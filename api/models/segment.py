@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from models.parallel import Parallel
+from api.models.parallel import Parallel
 
 
 class Segment(BaseModel):

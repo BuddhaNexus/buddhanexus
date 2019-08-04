@@ -6,12 +6,10 @@ services:
       context: .
       dockerfile: ./setup/Dockerfile-fastapi
     ports:
-      - "4200:8000"
+      - "8000:8000"
     volumes:
-      - type: bind
-        source: .
-        target: /opt/buddhanexus
-    command: ./setup/fastapi.sh
+      - .:/opt/buddhanexus
+    command: uvicorn --host 0.0.0.0 api.main:app --reload
     depends_on:
       - arangodb
 

@@ -4,7 +4,6 @@ RUN mkdir -p /opt/buddhanexus
 
 WORKDIR /opt/buddhanexus
 
-COPY requirements.txt requirements.txt
+COPY */fastapi-requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
-
