@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: ./setup/Dockerfile-fastapi
+    ports:
+      - "4200:8000"
+    volumes:
+      - type: bind
+        source: .
+        target: /opt/buddhanexus
+    command: ./setup/fastapi.sh
+    depends_on:
+      - arangodb
+
+  arangodb:
+    image: arangodb:3.4.7
+    expose:
+      - "8529"
+    ports:
+      - "8529:8529"
+    env_file:
+      - ./setup/.base.env
+    volumes:
+      - dbdata:/var/lib/arangodb3
+
+
+volumes:
+  dbdata:

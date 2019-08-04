@@ -1,0 +1,552 @@
+[
+    {
+        "segmentnr": "K07kl00023e:1",
+        "segment": "rgya gar skad du /",
+        "lang": "tib",
+        "parallels": []
+    },
+    {
+        "segmentnr": "K07kl00023e:2",
+        "segment": "bha ga wa ti pra dzny'a pa ra m'i ta sarba ta th'a ga ta m'a ta ae ka aa ksha ri n'a ma /",
+        "lang": "tib",
+        "parallels": []
+    },
+    {
+        "segmentnr": "K07kl00023e:3",
+        "segment": "bod skad du /",
+        "lang": "tib",
+        "parallels": []
+    },
+    {
+        "segmentnr": "K07kl00023e:4",
+        "segment": "bcom ldan 'das ma shes rab kyi pha rol tu phyin pa de bzhin gshegs pa thams cad kyi yum yi ge gcig ma zhes bya ba /",
+        "lang": "tib",
+        "parallels": []
+    },
+    {
+        "segmentnr": "K07kl00023e:5",
+        "segment": "shes rab kyi pha rol tu phyin ma la phyag 'tshal lo //",
+        "lang": "tib",
+        "parallels": []
+    },
+    {
+        "segmentnr": "K07kl00023e:6",
+        "segment": "'di skad bdag gis thos pa'i dus gcig na bcom ldan 'das rgyal po'i khab bya rgod phung po'i ri la dge slong gi dge 'dun chen po brgya phrag phyed dang bcu gsum dang byang chub sems dpa' bye ba khrag khrig brgya stong mang po dag dang thabs cig tu bzhugs te /",
+        "lang": "tib",
+        "parallels": []
+    },
+    {
+        "segmentnr": "K07kl00023e:7",
+        "segment": "yang de'i tshe bcom ldan 'das kyis tshe dang ldan pa kun dga' bo la bka' stsal pa /",
+        "lang": "tib",
+        "parallels": []
+    },
+    {
+        "segmentnr": "K07kl00023e:8",
+        "segment": "kun dga' bo /",
+        "lang": "tib",
+        "parallels": [
+            {
+                "probability": 100,
+                "parlength": 5,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 58,
+                "parsegnr": [
+                    "T03TD3790.3E:3892"
+                ],
+                "parsegment": [
+                    "kun dga' bo khyod kyis shes rab kyi pha rol tu phyin pa'i gzungs gang bzung bas chos thams cad gzung bar 'gyur ba'i shes rab kyi pha rol tu phyin pa'i gzungs ngas bstan pa 'di yin no zhes bya ba ni byang chub chen po la yid ches pa'i rgyu gsungs pa yin no ////"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 43,
+                "root_segnr": [
+                    "K07kl00023e:8",
+                    "K07kl00023e:9"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 5,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 44,
+                "parsegnr": [
+                    "K04kl00012e1inc:17329",
+                    "K04kl00012e1inc:17330"
+                ],
+                "parsegment": [
+                    "kun dga' bo /",
+                    "khyod kyis shes rab kyi pha rol tu phyin pa 'di legs par yid la bya ba dang legs par zin par bya ba dang legs par kun chub par bya ba dang legs par rab tu 'don par bya ste /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 43,
+                "root_segnr": [
+                    "K07kl00023e:8",
+                    "K07kl00023e:9"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 5,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 56,
+                "parsegnr": [
+                    "T03TD3790.3E:3678"
+                ],
+                "parsegment": [
+                    "kun dga' bo khyod kyis shes rab kyi pha rol tu phyin pa 'di sdug pa dang yid du 'ong ba yongs su mi btang ba gyis shig /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 43,
+                "root_segnr": [
+                    "K07kl00023e:8",
+                    "K07kl00023e:9"
+                ]
+            }
+        ]
+    },
+    {
+        "segmentnr": "K07kl00023e:9",
+        "segment": "khyod kyis shes rab kyi pha rol tu phyin pa yi ge gcig ma zhes bya ba 'di /",
+        "lang": "tib",
+        "parallels": [
+            {
+                "probability": 100,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 30,
+                "par_offset_end": 80,
+                "parsegnr": [
+                    "T03TD3811E:2546"
+                ],
+                "parsegment": [
+                    "thos pa med do zhes bya ba ni yi ge gcig kyang shes rab kyi pha rol tu phyin pa rjod par byed pa nyid kyis thos pa med do //"
+                ],
+                "root_offset_beg": 11,
+                "root_offset_end": 57,
+                "root_segnr": [
+                    "K07kl00023e:9"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 5,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 58,
+                "parsegnr": [
+                    "T03TD3790.3E:3892"
+                ],
+                "parsegment": [
+                    "kun dga' bo khyod kyis shes rab kyi pha rol tu phyin pa'i gzungs gang bzung bas chos thams cad gzung bar 'gyur ba'i shes rab kyi pha rol tu phyin pa'i gzungs ngas bstan pa 'di yin no zhes bya ba ni byang chub chen po la yid ches pa'i rgyu gsungs pa yin no ////"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 43,
+                "root_segnr": [
+                    "K07kl00023e:8",
+                    "K07kl00023e:9"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 5,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 44,
+                "parsegnr": [
+                    "K04kl00012e1inc:17329",
+                    "K04kl00012e1inc:17330"
+                ],
+                "parsegment": [
+                    "kun dga' bo /",
+                    "khyod kyis shes rab kyi pha rol tu phyin pa 'di legs par yid la bya ba dang legs par zin par bya ba dang legs par kun chub par bya ba dang legs par rab tu 'don par bya ste /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 43,
+                "root_segnr": [
+                    "K07kl00023e:8",
+                    "K07kl00023e:9"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 5,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 56,
+                "parsegnr": [
+                    "T03TD3790.3E:3678"
+                ],
+                "parsegment": [
+                    "kun dga' bo khyod kyis shes rab kyi pha rol tu phyin pa 'di sdug pa dang yid du 'ong ba yongs su mi btang ba gyis shig /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 43,
+                "root_segnr": [
+                    "K07kl00023e:8",
+                    "K07kl00023e:9"
+                ]
+            },
+            {
+                "probability": 99,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 65,
+                "par_offset_end": 103,
+                "parsegnr": [
+                    "T02TD1869E:1511"
+                ],
+                "parsegment": [
+                    "rten dang brten pa'i rang bzhin can dkyil 'khor dam pa'i rnam pa can 'di ni sems yin te zhes bya ba ni 'di shes rab dang thabs kyi rang bzhin can 'di ni 'dir de'i rang bzhin gyi rig ma dang skyes bu'i rang bzhin kho nar shes par bya'o //"
+                ],
+                "root_offset_beg": 58,
+                "root_offset_end": 17,
+                "root_segnr": [
+                    "K07kl00023e:9",
+                    "K07kl00023e:10"
+                ]
+            },
+            {
+                "probability": 99,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 46,
+                "parsegnr": [
+                    "K03kl00009e3:3659",
+                    "K03kl00009e3:3660"
+                ],
+                "parsegment": [
+                    "dga' bo /",
+                    "khyod kyis shes rab kyi pha rol tu phyin pa'i gzungs gang gzung bas /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 43,
+                "root_segnr": [
+                    "K07kl00023e:9"
+                ]
+            },
+            {
+                "probability": 99,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 44,
+                "parsegnr": [
+                    "K03kl00009e3:3343",
+                    "K03kl00009e3:3344"
+                ],
+                "parsegment": [
+                    "dga' bo /",
+                    "khyod kyis shes rab kyi pha rol tu phyin pa 'di sdug pa dang yid du 'ong ba dang yongs su mi gtong ba gyis shig /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 43,
+                "root_segnr": [
+                    "K07kl00023e:9"
+                ]
+            },
+            {
+                "probability": 99,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 54,
+                "parsegnr": [
+                    "T03TD3807.2E:7435"
+                ],
+                "parsegment": [
+                    "dga' bo khyod kyis shes rab kyi pha rol tu phyin pa'i gzungs gang bzung bas /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 43,
+                "root_segnr": [
+                    "K07kl00023e:9"
+                ]
+            },
+            {
+                "probability": 99,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 49,
+                "par_offset_end": -1,
+                "parsegnr": [
+                    "T16TD4357E:1802"
+                ],
+                "parsegment": [
+                    "kye rgyal ba'i sras de bzhin gshegs pa 'byung ba zhes bya ba 'di ni /"
+                ],
+                "root_offset_beg": 58,
+                "root_offset_end": 17,
+                "root_segnr": [
+                    "K07kl00023e:9",
+                    "K07kl00023e:10"
+                ]
+            }
+        ]
+    },
+    {
+        "segmentnr": "K07kl00023e:10",
+        "segment": "sems can rnams la phan pa dang bde ba'i phyir zungs shig /",
+        "lang": "tib",
+        "parallels": [
+            {
+                "probability": 99,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 65,
+                "par_offset_end": 103,
+                "parsegnr": [
+                    "T02TD1869E:1511"
+                ],
+                "parsegment": [
+                    "rten dang brten pa'i rang bzhin can dkyil 'khor dam pa'i rnam pa can 'di ni sems yin te zhes bya ba ni 'di shes rab dang thabs kyi rang bzhin can 'di ni 'dir de'i rang bzhin gyi rig ma dang skyes bu'i rang bzhin kho nar shes par bya'o //"
+                ],
+                "root_offset_beg": 58,
+                "root_offset_end": 17,
+                "root_segnr": [
+                    "K07kl00023e:9",
+                    "K07kl00023e:10"
+                ]
+            },
+            {
+                "probability": 99,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 49,
+                "par_offset_end": -1,
+                "parsegnr": [
+                    "T16TD4357E:1802"
+                ],
+                "parsegment": [
+                    "kye rgyal ba'i sras de bzhin gshegs pa 'byung ba zhes bya ba 'di ni /"
+                ],
+                "root_offset_beg": 58,
+                "root_offset_end": 17,
+                "root_segnr": [
+                    "K07kl00023e:9",
+                    "K07kl00023e:10"
+                ]
+            }
+        ]
+    },
+    {
+        "segmentnr": "K07kl00023e:11",
+        "segment": "'di lta ste /",
+        "lang": "tib",
+        "parallels": []
+    },
+    {
+        "segmentnr": "K07kl00023e:13",
+        "segment": "bcom ldan 'das kyis de skad ces bka' stsal nas tshe dang ldan pa kun dga' bo dang dge slong gi dge 'dun chen po dang byang chub sems dpa'i 'khor de dag dang lha dang mi dang lha ma yin dang dri zar bcas pa'i 'jig rten yi rang ste bcom ldan 'das kyis gsungs pa la //",
+        "lang": "tib",
+        "parallels": [
+            {
+                "probability": 100,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 43,
+                "parsegnr": [
+                    "T02TD2691E:11322"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal nas zhes bya ba ni /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 42,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 43,
+                "parsegnr": [
+                    "K10kl00244:1503"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal nas byang chub sems dpa' sems dpa' chen po rab tu mang po de dag dang lha dang mi dang lha ma yin dang dri zar bcas pa'i 'jig rten yi rang ste bcom ldan 'das kyis gsungs pa la mngon par bstod do ;;"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 42,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 43,
+                "parsegnr": [
+                    "T05TD4004E:227"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal nas zhes pa'o //"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 42,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 5,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 47,
+                "parsegnr": [
+                    "K10kl00304:114"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal nas dge slong de dag yi rangs te /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 46,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 43,
+                "parsegnr": [
+                    "K12acip-k:lha:sa-090-044:39"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal nas nyan thos de dag dang byang chub sems dpa' de dag dang thams cad dang ldan pa'i 'khor de dang lha dang mi dang lha ma yin dang dri zar bcas pa'i 'jig rten yid rangs te bcom ldan 'das kyis gsungs pa la mngon par bstod do //"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 42,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 5,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 47,
+                "parsegnr": [
+                    "K10kl00142e:272"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal nas byang chub sems dpa' sems dpa' chen po rnam par mi rtog snang ba dang thams cad dang ldan pa'i 'khor de dang lha dang mi dang lha ma yin dang dri zar bcas pa'i 'jig rten yi rang ste bcom ldan 'das kyis gsungs pa la mngon par bstod do ;;"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 46,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 5,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": -1,
+                "parsegnr": [
+                    "K12acip-k:lha:sa-091-040:151"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal nas /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 46,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 42,
+                "par_offset_end": 85,
+                "parsegnr": [
+                    "T16TD4358.1E:4536"
+                ],
+                "parsegment": [
+                    "lnga ba ni mdo sde thams cad kyi mjug nas bcom ldan 'das kyis de skad ces bka' stsal nas /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 42,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": -1,
+                "parsegnr": [
+                    "K10kl00334:80"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal te /"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 42,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 43,
+                "parsegnr": [
+                    "K12acip-k:lha:sa-094-005:152"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal nas dge slong de dag dang byang chub sems dpa' de dag dang thams cad dang ldan pa'i 'khor de dag yi rang ste bcom ldan 'das kyis gsungs pa la mngon par bstod do //"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 42,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            },
+            {
+                "probability": 100,
+                "parlength": 4,
+                "parlang": "tib",
+                "par_offset_beg": 0,
+                "par_offset_end": 43,
+                "parsegnr": [
+                    "K12acip-k:lha:sa-090-040:471"
+                ],
+                "parsegment": [
+                    "bcom ldan 'das kyis de skad ces bka' stsal nas thams cad dang ldan pa'i 'khor de dag yid rangs te bcom ldan 'das kyis gsungs pa la mngon par bstod do //"
+                ],
+                "root_offset_beg": 0,
+                "root_offset_end": 42,
+                "root_segnr": [
+                    "K07kl00023e:13"
+                ]
+            }
+        ]
+    },
+    {
+        "segmentnr": "K07kl00023e:14",
+        "segment": "mngon par bstod do //",
+        "lang": "tib",
+        "parallels": []
+    }
+]
