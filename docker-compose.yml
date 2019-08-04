@@ -1,15 +1,16 @@
 version: "3.7"
 
 services:
-  fastapi:
+  dataloader:
     build:
       context: .
-      dockerfile: ./setup/Dockerfile-fastapi
-    ports:
-      - "8000:8000"
+      dockerfile: ./setup/Dockerfile-dataloader
+    env_file:
+      - ./setup/.base.env
     volumes:
       - .:/opt/buddhanexus
-    command: uvicorn --host 0.0.0.0 api.main:app --reload
+    links:
+      - "arangodb"
     depends_on:
       - arangodb
 
@@ -24,6 +25,18 @@ services:
     volumes:
       - dbdata:/var/lib/arangodb3
 
+  fastapi:
+    build:
+      context: .
+      dockerfile: ./setup/Dockerfile-fastapi
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/opt/buddhanexus
+    command: uvicorn --host 0.0.0.0 api.main:app --reload
+    depends_on:
+      - arangodb
+      - dataloader
 
 volumes:
   dbdata:
