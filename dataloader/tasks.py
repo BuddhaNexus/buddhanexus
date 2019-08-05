@@ -1,6 +1,6 @@
 import os
 from json import JSONDecodeError
-import json
+import htmllistparse
 
 from pyArango.connection import *
 from invoke import task
@@ -61,3 +61,18 @@ def load_segments(c, path="./example.json"):
                 load_segment_to_db(segment)
         except JSONDecodeError:
             print("Error loading the segment in file: ", path)
+
+
+@task
+# def download_source_files(c, url=os.environ["SOURCE_FILES_URL"]):
+def download_source_files(c, url="http://buddhist-db.de/vimala/suttas/"):
+    cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
+    # Get directories in url
+    for directory in listing:
+        print(directory)
+        dir_url = f"{url}{directory.name}"
+        _, dir_files = htmllistparse.fetch_listing(dir_url, timeout=30)
+        for file in dir_files:
+            print(file)
+            file_url = f"{dir_url}{file.name}"
+            print("URL to file: ", file_url)
