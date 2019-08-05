@@ -14,3 +14,10 @@ class Parallel(BaseModel):
     root_offset_beg: int
     root_offset_end: int
     root_segnr: List[str]
+
+
+class Segment(BaseModel):
+    segmentnr: str
+    segment: str
+    lang: str
+    paralells: List[Parallel]

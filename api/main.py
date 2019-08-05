@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Path, Query
 from pydantic import BaseModel
 
-from api.models.segment import Segment
+from models import Segment
 
 
 class Item(BaseModel):
