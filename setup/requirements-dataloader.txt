@@ -2,3 +2,6 @@ typing==3.7.4
 pyarango==1.3.2
 invoke==1.2.0
 htmllistparse==0.5
+urlfetch==1.1.2
+tqdm==4.32.2
+joblib==0.13.2

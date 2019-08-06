@@ -1,9 +1,15 @@
+import io
 import os
-from json import JSONDecodeError
-import htmllistparse
+import gzip
+# from joblib import Parallel, delayed
+# import multiprocessing
 
-from pyArango.connection import *
+import urlfetch
+import htmllistparse
+from json import JSONDecodeError
+from tqdm import trange
 from invoke import task
+from pyArango.connection import *
 
 from models import Segment
 
@@ -27,8 +33,16 @@ def load_segment_to_db(json_data: Segment):
     doc["segment"] = json_data["segment"]
     doc["parallels"] = json_data["parallels"]
     doc.save()
-    print("Saved collection for segment: ", json_data["segment"])
+    # print("Saved collection for segment: ", json_data["segment"])
 
+
+def load_gzipfile_into_db(path):
+    result = urlfetch.fetch(path)
+    file_stream = io.BytesIO(result.content)
+    with gzip.open(file_stream) as f:
+        parsed = json.loads(f.read())
+        for segment in parsed:
+            load_segment_to_db(segment)
 
 @task
 def create_db(c):
@@ -51,28 +65,27 @@ def create_collections(c, langs=("chn", "skt", "tib")):
     print(f"created {langs} collections")
 
 
-@task
-def load_segments(c, path="./example.json"):
-    db = get_db_connection()["texts"]
-    with open(path, "r") as f:
-        try:
-            data = json.loads(f.read())
-            for segment in data:
-                load_segment_to_db(segment)
-        except JSONDecodeError:
-            print("Error loading the segment in file: ", path)
+# @task
+# def load_segments(c, path="./example.json"):
+#     db = get_db_connection()["texts"]
+#     with open(path, "r") as f:
+#         try:
+#             data = json.loads(f.read())
+#             for segment in data:
+#                 load_segment_to_db(segment)
+#         except JSONDecodeError:
+#             print("Error loading the segment in file: ", path)
 
 
 @task
 # def download_source_files(c, url=os.environ["SOURCE_FILES_URL"]):
 def download_source_files(c, url="http://buddhist-db.de/vimala/suttas/"):
     cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
-    # Get directories in url
     for directory in listing:
-        print(directory)
+        print(f"loading {directory.name} files:")
         dir_url = f"{url}{directory.name}"
         _, dir_files = htmllistparse.fetch_listing(dir_url, timeout=30)
-        for file in dir_files:
-            print(file)
-            file_url = f"{dir_url}{file.name}"
-            print("URL to file: ", file_url)
+        for i in trange(len(dir_files)):
+            file_url = f"{dir_url}{dir_files[i].name}"
+            load_gzipfile_into_db(file_url)
+
