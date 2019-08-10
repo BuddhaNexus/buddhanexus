@@ -76,20 +76,24 @@ def clean_collections(c):
 
 def load_dir_file(dir_url, dir_files, threads):
     try:
-        # Parallel(n_jobs=threads)(
-        #     delayed(lambda i: load_gzipfile_into_db(f"{dir_url}{dir_files[i].name}"))(i)
-        #     for i in trange(len(dir_files))
-        # )
-        [
-            load_gzipfile_into_db(f"{dir_url}{dir_files[i].name}")
-            for i in trange(len(dir_files))
-        ]
+        if threads == 1:
+            [
+                load_gzipfile_into_db(f"{dir_url}{dir_files[i].name}")
+                for i in trange(len(dir_files))
+            ]
+        else:
+            Parallel(n_jobs=threads)(
+                delayed(
+                    lambda i: load_gzipfile_into_db(f"{dir_url}{dir_files[i].name}")
+                )(i)
+                for i in trange(len(dir_files))
+            )
     except ConnectionError as e:
         print("Connection Error: ", e)
 
 
 @task(clean_collections)
-def load_source_files(c, url=DEFAULT_SOURCE_URL, threads=4):
+def load_source_files(c, url=DEFAULT_SOURCE_URL, threads=1):
     cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
     for directory in listing:
         print(f"loading {directory.name} files:")
