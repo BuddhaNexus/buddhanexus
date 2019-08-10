@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./setup/Dockerfile-dataloader
+    container_name: "dataloader"
     env_file:
       - ./setup/.base.env
     volumes:
@@ -16,8 +17,10 @@ services:
 
   arangodb:
     image: arangodb:3.4.7
+#    command: "--server.maximal-threads 4 --foxx.queues false --javascript.gc-interval 1000 --javascript.gc-frequency 10 --server.statistics false --javascript.v8-contexts 2"
     expose:
       - "8529"
+    container_name: "arangodb"
     ports:
       - "8529:8529"
     env_file:
@@ -29,6 +32,7 @@ services:
     build:
       context: .
       dockerfile: ./setup/Dockerfile-fastapi
+    container_name: "fastapi"
     ports:
       - "8000:8000"
     volumes:

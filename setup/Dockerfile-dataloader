@@ -8,3 +8,4 @@ COPY * /opt/buddhanexus/
 RUN python tasks.py
 # Keep container running
 CMD tail -f /dev/null
+WORKDIR /opt/buddhanexus/dataloader

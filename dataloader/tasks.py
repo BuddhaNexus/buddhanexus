@@ -1,12 +1,11 @@
 import io
 import os
 import gzip
-# from joblib import Parallel, delayed
-# import multiprocessing
+
+from joblib import Parallel, delayed
 
 import urlfetch
 import htmllistparse
-from json import JSONDecodeError
 from tqdm import trange
 from invoke import task
 from pyArango.connection import *
@@ -14,6 +13,8 @@ from pyArango.connection import *
 from models import Segment
 
 DB_NAME = "buddha-nexus"
+DEFAULT_LANGS = ("chn", "skt", "tib")
+DEFAULT_SOURCE_URL = "http://buddhist-db.de/vimala/suttas/"
 
 
 def get_db_connection():
@@ -33,7 +34,6 @@ def load_segment_to_db(json_data: Segment):
     doc["segment"] = json_data["segment"]
     doc["parallels"] = json_data["parallels"]
     doc.save()
-    # print("Saved collection for segment: ", json_data["segment"])
 
 
 def load_gzipfile_into_db(path):
@@ -43,6 +43,7 @@ def load_gzipfile_into_db(path):
         parsed = json.loads(f.read())
         for segment in parsed:
             load_segment_to_db(segment)
+
 
 @task
 def create_db(c):
@@ -55,7 +56,7 @@ def create_db(c):
 
 
 @task()
-def create_collections(c, langs=("chn", "skt", "tib")):
+def create_collections(c, langs=DEFAULT_LANGS):
     db = get_db_connection()[DB_NAME]
     try:
         for lang in langs:
@@ -65,27 +66,33 @@ def create_collections(c, langs=("chn", "skt", "tib")):
     print(f"created {langs} collections")
 
 
-# @task
-# def load_segments(c, path="./example.json"):
-#     db = get_db_connection()["texts"]
-#     with open(path, "r") as f:
-#         try:
-#             data = json.loads(f.read())
-#             for segment in data:
-#                 load_segment_to_db(segment)
-#         except JSONDecodeError:
-#             print("Error loading the segment in file: ", path)
-
-
 @task
-# def download_source_files(c, url=os.environ["SOURCE_FILES_URL"]):
-def download_source_files(c, url="http://buddhist-db.de/vimala/suttas/"):
+def clean_collections(c):
+    db = get_db_connection()[DB_NAME]
+    for lang in DEFAULT_LANGS:
+        db[lang].empty()
+    print("all collections cleaned.")
+
+
+def load_dir_file(dir_url, dir_files, threads):
+    try:
+        # Parallel(n_jobs=threads)(
+        #     delayed(lambda i: load_gzipfile_into_db(f"{dir_url}{dir_files[i].name}"))(i)
+        #     for i in trange(len(dir_files))
+        # )
+        [
+            load_gzipfile_into_db(f"{dir_url}{dir_files[i].name}")
+            for i in trange(len(dir_files))
+        ]
+    except ConnectionError as e:
+        print("Connection Error: ", e)
+
+
+@task(clean_collections)
+def load_source_files(c, url=DEFAULT_SOURCE_URL, threads=4):
     cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
     for directory in listing:
         print(f"loading {directory.name} files:")
         dir_url = f"{url}{directory.name}"
         _, dir_files = htmllistparse.fetch_listing(dir_url, timeout=30)
-        for i in trange(len(dir_files)):
-            file_url = f"{dir_url}{dir_files[i].name}"
-            load_gzipfile_into_db(file_url)
-
+        load_dir_file(dir_url, dir_files, threads)
