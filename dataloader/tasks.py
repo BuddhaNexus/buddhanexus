@@ -2,7 +2,7 @@ import io
 import os
 import gzip
 
-from joblib import Parallel, delayed
+from joblib import Parallel as ParallelJobRunner, delayed
 
 import urlfetch
 import htmllistparse
@@ -10,7 +10,7 @@ from tqdm import trange
 from invoke import task
 from pyArango.connection import *
 
-from models import Segment
+from models import Segment, Parallel
 
 DB_NAME = os.environ["ARANGO_BASE_DB_NAME"]
 DEFAULT_LANGS = ("chn", "skt", "tib")
@@ -39,6 +39,7 @@ def create_db(c):
 def create_collections(c, langs=DEFAULT_LANGS):
     db = get_db_connection()[DB_NAME]
     try:
+        db.createCollection(name="parallels")
         for lang in langs:
             db.createCollection(name=lang)
     except CreationError as e:
@@ -54,17 +55,30 @@ def clean_collections(c):
     print("all collections cleaned.")
 
 
-def load_segment_to_db(json_data: Segment):
+def load_parallels_to_db(connection: Connection, json_parallels: [Parallel]) -> None:
+    collection = connection["parallels"]
+    for parallel in json_parallels:
+        doc = collection.createDocument()
+        doc.set(parallel)
+        try:
+            doc.save()
+        except CreationError as e:
+            print(f"Could not save parallel {parallel}. Error: ", e)
+
+
+def load_segment_to_db(json_segment: Segment) -> None:
     db = get_db_connection()[DB_NAME]
-    segment_lang = json_data["lang"]
+    segment_lang = json_segment["lang"]
     collection = db[segment_lang]
     doc = collection.createDocument()
-    doc._key = json_data["segmentnr"]
-    doc["segmentnr"] = json_data["segmentnr"]
-    doc["segment"] = json_data["segment"]
-    doc["parallels"] = json_data["parallels"]
+    doc._key = json_segment["segmentnr"]
+    doc["segmentnr"] = json_segment["segmentnr"]
+    doc["segment"] = json_segment["segment"]
+    doc["lang"] = json_segment["lang"]
+
     try:
         doc.save()
+        load_parallels_to_db(db, json_segment["parallels"])
     except CreationError as e:
         print(f"Could not save segment {doc._key}. Error: ", e)
 
@@ -90,7 +104,7 @@ def load_dir_file(dir_url, dir_files, threads):
                 for i in trange(len(dir_files))
             ]
         else:
-            Parallel(n_jobs=threads)(
+            ParallelJobRunner(n_jobs=threads)(
                 delayed(lambda i: load_gzipfile_into_db(dir_url, dir_files[i].name))(i)
                 for i in trange(len(dir_files))
             )
@@ -125,3 +139,4 @@ def load_source_files(c, url=DEFAULT_SOURCE_URL, threads=1):
         ]
 
         load_dir_file(dir_url, filtered_files, threads)
+        print("Data loading completed.")

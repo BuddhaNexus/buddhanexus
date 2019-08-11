@@ -20,4 +20,4 @@ load-data:
 	@docker exec -t dataloader bash -c "invoke load-source-files"
 
 load-data-async:
-	@docker exec -t dataloader bash -c "invoke load-source-files --threads=4"
+	@docker exec -t dataloader bash -c "invoke load-source-files --threads=10"
