@@ -14,10 +14,10 @@ services:
       - "arangodb"
     depends_on:
       - arangodb
+    restart: always
 
   arangodb:
     image: arangodb:3.4.7
-#    command: "--server.maximal-threads 4 --foxx.queues false --javascript.gc-interval 1000 --javascript.gc-frequency 10 --server.statistics false --javascript.v8-contexts 2"
     expose:
       - "8529"
     container_name: "arangodb"
@@ -27,6 +27,7 @@ services:
       - ./setup/.base.env
     volumes:
       - dbdata:/var/lib/arangodb3
+    restart: always
 
   fastapi:
     build:
@@ -37,7 +38,10 @@ services:
       - "8000:8000"
     volumes:
       - .:/opt/buddhanexus
+    env_file:
+      - ./setup/.base.env
     command: uvicorn --host 0.0.0.0 api.main:app --reload
+    restart: always
     depends_on:
       - arangodb
       - dataloader

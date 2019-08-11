@@ -12,7 +12,7 @@ from pyArango.connection import *
 
 from models import Segment
 
-DB_NAME = "buddha-nexus"
+DB_NAME = os.environ["ARANGO_BASE_DB_NAME"]
 DEFAULT_LANGS = ("chn", "skt", "tib")
 DEFAULT_SOURCE_URL = "http://buddhist-db.de/vimala/suttas/"
 
@@ -59,10 +59,14 @@ def load_segment_to_db(json_data: Segment):
     segment_lang = json_data["lang"]
     collection = db[segment_lang]
     doc = collection.createDocument()
+    doc._key = json_data["segmentnr"]
     doc["segmentnr"] = json_data["segmentnr"]
     doc["segment"] = json_data["segment"]
     doc["parallels"] = json_data["parallels"]
-    doc.save()
+    try:
+        doc.save()
+    except CreationError as e:
+        print(f"Could not save segment {doc._key}. Error: ", e)
 
 
 def load_gzipfile_into_db(dir_url, file_name):
@@ -114,6 +118,10 @@ def load_source_files(c, url=DEFAULT_SOURCE_URL, threads=1):
         _, dir_files = htmllistparse.fetch_listing(dir_url, timeout=30)
 
         # Todo remove testing filter
-        filtered_files = [file for file in dir_files if should_download_file(directory.name[:3], file.name)]
+        filtered_files = [
+            file
+            for file in dir_files
+            if should_download_file(directory.name[:3], file.name)
+        ]
 
         load_dir_file(dir_url, filtered_files, threads)
