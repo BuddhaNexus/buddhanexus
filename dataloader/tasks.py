@@ -13,8 +13,16 @@ from pyArango.connection import *
 from models import Segment, Parallel
 
 DB_NAME = os.environ["ARANGO_BASE_DB_NAME"]
+DEFAULT_SOURCE_URL = os.environ["SOURCE_FILES_URL"]
+
 DEFAULT_LANGS = ("chn", "skt", "tib")
-DEFAULT_SOURCE_URL = "http://buddhist-db.de/vimala/suttas/"
+COLLECTION_NAMES = (
+    "parallels",
+    "segments",
+    "files",
+    "menu-collections",
+    "menu-categories",
+)
 
 
 def get_db_connection():
@@ -36,15 +44,14 @@ def create_db(c):
 
 
 @task()
-def create_collections(c, langs=DEFAULT_LANGS):
+def create_collections(c, collections=COLLECTION_NAMES):
     db = get_db_connection()[DB_NAME]
     try:
-        db.createCollection(name="parallels")
-        for lang in langs:
-            db.createCollection(name=lang)
+        for name in collections:
+            db.createCollection(name=name)
     except CreationError as e:
         print("Error creating collection: ", e)
-    print(f"created {langs} collections")
+    print(f"created {collections} collections")
 
 
 @task
@@ -114,9 +121,9 @@ def load_dir_file(dir_url, dir_files, threads):
 
 # Temporary limit to speed up file loading:
 def should_download_file(language, file_name):
-    if language == "chn" and file_name.startswith("T31"):
+    if language == "chn" and file_name.startswith("T01_T0082"):
         return True
-    elif language == "tib" and file_name.startswith("T06"):
+    elif language == "tib" and file_name.startswith("T01TD1170E"):
         return True
     else:
         return False
