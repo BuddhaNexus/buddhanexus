@@ -20,7 +20,7 @@ create-db:
 	@docker exec -t dataloader bash -c "invoke create-db create-collections"
 
 load-data:
-	@docker exec -t dataloader bash -c "invoke load-source-files"
+	@docker exec -t dataloader bash -c "python -m invoke load-source-files"
 
 load-data-async:
 	@docker exec -t dataloader bash -c "invoke load-source-files --threads=10"

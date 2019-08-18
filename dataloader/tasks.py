@@ -10,19 +10,14 @@ from tqdm import trange
 from invoke import task
 from pyArango.connection import *
 
+from db_collections import COLLECTION_NAMES, COLLECTION_SEGMENTS, COLLECTION_PARALLELS
 from models import Segment, Parallel
+
 
 DB_NAME = os.environ["ARANGO_BASE_DB_NAME"]
 DEFAULT_SOURCE_URL = os.environ["SOURCE_FILES_URL"]
 
 DEFAULT_LANGS = ("chn", "skt", "tib")
-COLLECTION_NAMES = (
-    "parallels",
-    "segments",
-    "files",
-    "menu-collections",
-    "menu-categories",
-)
 
 
 def get_db_connection():
@@ -57,15 +52,16 @@ def create_collections(c, collections=COLLECTION_NAMES):
 @task
 def clean_collections(c):
     db = get_db_connection()[DB_NAME]
-    for lang in DEFAULT_LANGS:
-        db[lang].empty()
+    for name in COLLECTION_NAMES:
+        db[name].empty()
     print("all collections cleaned.")
 
 
-def load_parallels_to_db(connection: Connection, json_parallels: [Parallel]) -> None:
-    collection = connection["parallels"]
+def load_parallels_to_db(json_parallels: [Parallel], connection: Connection) -> None:
+    collection = connection[COLLECTION_PARALLELS]
     for parallel in json_parallels:
         doc = collection.createDocument()
+        doc._key = parallel["id"]
         doc.set(parallel)
         try:
             doc.save()
@@ -73,19 +69,20 @@ def load_parallels_to_db(connection: Connection, json_parallels: [Parallel]) -> 
             print(f"Could not save parallel {parallel}. Error: ", e)
 
 
-def load_segment_to_db(json_segment: Segment) -> None:
-    db = get_db_connection()[DB_NAME]
-    segment_lang = json_segment["lang"]
-    collection = db[segment_lang]
+def load_segment_to_db(json_segment: Segment, connection: Connection) -> None:
+    collection = connection[COLLECTION_SEGMENTS]
     doc = collection.createDocument()
-    doc._key = json_segment["segmentnr"]
-    doc["segmentnr"] = json_segment["segmentnr"]
-    doc["segment"] = json_segment["segment"]
-    doc["lang"] = json_segment["lang"]
+    try:
+        doc._key = json_segment["segnr"]
+        doc["segnr"] = json_segment["segnr"]
+        doc["segtext"] = json_segment["segtext"]
+        doc["lang"] = json_segment["lang"]
+        doc["position"] = json_segment["position"]
+    except KeyError as e:
+        print("Could not load segment. Error: ", e)
 
     try:
         doc.save()
-        load_parallels_to_db(db, json_segment["parallels"])
     except CreationError as e:
         print(f"Could not save segment {doc._key}. Error: ", e)
 
@@ -93,13 +90,18 @@ def load_segment_to_db(json_segment: Segment) -> None:
 def load_gzipfile_into_db(dir_url, file_name):
     file_url = f"{dir_url}{file_name}"
     if not file_url.endswith("gz"):
+        print(f"{file_name} is not a gzip file. Ignoring.")
         return
     result = urlfetch.fetch(file_url)
     file_stream = io.BytesIO(result.content)
+
     with gzip.open(file_stream) as f:
         parsed = json.loads(f.read())
-        for segment in parsed:
-            load_segment_to_db(segment)
+        segments, parallels = parsed
+        db = get_db_connection()[DB_NAME]
+        for segment in segments:
+            load_segment_to_db(segment, db)
+        load_parallels_to_db(parallels, db)
         f.close()
 
 
@@ -121,9 +123,9 @@ def load_dir_file(dir_url, dir_files, threads):
 
 # Temporary limit to speed up file loading:
 def should_download_file(language, file_name):
-    if language == "chn" and file_name.startswith("T01_T0082"):
-        return True
-    elif language == "tib" and file_name.startswith("T01TD1170E"):
+    # if language == "chn" and file_name.startswith("T01_T0082"):
+    #     return True
+    if language == "tib" and file_name.startswith("T06"):
         return True
     else:
         return False
@@ -131,19 +133,24 @@ def should_download_file(language, file_name):
 
 @task(clean_collections)
 def load_source_files(c, url=DEFAULT_SOURCE_URL, threads=1):
-    print(f"Loading source files from {url} using {threads} threads.")
+    print(
+        f"Loading source files from {url} using {threads} {'threads' if threads > 1 else 'thread'}."
+    )
     cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
     for directory in listing:
         print(f"loading {directory.name} files:")
         dir_url = f"{url}{directory.name}"
         _, dir_files = htmllistparse.fetch_listing(dir_url, timeout=30)
 
-        # Todo remove testing filter
-        filtered_files = [
-            file
-            for file in dir_files
-            if should_download_file(directory.name[:3], file.name)
-        ]
+        filtered_files = (
+            [
+                file
+                for file in dir_files
+                if should_download_file(directory.name[:3], file.name)
+            ]
+            if os.environ["TESTING_LIMIT"]
+            else dir_files
+        )
 
         load_dir_file(dir_url, filtered_files, threads)
         print("Data loading completed.")
