@@ -1,15 +1,8 @@
-import htmllistparse
 from invoke import task
 from pyArango.connection import *
 
-from constants import (
-    DB_NAME,
-    COLLECTION_NAMES,
-    DEFAULT_SOURCE_URL,
-    TIBETAN_MENU_URL,
-    LANG_TIBETAN,
-)
-from data_parser import get_db_connection, get_menu_file, load_menu_item
+from constants import DB_NAME, COLLECTION_NAMES, DEFAULT_SOURCE_URL
+from data_parser import get_db_connection, populate_all_collections_from_menu_files
 
 
 @task
@@ -74,9 +67,7 @@ def load_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
         f"Loading source files from {root_url} using {threads} {'threads' if threads > 1 else 'thread'}."
     )
 
-    tibetan_menu_data = get_menu_file(TIBETAN_MENU_URL)
-    for menu_item in tibetan_menu_data:
-        load_menu_item(menu_item, LANG_TIBETAN, root_url)
+    populate_all_collections_from_menu_files(root_url, threads)
 
     print("Data loading completed.")
 

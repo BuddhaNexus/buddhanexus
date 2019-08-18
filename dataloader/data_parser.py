@@ -1,16 +1,17 @@
 import gzip
-import io
-import os
 from urllib.request import urlopen
 
-import urlfetch
 from pyArango.connection import *
-from tqdm import trange
-from joblib import Parallel as ParallelJobRunner, delayed
 
-from constants import COLLECTION_PARALLELS, COLLECTION_SEGMENTS, COLLECTION_FILES
+from constants import (
+    COLLECTION_PARALLELS,
+    COLLECTION_SEGMENTS,
+    COLLECTION_FILES,
+    TIBETAN_MENU_URL,
+    LANG_TIBETAN,
+)
 from models_dataloader import Parallel, Segment, MenuItem
-from utils import get_remote_bytes, get_db_connection, get_database
+from utils import get_remote_bytes, get_db_connection, get_database, execute_in_parallel
 
 
 def load_parallels_into_db(json_parallels: [Parallel], connection: Connection) -> None:
@@ -104,27 +105,6 @@ def get_menu_file(url: str) -> [MenuItem]:
         return json.loads(file.read().decode())
 
 
-def load_menu_item(menu_item, lang: str, root_url: str) -> None:
-    file_url = f"{root_url}{lang}/{menu_item['filename']}.json.gz"
-
-    if not should_download_file(lang, menu_item["filename"]):
-        return
-
-    db = get_database()
-    print("Loading file: ", menu_item["filename"])
-
-    if not file_url.endswith("gz"):
-        print(f"{file_url} is not a gzip file. Ignoring.")
-        return
-
-    [segments, parallels] = parse_gzipfile(file_url)
-    segmentnrs = []
-    if segments:
-        segmentnrs = load_segments_into_db(segments, db)
-    load_file_into_db(menu_item, segmentnrs, db)
-    load_parallels_into_db(parallels, db)
-
-
 def should_download_file(file_lang: str, file_name: str) -> bool:
     """
     (temporary) Limit source file set size to speed up loading process
@@ -139,27 +119,35 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
         return False
 
 
-# def load_dir_file(dir_url, dir_files, threads):
-#     """
-#     Invoke
-#
-#     :param dir_url:
-#     :param dir_files:
-#     :param threads:
-#     :return:
-#     """
-#     try:
-#         if threads == 1:
-#             [
-#                 load_gzipfile_into_db(f"{dir_url}{dir_files[i].name}")
-#                 for i in trange(len(dir_files))
-#             ]
-#         else:
-#             ParallelJobRunner(n_jobs=threads)(
-#                 delayed(
-#                     lambda i: load_gzipfile_into_db(f"{dir_url}{dir_files[i].name}")
-#                 )(i)
-#                 for i in trange(len(dir_files))
-#             )
-#     except ConnectionError as e:
-#         print("Connection Error: ", e)
+def load_menu_item(menu_item, lang: str, root_url: str) -> None:
+    if not should_download_file(lang, menu_item["filename"]):
+        return
+
+    file_url = f"{root_url}{lang}/{menu_item['filename']}.json.gz"
+    db = get_database()
+
+    print("Loading file: ", menu_item["filename"])
+
+    if not file_url.endswith("gz"):
+        print(f"{file_url} is not a gzip file. Ignoring.")
+        return
+
+    [segments, parallels] = parse_gzipfile(file_url)
+    segmentnrs = []
+    if segments:
+        segmentnrs = load_segments_into_db(segments, db)
+    load_file_into_db(menu_item, segmentnrs, db)
+    load_parallels_into_db(parallels, db)
+
+    db.disconnectSession()
+
+
+def populate_all_collections_from_menu_files(root_url: str, threads: int):
+    tibetan_menu_data = get_menu_file(TIBETAN_MENU_URL)
+
+    execute_in_parallel(
+        lambda item: load_menu_item(item, lang=LANG_TIBETAN, root_url=root_url),
+        tibetan_menu_data,
+        threads,
+    )
+    # TODO: Load Chinese and Sanskrit menu files
