@@ -18,3 +18,11 @@ class Parallel:
     root_offset_beg: int
     root_offset_end: int
     root_segnr: List[str]
+
+
+# Examples on the right
+class MenuItem:
+    searchString: str  # "K01acip-k_lha_sa-001-001 D0001"
+    textname: str  # "D0001
+    filename: str  # "K01acip-k_lha_sa-001-001",
+    category: str  # "K01"

@@ -1,35 +1,25 @@
-import io
-import os
-import gzip
-
-from joblib import Parallel as ParallelJobRunner, delayed
-
-import urlfetch
 import htmllistparse
-from tqdm import trange
 from invoke import task
 from pyArango.connection import *
 
-from db_collections import COLLECTION_NAMES, COLLECTION_SEGMENTS, COLLECTION_PARALLELS
-from models import Segment, Parallel
-
-
-DB_NAME = os.environ["ARANGO_BASE_DB_NAME"]
-DEFAULT_SOURCE_URL = os.environ["SOURCE_FILES_URL"]
-
-DEFAULT_LANGS = ("chn", "skt", "tib")
-
-
-def get_db_connection():
-    return Connection(
-        username=os.environ["ARANGO_USER"],
-        password=os.environ["ARANGO_PASS"],
-        arangoURL=f"http://{os.environ['ARANGO_HOST']}:{os.environ['ARANGO_PORT']}",
-    )
+from constants import (
+    DB_NAME,
+    COLLECTION_NAMES,
+    DEFAULT_SOURCE_URL,
+    TIBETAN_MENU_URL,
+    LANG_TIBETAN,
+)
+from data_parser import get_db_connection, get_menu_file, load_menu_item
 
 
 @task
 def create_db(c):
+    """
+    Create empty database with name specified in the .env file
+
+    :param c: invoke.py context object
+    :return: None
+    """
     try:
         conn = get_db_connection()
         conn.createDatabase(name=DB_NAME)
@@ -38,8 +28,15 @@ def create_db(c):
         print("Error creating the database: ", e)
 
 
-@task()
+@task(help={"collections": "Array of collections you'd like to create"})
 def create_collections(c, collections=COLLECTION_NAMES):
+    """
+    Create empty collections in database
+
+    :param c: invoke.py context object
+    :param collections: Array of collection names to be created
+    :return: None
+    """
     db = get_db_connection()[DB_NAME]
     try:
         for name in collections:
@@ -51,106 +48,52 @@ def create_collections(c, collections=COLLECTION_NAMES):
 
 @task
 def clean_collections(c):
+    """
+    Clear the database collections completely.
+
+    :param c: invoke.py context object
+    :return: None
+    """
     db = get_db_connection()[DB_NAME]
     for name in COLLECTION_NAMES:
         db[name].empty()
     print("all collections cleaned.")
 
 
-def load_parallels_to_db(json_parallels: [Parallel], connection: Connection) -> None:
-    collection = connection[COLLECTION_PARALLELS]
-    for parallel in json_parallels:
-        doc = collection.createDocument()
-        doc._key = parallel["id"]
-        doc.set(parallel)
-        try:
-            doc.save()
-        except CreationError as e:
-            print(f"Could not save parallel {parallel}. Error: ", e)
-
-
-def load_segment_to_db(json_segment: Segment, connection: Connection) -> None:
-    collection = connection[COLLECTION_SEGMENTS]
-    doc = collection.createDocument()
-    try:
-        doc._key = json_segment["segnr"]
-        doc["segnr"] = json_segment["segnr"]
-        doc["segtext"] = json_segment["segtext"]
-        doc["lang"] = json_segment["lang"]
-        doc["position"] = json_segment["position"]
-    except KeyError as e:
-        print("Could not load segment. Error: ", e)
-
-    try:
-        doc.save()
-    except CreationError as e:
-        print(f"Could not save segment {doc._key}. Error: ", e)
-
-
-def load_gzipfile_into_db(dir_url, file_name):
-    file_url = f"{dir_url}{file_name}"
-    if not file_url.endswith("gz"):
-        print(f"{file_name} is not a gzip file. Ignoring.")
-        return
-    result = urlfetch.fetch(file_url)
-    file_stream = io.BytesIO(result.content)
-
-    with gzip.open(file_stream) as f:
-        parsed = json.loads(f.read())
-        segments, parallels = parsed
-        db = get_db_connection()[DB_NAME]
-        for segment in segments:
-            load_segment_to_db(segment, db)
-        load_parallels_to_db(parallels, db)
-        f.close()
-
-
-def load_dir_file(dir_url, dir_files, threads):
-    try:
-        if threads == 1:
-            [
-                load_gzipfile_into_db(dir_url, dir_files[i].name)
-                for i in trange(len(dir_files))
-            ]
-        else:
-            ParallelJobRunner(n_jobs=threads)(
-                delayed(lambda i: load_gzipfile_into_db(dir_url, dir_files[i].name))(i)
-                for i in trange(len(dir_files))
-            )
-    except ConnectionError as e:
-        print("Connection Error: ", e)
-
-
-# Temporary limit to speed up file loading:
-def should_download_file(language, file_name):
-    # if language == "chn" and file_name.startswith("T01_T0082"):
-    #     return True
-    if language == "tib" and file_name.startswith("T06"):
-        return True
-    else:
-        return False
-
-
 @task(clean_collections)
-def load_source_files(c, url=DEFAULT_SOURCE_URL, threads=1):
+def load_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
+    """
+    Download, parse and load source data into database collections.
+
+    :param c: invoke.py context object
+    :param root_url: URL to the server where source files are stored
+    :param threads: Number of CPU threads to use when loading the source
+    :return: None
+    """
     print(
-        f"Loading source files from {url} using {threads} {'threads' if threads > 1 else 'thread'}."
+        f"Loading source files from {root_url} using {threads} {'threads' if threads > 1 else 'thread'}."
     )
-    cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
-    for directory in listing:
-        print(f"loading {directory.name} files:")
-        dir_url = f"{url}{directory.name}"
-        _, dir_files = htmllistparse.fetch_listing(dir_url, timeout=30)
 
-        filtered_files = (
-            [
-                file
-                for file in dir_files
-                if should_download_file(directory.name[:3], file.name)
-            ]
-            if os.environ["TESTING_LIMIT"]
-            else dir_files
-        )
+    tibetan_menu_data = get_menu_file(TIBETAN_MENU_URL)
+    for menu_item in tibetan_menu_data:
+        load_menu_item(menu_item, LANG_TIBETAN, root_url)
 
-        load_dir_file(dir_url, filtered_files, threads)
-        print("Data loading completed.")
+    print("Data loading completed.")
+
+    # cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
+    # for directory in listing:
+    #     print(f"loading {directory.name} files:")
+    #     dir_url = f"{url}{directory.name}"
+    #     _, dir_files = htmllistparse.fetch_listing(dir_url, timeout=30)
+    #
+    #     filtered_files = (
+    #         [
+    #             file
+    #             for file in dir_files
+    #             if should_download_file(directory.name[:3], file.name)
+    #         ]
+    #         if os.environ["TESTING_LIMIT"]
+    #         else dir_files
+    #     )
+    #
+    #     load_dir_file(dir_url, filtered_files, threads)

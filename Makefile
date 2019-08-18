@@ -25,5 +25,13 @@ load-data:
 load-data-async:
 	@docker exec -t dataloader bash -c "invoke load-source-files --threads=10"
 
+# List available commands for the dataloader
+list-tasks:
+	@docker exec -t dataloader bash -c "invoke --list"
+
 clean-all:
 	$(COMPOSE) down --rmi local --volumes
+
+# Enter the docker container
+enter-dataloader:
+	@docker exec -ti dataloader bash
