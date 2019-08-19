@@ -1,4 +1,5 @@
 import gzip
+import os
 from urllib.request import urlopen
 
 from pyArango.connection import *
@@ -75,7 +76,10 @@ def load_file_into_db(file: MenuItem, segmentnrs: list, connection: Connection):
     doc._key = file["filename"]
     doc.set(file)
     doc["segmentnrs"] = segmentnrs
-    doc.save()
+    try:
+        doc.save()
+    except CreationError as e:
+        print("Could not load file. Error: ", e)
 
 
 def parse_gzipfile(file_url: str) -> list:
@@ -110,7 +114,6 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     (temporary) Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-
     # if language == "chn" and file_name.startswith("T01_T0082"):
     #     return True
     if file_lang == "tib" and file_name.startswith("T06"):
@@ -139,15 +142,23 @@ def load_menu_item(menu_item, lang: str, root_url: str) -> None:
     load_file_into_db(menu_item, segmentnrs, db)
     load_parallels_into_db(parallels, db)
 
-    db.disconnectSession()
-
 
 def populate_all_collections_from_menu_files(root_url: str, threads: int):
     tibetan_menu_data = get_menu_file(TIBETAN_MENU_URL)
 
+    filtered_tibetan_menu_data = (
+        [
+            menu_item
+            for menu_item in tibetan_menu_data
+            if should_download_file(LANG_TIBETAN, menu_item["filename"])
+        ]
+        if os.environ["TESTING_LIMIT"]
+        else tibetan_menu_data
+    )
+
     execute_in_parallel(
         lambda item: load_menu_item(item, lang=LANG_TIBETAN, root_url=root_url),
-        tibetan_menu_data,
+        filtered_tibetan_menu_data,
         threads,
     )
     # TODO: Load Chinese and Sanskrit menu files

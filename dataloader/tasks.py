@@ -77,14 +77,4 @@ def load_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
     #     dir_url = f"{url}{directory.name}"
     #     _, dir_files = htmllistparse.fetch_listing(dir_url, timeout=30)
     #
-    #     filtered_files = (
-    #         [
-    #             file
-    #             for file in dir_files
-    #             if should_download_file(directory.name[:3], file.name)
-    #         ]
-    #         if os.environ["TESTING_LIMIT"]
-    #         else dir_files
-    #     )
-    #
     #     load_dir_file(dir_url, filtered_files, threads)
