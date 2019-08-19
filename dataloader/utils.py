@@ -3,7 +3,6 @@ import os
 
 import urlfetch
 from pyArango.connection import Connection
-from pyArango.database import Database
 from tqdm import trange
 from joblib import Parallel as ParallelJobRunner, delayed
 

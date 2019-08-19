@@ -70,11 +70,3 @@ def load_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
     populate_all_collections_from_menu_files(root_url, threads)
 
     print("Data loading completed.")
-
-    # cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
-    # for directory in listing:
-    #     print(f"loading {directory.name} files:")
-    #     dir_url = f"{url}{directory.name}"
-    #     _, dir_files = htmllistparse.fetch_listing(dir_url, timeout=30)
-    #
-    #     load_dir_file(dir_url, filtered_files, threads)
