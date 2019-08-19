@@ -5,7 +5,6 @@ WORKDIR /opt/buddhanexus
 COPY */requirements-dataloader.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY * /opt/buddhanexus/
-RUN python tasks.py
 # Keep container running
 CMD tail -f /dev/null
 WORKDIR /opt/buddhanexus/dataloader

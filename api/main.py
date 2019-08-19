@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from pyArango.connection import *
 
 from .db_connection import get_collection, get_db
-from .models import Segment
+from .models_api import Segment
 
 app = FastAPI()
 
