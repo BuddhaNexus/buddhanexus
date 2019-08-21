@@ -15,6 +15,7 @@ from data_parser import (
     get_db_connection,
     populate_collections_from_menu_files,
     populate_menu_collections,
+    populate_menu_categories,
 )
 
 
@@ -114,11 +115,11 @@ def load_segment_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
 
 
 @task(clean_menu_collections)
-def load_menu_files(c, threads=1):
+def load_menu_files(c):
     print(
-        f"Loading source files from this git repository using {threads} {'threads' if threads > 1 else 'thread'}."
+        "Loading menu files into database collections from inside this git repository. "
     )
-
     populate_menu_collections()
+    populate_menu_categories()
 
     print("Menu data loading completed.")
