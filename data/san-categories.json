@@ -1,0 +1,287 @@
+[
+  {
+    "category": "T01",
+    "categoryname": "(Praises)",
+    "files": []
+  },
+  {
+    "category": "T02",
+    "categoryname": "Tantra (Tantra)",
+    "files": []
+  },
+  {
+    "category": "T03",
+    "categoryname": "Prajñāpāramitā (Perfection of Wisdom)",
+    "files": []
+  },
+  {
+    "category": "T04",
+    "categoryname": "Madhyamaka (The Middle Way)",
+    "files": []
+  },
+  {
+    "category": "T05",
+    "categoryname": "Sūtra (Commentaries)",
+    "files": []
+  },
+  {
+    "category": "T06",
+    "categoryname": "Vijñaptimātra (Mind Only)",
+    "files": []
+  },
+  {
+    "category": "T07",
+    "categoryname": "Abhidharma (Abhidharma)",
+    "files": []
+  },
+  {
+    "category": "T09",
+    "categoryname": "Jātaka (Birth Stories)",
+    "files": []
+  },
+  {
+    "category": "T10",
+    "categoryname": "Lekha (Epistles)",
+    "files": []
+  },
+  {
+    "category": "T11",
+    "categoryname": "(Logic)",
+    "files": []
+  },
+  {
+    "category": "T15",
+    "categoryname": "Nītiśāstram (Mundane Treatises)",
+    "files": []
+  },
+  {
+    "category": "T16",
+    "categoryname": "(Various)",
+    "files": []
+  },
+  {
+    "category": "K01",
+    "categoryname": "Vinaya (Monastic Discipline)",
+    "files": []
+  },
+  {
+    "category": "K02",
+    "categoryname": "Śatasāhasrikāprajñāpāramitā (Perfection of Wisdom in 100.000 lines)",
+    "files": []
+  },
+  {
+    "category": "K10",
+    "categoryname": "Sūtra (Collection of Sutras)",
+    "files": []
+  },
+  {
+    "category": "XX",
+    "categoryname": "Misc. Buddhist",
+    "files": []
+  },
+  {
+    "category": "GV00",
+    "categoryname": "GV00 Veda 1 Sam",
+    "files": []
+  },
+  {
+    "category": "GV01",
+    "categoryname": "GV01 Veda 1 Sam/1_rv",
+    "files": []
+  },
+  {
+    "category": "GV02",
+    "categoryname": "GV02 Veda 2 Bra",
+    "files": []
+  },
+  {
+    "category": "GV03",
+    "categoryname": "GV03 Veda 2 Bra/Satapath",
+    "files": []
+  },
+  {
+    "category": "GV04",
+    "categoryname": "GV04 Veda 3 Ara",
+    "files": []
+  },
+  {
+    "category": "GV05",
+    "categoryname": "GV05 Veda 4 Upa",
+    "files": []
+  },
+  {
+    "category": "GV06",
+    "categoryname": "GV06 Veda 5 Vedang",
+    "files": []
+  },
+  {
+    "category": "GV07",
+    "categoryname": "GE07 Mbh",
+    "files": []
+  },
+  {
+    "category": "GV08",
+    "categoryname": "GE08 Ramayana",
+    "files": []
+  },
+  {
+    "category": "GP10",
+    "categoryname": "GP10 Bhagp",
+    "files": []
+  },
+  {
+    "category": "GP11",
+    "categoryname": "GP11 Brahmap",
+    "files": []
+  },
+  {
+    "category": "GP12",
+    "categoryname": "GP12",
+    "files": []
+  },
+  {
+    "category": "GR12",
+    "categoryname": "GR12 Jaina",
+    "files": []
+  },
+  {
+    "category": "GR13",
+    "categoryname": "GR13 Saiva",
+    "files": []
+  },
+  {
+    "category": "GR14",
+    "categoryname": "GR14 Vaisn",
+    "files": []
+  },
+  {
+    "category": "GK16",
+    "categoryname": "GK16 Poetry 1 Alam",
+    "files": []
+  },
+  {
+    "category": "GK17",
+    "categoryname": "GK17 Poetry 1 Chandas",
+    "files": []
+  },
+  {
+    "category": "GK18",
+    "categoryname": "GK18 Poetry 1 Natya",
+    "files": []
+  },
+  {
+    "category": "GK19",
+    "categoryname": "GK19 Poetry 2 Kavya",
+    "files": []
+  },
+  {
+    "category": "GK20",
+    "categoryname": "GK20 Poetry 3 Drama",
+    "files": []
+  },
+  {
+    "category": "GK21",
+    "categoryname": "GK21 Poetry 4 Narr",
+    "files": []
+  },
+  {
+    "category": "GK22",
+    "categoryname": "GK22 Poetry 5 Subhas",
+    "files": []
+  },
+  {
+    "category": "GK23",
+    "categoryname": "GK23 Poetry 6 Hist",
+    "files": []
+  },
+  {
+    "category": "GS24",
+    "categoryname": "GS24 Sastra 1 Gram",
+    "files": []
+  },
+  {
+    "category": "GS25",
+    "categoryname": "GS25 Sastra 2 Lex",
+    "files": []
+  },
+  {
+    "category": "GS26",
+    "categoryname": "GS26 Sastra 3 Phil",
+    "files": []
+  },
+  {
+    "category": "GSP27",
+    "categoryname": "GSP27 Sastra 3 Phil Advaita",
+    "files": []
+  },
+  {
+    "category": "GSP28",
+    "categoryname": "GSP28 Sastra 3 Phil Mimamsa",
+    "files": []
+  },
+  {
+    "category": "GSP29",
+    "categoryname": "GSP29 Sastra 3 Phil Nyaya",
+    "files": []
+  },
+  {
+    "category": "GSP30",
+    "categoryname": "GSP30 Sastra 3 Phil Saiva",
+    "files": []
+  },
+  {
+    "category": "GSP31",
+    "categoryname": "GSP31 Sastra 3 Phil Samkhya",
+    "files": []
+  },
+  {
+    "category": "GSP32",
+    "categoryname": "GSP32 Sastra 3 Phil Vaisesik",
+    "files": []
+  },
+  {
+    "category": "GSP33",
+    "categoryname": "GSP33 Sastra 3 Phil Vedanta",
+    "files": []
+  },
+  {
+    "category": "GSP34",
+    "categoryname": "GSP34 Sastra 3 Phil Yoga",
+    "files": []
+  },
+  {
+    "category": "GSD36",
+    "categoryname": "GSD36 Sastra 4 Dharma Smrti",
+    "files": []
+  },
+  {
+    "category": "GSD37",
+    "categoryname": "GSD37 Sastra 4 Dharma Sutra",
+    "files": []
+  },
+  {
+    "category": "GS38",
+    "categoryname": "GS38  Sastra 5 Artha",
+    "files": []
+  },
+  {
+    "category": "GS39",
+    "categoryname": "GS39  Sastra 6 Kama",
+    "files": []
+  },
+  {
+    "category": "GS40",
+    "categoryname": "GS40  Sastra 7 Ayur",
+    "files": []
+  },
+  {
+    "category": "GS41",
+    "categoryname": "GS41  Sastra 8 Jyot",
+    "files": []
+  },
+  {
+    "category": "none",
+    "categoryname": "Miscellaneous",
+    "files": []
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "collection": "Tengyur",
+    "categories": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T09",
+      "T10",
+      "T11",
+      "T15",
+      "T16"
+    ]
+  },
+  {
+    "collection": "Kangyur",
+    "categories": ["K01", "K02", "K10"]
+  },
+  {
+    "collection": "Buddhist",
+    "categories": ["XX"]
+  },
+  {
+    "collection": "Veda",
+    "categories": ["GV00", "GV01", "GV02", "GV03", "GV04", "GV05", "GV06"]
+  },
+  {
+    "collection": "Epic",
+    "categories": ["GE07", "GE08"]
+  },
+  {
+    "collection": "Purana",
+    "categories": ["GP10", "GP11", "GP12"]
+  },
+  {
+    "collection": "Rellit",
+    "categories": ["GR12", "GR13", "GR14"]
+  },
+  {
+    "collection": "Poetry",
+    "categories": [
+      "GK16",
+      "GK17",
+      "GK18",
+      "GK19",
+      "GK20",
+      "GK21",
+      "GK22",
+      "GK23"
+    ]
+  },
+  {
+    "collection": "Sastra",
+    "categories": [
+      "GS24",
+      "GS25",
+      "GS26",
+      "GSP27",
+      "GSP28",
+      "GSP29",
+      "GSP30",
+      "GSP31",
+      "GSP32",
+      "GSP33",
+      "GSP34",
+      "GSD36",
+      "GSD37",
+      "GS38",
+      "GS39",
+      "GS40",
+      "GS41"
+    ]
+  },
+  {
+    "collection": "Other",
+    "categories": ["none"]
+  }
+]
