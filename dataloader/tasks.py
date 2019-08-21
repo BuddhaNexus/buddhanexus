@@ -1,8 +1,21 @@
 from invoke import task
 from pyArango.connection import *
 
-from constants import DB_NAME, COLLECTION_NAMES, DEFAULT_SOURCE_URL
-from data_parser import get_db_connection, populate_all_collections_from_menu_files
+from constants import (
+    DB_NAME,
+    COLLECTION_NAMES,
+    DEFAULT_SOURCE_URL,
+    COLLECTION_SEGMENTS,
+    COLLECTION_PARALLELS,
+    COLLECTION_FILES,
+    COLLECTION_MENU_COLLECTIONS,
+    COLLECTION_MENU_CATEGORIES,
+)
+from data_parser import (
+    get_db_connection,
+    populate_collections_from_menu_files,
+    populate_menu_collections,
+)
 
 
 @task
@@ -40,9 +53,9 @@ def create_collections(c, collections=COLLECTION_NAMES):
 
 
 @task
-def clean_collections(c):
+def clean_all_collections(c):
     """
-    Clear the database collections completely.
+    Clear all the database collections completely.
 
     :param c: invoke.py context object
     :return: None
@@ -53,8 +66,36 @@ def clean_collections(c):
     print("all collections cleaned.")
 
 
-@task(clean_collections)
-def load_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
+@task
+def clean_segment_collections(c):
+    """
+    Clear the segment database collections completely.
+
+    :param c: invoke.py context object
+    :return: None
+    """
+    db = get_db_connection()[DB_NAME]
+    for name in (COLLECTION_SEGMENTS, COLLECTION_PARALLELS, COLLECTION_FILES):
+        db[name].empty()
+    print("segment collections cleaned.")
+
+
+@task
+def clean_menu_collections(c):
+    """
+    Clear the menu database collections completely.
+
+    :param c: invoke.py context object
+    :return: None
+    """
+    db = get_db_connection()[DB_NAME]
+    for name in (COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES):
+        db[name].empty()
+    print("menu data collections cleaned.")
+
+
+@task(clean_segment_collections)
+def load_segment_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
     """
     Download, parse and load source data into database collections.
 
@@ -67,6 +108,17 @@ def load_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
         f"Loading source files from {root_url} using {threads} {'threads' if threads > 1 else 'thread'}."
     )
 
-    populate_all_collections_from_menu_files(root_url, threads)
+    populate_collections_from_menu_files(root_url, threads)
 
-    print("Data loading completed.")
+    print("Segment data loading completed.")
+
+
+@task(clean_menu_collections)
+def load_menu_files(c, threads=1):
+    print(
+        f"Loading source files from this git repository using {threads} {'threads' if threads > 1 else 'thread'}."
+    )
+
+    populate_menu_collections()
+
+    print("Menu data loading completed.")
