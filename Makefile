@@ -25,6 +25,9 @@ load-data:
 load-data-async:
 	@docker exec -t dataloader bash -c "invoke load-source-files --threads=10"
 
+load-menu-data:
+	@docker exec -t dataloader bash -c "invoke load-menu-files"
+
 # List available commands for the dataloader
 list-tasks:
 	@docker exec -t dataloader bash -c "invoke --list"

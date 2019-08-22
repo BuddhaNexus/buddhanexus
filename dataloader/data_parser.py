@@ -10,6 +10,9 @@ from constants import (
     COLLECTION_FILES,
     TIBETAN_MENU_URL,
     LANG_TIBETAN,
+    DEFAULT_LANGS,
+    COLLECTION_MENU_COLLECTIONS,
+    COLLECTION_MENU_CATEGORIES,
 )
 from models_dataloader import Parallel, Segment, MenuItem
 from utils import get_remote_bytes, get_db_connection, get_database, execute_in_parallel
@@ -143,7 +146,7 @@ def load_menu_item(menu_item, lang: str, root_url: str) -> None:
     load_parallels_into_db(parallels, db)
 
 
-def populate_all_collections_from_menu_files(root_url: str, threads: int):
+def populate_collections_from_menu_files(root_url: str, threads: int):
     tibetan_menu_data = get_menu_file(TIBETAN_MENU_URL)
 
     filtered_tibetan_menu_data = (
@@ -162,3 +165,48 @@ def populate_all_collections_from_menu_files(root_url: str, threads: int):
         threads,
     )
     # TODO: Load Chinese and Sanskrit menu files
+
+
+def load_menu_collection_into_db(menu_collection, language, db):
+    db_collection = db[COLLECTION_MENU_COLLECTIONS]
+    doc = db_collection.createDocument()
+    doc._key = menu_collection["collection"]
+    doc.set(menu_collection)
+    doc["language"] = language
+    try:
+        doc.save()
+    except CreationError as e:
+        print("Could not load menu collection. Error: ", e)
+
+
+def populate_menu_collections():
+    db = get_database()
+    for language in DEFAULT_LANGS:
+        with open(f"../data/{language}-collections.json") as f:
+            print(f"\nLoading menu collections in {language}:\n---")
+            collections = json.load(f)
+            for collection in collections:
+                load_menu_collection_into_db(collection, language, db)
+
+
+def load_menu_category_into_db(menu_category, language, db):
+
+    db_collection = db[COLLECTION_MENU_CATEGORIES]
+    doc = db_collection.createDocument()
+    doc._key = menu_category["category"]
+    doc.set(menu_category)
+    doc["language"] = language
+    try:
+        doc.save()
+    except CreationError as e:
+        print("Could not load menu category. Error: ", e)
+
+
+def populate_menu_categories():
+    db = get_database()
+    for language in DEFAULT_LANGS:
+        with open(f"../data/{language}-categories.json") as f:
+            print(f"\nLoading menu categories in {language}:\n---")
+            categories = json.load(f)
+            for category in categories:
+                load_menu_category_into_db(category, language, db)
