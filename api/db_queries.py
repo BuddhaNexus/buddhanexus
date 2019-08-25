@@ -6,7 +6,15 @@ query_file_segments_parallels = """
                 LET seg_parallels = (
                     FOR segment IN segments
                     FILTER segment._key == segmentnr
-                    RETURN segment.parallel_ids[0]
+                    FOR segment_id IN segment.parallel_ids
+                        FOR p IN parallels
+                            FILTER p._key == segment_id
+                            RETURN { 
+                                "parsegnr": p.par_segnr, 
+                                "probability": p.score,
+                                "parlength": p.par_length,
+                                "co-occ": p["co-occ"]
+                            }
                 )
                 RETURN seg_parallels[0] ? 
                     { "segmentnr": segmentnr, "parallels": seg_parallels } :

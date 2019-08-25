@@ -33,11 +33,6 @@ def load_parallels_into_db(json_parallels: [Parallel], connection: Connection) -
         doc._id = parallel_id
         doc.set(parallel)
 
-        # for par_segnr in parallel["par_segnr"]:
-        #     load_parallels_for_segment(
-        #         f"segments/{parallel_id}", f"segments/{par_segnr}", connection
-        #     )
-
         try:
             doc.save()
         except CreationError as e:

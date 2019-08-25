@@ -2,12 +2,23 @@ from typing import Dict
 
 from fastapi import FastAPI
 from pyArango.theExceptions import DocumentNotFoundError
-import fastapi
+from starlette.middleware.cors import CORSMiddleware
+
 
 from .db_queries import query_file_segments_parallels
 from .db_connection import get_collection, get_db
 
 app = FastAPI()
+
+cors_origins = ["http://localhost", "http://localhost:8080"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -58,6 +69,6 @@ async def get_segments_for_file(file_name):
         query_result = get_db().AQLQuery(
             query=query_file_segments_parallels, bindVars={"filename": file_name}
         )
-        return query_result.result[0]
+        return query_result.result[0] if query_result.result else []
     except (DocumentNotFoundError, KeyError) as e:
         return e
