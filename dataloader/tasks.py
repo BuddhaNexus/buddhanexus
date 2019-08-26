@@ -12,11 +12,11 @@ from constants import (
     COLLECTION_MENU_CATEGORIES,
 )
 from data_parser import (
-    get_db_connection,
     populate_collections_from_menu_files,
     populate_menu_collections,
     populate_menu_categories,
 )
+from utils import get_db_connection
 
 
 @task
@@ -45,11 +45,11 @@ def create_collections(c, collections=COLLECTION_NAMES):
     :return: None
     """
     db = get_db_connection()[DB_NAME]
-    try:
-        for name in collections:
+    for name in collections:
+        try:
             db.createCollection(name=name)
-    except CreationError as e:
-        print("Error creating collection: ", e)
+        except CreationError as e:
+            print("Error creating collection: ", e)
     print(f"created {collections} collections")
 
 

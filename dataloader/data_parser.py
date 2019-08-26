@@ -5,17 +5,17 @@ from urllib.request import urlopen
 from pyArango.connection import *
 
 from constants import (
-    COLLECTION_PARALLELS,
-    COLLECTION_SEGMENTS,
-    COLLECTION_FILES,
     TIBETAN_MENU_URL,
     LANG_TIBETAN,
     DEFAULT_LANGS,
+    COLLECTION_PARALLELS,
+    COLLECTION_SEGMENTS,
+    COLLECTION_FILES,
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
 )
 from models_dataloader import Parallel, Segment, MenuItem
-from utils import get_remote_bytes, get_db_connection, get_database, execute_in_parallel
+from utils import get_remote_bytes, get_database, execute_in_parallel
 
 
 def load_parallels_into_db(json_parallels: [Parallel], connection: Connection) -> None:
@@ -28,19 +28,25 @@ def load_parallels_into_db(json_parallels: [Parallel], connection: Connection) -
     collection = connection[COLLECTION_PARALLELS]
     for parallel in json_parallels:
         doc = collection.createDocument()
+        parallel_id = f"parallels/{parallel['id']}"
         doc._key = parallel["id"]
+        doc._id = parallel_id
         doc.set(parallel)
+
         try:
             doc.save()
         except CreationError as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
 
-def load_segment_into_db(json_segment: Segment, connection: Connection) -> str:
+def load_segment_into_db(
+    json_segment: Segment, parallel_ids: list, connection: Connection
+) -> str:
     """
     Given a single segment object, load it into the `segments` collection.
 
     :param json_segment: Segment JSON data
+    :param parallel_ids: Array of IDs of parallels of which segment is root
     :param connection: ArangoDB database object
     :return: Segment nr
     """
@@ -48,10 +54,12 @@ def load_segment_into_db(json_segment: Segment, connection: Connection) -> str:
     doc = collection.createDocument()
     try:
         doc._key = json_segment["segnr"]
+        doc._id = f'segments/{json_segment["segnr"]}'
         doc["segnr"] = json_segment["segnr"]
         doc["segtext"] = json_segment["segtext"]
         doc["lang"] = json_segment["lang"]
         doc["position"] = json_segment["position"]
+        doc["parallel_ids"] = parallel_ids
     except KeyError as e:
         print("Could not load segment. Error: ", e)
 
@@ -63,11 +71,16 @@ def load_segment_into_db(json_segment: Segment, connection: Connection) -> str:
     return json_segment["segnr"]
 
 
-def load_segments_into_db(segments: list, connection: Connection) -> list:
+def load_segments_into_db(
+    segments: list, parallels: list, connection: Connection
+) -> list:
     """ Returns list of segment numbers. """
     segmentnrs = []
     for segment in segments:
-        segmentnr = load_segment_into_db(segment, connection)
+        parallel_ids = [
+            p["id"] for p in parallels if segment["segnr"] in p["root_segnr"]
+        ]
+        segmentnr = load_segment_into_db(segment, parallel_ids, connection)
         segmentnrs.append(segmentnr)
 
     return segmentnrs
@@ -141,7 +154,7 @@ def load_menu_item(menu_item, lang: str, root_url: str) -> None:
     [segments, parallels] = parse_gzipfile(file_url)
     segmentnrs = []
     if segments:
-        segmentnrs = load_segments_into_db(segments, db)
+        segmentnrs = load_segments_into_db(segments, parallels, db)
     load_file_into_db(menu_item, segmentnrs, db)
     load_parallels_into_db(parallels, db)
 
@@ -190,7 +203,6 @@ def populate_menu_collections():
 
 
 def load_menu_category_into_db(menu_category, language, db):
-
     db_collection = db[COLLECTION_MENU_CATEGORIES]
     doc = db_collection.createDocument()
     doc._key = menu_category["category"]

@@ -1,14 +1,24 @@
-from typing import List, Dict
+from typing import Dict
 
-from fastapi import FastAPI, Path, Query
+from fastapi import FastAPI
 from pyArango.theExceptions import DocumentNotFoundError
-from pydantic import BaseModel
-from pyArango.connection import *
+from starlette.middleware.cors import CORSMiddleware
 
+
+from .db_queries import query_file_segments_parallels
 from .db_connection import get_collection, get_db
-from .models_api import Segment
 
 app = FastAPI()
+
+cors_origins = ["http://localhost", "http://localhost:8080"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -47,7 +57,18 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
         RETURN p
     """
     try:
-        query_result = get_db().AQLQuery(aql)
+        query_result = get_db().AQLQuery(query=aql)
         return query_result.result
+    except (DocumentNotFoundError, KeyError) as e:
+        return e
+
+
+@app.get("/files/{file_name}/segments")
+async def get_segments_for_file(file_name):
+    try:
+        query_result = get_db().AQLQuery(
+            query=query_file_segments_parallels, bindVars={"filename": file_name}
+        )
+        return query_result.result[0] if query_result.result else []
     except (DocumentNotFoundError, KeyError) as e:
         return e
