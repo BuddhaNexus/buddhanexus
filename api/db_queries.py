@@ -22,3 +22,12 @@ query_file_segments_parallels = """
         )
         RETURN result
 """
+
+query_collection_names = """
+RETURN MERGE(
+    FOR category IN menu_categories
+        FOR collection_key in @collections
+            FILTER category._key == collection_key
+            RETURN { [category._key]: category.categoryname }
+)
+"""

@@ -1,14 +1,14 @@
+import re
 from typing import Dict
 
 from fastapi import FastAPI
 from pyArango.theExceptions import DocumentNotFoundError
 from starlette.middleware.cors import CORSMiddleware
 
-
-from .db_queries import query_file_segments_parallels
+from .db_queries import query_file_segments_parallels, query_collection_names
 from .db_connection import get_collection, get_db
 
-app = FastAPI()
+app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
 
 cors_origins = ["http://localhost", "http://localhost:8080"]
 
@@ -66,9 +66,29 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(file_name):
     try:
-        query_result = get_db().AQLQuery(
+        db = get_db()
+        query_result = db.AQLQuery(
             query=query_file_segments_parallels, bindVars={"filename": file_name}
         )
-        return query_result.result[0] if query_result.result else []
+        segments = query_result.result[0] if query_result.result else []
+        collection_keys = []
+        result = []
+        parallel_count = 0
+        for segment in segments:
+            if "parallels" in segment:
+                for parallel in segment["parallels"]:
+                    parallel_count += 1
+                    for seg_nr in parallel["parsegnr"]:
+                        collection_key = re.search(r"^[A-Z]+[0-9]+", seg_nr).group()
+                        if collection_key not in collection_keys:
+                            collection_keys.append(collection_key)
+                result.append(segment)
+
+        collections = db.AQLQuery(
+            query=query_collection_names, bindVars={"collections": collection_keys}
+        )
+
+        return {"collections": collections.result, "segments": result, "parallel_count": parallel_count}
+
     except (DocumentNotFoundError, KeyError) as e:
         return e
