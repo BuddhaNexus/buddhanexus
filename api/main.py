@@ -73,9 +73,11 @@ async def get_segments_for_file(file_name):
         segments = query_result.result[0] if query_result.result else []
         collection_keys = []
         result = []
+        parallel_count = 0
         for segment in segments:
             if "parallels" in segment:
                 for parallel in segment["parallels"]:
+                    parallel_count += 1
                     for seg_nr in parallel["parsegnr"]:
                         collection_key = re.search(r"^[A-Z]+[0-9]+", seg_nr).group()
                         if collection_key not in collection_keys:
@@ -86,7 +88,7 @@ async def get_segments_for_file(file_name):
             query=query_collection_names, bindVars={"collections": collection_keys}
         )
 
-        return {"collections": collections.result, "segments": result}
+        return {"collections": collections.result, "segments": result, "parallel_count": parallel_count}
 
     except (DocumentNotFoundError, KeyError) as e:
         return e
