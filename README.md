@@ -10,19 +10,21 @@ Backend for the Buddhanexus project
 
 #### 2. Getting project files:
 - navigate to the folder where you'd like to store the project
-- run:
+- clone the project repository:
 
 ```shell
     git clone https://github.com/ayya-vimala/buddhanexus.git && cd buddhanexus
 ```
 
 #### 3. Running the project
-Run `make run-dev`. This will download docker images and start all services.
+- First, open the `.env.example` file, copy it and name the copy `.env`.
+- Modify the variables in the `.env` file. If running online, **choose a strong password for arangodb**. 
+- Run `make run-dev`. This will download docker images and start all services.
 
 The API should now be accessible on port 8000.  
 
-The API Documentation is also available in the `/docs` folder. 
-If running on you local machine, the address is [http://localhost:8000/docs].
+The API Documentation is also available in the `/docs` folder.
+If running on a local machine, the address is [http://localhost:8000/docs].
 
 #### 4. Loading the segment data
 So far the database is empty. To populate it, do the following:

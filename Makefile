@@ -1,6 +1,6 @@
 COMPOSE := docker-compose -f docker-compose.yml
 #COMPOSEDEV := $(COMPOSE) -f docker-compose.dev.yml
-#COMPOSEPROD := $(COMPOSE) -f docker-compose.prod.yml
+COMPOSEPROD := $(COMPOSE) -f docker-compose.prod.yml
 
 SERVICES := dataloader arangodb fastapi
 
@@ -9,6 +9,12 @@ run-dev:
 
 run-dev-no-logs:
 	$(COMPOSE) up $(SERVICES) -d
+
+run-prod:
+	@$(COMPOSEPROD) up $(SERVICES)
+
+run-prod-no-logs:
+	@$(COMPOSEPROD) up -d $(SERVICES)
 
 show-logs:
 	$(COMPOSE) logs
