@@ -59,7 +59,7 @@ load-data:
 # Load all data - asynchronously
 load-data-async:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-segment-files --threads=10"
+	@docker exec -t dataloader bash -c "invoke load-segment-files --threaded"
 
 # List available commands for the dataloader
 list-tasks:
