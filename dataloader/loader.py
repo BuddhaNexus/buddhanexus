@@ -22,7 +22,7 @@ from utils import (
 def load_segment_data_from_menu_files(root_url: str, threads: int):
     for language in DEFAULT_LANGS:
         with open(f"../data/{language}-files.json") as f:
-            print(f"\nLoading segment data from menu files in {language}:\n---")
+            print(f"\nLoading segment data from menu files in {language}:...")
             files_data = json.load(f)
 
             filtered_file_data = (
@@ -152,7 +152,7 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
 def load_menu_collection(menu_collection, language, db):
     db_collection = db[COLLECTION_MENU_COLLECTIONS]
     doc = db_collection.createDocument()
-    doc._key = menu_collection["collection"]
+    doc._key = f"{language}_{menu_collection['collection']}"
     doc.set(menu_collection)
     doc["language"] = language
     try:
@@ -165,16 +165,17 @@ def load_all_menu_collections():
     db = get_database()
     for language in DEFAULT_LANGS:
         with open(f"../data/{language}-collections.json") as f:
-            print(f"\nLoading menu collections in {language}:\n---")
+            print(f"Loading menu collections in {language}...")
             collections = json.load(f)
             for collection in collections:
                 load_menu_collection(collection, language, db)
+            print("✓")
 
 
 def load_menu_category(menu_category, language, db):
     db_collection = db[COLLECTION_MENU_CATEGORIES]
     doc = db_collection.createDocument()
-    doc._key = menu_category["category"]
+    doc._key = f'{language}_{menu_category["category"]}'
     doc.set(menu_category)
     doc["language"] = language
     try:
@@ -187,7 +188,8 @@ def load_all_menu_categories():
     db = get_database()
     for language in DEFAULT_LANGS:
         with open(f"../data/{language}-categories.json") as f:
-            print(f"\nLoading menu categories in {language}:\n---")
+            print(f"Loading menu categories in {language}...")
             categories = json.load(f)
             for category in categories:
                 load_menu_category(category, language, db)
+            print("✓")

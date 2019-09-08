@@ -15,6 +15,9 @@ run-prod:
 run-prod-no-logs:
 	@$(COMPOSEPROD) up -d $(SERVICES)
 
+stop:
+	docker-compose down
+
 # Display recent logs from all docker containers.
 show-logs:
 	$(COMPOSE) logs
@@ -38,6 +41,15 @@ load-menu-data:
 # Load segment & parallel data from remote url based on local menu files.
 load-segment-data:
 	@docker exec -t dataloader bash -c "invoke load-segment-files"
+
+clean-db:
+	@docker exec -t dataloader bash -c "invoke clean-all-collections"
+
+clean-db-menu-data:
+	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
+
+clean-db-segment-data:
+	@docker exec -t dataloader bash -c "invoke clean-segment-collections"
 
 # Load all (segment, parallel & menu) data
 load-data:
