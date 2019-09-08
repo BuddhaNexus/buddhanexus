@@ -1,8 +1,8 @@
 import re
 from typing import Dict
 
-from fastapi import FastAPI
-from pyArango.theExceptions import DocumentNotFoundError
+from fastapi import FastAPI, HTTPException
+from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
 from .db_queries import query_file_segments_parallels, query_collection_names
@@ -64,11 +64,19 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
 
 
 @app.get("/files/{file_name}/segments")
-async def get_segments_for_file(file_name):
+async def get_segments_for_file(
+    file_name: str, score: int = 0, par_length: int = 0, co_occ: int = 0
+):
     try:
         db = get_db()
         query_result = db.AQLQuery(
-            query=query_file_segments_parallels, bindVars={"filename": file_name}
+            query=query_file_segments_parallels,
+            bindVars={
+                "filename": file_name,
+                "score": score,
+                "parlength": par_length,
+                "coocc": co_occ,
+            },
         )
         segments = query_result.result[0] if query_result.result else []
         collection_keys = []
@@ -78,7 +86,7 @@ async def get_segments_for_file(file_name):
             if "parallels" in segment:
                 for parallel in segment["parallels"]:
                     parallel_count += 1
-                    for seg_nr in parallel["parsegnr"]:
+                    for seg_nr in parallel:
                         collection_key = re.search(r"^[A-Z]+[0-9]+", seg_nr).group()
                         if collection_key not in collection_keys:
                             collection_keys.append(collection_key)
@@ -89,10 +97,12 @@ async def get_segments_for_file(file_name):
         )
 
         return {
-            "collections": collections.result,
+            "collections": collections.result[0],
             "segments": result,
             "parallel_count": parallel_count,
         }
 
-    except (DocumentNotFoundError, KeyError) as e:
-        return e
+    except DocumentNotFoundError:
+        raise HTTPException(status_code=404, detail="Item not found")
+    except (KeyError, AQLQueryError) as e:
+        raise HTTPException(status_code=400, detail=e.errors)

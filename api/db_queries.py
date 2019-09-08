@@ -9,12 +9,10 @@ query_file_segments_parallels = """
                     FOR segment_id IN segment.parallel_ids
                         FOR p IN parallels
                             FILTER p._key == segment_id
-                            RETURN { 
-                                "parsegnr": p.par_segnr, 
-                                "probability": p.score,
-                                "parlength": p.par_length,
-                                "co-occ": p["co-occ"]
-                            }
+                            FILTER p.score >= @score
+                            FILTER p.par_length >= @parlength
+                            FILTER p["co-occ"] >= @coocc
+                            RETURN p.par_segnr
                 )
                 RETURN seg_parallels[0] ? 
                     { "segmentnr": segmentnr, "parallels": seg_parallels } :

@@ -16,3 +16,4 @@ def get_db() -> Database:
 
 def get_collection(name) -> Collection:
     return get_db()[name]
+
