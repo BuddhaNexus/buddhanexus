@@ -11,10 +11,10 @@ from constants import (
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
 )
-from data_parser import (
-    populate_collections_from_menu_files,
-    populate_menu_collections,
-    populate_menu_categories,
+from loader import (
+    load_segment_data_from_menu_files,
+    load_all_menu_collections,
+    load_all_menu_categories,
 )
 from utils import get_db_connection
 
@@ -96,7 +96,7 @@ def clean_menu_collections(c):
 
 
 @task(clean_segment_collections)
-def load_segment_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
+def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
     """
     Download, parse and load source data into database collections.
 
@@ -109,7 +109,7 @@ def load_segment_source_files(c, root_url=DEFAULT_SOURCE_URL, threads=1):
         f"Loading source files from {root_url} using {threads} {'threads' if threads > 1 else 'thread'}."
     )
 
-    populate_collections_from_menu_files(root_url, threads)
+    load_segment_data_from_menu_files(root_url, threads)
 
     print("Segment data loading completed.")
 
@@ -119,7 +119,7 @@ def load_menu_files(c):
     print(
         "Loading menu files into database collections from inside this git repository. "
     )
-    populate_menu_collections()
-    populate_menu_categories()
+    load_all_menu_collections()
+    load_all_menu_categories()
 
     print("Menu data loading completed.")

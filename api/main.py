@@ -88,7 +88,11 @@ async def get_segments_for_file(file_name):
             query=query_collection_names, bindVars={"collections": collection_keys}
         )
 
-        return {"collections": collections.result, "segments": result, "parallel_count": parallel_count}
+        return {
+            "collections": collections.result,
+            "segments": result,
+            "parallel_count": parallel_count,
+        }
 
     except (DocumentNotFoundError, KeyError) as e:
         return e

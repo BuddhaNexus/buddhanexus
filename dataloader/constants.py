@@ -3,8 +3,6 @@ import os
 DB_NAME = os.environ["ARANGO_BASE_DB_NAME"]
 DEFAULT_SOURCE_URL = os.environ["SOURCE_FILES_URL"]
 
-TIBETAN_MENU_URL = "http://buddhist-db.de/etc/tibetan_menu.json"
-
 LANG_TIBETAN = "tib"
 LANG_SANSKRIT = "skt"
 LANG_CHINESE = "chn"

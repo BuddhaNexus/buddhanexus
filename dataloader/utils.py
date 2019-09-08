@@ -1,4 +1,6 @@
+import gzip
 import io
+import json
 import os
 
 import urlfetch
@@ -46,3 +48,37 @@ def execute_in_parallel(task, items, threads) -> None:
         ParallelJobRunner(n_jobs=threads)(
             delayed(lambda i: task(items[i]))(i) for i in trange(len(items))
         )
+
+
+def should_download_file(file_lang: str, file_name: str) -> bool:
+    """
+    Limit source file set size to speed up loading process
+    Can be controlled with the `LIMIT` environment variable.
+    """
+    # if language == "chn" and file_name.startswith("T01_T0082"):
+    #     return True
+    if file_lang == "tib" and file_name.startswith("T06"):
+        return True
+    else:
+        return False
+
+
+def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
+    """
+    Given a url to a .gz file:
+    1. Download the file
+    2. Unpack it in memory
+    3. Return segments and parallels
+
+    :param file_url: URL to the gzipped file
+    """
+    file_bytes = get_remote_bytes(file_url)
+    try:
+        with gzip.open(file_bytes) as f:
+            parsed = json.loads(f.read())
+            segments, parallels = parsed
+            f.close()
+            return [segments, parallels]
+    except OSError as os_error:
+        print(f"Could not load the gzipped file {file_url}. Error: ", os_error)
+        return [None, None]

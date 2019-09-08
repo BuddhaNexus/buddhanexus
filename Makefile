@@ -27,11 +27,11 @@ create-db:
 
 load-data:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-segment-source-files"
+	@docker exec -t dataloader bash -c "invoke load-segment-files"
 
 load-data-async:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-segment-source-files --threads=10"
+	@docker exec -t dataloader bash -c "invoke load-segment-files --threads=10"
 
 load-menu-data:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
