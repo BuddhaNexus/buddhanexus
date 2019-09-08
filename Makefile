@@ -1,5 +1,4 @@
 COMPOSE := docker-compose -f docker-compose.yml
-#COMPOSEDEV := $(COMPOSE) -f docker-compose.dev.yml
 COMPOSEPROD := $(COMPOSE) -f docker-compose.prod.yml
 
 SERVICES := dataloader arangodb fastapi
@@ -16,32 +15,43 @@ run-prod:
 run-prod-no-logs:
 	@$(COMPOSEPROD) up -d $(SERVICES)
 
+# Display recent logs from all docker containers.
 show-logs:
 	$(COMPOSE) logs
 
+# Build docker containers again without removing database data
 rebuild:
 	$(COMPOSE) up --build $(SERVICES)
 
+# Destroy containers and images, including database data
+clean-all:
+	$(COMPOSE) down --rmi local --volumes
+
+# Initialize database and create empty collections
 create-db:
 	@docker exec -t dataloader bash -c "invoke create-db create-collections"
 
+# Load menu collections and categories based on local menu files
+load-menu-data:
+	@docker exec -t dataloader bash -c "invoke load-menu-files"
+
+# Load segment & parallel data from remote url based on local menu files.
+load-segment-data:
+	@docker exec -t dataloader bash -c "invoke load-segment-files"
+
+# Load all (segment, parallel & menu) data
 load-data:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
 	@docker exec -t dataloader bash -c "invoke load-segment-files"
 
+# Load all data - asynchronously
 load-data-async:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
 	@docker exec -t dataloader bash -c "invoke load-segment-files --threads=10"
 
-load-menu-data:
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-
 # List available commands for the dataloader
 list-tasks:
 	@docker exec -t dataloader bash -c "invoke --list"
-
-clean-all:
-	$(COMPOSE) down --rmi local --volumes
 
 # Enter the docker container
 enter-dataloader:

@@ -8,7 +8,7 @@ from pyArango.connection import Connection
 from tqdm import trange
 from joblib import Parallel as ParallelJobRunner, delayed
 
-from constants import DB_NAME
+from constants import DB_NAME, LANG_PALI, LANG_TIBETAN, LANG_CHINESE
 
 
 def get_db_connection() -> Connection:
@@ -55,9 +55,11 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    # if language == "chn" and file_name.startswith("T01_T0082"):
-    #     return True
-    if file_lang == "tib" and file_name.startswith("T06"):
+    if file_lang == LANG_PALI and file_name.startswith("MN"):
+        return True
+    elif file_lang == LANG_CHINESE and file_name.startswith("T31"):
+        return True
+    elif file_lang == LANG_TIBETAN and file_name.startswith("T06"):
         return True
     else:
         return False
