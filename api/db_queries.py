@@ -9,12 +9,10 @@ query_file_segments_parallels = """
                     FOR segment_id IN segment.parallel_ids
                         FOR p IN parallels
                             FILTER p._key == segment_id
-                            RETURN { 
-                                "parsegnr": p.par_segnr, 
-                                "probability": p.score,
-                                "parlength": p.par_length,
-                                "co-occ": p["co-occ"]
-                            }
+                            FILTER p.score >= @score
+                            FILTER p.par_length >= @parlength
+                            FILTER p["co-occ"] >= @coocc
+                            RETURN p.par_segnr
                 )
                 RETURN seg_parallels[0] ? 
                     { "segmentnr": segmentnr, "parallels": seg_parallels } :
@@ -27,7 +25,7 @@ query_collection_names = """
 RETURN MERGE(
     FOR category IN menu_categories
         FOR collection_key in @collections
-            FILTER category._key == collection_key
-            RETURN { [category._key]: category.categoryname }
+            FILTER category["category"] == collection_key
+            RETURN { [category["category"]]: category.categoryname }
 )
 """
