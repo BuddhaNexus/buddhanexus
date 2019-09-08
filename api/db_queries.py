@@ -27,7 +27,7 @@ query_collection_names = """
 RETURN MERGE(
     FOR category IN menu_categories
         FOR collection_key in @collections
-            FILTER category._key == collection_key
-            RETURN { [category._key]: category.categoryname }
+            FILTER category["category"] == collection_key
+            RETURN { [category["category"]]: category.categoryname }
 )
 """
