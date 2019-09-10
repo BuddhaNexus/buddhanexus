@@ -15,7 +15,7 @@ def get_db_connection() -> Connection:
     """ Get database connection """
     return Connection(
         username=os.environ["ARANGO_USER"],
-        password=os.environ["ARANGO_PASS"],
+        password=os.environ["ARANGO_ROOT_PASSWORD"],
         arangoURL=f"http://{os.environ['ARANGO_HOST']}:{os.environ['ARANGO_PORT']}",
     )
 
