@@ -65,7 +65,7 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
 
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
-    file_name: str, score: int = 0, par_length: int = 0, co_occ: int = 0
+    file_name: str, score: int = 0, par_length: int = 0, co_occ: int = 0, limit_collection: list = [],
 ):
     try:
         db = get_db()
@@ -76,6 +76,7 @@ async def get_segments_for_file(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "limitcollection": limit_collection,
             },
         )
         segments = query_result.result[0] if query_result.result else []

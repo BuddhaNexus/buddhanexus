@@ -8,6 +8,12 @@ query_file_segments_parallels = """
                     FILTER segment._key == segmentnr
                     FOR segment_id IN segment.parallel_ids
                         FOR p IN parallels
+                           LET filtertest = (
+                                FOR item IN @limitcollection
+                                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                                )
+                            LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                            FILTER filternr == true
                             FILTER p._key == segment_id
                             FILTER p.score >= @score
                             FILTER p.par_length >= @parlength
