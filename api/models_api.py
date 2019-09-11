@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Parallel(BaseModel):
-    probability: int
+    score: int
     parlength: int
     parlang: str  # Language of parallel
     par_offset_beg: int
