@@ -1,7 +1,7 @@
 [
   {
     "category": "T01",
-    "categoryname": "(Praises)",
+    "categoryname": "BSTOD TSOGS (Praises)",
     "files": [
       "T01TD1109E",
       "T01TD1110E",
@@ -78,7 +78,7 @@
   },
   {
     "category": "T02",
-    "categoryname": "Tantra (Tantra)",
+    "categoryname": "RGYUD (Tantra)",
     "files": [
       "T02TD1180E",
       "T02TD1181E",
@@ -2723,7 +2723,7 @@
   },
   {
     "category": "T03",
-    "categoryname": "Prajñāpāramitā (Perfection of Wisdom)",
+    "categoryname": "SHES PHYIN—Prajñāpāramitā (Perfection of Wisdom)",
     "files": [
       "T03TD3786E",
       "T03TD3787E",
@@ -2770,7 +2770,7 @@
   },
   {
     "category": "T04",
-    "categoryname": "Madhyamaka (The Middle Way)",
+    "categoryname": "DBU MA—Madhyamaka (The Middle Way)",
     "files": [
       "T04TD3825E",
       "T04TD3826E",
@@ -2935,7 +2935,7 @@
   },
   {
     "category": "T05",
-    "categoryname": "Sūtra (Commentaries)",
+    "categoryname": "MDO GREL—Sūtra (Commentaries)",
     "files": [
       "T05TD3981E",
       "T05TD3982E",
@@ -2983,7 +2983,7 @@
   },
   {
     "category": "T06",
-    "categoryname": "Vijñaptimātra (Mind Only)",
+    "categoryname": "SEMS TSAM—Vijñaptimātra (Mind Only)",
     "files": [
       "T06TD4020E",
       "T06TD4021E",
@@ -3057,7 +3057,7 @@
   },
   {
     "category": "T07",
-    "categoryname": "Abhidharma (Abhidharma)",
+    "categoryname": "MNGON PA—Abhidharma (Abhidharma)",
     "files": [
       "T07TD4086E",
       "T07TD4087E",
@@ -3086,7 +3086,7 @@
   },
   {
     "category": "T08",
-    "categoryname": "Vinaya (Monastic Discipline)",
+    "categoryname": "'DUL BA—Vinaya (Monastic Discipline)",
     "files": [
       "T08TD4104.1E",
       "T08TD4104.2E",
@@ -3143,7 +3143,7 @@
   },
   {
     "category": "T09",
-    "categoryname": "Jātaka (Birth Stories)",
+    "categoryname": "SKYES RABS—Jātaka (Birth Stories)",
     "files": [
       "T09TD4150E",
       "T09TD4151E",
@@ -3158,7 +3158,7 @@
   },
   {
     "category": "T10",
-    "categoryname": "Lekha (Epistles)",
+    "categoryname": "SPRING YIG—Lekha (Epistles)",
     "files": [
       "T10TD4158E",
       "T10TD4159E",
@@ -3209,7 +3209,7 @@
   },
   {
     "category": "T11",
-    "categoryname": "(Logic)",
+    "categoryname": "TSAD MA (Logic)",
     "files": [
       "T11TD4203E",
       "T11TD4204E",
@@ -3288,7 +3288,7 @@
   },
   {
     "category": "T12",
-    "categoryname": "(Language)",
+    "categoryname": "SGRA MDO (Language)",
     "files": [
       "T12TD4269E",
       "T12TD4270E",
@@ -3329,7 +3329,7 @@
   },
   {
     "category": "T13",
-    "categoryname": "(Medicine)",
+    "categoryname": "GSO BA RIG PA (Medicine)",
     "files": [
       "T13TD4306E",
       "T13TD4307E",
@@ -3345,7 +3345,7 @@
   },
   {
     "category": "T14",
-    "categoryname": "(Arts and Crafts)",
+    "categoryname": "BZO RIG PA (Arts and Crafts)",
     "files": [
       "T14TD4313E",
       "T14TD4314E",
@@ -3366,7 +3366,7 @@
   },
   {
     "category": "T15",
-    "categoryname": "Nītiśāstram (Mundane Treatises)",
+    "categoryname": "LUGS KYI BSTAN BCOS—Nītiśāstram (Mundane Treatises)",
     "files": [
       "T15TD4328E",
       "T15TD4329E",
@@ -3390,7 +3390,7 @@
   },
   {
     "category": "T16",
-    "categoryname": "(Various)",
+    "categoryname": "SNA TSHOGS (Various)",
     "files": [
       "T16TD4346E",
       "T16TD4347E",
@@ -3521,7 +3521,7 @@
 
   {
     "category": "K01",
-    "categoryname": "Vinaya (Monastic Discipline)",
+    "categoryname": "'DUL BA—Vinaya (Monastic Discipline)",
     "files": [
       "K01acip-k_lha_sa-001-001",
       "K01acip-k_lha_sa-002-001",
@@ -3543,7 +3543,7 @@
   },
   {
     "category": "K02",
-    "categoryname": "Śatasāhasrikāprajñāpāramitā (Perfection of Wisdom in 100.000 lines)",
+    "categoryname": "BUM—Śatasāhasrikāprajñāpāramitā (Perfection of Wisdom in 100.000 lines)",
     "files": [
       "K02acip-k_lha_sa-014-001",
       "K02acip-k_lha_sa-015-001",
@@ -3561,7 +3561,7 @@
   },
   {
     "category": "K03",
-    "categoryname": "Pañcaviṃśatisāhasrikāprajñāpāramitā (Perfection of Wisdom in 25.000 lines)",
+    "categoryname": "NYI KHRI—Pañcaviṃśatisāhasrikāprajñāpāramitā (Perfection of Wisdom in 25.000 lines)",
     "files": [
       "K03acip-k_lha_sa-026-001",
       "K03acip-k_lha_sa-027-001",
@@ -3570,12 +3570,12 @@
   },
   {
     "category": "K04",
-    "categoryname": "Aṣṭasāhasrikāprajñāpāramitā (Perfection of Wisdom in 8.000 lines)",
+    "categoryname": "BRGYAD STONG—Aṣṭasāhasrikāprajñāpāramitā (Perfection of Wisdom in 8.000 lines)",
     "files": ["K04acip-k_lha_sa-029-001"]
   },
   {
     "category": "K05",
-    "categoryname": "Aṣṭadaśasāhasrikāprajñāpāramitā (Perfection of Wisdom in 18.000 lines)",
+    "categoryname": "KHRI BRGYAD STONG—Aṣṭadaśasāhasrikāprajñāpāramitā (Perfection of Wisdom in 18.000 lines)",
     "files": [
       "K05acip-k_lha_sa-030-001",
       "K05acip-k_lha_sa-031-001",
@@ -3585,7 +3585,7 @@
   },
   {
     "category": "K06",
-    "categoryname": "Daśasāhasrikāprajñāpāramitā (Perfection of Wisdom in 10.000 lines)",
+    "categoryname": "KHRI PA—Daśasāhasrikāprajñāpāramitā (Perfection of Wisdom in 10.000 lines)",
     "files": [
       "K06acip-k_lha_sa-033-001",
       "K06acip-k_lha_sa-034-001",
@@ -3623,7 +3623,7 @@
   },
   {
     "category": "K07",
-    "categoryname": "(Various Teachings on the Perfection of Wisdom)",
+    "categoryname": "SHER PHYIN SNA TSHOGS (Various Teachings on the Perfection of Wisdom)",
     "files": [
       "K07acip-k_lha_sa-035-001",
       "K07acip-k_lha_sa-035-002",
@@ -3634,7 +3634,7 @@
   },
   {
     "category": "K08",
-    "categoryname": "Ratnakūṭa (Pile of Jewels)",
+    "categoryname": "DKON BRTZEGS—Ratnakūṭa (Pile of Jewels)",
     "files": [
       "K08acip-k_lha_sa-036-001",
       "K08acip-k_lha_sa-036-002",
@@ -3685,7 +3685,7 @@
   },
   {
     "category": "K09",
-    "categoryname": "Avataṃsaka (The Majority)",
+    "categoryname": "PHAL CHEN—Avataṃsaka (The Majority)",
     "files": [
       "K09acip-k_lha_sa-042-001",
       "K09acip-k_lha_sa-043-001",
@@ -3707,7 +3707,7 @@
   },
   {
     "category": "K10",
-    "categoryname": "Sūtra (Collection of Sutras)",
+    "categoryname": "MDO MANG—Sūtra (Collection of Sutras)",
     "files": [
       "K10acip-k_lha_sa-048-001",
       "K10acip-k_lha_sa-048-002",
@@ -3990,12 +3990,12 @@
   },
   {
     "category": "K11",
-    "categoryname": "Nirvana (Nirvana)",
+    "categoryname": "MYANG 'DAS—Nirvana (Nirvana)",
     "files": ["K11acip-k_lha_sa-078-001"]
   },
   {
     "category": "K12",
-    "categoryname": "Tantra (Secret Teachings)",
+    "categoryname": "RGYUD—Tantra (Secret Teachings)",
     "files": [
       "K12acip-k_lha_sa-079-001",
       "K12acip-k_lha_sa-079-002",
@@ -4470,7 +4470,7 @@
   },
   {
     "category": "K13",
-    "categoryname": "(Native Catalog to the Kangyur)",
+    "categoryname": "DKAR CHAG (Native Catalog to the Kangyur)",
     "files": []
   }
 ]
