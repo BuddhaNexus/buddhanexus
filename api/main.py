@@ -1,7 +1,7 @@
 import re
-from typing import Dict
+from typing import Dict, List
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
@@ -65,7 +65,7 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
 
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
-    file_name: str, score: int = 0, par_length: int = 0, co_occ: int = 0, limit_collection: list = [],
+    file_name: str, score: int = 0, par_length: int = 0, co_occ: int = 0, limit_collection: List[str] = Query([]),
 ):
     try:
         db = get_db()
@@ -103,7 +103,12 @@ async def get_segments_for_file(
             "parallel_count": parallel_count,
         }
 
-    except DocumentNotFoundError:
+    except DocumentNotFoundError as e:
+        print(e)
         raise HTTPException(status_code=404, detail="Item not found")
-    except (KeyError, AQLQueryError) as e:
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
         raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
