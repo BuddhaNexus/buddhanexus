@@ -17,7 +17,7 @@ query_file_segments_parallels = """
                             FILTER p._key == segment_id
                             FILTER p.score >= @score
                             FILTER p.par_length >= @parlength
-                            FILTER p["co-occ"] >= @coocc
+                            FILTER p["co-occ"] <= @coocc
                             RETURN p.par_segnr
                 )
                 RETURN seg_parallels[0] ? 
