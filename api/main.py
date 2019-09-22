@@ -92,9 +92,9 @@ async def get_segments_for_file(
                 for parallel in segment["parallels"]:
                     parallel_count += 1
                     for seg_nr in parallel:
-                        collection_key = re.search(r"^[A-Z]+[0-9]+", seg_nr).group()
-                        if collection_key not in collection_keys:
-                            collection_keys.append(collection_key)
+                        collection_key = re.search(r"^[a-zA-Z]+[0-9]+", seg_nr)
+                        if collection_key and collection_key.group() not in collection_keys:
+                            collection_keys.append(collection_key.group())
                 result.append(segment)
 
         collections = db.AQLQuery(
