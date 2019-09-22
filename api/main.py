@@ -65,7 +65,11 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
 
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
-    file_name: str, score: int = 0, par_length: int = 0, co_occ: int = 0, limit_collection: List[str] = Query([]),
+    file_name: str,
+    score: int = 0,
+    par_length: int = 0,
+    co_occ: int = 0,
+    limit_collection: List[str] = Query([]),
 ):
     try:
         db = get_db()
@@ -88,9 +92,9 @@ async def get_segments_for_file(
                 for parallel in segment["parallels"]:
                     parallel_count += 1
                     for seg_nr in parallel:
-                        collection_key = re.search(r"^[A-Z]+[0-9]+", seg_nr).group()
-                        if collection_key not in collection_keys:
-                            collection_keys.append(collection_key)
+                        collection_key = re.search(r"^([A-Z]+[0-9]+|[a-z]*)", seg_nr)
+                        if collection_key and collection_key.group() not in collection_keys:
+                            collection_keys.append(collection_key.group())
                 result.append(segment)
 
         collections = db.AQLQuery(

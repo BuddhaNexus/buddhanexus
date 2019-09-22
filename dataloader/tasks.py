@@ -12,7 +12,6 @@ from constants import (
     COLLECTION_FILES,
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
-    COLLECTION_SEGMENT_PARALLELS,
 )
 from loader import (
     load_segment_data_from_menu_files,
@@ -79,7 +78,6 @@ def clean_segment_collections(c):
         COLLECTION_SEGMENTS,
         COLLECTION_PARALLELS,
         COLLECTION_FILES,
-        COLLECTION_SEGMENT_PARALLELS,
     ):
         db[name].empty()
     print("segment collections cleaned.")

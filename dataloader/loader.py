@@ -47,9 +47,6 @@ def load_segment_data_from_menu_files(root_url: str, threads: int):
 def load_segments_and_parallels_data_from_menu_file(
     menu_file_json, lang: str, root_url: str
 ) -> None:
-    if not should_download_file(lang, menu_file_json["filename"]):
-        return
-
     file_url = f"{root_url}{lang}/{menu_file_json['filename']}.json.gz"
     db = get_database()
 

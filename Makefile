@@ -7,7 +7,7 @@ run-dev:
 	$(COMPOSE) up $(SERVICES)
 
 run-dev-no-logs:
-	$(COMPOSE) up $(SERVICES) -d
+	$(COMPOSE) up -d $(SERVICES)
 
 run-prod:
 	@$(COMPOSEPROD) up $(SERVICES)
@@ -42,15 +42,6 @@ load-menu-data:
 load-segment-data:
 	@docker exec -t dataloader bash -c "invoke load-segment-files"
 
-clean-db:
-	@docker exec -t dataloader bash -c "invoke clean-all-collections"
-
-clean-db-menu-data:
-	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
-
-clean-db-segment-data:
-	@docker exec -t dataloader bash -c "invoke clean-segment-collections"
-
 # Load all (segment, parallel & menu) data
 load-data:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
@@ -60,6 +51,15 @@ load-data:
 load-data-async:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
 	@docker exec -t dataloader bash -c "invoke load-segment-files --threaded"
+
+clean-db:
+	@docker exec -t dataloader bash -c "invoke clean-all-collections"
+
+clean-db-menu-data:
+	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
+
+clean-db-segment-data:
+	@docker exec -t dataloader bash -c "invoke clean-segment-collections"
 
 # List available commands for the dataloader
 list-tasks:
