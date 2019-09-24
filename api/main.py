@@ -92,7 +92,7 @@ async def get_segments_for_file(
                 for parallel in segment["parallels"]:
                     parallel_count += 1
                     for seg_nr in parallel:
-                        collection_key = re.search(r"^([A-Z]+[0-9]+|[a-z]*)", seg_nr)
+                        collection_key = re.search(r"^([A-Z]+[0-9]+|[a-z\-]*)", seg_nr)
                         if collection_key and collection_key.group() not in collection_keys:
                             collection_keys.append(collection_key.group())
                 result.append(segment)

@@ -198,8 +198,8 @@
     ]
   },
   {
-    "category": "sn1",
-    "categoryname": "Saṃyuttanikāya 1",
+    "category": "sn",
+    "categoryname": "Saṃyuttanikāya",
     "files": [
       "sn1.1",
       "sn1.2",
@@ -281,13 +281,7 @@
       "sn1.78",
       "sn1.79",
       "sn1.80",
-      "sn1.81"
-    ]
-  },
-  {
-    "category": "sn2",
-    "categoryname": "Saṃyuttanikāya 2",
-    "files": [
+      "sn1.81",
       "sn2.1",
       "sn2.2",
       "sn2.3",
@@ -317,13 +311,7 @@
       "sn2.27",
       "sn2.28",
       "sn2.29",
-      "sn2.30"
-    ]
-  },
-  {
-    "category": "sn3",
-    "categoryname": "Saṃyuttanikāya 3",
-    "files": [
+      "sn2.30",
       "sn3.1",
       "sn3.2",
       "sn3.3",
@@ -348,13 +336,7 @@
       "sn3.22",
       "sn3.23",
       "sn3.24",
-      "sn3.25"
-    ]
-  },
-  {
-    "category": "sn4",
-    "categoryname": "Saṃyuttanikāya 4",
-    "files": [
+      "sn3.25",
       "sn4.1",
       "sn4.2",
       "sn4.3",
@@ -379,13 +361,7 @@
       "sn4.22",
       "sn4.23",
       "sn4.24",
-      "sn4.25"
-    ]
-  },
-  {
-    "category": "sn5",
-    "categoryname": "Saṃyuttanikāya 5",
-    "files": [
+      "sn4.25",
       "sn5.1",
       "sn5.2",
       "sn5.3",
@@ -395,13 +371,7 @@
       "sn5.7",
       "sn5.8",
       "sn5.9",
-      "sn5.10"
-    ]
-  },
-  {
-    "category": "sn6",
-    "categoryname": "Saṃyuttanikāya 6",
-    "files": [
+      "sn5.10",
       "sn6.1",
       "sn6.2",
       "sn6.3",
@@ -416,13 +386,7 @@
       "sn6.12",
       "sn6.13",
       "sn6.14",
-      "sn6.15"
-    ]
-  },
-  {
-    "category": "sn7",
-    "categoryname": "Saṃyuttanikāya 7",
-    "files": [
+      "sn6.15",
       "sn7.1",
       "sn7.2",
       "sn7.3",
@@ -444,13 +408,7 @@
       "sn7.19",
       "sn7.20",
       "sn7.21",
-      "sn7.22"
-    ]
-  },
-  {
-    "category": "sn8",
-    "categoryname": "Saṃyuttanikāya 8",
-    "files": [
+      "sn7.22",
       "sn8.1",
       "sn8.2",
       "sn8.3",
@@ -462,13 +420,7 @@
       "sn8.9",
       "sn8.10",
       "sn8.11",
-      "sn8.12"
-    ]
-  },
-  {
-    "category": "sn9",
-    "categoryname": "Saṃyuttanikāya 9",
-    "files": [
+      "sn8.12",
       "sn9.1",
       "sn9.2",
       "sn9.3",
@@ -482,13 +434,7 @@
       "sn9.11",
       "sn9.12",
       "sn9.13",
-      "sn9.14"
-    ]
-  },
-  {
-    "category": "sn10",
-    "categoryname": "Saṃyuttanikāya 10",
-    "files": [
+      "sn9.14",
       "sn10.1",
       "sn10.2",
       "sn10.3",
@@ -500,13 +446,7 @@
       "sn10.9",
       "sn10.10",
       "sn10.11",
-      "sn10.12"
-    ]
-  },
-  {
-    "category": "sn11",
-    "categoryname": "Saṃyuttanikāya 11",
-    "files": [
+      "sn10.12",
       "sn11.1",
       "sn11.2",
       "sn11.3",
@@ -531,13 +471,7 @@
       "sn11.22",
       "sn11.23",
       "sn11.24",
-      "sn11.25"
-    ]
-  },
-  {
-    "category": "sn12",
-    "categoryname": "Saṃyuttanikāya 12",
-    "files": [
+      "sn11.25",
       "sn12.1",
       "sn12.2",
       "sn12.3",
@@ -612,13 +546,7 @@
       "sn12.72-81",
       "sn12.82",
       "sn12.83-92",
-      "sn12.93-213"
-    ]
-  },
-  {
-    "category": "sn13",
-    "categoryname": "Saṃyuttanikāya 13",
-    "files": [
+      "sn12.93-213",
       "sn13.1",
       "sn13.2",
       "sn13.3",
@@ -629,13 +557,7 @@
       "sn13.8",
       "sn13.9",
       "sn13.10",
-      "sn13.11"
-    ]
-  },
-  {
-    "category": "sn14",
-    "categoryname": "Saṃyuttanikāya 14",
-    "files": [
+      "sn13.11",
       "sn14.1",
       "sn14.2",
       "sn14.3",
@@ -674,13 +596,7 @@
       "sn14.36",
       "sn14.37",
       "sn14.38",
-      "sn14.39"
-    ]
-  },
-  {
-    "category": "sn15",
-    "categoryname": "Saṃyuttanikāya 15",
-    "files": [
+      "sn14.39",
       "sn15.1",
       "sn15.2",
       "sn15.3",
@@ -700,13 +616,7 @@
       "sn15.17",
       "sn15.18",
       "sn15.19",
-      "sn15.20"
-    ]
-  },
-  {
-    "category": "sn16",
-    "categoryname": "Saṃyuttanikāya 16",
-    "files": [
+      "sn15.20",
       "sn16.1",
       "sn16.2",
       "sn16.3",
@@ -719,13 +629,7 @@
       "sn16.10",
       "sn16.11",
       "sn16.12",
-      "sn16.13"
-    ]
-  },
-  {
-    "category": "sn17",
-    "categoryname": "Saṃyuttanikāya 17",
-    "files": [
+      "sn16.13",
       "sn17.1",
       "sn17.2",
       "sn17.3",
@@ -756,13 +660,7 @@
       "sn17.35",
       "sn17.36",
       "sn17.37",
-      "sn17.38-43"
-    ]
-  },
-  {
-    "category": "sn18",
-    "categoryname": "Saṃyuttanikāya 18",
-    "files": [
+      "sn17.38-43",
       "sn18.1",
       "sn18.2",
       "sn18.3",
@@ -776,13 +674,7 @@
       "sn18.11",
       "sn18.12-20",
       "sn18.21",
-      "sn18.22"
-    ]
-  },
-  {
-    "category": "sn19",
-    "categoryname": "Saṃyuttanikāya 19",
-    "files": [
+      "sn18.22",
       "sn19.1",
       "sn19.2",
       "sn19.3",
@@ -803,13 +695,7 @@
       "sn19.18",
       "sn19.19",
       "sn19.20",
-      "sn19.21"
-    ]
-  },
-  {
-    "category": "sn20",
-    "categoryname": "Saṃyuttanikāya 20",
-    "files": [
+      "sn19.21",
       "sn20.1",
       "sn20.2",
       "sn20.3",
@@ -821,13 +707,7 @@
       "sn20.9",
       "sn20.10",
       "sn20.11",
-      "sn20.12"
-    ]
-  },
-  {
-    "category": "sn21",
-    "categoryname": "Saṃyuttanikāya 21",
-    "files": [
+      "sn20.12",
       "sn21.1",
       "sn21.2",
       "sn21.3",
@@ -839,13 +719,7 @@
       "sn21.9",
       "sn21.10",
       "sn21.11",
-      "sn21.12"
-    ]
-  },
-  {
-    "category": "sn22",
-    "categoryname": "Saṃyuttanikāya 22",
-    "files": [
+      "sn21.12",
       "sn22.1",
       "sn22.2",
       "sn22.3",
@@ -1004,13 +878,7 @@
       "sn22.156",
       "sn22.157",
       "sn22.158",
-      "sn22.159"
-    ]
-  },
-  {
-    "category": "sn23",
-    "categoryname": "Saṃyuttanikāya 23",
-    "files": [
+      "sn22.159",
       "sn23.1",
       "sn23.2",
       "sn23.3",
@@ -1036,13 +904,7 @@
       "sn23.23-33",
       "sn23.34",
       "sn23.35-45",
-      "sn23.46"
-    ]
-  },
-  {
-    "category": "sn24",
-    "categoryname": "Saṃyuttanikāya 24",
-    "files": [
+      "sn23.46",
       "sn24.1",
       "sn24.2",
       "sn24.3",
@@ -1077,13 +939,7 @@
       "sn24.70",
       "sn24.71",
       "sn24.72-95",
-      "sn24.96"
-    ]
-  },
-  {
-    "category": "sn25",
-    "categoryname": "Saṃyuttanikāya 25",
-    "files": [
+      "sn24.96",
       "sn25.1",
       "sn25.2",
       "sn25.3",
@@ -1093,13 +949,7 @@
       "sn25.7",
       "sn25.8",
       "sn25.9",
-      "sn25.10"
-    ]
-  },
-  {
-    "category": "sn26",
-    "categoryname": "Saṃyuttanikāya 26",
-    "files": [
+      "sn25.10",
       "sn26.1",
       "sn26.2",
       "sn26.3",
@@ -1109,13 +959,7 @@
       "sn26.7",
       "sn26.8",
       "sn26.9",
-      "sn26.10"
-    ]
-  },
-  {
-    "category": "sn27",
-    "categoryname": "Saṃyuttanikāya 27",
-    "files": [
+      "sn26.10",
       "sn27.1",
       "sn27.2",
       "sn27.3",
@@ -1125,13 +969,7 @@
       "sn27.7",
       "sn27.8",
       "sn27.9",
-      "sn27.10"
-    ]
-  },
-  {
-    "category": "sn28",
-    "categoryname": "Saṃyuttanikāya 28",
-    "files": [
+      "sn27.10",
       "sn28.1",
       "sn28.2",
       "sn28.3",
@@ -1141,13 +979,7 @@
       "sn28.7",
       "sn28.8",
       "sn28.9",
-      "sn28.10"
-    ]
-  },
-  {
-    "category": "sn29",
-    "categoryname": "Saṃyuttanikāya 29",
-    "files": [
+      "sn28.10",
       "sn29.1",
       "sn29.2",
       "sn29.3",
@@ -1159,37 +991,19 @@
       "sn29.9",
       "sn29.10",
       "sn29.11-20",
-      "sn29.21-50"
-    ]
-  },
-  {
-    "category": "sn30",
-    "categoryname": "Saṃyuttanikāya 30",
-    "files": [
+      "sn29.21-50",
       "sn30.1",
       "sn30.2",
       "sn30.3",
       "sn30.4-6",
       "sn30.7-16",
-      "sn30.17-46"
-    ]
-  },
-  {
-    "category": "sn31",
-    "categoryname": "Saṃyuttanikāya 31",
-    "files": [
+      "sn30.17-46",
       "sn31.1",
       "sn31.2",
       "sn31.3",
       "sn31.4-12",
       "sn31.13-22",
-      "sn31.23-112"
-    ]
-  },
-  {
-    "category": "sn32",
-    "categoryname": "Saṃyuttanikāya 32",
-    "files": [
+      "sn31.23-112",
       "sn32.1",
       "sn32.2",
       "sn32.3-12",
@@ -1198,13 +1012,7 @@
       "sn32.54",
       "sn32.55",
       "sn32.56",
-      "sn32.57"
-    ]
-  },
-  {
-    "category": "sn33",
-    "categoryname": "Saṃyuttanikāya 33",
-    "files": [
+      "sn32.57",
       "sn33.1",
       "sn33.2",
       "sn33.3",
@@ -1220,13 +1028,7 @@
       "sn33.41-45",
       "sn33.46-50",
       "sn33.51-54",
-      "sn33.55"
-    ]
-  },
-  {
-    "category": "sn34",
-    "categoryname": "Saṃyuttanikāya 34",
-    "files": [
+      "sn33.55",
       "sn34.1",
       "sn34.2",
       "sn34.3",
@@ -1253,13 +1055,7 @@
       "sn34.46-49",
       "sn34.50-52",
       "sn34.53-54",
-      "sn34.55"
-    ]
-  },
-  {
-    "category": "sn35",
-    "categoryname": "Saṃyuttanikāya 35",
-    "files": [
+      "sn34.55",
       "sn35.1",
       "sn35.2",
       "sn35.3",
@@ -1460,13 +1256,7 @@
       "sn35.245",
       "sn35.246",
       "sn35.247",
-      "sn35.248"
-    ]
-  },
-  {
-    "category": "sn36",
-    "categoryname": "Saṃyuttanikāya 36",
-    "files": [
+      "sn35.248",
       "sn36.1",
       "sn36.2",
       "sn36.3",
@@ -1497,13 +1287,7 @@
       "sn36.28",
       "sn36.29",
       "sn36.30",
-      "sn36.31"
-    ]
-  },
-  {
-    "category": "sn37",
-    "categoryname": "Saṃyuttanikāya 37",
-    "files": [
+      "sn36.31",
       "sn37.1",
       "sn37.2",
       "sn37.3",
@@ -1537,13 +1321,7 @@
       "sn37.31",
       "sn37.32",
       "sn37.33",
-      "sn37.34"
-    ]
-  },
-  {
-    "category": "sn38",
-    "categoryname": "Saṃyuttanikāya 38",
-    "files": [
+      "sn37.34",
       "sn38.1",
       "sn38.2",
       "sn38.3",
@@ -1559,18 +1337,9 @@
       "sn38.13",
       "sn38.14",
       "sn38.15",
-      "sn38.16"
-    ]
-  },
-  {
-    "category": "sn39",
-    "categoryname": "Saṃyuttanikāya 39",
-    "files": ["sn39.1-15", "sn39.16"]
-  },
-  {
-    "category": "sn40",
-    "categoryname": "Saṃyuttanikāya 40",
-    "files": [
+      "sn38.16",
+      "sn39.1-15",
+      "sn39.16",
       "sn40.1",
       "sn40.2",
       "sn40.3",
@@ -1581,13 +1350,7 @@
       "sn40.8",
       "sn40.9",
       "sn40.10",
-      "sn40.11"
-    ]
-  },
-  {
-    "category": "sn41",
-    "categoryname": "Saṃyuttanikāya 41",
-    "files": [
+      "sn40.11",
       "sn41.1",
       "sn41.2",
       "sn41.3",
@@ -1597,13 +1360,7 @@
       "sn41.7",
       "sn41.8",
       "sn41.9",
-      "sn41.10"
-    ]
-  },
-  {
-    "category": "sn42",
-    "categoryname": "Saṃyuttanikāya 42",
-    "files": [
+      "sn41.10",
       "sn42.1",
       "sn42.2",
       "sn42.3",
@@ -1616,13 +1373,7 @@
       "sn42.10",
       "sn42.11",
       "sn42.12",
-      "sn42.13"
-    ]
-  },
-  {
-    "category": "sn43",
-    "categoryname": "Saṃyuttanikāya 43",
-    "files": [
+      "sn42.13",
       "sn43.1",
       "sn43.2",
       "sn43.3",
@@ -1637,13 +1388,7 @@
       "sn43.12",
       "sn43.13",
       "sn43.14-43",
-      "sn43.44"
-    ]
-  },
-  {
-    "category": "sn44",
-    "categoryname": "Saṃyuttanikāya 44",
-    "files": [
+      "sn43.44",
       "sn44.1",
       "sn44.2",
       "sn44.3",
@@ -1654,13 +1399,7 @@
       "sn44.8",
       "sn44.9",
       "sn44.10",
-      "sn44.11"
-    ]
-  },
-  {
-    "category": "sn45",
-    "categoryname": "Saṃyuttanikāya 45",
-    "files": [
+      "sn44.11",
       "sn45.1",
       "sn45.2",
       "sn45.3",
@@ -1774,13 +1513,7 @@
       "sn45.177",
       "sn45.178",
       "sn45.179",
-      "sn45.180"
-    ]
-  },
-  {
-    "category": "sn46",
-    "categoryname": "Saṃyuttanikāya 46",
-    "files": [
+      "sn45.180",
       "sn46.1",
       "sn46.2",
       "sn46.3",
@@ -1867,13 +1600,7 @@
       "sn46.143-152",
       "sn46.153-164",
       "sn46.165-174",
-      "sn46.175-184"
-    ]
-  },
-  {
-    "category": "sn47",
-    "categoryname": "Saṃyuttanikāya 47",
-    "files": [
+      "sn46.175-184",
       "sn47.1",
       "sn47.2",
       "sn47.3",
@@ -1928,13 +1655,7 @@
       "sn47.63-72",
       "sn47.73-84",
       "sn47.85-94",
-      "sn47.95-104"
-    ]
-  },
-  {
-    "category": "sn48",
-    "categoryname": "Saṃyuttanikāya 48",
-    "files": [
+      "sn47.95-104",
       "sn48.1",
       "sn48.2",
       "sn48.3",
@@ -2014,24 +1735,12 @@
       "sn48.137-146",
       "sn48.147-158",
       "sn48.159-168",
-      "sn48.169-178"
-    ]
-  },
-  {
-    "category": "sn49",
-    "categoryname": "Saṃyuttanikāya 49",
-    "files": [
+      "sn48.169-178",
       "sn49.1-12",
       "sn49.13-22",
       "sn49.23-34",
       "sn49.35-44",
-      "sn49.45-54"
-    ]
-  },
-  {
-    "category": "sn50",
-    "categoryname": "Saṃyuttanikāya 50",
-    "files": [
+      "sn49.45-54",
       "sn50.1-12",
       "sn50.13-22",
       "sn50.23-34",
@@ -2041,13 +1750,7 @@
       "sn50.67-76",
       "sn50.77-88",
       "sn50.89-98",
-      "sn50.99-108"
-    ]
-  },
-  {
-    "category": "sn51",
-    "categoryname": "Saṃyuttanikāya 51",
-    "files": [
+      "sn50.99-108",
       "sn51.1",
       "sn51.2",
       "sn51.3",
@@ -2084,13 +1787,7 @@
       "sn51.45-54",
       "sn51.55-66",
       "sn51.67-76",
-      "sn51.77-86"
-    ]
-  },
-  {
-    "category": "sn52",
-    "categoryname": "Saṃyuttanikāya 52",
-    "files": [
+      "sn51.77-86",
       "sn52.1",
       "sn52.2",
       "sn52.3",
@@ -2114,24 +1811,12 @@
       "sn52.21",
       "sn52.22",
       "sn52.23",
-      "sn52.24"
-    ]
-  },
-  {
-    "category": "sn53",
-    "categoryname": "Saṃyuttanikāya 53",
-    "files": [
+      "sn52.24",
       "sn53.1-12",
       "sn53.13-22",
       "sn53.23-34",
       "sn53.35-44",
-      "sn53.45-54"
-    ]
-  },
-  {
-    "category": "sn54",
-    "categoryname": "Saṃyuttanikāya 54",
-    "files": [
+      "sn53.45-54",
       "sn54.1",
       "sn54.2",
       "sn54.3",
@@ -2151,13 +1836,7 @@
       "sn54.17",
       "sn54.18",
       "sn54.19",
-      "sn54.20"
-    ]
-  },
-  {
-    "category": "sn55",
-    "categoryname": "Saṃyuttanikāya 55",
-    "files": [
+      "sn54.20",
       "sn55.1",
       "sn55.2",
       "sn55.3",
@@ -2231,13 +1910,7 @@
       "sn55.71",
       "sn55.72",
       "sn55.73",
-      "sn55.74"
-    ]
-  },
-  {
-    "category": "sn56",
-    "categoryname": "Saṃyuttanikāya 56",
-    "files": [
+      "sn55.74",
       "sn56.1",
       "sn56.2",
       "sn56.3",
@@ -2349,8 +2022,8 @@
     ]
   },
   {
-    "category": "an1",
-    "categoryname": "Aṅguttaranikāya 1",
+    "category": "an",
+    "categoryname": "Aṅguttaranikāya",
     "files": [
       "an1.1-10",
       "an1.11-20",
@@ -2382,13 +2055,7 @@
       "an1.378-393",
       "an1.394-574",
       "an1.575-615",
-      "an1.616-627"
-    ]
-  },
-  {
-    "category": "an2",
-    "categoryname": "Aṅguttaranikāya 2",
-    "files": [
+      "an1.616-627",
       "an2.1-10",
       "an2.11-20",
       "an2.21-31",
@@ -2407,13 +2074,7 @@
       "an2.180-229",
       "an2.230-279",
       "an2.280-309",
-      "an2.310-479"
-    ]
-  },
-  {
-    "category": "an3",
-    "categoryname": "Aṅguttaranikāya 3",
-    "files": [
+      "an2.310-479",
       "an3.1",
       "an3.2",
       "an3.3",
@@ -2571,13 +2232,7 @@
       "an3.155",
       "an3.156-162",
       "an3.163-182",
-      "an3.183-352"
-    ]
-  },
-  {
-    "category": "an4",
-    "categoryname": "Aṅguttaranikāya 4",
-    "files": [
+      "an3.183-352",
       "an4.1",
       "an4.2",
       "an4.3",
@@ -2855,13 +2510,7 @@
       "an4.275",
       "an4.276",
       "an4.277-303",
-      "an4.304-783"
-    ]
-  },
-  {
-    "category": "an5",
-    "categoryname": "Aṅguttaranikāya 5",
-    "files": [
+      "an4.304-783",
       "an5.1",
       "an5.2",
       "an5.3",
@@ -3132,13 +2781,7 @@
       "an5.305",
       "an5.306",
       "an5.307",
-      "an5.308-1152"
-    ]
-  },
-  {
-    "category": "an6",
-    "categoryname": "Aṅguttaranikāya 6",
-    "files": [
+      "an5.308-1152",
       "an6.1",
       "an6.2",
       "an6.3",
@@ -3263,13 +2906,7 @@
       "an6.141",
       "an6.142",
       "an6.143-169",
-      "an6.170-649"
-    ]
-  },
-  {
-    "category": "an7",
-    "categoryname": "Aṅguttaranikāya 7",
-    "files": [
+      "an6.170-649",
       "an7.1",
       "an7.2",
       "an7.3",
@@ -3370,13 +3007,7 @@
       "an7.616",
       "an7.617",
       "an7.618-644",
-      "an7.645-1124"
-    ]
-  },
-  {
-    "category": "an8",
-    "categoryname": "Aṅguttaranikāya 8",
-    "files": [
+      "an7.645-1124",
       "an8.1",
       "an8.2",
       "an8.3",
@@ -3472,13 +3103,7 @@
       "an8.119",
       "an8.120",
       "an8.121-147",
-      "an8.148-627"
-    ]
-  },
-  {
-    "category": "an9",
-    "categoryname": "Aṅguttaranikāya 9",
-    "files": [
+      "an8.148-627",
       "an9.1",
       "an9.2",
       "an9.3",
@@ -3560,13 +3185,7 @@
       "an9.93",
       "an9.94",
       "an9.95-112",
-      "an9.113-432"
-    ]
-  },
-  {
-    "category": "an10",
-    "categoryname": "Aṅguttaranikāya 10",
-    "files": [
+      "an9.113-432",
       "an10.1",
       "an10.2",
       "an10.3",
@@ -3777,13 +3396,7 @@
       "an10.238",
       "an10.239",
       "an10.240-266",
-      "an10.267-746"
-    ]
-  },
-  {
-    "category": "an11",
-    "categoryname": "Aṅguttaranikāya 11",
-    "files": [
+      "an10.267-746",
       "an11.1",
       "an11.2",
       "an11.3",
