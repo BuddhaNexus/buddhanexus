@@ -32,6 +32,6 @@ RETURN MERGE(
     FOR category IN menu_categories
         FOR collection_key in @collections
             FILTER category["category"] == collection_key
-            RETURN { [category["category"]]: category.categoryname }
+            RETURN { [category["categorynr"]] : { [category["category"]]: category.categoryname } }
 )
 """
