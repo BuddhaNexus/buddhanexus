@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
-from .db_queries import query_file_segments_parallels, query_collection_names
+from .db_queries import query_file_segments_parallels, query_collection_names, query_items_for_menu
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -116,3 +116,38 @@ async def get_segments_for_file(
     except KeyError as e:
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
+
+
+@app.get("/menus/{language}")
+async def get_items_for_menu(language: str):
+    try:
+        languageId = getLanguageId(language)
+        db = get_db()
+        menu_query_result = db.AQLQuery(
+            query=query_items_for_menu,
+            bindVars={"language": languageId}
+        )
+        return {"menuitems": menu_query_result.result}
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+def getLanguageId(language):
+    languageId = ''
+    if language == 'pali':
+        languageId = 'pli'
+    if language == 'tibetan':
+        languageId = 'tib'
+    if language == 'chinese':
+        languageId = 'chn'
+    if language == 'sanskrit':
+        languageId = 'skt'
+    return languageId

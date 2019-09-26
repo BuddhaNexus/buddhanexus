@@ -35,3 +35,16 @@ RETURN MERGE(
             RETURN { [category["category"]]: category.categoryname }
 )
 """
+
+query_items_for_menu = """
+FOR category in menu_categories
+    FILTER category.language == @language
+    FOR catfile in category.files
+        FOR file in files
+            FILTER file._key == catfile
+            RETURN {filenr: file.filenr,
+                    displayName: file.displayName,
+                    textname: file.textname,
+                    filename: file.filename,
+                    category: file.category}
+"""
