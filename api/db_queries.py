@@ -48,3 +48,10 @@ FOR category in menu_categories
                     filename: file.filename,
                     category: file.category}
 """
+
+query_items_for_category_menu = """
+FOR category in menu_categories
+    FILTER category.language == @language
+    RETURN {categorynr: category.categorynr,
+            category: category.category}
+"""
