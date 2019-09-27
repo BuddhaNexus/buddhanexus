@@ -1,11 +1,11 @@
 import re
 from typing import Dict, List
-
+from collections import Counter
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
-from .db_queries import query_file_segments_parallels, query_collection_names
+from .db_queries import query_file_segments_parallels, query_collection_names, query_graph_data
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -92,7 +92,7 @@ async def get_segments_for_file(
                 for parallel in segment["parallels"]:
                     parallel_count += 1
                     for seg_nr in parallel:
-                        collection_key = re.search(r"^([A-Z]+[0-9]+|[a-z\-]*)", seg_nr)
+                        collection_key = re.search(r"^([A-Z]+[0-9]+|'XX'|[a-z\-]+)", seg_nr)
                         if collection_key and collection_key.group() not in collection_keys:
                             collection_keys.append(collection_key.group())
                 result.append(segment)
@@ -106,6 +106,44 @@ async def get_segments_for_file(
             "segments": result,
             "parallel_count": parallel_count,
         }
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+@app.get("/files/{file_name}/graph")
+async def get_graph_for_file(
+    file_name: str,
+    score: int = 0,
+    par_length: int = 0,
+    co_occ: int = 0,
+    limit_collection: List[str] = Query([]),
+):
+    try:
+        db = get_db()
+        query_graph_result = db.AQLQuery(
+            query=query_graph_data,
+            bindVars={
+                "filename": file_name,
+                "score": score,
+                "parlength": par_length,
+                "coocc": co_occ,
+                "limitcollection": limit_collection,
+            },
+        )
+        parallel_graph_list = []
+        for parallel in query_graph_result.result:
+            collection_key = re.search(r"^([A-Z]+[0-9]+|'XX'|[a-z\-]+)", parallel)
+            parallel_graph_list.append(collection_key[0])
+        counteddic = Counter(parallel_graph_list)
+        return { "data" : list(map(list, counteddic.items())) }
 
     except DocumentNotFoundError as e:
         print(e)

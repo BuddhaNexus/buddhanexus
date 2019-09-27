@@ -35,3 +35,18 @@ RETURN MERGE(
             RETURN { [category["category"]]: category.categoryname }
 )
 """
+
+query_graph_data = """
+FOR p IN parallels
+    FILTER p._key LIKE CONCAT(@filename,"%")
+    LET filtertest = (
+        FOR item IN @limitcollection
+        RETURN REGEX_TEST(p.par_segnr[0], item)
+        )
+    LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+    FILTER filternr == true
+    FILTER p.score >= @score
+    FILTER p.par_length >= @parlength
+    FILTER p["co-occ"] <= @coocc
+    RETURN SPLIT(p.par_segnr[0],":")[0]
+"""
