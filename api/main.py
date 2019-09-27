@@ -141,9 +141,22 @@ async def get_graph_for_file(
         parallel_graph_list = []
         for parallel in query_graph_result.result:
             collection_key = re.search(r"^([A-Z]+[0-9]+|'XX'|[a-z\-]+)", parallel)
-            parallel_graph_list.append(collection_key[0])
-        counteddic = Counter(parallel_graph_list)
-        return { "data" : list(map(list, counteddic.items())) }
+            if collection_key[0].startswith("pli-tv-bi-vb-"):
+                parallel_graph_list.append("pli-tv-bi-vb")
+            elif collection_key[0].startswith("pli-tv-bu-vb-"):
+                parallel_graph_list.append("pli-tv-bu-vb")
+            else:
+                parallel_graph_list.append(collection_key[0])
+
+        collections = db.AQLQuery(
+            query=query_collection_names, bindVars={"collections": parallel_graph_list}
+        )
+        datalist = Counter(parallel_graph_list)
+        parallel_graph_name_list = {}
+        for key in datalist:
+            parallel_graph_name_list.update({collections.result[0][key] : datalist[key]})
+
+        return { "data" : list(map(list, parallel_graph_name_list.items())) }
 
     except DocumentNotFoundError as e:
         print(e)
