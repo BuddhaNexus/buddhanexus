@@ -66,7 +66,6 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
     file_name: str,
-    language: str,
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
@@ -99,7 +98,7 @@ async def get_segments_for_file(
                 result.append(segment)
 
         collections = db.AQLQuery(
-            query=query_collection_names, bindVars={"collections": collection_keys, "language": language}
+            query=query_collection_names, bindVars={"collections": collection_keys, "language": getLanguageFromFile(file_name)}
         )
 
         return {
@@ -118,3 +117,11 @@ async def get_segments_for_file(
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
 
+def getLanguageFromFile(filename):
+    languageId = 'pli'
+    if re.search(r"(TD|acip|kl[0-9])", filename):
+        languageId = 'tib'
+    elif re.search(r"(_[TX])", filename):
+        languageId = 'chn'
+
+    return languageId
