@@ -30,6 +30,7 @@ query_file_segments_parallels = """
 query_collection_names = """
 RETURN MERGE(
     FOR category IN menu_categories
+        FILTER category.language == @language
         FOR collection_key in @collections
             FILTER category["category"] == collection_key
             RETURN { [category["categorynr"]] : { [category["category"]]: category.categoryname } }
