@@ -33,6 +33,6 @@ RETURN MERGE(
         FILTER category.language == @language
         FOR collection_key in @collections
             FILTER category["category"] == collection_key
-            RETURN { [category["categorynr"]] : { [category["category"]]: category.categoryname } }
+            RETURN { [category["category"]]: category.categoryname }
 )
 """
