@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
+from .utils import get_language_from_filename
 from .db_queries import query_file_segments_parallels, query_collection_names
 from .db_connection import get_collection, get_db
 
@@ -98,7 +99,11 @@ async def get_segments_for_file(
                 result.append(segment)
 
         collections = db.AQLQuery(
-            query=query_collection_names, bindVars={"collections": collection_keys, "language": getLanguageFromFile(file_name)}
+            query=query_collection_names,
+            bindVars={
+                "collections": collection_keys,
+                "language": get_language_from_filename(file_name),
+            },
         )
 
         return {
@@ -116,12 +121,3 @@ async def get_segments_for_file(
     except KeyError as e:
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
-
-def getLanguageFromFile(filename):
-    languageId = 'pli'
-    if re.search(r"(TD|acip|kl[0-9])", filename):
-        languageId = 'tib'
-    elif re.search(r"(_[TX])", filename):
-        languageId = 'chn'
-
-    return languageId
