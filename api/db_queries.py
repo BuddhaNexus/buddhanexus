@@ -8,13 +8,13 @@ query_file_segments_parallels = """
                     FILTER segment._key == segmentnr
                     FOR segment_id IN segment.parallel_ids
                         FOR p IN parallels
+                           FILTER p._key == segment_id
                            LET filtertest = (
                                 FOR item IN @limitcollection
                                     RETURN REGEX_TEST(p.par_segnr[0], item)
                                 )
                             LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
                             FILTER filternr == true
-                            FILTER p._key == segment_id
                             FILTER p.score >= @score
                             FILTER p.par_length >= @parlength
                             FILTER p["co-occ"] <= @coocc
@@ -28,8 +28,10 @@ query_file_segments_parallels = """
 """
 
 query_collection_names = """
-RETURN MERGE(
+RETURN (
     FOR category IN menu_categories
+        FILTER category.language == @language
+        SORT category.categorynr
         FOR collection_key in @collections
             FILTER category["category"] == collection_key
             RETURN { [category["category"]]: category.categoryname }
@@ -37,21 +39,29 @@ RETURN MERGE(
 """
 
 query_items_for_menu = """
-FOR category in menu_categories
+FOR category IN menu_categories
     FILTER category.language == @language
     FOR catfile in category.files
         FOR file in files
             FILTER file._key == catfile
-            RETURN {filenr: file.filenr,
-                    displayName: file.displayName,
+            SORT file.filenr
+            RETURN {displayName: file.displayName,
                     textname: file.textname,
                     filename: file.filename,
                     category: file.category}
 """
 
-query_items_for_category_menu = """
-FOR category in menu_categories
+query_items_for_filter_menu = """
+FOR category IN menu_categories
     FILTER category.language == @language
-    RETURN {categorynr: category.categorynr,
-            category: category.category}
+    SORT category.categorynr
+    FOR catfile in category.files
+        RETURN {filename: catfile}
+"""
+
+query_items_for_category_menu = """
+FOR category IN menu_categories
+    FILTER category.language == @language
+    SORT category.categorynr
+    RETURN {category: category.category}
 """

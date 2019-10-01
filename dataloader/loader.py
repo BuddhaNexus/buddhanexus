@@ -169,12 +169,13 @@ def load_all_menu_collections():
             print("✓")
 
 
-def load_menu_category(menu_category, language, db):
+def load_menu_category(menu_category, category_count, language, db):
     db_collection = db[COLLECTION_MENU_CATEGORIES]
     doc = db_collection.createDocument()
     doc._key = f'{language}_{menu_category["category"]}'
     doc.set(menu_category)
     doc["language"] = language
+    doc["categorynr"] = category_count
     try:
         doc.save()
     except CreationError as e:
@@ -187,6 +188,8 @@ def load_all_menu_categories():
         with open(f"../data/{language}-categories.json") as f:
             print(f"Loading menu categories in {language}...")
             categories = json.load(f)
+            category_count = 0
             for category in categories:
-                load_menu_category(category, language, db)
+                load_menu_category(category, category_count, language, db)
+                category_count += 1
             print("✓")

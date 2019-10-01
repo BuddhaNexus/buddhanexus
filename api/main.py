@@ -5,16 +5,15 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
-from .db_queries import query_file_segments_parallels, query_collection_names, query_items_for_menu, query_items_for_category_menu
+from .db_queries import query_file_segments_parallels, query_collection_names, query_items_for_menu, query_items_for_category_menu, query_items_for_filter_menu
+from .utils import get_language_from_filename, get_language_from_languagename
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
 
-cors_origins = ["http://localhost", "http://localhost:8080"]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -93,12 +92,19 @@ async def get_segments_for_file(
                     parallel_count += 1
                     for seg_nr in parallel:
                         collection_key = re.search(r"^([A-Z]+[0-9]+|[a-z\-]*)", seg_nr)
-                        if collection_key and collection_key.group() not in collection_keys:
+                        if (
+                            collection_key
+                            and collection_key.group() not in collection_keys
+                        ):
                             collection_keys.append(collection_key.group())
                 result.append(segment)
 
         collections = db.AQLQuery(
-            query=query_collection_names, bindVars={"collections": collection_keys}
+            query=query_collection_names,
+            bindVars={
+                "collections": collection_keys,
+                "language": get_language_from_filename(file_name),
+            },
         )
 
         return {
@@ -121,13 +127,33 @@ async def get_segments_for_file(
 @app.get("/menus/{language}")
 async def get_items_for_menu(language: str):
     try:
-        languageId = getLanguageId(language)
         db = get_db()
         menu_query_result = db.AQLQuery(
             query=query_items_for_menu,
-            bindVars={"language": languageId}
+            bindVars={"language": get_language_from_languagename(language)}
         )
         return {"menuitems": menu_query_result.result}
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+@app.get("/menus/filter/{language}")
+async def get_items_for_filter_menu(language: str):
+    try:
+        db = get_db()
+        filter_menu_query_result = db.AQLQuery(
+            query=query_items_for_filter_menu,
+            bindVars={"language": get_language_from_languagename(language)}
+        )
+        return {"filteritems": filter_menu_query_result.result}
 
     except DocumentNotFoundError as e:
         print(e)
@@ -143,11 +169,10 @@ async def get_items_for_menu(language: str):
 @app.get("/menus/category/{language}")
 async def get_items_for_category_menu(language: str):
     try:
-        languageId = getLanguageId(language)
         db = get_db()
         category_menu_query_result = db.AQLQuery(
             query=query_items_for_category_menu,
-            bindVars={"language": languageId}
+            bindVars={"language": get_language_from_languagename(language)}
         )
         return {"categoryitems": category_menu_query_result.result}
 
@@ -161,15 +186,3 @@ async def get_items_for_category_menu(language: str):
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
 
-
-def getLanguageId(language):
-    languageId = ''
-    if language == 'pali':
-        languageId = 'pli'
-    if language == 'tibetan':
-        languageId = 'tib'
-    if language == 'chinese':
-        languageId = 'chn'
-    if language == 'sanskrit':
-        languageId = 'skt'
-    return languageId
