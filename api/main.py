@@ -6,15 +6,14 @@ from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
 from .db_queries import query_file_segments_parallels, query_collection_names, query_items_for_menu, query_items_for_category_menu
+from .utils import get_language_from_filename
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
 
-cors_origins = ["http://localhost", "http://localhost:8080"]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -93,12 +92,19 @@ async def get_segments_for_file(
                     parallel_count += 1
                     for seg_nr in parallel:
                         collection_key = re.search(r"^([A-Z]+[0-9]+|[a-z\-]*)", seg_nr)
-                        if collection_key and collection_key.group() not in collection_keys:
+                        if (
+                            collection_key
+                            and collection_key.group() not in collection_keys
+                        ):
                             collection_keys.append(collection_key.group())
                 result.append(segment)
 
         collections = db.AQLQuery(
-            query=query_collection_names, bindVars={"collections": collection_keys}
+            query=query_collection_names,
+            bindVars={
+                "collections": collection_keys,
+                "language": get_language_from_filename(file_name),
+            },
         )
 
         return {
