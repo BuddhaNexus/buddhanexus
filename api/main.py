@@ -6,7 +6,7 @@ from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
 from .db_queries import query_file_segments_parallels, query_collection_names, query_items_for_menu, query_items_for_category_menu, query_items_for_filter_menu
-from .utils import get_language_from_filename, get_language_from_languagename
+from .utils import get_language_from_filename, create_teststring
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -71,6 +71,7 @@ async def get_segments_for_file(
     limit_collection: List[str] = Query([]),
 ):
     try:
+        language = get_language_from_filename(file_name)
         db = get_db()
         query_result = db.AQLQuery(
             query=query_file_segments_parallels,
@@ -79,7 +80,7 @@ async def get_segments_for_file(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "limitcollection": limit_collection,
+                "limitcollection": create_teststring(limit_collection,language),
             },
         )
         segments = query_result.result[0] if query_result.result else []
@@ -103,7 +104,7 @@ async def get_segments_for_file(
             query=query_collection_names,
             bindVars={
                 "collections": collection_keys,
-                "language": get_language_from_filename(file_name),
+                "language": language,
             },
         )
 
@@ -130,7 +131,7 @@ async def get_items_for_menu(language: str):
         db = get_db()
         menu_query_result = db.AQLQuery(
             query=query_items_for_menu,
-            bindVars={"language": get_language_from_languagename(language)}
+            bindVars={"language": language}
         )
         return {"menuitems": menu_query_result.result}
 
@@ -151,7 +152,7 @@ async def get_items_for_filter_menu(language: str):
         db = get_db()
         filter_menu_query_result = db.AQLQuery(
             query=query_items_for_filter_menu,
-            bindVars={"language": get_language_from_languagename(language)}
+            bindVars={"language": language}
         )
         return {"filteritems": filter_menu_query_result.result}
 
@@ -172,7 +173,7 @@ async def get_items_for_category_menu(language: str):
         db = get_db()
         category_menu_query_result = db.AQLQuery(
             query=query_items_for_category_menu,
-            bindVars={"language": get_language_from_languagename(language)}
+            bindVars={"language": language}
         )
         return {"categoryitems": category_menu_query_result.result}
 

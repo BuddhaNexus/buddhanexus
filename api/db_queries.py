@@ -1,5 +1,5 @@
 query_file_segments_parallels = """
-    FOR file in files
+    FOR file IN files
         FILTER file._key == @filename
         LET result = (
             FOR segmentnr IN file.segmentnrs
@@ -55,13 +55,15 @@ query_items_for_filter_menu = """
 FOR category IN menu_categories
     FILTER category.language == @language
     SORT category.categorynr
-    FOR catfile in category.files
-        RETURN {filename: catfile}
+    FOR catfile IN category.files
+        RETURN {filename: catfile,
+                categoryname: UPPER(catfile)}
 """
 
 query_items_for_category_menu = """
 FOR category IN menu_categories
     FILTER category.language == @language
     SORT category.categorynr
-    RETURN {category: category.category}
+    RETURN {category: category.category,
+            categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),category.categoryname)}
 """

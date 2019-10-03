@@ -10,12 +10,18 @@ def get_language_from_filename(filename):
         return "pli"
 
 
-def get_language_from_languagename(language):
-    if language == 'pali':
-        return 'pli'
-    elif language == 'tibetan':
-        return 'tib'
-    elif language == 'chinese':
-        return 'chn'
-    else:
-        return 'skt'
+def create_teststring(limitcollection,language):
+    teststring = []
+    if language == "tib" or language == "chn":
+        for item in limitcollection:
+            teststring.append("^"+item)
+    elif language == "pli":
+        for item in limitcollection:
+            if number_exists(item):
+                teststring.append("^"+item+":")
+            else:
+                teststring.append("^"+item+"[0-9]")
+    return teststring
+
+def number_exists(s):
+    return any(i.isdigit() for i in s)
