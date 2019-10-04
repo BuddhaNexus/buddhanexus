@@ -126,14 +126,14 @@ async def get_segments_for_file(
 
 
 @app.get("/menus/{language}")
-async def get_files_for_menu_per_language(language: str):
+async def get_files_for_menu(language: str):
     try:
         db = get_db()
         language_menu_query_result = db.AQLQuery(
             query=query_files_for_language,
             bindVars={"language": language}
         )
-        return {"menuitems": language_menu_query_result.result}
+        return {"result": language_menu_query_result.result}
 
     except DocumentNotFoundError as e:
         print(e)
@@ -147,7 +147,7 @@ async def get_files_for_menu_per_language(language: str):
 
 
 @app.get("/menus/filter/{language}")
-async def get_files_for_filter_menu_per_language(language: str):
+async def get_files_for_filter_menu(language: str):
     try:
         db = get_db()
         file_filter_query_result = db.AQLQuery(
@@ -168,7 +168,7 @@ async def get_files_for_filter_menu_per_language(language: str):
 
 
 @app.get("/menus/category/{language}")
-async def get_categories_for_filter_menu_per_language(language: str):
+async def get_categories_for_filter_menu(language: str):
     try:
         db = get_db()
         category_filter_query_result = db.AQLQuery(
