@@ -32,17 +32,17 @@ RETURN (
     FOR category IN menu_categories
         FILTER category.language == @language
         SORT category.categorynr
-        FOR collection_key in @collections
+        FOR collection_key IN @collections
             FILTER category["category"] == collection_key
             RETURN { [category["category"]]: category.categoryname }
 )
 """
 
-query_items_for_menu = """
+query_files_for_language = """
 FOR category IN menu_categories
     FILTER category.language == @language
-    FOR catfile in category.files
-        FOR file in files
+    FOR catfile IN category.files
+        FOR file IN files
             FILTER file._key == catfile
             SORT file.filenr
             RETURN {displayName: file.displayName,
@@ -51,7 +51,7 @@ FOR category IN menu_categories
                     category: file.category}
 """
 
-query_items_for_filter_menu = """
+query_files_for_category = """
 FOR category IN menu_categories
     FILTER category.language == @language
     SORT category.categorynr
@@ -60,7 +60,7 @@ FOR category IN menu_categories
                 categoryname: UPPER(catfile)}
 """
 
-query_items_for_category_menu = """
+query_categories_for_language = """
 FOR category IN menu_categories
     FILTER category.language == @language
     SORT category.categorynr

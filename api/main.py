@@ -5,8 +5,8 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
-from .db_queries import query_file_segments_parallels, query_collection_names, query_items_for_menu, query_items_for_category_menu, query_items_for_filter_menu
-from .utils import get_language_from_filename, create_teststring
+from .db_queries import query_file_segments_parallels, query_collection_names, query_files_for_language, query_categories_for_language, query_files_for_category
+from .utils import get_language_from_filename, get_regex_test
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -80,7 +80,7 @@ async def get_segments_for_file(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "limitcollection": create_teststring(limit_collection,language),
+                "limitcollection": get_regex_test(limit_collection,language),
             },
         )
         segments = query_result.result[0] if query_result.result else []
@@ -126,14 +126,14 @@ async def get_segments_for_file(
 
 
 @app.get("/menus/{language}")
-async def get_items_for_menu(language: str):
+async def get_files_for_menu_per_language(language: str):
     try:
         db = get_db()
-        menu_query_result = db.AQLQuery(
-            query=query_items_for_menu,
+        language_menu_query_result = db.AQLQuery(
+            query=query_files_for_language,
             bindVars={"language": language}
         )
-        return {"menuitems": menu_query_result.result}
+        return {"menuitems": language_menu_query_result.result}
 
     except DocumentNotFoundError as e:
         print(e)
@@ -147,14 +147,14 @@ async def get_items_for_menu(language: str):
 
 
 @app.get("/menus/filter/{language}")
-async def get_items_for_filter_menu(language: str):
+async def get_files_for_filter_menu_per_language(language: str):
     try:
         db = get_db()
-        filter_menu_query_result = db.AQLQuery(
-            query=query_items_for_filter_menu,
+        file_filter_query_result = db.AQLQuery(
+            query=query_files_for_category,
             bindVars={"language": language}
         )
-        return {"filteritems": filter_menu_query_result.result}
+        return {"filteritems": file_filter_query_result.result}
 
     except DocumentNotFoundError as e:
         print(e)
@@ -168,14 +168,14 @@ async def get_items_for_filter_menu(language: str):
 
 
 @app.get("/menus/category/{language}")
-async def get_items_for_category_menu(language: str):
+async def get_categories_for_filter_menu_per_language(language: str):
     try:
         db = get_db()
-        category_menu_query_result = db.AQLQuery(
-            query=query_items_for_category_menu,
+        category_filter_query_result = db.AQLQuery(
+            query=query_categories_for_language,
             bindVars={"language": language}
         )
-        return {"categoryitems": category_menu_query_result.result}
+        return {"categoryitems": category_filter_query_result.result}
 
     except DocumentNotFoundError as e:
         print(e)

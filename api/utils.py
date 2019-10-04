@@ -10,17 +10,17 @@ def get_language_from_filename(filename):
         return "pli"
 
 
-def create_teststring(limitcollection,language):
+def get_regex_test(limitcollection,language):
     teststring = []
     if language == "tib" or language == "chn":
-        for item in limitcollection:
-            teststring.append("^"+item)
+        for file in limitcollection:
+            teststring.append("^"+file)
     elif language == "pli":
-        for item in limitcollection:
-            if number_exists(item):
-                teststring.append("^"+item+":")
+        for file in limitcollection:
+            if number_exists(file):
+                teststring.append("^"+file+":")
             else:
-                teststring.append("^"+item+"[0-9]")
+                teststring.append("^"+file+"[0-9]")
     return teststring
 
 def number_exists(s):
