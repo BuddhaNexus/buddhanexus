@@ -20,7 +20,7 @@ def get_regex_test(limitcollection,language):
             if number_exists(file):
                 teststring.append("^"+file+":")
             else:
-                teststring.append("^"+file+"[0-9]")
+                teststring.append("^"+file+"[0-9\-]")
     return teststring
 
 def number_exists(s):
