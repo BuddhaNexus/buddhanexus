@@ -5,8 +5,8 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
-from .utils import get_language_from_filename
-from .db_queries import query_file_segments_parallels, query_collection_names
+from .db_queries import query_file_segments_parallels, query_collection_names, query_files_for_language, query_categories_for_language, query_files_for_category
+from .utils import get_language_from_filename, get_regex_test
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -71,6 +71,7 @@ async def get_segments_for_file(
     limit_collection: List[str] = Query([]),
 ):
     try:
+        language = get_language_from_filename(file_name)
         db = get_db()
         query_result = db.AQLQuery(
             query=query_file_segments_parallels,
@@ -79,7 +80,7 @@ async def get_segments_for_file(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "limitcollection": limit_collection,
+                "limitcollection": get_regex_test(limit_collection,language),
             },
         )
         segments = query_result.result[0] if query_result.result else []
@@ -103,7 +104,7 @@ async def get_segments_for_file(
             query=query_collection_names,
             bindVars={
                 "collections": collection_keys,
-                "language": get_language_from_filename(file_name),
+                "language": language,
             },
         )
 
@@ -122,3 +123,67 @@ async def get_segments_for_file(
     except KeyError as e:
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
+
+
+@app.get("/menus/{language}")
+async def get_files_for_menu(language: str):
+    try:
+        db = get_db()
+        language_menu_query_result = db.AQLQuery(
+            query=query_files_for_language,
+            bindVars={"language": language}
+        )
+        return {"result": language_menu_query_result.result}
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+@app.get("/menus/filter/{language}")
+async def get_files_for_filter_menu(language: str):
+    try:
+        db = get_db()
+        file_filter_query_result = db.AQLQuery(
+            query=query_files_for_category,
+            bindVars={"language": language}
+        )
+        return {"filteritems": file_filter_query_result.result}
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+@app.get("/menus/category/{language}")
+async def get_categories_for_filter_menu(language: str):
+    try:
+        db = get_db()
+        category_filter_query_result = db.AQLQuery(
+            query=query_categories_for_language,
+            bindVars={"language": language}
+        )
+        return {"categoryitems": category_filter_query_result.result}
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
