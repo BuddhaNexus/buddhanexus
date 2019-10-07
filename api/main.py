@@ -4,9 +4,16 @@ from typing import Dict, List
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import Response
 
-from .db_queries import query_file_segments_parallels, query_collection_names, query_files_for_language, query_categories_for_language, query_files_for_category
-from .utils import get_language_from_filename, get_regex_test
+from .db_queries import (
+    query_file_segments_parallels,
+    query_collection_names,
+    query_files_for_language,
+    query_categories_for_language,
+    query_files_for_category,
+)
+from .utils import get_language_from_filename, get_regex_test, get_future_date
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -64,12 +71,15 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
 
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
+    response: Response,
     file_name: str,
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
 ):
+    response.headers["Expires"] = get_future_date()
+    response.headers["Cache-Control"] = 'public'
     try:
         language = get_language_from_filename(file_name)
         db = get_db()
@@ -80,7 +90,7 @@ async def get_segments_for_file(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "limitcollection": get_regex_test(limit_collection,language),
+                "limitcollection": get_regex_test(limit_collection, language),
             },
         )
         segments = query_result.result[0] if query_result.result else []
@@ -92,7 +102,9 @@ async def get_segments_for_file(
                 for parallel in segment["parallels"]:
                     parallel_count += 1
                     for seg_nr in parallel:
-                        collection_key = re.search(r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)", seg_nr)
+                        collection_key = re.search(
+                            r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)", seg_nr
+                        )
                         if (
                             collection_key
                             and collection_key.group() not in collection_keys
@@ -102,10 +114,7 @@ async def get_segments_for_file(
 
         collections = db.AQLQuery(
             query=query_collection_names,
-            bindVars={
-                "collections": collection_keys,
-                "language": language,
-            },
+            bindVars={"collections": collection_keys, "language": language},
         )
 
         return {
@@ -130,8 +139,7 @@ async def get_files_for_menu(language: str):
     try:
         db = get_db()
         language_menu_query_result = db.AQLQuery(
-            query=query_files_for_language,
-            bindVars={"language": language}
+            query=query_files_for_language, bindVars={"language": language}
         )
         return {"result": language_menu_query_result.result}
 
@@ -151,8 +159,7 @@ async def get_files_for_filter_menu(language: str):
     try:
         db = get_db()
         file_filter_query_result = db.AQLQuery(
-            query=query_files_for_category,
-            bindVars={"language": language}
+            query=query_files_for_category, bindVars={"language": language}
         )
         return {"filteritems": file_filter_query_result.result}
 
@@ -172,8 +179,7 @@ async def get_categories_for_filter_menu(language: str):
     try:
         db = get_db()
         category_filter_query_result = db.AQLQuery(
-            query=query_categories_for_language,
-            bindVars={"language": language}
+            query=query_categories_for_language, bindVars={"language": language}
         )
         return {"categoryitems": category_filter_query_result.result}
 
@@ -186,4 +192,3 @@ async def get_categories_for_filter_menu(language: str):
     except KeyError as e:
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
-
