@@ -31,11 +31,11 @@
   {
     "collection": "Vinaya",
     "categories": [
-      "pli-tv-pvr",
       "pli-tv-bu-pm",
       "pli-tv-bi-pm",
       "pli-tv-bu-vb",
-      "pli-tv-bi-vb"
+      "pli-tv-bi-vb",
+      "pli-tv-pvr"
     ]
   },
   {
