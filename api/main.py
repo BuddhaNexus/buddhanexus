@@ -12,6 +12,7 @@ from .db_queries import (
     query_files_for_language,
     query_categories_for_language,
     query_files_for_category,
+    query_text_segments,
 )
 from .utils import get_language_from_filename, get_regex_test, get_future_date
 from .db_connection import get_collection, get_db
@@ -182,6 +183,28 @@ async def get_categories_for_filter_menu(language: str):
             query=query_categories_for_language, bindVars={"language": language}
         )
         return {"categoryitems": category_filter_query_result.result}
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+@app.get("/files/{file_name}/textleft")
+async def get_file_text_segments(file_name: str):
+    try:
+        db = get_db()
+        text_segments_query_result = db.AQLQuery(
+            query=query_text_segments, 
+            batchSize=100000, 
+            bindVars={"filename": file_name}
+        )
+        return {"textleft": text_segments_query_result.result}
 
     except DocumentNotFoundError as e:
         print(e)

@@ -67,3 +67,13 @@ FOR category IN menu_categories
     RETURN {category: category.category,
             categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),category.categoryname)}
 """
+
+query_text_segments = """
+FOR file IN files
+    FILTER file._key == @filename
+    FOR segmentnr IN file.segmentnrs
+        FOR segment in segments
+            FILTER segment._key == segmentnr
+            RETURN { segnr: segment.segnr,
+                     segtext: segment.segtext }
+"""
