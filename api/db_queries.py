@@ -70,7 +70,7 @@ FOR category IN menu_categories
 
 query_graph_data = """
 FOR p IN parallels
-    FILTER p._key LIKE CONCAT(@filename,"%")
+    FILTER SPLIT(p._key,":")[0] == @filename
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
     FILTER p["co-occ"] <= @coocc

@@ -27,6 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
 @app.get("/")
 def root():
@@ -103,8 +104,7 @@ async def get_segments_for_file(
                 for parallel in segment["parallels"]:
                     parallel_count += 1
                     for seg_nr in parallel:
-                        collection_key = re.search(
-                            r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)", seg_nr
+                        collection_key = re.search(collection_pattern, seg_nr
                         )
                         if (
                             collection_key
@@ -140,7 +140,7 @@ async def get_files_for_menu(language: str):
     try:
         db = get_db()
         language_menu_query_result = db.AQLQuery(
-            query=query_files_for_language, bindVars={"language": language}
+            query=query_files_for_language, batchSize=10000, bindVars={"language": language}
         )
         return {"result": language_menu_query_result.result}
 
@@ -160,7 +160,7 @@ async def get_files_for_filter_menu(language: str):
     try:
         db = get_db()
         file_filter_query_result = db.AQLQuery(
-            query=query_files_for_category, bindVars={"language": language}
+            query=query_files_for_category, batchSize=10000, bindVars={"language": language}
         )
         return {"filteritems": file_filter_query_result.result}
 
@@ -180,7 +180,7 @@ async def get_categories_for_filter_menu(language: str):
     try:
         db = get_db()
         category_filter_query_result = db.AQLQuery(
-            query=query_categories_for_language, bindVars={"language": language}
+            query=query_categories_for_language, batchSize=500, bindVars={"language": language}
         )
         return {"categoryitems": category_filter_query_result.result}
 
@@ -208,6 +208,7 @@ async def get_graph_for_file(
         db = get_db()
         query_graph_result = db.AQLQuery(
             query=query_graph_data,
+            batchSize=100000,
             bindVars={
                 "filename": file_name,
                 "score": score,
@@ -220,8 +221,7 @@ async def get_graph_for_file(
         total_collection_key_list = []
         for parallel in query_graph_result.result:
             parallel_count += 1
-            collection_key = re.search(
-                r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)", parallel
+            collection_key = re.search(collection_pattern, parallel
             )
             if (collection_key):
                 total_collection_key_list.append(collection_key.group())
