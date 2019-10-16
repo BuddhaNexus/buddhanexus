@@ -12,6 +12,7 @@ from .db_queries import (
     query_files_for_language,
     query_categories_for_language,
     query_files_for_category,
+    query_graph_data,
 )
 from .utils import get_language_from_filename, get_regex_test, get_future_date
 from .db_connection import get_collection, get_db
@@ -26,6 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
 @app.get("/")
 def root():
@@ -102,8 +104,7 @@ async def get_segments_for_file(
                 for parallel in segment["parallels"]:
                     parallel_count += 1
                     for seg_nr in parallel:
-                        collection_key = re.search(
-                            r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)", seg_nr
+                        collection_key = re.search(collection_pattern, seg_nr
                         )
                         if (
                             collection_key
@@ -139,7 +140,7 @@ async def get_files_for_menu(language: str):
     try:
         db = get_db()
         language_menu_query_result = db.AQLQuery(
-            query=query_files_for_language, bindVars={"language": language}
+            query=query_files_for_language, batchSize=10000, bindVars={"language": language}
         )
         return {"result": language_menu_query_result.result}
 
@@ -159,7 +160,7 @@ async def get_files_for_filter_menu(language: str):
     try:
         db = get_db()
         file_filter_query_result = db.AQLQuery(
-            query=query_files_for_category, bindVars={"language": language}
+            query=query_files_for_category, batchSize=10000, bindVars={"language": language}
         )
         return {"filteritems": file_filter_query_result.result}
 
@@ -179,9 +180,79 @@ async def get_categories_for_filter_menu(language: str):
     try:
         db = get_db()
         category_filter_query_result = db.AQLQuery(
-            query=query_categories_for_language, bindVars={"language": language}
+            query=query_categories_for_language, batchSize=500, bindVars={"language": language}
         )
         return {"categoryitems": category_filter_query_result.result}
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+@app.get("/files/{file_name}/graph")
+async def get_graph_for_file(
+    file_name: str,
+    score: int = 0,
+    par_length: int = 0,
+    co_occ: int = 0,
+    limit_collection: List[str] = Query([]),
+):
+    try:
+        language = get_language_from_filename(file_name)
+        db = get_db()
+        query_graph_result = db.AQLQuery(
+            query=query_graph_data,
+            batchSize=100000,
+            bindVars={
+                "filename": file_name,
+                "score": score,
+                "parlength": par_length,
+                "coocc": co_occ,
+            },
+        )
+
+        parallel_count = 0
+        collection_keys = []
+        total_collection_dict = {}
+
+        # extract a dictionary of collection numbers and number of parallels for each
+        for parallel in query_graph_result.result[0].keys():
+            count_this_parallel = query_graph_result.result[0][parallel]
+            parallel_count += count_this_parallel
+            collection_key = re.search(collection_pattern, parallel)
+
+            if (collection_key):
+                collection = collection_key.group()
+                if collection not in total_collection_dict.keys():
+                    total_collection_dict[collection] = count_this_parallel
+                else:
+                    total_collection_dict[collection] += count_this_parallel
+                if (collection not in collection_keys):
+                    collection_keys.append(collection)
+
+        # find the proper full names vor each collection
+        collections = db.AQLQuery(
+            query=query_collection_names,
+            bindVars={"collections": collection_keys, "language": language},
+        )
+
+        collections_with_full_name = {}
+        for collection_result in collections.result[0]:
+            collections_with_full_name.update(collection_result)
+
+        parallel_graph_name_list = {}
+        for key in total_collection_dict:
+            parallel_graph_name_list.update({collections_with_full_name[key] : total_collection_dict[key]})
+
+        # returns a list of the data as needed by Google Graphs
+        return { "graphdata" : list(map(list, parallel_graph_name_list.items())),
+                 "parallel_count": parallel_count }
 
     except DocumentNotFoundError as e:
         print(e)

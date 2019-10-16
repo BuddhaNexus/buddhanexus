@@ -68,3 +68,15 @@ FOR category IN menu_categories
     RETURN {category: category.category,
             categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),categorynamepart)}
 """
+
+query_graph_data = """
+RETURN MERGE(
+    FOR p IN parallels
+        FILTER p.filename == @filename
+        FILTER p.score >= @score
+        FILTER p.par_length >= @parlength
+        FILTER p["co-occ"] <= @coocc
+        COLLECT textname = SPLIT(p.par_segnr[0],":")[0] WITH COUNT INTO length
+        RETURN { [textname] : length }
+        )
+"""
