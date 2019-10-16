@@ -1,6 +1,6 @@
 import re
 from typing import Dict, List
-from collections import Counter
+
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
