@@ -216,18 +216,27 @@ async def get_graph_for_file(
                 "coocc": co_occ,
             },
         )
+
         parallel_count = 0
         collection_keys = []
-        total_collection_key_list = []
-        for parallel in query_graph_result.result:
-            parallel_count += 1
-            collection_key = re.search(collection_pattern, parallel
-            )
-            if (collection_key):
-                total_collection_key_list.append(collection_key.group())
-                if (collection_key.group() not in collection_keys):
-                    collection_keys.append(collection_key.group())
+        total_collection_dict = {}
 
+        # extract a dictionary of collection numbers and number of parallels for each
+        for parallel in query_graph_result.result[0].keys():
+            count_this_parallel = query_graph_result.result[0][parallel]
+            parallel_count += count_this_parallel
+            collection_key = re.search(collection_pattern, parallel)
+
+            if (collection_key):
+                collection = collection_key.group()
+                if collection not in total_collection_dict.keys():
+                    total_collection_dict[collection] = count_this_parallel
+                else:
+                    total_collection_dict[collection] += count_this_parallel
+                if (collection not in collection_keys):
+                    collection_keys.append(collection)
+
+        # find the proper full names vor each collection
         collections = db.AQLQuery(
             query=query_collection_names,
             bindVars={"collections": collection_keys, "language": language},
@@ -237,11 +246,11 @@ async def get_graph_for_file(
         for collection_result in collections.result[0]:
             collections_with_full_name.update(collection_result)
 
-        datalist = Counter(total_collection_key_list)
-
         parallel_graph_name_list = {}
-        for key in datalist:
-            parallel_graph_name_list.update({collections_with_full_name[key] : datalist[key]})
+        for key in total_collection_dict:
+            parallel_graph_name_list.update({collections_with_full_name[key] : total_collection_dict[key]})
+
+        # returns a list of the data as needed by Google Graphs
         return { "graphdata" : list(map(list, parallel_graph_name_list.items())),
                  "parallel_count": parallel_count }
 
