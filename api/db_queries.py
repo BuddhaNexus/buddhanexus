@@ -64,8 +64,9 @@ query_categories_for_language = """
 FOR category IN menu_categories
     FILTER category.language == @language
     SORT category.categorynr
+    LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
     RETURN {category: category.category,
-            categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),category.categoryname)}
+            categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),categorynamepart)}
 """
 
 query_graph_data = """
