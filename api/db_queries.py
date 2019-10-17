@@ -77,3 +77,13 @@ FOR file IN files
             RETURN { segnr: segment.segnr,
                      segtext: segment.segtext }
 """
+
+query_parallels_for_left_text = """
+    LET result = (
+        FOR root_segnr IN @root_segnr_list
+            FOR p IN parallels 
+            FILTER root_segnr IN p.root_segnr 
+            RETURN p
+    )
+    RETURN result
+    """

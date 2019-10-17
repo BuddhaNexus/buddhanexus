@@ -13,6 +13,7 @@ from .db_queries import (
     query_categories_for_language,
     query_files_for_category,
     query_text_segments,
+    query_parallels_for_left_text
 )
 from .utils import get_language_from_filename, get_regex_test, get_future_date
 from .db_connection import get_collection, get_db
@@ -55,7 +56,6 @@ async def get_segment(lang: str, key: str) -> Dict[str, str]:
     except (DocumentNotFoundError, KeyError) as e:
         return e
 
-
 @app.get("/parallels/{root_segnr}")
 async def get_parallels_for_root_seg_nr(root_segnr: str):
     aql = f"""
@@ -69,6 +69,21 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
     except (DocumentNotFoundError, KeyError) as e:
         return e
 
+
+# this request is way too slow!     
+@app.get("/parallels-for-left/")
+async def get_parallels_for_root_seg_nr(root_segnr_list: str):
+    root_segnr_list = root_segnr_list.split(',')
+    print("ROOT LIST",root_segnr_list)
+    query_result = get_db().AQLQuery(
+        query=query_parallels_for_left_text,
+        bindVars={
+            "root_segnr_list": root_segnr_list
+        },
+    )
+    return { "parallels" : query_result.result }
+
+    
 
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
@@ -205,7 +220,8 @@ async def get_file_text_segments(file_name: str):
             bindVars={"filename": file_name}
         )
         return {"textleft": text_segments_query_result.result}
-
+    
+    
     except DocumentNotFoundError as e:
         print(e)
         raise HTTPException(status_code=404, detail="Item not found")
