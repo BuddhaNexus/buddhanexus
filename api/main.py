@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import Response
+from pydantic import BaseModel
 
 from .db_queries import (
     query_file_segments_parallels,
@@ -69,16 +70,19 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
     except (DocumentNotFoundError, KeyError) as e:
         return e
 
+class parallelItem(BaseModel):
+    parallelIDList : list 
 
 # this request is way too slow!     
-@app.get("/parallels-for-left/")
-async def get_parallels_for_root_seg_nr(root_segnr_list: str):
-    root_segnr_list = root_segnr_list.split(',')
-    print("ROOT LIST",root_segnr_list)
+@app.post("/parallels-for-left/")
+async def get_parallels_for_root_seg_nr(parallels : parallelItem):
+    print(parallels)
+    parallelIDList = parallels.parallelIDList
+    print("PARALLEL ID LIST",parallelIDList)
     query_result = get_db().AQLQuery(
         query=query_parallels_for_left_text,
         bindVars={
-            "root_segnr_list": root_segnr_list
+            "parallel_ids": parallelIDList
         },
     )
     return { "parallels" : query_result.result }

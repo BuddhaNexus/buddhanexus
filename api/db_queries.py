@@ -75,15 +75,16 @@ FOR file IN files
         FOR segment in segments
             FILTER segment._key == segmentnr
             RETURN { segnr: segment.segnr,
-                     segtext: segment.segtext }
+                     segtext: segment.segtext,
+                     parallel_ids: segment.parallel_ids }
 """
 
 query_parallels_for_left_text = """
-    LET result = (
-        FOR root_segnr IN @root_segnr_list
-            FOR p IN parallels 
-            FILTER root_segnr IN p.root_segnr 
-            RETURN p
-    )
-    RETURN result
-    """
+LET result = (
+    FOR parallel_id IN @parallel_ids
+        FOR p IN parallels 
+        FILTER  p._key == parallel_id
+        RETURN p
+)
+RETURN result
+"""
