@@ -83,8 +83,17 @@ query_parallels_for_left_text = """
 LET result = (
     FOR parallel_id IN @parallel_ids
         FOR p IN parallels 
-        FILTER  p._key == parallel_id
-        RETURN p
+            FILTER p._key == parallel_id
+            LET filtertest = (
+                FOR item IN @limitcollection
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+                LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                FILTER filternr == true
+                FILTER p.score >= @score
+                FILTER p.par_length >= @parlength
+                FILTER p["co-occ"] <= @coocc
+                RETURN p
 )
 RETURN result
 """

@@ -72,17 +72,26 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
 
 class parallelItem(BaseModel):
     parallelIDList : list 
+    score : int
+    par_length : int
+    co_occ : int
+    limit_collection : list
+    file_name : str
 
-# this request is way too slow!     
 @app.post("/parallels-for-left/")
 async def get_parallels_for_root_seg_nr(parallels : parallelItem):
     print(parallels)
     parallelIDList = parallels.parallelIDList
+    language = get_language_from_filename(parallels.file_name)
     print("PARALLEL ID LIST",parallelIDList)
     query_result = get_db().AQLQuery(
         query=query_parallels_for_left_text,
         bindVars={
-            "parallel_ids": parallelIDList
+            "parallel_ids": parallels.parallelIDList,
+            "score": parallels.score,
+            "parlength": parallels.par_length,
+            "coocc": parallels.co_occ,
+            "limitcollection": get_regex_test(parallels.limit_collection, language),
         },
     )
     return { "parallels" : query_result.result }
