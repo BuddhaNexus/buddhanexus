@@ -248,7 +248,7 @@ async def get_graph_for_file(
 
         parallel_graph_name_list = {}
         for key in total_collection_dict:
-            parallel_graph_name_list.update({collections_with_full_name[key] : total_collection_dict[key]})
+            parallel_graph_name_list.update({key+" "+collections_with_full_name[key] : total_collection_dict[key]})
 
         # returns a list of the data as needed by Google Graphs
         return { "graphdata" : list(map(list, parallel_graph_name_list.items())),
