@@ -263,3 +263,93 @@ async def get_graph_for_file(
     except KeyError as e:
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
+
+
+@app.get("/visual/{searchterm}")
+async def get_graph_for_file(
+    searchterm: str,
+    searchtype: str,
+    language: str,
+):
+    try:
+        db = get_db()
+        total_parallel_count = []
+
+        # get a sorted list of categories to get the results in the right order
+        query_full_category_list = db.AQLQuery(
+            query=query_sorted_category_list,
+            bindVars={
+                "language": language,
+            },
+        )
+
+        # check if the search is for a catagory (i.e. T06) or for a collection (i.e. Tengyur)
+        if searchtype == "category":
+            filecount = get_query_files_per_category(searchterm, language)
+
+            for filename in filecount:
+                parallel_count = filename["parallelcount"]
+                for categoryname in query_full_category_list.result:
+                    if categoryname in parallel_count.keys():
+                        total_parallel_count.append([filename["filename"],categoryname,parallel_count[categoryname]])
+                    else:
+                        total_parallel_count.append([filename["filename"],categoryname,0])
+
+        # if the search is for a collection, a list of categories for that collection
+        # is iterated over and the results for each file added.
+        elif searchtype == "collection":
+            query_collection_list = db.AQLQuery(
+                query=query_categories_per_collection,
+                bindVars={
+                    "collection": searchterm,
+                    "language": language,
+                },
+            )
+
+            for cat in query_collection_list.result[0]:
+                filecount = get_query_files_per_category(cat, language)
+
+                total_parlist = {}
+                for filename in filecount:
+                    parallel_count = filename["parallelcount"]
+                    for categoryname in query_full_category_list.result:
+                        if categoryname not in total_parlist.keys():
+                            if categoryname not in parallel_count.keys():
+                                total_parlist[categoryname] = 0
+                            else:
+                                total_parlist[categoryname] = parallel_count[categoryname]
+                        elif categoryname in parallel_count.keys():
+                                total_parlist[categoryname] += parallel_count[categoryname]
+
+                for key,value in total_parlist.items():
+                    total_parallel_count.append([cat,key,value])
+
+        return total_parallel_count
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+# supporting function to return a list of files in the respective category
+def get_query_files_per_category(
+    searchterm: str,
+    language: str,
+):
+
+    db = get_db()
+    query_parallelcount_per_category = db.AQLQuery(
+        query=query_files_per_category,
+        bindVars={
+            "category": searchterm,
+            "language": language,
+        },
+    )
+
+    return query_parallelcount_per_category.result

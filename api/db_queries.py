@@ -80,3 +80,29 @@ RETURN MERGE(
         RETURN { [textname] : length }
         )
 """
+
+query_categories_per_collection = """
+FOR collection IN menu_collections
+    FILTER collection.collection == @collection
+    FILTER collection.language == @language
+    RETURN collection.categories
+"""
+
+query_sorted_category_list = """
+FOR category IN menu_categories
+    FILTER category.language == @language
+    SORT category.categorynr
+    RETURN category.category
+"""
+
+query_files_per_category = """
+FOR category IN menu_categories
+    FILTER category.category == @category
+    FILTER category.language == @language
+    SORT category.categorynr
+    FOR catfile IN category.files
+        FOR file IN files
+            FILTER file._key == catfile
+            RETURN { filename: file._key,
+                     parallelcount: file.parallelcount }
+"""
