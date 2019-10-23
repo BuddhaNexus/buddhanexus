@@ -71,10 +71,22 @@ def load_segments_and_parallels_data_from_menu_file(
 def load_segments(segments: list, all_parallels: list, connection: Connection) -> list:
     """ Returns list of segment numbers. """
     segmentnrs = []
+    segmentnr_parallel_ids_dic = {}
+    parallel_keys = []
+    for parallel in all_parallels:
+        if not parallel['id'] in parallel_keys:
+            parallel_keys.append(parallel['id'])
+        else:
+            print(parallel['id'])
+        for segmentnr in parallel['root_segnr']:
+            if not segmentnr in segmentnr_parallel_ids_dic.keys():
+                segmentnr_parallel_ids_dic[segmentnr] = [parallel['id']]
+            else:
+                segmentnr_parallel_ids_dic[segmentnr].append(parallel['id'])
     for segment in segments:
-        parallel_ids = [
-            p["id"] for p in all_parallels if segment["segnr"] in p["root_segnr"]
-        ]
+        parallel_ids = []
+        if segment['segnr'] in segmentnr_parallel_ids_dic.keys():
+            parallel_ids = segmentnr_parallel_ids_dic[segment['segnr']]
         segmentnr = load_segment(segment, parallel_ids, connection)
         segmentnrs.append(segmentnr)
 
@@ -139,7 +151,6 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
         doc._key = parallel["id"]
         doc._id = parallel_id
         doc.set(parallel)
-
         try:
             doc.save()
         except CreationError as e:
