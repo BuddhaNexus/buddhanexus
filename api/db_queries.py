@@ -64,8 +64,9 @@ query_categories_for_language = """
 FOR category IN menu_categories
     FILTER category.language == @language
     SORT category.categorynr
+    LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
     RETURN {category: category.category,
-            categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),category.categoryname)}
+            categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),categorynamepart)}
 """
 
 query_text_segments = """
@@ -96,4 +97,16 @@ LET result = (
                 RETURN p
 )
 RETURN result
+"""
+
+query_graph_data = """
+RETURN MERGE(
+    FOR p IN parallels
+        FILTER p.filename == @filename
+        FILTER p.score >= @score
+        FILTER p.par_length >= @parlength
+        FILTER p["co-occ"] <= @coocc
+        COLLECT textname = SPLIT(p.par_segnr[0],":")[0] WITH COUNT INTO length
+        RETURN { [textname] : length }
+        )
 """

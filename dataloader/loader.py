@@ -1,5 +1,6 @@
 import os
-
+import re
+from collections import Counter
 from pyArango.connection import *
 
 from constants import (
@@ -18,6 +19,7 @@ from utils import (
     get_segments_and_parallels_from_gzipped_remote_file,
 )
 
+collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
     for language in DEFAULT_LANGS:
@@ -62,9 +64,9 @@ def load_segments_and_parallels_data_from_menu_file(
 
     segmentnrs = []
     if segments:
-        segmentnrs = load_segments(segments, parallels, db)
+        segmentnrs, parallelcount = load_segments(segments, parallels, db)
 
-    load_files_collection(menu_file_json, segmentnrs, db)
+    load_files_collection(menu_file_json, segmentnrs, parallelcount, db)
     load_parallels(parallels, db)
 
 
@@ -83,6 +85,9 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                 segmentnr_parallel_ids_dic[segmentnr] = [parallel['id']]
             else:
                 segmentnr_parallel_ids_dic[segmentnr].append(parallel['id'])
+                
+    parallel_total_list = []
+    collection_key = ""
     for segment in segments:
         parallel_ids = []
         if segment['segnr'] in segmentnr_parallel_ids_dic.keys():
@@ -90,7 +95,14 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
         segmentnr = load_segment(segment, parallel_ids, connection)
         segmentnrs.append(segmentnr)
 
-    return segmentnrs
+    for parallel in all_parallels:
+        if parallel and parallel["par_segnr"]:
+            collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
+            parallel_total_list.append(collection_key.group())
+
+    parallelcount = Counter(parallel_total_list)
+
+    return segmentnrs, parallelcount
 
 
 def load_segment(
@@ -125,12 +137,13 @@ def load_segment(
     return json_segment["segnr"]
 
 
-def load_files_collection(file: MenuItem, segmentnrs: list, connection: Connection):
+def load_files_collection(file: MenuItem, segmentnrs: list, parallelcount: list, connection: Connection):
     collection = connection[COLLECTION_FILES]
     doc = collection.createDocument()
     doc._key = file["filename"]
     doc.set(file)
     doc["segmentnrs"] = segmentnrs
+    doc["parallelcount"] = parallelcount
     try:
         doc.save()
     except CreationError as e:
@@ -150,6 +163,7 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
         parallel_id = f"parallels/{parallel['id']}"
         doc._key = parallel["id"]
         doc._id = parallel_id
+        doc["filename"] = parallel["id"].split(":")[0]
         doc.set(parallel)
         try:
             doc.save()
