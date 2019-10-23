@@ -80,6 +80,7 @@ class parallelItem(BaseModel):
     limit_collection : list
     file_name : str
 
+
 @app.post("/parallels-for-left/")
 async def get_parallels_for_root_seg_nr(parallels : parallelItem):
     print(parallels)
@@ -97,7 +98,6 @@ async def get_parallels_for_root_seg_nr(parallels : parallelItem):
         },
     )
     return { "parallels" : query_result.result }
-
     
 
 @app.get("/files/{file_name}/segments")
@@ -234,7 +234,7 @@ async def get_file_text_segments(file_name: str):
             bindVars={"filename": file_name}
         )
         return {"textleft": text_segments_query_result.result}
-        
+
     except DocumentNotFoundError as e:
         print(e)
         raise HTTPException(status_code=404, detail="Item not found")
