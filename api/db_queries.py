@@ -106,3 +106,10 @@ FOR category IN menu_categories
             RETURN { filename: file._key,
                      parallelcount: file.parallelcount }
 """
+
+query_all_collections = """
+FOR menu IN menu_collections
+    RETURN { collectionname : menu.collection,
+             collectionlanguage: menu.language,
+             collectionkey: menu._key }
+"""

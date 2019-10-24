@@ -13,6 +13,7 @@ from .db_queries import (
     query_categories_for_language,
     query_files_for_category,
     query_graph_data,
+    query_all_collections,
 )
 from .utils import get_language_from_filename, get_regex_test, get_future_date
 from .db_connection import get_collection, get_db
@@ -353,3 +354,24 @@ def get_query_files_per_category(
     )
 
     return query_parallelcount_per_category.result
+
+@app.get("/collections")
+async def get_collections_for_visual():
+    try:
+        db = get_db()
+        collections_query_result = db.AQLQuery(
+            query=query_all_collections
+        )
+        return {"result": collections_query_result.result}
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+        
