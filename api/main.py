@@ -4,7 +4,6 @@ from typing import Dict, List
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import Response
 
 from .db_queries import (
     query_file_segments_parallels,
@@ -13,8 +12,9 @@ from .db_queries import (
     query_categories_for_language,
     query_files_for_category,
     query_graph_data,
+    query_table_view,
 )
-from .utils import get_language_from_filename, get_regex_test, get_future_date
+from .utils import get_language_from_filename, get_regex_test
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -28,6 +28,7 @@ app.add_middleware(
 )
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
+
 
 @app.get("/")
 def root():
@@ -73,19 +74,17 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
 
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
-    response: Response,
     file_name: str,
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
 ):
-    response.headers["Expires"] = get_future_date()
-    response.headers["Cache-Control"] = 'public'
+    # TODO: enable caching, add etag header
     try:
         language = get_language_from_filename(file_name)
         db = get_db()
-        query_result = db.AQLQuery(
+        segments_query = db.AQLQuery(
             query=query_file_segments_parallels,
             bindVars={
                 "filename": file_name,
@@ -95,17 +94,15 @@ async def get_segments_for_file(
                 "limitcollection": get_regex_test(limit_collection, language),
             },
         )
-        segments = query_result.result[0] if query_result.result else []
         collection_keys = []
         result = []
         parallel_count = 0
-        for segment in segments:
+        for segment in segments_query.result:
             if "parallels" in segment:
                 for parallel in segment["parallels"]:
                     parallel_count += 1
                     for seg_nr in parallel:
-                        collection_key = re.search(collection_pattern, seg_nr
-                        )
+                        collection_key = re.search(collection_pattern, seg_nr)
                         if (
                             collection_key
                             and collection_key.group() not in collection_keys
@@ -135,12 +132,75 @@ async def get_segments_for_file(
         raise HTTPException(status_code=400)
 
 
+@app.get("/files/{file_name}/table")
+async def get_table_view(
+    file_name: str,
+    score: int = 0,
+    par_length: int = 0,
+    co_occ: int = 0,
+    limit_collection: List[str] = Query([]),
+    # "sortmethod"
+):
+    try:
+        language = get_language_from_filename(file_name)
+        db = get_db()
+        segments_query = db.AQLQuery(
+            query=query_table_view,
+            bindVars={
+                "filename": file_name,
+                "score": score,
+                "parlength": par_length,
+                "coocc": co_occ,
+                "limitcollection": get_regex_test(limit_collection, language),
+                # "sortmethod"
+            },
+        )
+        collection_keys = []
+        result = []
+        parallel_count = 0
+        for segment in segments_query.result:
+            if "parallels" in segment:
+                for parallel in segment["parallels"]:
+                    parallel_count += 1
+                    for seg_nr in parallel:
+                        collection_key = re.search(collection_pattern, seg_nr)
+                        if (
+                            collection_key
+                            and collection_key.group() not in collection_keys
+                        ):
+                            collection_keys.append(collection_key.group())
+                result.append(segment)
+
+        # collections = db.AQLQuery(
+        #     query=query_collection_names,
+        #     bindVars={"collections": collection_keys, "language": language},
+        # )
+
+        return {
+            # "collections": collections.result[0],
+            "segments": result,
+            "parallel_count": parallel_count,
+        }
+
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
 @app.get("/menus/{language}")
 async def get_files_for_menu(language: str):
     try:
         db = get_db()
         language_menu_query_result = db.AQLQuery(
-            query=query_files_for_language, batchSize=10000, bindVars={"language": language}
+            query=query_files_for_language,
+            batchSize=10000,
+            bindVars={"language": language},
         )
         return {"result": language_menu_query_result.result}
 
@@ -160,7 +220,9 @@ async def get_files_for_filter_menu(language: str):
     try:
         db = get_db()
         file_filter_query_result = db.AQLQuery(
-            query=query_files_for_category, batchSize=10000, bindVars={"language": language}
+            query=query_files_for_category,
+            batchSize=10000,
+            bindVars={"language": language},
         )
         return {"filteritems": file_filter_query_result.result}
 
@@ -180,7 +242,9 @@ async def get_categories_for_filter_menu(language: str):
     try:
         db = get_db()
         category_filter_query_result = db.AQLQuery(
-            query=query_categories_for_language, batchSize=500, bindVars={"language": language}
+            query=query_categories_for_language,
+            batchSize=500,
+            bindVars={"language": language},
         )
         return {"categoryitems": category_filter_query_result.result}
 
@@ -227,13 +291,13 @@ async def get_graph_for_file(
             parallel_count += count_this_parallel
             collection_key = re.search(collection_pattern, parallel)
 
-            if (collection_key):
+            if collection_key:
                 collection = collection_key.group()
                 if collection not in total_collection_dict.keys():
                     total_collection_dict[collection] = count_this_parallel
                 else:
                     total_collection_dict[collection] += count_this_parallel
-                if (collection not in collection_keys):
+                if collection not in collection_keys:
                     collection_keys.append(collection)
 
         # find the proper full names vor each collection
@@ -248,11 +312,15 @@ async def get_graph_for_file(
 
         parallel_graph_name_list = {}
         for key in total_collection_dict:
-            parallel_graph_name_list.update({collections_with_full_name[key] : total_collection_dict[key]})
+            parallel_graph_name_list.update(
+                {collections_with_full_name[key]: total_collection_dict[key]}
+            )
 
         # returns a list of the data as needed by Google Graphs
-        return { "graphdata" : list(map(list, parallel_graph_name_list.items())),
-                 "parallel_count": parallel_count }
+        return {
+            "graphdata": list(map(list, parallel_graph_name_list.items())),
+            "parallel_count": parallel_count,
+        }
 
     except DocumentNotFoundError as e:
         print(e)
