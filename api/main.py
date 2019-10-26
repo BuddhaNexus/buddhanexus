@@ -83,10 +83,8 @@ class parallelItem(BaseModel):
 
 @app.post("/parallels-for-left/")
 async def get_parallels_for_root_seg_nr(parallels : parallelItem):
-    print(parallels)
     parallelIDList = parallels.parallelIDList
     language = get_language_from_filename(parallels.file_name)
-    print("PARALLEL ID LIST",parallelIDList)
     query_result = get_db().AQLQuery(
         query=query_parallels_for_left_text,
         bindVars={
@@ -225,7 +223,8 @@ async def get_categories_for_filter_menu(language: str):
 
 
 @app.get("/files/{file_name}/textleft")
-async def get_file_text_segments(file_name: str):
+async def get_file_text_segments(file_name: str,
+                                 active_segment: str = "none"):
     try:
         db = get_db()
         text_segments_query_result = db.AQLQuery(
@@ -233,8 +232,22 @@ async def get_file_text_segments(file_name: str):
             batchSize=100000, 
             bindVars={"filename": file_name}
         )
-        return {"textleft": text_segments_query_result.result}
-
+        result = []
+        if active_segment == "none":
+            result = text_segments_query_result.result[:100]
+        else:
+            c = 0
+            for segment in text_segments_query_result.result:
+                if segment['segnr'] == active_segment:
+                    break
+                else:
+                    c += 1
+            beg = c - 100
+            if beg < 0:
+                beg = 0
+            end = c+100
+            result = text_segments_query_result.result[beg:end]
+        return { "textleft" : result }
     except DocumentNotFoundError as e:
         print(e)
         raise HTTPException(status_code=404, detail="Item not found")
