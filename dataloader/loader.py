@@ -64,9 +64,9 @@ def load_segments_and_parallels_data_from_menu_file(
 
     segmentnrs = []
     if segments:
-        segmentnrs, parallelcount = load_segments(segments, parallels, db)
+        segmentnrs, totallengthcount = load_segments(segments, parallels, db)
 
-    load_files_collection(menu_file_json, segmentnrs, parallelcount, db)
+    load_files_collection(menu_file_json, segmentnrs, totallengthcount, db)
     load_parallels(parallels, db)
 
 
@@ -85,11 +85,13 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
     for parallel in all_parallels:
         if parallel and parallel["par_segnr"]:
             collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
-            parallel_total_list.append(collection_key.group())
+            parallel_total_list.append({collection_key.group():parallel["root_length"]})
 
-    parallelcount = Counter(parallel_total_list)
+    totallengthcount = Counter()
+    for totalcount in parallel_total_list:
+        totallengthcount += Counter(totalcount)
 
-    return segmentnrs, parallelcount
+    return segmentnrs, totallengthcount
 
 
 def load_segment(
@@ -124,13 +126,13 @@ def load_segment(
     return json_segment["segnr"]
 
 
-def load_files_collection(file: MenuItem, segmentnrs: list, parallelcount: list, connection: Connection):
+def load_files_collection(file: MenuItem, segmentnrs: list, totallengthcount: list, connection: Connection):
     collection = connection[COLLECTION_FILES]
     doc = collection.createDocument()
     doc._key = file["filename"]
     doc.set(file)
     doc["segmentnrs"] = segmentnrs
-    doc["parallelcount"] = parallelcount
+    doc["totallengthcount"] = totallengthcount
     try:
         doc.save()
     except CreationError as e:

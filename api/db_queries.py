@@ -83,28 +83,32 @@ RETURN MERGE(
 
 query_categories_per_collection = """
 FOR collection IN menu_collections
-    FILTER collection.collection == @collection
-    FILTER collection.language == @language
+    FILTER collection._key == @searchterm
     RETURN collection.categories
 """
 
 query_sorted_category_list = """
-FOR category IN menu_categories
-    FILTER category.language == @language
-    SORT category.categorynr
-    RETURN category.category
+FOR target IN @selected
+    FOR collection IN menu_collections
+        FILTER collection._key == target
+        FOR category IN collection.categories
+            FOR menucategory IN menu_categories
+                FILTER menucategory.category == category
+                FILTER menucategory.language == @language
+                SORT menucategory.categorynr
+                LET catname = SPLIT(menucategory.categoryname,["—","("])[0]
+                RETURN { [menucategory.category] : catname }
 """
 
 query_files_per_category = """
 FOR category IN menu_categories
-    FILTER category.category == @category
-    FILTER category.language == @language
+    FILTER category._key == @searchterm
     SORT category.categorynr
     FOR catfile IN category.files
         FOR file IN files
             FILTER file._key == catfile
             RETURN { filename: file._key,
-                     parallelcount: file.parallelcount }
+                     totallengthcount: file.totallengthcount }
 """
 
 query_all_collections = """

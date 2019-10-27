@@ -14,6 +14,9 @@ from .db_queries import (
     query_files_for_category,
     query_graph_data,
     query_all_collections,
+    query_sorted_category_list,
+    query_categories_per_collection,
+    query_files_per_category
 )
 from .utils import get_language_from_filename, get_regex_test, get_future_date
 from .db_connection import get_collection, get_db
@@ -271,6 +274,7 @@ async def get_graph_for_file(
     searchterm: str,
     searchtype: str,
     language: str,
+    selected: List[str] = Query([]),
 ):
     try:
         db = get_db()
@@ -281,20 +285,24 @@ async def get_graph_for_file(
             query=query_sorted_category_list,
             bindVars={
                 "language": language,
+                "selected": selected,
             },
         )
+        category_list = {}
+        for category in query_full_category_list.result:
+            category_list.update(category)
 
         # check if the search is for a catagory (i.e. T06) or for a collection (i.e. Tengyur)
         if searchtype == "category":
-            filecount = get_query_files_per_category(searchterm, language)
+            filecount = get_query_files_per_category(language+"_"+searchterm)
 
             for filename in filecount:
-                parallel_count = filename["parallelcount"]
-                for categoryname in query_full_category_list.result:
+                parallel_count = filename["totallengthcount"]
+                for categoryname in category_list.keys():
                     if categoryname in parallel_count.keys():
-                        total_parallel_count.append([filename["filename"],categoryname,parallel_count[categoryname]])
+                        total_parallel_count.append([filename["filename"],"R_"+categoryname+" "+category_list[categoryname],parallel_count[categoryname]])
                     else:
-                        total_parallel_count.append([filename["filename"],categoryname,0])
+                        total_parallel_count.append([filename["filename"],"R_"+categoryname+" "+category_list[categoryname],0])
 
         # if the search is for a collection, a list of categories for that collection
         # is iterated over and the results for each file added.
@@ -302,18 +310,17 @@ async def get_graph_for_file(
             query_collection_list = db.AQLQuery(
                 query=query_categories_per_collection,
                 bindVars={
-                    "collection": searchterm,
-                    "language": language,
+                    "searchterm": language+"_"+searchterm,
                 },
             )
 
             for cat in query_collection_list.result[0]:
-                filecount = get_query_files_per_category(cat, language)
+                filecount = get_query_files_per_category(language+"_"+cat)
 
                 total_parlist = {}
                 for filename in filecount:
-                    parallel_count = filename["parallelcount"]
-                    for categoryname in query_full_category_list.result:
+                    parallel_count = filename["totallengthcount"]
+                    for categoryname in category_list.keys():
                         if categoryname not in total_parlist.keys():
                             if categoryname not in parallel_count.keys():
                                 total_parlist[categoryname] = 0
@@ -323,9 +330,9 @@ async def get_graph_for_file(
                                 total_parlist[categoryname] += parallel_count[categoryname]
 
                 for key,value in total_parlist.items():
-                    total_parallel_count.append([cat,key,value])
+                    total_parallel_count.append(["L_"+cat+" "+category_list[cat],"R_"+key+" "+category_list[key],value])
 
-        return total_parallel_count
+        return { "graphdata" : total_parallel_count }
 
     except DocumentNotFoundError as e:
         print(e)
@@ -341,15 +348,13 @@ async def get_graph_for_file(
 # supporting function to return a list of files in the respective category
 def get_query_files_per_category(
     searchterm: str,
-    language: str,
 ):
 
     db = get_db()
     query_parallelcount_per_category = db.AQLQuery(
         query=query_files_per_category,
         bindVars={
-            "category": searchterm,
-            "language": language,
+            "searchterm": searchterm,
         },
     )
 
