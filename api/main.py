@@ -144,7 +144,7 @@ async def get_table_view(
     try:
         language = get_language_from_filename(file_name)
         db = get_db()
-        segments_query = db.AQLQuery(
+        query = db.AQLQuery(
             query=query_table_view,
             bindVars={
                 "filename": file_name,
@@ -155,32 +155,28 @@ async def get_table_view(
                 # "sortmethod"
             },
         )
-        collection_keys = []
-        result = []
-        parallel_count = 0
-        for segment in segments_query.result:
-            if "parallels" in segment:
-                for parallel in segment["parallels"]:
-                    parallel_count += 1
-                    for seg_nr in parallel:
-                        collection_key = re.search(collection_pattern, seg_nr)
-                        if (
-                            collection_key
-                            and collection_key.group() not in collection_keys
-                        ):
-                            collection_keys.append(collection_key.group())
-                result.append(segment)
+        # collection_keys = []
+        # result = []
+        # parallel_count = 0
+        # for segment in segments_query.result:
+        #     if "parallels" in segment:
+        #         for parallel in segment["parallels"]:
+        #             parallel_count += 1
+        #             for seg_nr in parallel:
+        #                 collection_key = re.search(collection_pattern, seg_nr)
+        #                 if (
+        #                     collection_key
+        #                     and collection_key.group() not in collection_keys
+        #                 ):
+        #                     collection_keys.append(collection_key.group())
+        #         result.append(segment)
 
         # collections = db.AQLQuery(
         #     query=query_collection_names,
         #     bindVars={"collections": collection_keys, "language": language},
         # )
 
-        return {
-            # "collections": collections.result[0],
-            "segments": result,
-            "parallel_count": parallel_count,
-        }
+        return query.result[0]
 
     except DocumentNotFoundError as e:
         print(e)
