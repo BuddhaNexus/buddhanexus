@@ -15,7 +15,7 @@ FOR file IN files
                             )
                         LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
                         FILTER filternr == true
-                        FIL TER p.score >= @score
+                        FILTER p.score >= @score
                         FILTER p.par_length >= @parlength
                         FILTER p["co-occ"] <= @coocc
                         RETURN p.par_segnr
@@ -66,6 +66,7 @@ LET parallels = (
     LET filteredParallels = (
         FOR p IN parallels
             FILTER p != null
+            LIMIT 100
             RETURN p
     )
     RETURN { parallels: filteredParallels, parallelCount: COUNT(filteredParallels) }
