@@ -314,10 +314,10 @@ async def get_graph_for_file(
         total_collection_dict = {}
 
         # extract a dictionary of collection numbers and number of parallels for each
-        for parallel in query_graph_result.result[0].keys():
-            count_this_parallel = query_graph_result.result[0][parallel]
+        for parallel in query_graph_result.result:
+            count_this_parallel = parallel["parlength"]
             parallel_count += count_this_parallel
-            collection_key = re.search(collection_pattern, parallel)
+            collection_key = re.search(collection_pattern, parallel["textname"])
 
             if (collection_key):
                 collection = collection_key.group()
