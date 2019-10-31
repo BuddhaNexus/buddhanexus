@@ -14,6 +14,7 @@ from .db_queries import (
     query_categories_for_language,
     query_files_for_category,
     query_text_segments,
+    query_text_search,
     query_parallels_for_left_text,
     query_graph_data,
 )
@@ -79,7 +80,6 @@ class parallelItem(BaseModel):
     co_occ : int
     limit_collection : list
     file_name : str
-
 
 @app.post("/parallels-for-left/")
 async def get_parallels_for_root_seg_nr(parallels : parallelItem):
@@ -258,6 +258,34 @@ async def get_file_text_segments(file_name: str,
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
 
+
+@app.get("/files/{file_name}/searchtext")
+async def search_file_text_segments(file_name: str,
+                                    search_string: str):
+    try:
+        search_string = search_string.lower()
+        db = get_db()
+        text_segments_query_result = db.AQLQuery(
+            query=query_text_search, 
+            batchSize=100000, 
+            bindVars={"filename": file_name,
+                      "search_string": search_string
+            }
+        )
+        print("FILE NAME",file_name)
+        print("SEARCH STRING", search_string)
+        return { "result" : text_segments_query_result.result}    
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+    
     
 @app.get("/files/{file_name}/graph")
 async def get_graph_for_file(

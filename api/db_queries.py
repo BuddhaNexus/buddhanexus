@@ -80,6 +80,20 @@ FOR file IN files
                      parallel_ids: segment.parallel_ids }
 """
 
+query_text_search = """
+FOR file IN files
+    FILTER file._key == @filename
+    FOR segmentnr IN file.segmentnrs
+        FOR segment in segments
+            FILTER segment._key == segmentnr
+            FILTER CONTAINS(segment.segtext, @search_string)
+            RETURN { segnr: segment.segnr,
+                     segtext: segment.segtext,
+                     parallel_ids: segment.parallel_ids }
+"""
+
+
+
 query_parallels_for_left_text = """
 LET result = (
     FOR parallel_id IN @parallel_ids
