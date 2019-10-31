@@ -60,6 +60,7 @@ async def get_segment(lang: str, key: str) -> Dict[str, str]:
     except (DocumentNotFoundError, KeyError) as e:
         return e
 
+
 @app.get("/parallels/{root_segnr}")
 async def get_parallels_for_root_seg_nr(root_segnr: str):
     aql = f"""
@@ -80,6 +81,7 @@ class parallelItem(BaseModel):
     co_occ : int
     limit_collection : list
     file_name : str
+
 
 @app.post("/parallels-for-left/")
 async def get_parallels_for_root_seg_nr(parallels : parallelItem):
@@ -284,7 +286,6 @@ async def search_file_text_segments(file_name: str,
     except KeyError as e:
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
-
     
     
 @app.get("/files/{file_name}/graph")

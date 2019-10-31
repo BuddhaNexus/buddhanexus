@@ -92,8 +92,6 @@ FOR file IN files
                      parallel_ids: segment.parallel_ids }
 """
 
-
-
 query_parallels_for_left_text = """
 LET result = (
     FOR parallel_id IN @parallel_ids
