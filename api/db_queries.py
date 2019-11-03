@@ -114,14 +114,54 @@ FOR category IN menu_categories
             categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),categorynamepart)}
 """
 
+query_text_segments = """
+FOR file IN files
+    FILTER file._key == @filename
+    FOR segmentnr IN file.segmentnrs
+        FOR segment in segments
+            FILTER segment._key == segmentnr
+            RETURN { segnr: segment.segnr,
+                     segtext: segment.segtext,
+                     parallel_ids: segment.parallel_ids }
+"""
+
+query_text_search = """
+FOR file IN files
+    FILTER file._key == @filename
+    FOR segmentnr IN file.segmentnrs
+        FOR segment in segments
+            FILTER segment._key == segmentnr
+            FILTER CONTAINS(segment.segtext, @search_string)
+            RETURN { segnr: segment.segnr,
+                     segtext: segment.segtext,
+                     parallel_ids: segment.parallel_ids }
+"""
+
+query_parallels_for_left_text = """
+RETURN (
+    FOR parallel_id IN @parallel_ids
+        FOR p IN parallels 
+            FILTER p._key == parallel_id
+            LET filtertest = (
+                FOR item IN @limitcollection
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+                LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                FILTER filternr == true
+                FILTER p.score >= @score
+                FILTER p.par_length >= @parlength
+                FILTER p["co-occ"] <= @coocc
+                RETURN p
+)
+"""
+
 query_graph_data = """
-RETURN MERGE(
-    FOR p IN parallels
-        FILTER p.filename == @filename
-        FILTER p.score >= @score
-        FILTER p.par_length >= @parlength
-        FILTER p["co-occ"] <= @coocc
-        COLLECT textname = SPLIT(p.par_segnr[0],":")[0] WITH COUNT INTO length
-        RETURN { [textname] : length }
-        )
+FOR p IN parallels
+    FILTER p.filename == @filename
+    FILTER p.score >= @score
+    FILTER p.par_length >= @parlength
+    FILTER p["co-occ"] <= @coocc
+    LET textname = SPLIT(p.par_segnr[0],":")[0]
+    RETURN { textname : textname,
+             parlength : p.par_length }
 """

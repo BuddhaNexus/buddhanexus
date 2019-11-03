@@ -4,6 +4,8 @@ from typing import Dict, List
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import Response
+from pydantic import BaseModel
 
 from .db_queries import (
     query_file_segments_parallels,
@@ -11,6 +13,9 @@ from .db_queries import (
     query_files_for_language,
     query_categories_for_language,
     query_files_for_category,
+    query_text_segments,
+    query_text_search,
+    query_parallels_for_left_text,
     query_graph_data,
     query_table_view,
 )
@@ -70,6 +75,32 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
         return query_result.result
     except (DocumentNotFoundError, KeyError) as e:
         return e
+
+
+class parallelItem(BaseModel):
+    parallelIDList: list
+    score: int
+    par_length: int
+    co_occ: int
+    limit_collection: list
+    file_name: str
+
+
+@app.post("/parallels-for-left/")
+async def get_parallels_for_root_seg_nr(parallels: parallelItem):
+    parallelIDList = parallels.parallelIDList
+    language = get_language_from_filename(parallels.file_name)
+    query_result = get_db().AQLQuery(
+        query=query_parallels_for_left_text,
+        bindVars={
+            "parallel_ids": parallels.parallelIDList,
+            "score": parallels.score,
+            "parlength": parallels.par_length,
+            "coocc": parallels.co_occ,
+            "limitcollection": get_regex_test(parallels.limit_collection, language),
+        },
+    )
+    return {"parallels": query_result.result}
 
 
 @app.get("/files/{file_name}/segments")
@@ -255,6 +286,67 @@ async def get_categories_for_filter_menu(language: str):
         raise HTTPException(status_code=400)
 
 
+@app.get("/files/{file_name}/textleft")
+async def get_file_text_segments(file_name: str, active_segment: str = "none"):
+    try:
+        db = get_db()
+        text_segments_query_result = db.AQLQuery(
+            query=query_text_segments,
+            batchSize=100000,
+            bindVars={"filename": file_name},
+        )
+        # TODO: this needs some comments for explanation and maybe a bit more descriptive names.
+        result = []
+        if active_segment == "none":
+            result = text_segments_query_result.result[:100]
+        else:
+            c = 0
+            for segment in text_segments_query_result.result:
+                if segment["segnr"] == active_segment:
+                    break
+                else:
+                    c += 1
+            beg = c - 100
+            if beg < 0:
+                beg = 0
+            end = c + 100
+            result = text_segments_query_result.result[beg:end]
+        return {"textleft": result}
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+@app.get("/files/{file_name}/searchtext")
+async def search_file_text_segments(file_name: str, search_string: str):
+    try:
+        search_string = search_string.lower()
+        db = get_db()
+        text_segments_query_result = db.AQLQuery(
+            query=query_text_search,
+            batchSize=100000,
+            bindVars={"filename": file_name, "search_string": search_string},
+        )
+        print("FILE NAME", file_name)
+        print("SEARCH STRING", search_string)
+        return {"result": text_segments_query_result.result}
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
 @app.get("/files/{file_name}/graph")
 async def get_graph_for_file(
     file_name: str,
@@ -282,10 +374,10 @@ async def get_graph_for_file(
         total_collection_dict = {}
 
         # extract a dictionary of collection numbers and number of parallels for each
-        for parallel in query_graph_result.result[0].keys():
-            count_this_parallel = query_graph_result.result[0][parallel]
+        for parallel in query_graph_result.result:
+            count_this_parallel = parallel["parlength"]
             parallel_count += count_this_parallel
-            collection_key = re.search(collection_pattern, parallel)
+            collection_key = re.search(collection_pattern, parallel["textname"])
 
             if collection_key:
                 collection = collection_key.group()
@@ -309,7 +401,11 @@ async def get_graph_for_file(
         parallel_graph_name_list = {}
         for key in total_collection_dict:
             parallel_graph_name_list.update(
-                {collections_with_full_name[key]: total_collection_dict[key]}
+                {
+                    key
+                    + " "
+                    + collections_with_full_name[key]: total_collection_dict[key]
+                }
             )
 
         # returns a list of the data as needed by Google Graphs
