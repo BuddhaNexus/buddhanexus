@@ -28,6 +28,7 @@ def get_regex_test(limitcollection, language):
 def number_exists(s):
     return any(i.isdigit() for i in s)
 
+
 def get_future_date() -> str:
     """
     :return: RFC1123 formatted string representing a date sometime in year 2099.
