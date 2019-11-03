@@ -93,7 +93,7 @@ FOR file IN files
 """
 
 query_parallels_for_left_text = """
-LET result = (
+RETURN (
     FOR parallel_id IN @parallel_ids
         FOR p IN parallels 
             FILTER p._key == parallel_id
@@ -108,7 +108,6 @@ LET result = (
                 FILTER p["co-occ"] <= @coocc
                 RETURN p
 )
-RETURN result
 """
 
 query_graph_data = """

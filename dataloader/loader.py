@@ -78,8 +78,6 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
     for parallel in all_parallels:
         if not parallel['id'] in parallel_keys:
             parallel_keys.append(parallel['id'])
-        else:
-            print(parallel['id'])
         for segmentnr in parallel['root_segnr']:
             if not segmentnr in segmentnr_parallel_ids_dic.keys():
                 segmentnr_parallel_ids_dic[segmentnr] = [parallel['id']]

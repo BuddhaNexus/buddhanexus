@@ -240,6 +240,7 @@ async def get_file_text_segments(file_name: str, active_segment: str = "none"):
             batchSize=100000,
             bindVars={"filename": file_name},
         )
+        # TODO: this needs some comments for explanation and maybe a bit more descriptive names.
         result = []
         if active_segment == "none":
             result = text_segments_query_result.result[:100]
