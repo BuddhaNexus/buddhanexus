@@ -416,10 +416,11 @@ async def get_graph_for_file(
                 query=query_categories_per_collection,
                 bindVars={
                     "searchterm": language+"_"+searchterm,
+                    "language": language
                 },
             )
 
-            for cat in query_collection_list.result[0]:
+            for cat, catname in query_collection_list.result[0].items():
                 filecount = get_query_files_per_category(language+"_"+cat)
 
                 total_parlist = {}
@@ -434,8 +435,8 @@ async def get_graph_for_file(
                         elif categoryname in parallel_count.keys():
                                 total_parlist[categoryname] += parallel_count[categoryname]
 
-                for key,value in total_parlist.items():
-                    total_parallel_count.append(["L_"+cat+" "+category_list[cat],"R_"+key+" "+category_list[key],value])
+                for key, value in total_parlist.items():
+                    total_parallel_count.append(["L_"+cat+" "+catname, "R_"+key+" "+category_list[key], value])
 
         return { "graphdata" : total_parallel_count }
 
@@ -458,6 +459,7 @@ def get_query_files_per_category(
     db = get_db()
     query_parallelcount_per_category = db.AQLQuery(
         query=query_files_per_category,
+        batchSize=100000,
         bindVars={
             "searchterm": searchterm,
         },

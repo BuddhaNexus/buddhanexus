@@ -122,9 +122,15 @@ FOR p IN parallels
 """
 
 query_categories_per_collection = """
-FOR collection IN menu_collections
-    FILTER collection._key == @searchterm
-    RETURN collection.categories
+RETURN MERGE(
+    FOR collection IN menu_collections
+        FILTER collection._key == @searchterm
+        FOR colcategory IN collection.categories
+            FOR category IN menu_categories
+                FILTER category.category == colcategory
+                FILTER category.language == @language
+                RETURN { [category["category"]]: category.categoryname }
+)
 """
 
 query_sorted_category_list = """
