@@ -161,12 +161,20 @@ RETURN (
 """
 
 query_graph_data = """
-FOR p IN parallels
-    FILTER p.filename == @filename
-    FILTER p.score >= @score
-    FILTER p.par_length >= @parlength
-    FILTER p["co-occ"] <= @coocc
-    LET textname = SPLIT(p.par_segnr[0],":")[0]
-    RETURN { textname : textname,
-             parlength : p.par_length }
+LET parids = SORTED_UNIQUE(FLATTEN(
+    FOR file IN files
+        FILTER file._key == @filename
+        FOR segmentnr IN file.segmentnrs
+            FOR segment IN segments
+            FILTER segment._key == segmentnr
+            RETURN segment.parallel_ids
+))
+
+FOR segment_id IN parids
+    FOR p IN parallels
+        FILTER p._key == segment_id
+        FILTER p.score >= @score
+        FILTER p.par_length >= @parlength
+        FILTER p["co-occ"] <= @coocc
+        RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length }
 """

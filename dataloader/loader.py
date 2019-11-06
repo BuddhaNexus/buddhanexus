@@ -147,7 +147,6 @@ def load_files_collection(file: MenuItem, segmentnrs: list, parallelcount: list,
     except CreationError as e:
         print("Could not load file. Error: ", e)
 
-
 def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     """
     Given an array of parallel objects, load them all into the `parallels` collection
@@ -156,18 +155,17 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     :param connection: ArangoDB connection object
     """
     collection = connection[COLLECTION_PARALLELS]
+    parallels_to_be_inserted = []
     for parallel in json_parallels:
-        doc = collection.createDocument()
         parallel_id = f"parallels/{parallel['id']}"
-        doc._key = parallel["id"]
-        doc._id = parallel_id
-        doc["filename"] = parallel["id"].split(":")[0]
-        doc.set(parallel)
-        try:
-            doc.save()
-        except CreationError as e:
-            print(f"Could not save parallel {parallel}. Error: ", e)
-
+        parallel['_key'] = parallel["id"]
+        parallel['_id'] = parallel_id
+        parallels_to_be_inserted.append(parallel)
+    try:
+        collection.importBulk(parallels_to_be_inserted)
+    except CreationError as e:
+        print(f"Could not save parallel {parallel}. Error: ", e)
+        
 
 def load_menu_collection(menu_collection, language, db):
     db_collection = db[COLLECTION_MENU_COLLECTIONS]
