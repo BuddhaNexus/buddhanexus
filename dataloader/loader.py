@@ -2,7 +2,6 @@ import os
 import re
 from collections import Counter
 from pyArango.connection import *
-from tqdm import tqdm as tqdm 
 from constants import (
     DEFAULT_LANGS,
     COLLECTION_PARALLELS,
@@ -17,7 +16,6 @@ from utils import (
     execute_in_parallel,
     should_download_file,
     get_segments_and_parallels_from_gzipped_remote_file,
-    get_segments_and_parallels_from_gzipped_local_file,    
 )
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
@@ -62,9 +60,6 @@ def load_segments_and_parallels_data_from_menu_file(
     [segments, parallels] = get_segments_and_parallels_from_gzipped_remote_file(
         file_url
     )
-    # [segments, parallels] = get_segments_and_parallels_from_gzipped_local_file(
-    #     file_url
-    # )
 
     segmentnrs = []
     if segments:

@@ -85,22 +85,22 @@ def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
         print(f"Could not load the gzipped file {file_url}. Error: ", os_error)
         return [None, None]
 
-def get_segments_and_parallels_from_gzipped_local_file(file_url: str) -> list:
+def get_segments_and_parallels_from_gzipped_local_file(file_path: str) -> list:
     """
-    Given a url to a .gz file:
-    1. Download the file
+    Give file path as parameter, then:
+    1. Open file
     2. Unpack it in memory
     3. Return segments and parallels
 
-    :param file_url: URL to the gzipped file
+    :param file_path: path to the gzipped file
     """
     
     try:
-        with gzip.open(file_url,'rt') as f:
+        with gzip.open(file_path,'rt') as f:
             parsed = json.loads(f.read())
             segments, parallels = parsed[:2]
             f.close()
             return [segments, parallels]
     except OSError as os_error:
-        print(f"Could not load the gzipped local file {file_url}. Error: ", os_error)
+        print(f"Could not load the gzipped local file {file_path}. Error: ", os_error)
         return [None, None]
