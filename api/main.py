@@ -4,7 +4,6 @@ from typing import Dict, List
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import Response
 from pydantic import BaseModel
 
 from .db_queries import (
@@ -186,35 +185,9 @@ async def get_table_view(
                 # "sortmethod"
             },
         )
-        # collection_keys = []
-        # result = []
-        # parallel_count = 0
-        # for segment in segments_query.result:
-        #     if "parallels" in segment:
-        #         for parallel in segment["parallels"]:
-        #             parallel_count += 1
-        #             for seg_nr in parallel:
-        #                 collection_key = re.search(collection_pattern, seg_nr)
-        #                 if (
-        #                     collection_key
-        #                     and collection_key.group() not in collection_keys
-        #                 ):
         #                     collection_keys.append(collection_key.group())
-        #         result.append(segment)
-
-        # collections = db.AQLQuery(
-        #     query=query_collection_names,
-        #     bindVars={"collections": collection_keys, "language": language},
-        # )
-
         return query.result[0]
 
-    except DocumentNotFoundError as e:
-        print(e)
-        raise HTTPException(status_code=404, detail="Item not found")
-    except AQLQueryError as e:
-        print("AQLQueryError: ", e)
-        raise HTTPException(status_code=400, detail=e.errors)
     except KeyError as e:
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
