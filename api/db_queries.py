@@ -120,3 +120,29 @@ FOR p IN parallels
     RETURN { textname : textname,
              parlength : p.par_length }
 """
+
+
+query_file_segments_parallels_count = """
+LET parids = SORTED_UNIQUE(FLATTEN(
+    FOR file IN files
+        FILTER file._key == @filename
+        FOR segmentnr IN file.segmentnrs
+            FOR segment IN segments
+            FILTER segment._key == segmentnr
+            RETURN segment.parallel_ids
+))
+
+FOR segment_id IN parids
+    FOR p IN parallels
+        FILTER p._key == segment_id
+        LET filtertest = (
+            FOR item IN @limitcollection
+                RETURN REGEX_TEST(p.par_segnr[0], item)
+            )
+            LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+            FILTER filternr == true
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
+            RETURN { id : p._key }
+"""

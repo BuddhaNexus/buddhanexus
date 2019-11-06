@@ -9,6 +9,7 @@ from pydantic import BaseModel
 
 from .db_queries import (
     query_file_segments_parallels,
+    query_file_segments_parallels_count,
     query_collection_names,
     query_files_for_language,
     query_categories_for_language,
@@ -116,7 +117,7 @@ async def get_parallel_count_for_file(
         language = get_language_from_filename(file_name)
         db = get_db()
         query_result = db.AQLQuery(
-            query=query_file_segments_parallels,
+            query=query_file_segments_parallels_count,
             bindVars={
                 "filename": file_name,
                 "score": score,
@@ -125,18 +126,11 @@ async def get_parallel_count_for_file(
                 "limitcollection": get_regex_test(limit_collection, language),
             },
         )
-        segments = query_result.result[0] if query_result.result else []
-        collection_keys = []
-        result = []
-        parallel_count = 0
-        segment_count = 0 
-        for segment in segments:
-            if "parallels" in segment:
-                if len(segment["parallels"]) >= 1:
-                    segment_count += 1
-                    parallel_count += len(segment["parallels"])
+        parallels = query_result.result if query_result.result else []
+        print("PARALLELS",parallels)
+        parallel_count = len(parallels)
         return {
-            "segment_count": segment_count,
+            "segment_count": parallel_count,
             "parallel_count": parallel_count,
         }
 
