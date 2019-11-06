@@ -101,6 +101,7 @@ async def get_parallels_for_root_seg_nr(parallels: parallelItem):
     )
     return {"parallels": query_result.result}
 
+
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
     response: Response,
@@ -163,9 +164,6 @@ async def get_segments_for_file(
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
 
-
-
-    
 
 @app.get("/menus/{language}")
 async def get_files_for_menu(language: str):

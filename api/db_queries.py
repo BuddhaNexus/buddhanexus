@@ -128,5 +128,3 @@ FOR segment_id IN parids
         FILTER p["co-occ"] <= @coocc
         RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length }
 """
-
-

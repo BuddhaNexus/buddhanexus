@@ -58,7 +58,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     if file_lang == LANG_PALI:
         return True
     elif file_lang == LANG_CHINESE:
-         return True
+        return True
     elif file_lang == LANG_TIBETAN:
         return True
     else:
@@ -85,6 +85,7 @@ def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
         print(f"Could not load the gzipped file {file_url}. Error: ", os_error)
         return [None, None]
 
+
 def get_segments_and_parallels_from_gzipped_local_file(file_path: str) -> list:
     """
     Give file path as parameter, then:
@@ -94,9 +95,9 @@ def get_segments_and_parallels_from_gzipped_local_file(file_path: str) -> list:
 
     :param file_path: path to the gzipped file
     """
-    
+
     try:
-        with gzip.open(file_path,'rt') as f:
+        with gzip.open(file_path, "rt") as f:
             parsed = json.loads(f.read())
             segments, parallels = parsed[:2]
             f.close()

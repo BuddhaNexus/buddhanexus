@@ -74,11 +74,7 @@ def clean_segment_collections(c):
     :param c: invoke.py context object
     """
     db = get_db_connection()[DB_NAME]
-    for name in (
-        COLLECTION_SEGMENTS,
-        COLLECTION_PARALLELS,
-        COLLECTION_FILES,
-    ):
+    for name in (COLLECTION_SEGMENTS, COLLECTION_PARALLELS, COLLECTION_FILES):
         db[name].empty()
     print("segment collections cleaned.")
 
@@ -96,7 +92,6 @@ def clean_menu_collections(c):
     print("menu data collections cleaned.")
 
 
-#@task(clean_segment_collections)
 @task
 def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     """

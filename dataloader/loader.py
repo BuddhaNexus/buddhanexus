@@ -20,6 +20,7 @@ from utils import (
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
+
 def load_segment_data_from_menu_files(root_url: str, threads: int):
     for language in DEFAULT_LANGS:
         with open(f"../data/{language}-files.json") as f:
@@ -74,26 +75,29 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
     segmentnrs = []
     segmentnr_parallel_ids_dic = {}
     for parallel in all_parallels:
-        if isinstance(parallel,dict): # this relates to a strange bug in the generated data, I hope I can fix it in the future. 
-            if parallel['root_segnr']:
-                for segmentnr in parallel['root_segnr']:
+        if isinstance(
+            parallel, dict
+        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
+            if parallel["root_segnr"]:
+                for segmentnr in parallel["root_segnr"]:
                     if not segmentnr in segmentnr_parallel_ids_dic.keys():
-                        segmentnr_parallel_ids_dic[segmentnr] = [parallel['id']]
+                        segmentnr_parallel_ids_dic[segmentnr] = [parallel["id"]]
                     else:
-                        segmentnr_parallel_ids_dic[segmentnr].append(parallel['id'])
+                        segmentnr_parallel_ids_dic[segmentnr].append(parallel["id"])
     parallel_total_list = []
     collection_key = ""
     for segment in segments:
         parallel_ids = []
-        if isinstance(segment,dict):
-            if segment['segnr'] in segmentnr_parallel_ids_dic.keys():
-                parallel_ids = segmentnr_parallel_ids_dic[segment['segnr']]
+        if isinstance(segment, dict):
+            if segment["segnr"] in segmentnr_parallel_ids_dic.keys():
+                parallel_ids = segmentnr_parallel_ids_dic[segment["segnr"]]
                 segmentnr = load_segment(segment, parallel_ids, connection)
                 segmentnrs.append(segmentnr)
 
-
     for parallel in all_parallels:
-        if isinstance(parallel,dict): # this relates to a strange bug in the generated data, I hope I can fix it in the future. 
+        if isinstance(
+            parallel, dict
+        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
             if parallel and parallel["par_segnr"]:
                 collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
                 parallel_total_list.append(collection_key.group())
@@ -134,7 +138,9 @@ def load_segment(
     return json_segment["segnr"]
 
 
-def load_files_collection(file: MenuItem, segmentnrs: list, parallelcount: list, connection: Connection):
+def load_files_collection(
+    file: MenuItem, segmentnrs: list, parallelcount: list, connection: Connection
+):
     collection = connection[COLLECTION_FILES]
     doc = collection.createDocument()
     doc._key = file["filename"]
@@ -146,6 +152,7 @@ def load_files_collection(file: MenuItem, segmentnrs: list, parallelcount: list,
     except CreationError as e:
         print("Could not load file. Error: ", e)
 
+
 def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     """
     Given an array of parallel objects, load them all into the `parallels` collection
@@ -156,16 +163,18 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     collection = connection[COLLECTION_PARALLELS]
     parallels_to_be_inserted = []
     for parallel in json_parallels:
-        if isinstance(parallel,dict): # this relates to a strange bug in the generated data, I hope I can fix it in the future. 
+        if isinstance(
+            parallel, dict
+        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
             parallel_id = f"parallels/{parallel['id']}"
-            parallel['_key'] = parallel["id"]
-            parallel['_id'] = parallel_id
+            parallel["_key"] = parallel["id"]
+            parallel["_id"] = parallel_id
             parallels_to_be_inserted.append(parallel)
     try:
         collection.importBulk(parallels_to_be_inserted)
     except CreationError as e:
         print(f"Could not save parallel {parallel}. Error: ", e)
-        
+
 
 def load_menu_collection(menu_collection, language, db):
     db_collection = db[COLLECTION_MENU_COLLECTIONS]
