@@ -96,7 +96,8 @@ def clean_menu_collections(c):
     print("menu data collections cleaned.")
 
 
-@task(clean_segment_collections)
+#@task(clean_segment_collections)
+@task
 def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     """
     Download, parse and load source data into database collections.

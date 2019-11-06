@@ -1,0 +1,86 @@
+import sys
+import re
+import gzip
+import pprint
+import numpy as np
+import os
+import string
+import json
+from Levenshtein import distance as distance2
+from smith_waterman import get_aligned_offsets
+import numpy as np
+from tqdm import tqdm as tqdm
+
+stopfile = open("/home/basti/deeplearning/bilingual/skt2tib/data/tib_stop.txt",'r')
+filename = sys.argv[1]
+pp = pprint.PrettyPrinter(indent=4)
+# filename = "/mnt/output_parallel/tibetan/raw/T06TD4070E.json.gz"
+
+list_of_stopwords = []
+for line in stopfile:
+    list_of_stopwords.append(line.strip())
+    
+
+
+def process_file(filename):
+    with gzip.open(filename,'rt') as f:
+        segments,quotes = json.load(f)
+        result_quotes = []
+        lost_count = 0 
+        for quote in tqdm(quotes):
+            add_flag = 0 
+            quote_strings = quote['par_string'].split('/')
+            root_strings = quote['root_string'].split('/')
+            half_add_flag = 0 
+            for string in quote_strings:
+                length = len(string.split())
+                if length == 7 or length == 9 or length == 11:
+                    half_add_flag = 1
+            if half_add_flag == 1:
+                for string in quote['par_segtext']:
+                    length = len(string.replace('/','').split())
+                    if length == 7 or length == 9 or length == 11:
+                        add_flag = 1
+            half_add_flag = 0 
+            for string in root_strings:
+                length = len(string.split())
+                if length == 7 or length == 9 or length == 11:
+                    half_add_flag = 1
+            if half_add_flag == 1:
+                for string in quote['root_segtext']:
+                    length = len(string.replace('/','').split())
+                    if length == 7 or length == 9 or length == 11:
+                        add_flag = 1
+            if add_flag == 0:
+                tokens = []
+                stripped_tokens = []
+                for string in quote_strings:
+                    tokens.extend(string.split())
+                for token in tokens:
+                    if not token in list_of_stopwords:
+                        stripped_tokens.append(token)
+                if len(stripped_tokens) > 5 and len(tokens) > 12:
+                    add_flag = 1
+                tokens = []
+                stripped_tokens = []
+                for string in root_strings:
+                    tokens.extend(string.split())
+                for token in tokens:
+                    if not token in list_of_stopwords:
+                        stripped_tokens.append(token)                        
+                if len(stripped_tokens) > 5 and len(tokens) > 12:
+                    add_flag = 1
+            if add_flag == 1:
+                result_quotes.append(quote)
+            if add_flag == 0:
+                # print("LOST")
+                # pp.pprint(quote['root_string'])
+                # pp.pprint(quote['par_string'])
+                lost_count += 1
+        #print("LOST", lost_count,"TOTAL",len(quotes))
+        with open(filename[:-8] +"_cleaned.json", 'w') as outfile:        
+            json.dump([segments,result_quotes], outfile)
+
+
+            
+process_file(filename)

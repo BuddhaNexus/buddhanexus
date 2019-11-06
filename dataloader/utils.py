@@ -57,9 +57,9 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     """
     if file_lang == LANG_PALI:# and file_name.startswith("dn10"):
         return True
-    elif file_lang == LANG_CHINESE:# and file_name.startswith("T01_T0030"):
-        return True
-    elif file_lang == LANG_TIBETAN:# and file_name.startswith("T06TD4021"):
+    # elif file_lang == LANG_CHINESE:
+    #     return True
+    elif file_lang == LANG_TIBETAN:
         return True
     else:
         return False
@@ -78,9 +78,29 @@ def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
     try:
         with gzip.open(file_bytes) as f:
             parsed = json.loads(f.read())
-            segments, parallels = parsed
+            segments, parallels = parsed[:2]
             f.close()
             return [segments, parallels]
     except OSError as os_error:
         print(f"Could not load the gzipped file {file_url}. Error: ", os_error)
+        return [None, None]
+
+def get_segments_and_parallels_from_gzipped_local_file(file_url: str) -> list:
+    """
+    Given a url to a .gz file:
+    1. Download the file
+    2. Unpack it in memory
+    3. Return segments and parallels
+
+    :param file_url: URL to the gzipped file
+    """
+    
+    try:
+        with gzip.open(file_url,'rt') as f:
+            parsed = json.loads(f.read())
+            segments, parallels = parsed[:2]
+            f.close()
+            return [segments, parallels]
+    except OSError as os_error:
+        print(f"Could not load the gzipped local file {file_url}. Error: ", os_error)
         return [None, None]
