@@ -134,9 +134,7 @@ async def get_parallel_count_for_file(
             if "parallels" in segment:
                 if len(segment["parallels"]) >= 1:
                     segment_count += 1
-                for parallel in segment["parallels"]:
-                    parallel_count += 1
- 
+                    parallel_count += len(segment["parallels"])
         return {
             "segment_count": segment_count,
             "parallel_count": parallel_count,
