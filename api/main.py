@@ -9,7 +9,6 @@ from pydantic import BaseModel
 
 from .db_queries import (
     query_file_segments_parallels,
-    query_file_segments_parallels_count,
     query_collection_names,
     query_files_for_language,
     query_categories_for_language,
@@ -101,53 +100,6 @@ async def get_parallels_for_root_seg_nr(parallels: parallelItem):
         },
     )
     return {"parallels": query_result.result}
-
-@app.get("/parallels/{file_name}/count")
-async def get_parallel_count_for_file(
-    response: Response,
-    file_name: str,
-    score: int = 0,
-    par_length: int = 0,
-    co_occ: int = 0,
-    limit_collection: List[str] = Query([]),
-):
-    response.headers["Expires"] = get_future_date()
-    response.headers["Cache-Control"] = "public"
-    try:
-        language = get_language_from_filename(file_name)
-        db = get_db()
-        query_result = db.AQLQuery(
-            query=query_file_segments_parallels_count,
-            bindVars={
-                "filename": file_name,
-                "score": score,
-                "parlength": par_length,
-                "coocc": co_occ,
-                "limitcollection": get_regex_test(limit_collection, language),
-            },
-        )
-        parallels = query_result.result if query_result.result else []
-        print("PARALLELS",parallels)
-        parallel_count = len(parallels)
-        return {
-            "segment_count": parallel_count,
-            "parallel_count": parallel_count,
-        }
-
-    except DocumentNotFoundError as e:
-        print(e)
-        raise HTTPException(status_code=404, detail="Item not found")
-    except AQLQueryError as e:
-        print("AQLQueryError: ", e)
-        raise HTTPException(status_code=400, detail=e.errors)
-    except KeyError as e:
-        print("KeyError: ", e)
-        raise HTTPException(status_code=400)
-
-
-
-
-
 
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
