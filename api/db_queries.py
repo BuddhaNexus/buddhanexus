@@ -86,7 +86,7 @@ FOR file IN files
     FOR segmentnr IN file.segmentnrs
         FOR segment in segments
             FILTER segment._key == segmentnr
-            FILTER CONTAINS(segment.segtext, @search_string)
+            FILTER LIKE(segment.segtext, @search_string, true)
             RETURN { segnr: segment.segnr,
                      segtext: segment.segtext,
                      parallel_ids: segment.parallel_ids }
