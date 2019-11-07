@@ -302,7 +302,6 @@ async def get_graph_for_file(
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
-    limit_collection: List[str] = Query([]),
 ):
     try:
         language = get_language_from_filename(file_name)
@@ -377,13 +376,15 @@ async def get_graph_for_file(
 @app.get("/visual/{searchterm}")
 async def get_graph_for_file(
     searchterm: str,
-    searchtype: str,
     language: str,
     selected: List[str] = Query([]),
 ):
     try:
         db = get_db()
         total_parallel_count = []
+        searchtype = 'category'
+        if re.search("^[A-Z][a-z]+$", searchterm):
+            searchtype = "collection"
 
         # get a sorted list of categories to get the results in the right order
         query_full_category_list = db.AQLQuery(
