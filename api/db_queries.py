@@ -57,12 +57,14 @@ LET file_parallels = (
                 FILTER p.score >= @score
                 FILTER p.par_length >= @parlength
                 FILTER p["co-occ"] <= @coocc
+                LIMIT 10 * @page, 10
                 RETURN {
                     parSegNr: p.par_segnr, 
                     parOffsetBeg: p.par_offset_beg, 
                     parOffsetEnd: p.par_offset_end, 
                     parSegment: p.par_segtext, 
-                    fileName: p.filename, 
+                    fileName: p.id, 
+                    rootLang: segment.lang,
                     rootSegNr: p.root_segnr, 
                     rootSegText: p.root_segtext,
                     parLength: p.par_length, 

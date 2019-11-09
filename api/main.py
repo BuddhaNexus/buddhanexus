@@ -87,7 +87,6 @@ class parallelItem(BaseModel):
 
 @app.post("/parallels-for-left/")
 async def get_parallels_for_root_seg_nr(parallels: parallelItem):
-    parallelIDList = parallels.parallelIDList
     language = get_language_from_filename(parallels.file_name)
     query_result = get_db().AQLQuery(
         query=query_parallels_for_left_text,
@@ -169,6 +168,7 @@ async def get_table_view(
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
+    page: int = 0,
     # "sortmethod"
 ):
     try:
@@ -182,10 +182,10 @@ async def get_table_view(
                 "parlength": par_length,
                 "coocc": co_occ,
                 "limitcollection": get_regex_test(limit_collection, language),
+                "page": page
                 # "sortmethod"
             },
         )
-        #                     collection_keys.append(collection_key.group())
         return query.result[0]
 
     except KeyError as e:
