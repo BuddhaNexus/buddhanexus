@@ -280,7 +280,7 @@ async def search_file_text_segments(file_name: str, search_string: str):
         text_segments_query_result = db.AQLQuery(
             query=query_text_search,
             batchSize=100000,
-            bindVars={"filename": file_name, "search_string": search_string},
+            bindVars={"filename": file_name, "search_string": "%"+search_string+"%"},
         )
         print("FILE NAME", file_name)
         print("SEARCH STRING", search_string)

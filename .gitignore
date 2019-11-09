@@ -3,6 +3,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
 # Environments
 .env

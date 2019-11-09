@@ -86,7 +86,7 @@ FOR file IN files
     FOR segmentnr IN file.segmentnrs
         FOR segment in segments
             FILTER segment._key == segmentnr
-            FILTER CONTAINS(segment.segtext, @search_string)
+            FILTER LIKE(segment.segtext, @search_string, true)
             RETURN { segnr: segment.segnr,
                      segtext: segment.segtext,
                      parallel_ids: segment.parallel_ids }
@@ -111,14 +111,22 @@ RETURN (
 """
 
 query_graph_data = """
-FOR p IN parallels
-    FILTER p.filename == @filename
-    FILTER p.score >= @score
-    FILTER p.par_length >= @parlength
-    FILTER p["co-occ"] <= @coocc
-    LET textname = SPLIT(p.par_segnr[0],":")[0]
-    RETURN { textname : textname,
-             parlength : p.par_length }
+LET parids = SORTED_UNIQUE(FLATTEN(
+    FOR file IN files
+        FILTER file._key == @filename
+        FOR segmentnr IN file.segmentnrs
+            FOR segment IN segments
+            FILTER segment._key == segmentnr
+            RETURN segment.parallel_ids
+))
+
+FOR segment_id IN parids
+    FOR p IN parallels
+        FILTER p._key == segment_id
+        FILTER p.score >= @score
+        FILTER p.par_length >= @parlength
+        FILTER p["co-occ"] <= @coocc
+        RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length }
 """
 
 query_categories_per_collection = """

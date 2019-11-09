@@ -2,7 +2,6 @@ import os
 import re
 from collections import Counter
 from pyArango.connection import *
-
 from constants import (
     DEFAULT_LANGS,
     COLLECTION_PARALLELS,
@@ -20,6 +19,7 @@ from utils import (
 )
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
+
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
     for language in DEFAULT_LANGS:
@@ -64,45 +64,46 @@ def load_segments_and_parallels_data_from_menu_file(
 
     segmentnrs = []
     if segments:
-        segmentnrs, totallengthcount = load_segments(segments, parallels, db)
+        segmentnrs, parallelcount = load_segments(segments, parallels, db)
+        load_files_collection(menu_file_json, segmentnrs, parallelcount, db)
+    if parallels:
+        load_parallels(parallels, db)
 
-    load_files_collection(menu_file_json, segmentnrs, totallengthcount, db)
-    load_parallels(parallels, db)
-
-
+        
 def load_segments(segments: list, all_parallels: list, connection: Connection) -> list:
     """ Returns list of segment numbers. """
     segmentnrs = []
     segmentnr_parallel_ids_dic = {}
-    parallel_keys = []
     for parallel in all_parallels:
-        if not parallel['id'] in parallel_keys:
-            parallel_keys.append(parallel['id'])
-        for segmentnr in parallel['root_segnr']:
-            if not segmentnr in segmentnr_parallel_ids_dic.keys():
-                segmentnr_parallel_ids_dic[segmentnr] = [parallel['id']]
-            else:
-                segmentnr_parallel_ids_dic[segmentnr].append(parallel['id'])
-                
+        if isinstance(
+            parallel, dict
+        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
+            if parallel["root_segnr"]:
+                for segmentnr in parallel["root_segnr"]:
+                    if not segmentnr in segmentnr_parallel_ids_dic.keys():
+                        segmentnr_parallel_ids_dic[segmentnr] = [parallel["id"]]
+                    else:
+                        segmentnr_parallel_ids_dic[segmentnr].append(parallel["id"])
     parallel_total_list = []
     collection_key = ""
     for segment in segments:
         parallel_ids = []
-        if segment['segnr'] in segmentnr_parallel_ids_dic.keys():
-            parallel_ids = segmentnr_parallel_ids_dic[segment['segnr']]
-        segmentnr = load_segment(segment, parallel_ids, connection)
-        segmentnrs.append(segmentnr)
+        if isinstance(segment, dict):
+            if segment["segnr"] in segmentnr_parallel_ids_dic.keys():
+                parallel_ids = segmentnr_parallel_ids_dic[segment["segnr"]]
+                segmentnr = load_segment(segment, parallel_ids, connection)
+                segmentnrs.append(segmentnr)
 
     for parallel in all_parallels:
-        if parallel and parallel["par_segnr"]:
-            collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
-            parallel_total_list.append({collection_key.group():parallel["root_length"]})
+        if isinstance(
+            parallel, dict
+        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
+            if parallel and parallel["par_segnr"]:
+                collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
+                parallel_total_list.append(collection_key.group())
+    parallelcount = Counter(parallel_total_list)
 
-    totallengthcount = Counter()
-    for totalcount in parallel_total_list:
-        totallengthcount += Counter(totalcount)
-
-    return segmentnrs, totallengthcount
+    return segmentnrs, parallelcount
 
 
 def load_segment(
@@ -137,7 +138,9 @@ def load_segment(
     return json_segment["segnr"]
 
 
-def load_files_collection(file: MenuItem, segmentnrs: list, totallengthcount: list, connection: Connection):
+def load_files_collection(
+    file: MenuItem, segmentnrs: list, parallelcount: list, connection: Connection
+):
     collection = connection[COLLECTION_FILES]
     doc = collection.createDocument()
     doc._key = file["filename"]
@@ -158,17 +161,19 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     :param connection: ArangoDB connection object
     """
     collection = connection[COLLECTION_PARALLELS]
+    parallels_to_be_inserted = []
     for parallel in json_parallels:
-        doc = collection.createDocument()
-        parallel_id = f"parallels/{parallel['id']}"
-        doc._key = parallel["id"]
-        doc._id = parallel_id
-        doc["filename"] = parallel["id"].split(":")[0]
-        doc.set(parallel)
-        try:
-            doc.save()
-        except CreationError as e:
-            print(f"Could not save parallel {parallel}. Error: ", e)
+        if isinstance(
+            parallel, dict
+        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
+            parallel_id = f"parallels/{parallel['id']}"
+            parallel["_key"] = parallel["id"]
+            parallel["_id"] = parallel_id
+            parallels_to_be_inserted.append(parallel)
+    try:
+        collection.importBulk(parallels_to_be_inserted)
+    except CreationError as e:
+        print(f"Could not save parallel {parallel}. Error: ", e)
 
 
 def load_menu_collection(menu_collection, language, db):
