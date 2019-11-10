@@ -128,3 +128,46 @@ FOR segment_id IN parids
         FILTER p["co-occ"] <= @coocc
         RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length }
 """
+
+query_categories_per_collection = """
+RETURN MERGE(
+    FOR collection IN menu_collections
+        FILTER collection._key == @searchterm
+        FOR col_category IN collection.categories
+            FOR category IN menu_categories
+                FILTER category.category == col_category
+                FILTER category.language == @language
+                RETURN { [category["category"]]: category.categoryname }
+)
+"""
+
+query_sorted_category_list = """
+FOR target IN @selected
+    FOR collection IN menu_collections
+        FILTER collection._key == target
+        FOR category IN collection.categories
+            FOR menucategory IN menu_categories
+                FILTER menucategory.category == category
+                FILTER menucategory.language == @language
+                SORT menucategory.categorynr
+                LET catname = SPLIT(menucategory.categoryname,["—","("])[0]
+                RETURN { [menucategory.category] : catname }
+"""
+
+query_files_per_category = """
+FOR category IN menu_categories
+    FILTER category._key == @searchterm
+    SORT category.categorynr
+    FOR catfile IN category.files
+        FOR file IN files
+            FILTER file._key == catfile
+            RETURN { filename: file._key,
+                     totallengthcount: file.totallengthcount }
+"""
+
+query_all_collections = """
+FOR menu IN menu_collections
+    RETURN { collectionname : menu.collection,
+             collectionlanguage: menu.language,
+             collectionkey: menu._key }
+"""
