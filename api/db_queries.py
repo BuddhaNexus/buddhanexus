@@ -133,9 +133,9 @@ query_categories_per_collection = """
 RETURN MERGE(
     FOR collection IN menu_collections
         FILTER collection._key == @searchterm
-        FOR colcategory IN collection.categories
+        FOR col_category IN collection.categories
             FOR category IN menu_categories
-                FILTER category.category == colcategory
+                FILTER category.category == col_category
                 FILTER category.language == @language
                 RETURN { [category["category"]]: category.categoryname }
 )

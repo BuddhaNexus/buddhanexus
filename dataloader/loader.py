@@ -63,10 +63,13 @@ def load_segments_and_parallels_data_from_menu_file(
     )
 
     segmentnrs = []
+    totallengthcount = {}
     if segments:
-        segmentnrs, parallelcount = load_segments(segments, parallels, db)
-        load_files_collection(menu_file_json, segmentnrs, parallelcount, db)
-    if parallels:
+        segmentnrs, totallengthcount = load_segments(segments, parallels, db)
+
+    load_files_collection(menu_file_json, segmentnrs, totallengthcount, db)
+
+    if parallels: 
         load_parallels(parallels, db)
 
         
@@ -74,6 +77,9 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
     """ Returns list of segment numbers. """
     segmentnrs = []
     segmentnr_parallel_ids_dic = {}
+    parallel_total_list = []
+    collection_key = ""
+
     for parallel in all_parallels:
         if isinstance(
             parallel, dict
@@ -84,26 +90,25 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                         segmentnr_parallel_ids_dic[segmentnr] = [parallel["id"]]
                     else:
                         segmentnr_parallel_ids_dic[segmentnr].append(parallel["id"])
-    parallel_total_list = []
-    collection_key = ""
+                        
+            if parallel and parallel["par_segnr"]:
+                collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
+                parallel_total_list.append({collection_key.group():parallel["root_length"]})
+
     for segment in segments:
         parallel_ids = []
         if isinstance(segment, dict):
             if segment["segnr"] in segmentnr_parallel_ids_dic.keys():
                 parallel_ids = segmentnr_parallel_ids_dic[segment["segnr"]]
-                segmentnr = load_segment(segment, parallel_ids, connection)
-                segmentnrs.append(segmentnr)
 
-    for parallel in all_parallels:
-        if isinstance(
-            parallel, dict
-        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
-            if parallel and parallel["par_segnr"]:
-                collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
-                parallel_total_list.append(collection_key.group())
-    parallelcount = Counter(parallel_total_list)
+            segmentnr = load_segment(segment, parallel_ids, connection)
+            segmentnrs.append(segmentnr)
 
-    return segmentnrs, parallelcount
+    totallengthcount = Counter()
+    for totalcount in parallel_total_list:
+        totallengthcount += Counter(totalcount)
+
+    return segmentnrs, totallengthcount
 
 
 def load_segment(
@@ -139,7 +144,7 @@ def load_segment(
 
 
 def load_files_collection(
-    file: MenuItem, segmentnrs: list, parallelcount: list, connection: Connection
+    file: MenuItem, segmentnrs: list, totallengthcount: list, connection: Connection
 ):
     collection = connection[COLLECTION_FILES]
     doc = collection.createDocument()
