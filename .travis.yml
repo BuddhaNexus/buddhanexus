@@ -4,3 +4,5 @@ python:
 install:
   - pip install -r setup/requirements-dataloader.txt
   - pip install -r setup/requirements-fastapi.txt
+  - pip install pylint
+script: pylint ./**/*.py
