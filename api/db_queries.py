@@ -62,6 +62,8 @@ LET file_parallels = (
                     par_segnr: p.par_segnr, 
                     par_offset_beg: p.par_offset_beg, 
                     par_offset_end: p.par_offset_end, 
+                    root_offset_beg: p.root_offset_beg, 
+                    root_offset_end: p.root_offset_end-1, 
                     par_segment: p.par_segtext, 
                     file_name: p.id, 
                     root_lang: segment.lang,
