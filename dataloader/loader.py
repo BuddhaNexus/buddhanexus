@@ -60,7 +60,7 @@ def load_segments_and_parallels_data_from_menu_file(
         print(f"{file_url} is not a gzip file. Ignoring.")
         return
 
-    [segments, parallels] = get_segments_and_parallels_from_gzipped_local_file(
+    [segments, parallels] = get_segments_and_parallels_from_gzipped_remote_file(
         file_url
     )
 
