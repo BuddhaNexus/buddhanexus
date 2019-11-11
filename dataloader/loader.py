@@ -1,5 +1,6 @@
 import os
 import re
+import random
 from collections import Counter
 from pyArango.connection import *
 from constants import (
@@ -16,6 +17,7 @@ from utils import (
     execute_in_parallel,
     should_download_file,
     get_segments_and_parallels_from_gzipped_remote_file,
+    get_segments_and_parallels_from_gzipped_local_file,
 )
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
@@ -58,7 +60,7 @@ def load_segments_and_parallels_data_from_menu_file(
         print(f"{file_url} is not a gzip file. Ignoring.")
         return
 
-    [segments, parallels] = get_segments_and_parallels_from_gzipped_remote_file(
+    [segments, parallels] = get_segments_and_parallels_from_gzipped_local_file(
         file_url
     )
 
@@ -174,11 +176,16 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
+            parallel['root_filename'] = parallel['root_segnr'][0].split(':')[0]
             parallels_to_be_inserted.append(parallel)
-    try:
-        collection.importBulk(parallels_to_be_inserted)
-    except CreationError as e:
-        print(f"Could not save parallel {parallel}. Error: ", e)
+    random.shuffle(parallels_to_be_inserted)
+    chunksize = 10000 #10000 for Tibetan, 100000 for Chinese
+    for x in range(0,len(parallels_to_be_inserted),chunksize):
+        try:
+            collection.importBulk(parallels_to_be_inserted[x:x+chunksize])
+        except CreationError as e:
+            print(f"Could not save parallel {parallel}. Error: ", e)
+    collection.ensureHashIndex(['root_filename'], unique = False) # I am not shure if this is the right place to add the index...
 
 
 def load_menu_collection(menu_collection, language, db):

@@ -111,23 +111,32 @@ RETURN (
 """
 
 query_graph_data = """
-LET parids = SORTED_UNIQUE(FLATTEN(
-    FOR file IN files
-        FILTER file._key == @filename
-        FOR segmentnr IN file.segmentnrs
-            FOR segment IN segments
-            FILTER segment._key == segmentnr
-            RETURN segment.parallel_ids
-))
+FOR p IN parallels
+    FILTER p.root_filename == @filename
+    LIMIT 15000
+    FILTER p.score >= @score
+    FILTER p.par_length >= @parlength
+    FILTER p["co-occ"] <= @coocc
+    RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length}
+"""
 
-FOR segment_id IN parids
-    FOR p IN parallels
-        FILTER p._key == segment_id
+query_total_numbers = """
+FOR p IN parallels
+    FILTER p.root_filename == @filename
+    LIMIT 15000
+    LET filtertest = (
+        FOR item IN @limitcollection
+            RETURN REGEX_TEST(p.par_segnr[0], item)
+        )
+        LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+        FILTER filternr == true
         FILTER p.score >= @score
         FILTER p.par_length >= @parlength
         FILTER p["co-occ"] <= @coocc
-        RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length }
+        COLLECT WITH COUNT INTO length
+RETURN length
 """
+
 
 query_categories_per_collection = """
 RETURN MERGE(
