@@ -4,7 +4,6 @@ from typing import Dict, List
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import Response
 from pydantic import BaseModel
 
 from .db_queries import (
@@ -17,13 +16,14 @@ from .db_queries import (
     query_text_search,
     query_parallels_for_left_text,
     query_graph_data,
+    query_table_view,
     query_all_collections,
     query_total_numbers,
     query_sorted_category_list,
     query_categories_per_collection
 )
 from .db_actions import get_files_per_category_from_db
-from .utils import get_language_from_filename, get_regex_test, get_future_date
+from .utils import get_language_from_filename, get_regex_test
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -92,7 +92,6 @@ class parallelItem(BaseModel):
 
 @app.post("/parallels-for-left/")
 async def get_parallels_for_root_seg_nr(parallels: parallelItem):
-    parallelIDList = parallels.parallelIDList
     language = get_language_from_filename(parallels.file_name)
     query_result = get_db().AQLQuery(
         query=query_parallels_for_left_text,
@@ -109,19 +108,17 @@ async def get_parallels_for_root_seg_nr(parallels: parallelItem):
 
 @app.get("/files/{file_name}/segments")
 async def get_segments_for_file(
-    response: Response,
     file_name: str,
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
 ):
-    response.headers["Expires"] = get_future_date()
-    response.headers["Cache-Control"] = "public"
+    # TODO: enable caching, add etag header
     try:
         language = get_language_from_filename(file_name)
         db = get_db()
-        query_result = db.AQLQuery(
+        segments_query = db.AQLQuery(
             query=query_file_segments_parallels,
             bindVars={
                 "filename": file_name,
@@ -131,11 +128,10 @@ async def get_segments_for_file(
                 "limitcollection": get_regex_test(limit_collection, language),
             },
         )
-        segments = query_result.result[0] if query_result.result else []
         collection_keys = []
         result = []
         parallel_count = 0
-        for segment in segments:
+        for segment in segments_query.result:
             if "parallels" in segment:
                 for parallel in segment["parallels"]:
                     parallel_count += 1
@@ -165,6 +161,38 @@ async def get_segments_for_file(
     except AQLQueryError as e:
         print("AQLQueryError: ", e)
         raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
+
+
+@app.get("/files/{file_name}/table")
+async def get_table_view(
+    file_name: str,
+    score: int = 0,
+    par_length: int = 0,
+    co_occ: int = 0,
+    limit_collection: List[str] = Query([]),
+    page: int = 0,
+    # "sortmethod"
+):
+    try:
+        language = get_language_from_filename(file_name)
+        db = get_db()
+        query = db.AQLQuery(
+            query=query_table_view,
+            bindVars={
+                "filename": file_name,
+                "score": score,
+                "parlength": par_length,
+                "coocc": co_occ,
+                "limitcollection": get_regex_test(limit_collection, language),
+                "page": page
+                # "sortmethod"
+            },
+        )
+        return query.result[0]
+
     except KeyError as e:
         print("KeyError: ", e)
         raise HTTPException(status_code=400)

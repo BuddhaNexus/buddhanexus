@@ -1,30 +1,82 @@
 query_file_segments_parallels = """
+FOR file IN files
+    FILTER file._key == @filename
+
+    FOR segmentnr IN file.segmentnrs
+        LET seg_parallels = (
+            FOR segment IN segments
+                FILTER segment._key == segmentnr
+                FOR parallel_id IN segment.parallel_ids
+                    FOR p IN parallels
+                        FILTER p._key == parallel_id
+                        LET filtertest = (
+                            FOR item IN @limitcollection
+                                RETURN REGEX_TEST(p.par_segnr[0], item)
+                            )
+                        LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                        FILTER filternr == true
+                        FILTER p.score >= @score
+                        FILTER p.par_length >= @parlength
+                        FILTER p["co-occ"] <= @coocc
+                        RETURN p.par_segnr
+            )
+        RETURN seg_parallels[0] ? 
+            { "segmentnr": segmentnr, "parallels": seg_parallels } :
+            { "segmentnr": segmentnr }
+"""
+
+query_table_view = """
+// get all segment IDs in file 
+// @todo: replace by `file_segments` collection
+LET file_segmentnrs = (
     FOR file IN files
         FILTER file._key == @filename
-        LET result = (
-            FOR segmentnr IN file.segmentnrs
-                LET seg_parallels = (
-                    FOR segment IN segments
-                    FILTER segment._key == segmentnr
-                    FOR segment_id IN segment.parallel_ids
-                        FOR p IN parallels
-                           FILTER p._key == segment_id
-                           LET filtertest = (
-                                FOR item IN @limitcollection
-                                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                                )
-                            LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
-                            FILTER filternr == true
-                            FILTER p.score >= @score
-                            FILTER p.par_length >= @parlength
-                            FILTER p["co-occ"] <= @coocc
-                            RETURN p.par_segnr
+        RETURN file.segmentnrs
+)[0]
+
+LET file_segments = (
+    FOR segmentnr IN file_segmentnrs
+        FOR segment IN segments
+            FILTER segment._key == segmentnr
+            RETURN segment
+)
+
+LET file_parallels = (
+    FOR segment IN file_segments
+        FOR segment_parallel_id IN segment.parallel_ids
+            FOR p IN parallels
+                FILTER p._key == segment_parallel_id
+                LET collection_filter_test = (
+                    FOR item IN @limitcollection
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
-                RETURN seg_parallels[0] ? 
-                    { "segmentnr": segmentnr, "parallels": seg_parallels } :
-                    { "segmentnr": segmentnr }
-        )
-        RETURN result
+                LET fits_collection = (@limitcollection != []) 
+                    ? POSITION(collection_filter_test, true) 
+                    : true
+                FILTER fits_collection == true
+                FILTER p.score >= @score
+                FILTER p.par_length >= @parlength
+                FILTER p["co-occ"] <= @coocc
+                LIMIT 50 * @page, 50
+                RETURN {
+                    par_segnr: p.par_segnr, 
+                    par_offset_beg: p.par_offset_beg, 
+                    par_offset_end: p.par_offset_end, 
+                    par_segment: p.par_segtext, 
+                    file_name: p.id, 
+                    root_lang: segment.lang,
+                    root_segnr: p.root_segnr, 
+                    root_seg_text: p.root_segtext,
+                    par_length: p.par_length, 
+                    par_pos_beg: p.par_pos_beg,
+                    score: p.score
+                }
+)
+
+RETURN {
+    parallels: file_parallels,
+    parallel_count: COUNT(file_parallels)
+}
 """
 
 query_collection_names = """
