@@ -22,7 +22,7 @@ from .db_queries import (
     query_categories_per_collection
 )
 from .db_actions import get_files_per_category_from_db
-from .utils import get_language_from_filename, get_regex_test, get_future_date
+from .utils import get_language_from_filename, get_regex_test
 from .db_connection import get_collection, get_db
 
 app = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
