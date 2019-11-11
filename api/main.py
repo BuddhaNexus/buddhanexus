@@ -503,14 +503,12 @@ async def get_all_collections():
 
 @app.get("/parallels/{file_name}/count")
 async def get_counts_for_file(
-        response: Response,
         file_name: str,
         score: int = 0,
         par_length: int = 0,
         co_occ: int = 0,
         limit_collection: List[str] = Query([]),
-):
-    
+):    
     try:
         language = get_language_from_filename(file_name)
         db = get_db()
