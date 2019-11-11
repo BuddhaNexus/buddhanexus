@@ -163,6 +163,13 @@ RETURN (
 """
 
 query_graph_data = """
+LET target = FLATTEN(
+    FOR targetitem IN @targetcollection
+        FOR collection IN menu_collections
+            FILTER collection._key == targetitem
+            RETURN collection.categories
+        )
+
 LET parids = SORTED_UNIQUE(FLATTEN(
     FOR file IN files
         FILTER file._key == @filename
@@ -178,6 +185,12 @@ FOR segment_id IN parids
         FILTER p.score >= @score
         FILTER p.par_length >= @parlength
         FILTER p["co-occ"] <= @coocc
+        LET filtertest = (
+            FOR item IN target
+                RETURN REGEX_TEST(p.par_segnr[0], CONCAT("^",item))
+            )
+        LET filternr = (target != []) ? POSITION(filtertest, true) : true
+        FILTER filternr == true
         RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length }
 """
 
