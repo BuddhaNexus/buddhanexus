@@ -331,6 +331,7 @@ async def get_graph_for_file(
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
+    target_collection: List[str] = Query([]),
 ):
     try:
         language = get_language_from_filename(file_name)
@@ -343,6 +344,7 @@ async def get_graph_for_file(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "targetcollection": target_collection,
             },
         )
 

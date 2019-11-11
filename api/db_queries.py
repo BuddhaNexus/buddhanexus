@@ -163,12 +163,24 @@ RETURN (
 """
 
 query_graph_data = """
+LET target = FLATTEN(
+    FOR targetitem IN @targetcollection
+        FOR collection IN menu_collections
+            FILTER collection._key == targetitem
+            RETURN collection.categories
+        )
 FOR p IN parallels
     FILTER p.root_filename == @filename
     LIMIT 15000
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
     FILTER p["co-occ"] <= @coocc
+    LET filtertest = (
+        FOR item IN target
+            RETURN REGEX_TEST(p.par_segnr[0], CONCAT("^",item))
+        )
+    LET filternr = (target != []) ? POSITION(filtertest, true) : true
+    FILTER filternr == true
     RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length}
 """
 
