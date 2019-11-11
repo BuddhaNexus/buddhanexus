@@ -18,6 +18,7 @@ from .db_queries import (
     query_graph_data,
     query_table_view,
     query_all_collections,
+    query_total_numbers,
     query_sorted_category_list,
     query_categories_per_collection
 )
@@ -501,4 +502,38 @@ async def get_all_collections():
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
 
-        
+
+@app.get("/parallels/{file_name}/count")
+async def get_counts_for_file(
+        file_name: str,
+        score: int = 0,
+        par_length: int = 0,
+        co_occ: int = 0,
+        limit_collection: List[str] = Query([]),
+):    
+    try:
+        language = get_language_from_filename(file_name)
+        db = get_db()
+        query_graph_result = db.AQLQuery(
+            query=query_total_numbers,
+            batchSize=100000,
+            bindVars={
+                "filename": file_name,
+                "score": score,
+                "parlength": par_length,
+                "coocc": co_occ,
+                "limitcollection": limit_collection,
+            },
+        )
+        return {
+            "parallel_count": query_graph_result.result,
+        }
+    except DocumentNotFoundError as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Item not found")
+    except AQLQueryError as e:
+        print("AQLQueryError: ", e)
+        raise HTTPException(status_code=400, detail=e.errors)
+    except KeyError as e:
+        print("KeyError: ", e)
+        raise HTTPException(status_code=400)
