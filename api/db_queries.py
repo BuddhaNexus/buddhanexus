@@ -202,7 +202,8 @@ RETURN MERGE(
             FOR category IN menu_categories
                 FILTER category.category == col_category
                 FILTER category.language == @language
-                RETURN { [category["category"]]: category.categoryname }
+                LET catname = SPLIT(category.categoryname,["—","("])[0]
+                RETURN { [category["category"]]: catname }
 )
 """
 
