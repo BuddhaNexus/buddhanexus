@@ -299,7 +299,7 @@ async def get_file_text_segments(file_name: str, active_segment: str = "none"):
     if active_segment != 'none':
         start_int = int(active_segment.split(':')[1].split('_')[0]) - 100
     if start_int < 0:
-        start_int = 0 
+        start_int = 0
     try:
         db = get_db()
         text_segments_query_result = db.AQLQuery(
@@ -307,7 +307,8 @@ async def get_file_text_segments(file_name: str, active_segment: str = "none"):
             bindVars={"filename": file_name,
                       "start_int": start_int},
         )
-        return {"textleft": text_segments_query_result.result}
+        return {"textleft": text_segments_query_result.result[0],
+                "startint": start_int}
     except DocumentNotFoundError as e:
         print(e)
         raise HTTPException(status_code=404, detail="Item not found")
@@ -356,7 +357,7 @@ async def get_graph_for_file(
         db = get_db()
         query_graph_result = db.AQLQuery(
             query=query_graph_data,
-            batchSize=100000,
+            batchSize=15000,
             bindVars={
                 "filename": file_name,
                 "score": score,

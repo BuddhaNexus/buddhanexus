@@ -1,7 +1,6 @@
 query_file_segments_parallels = """
 FOR file IN files
     FILTER file._key == @filename
-
     FOR segmentnr IN file.segmentnrs
         LET seg_parallels = (
             FOR segment IN segments
@@ -108,14 +107,28 @@ FOR category IN menu_categories
 query_text_segments = """
 FOR file IN files
     FILTER file._key == @filename
-    FOR segmentnr IN file.segmentnrs
-        FOR segment in segments
-            FILTER segment._key == segmentnr
+    let u = (
+        FOR segmentnr IN file.segmentnrs
             LIMIT @start_int, 200
-            RETURN { segnr: segment.segnr,
-                     segtext: segment.segtext,
-                     parallel_ids: segment.parallel_ids }
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                RETURN { segnr: segment.segnr,
+                         segtext: segment.segtext,
+                         parallel_ids: segment.parallel_ids }
+        )
+    return u 
 """
+
+# query_text_segments = """
+# FOR file IN files
+#     FILTER file._key == @filename
+#     let u = (
+#     FOR segmentnr IN file.segmentnrs
+#         RETURN {segmentnr}
+#     )
+#     RETURN u
+# """
+
 
 query_text_search = """
 FOR file IN files
