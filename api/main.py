@@ -305,7 +305,7 @@ async def get_file_text_segments(file_name: str, active_segment: str = "none"):
         text_segments_query_result = db.AQLQuery(
             query=query_text_segments,
             bindVars={"filename": file_name,
-                      "start_int": startint},
+                      "start_int": start_int},
         )
         return {"textleft": text_segments_query_result.result}
     except DocumentNotFoundError as e:
