@@ -304,8 +304,6 @@ async def get_file_text_segments(file_name: str, active_segment: str = "none"):
         start_int = int(active_segment.split(':')[1].split('_')[0]) - 100
     if start_int < 0:
         start_int = 0
-    if start_int == 0:
-        limit = 100
     try:
         db = get_db()
         text_segments_query_result = db.AQLQuery(
