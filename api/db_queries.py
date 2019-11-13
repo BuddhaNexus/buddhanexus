@@ -186,6 +186,7 @@ FOR p IN parallels
 query_total_numbers = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
+    LIMIT 15000
     LET filtertest = (
         FOR item IN @limitcollection
             RETURN REGEX_TEST(p.par_segnr[0], item)
@@ -195,7 +196,6 @@ FOR p IN parallels
         FILTER p.score >= @score
         FILTER p.par_length >= @parlength
         FILTER p["co-occ"] <= @coocc
-        LIMIT 10001
         COLLECT WITH COUNT INTO length
 RETURN length
 """
