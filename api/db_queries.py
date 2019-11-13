@@ -141,9 +141,24 @@ RETURN (
                 FILTER p.score >= @score
                 FILTER p.par_length >= @parlength
                 FILTER p["co-occ"] <= @coocc
-                RETURN p
+                RETURN { root_offset_beg: p.root_offset_beg,
+                         root_offset_end: p.root_offset_end,
+                         root_segnr : p.root_segnr,
+                         id: p._key }
 )
 """
+
+query_parallels_for_middle_text = """
+RETURN (
+    FOR parallel_id IN @parallel_ids
+        FOR p IN parallels 
+            FILTER p._key == parallel_id
+            RETURN p
+)
+"""
+
+
+
 
 query_graph_data = """
 LET target = FLATTEN(

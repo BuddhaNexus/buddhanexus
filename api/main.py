@@ -15,6 +15,7 @@ from .db_queries import (
     query_text_segments,
     query_text_search,
     query_parallels_for_left_text,
+    query_parallels_for_middle_text,
     query_graph_data,
     query_table_view,
     query_all_collections,
@@ -104,6 +105,20 @@ async def get_parallels_for_root_seg_nr(parallels: parallelItem):
         },
     )
     return {"parallels": query_result.result}
+
+class parallelItemMiddle(BaseModel):
+    parallelIDList: list
+
+@app.post("/parallels-for-middle/")
+async def get_parallels_for_middle(parallels: parallelItemMiddle):
+    query_result = get_db().AQLQuery(
+        query=query_parallels_for_middle_text,
+        bindVars={
+            "parallel_ids": parallels.parallelIDList,
+        },
+    )
+    return {"parallels": query_result.result}
+
 
 
 @app.get("/files/{file_name}/segments")
