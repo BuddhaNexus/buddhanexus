@@ -299,15 +299,19 @@ async def get_categories_for_filter_menu(language: str):
 @app.get("/files/{file_name}/textleft")
 async def get_file_text_segments(file_name: str, active_segment: str = "none"):
     start_int = 0
+    limit = 200
     if active_segment != 'none':
         start_int = int(active_segment.split(':')[1].split('_')[0]) - 100
     if start_int < 0:
         start_int = 0
+    if start_int = 0:
+        limit = 100
     try:
         db = get_db()
         text_segments_query_result = db.AQLQuery(
             query=query_text_segments,
             bindVars={"filename": file_name,
+                      "limit": limit,
                       "start_int": start_int},
         )
         return {"textleft": text_segments_query_result.result[0],

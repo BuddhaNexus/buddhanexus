@@ -109,7 +109,7 @@ FOR file IN files
     FILTER file._key == @filename
     let u = (
         FOR segmentnr IN file.segmentnrs
-            LIMIT @start_int, 200
+            LIMIT @start_int, @limit
             FOR segment in segments
                 FILTER segment._key == segmentnr
                 RETURN { segnr: segment.segnr,
