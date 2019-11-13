@@ -119,16 +119,6 @@ FOR file IN files
     return u 
 """
 
-# query_text_segments = """
-# FOR file IN files
-#     FILTER file._key == @filename
-#     let u = (
-#     FOR segmentnr IN file.segmentnrs
-#         RETURN {segmentnr}
-#     )
-#     RETURN u
-# """
-
 
 query_text_search = """
 FOR file IN files
@@ -147,28 +137,38 @@ RETURN (
     FOR parallel_id IN @parallel_ids
         FOR p IN parallels 
             FILTER p._key == parallel_id
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
             LET filtertest = (
                 FOR item IN @limitcollection
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
                 LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
-                FILTER filternr == true
-                FILTER p.score >= @score
-                FILTER p.par_length >= @parlength
-                FILTER p["co-occ"] <= @coocc
+                FILTER filternr == true     
                 RETURN { root_offset_beg: p.root_offset_beg,
                          root_offset_end: p.root_offset_end,
                          root_segnr : p.root_segnr,
                          id: p._key }
-)
+    )
 """
+
 
 query_parallels_for_middle_text = """
 RETURN (
     FOR parallel_id IN @parallel_ids
         FOR p IN parallels 
             FILTER p._key == parallel_id
-            RETURN p
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
+            LET filtertest = (
+                FOR item IN @limitcollection
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+                LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                FILTER filternr == true     
+                RETURN p
 )
 """
 

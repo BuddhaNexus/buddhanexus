@@ -106,15 +106,18 @@ async def get_parallels_for_root_seg_nr(parallels: parallelItem):
     )
     return {"parallels": query_result.result}
 
-class parallelItemMiddle(BaseModel):
-    parallelIDList: list
 
 @app.post("/parallels-for-middle/")
-async def get_parallels_for_middle(parallels: parallelItemMiddle):
+async def get_parallels_for_middle(parallels: parallelItem):
+    language = get_language_from_filename(parallels.file_name)
     query_result = get_db().AQLQuery(
         query=query_parallels_for_middle_text,
         bindVars={
             "parallel_ids": parallels.parallelIDList,
+            "score": parallels.score,
+            "parlength": parallels.par_length,
+            "coocc": parallels.co_occ,
+            "limitcollection": get_regex_test(parallels.limit_collection, language),
         },
     )
     return {"parallels": query_result.result}
