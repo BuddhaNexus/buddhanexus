@@ -295,30 +295,19 @@ async def get_categories_for_filter_menu(language: str):
 
 @app.get("/files/{file_name}/textleft")
 async def get_file_text_segments(file_name: str, active_segment: str = "none"):
+    start_int = 0
+    if active_segment != 'none':
+        start_int = int(active_segment.split(':')[1].split('_')[0]) - 100
+    if start_int < 0:
+        start_int = 0 
     try:
         db = get_db()
         text_segments_query_result = db.AQLQuery(
             query=query_text_segments,
-            batchSize=100000,
-            bindVars={"filename": file_name},
+            bindVars={"filename": file_name,
+                      "start_int": startint},
         )
-        # TODO: this needs some comments for explanation and maybe a bit more descriptive names.
-        result = []
-        if active_segment == "none":
-            result = text_segments_query_result.result[:100]
-        else:
-            c = 0
-            for segment in text_segments_query_result.result:
-                if segment["segnr"] == active_segment:
-                    break
-                else:
-                    c += 1
-            beg = c - 100
-            if beg < 0:
-                beg = 0
-            end = c + 100
-            result = text_segments_query_result.result[beg:end]
-        return {"textleft": result}
+        return {"textleft": text_segments_query_result.result}
     except DocumentNotFoundError as e:
         print(e)
         raise HTTPException(status_code=404, detail="Item not found")

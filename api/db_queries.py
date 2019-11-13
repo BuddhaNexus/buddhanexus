@@ -111,6 +111,7 @@ FOR file IN files
     FOR segmentnr IN file.segmentnrs
         FOR segment in segments
             FILTER segment._key == segmentnr
+            LIMIT @start_int, 200
             RETURN { segnr: segment.segnr,
                      segtext: segment.segtext,
                      parallel_ids: segment.parallel_ids }
