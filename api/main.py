@@ -174,9 +174,22 @@ async def get_table_view(
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
     page: int = 0,
-    # "sortmethod"
+    sort_method: str = 'position',
+
 ):
     try:
+        print("CURRENT SORTING METHOD",sort_method)
+        sort_key = ''
+        if sort_method == 'position':
+            sort_key = "root_pos_beg"
+        if sort_method == 'quoted-text':
+            sort_key = "par_pos_beg"
+        if sort_method == 'length':
+            sort_key = "root_length"
+        if sort_method == 'length2':
+            sort_key = "par_length"
+
+            
         language = get_language_from_filename(file_name)
         db = get_db()
         query = db.AQLQuery(
@@ -186,6 +199,7 @@ async def get_table_view(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "sortkey": sort_key,                
                 "limitcollection": get_regex_test(limit_collection, language),
                 "page": page
                 # "sortmethod"
