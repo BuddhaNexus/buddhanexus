@@ -29,6 +29,7 @@ query_table_view = """
 LET file_parallels = (
     FOR p IN parallels
         FILTER p.root_filename == @filename
+        LIMIT 200000 
         FILTER p.score >= @score
         FILTER p.par_length >= @parlength
         FILTER p["co-occ"] <= @coocc
