@@ -104,22 +104,6 @@ FOR category IN menu_categories
             categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),categorynamepart)}
 """
 
-query_text_segments = """
-FOR file IN files
-    FILTER file._key == @filename
-    let u = (
-        FOR segmentnr IN file.segmentnrs
-            LIMIT @start_int, @limit
-            FOR segment in segments
-                FILTER segment._key == segmentnr
-                RETURN { segnr: segment.segnr,
-                         segtext: segment.segtext,
-                         parallel_ids: segment.parallel_ids }
-        )
-    return u 
-"""
-
-
 query_text_search = """
 FOR file IN files
     FILTER file._key == @filename
@@ -132,9 +116,26 @@ FOR file IN files
                      parallel_ids: segment.parallel_ids }
 """
 
-query_parallels_for_left_text = """
-RETURN (
-    FOR parallel_id IN @parallel_ids
+query_text_and_parallels = """
+FOR file IN files
+    FILTER file._key == @filename
+    let segments = (
+        FOR segmentnr IN file.segmentnrs
+            LIMIT @start_int, @limit
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                RETURN { segnr: segment.segnr,
+                         segtext: segment.segtext,
+                         parallel_ids: segment.parallel_ids }
+        )
+
+let parallel_ids = UNIQUE(FLATTEN(
+     FOR segment in segments
+          RETURN segment.parallel_ids
+))
+
+let parallels =  (
+    FOR parallel_id IN parallel_ids
         FOR p IN parallels 
             FILTER p._key == parallel_id
             FILTER p.score >= @score
@@ -151,7 +152,11 @@ RETURN (
                          root_segnr : p.root_segnr,
                          id: p._key }
     )
+RETURN { textleft: segments,
+         parallel_ids: parallel_ids,
+         parallels: parallels}
 """
+
 
 
 query_parallels_for_middle_text = """
