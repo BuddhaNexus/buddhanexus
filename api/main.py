@@ -90,7 +90,6 @@ class parallelItem(BaseModel):
     file_name: str
 
 
-
 @app.post("/parallels-for-middle/")
 async def get_parallels_for_middle(parallels: parallelItem):
     language = get_language_from_filename(parallels.file_name)
@@ -105,7 +104,6 @@ async def get_parallels_for_middle(parallels: parallelItem):
         },
     )
     return {"parallels": query_result.result}
-
 
 
 @app.get("/files/{file_name}/segments")
@@ -194,7 +192,6 @@ async def get_table_view(
         if sort_method == 'length2':
             sort_key = "par_length"
 
-            
         language = get_language_from_filename(file_name)
         db = get_db()
         query = db.AQLQuery(
@@ -319,7 +316,6 @@ async def get_file_text_segments_and_parallels(file_name: str,
     except KeyError as e:
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
-    
 
 
 @app.get("/files/{file_name}/searchtext")
