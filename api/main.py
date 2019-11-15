@@ -182,10 +182,13 @@ async def get_table_view(
     try:
         print("CURRENT SORTING METHOD",sort_method)
         sort_key = ''
+        sort_direction = 'DESC'
         if sort_method == 'position':
             sort_key = "root_pos_beg"
+            sort_direction = "ASC"
         if sort_method == 'quoted-text':
             sort_key = "par_pos_beg"
+            sort_direction = "ASC"            
         if sort_method == 'length':
             sort_key = "root_length"
         if sort_method == 'length2':
@@ -201,6 +204,7 @@ async def get_table_view(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "sortdirection": sort_direction,
                 "sortkey": sort_key,                
                 "limitcollection": get_regex_test(limit_collection, language),
                 "page": page

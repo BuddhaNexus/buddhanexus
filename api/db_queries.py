@@ -40,7 +40,7 @@ LET file_parallels = (
             ? POSITION(collection_filter_test, true) 
             : true
         FILTER fits_collection == true
-        SORT p.@sortkey DESC
+        SORT p.@sortkey @sortdirection
         LIMIT 50 * @page, 50
         RETURN {
             par_segnr: p.par_segnr, 
