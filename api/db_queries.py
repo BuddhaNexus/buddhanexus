@@ -157,8 +157,6 @@ RETURN { textleft: segments,
          parallels: parallels}
 """
 
-
-
 query_parallels_for_middle_text = """
 RETURN (
     FOR parallel_id IN @parallel_ids
@@ -176,9 +174,6 @@ RETURN (
                 RETURN p
 )
 """
-
-
-
 
 query_graph_data = """
 LET target = FLATTEN(
@@ -218,7 +213,6 @@ FOR p IN parallels
         COLLECT WITH COUNT INTO length
 RETURN length
 """
-
 
 query_categories_per_collection = """
 RETURN MERGE(
