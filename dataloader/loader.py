@@ -59,7 +59,7 @@ def load_segments_and_parallels_data_from_menu_file(
         print(f"{file_url} is not a gzip file. Ignoring.")
         return
 
-    [segments, parallels] = get_segments_and_parallels_from_gzipped_remote_file(
+    [segments, parallels] = get_segments_and_parallels_from_gzipped_local_file(
         file_url
     )
 
@@ -172,10 +172,11 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     for parallel in json_parallels:
         if isinstance(
             parallel, dict
-        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
+        ):  
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
+            # here we delete some things that we don't need in the DB: 
             del parallel['par_pos_end']
             del parallel['root_pos_end']
             del parallel['par_segtext']
