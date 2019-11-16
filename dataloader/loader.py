@@ -94,7 +94,8 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                         
             if parallel["par_segnr"]:
                 collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
-                parallel_total_list.append({collection_key.group():parallel["root_length"]})
+                if collection_key:
+                    parallel_total_list.append({collection_key.group():parallel["root_length"]})
 
     for segment in segments:
         parallel_ids = []
@@ -175,6 +176,12 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
+            del parallel['par_pos_end']
+            del parallel['root_pos_end']
+            del parallel['par_segtext']
+            del parallel['root_segtext']
+            del parallel['par_string']
+            del parallel['root_string']            
             parallel['root_filename'] = parallel['root_segnr'][0].split(':')[0]
             parallels_to_be_inserted.append(parallel)
     random.shuffle(parallels_to_be_inserted)
