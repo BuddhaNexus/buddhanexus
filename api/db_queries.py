@@ -42,16 +42,28 @@ LET file_parallels = (
         FILTER fits_collection == true
         SORT p.@sortkey @sortdirection
         LIMIT 50 * @page, 50
+        let root_seg_text = (
+            FOR segnr IN p.root_segnr
+                FOR segment IN segments
+                    FILTER segment._key == segnr
+                    RETURN segment.segtext
+        )
+        let par_segment = (
+            FOR segnr IN p.par_segnr
+                FOR segment IN segments
+                    FILTER segment._key == segnr
+                    RETURN segment.segtext
+        )
         RETURN {
             par_segnr: p.par_segnr, 
             par_offset_beg: p.par_offset_beg, 
             par_offset_end: p.par_offset_end, 
             root_offset_beg: p.root_offset_beg, 
             root_offset_end: p.root_offset_end-1, 
-            par_segment: p.par_segtext, 
+            par_segment: par_segment, 
             file_name: p.id, 
             root_segnr: p.root_segnr, 
-            root_seg_text: p.root_segtext,
+            root_seg_text: root_seg_text,
             par_length: p.par_length, 
             par_pos_beg: p.par_pos_beg,
             score: p.score
