@@ -178,7 +178,6 @@ async def get_table_view(
 
 ):
     try:
-        print("CURRENT SORTING METHOD",sort_method)
         sort_key = ''
         sort_direction = 'DESC'
         if sort_method == 'position':
@@ -328,8 +327,6 @@ async def search_file_text_segments(file_name: str, search_string: str):
             batchSize=100000,
             bindVars={"filename": file_name, "search_string": "%"+search_string+"%"},
         )
-        print("FILE NAME", file_name)
-        print("SEARCH STRING", search_string)
         return {"result": text_segments_query_result.result}
     except DocumentNotFoundError as e:
         print(e)
