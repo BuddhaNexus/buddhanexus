@@ -22,7 +22,6 @@ from utils import (
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
-
 def load_segment_data_from_menu_files(root_url: str, threads: int):
     for language in DEFAULT_LANGS:
         with open(f"../data/{language}-files.json") as f:
@@ -93,7 +92,7 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                     else:
                         segmentnr_parallel_ids_dic[segmentnr].append(parallel["id"])
                         
-            if parallel and parallel["par_segnr"]:
+            if parallel["par_segnr"]:
                 collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
                 parallel_total_list.append({collection_key.group():parallel["root_length"]})
 
