@@ -254,6 +254,7 @@ def load_menu_category(menu_category, category_count, language, db):
     doc.set(menu_category)
     doc["language"] = language
     doc["categorynr"] = category_count
+    db_collection.ensureHashIndex(['category'], unique = False)
     try:
         doc.save()
     except CreationError as e:
