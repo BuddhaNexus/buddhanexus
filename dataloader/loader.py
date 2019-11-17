@@ -22,7 +22,6 @@ from utils import (
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
-
 def load_segment_data_from_menu_files(root_url: str, threads: int):
     for language in DEFAULT_LANGS:
         with open(f"../data/{language}-files.json") as f:
@@ -93,9 +92,10 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                     else:
                         segmentnr_parallel_ids_dic[segmentnr].append(parallel["id"])
                         
-            if parallel and parallel["par_segnr"]:
+            if parallel["par_segnr"]:
                 collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
-                parallel_total_list.append({collection_key.group():parallel["root_length"]})
+                if collection_key:
+                    parallel_total_list.append({collection_key.group():parallel["root_length"]})
 
     for segment in segments:
         parallel_ids = []
@@ -172,10 +172,17 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     for parallel in json_parallels:
         if isinstance(
             parallel, dict
-        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
+        ):  
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
+            # here we delete some things that we don't need in the DB: 
+            del parallel['par_pos_end']
+            del parallel['root_pos_end']
+            del parallel['par_segtext']
+            del parallel['root_segtext']
+            del parallel['par_string']
+            del parallel['root_string']            
             parallel['root_filename'] = parallel['root_segnr'][0].split(':')[0]
             parallels_to_be_inserted.append(parallel)
     random.shuffle(parallels_to_be_inserted)

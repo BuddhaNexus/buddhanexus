@@ -5,16 +5,16 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
+from urllib.parse import unquote
 from .db_queries import (
     query_file_segments_parallels,
     query_collection_names,
     query_files_for_language,
     query_categories_for_language,
     query_files_for_category,
-    query_text_segments,
     query_text_search,
-    query_parallels_for_left_text,
+    query_text_and_parallels,
+    query_parallels_for_middle_text,
     query_graph_data,
     query_table_view,
     query_all_collections,
@@ -90,11 +90,11 @@ class parallelItem(BaseModel):
     file_name: str
 
 
-@app.post("/parallels-for-left/")
-async def get_parallels_for_root_seg_nr(parallels: parallelItem):
+@app.post("/parallels-for-middle/")
+async def get_parallels_for_middle(parallels: parallelItem):
     language = get_language_from_filename(parallels.file_name)
     query_result = get_db().AQLQuery(
-        query=query_parallels_for_left_text,
+        query=query_parallels_for_middle_text,
         bindVars={
             "parallel_ids": parallels.parallelIDList,
             "score": parallels.score,
@@ -174,9 +174,23 @@ async def get_table_view(
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
     page: int = 0,
-    # "sortmethod"
+    sort_method: str = 'position',
+
 ):
     try:
+        sort_key = ''
+        sort_direction = 'DESC'
+        if sort_method == 'position':
+            sort_key = "root_pos_beg"
+            sort_direction = "ASC"
+        if sort_method == 'quoted-text':
+            sort_key = "par_pos_beg"
+            sort_direction = "ASC"            
+        if sort_method == 'length':
+            sort_key = "root_length"
+        if sort_method == 'length2':
+            sort_key = "par_length"
+
         language = get_language_from_filename(file_name)
         db = get_db()
         query = db.AQLQuery(
@@ -186,6 +200,8 @@ async def get_table_view(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "sortdirection": sort_direction,
+                "sortkey": sort_key,                
                 "limitcollection": get_regex_test(limit_collection, language),
                 "page": page
                 # "sortmethod"
@@ -263,33 +279,33 @@ async def get_categories_for_filter_menu(language: str):
         print("KeyError: ", e)
         raise HTTPException(status_code=400)
 
-
-@app.get("/files/{file_name}/textleft")
-async def get_file_text_segments(file_name: str, active_segment: str = "none"):
+@app.get("/files/{file_name}/textandparallels")
+async def get_file_text_segments_and_parallels(file_name: str,
+                                 active_segment: str = "none",
+                                 score: int = 0,
+                                 par_length: int = 0,
+                                 co_occ: int = 0,
+                                 limit_collection: List[str] = Query([]),):
+    start_int = 0
+    limit = 200
+    if active_segment != 'none':
+        active_segment = unquote(active_segment)
+        start_int = int(active_segment.split(':')[1].split('_')[0]) - 100
+    if start_int < 0:
+        start_int = 0
     try:
         db = get_db()
         text_segments_query_result = db.AQLQuery(
-            query=query_text_segments,
-            batchSize=100000,
-            bindVars={"filename": file_name},
+            query=query_text_and_parallels,
+            bindVars={"filename": file_name,
+                      "limit": limit,
+                      "start_int": start_int,
+                      "score":score,
+                      "parlength":par_length,
+                      "coocc":co_occ,
+                      "limitcollection":limit_collection},
         )
-        # TODO: this needs some comments for explanation and maybe a bit more descriptive names.
-        result = []
-        if active_segment == "none":
-            result = text_segments_query_result.result[:100]
-        else:
-            c = 0
-            for segment in text_segments_query_result.result:
-                if segment["segnr"] == active_segment:
-                    break
-                else:
-                    c += 1
-            beg = c - 100
-            if beg < 0:
-                beg = 0
-            end = c + 100
-            result = text_segments_query_result.result[beg:end]
-        return {"textleft": result}
+        return text_segments_query_result.result[0]
     except DocumentNotFoundError as e:
         print(e)
         raise HTTPException(status_code=404, detail="Item not found")
@@ -311,8 +327,6 @@ async def search_file_text_segments(file_name: str, search_string: str):
             batchSize=100000,
             bindVars={"filename": file_name, "search_string": "%"+search_string+"%"},
         )
-        print("FILE NAME", file_name)
-        print("SEARCH STRING", search_string)
         return {"result": text_segments_query_result.result}
     except DocumentNotFoundError as e:
         print(e)
@@ -338,7 +352,7 @@ async def get_graph_for_file(
         db = get_db()
         query_graph_result = db.AQLQuery(
             query=query_graph_data,
-            batchSize=100000,
+            batchSize=15000,
             bindVars={
                 "filename": file_name,
                 "score": score,
