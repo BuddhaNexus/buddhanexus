@@ -9,7 +9,6 @@ Todo:
 QUERY_FILE_SEGMENTS_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
-
     FOR segmentnr IN file.segmentnrs
         LET seg_parallels = (
             FOR segment IN segments
@@ -34,58 +33,52 @@ FOR file IN files
 """
 
 QUERY_TABLE_VIEW = """
-// get all segment IDs in file 
-// @todo: replace by `file_segments` collection
-LET file_segmentnrs = (
-    FOR file IN files
-        FILTER file._key == @filename
-        RETURN file.segmentnrs
-)[0]
-
-LET file_segments = (
-    FOR segmentnr IN file_segmentnrs
-        FOR segment IN segments
-            FILTER segment._key == segmentnr
-            RETURN segment
-)
-
 LET file_parallels = (
-    FOR segment IN file_segments
-        FOR segment_parallel_id IN segment.parallel_ids
-            FOR p IN parallels
-                FILTER p._key == segment_parallel_id
-                LET collection_filter_test = (
-                    FOR item IN @limitcollection
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-                LET fits_collection = (@limitcollection != []) 
-                    ? POSITION(collection_filter_test, true) 
-                    : true
-                FILTER fits_collection == true
-                FILTER p.score >= @score
-                FILTER p.par_length >= @parlength
-                FILTER p["co-occ"] <= @coocc
-                LIMIT 50 * @page, 50
-                RETURN {
-                    par_segnr: p.par_segnr, 
-                    par_offset_beg: p.par_offset_beg, 
-                    par_offset_end: p.par_offset_end, 
-                    root_offset_beg: p.root_offset_beg, 
-                    root_offset_end: p.root_offset_end-1, 
-                    par_segment: p.par_segtext, 
-                    file_name: p.id, 
-                    root_lang: segment.lang,
-                    root_segnr: p.root_segnr, 
-                    root_seg_text: p.root_segtext,
-                    par_length: p.par_length, 
-                    par_pos_beg: p.par_pos_beg,
-                    score: p.score
-                }
-)
-
+    FOR p IN parallels
+        FILTER p.root_filename == @filename
+        LIMIT 200000 
+        FILTER p.score >= @score
+        FILTER p.par_length >= @parlength
+        FILTER p["co-occ"] <= @coocc
+        LET collection_filter_test = (
+            FOR item IN @limitcollection
+            RETURN REGEX_TEST(p.par_segnr[0], item)
+        )
+        LET fits_collection = (@limitcollection != []) 
+            ? POSITION(collection_filter_test, true) 
+            : true
+        FILTER fits_collection == true
+        SORT p.@sortkey @sortdirection
+        LIMIT 50 * @page, 50
+        let root_seg_text = (
+            FOR segnr IN p.root_segnr
+                FOR segment IN segments
+                    FILTER segment._key == segnr
+                    RETURN segment.segtext
+        )
+        let par_segment = (
+            FOR segnr IN p.par_segnr
+                FOR segment IN segments
+                    FILTER segment._key == segnr
+                    RETURN segment.segtext
+        )
+        RETURN {
+            par_segnr: p.par_segnr, 
+            par_offset_beg: p.par_offset_beg, 
+            par_offset_end: p.par_offset_end, 
+            root_offset_beg: p.root_offset_beg, 
+            root_offset_end: p.root_offset_end-1, 
+            par_segment: par_segment, 
+            file_name: p.id, 
+            root_segnr: p.root_segnr, 
+            root_seg_text: root_seg_text,
+            par_length: p.par_length, 
+            par_pos_beg: p.par_pos_beg,
+            score: p.score
+        }
+    )
 RETURN {
-    parallels: file_parallels,
-    parallel_count: COUNT(file_parallels)
+    parallels: file_parallels
 }
 """
 
@@ -131,17 +124,6 @@ FOR category IN menu_categories
             categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),categorynamepart)}
 """
 
-QUERY_TEXT_SEGMENTS = """
-FOR file IN files
-    FILTER file._key == @filename
-    FOR segmentnr IN file.segmentnrs
-        FOR segment in segments
-            FILTER segment._key == segmentnr
-            RETURN { segnr: segment.segnr,
-                     segtext: segment.segtext,
-                     parallel_ids: segment.parallel_ids }
-"""
-
 QUERY_TEXT_SEARCH = """
 FOR file IN files
     FILTER file._key == @filename
@@ -154,21 +136,82 @@ FOR file IN files
                      parallel_ids: segment.parallel_ids }
 """
 
-QUERY_PARALLELS_FOR_LEFT_TEXT = """
-RETURN (
-    FOR parallel_id IN @parallel_ids
+QUERY_TEXT_AND_PARALLELS = """
+FOR file IN files
+    FILTER file._key == @filename
+    let segments = (
+        FOR segmentnr IN file.segmentnrs
+            LIMIT @start_int, @limit
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                RETURN { segnr: segment.segnr,
+                         segtext: segment.segtext,
+                         parallel_ids: segment.parallel_ids }
+        )
+
+let parallel_ids = UNIQUE(FLATTEN(
+     FOR segment in segments
+          RETURN segment.parallel_ids
+))
+
+let parallels =  (
+    FOR parallel_id IN parallel_ids
         FOR p IN parallels 
             FILTER p._key == parallel_id
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
             LET filtertest = (
                 FOR item IN @limitcollection
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
                 LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
-                FILTER filternr == true
-                FILTER p.score >= @score
-                FILTER p.par_length >= @parlength
-                FILTER p["co-occ"] <= @coocc
-                RETURN p
+                FILTER filternr == true     
+                RETURN { root_offset_beg: p.root_offset_beg,
+                         root_offset_end: p.root_offset_end,
+                         root_segnr : p.root_segnr,
+                         id: p._key }
+    )
+RETURN { textleft: segments,
+         parallel_ids: parallel_ids,
+         parallels: parallels}
+"""
+
+QUERY_PARALELLS_FOR_MIDDLE_TEXT = """
+RETURN (
+    FOR parallel_id IN @parallel_ids
+        FOR p IN parallels 
+            FILTER p._key == parallel_id
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
+            LET filtertest = (
+                FOR item IN @limitcollection
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+                LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                FILTER filternr == true     
+                let par_segtext = (
+                    FOR segnr IN p.par_segnr
+                        FOR segment IN segments
+                            FILTER segment._key == segnr
+                            RETURN segment.segtext
+                   )
+                RETURN {
+                    par_segnr: p.par_segnr, 
+                    par_offset_beg: p.par_offset_beg, 
+                    par_offset_end: p.par_offset_end, 
+                    root_offset_beg: p.root_offset_beg, 
+                    root_offset_end: p.root_offset_end-1, 
+                    par_segtext: par_segtext, 
+                    file_name: p.id, 
+                    root_segnr: p.root_segnr, 
+                    par_length: p.par_length, 
+                    par_pos_beg: p.par_pos_beg,
+                    score: p.score
+                }
+
+
 )
 """
 
@@ -210,7 +253,6 @@ FOR p IN parallels
         COLLECT WITH COUNT INTO length
 RETURN length
 """
-
 
 QUERY_CATEGORIES_PER_COLLECTION = """
 RETURN MERGE(
