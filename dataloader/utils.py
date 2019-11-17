@@ -65,7 +65,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
         return True
     if file_lang == LANG_CHINESE and file_name.startswith("T31_T0004"):
         return True
-    if file_lang == LANG_TIBETAN and file_name.startswith("T06"):
+    elif file_lang == LANG_TIBETAN and file_name.startswith("T06TD402"):
         return True
     else:
         return False
