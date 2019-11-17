@@ -1,4 +1,12 @@
-query_file_segments_parallels = """
+"""
+Contains all database queries used by buddhanexus.
+
+Todo:
+- When this gets too big (>300 lines), consider splitting this into
+  several files inside a "queries" directory.
+"""
+
+QUERY_FILE_SEGMENTS_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
 
@@ -25,7 +33,7 @@ FOR file IN files
             { "segmentnr": segmentnr }
 """
 
-query_table_view = """
+QUERY_TABLE_VIEW = """
 // get all segment IDs in file 
 // @todo: replace by `file_segments` collection
 LET file_segmentnrs = (
@@ -81,7 +89,7 @@ RETURN {
 }
 """
 
-query_collection_names = """
+QUERY_COLLECTION_NAMES = """
 RETURN (
     FOR category IN menu_categories
         FILTER category.language == @language
@@ -92,7 +100,7 @@ RETURN (
 )
 """
 
-query_files_for_language = """
+QUERY_FILES_FOR_LANGUAGE = """
 FOR category IN menu_categories
     FILTER category.language == @language
     FOR catfile IN category.files
@@ -105,7 +113,7 @@ FOR category IN menu_categories
                     category: file.category}
 """
 
-query_files_for_category = """
+QUERY_FILES_FOR_CATEGORY = """
 FOR category IN menu_categories
     FILTER category.language == @language
     SORT category.categorynr
@@ -114,7 +122,7 @@ FOR category IN menu_categories
                 categoryname: UPPER(catfile)}
 """
 
-query_categories_for_language = """
+QUERY_CATEGORIES_FOR_LANGUAGE = """
 FOR category IN menu_categories
     FILTER category.language == @language
     SORT category.categorynr
@@ -123,7 +131,7 @@ FOR category IN menu_categories
             categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),categorynamepart)}
 """
 
-query_text_segments = """
+QUERY_TEXT_SEGMENTS = """
 FOR file IN files
     FILTER file._key == @filename
     FOR segmentnr IN file.segmentnrs
@@ -134,7 +142,7 @@ FOR file IN files
                      parallel_ids: segment.parallel_ids }
 """
 
-query_text_search = """
+QUERY_TEXT_SEARCH = """
 FOR file IN files
     FILTER file._key == @filename
     FOR segmentnr IN file.segmentnrs
@@ -146,7 +154,7 @@ FOR file IN files
                      parallel_ids: segment.parallel_ids }
 """
 
-query_parallels_for_left_text = """
+QUERY_PARALLELS_FOR_LEFT_TEXT = """
 RETURN (
     FOR parallel_id IN @parallel_ids
         FOR p IN parallels 
@@ -164,7 +172,7 @@ RETURN (
 )
 """
 
-query_graph_data = """
+QUERY_GRAPH_DATA = """
 LET target = FLATTEN(
     FOR targetitem IN @targetcollection
         FOR collection IN menu_collections
@@ -186,7 +194,7 @@ FOR p IN parallels
     RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length}
 """
 
-query_total_numbers = """
+QUERY_TOTAL_NUMBERS = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
     LIMIT 15000
@@ -204,7 +212,7 @@ RETURN length
 """
 
 
-query_categories_per_collection = """
+QUERY_CATEGORIES_PER_COLLECTION = """
 RETURN MERGE(
     FOR collection IN menu_collections
         FILTER collection._key == @searchterm
@@ -217,7 +225,7 @@ RETURN MERGE(
 )
 """
 
-query_sorted_category_list = """
+QUERY_SORTED_CATEGORY_LIST = """
 FOR target IN @selected
     FOR collection IN menu_collections
         FILTER collection._key == target
@@ -230,18 +238,20 @@ FOR target IN @selected
                 RETURN { [menucategory.category] : catname }
 """
 
-query_files_per_category = """
+QUERY_FILES_PER_CATEGORY = """
 FOR category IN menu_categories
     FILTER category._key == @searchterm
     SORT category.categorynr
     FOR catfile IN category.files
         FOR file IN files
             FILTER file._key == catfile
-            RETURN { filename: file._key,
-                     totallengthcount: file.totallengthcount }
+            RETURN { 
+                filename: file._key,
+                totallengthcount: file.totallengthcount 
+            }
 """
 
-query_all_collections = """
+QUERY_ALL_COLLECTIONS = """
 FOR menu IN menu_collections
     RETURN { collectionname : menu.collection,
              collectionlanguage: menu.language,

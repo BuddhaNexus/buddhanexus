@@ -65,6 +65,14 @@ clean-db-segment-data:
 list-tasks:
 	@docker exec -t dataloader bash -c "invoke --list"
 
-# Enter the docker container
 enter-dataloader:
 	@docker exec -ti dataloader bash
+
+enter-api:
+	@docker exec -ti fastapi bash
+
+lint-dataloader:
+	@docker exec -t dataloader bash -c 'pylint ./*.py'
+
+lint-api:
+	@docker exec -t fastapi bash -c 'pylint ./api/*.py'
