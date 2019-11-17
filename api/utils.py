@@ -1,5 +1,7 @@
 import re
-from time import strftime, gmtime
+from datetime import datetime, timedelta
+from time import mktime
+from wsgiref.handlers import format_date_time
 
 
 def get_language_from_filename(filename):
@@ -11,6 +13,7 @@ def get_language_from_filename(filename):
         return "pli"
 
 
+# TODO: Give this method a more specific name
 def get_regex_test(limitcollection, language):
     teststring = []
     if language == "tib" or language == "chn":
@@ -27,10 +30,3 @@ def get_regex_test(limitcollection, language):
 
 def number_exists(s):
     return any(i.isdigit() for i in s)
-
-
-def get_future_date() -> str:
-    """
-    :return: RFC1123 formatted string representing a date sometime in year 2099.
-    """
-    return strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime(4095088747))
