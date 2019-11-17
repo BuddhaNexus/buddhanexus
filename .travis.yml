@@ -6,5 +6,5 @@ install:
   - pip install -r setup/requirements-fastapi.txt
   - pip install pylint
 script:
-  - pylint ./api/**/*.py
+  - pylint ./api/*.py --disable=fixme,bad-continuation,too-many-arguments,too-few-public-methods
 #  - pylint ./dataloader/**/*.py --disable=fixme,bad-continuation,too-many-arguments  TODO: re-enable
