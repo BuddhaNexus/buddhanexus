@@ -273,14 +273,12 @@ FOR target IN @selected
 """
 
 query_files_per_category = """
-FOR category IN menu_categories
-    FILTER category._key == @searchterm
-    SORT category.categorynr
-    FOR catfile IN category.files
-        FOR file IN files
-            FILTER file._key == catfile
-            RETURN { filename: file._key,
-                     totallengthcount: file.totallengthcount }
+FOR file IN files_parallelcount
+    FILTER file.category == @searchterm
+    FILTER file.language == @language
+    SORT file.filenr
+    RETURN { filename: file._key,
+             totallengthcount: file.totallengthcount }
 """
 
 query_all_collections = """

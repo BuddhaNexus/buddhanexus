@@ -12,6 +12,7 @@ from constants import (
     COLLECTION_FILES,
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
+    COLLECTION_FILES_PARALLELCOUNT,
 )
 from loader import (
     load_segment_data_from_menu_files,
@@ -74,7 +75,7 @@ def clean_segment_collections(c):
     :param c: invoke.py context object
     """
     db = get_db_connection()[DB_NAME]
-    for name in (COLLECTION_SEGMENTS, COLLECTION_PARALLELS, COLLECTION_FILES):
+    for name in (COLLECTION_SEGMENTS, COLLECTION_PARALLELS, COLLECTION_FILES, COLLECTION_FILES_PARALLELCOUNT):
         db[name].empty()
     print("segment collections cleaned.")
 

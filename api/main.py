@@ -445,7 +445,7 @@ async def get_graph_for_file(
 
         # check if the search is for a catagory (i.e. T06) or for a collection (i.e. Tengyur)
         if searchtype == "category":
-            all_files = get_files_per_category_from_db(language+"_"+searchterm)
+            all_files = get_files_per_category_from_db(searchterm, language)
 
             for filename in all_files:
                 parallel_count = filename["totallengthcount"]
@@ -467,7 +467,7 @@ async def get_graph_for_file(
             )
 
             for cat, catname in query_collection_list.result[0].items():
-                all_files = get_files_per_category_from_db(language+"_"+cat)
+                all_files = get_files_per_category_from_db(cat, language)
 
                 total_parlist = {}
                 for filename in all_files:

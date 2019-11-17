@@ -2,6 +2,7 @@ import gzip
 import io
 import json
 import os
+import re
 
 import urlfetch
 from pyArango.connection import Connection
@@ -105,3 +106,12 @@ def get_segments_and_parallels_from_gzipped_local_file(file_path: str) -> list:
     except OSError as os_error:
         print(f"Could not load the gzipped local file {file_path}. Error: ", os_error)
         return [None, None]
+
+
+def get_language_from_filename(filename):
+    if re.search(r"(TD|acip|kl[0-9])", filename):
+        return "tib"
+    elif re.search(r"(_[TX])", filename):
+        return "chn"
+    else:
+        return "pli"

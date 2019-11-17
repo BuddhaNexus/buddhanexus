@@ -1,7 +1,7 @@
 import os
 import re
 import random
-from collections import Counter
+from collections import Counter, OrderedDict
 from pyArango.connection import *
 from constants import (
     DEFAULT_LANGS,
@@ -10,6 +10,7 @@ from constants import (
     COLLECTION_FILES,
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
+    COLLECTION_FILES_PARALLELCOUNT,
 )
 from models_dataloader import Parallel, Segment, MenuItem
 from utils import (
@@ -18,6 +19,7 @@ from utils import (
     should_download_file,
     get_segments_and_parallels_from_gzipped_remote_file,
     get_segments_and_parallels_from_gzipped_local_file,
+    get_language_from_filename
 )
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
@@ -66,9 +68,10 @@ def load_segments_and_parallels_data_from_menu_file(
     segmentnrs = []
     totallengthcount = {}
     if segments:
-        segmentnrs, totallengthcount = load_segments(segments, parallels, db)
+        segmentnrs, totallengthcount, totalfilelengthcount = load_segments(segments, parallels, db)
 
-    load_files_collection(menu_file_json, segmentnrs, totallengthcount, db)
+    load_files_collection(menu_file_json, segmentnrs, db)
+    load_files_parallelcounts(menu_file_json, totallengthcount, totalfilelengthcount, db)
 
     if parallels: 
         load_parallels(parallels, db)
@@ -79,6 +82,7 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
     segmentnrs = []
     segmentnr_parallel_ids_dic = {}
     parallel_total_list = []
+    parallel_file_total_list = []
     collection_key = ""
 
     for parallel in all_parallels:
@@ -96,6 +100,8 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                 collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
                 if collection_key:
                     parallel_total_list.append({collection_key.group():parallel["root_length"]})
+                parallel_file_key = parallel["par_segnr"][0].split(":")[0]
+                parallel_file_total_list.append({parallel_file_key:parallel["root_length"]})
 
     for segment in segments:
         parallel_ids = []
@@ -110,7 +116,11 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
     for totalcount in parallel_total_list:
         totallengthcount += Counter(totalcount)
 
-    return segmentnrs, totallengthcount
+    totalfilelengthcount = Counter()
+    for totalparallelcount in parallel_file_total_list:
+        totalfilelengthcount += Counter(totalparallelcount)
+
+    return segmentnrs, totallengthcount, totalfilelengthcount
 
 
 def load_segment(
@@ -145,15 +155,34 @@ def load_segment(
     return json_segment["segnr"]
 
 
+def load_files_parallelcounts(
+    file: MenuItem, totallengthcount: list, totalfilelengthcount: list, connection: Connection
+):
+    collection = connection[COLLECTION_FILES_PARALLELCOUNT]
+    doc = collection.createDocument()
+    doc._key = file["filename"]
+    doc["category"] = file["category"]
+    doc["language"] = get_language_from_filename(file["filename"])
+    doc["filenr"] = file["filenr"]
+    doc["totallengthcount"] = totallengthcount
+    sorted_totalfilelengthcount = sorted(totalfilelengthcount.items(), key=lambda kv: kv[1], reverse=True)
+    doc["totalfilelengthcount"] = OrderedDict(sorted_totalfilelengthcount)
+    doc["totallength"] = sum(totallengthcount.values())
+    collection.ensureHashIndex(['category'], unique = False)
+    try:
+        doc.save()
+    except CreationError as e:
+        print("Could not load file. Error: ", e)
+
+
 def load_files_collection(
-    file: MenuItem, segmentnrs: list, totallengthcount: list, connection: Connection
+    file: MenuItem, segmentnrs: list, connection: Connection
 ):
     collection = connection[COLLECTION_FILES]
     doc = collection.createDocument()
     doc._key = file["filename"]
     doc.set(file)
     doc["segmentnrs"] = segmentnrs
-    doc["totallengthcount"] = totallengthcount
     try:
         doc.save()
     except CreationError as e:
