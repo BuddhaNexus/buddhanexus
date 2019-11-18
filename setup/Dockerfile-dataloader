@@ -4,6 +4,8 @@ RUN mkdir -p /opt/buddhanexus
 WORKDIR /opt/buddhanexus
 COPY */requirements-dataloader.txt requirements.txt
 RUN pip install -r requirements.txt
+RUN pip install -U setuptools
+RUN pip install -U pylint
 COPY * /opt/buddhanexus/
 
 # Keep container running

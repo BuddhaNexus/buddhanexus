@@ -1,12 +1,20 @@
-from .db_queries import query_files_per_category
+"""
+Contains façade functions that return data queried from the database
+"""
+
+from .db_queries import QUERY_FILES_PER_CATEGORY
 from .db_connection import get_db
 
-def get_files_per_category_from_db(search_term):
+
+def get_files_per_category_from_db(category_key):
+    """
+    :param category_key: The category ID.
+    :return: List of file names
+    :rtype: object
+    """
     files_per_category = get_db().AQLQuery(
-        query=query_files_per_category,
+        query=QUERY_FILES_PER_CATEGORY,
         batchSize=100000,
-        bindVars={
-            "searchterm": search_term,
-        },
+        bindVars={"searchterm": category_key},
     )
     return files_per_category.result
