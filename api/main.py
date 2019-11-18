@@ -14,7 +14,7 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
-from models_api import ParallelsCollection
+from .models_api import ParallelsCollection
 from .db_queries import (
     QUERY_TEXT_SEARCH,
     QUERY_TEXT_AND_PARALLELS,
