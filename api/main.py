@@ -155,12 +155,10 @@ async def get_segments_for_file(
         )
         collection_keys = []
         segments_result = []
-        parallel_count = 0
         for segment in segments_query.result:
             if "parallels" not in segment:
                 continue
             for parallel in segment["parallels"]:
-                parallel_count += 1
                 for seg_nr in parallel:
                     collection_key = re.search(COLLECTION_PATTERN, seg_nr)
                     if collection_key and collection_key.group() not in collection_keys:
@@ -176,7 +174,6 @@ async def get_segments_for_file(
                 },
             ).result[0],
             "segments": segments_result,
-            "parallel_count": parallel_count,
         }
 
     except DocumentNotFoundError as error:
