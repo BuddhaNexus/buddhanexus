@@ -410,14 +410,12 @@ async def get_graph_for_file(
         },
     )
 
-    parallel_count = 0
     collection_keys = []
     total_collection_dict = {}
 
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
-        parallel_count += count_this_parallel
         collection_key = re.search(COLLECTION_PATTERN, parallel["textname"])
 
         if not collection_key:
@@ -453,7 +451,6 @@ async def get_graph_for_file(
     # returns a list of the data as needed by Google Graphs
     return {
         "graphdata": list(map(list, parallel_graph_name_list.items())),
-        "parallel_count": parallel_count,
     }
 
 

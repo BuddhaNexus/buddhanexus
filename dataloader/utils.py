@@ -12,7 +12,7 @@ from pyArango.connection import Connection
 from tqdm import trange
 from joblib import Parallel as ParallelJobRunner, delayed
 
-from .constants import DB_NAME, LANG_PALI, LANG_TIBETAN, LANG_CHINESE
+from constants import DB_NAME, LANG_PALI, LANG_TIBETAN, LANG_CHINESE
 
 
 def get_db_connection() -> Connection:
@@ -63,7 +63,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     """
     if file_lang == LANG_PALI and file_name.startswith("mn"):
         return True
-    if file_lang == LANG_CHINESE and file_name.startswith("T31_T0004"):
+    if file_lang == LANG_CHINESE and file_name.startswith("T01_T000"):
         return True
     elif file_lang == LANG_TIBETAN and file_name.startswith("T06TD402"):
         return True
