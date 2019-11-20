@@ -23,6 +23,7 @@ from .db_queries import (
     QUERY_FILES_FOR_LANGUAGE,
     QUERY_FILE_SEGMENTS_PARALLELS,
     QUERY_COLLECTION_NAMES,
+    QUERY_SEGMENT_COUNT,
     QUERY_FILES_FOR_CATEGORY,
     QUERY_CATEGORIES_FOR_LANGUAGE,
     QUERY_GRAPH_DATA,
@@ -325,7 +326,23 @@ async def get_file_text_segments_and_parallels(
     limit = 200
     if active_segment != "none":
         active_segment = unquote(active_segment)
-        start_int = int(active_segment.split(":")[1].split("_")[0]) - 100
+        try:
+            text_segment_count_query_result = get_db().AQLQuery(
+                query=QUERY_SEGMENT_COUNT,
+                bindVars={
+                    "segmentnr": active_segment,
+                },
+            )
+            start_int = text_segment_count_query_result.result[0] - 100
+        except DocumentNotFoundError as error:
+            print(error)
+            raise HTTPException(status_code=404, detail="Item not found")
+        except AQLQueryError as error:
+            print("AQLQueryError: ", error)
+            raise HTTPException(status_code=400, detail=error.errors)
+        except KeyError as error:
+            print("KeyError: ", error)
+            raise HTTPException(status_code=400)
     if start_int < 0:
         start_int = 0
     try:
@@ -334,7 +351,7 @@ async def get_file_text_segments_and_parallels(
             bindVars={
                 "filename": file_name,
                 "limit": limit,
-                "start_int": start_int,
+                "startint": start_int,
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
