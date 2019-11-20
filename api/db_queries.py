@@ -272,19 +272,6 @@ RETURN FLATTEN(
             )
 """
 
-QUERY_SORTED_CATEGORY_LIST = """
-FOR target IN @selected
-    FOR collection IN menu_collections
-        FILTER collection._key == target
-        FOR category IN collection.categories
-            FOR menucategory IN menu_categories
-                FILTER menucategory.category == category
-                FILTER menucategory.language == @language
-                SORT menucategory.categorynr
-                LET catname = SPLIT(menucategory.categoryname,["—","("])[0]
-                RETURN { [menucategory.category] : catname }
-"""
-
 QUERY_FILES_PER_CATEGORY = """
 FOR file IN files_parallelcount
     FILTER file.category == @searchterm

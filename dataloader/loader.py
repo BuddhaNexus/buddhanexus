@@ -19,8 +19,7 @@ from utils import (
     execute_in_parallel,
     should_download_file,
     get_segments_and_parallels_from_gzipped_remote_file,
-    get_segments_and_parallels_from_gzipped_local_file,
-    get_language_from_filename
+    get_segments_and_parallels_from_gzipped_local_file
 )
 
 import sys
@@ -30,6 +29,7 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.db_actions import get_files_per_category_from_db
 from api.db_connection import get_db
+from api.utils import get_language_from_filename
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 

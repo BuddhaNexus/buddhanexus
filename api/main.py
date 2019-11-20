@@ -27,12 +27,10 @@ from .db_queries import (
     QUERY_FILES_FOR_CATEGORY,
     QUERY_CATEGORIES_FOR_LANGUAGE,
     QUERY_GRAPH_DATA,
-    QUERY_SORTED_CATEGORY_LIST,
     QUERY_COLLECTION_TOTALS,
     QUERY_ALL_COLLECTIONS,
     QUERY_TOTAL_NUMBERS,
 )
-from .db_actions import get_files_per_category_from_db
 from .utils import get_language_from_filename, get_collection_files_regex
 from .db_connection import get_collection, get_db
 
@@ -469,7 +467,6 @@ async def get_graph_for_file(
 
 
 @APP.get("/visual/{searchterm}")
-# pylint: disable=too-many-locals,too-many-branches,too-many-nested-blocks
 async def get_visual_view_for_file(
     searchterm: str, language: str, selected: List[str] = Query([])
 ):
@@ -477,7 +474,6 @@ async def get_visual_view_for_file(
     Endpoint for visual view
     """
     database = get_db()
-    searchtype = "category"
     if re.search("^[A-Z][a-z]+$", searchterm):
         searchterm = language + "_" + searchterm
 
