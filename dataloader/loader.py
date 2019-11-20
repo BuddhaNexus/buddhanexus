@@ -11,6 +11,7 @@ from constants import (
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
     COLLECTION_FILES_PARALLELCOUNT,
+    COLLECTION_CATEGORIES_PARALLELCOUNT,
 )
 from models_dataloader import Parallel, Segment, MenuItem
 from utils import (
@@ -21,6 +22,14 @@ from utils import (
     get_segments_and_parallels_from_gzipped_local_file,
     get_language_from_filename
 )
+
+import sys
+PACKAGE_PARENT = '..'
+SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
+from api.db_actions import get_files_per_category_from_db
+from api.db_connection import get_db
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
@@ -275,3 +284,99 @@ def load_all_menu_categories():
                 load_menu_category(category, category_count, language, db)
                 category_count += 1
             print("✓")
+
+
+def calculate_parallel_totals():
+    database = get_db()
+    QUERY_CATEGORIES_PER_COLLECTION = """
+        FOR collection IN menu_collections
+            LET language = collection.language
+            LET categorylist = (
+            FOR col_category IN collection.categories
+                FOR category IN menu_categories
+                    FILTER category.category == col_category
+                    FILTER category.language == language
+                    SORT category.categorynr
+                    LET catname = SPLIT(category.categoryname,["—","("])[0]
+                    RETURN {[category["category"]]: catname }
+                    )
+            RETURN { collection: collection._key,
+                     language: language,
+                     categories: categorylist }
+    """
+    query_collection_list = database.AQLQuery(
+        query=QUERY_CATEGORIES_PER_COLLECTION,
+    )
+
+    for sourcecol in query_collection_list.result:
+        language = sourcecol["language"]
+        sourcecollection = sourcecol["collection"]
+        sourcecol_dict = {}
+        for sourcecat in sourcecol["categories"]:
+            sourcecol_dict.update(sourcecat)
+
+        language_collection_list = get_collection_list_for_language(language, query_collection_list.result)
+
+        for targetcollection in language_collection_list:
+            selected_category_dict = get_categories_for_language_collection(targetcollection, query_collection_list.result)
+
+            counted_parallels = []
+            for cat, catname in sourcecol_dict.items():
+                all_files = get_files_per_category_from_db(cat, language)
+
+                total_parlist = {}
+                for filename in all_files:
+                    parallel_count = filename["totallengthcount"]
+                    for categoryname in selected_category_dict:
+                        if categoryname not in total_parlist.keys():
+                            if categoryname not in parallel_count.keys():
+                                total_parlist[categoryname] = 0
+                            else:
+                                total_parlist[categoryname] = parallel_count[categoryname]
+                        elif categoryname in parallel_count.keys():
+                            total_parlist[categoryname] += parallel_count[categoryname]
+
+                for key, value in total_parlist.items():
+                    counted_parallels.append(
+                        [
+                            "L_" + cat + " " + catname,
+                            "R_" + key + " " + selected_category_dict[key],
+                            value,
+                        ]
+                    )
+
+            load_categories_parallelcounts(sourcecollection, targetcollection, counted_parallels, get_database())
+
+
+def load_categories_parallelcounts(
+    sourcename: str, targetname: str, totallengthcount: list, connection: Connection
+):
+    collection = connection[COLLECTION_CATEGORIES_PARALLELCOUNT]
+    doc = collection.createDocument()
+    doc._key = sourcename+"_"+targetname
+    doc["sourcecollection"] = sourcename
+    doc["targetcollection"] = targetname
+    doc["totallengthcount"] = totallengthcount
+    collection.ensureHashIndex(['sourcecollection'], unique = False)
+    try:
+        doc.save()
+    except CreationError as e:
+        print("Could not load file. Error: ", e)
+
+
+def get_collection_list_for_language(language, allcols):
+    total_collection_list = []
+    for col in allcols:
+        if col["language"] == language:
+            total_collection_list.append(col["collection"])
+    return total_collection_list
+
+
+def get_categories_for_language_collection(language_collection, targetcol):
+    for target in targetcol:
+        if target["collection"] == language_collection:
+            targetcol_dict = {}
+            for targetcat in target["categories"]:
+                targetcol_dict.update(targetcat)
+
+            return targetcol_dict

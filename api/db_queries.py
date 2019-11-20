@@ -143,7 +143,6 @@ FOR segment IN segments
 
 """
 
-
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
@@ -263,17 +262,14 @@ FOR p IN parallels
 RETURN length
 """
 
-QUERY_CATEGORIES_PER_COLLECTION = """
-RETURN MERGE(
-    FOR collection IN menu_collections
-        FILTER collection._key == @searchterm
-        FOR col_category IN collection.categories
-            FOR category IN menu_categories
-                FILTER category.category == col_category
-                FILTER category.language == @language
-                LET catname = SPLIT(category.categoryname,["—","("])[0]
-                RETURN { [category["category"]]: catname }
-)
+QUERY_COLLECTION_TOTALS = """
+RETURN FLATTEN(
+    FOR target in @selected
+        FOR col IN categories_parallelcount
+            FILTER col.sourcecollection == @sourcecollection
+            FILTER col.targetcollection == target
+            RETURN col.totallengthcount
+            )
 """
 
 QUERY_SORTED_CATEGORY_LIST = """

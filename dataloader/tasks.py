@@ -13,11 +13,13 @@ from constants import (
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
     COLLECTION_FILES_PARALLELCOUNT,
+    COLLECTION_CATEGORIES_PARALLELCOUNT,
 )
 from loader import (
     load_segment_data_from_menu_files,
     load_all_menu_collections,
     load_all_menu_categories,
+    calculate_parallel_totals,
 )
 from utils import get_db_connection
 
@@ -75,7 +77,7 @@ def clean_segment_collections(c):
     :param c: invoke.py context object
     """
     db = get_db_connection()[DB_NAME]
-    for name in (COLLECTION_SEGMENTS, COLLECTION_PARALLELS, COLLECTION_FILES, COLLECTION_FILES_PARALLELCOUNT):
+    for name in (COLLECTION_SEGMENTS, COLLECTION_PARALLELS, COLLECTION_FILES, COLLECTION_FILES_PARALLELCOUNT, COLLECTION_CATEGORIES_PARALLELCOUNT):
         db[name].empty()
     print("segment collections cleaned.")
 
@@ -121,3 +123,13 @@ def load_menu_files(c):
     load_all_menu_categories()
 
     print("Menu data loading completed.")
+
+
+@task
+def calculate_collection_totals(c):
+    print(
+        "Calculating collection totals from loaded data"
+    )
+    calculate_parallel_totals()
+
+    print("Parallel totals calculation completed.")

@@ -28,7 +28,7 @@ from .db_queries import (
     QUERY_CATEGORIES_FOR_LANGUAGE,
     QUERY_GRAPH_DATA,
     QUERY_SORTED_CATEGORY_LIST,
-    QUERY_CATEGORIES_PER_COLLECTION,
+    QUERY_COLLECTION_TOTALS,
     QUERY_ALL_COLLECTIONS,
     QUERY_TOTAL_NUMBERS,
 )
@@ -482,17 +482,18 @@ async def get_visual_view_for_file(
     if re.search("^[A-Z][a-z]+$", searchterm):
         searchtype = "collection"
 
-    # get a sorted list of categories to get the results in the right order
-    query_full_selected_category_dict = database.AQLQuery(
-        query=QUERY_SORTED_CATEGORY_LIST,
-        bindVars={"language": language, "selected": selected},
-    )
-    selected_category_dict = {}
-    for category in query_full_selected_category_dict.result:
-        selected_category_dict.update(category)
-
     # check if the search is for a catagory (i.e. T06) or for a collection (i.e. Tengyur)
     if searchtype == "category":
+        # get a sorted list of categories to get the results in the right order
+        query_full_selected_category_dict = database.AQLQuery(
+            query=QUERY_SORTED_CATEGORY_LIST,
+            bindVars={"language": language, "selected": selected},
+        )
+        selected_category_dict = {}
+        for category in query_full_selected_category_dict.result:
+            selected_category_dict.update(category)
+
+
         all_files = get_files_per_category_from_db(searchterm, language)
 
         for filename in all_files:
@@ -525,33 +526,11 @@ async def get_visual_view_for_file(
     # is iterated over and the results for each file added.
     elif searchtype == "collection":
         query_collection_list = database.AQLQuery(
-            query=QUERY_CATEGORIES_PER_COLLECTION,
-            bindVars={"searchterm": language + "_" + searchterm, "language": language},
+            query=QUERY_COLLECTION_TOTALS,
+            bindVars={"sourcecollection": language + "_" + searchterm, "selected": selected},
         )
 
-        for cat, catname in query_collection_list.result[0].items():
-            all_files = get_files_per_category_from_db(cat, language)
-
-            total_parlist = {}
-            for filename in all_files:
-                parallel_count = filename["totallengthcount"]
-                for categoryname in selected_category_dict:
-                    if categoryname not in total_parlist.keys():
-                        if categoryname not in parallel_count.keys():
-                            total_parlist[categoryname] = 0
-                        else:
-                            total_parlist[categoryname] = parallel_count[categoryname]
-                    elif categoryname in parallel_count.keys():
-                        total_parlist[categoryname] += parallel_count[categoryname]
-
-            for key, value in total_parlist.items():
-                counted_parallels.append(
-                    [
-                        "L_" + cat + " " + catname,
-                        "R_" + key + " " + selected_category_dict[key],
-                        value,
-                    ]
-                )
+        counted_parallels = query_collection_list.result[0]
 
     return {"graphdata": counted_parallels}
 
