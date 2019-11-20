@@ -136,13 +136,20 @@ FOR file IN files
                      segtext: segment.segtext,
                      parallel_ids: segment.parallel_ids }
 """
+QUERY_SEGMENT_COUNT = """
+FOR segment IN segments
+    FILTER segment._key == @segmentnr
+    RETURN segment.count
+
+"""
+
 
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
     let segments = (
         FOR segmentnr IN file.segmentnrs
-            LIMIT @start_int, @limit
+            LIMIT @startint, @limit
             FOR segment in segments
                 FILTER segment._key == segmentnr
                 RETURN { segnr: segment.segnr,
