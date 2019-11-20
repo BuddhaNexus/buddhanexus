@@ -333,7 +333,7 @@ async def get_file_text_segments_and_parallels(
                     "segmentnr": active_segment,
                 },
             )
-            start_int =  text_segment_count_query_result.result[0] - 100
+            start_int = text_segment_count_query_result.result[0] - 100
         except DocumentNotFoundError as error:
             print(error)
             raise HTTPException(status_code=404, detail="Item not found")
