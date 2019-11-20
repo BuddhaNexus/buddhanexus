@@ -100,17 +100,19 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                 collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
                 if collection_key:
                     parallel_total_list.append({collection_key.group():parallel["root_length"]})
+
                 parallel_file_key = parallel["par_segnr"][0].split(":")[0]
                 parallel_file_total_list.append({parallel_file_key:parallel["root_length"]})
 
+    segment_count = 0
     for segment in segments:
         parallel_ids = []
         if isinstance(segment, dict):
             if segment["segnr"] in segmentnr_parallel_ids_dic.keys():
                 parallel_ids = segmentnr_parallel_ids_dic[segment["segnr"]]
-
-            segmentnr = load_segment(segment, parallel_ids, connection)
+            segmentnr = load_segment(segment,segment_count, parallel_ids, connection)
             segmentnrs.append(segmentnr)
+            segment_count += 1
 
     totallengthcount = Counter()
     for totalcount in parallel_total_list:
@@ -124,7 +126,7 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
 
 
 def load_segment(
-    json_segment: Segment, parallel_ids: list, connection: Connection
+        json_segment: Segment, count: int, parallel_ids: list, connection: Connection
 ) -> str:
     """
     Given a single segment object, load it into the `segments` collection.
@@ -143,6 +145,7 @@ def load_segment(
         doc["segtext"] = json_segment["segtext"]
         doc["lang"] = json_segment["lang"]
         doc["position"] = json_segment["position"]
+        doc["count"] = count
         doc["parallel_ids"] = parallel_ids
     except KeyError as e:
         print("Could not load segment. Error: ", e)

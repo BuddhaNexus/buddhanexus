@@ -1,3 +1,7 @@
+"""
+Utilities for interacting with the database and other tasks
+"""
+
 import gzip
 import io
 import json
@@ -22,6 +26,7 @@ def get_db_connection() -> Connection:
 
 
 def get_database() -> Connection:
+    """ Return database instance """
     return get_db_connection()[DB_NAME]
 
 
@@ -44,7 +49,8 @@ def execute_in_parallel(task, items, threads) -> None:
     :param threads: number of CPU threads to spawn
     """
     if threads == 1:
-        [task(items[i]) for i in trange(len(items))]
+        for i in trange(len(items)):
+            task(items[i])
     else:
         ParallelJobRunner(n_jobs=threads)(
             delayed(lambda i: task(items[i]))(i) for i in trange(len(items))
@@ -58,9 +64,9 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     """
     if file_lang == LANG_PALI and file_name.startswith("mn"):
         return True
-    elif file_lang == LANG_CHINESE and file_name.startswith("T31_T0004"):
+    if file_lang == LANG_CHINESE and file_name.startswith('T31'):
         return True
-    elif file_lang == LANG_TIBETAN and file_name.startswith("T06TD402"):
+    if file_lang == LANG_TIBETAN and file_name.startswith("T06TD402"):
         return True
     else:
         return False
