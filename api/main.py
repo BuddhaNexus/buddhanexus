@@ -469,6 +469,7 @@ async def get_graph_for_file(
 
 
 @APP.get("/visual/{searchterm}")
+# pylint: disable=too-many-locals,too-many-branches,too-many-nested-blocks
 async def get_visual_view_for_file(
     searchterm: str, language: str, selected: List[str] = Query([])
 ):
