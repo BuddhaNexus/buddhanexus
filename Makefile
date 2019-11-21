@@ -46,11 +46,13 @@ load-segment-data:
 load-data:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
 	@docker exec -t dataloader bash -c "invoke load-segment-files"
+	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
 
 # Load all data - asynchronously
 load-data-async:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
 	@docker exec -t dataloader bash -c "invoke load-segment-files --threaded"
+	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
 
 clean-db:
 	@docker exec -t dataloader bash -c "invoke clean-all-collections"

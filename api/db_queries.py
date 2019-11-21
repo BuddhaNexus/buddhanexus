@@ -143,7 +143,6 @@ FOR segment IN segments
 
 """
 
-
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
@@ -263,43 +262,23 @@ FOR p IN parallels
 RETURN length
 """
 
-QUERY_CATEGORIES_PER_COLLECTION = """
-RETURN MERGE(
-    FOR collection IN menu_collections
-        FILTER collection._key == @searchterm
-        FOR col_category IN collection.categories
-            FOR category IN menu_categories
-                FILTER category.category == col_category
-                FILTER category.language == @language
-                LET catname = SPLIT(category.categoryname,["—","("])[0]
-                RETURN { [category["category"]]: catname }
-)
-"""
-
-QUERY_SORTED_CATEGORY_LIST = """
-FOR target IN @selected
-    FOR collection IN menu_collections
-        FILTER collection._key == target
-        FOR category IN collection.categories
-            FOR menucategory IN menu_categories
-                FILTER menucategory.category == category
-                FILTER menucategory.language == @language
-                SORT menucategory.categorynr
-                LET catname = SPLIT(menucategory.categoryname,["—","("])[0]
-                RETURN { [menucategory.category] : catname }
+QUERY_COLLECTION_TOTALS = """
+RETURN FLATTEN(
+    FOR target in @selected
+        FOR col IN categories_parallelcount
+            FILTER col.sourcecollection == @sourcecollection
+            FILTER col.targetcollection == target
+            RETURN col.totallengthcount
+            )
 """
 
 QUERY_FILES_PER_CATEGORY = """
-FOR category IN menu_categories
-    FILTER category._key == @searchterm
-    SORT category.categorynr
-    FOR catfile IN category.files
-        FOR file IN files
-            FILTER file._key == catfile
-            RETURN { 
-                filename: file._key,
-                totallengthcount: file.totallengthcount 
-            }
+FOR file IN files_parallelcount
+    FILTER file.category == @searchterm
+    FILTER file.language == @language
+    SORT file.filenr
+    RETURN { filename: file._key,
+             totallengthcount: file.totallengthcount }
 """
 
 QUERY_ALL_COLLECTIONS = """

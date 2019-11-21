@@ -27,12 +27,10 @@ from .db_queries import (
     QUERY_FILES_FOR_CATEGORY,
     QUERY_CATEGORIES_FOR_LANGUAGE,
     QUERY_GRAPH_DATA,
-    QUERY_SORTED_CATEGORY_LIST,
-    QUERY_CATEGORIES_PER_COLLECTION,
+    QUERY_COLLECTION_TOTALS,
     QUERY_ALL_COLLECTIONS,
     QUERY_TOTAL_NUMBERS,
 )
-from .db_actions import get_files_per_category_from_db
 from .utils import get_language_from_filename, get_collection_files_regex
 from .db_connection import get_collection, get_db
 
@@ -469,7 +467,6 @@ async def get_graph_for_file(
 
 
 @APP.get("/visual/{searchterm}")
-# pylint: disable=too-many-locals,too-many-branches,too-many-nested-blocks
 async def get_visual_view_for_file(
     searchterm: str, language: str, selected: List[str] = Query([])
 ):
@@ -477,83 +474,14 @@ async def get_visual_view_for_file(
     Endpoint for visual view
     """
     database = get_db()
-    counted_parallels = []
-    searchtype = "category"
     if re.search("^[A-Z][a-z]+$", searchterm):
-        searchtype = "collection"
+        searchterm = language + "_" + searchterm
 
-    # get a sorted list of categories to get the results in the right order
-    query_full_selected_category_dict = database.AQLQuery(
-        query=QUERY_SORTED_CATEGORY_LIST,
-        bindVars={"language": language, "selected": selected},
+    query_collection_list = database.AQLQuery(
+        query=QUERY_COLLECTION_TOTALS,
+        bindVars={"sourcecollection": searchterm, "selected": selected},
     )
-    selected_category_dict = {}
-    for category in query_full_selected_category_dict.result:
-        selected_category_dict.update(category)
-
-    # check if the search is for a catagory (i.e. T06) or for a collection (i.e. Tengyur)
-    if searchtype == "category":
-        all_files = get_files_per_category_from_db(language + "_" + searchterm)
-
-        for filename in all_files:
-            parallel_count = filename["totallengthcount"]
-            for categoryname in selected_category_dict:
-                if categoryname in parallel_count:
-                    counted_parallels.append(
-                        [
-                            filename["filename"],
-                            "R_"
-                            + categoryname
-                            + " "
-                            + selected_category_dict[categoryname],
-                            parallel_count[categoryname],
-                        ]
-                    )
-                else:
-                    counted_parallels.append(
-                        [
-                            filename["filename"],
-                            "R_"
-                            + categoryname
-                            + " "
-                            + selected_category_dict[categoryname],
-                            0,
-                        ]
-                    )
-
-    # if the search is for a collection, a list of categories for that collection
-    # is iterated over and the results for each file added.
-    elif searchtype == "collection":
-        query_collection_list = database.AQLQuery(
-            query=QUERY_CATEGORIES_PER_COLLECTION,
-            bindVars={"searchterm": language + "_" + searchterm, "language": language},
-        )
-
-        for cat, catname in query_collection_list.result[0].items():
-            all_files = get_files_per_category_from_db(language + "_" + cat)
-
-            total_parlist = {}
-            for filename in all_files:
-                parallel_count = filename["totallengthcount"]
-                for categoryname in selected_category_dict:
-                    if categoryname not in total_parlist.keys():
-                        if categoryname not in parallel_count.keys():
-                            total_parlist[categoryname] = 0
-                        else:
-                            total_parlist[categoryname] = parallel_count[categoryname]
-                    elif categoryname in parallel_count.keys():
-                        total_parlist[categoryname] += parallel_count[categoryname]
-
-            for key, value in total_parlist.items():
-                counted_parallels.append(
-                    [
-                        "L_" + cat + " " + catname,
-                        "R_" + key + " " + selected_category_dict[key],
-                        value,
-                    ]
-                )
-
-    return {"graphdata": counted_parallels}
+    return {"graphdata": query_collection_list.result[0]}
 
 
 @APP.get("/collections")
