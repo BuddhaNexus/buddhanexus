@@ -30,6 +30,7 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 from api.db_actions import get_files_per_category_from_db
 from api.db_connection import get_db
 from api.utils import get_language_from_filename
+from api.db_queries import QUERY_CATEGORIES_PER_COLLECTION
 
 collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
@@ -287,22 +288,6 @@ def calculate_parallel_totals():
 # This function goes over all the data and groups it into totals for the visual view
 # This takes some time to run on the full dataset.
     database = get_db()
-    QUERY_CATEGORIES_PER_COLLECTION = """
-        FOR collection IN menu_collections
-            LET language = collection.language
-            LET categorylist = (
-            FOR col_category IN collection.categories
-                FOR category IN menu_categories
-                    FILTER category.category == col_category
-                    FILTER category.language == language
-                    SORT category.categorynr
-                    LET catname = SPLIT(category.categoryname,["—","("])[0]
-                    RETURN {[category["category"]]: catname }
-                    )
-            RETURN { collection: collection._key,
-                     language: language,
-                     categories: categorylist }
-    """
     query_collection_list = database.AQLQuery(
         query=QUERY_CATEGORIES_PER_COLLECTION,
     )
@@ -323,6 +308,8 @@ def calculate_parallel_totals():
             counted_parallels = []
             for cat, catname in sourcecol_dict.items():
                 all_files = get_files_per_category_from_db(cat, language)
+
+                add_category_totals_to_db(all_files, cat, targetcollection, selected_category_dict)
 
                 total_parlist = {}
                 for filename in all_files:
@@ -347,37 +334,36 @@ def calculate_parallel_totals():
 
             load_categories_parallelcounts(sourcecollection, targetcollection, counted_parallels, get_database())
 
-            # for each collection, the totals of each category in that collection to each other collection of that same language are calculated
-            counted_parallels = []
-            for category in sourcecol_dict.keys():
-                all_files = get_files_per_category_from_db(category, language)
 
-                for filename in all_files:
-                    parallel_count = filename["totallengthcount"]
-                    for categoryname in selected_category_dict:
-                        if categoryname in parallel_count:
-                            counted_parallels.append(
-                                [
-                                    filename["filename"],
-                                    "R_"
-                                    + categoryname
-                                    + " "
-                                    + selected_category_dict[categoryname],
-                                    parallel_count[categoryname],
-                                ]
-                            )
-                        else:
-                            counted_parallels.append(
-                                [
-                                    filename["filename"],
-                                    "R_"
-                                    + categoryname
-                                    + " "
-                                    + selected_category_dict[categoryname],
-                                    0,
-                                ]
-                            )
-                load_categories_parallelcounts(category, targetcollection, counted_parallels, get_database())
+def add_category_totals_to_db(all_files, category, targetcollection, selected_category_dict):
+    # for each collection, the totals of each category in that collection to each other collection of that same language are calculated
+    counted_parallels = []
+    for filename in all_files:
+        parallel_count = filename["totallengthcount"]
+        for categoryname in selected_category_dict:
+            if categoryname in parallel_count:
+                counted_parallels.append(
+                    [
+                        filename["filename"],
+                        "R_"
+                        + categoryname
+                        + " "
+                        + selected_category_dict[categoryname],
+                        parallel_count[categoryname],
+                    ]
+                )
+            else:
+                counted_parallels.append(
+                    [
+                        filename["filename"],
+                        "R_"
+                        + categoryname
+                        + " "
+                        + selected_category_dict[categoryname],
+                        0,
+                    ]
+                )
+    load_categories_parallelcounts(category, targetcollection, counted_parallels, get_database())
 
 
 def load_categories_parallelcounts(
