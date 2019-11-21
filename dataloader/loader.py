@@ -338,7 +338,6 @@ def calculate_parallel_totals():
 def add_category_totals_to_db(all_files, category, targetcollection, selected_category_dict):
     # for each collection, the totals of each category in that collection to each other collection of that same language are calculated
     counted_parallels = []
-    print(category,targetcollection)
     for filename in all_files:
         parallel_count = filename["totallengthcount"]
         for categoryname in selected_category_dict:
