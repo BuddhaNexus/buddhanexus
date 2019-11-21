@@ -287,3 +287,20 @@ FOR menu IN menu_collections
              collectionlanguage: menu.language,
              collectionkey: menu._key }
 """
+
+QUERY_CATEGORIES_PER_COLLECTION = """
+    FOR collection IN menu_collections
+        LET language = collection.language
+        LET categorylist = (
+        FOR col_category IN collection.categories
+            FOR category IN menu_categories
+                FILTER category.category == col_category
+                FILTER category.language == language
+                SORT category.categorynr
+                LET catname = SPLIT(category.categoryname,["—","("])[0]
+                RETURN {[category["category"]]: catname }
+                )
+        RETURN { collection: collection._key,
+                 language: language,
+                 categories: categorylist }
+"""
