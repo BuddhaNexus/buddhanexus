@@ -70,6 +70,18 @@ def clean_all_collections(c):
 
 
 @task
+def clean_totals_collection(c):
+    """
+    Clear the categories_parallelcount collection
+
+    :param c: invoke.py context object
+    """
+    db = get_db_connection()[DB_NAME]
+    db[COLLECTION_CATEGORIES_PARALLELCOUNT].empty()
+    print("totals collection cleaned.")
+
+
+@task
 def clean_segment_collections(c):
     """
     Clear the segment database collections completely.
@@ -77,7 +89,7 @@ def clean_segment_collections(c):
     :param c: invoke.py context object
     """
     db = get_db_connection()[DB_NAME]
-    for name in (COLLECTION_SEGMENTS, COLLECTION_PARALLELS, COLLECTION_FILES, COLLECTION_FILES_PARALLELCOUNT, COLLECTION_CATEGORIES_PARALLELCOUNT):
+    for name in (COLLECTION_SEGMENTS, COLLECTION_PARALLELS, COLLECTION_FILES, COLLECTION_FILES_PARALLELCOUNT):
         db[name].empty()
     print("segment collections cleaned.")
 
