@@ -80,10 +80,10 @@ def load_segments_and_parallels_data_from_menu_file(
         load_files_collection(menu_file_json, segmentnrs, db)
         load_files_parallelcounts(menu_file_json, totallengthcount, totalfilelengthcount, db)
 
-    if parallels: 
+    if parallels:
         load_parallels(parallels, db)
 
-        
+
 def load_segments(segments: list, all_parallels: list, connection: Connection) -> list:
     """ Returns list of segment numbers. """
     segmentnrs = []
@@ -102,7 +102,7 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                         segmentnr_parallel_ids_dic[segmentnr] = [parallel["id"]]
                     else:
                         segmentnr_parallel_ids_dic[segmentnr].append(parallel["id"])
-                        
+
             if parallel["par_segnr"]:
                 collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
                 if collection_key:
@@ -211,17 +211,17 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     for parallel in json_parallels:
         if isinstance(
             parallel, dict
-        ):  
+        ):
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
-            # here we delete some things that we don't need in the DB: 
+            # here we delete some things that we don't need in the DB:
             del parallel['par_pos_end']
             del parallel['root_pos_end']
             del parallel['par_segtext']
             del parallel['root_segtext']
             del parallel['par_string']
-            del parallel['root_string']            
+            del parallel['root_string']
             parallel['root_filename'] = parallel['root_segnr'][0].split(':')[0]
             parallels_to_be_inserted.append(parallel)
     random.shuffle(parallels_to_be_inserted)
@@ -232,7 +232,7 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
         except CreationError as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
     # I am not shure if this is the right place to add the index...
-    collection.ensureHashIndex(['root_filename'], unique=False) 
+    collection.ensureHashIndex(['root_filename'], unique=False)
 
 
 def load_menu_collection(menu_collection, language, db):
@@ -334,8 +334,8 @@ def calculate_parallel_totals():
                     )
 
             load_parallelcounts(
-                                sourcecollection, 
-                                targetcollection, 
+                                sourcecollection,
+                                targetcollection,
                                 counted_parallels
                                 )
 
@@ -361,8 +361,8 @@ def add_category_totals_to_db(all_files, category, targetcollection, selected_ca
                 ]
             )
         load_parallelcounts(
-                    filename["filename"], 
-                    targetcollection, 
+                    filename["filename"],
+                    targetcollection,
                     file_counted_parallels
                     )
         counted_parallels += file_counted_parallels
