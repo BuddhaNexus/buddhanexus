@@ -359,7 +359,7 @@ def add_category_totals_to_db(
     selected_category_dict,
     language
 ):
-    # for each collection, the totals of each category in that collection 
+    # for each collection, the totals of each category in that collection
     # to each other collection of that same language are calculated
     counted_parallels = []
     for filename in all_files:
