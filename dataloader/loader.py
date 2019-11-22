@@ -339,9 +339,12 @@ def add_category_totals_to_db(all_files, category, targetcollection, selected_ca
     # for each collection, the totals of each category in that collection to each other collection of that same language are calculated
     counted_parallels = []
     for filename in all_files:
-        parallel_count = filename["totallengthcount"]
-        for categoryname in selected_category_dict:
-            if categoryname in parallel_count:
+        if filename["totallength"] >= 30000:
+            parallel_count = filename["totallengthcount"]
+            for categoryname in selected_category_dict:
+                weight_value = 0
+                if categoryname in parallel_count:
+                    weight_value = parallel_count[categoryname]
                 counted_parallels.append(
                     [
                         filename["filename"],
@@ -349,18 +352,7 @@ def add_category_totals_to_db(all_files, category, targetcollection, selected_ca
                         + categoryname
                         + " "
                         + selected_category_dict[categoryname],
-                        parallel_count[categoryname],
-                    ]
-                )
-            else:
-                counted_parallels.append(
-                    [
-                        filename["filename"],
-                        "R_"
-                        + categoryname
-                        + " "
-                        + selected_category_dict[categoryname],
-                        0,
+                        weight_value,
                     ]
                 )
     load_categories_parallelcounts(category, targetcollection, counted_parallels, get_database())
