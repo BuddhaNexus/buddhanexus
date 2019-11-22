@@ -231,7 +231,8 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
             collection.importBulk(parallels_to_be_inserted[x:x+chunksize])
         except CreationError as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
-    collection.ensureHashIndex(['root_filename'], unique=False) # I am not shure if this is the right place to add the index...
+    # I am not shure if this is the right place to add the index...
+    collection.ensureHashIndex(['root_filename'], unique=False) 
 
 
 def load_menu_collection(menu_collection, language, db):
@@ -332,7 +333,11 @@ def calculate_parallel_totals():
                         ]
                     )
 
-            load_parallelcounts(sourcecollection, targetcollection, counted_parallels)
+            load_parallelcounts(
+                                sourcecollection, 
+                                targetcollection, 
+                                counted_parallels
+                                )
 
 
 def add_category_totals_to_db(all_files, category, targetcollection, selected_category_dict):
@@ -355,13 +360,18 @@ def add_category_totals_to_db(all_files, category, targetcollection, selected_ca
                     weight_value,
                 ]
             )
-        load_parallelcounts(filename["filename"], targetcollection, file_counted_parallels)
+        load_parallelcounts(
+                    filename["filename"], 
+                    targetcollection, 
+                    file_counted_parallels
+                    )
         counted_parallels += file_counted_parallels
     load_parallelcounts(category, targetcollection, counted_parallels)
 
 
 def load_parallelcounts(
-    sourcename: str, targetname: str, totallengthcount: list):
+    sourcename: str, targetname: str, totallengthcount: list
+):
     if totallengthcount:
         connection = get_database()
         collection = connection[COLLECTION_CATEGORIES_PARALLELCOUNT]
