@@ -474,9 +474,10 @@ async def get_visual_view_for_file(
     Endpoint for visual view
     """
     database = get_db()
+    searchterm = language + "_" + searchterm
     query_collection_list = database.AQLQuery(
         query=QUERY_COLLECTION_TOTALS,
-        bindVars={"sourcecollection": language + "_" + searchterm, "selected": selected},
+        bindVars={"sourcecollection": searchterm, "selected": selected},
     )
     return {"graphdata": query_collection_list.result[0]}
 

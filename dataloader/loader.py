@@ -301,16 +301,28 @@ def calculate_parallel_totals():
         for sourcecat in sourcecol["categories"]:
             sourcecol_dict.update(sourcecat)
 
-        language_collection_list = get_collection_list_for_language(language, query_collection_list.result)
+        language_collection_list = get_collection_list_for_language(
+                                        language,
+                                        query_collection_list.result
+                                        )
 
         for targetcollection in language_collection_list:
-            selected_category_dict = get_categories_for_language_collection(targetcollection, query_collection_list.result)
+            selected_category_dict = get_categories_for_language_collection(
+                                        targetcollection,
+                                        query_collection_list.result
+                                        )
 
             counted_parallels = []
             for cat, catname in sourcecol_dict.items():
                 all_files = get_files_per_category_from_db(cat, language)
 
-                add_category_totals_to_db(all_files, cat, targetcollection, selected_category_dict, language)
+                add_category_totals_to_db(
+                    all_files,
+                    cat,
+                    targetcollection,
+                    selected_category_dict,
+                    language
+                    )
 
                 total_parlist = {}
                 for filename in all_files:
@@ -340,8 +352,15 @@ def calculate_parallel_totals():
                                 )
 
 
-def add_category_totals_to_db(all_files, category, targetcollection, selected_category_dict, language):
-    # for each collection, the totals of each category in that collection to each other collection of that same language are calculated
+def add_category_totals_to_db(
+    all_files,
+    category,
+    targetcollection,
+    selected_category_dict,
+    language
+):
+    # for each collection, the totals of each category in that collection 
+    # to each other collection of that same language are calculated
     counted_parallels = []
     for filename in all_files:
         file_counted_parallels = []
@@ -366,7 +385,11 @@ def add_category_totals_to_db(all_files, category, targetcollection, selected_ca
                     file_counted_parallels
                     )
         counted_parallels += file_counted_parallels
-    load_parallelcounts(language+"_"+category, targetcollection, counted_parallels)
+    load_parallelcounts(
+            language+"_"+category,
+            targetcollection,
+            counted_parallels
+            )
 
 
 def load_parallelcounts(
