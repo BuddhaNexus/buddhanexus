@@ -332,46 +332,49 @@ def calculate_parallel_totals():
                         ]
                     )
 
-            load_categories_parallelcounts(sourcecollection, targetcollection, counted_parallels, get_database())
+            load_parallelcounts(sourcecollection, targetcollection, counted_parallels, get_database())
 
 
 def add_category_totals_to_db(all_files, category, targetcollection, selected_category_dict):
     # for each collection, the totals of each category in that collection to each other collection of that same language are calculated
     counted_parallels = []
     for filename in all_files:
-        if filename["totallength"] >= 30000:
-            parallel_count = filename["totallengthcount"]
-            for categoryname in selected_category_dict:
-                weight_value = 0
-                if categoryname in parallel_count:
-                    weight_value = parallel_count[categoryname]
-                counted_parallels.append(
-                    [
-                        filename["filename"],
-                        "R_"
-                        + categoryname
-                        + " "
-                        + selected_category_dict[categoryname],
-                        weight_value,
-                    ]
-                )
-    load_categories_parallelcounts(category, targetcollection, counted_parallels, get_database())
+        file_counted_parallels = []
+        parallel_count = filename["totallengthcount"]
+        for categoryname in selected_category_dict:
+            weight_value = 0
+            if categoryname in parallel_count:
+                weight_value = parallel_count[categoryname]
+            file_counted_parallels.append(
+                [
+                    filename["filename"],
+                    "R_"
+                    + categoryname
+                    + " "
+                    + selected_category_dict[categoryname],
+                    weight_value,
+                ]
+            )
+        load_parallelcounts(filename["filename"], targetcollection, file_counted_parallels, get_database())
+        counted_parallels += file_counted_parallels
+    load_parallelcounts(category, targetcollection, counted_parallels, get_database())
 
 
-def load_categories_parallelcounts(
+def load_parallelcounts(
     sourcename: str, targetname: str, totallengthcount: list, connection: Connection
 ):
-    collection = connection[COLLECTION_CATEGORIES_PARALLELCOUNT]
-    doc = collection.createDocument()
-    doc._key = sourcename+"_"+targetname
-    doc["sourcecollection"] = sourcename
-    doc["targetcollection"] = targetname
-    doc["totallengthcount"] = totallengthcount
-    collection.ensureHashIndex(['sourcecollection'], unique = False)
-    try:
-        doc.save()
-    except CreationError as e:
-        print("Could not load file. Error: ", e)
+    if totallengthcount:
+        collection = connection[COLLECTION_CATEGORIES_PARALLELCOUNT]
+        doc = collection.createDocument()
+        doc._key = sourcename+"_"+targetname
+        doc["sourcecollection"] = sourcename
+        doc["targetcollection"] = targetname
+        doc["totallengthcount"] = totallengthcount
+        collection.ensureHashIndex(['sourcecollection'], unique = False)
+        try:
+            doc.save()
+        except CreationError as e:
+            print("Could not load file. Error: ", e)
 
 
 def get_collection_list_for_language(language, allcols):

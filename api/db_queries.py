@@ -278,8 +278,7 @@ FOR file IN files_parallelcount
     FILTER file.language == @language
     SORT file.filenr
     RETURN { filename: file._key,
-             totallengthcount: file.totallengthcount,
-             totallength: file.totallength }
+             totallengthcount: file.totallengthcount }
 """
 
 QUERY_ALL_COLLECTIONS = """
