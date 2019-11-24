@@ -460,9 +460,11 @@ async def get_graph_for_file(
             {key + " " + collections_with_full_name[key]: total_collection_dict[key]}
         )
 
+    unsorted_graphdata_list = list(map(list, parallel_graph_name_list.items()))
+
     # returns a list of the data as needed by Google Graphs
     return {
-        "graphdata": list(map(list, parallel_graph_name_list.items())),
+        "graphdata": sorted(unsorted_graphdata_list, reverse=True, key=lambda x: x[1]),
     }
 
 
