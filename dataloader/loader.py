@@ -80,10 +80,10 @@ def load_segments_and_parallels_data_from_menu_file(
         load_files_collection(menu_file_json, segmentnrs, db)
         load_files_parallelcounts(menu_file_json, totallengthcount, totalfilelengthcount, db)
 
-    if parallels: 
+    if parallels:
         load_parallels(parallels, db)
 
-        
+
 def load_segments(segments: list, all_parallels: list, connection: Connection) -> list:
     """ Returns list of segment numbers. """
     segmentnrs = []
@@ -102,7 +102,7 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                         segmentnr_parallel_ids_dic[segmentnr] = [parallel["id"]]
                     else:
                         segmentnr_parallel_ids_dic[segmentnr].append(parallel["id"])
-                        
+
             if parallel["par_segnr"]:
                 collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
                 if collection_key:
@@ -178,7 +178,7 @@ def load_files_parallelcounts(
     sorted_totalfilelengthcount = sorted(totalfilelengthcount.items(), key=lambda kv: kv[1], reverse=True)
     doc["totalfilelengthcount"] = OrderedDict(sorted_totalfilelengthcount)
     doc["totallength"] = sum(totallengthcount.values())
-    collection.ensureHashIndex(['category'], unique = False)
+    collection.ensureHashIndex(['category'], unique=False)
     try:
         doc.save()
     except CreationError as e:
@@ -211,17 +211,17 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     for parallel in json_parallels:
         if isinstance(
             parallel, dict
-        ):  
+        ):
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
-            # here we delete some things that we don't need in the DB: 
+            # here we delete some things that we don't need in the DB:
             del parallel['par_pos_end']
             del parallel['root_pos_end']
             del parallel['par_segtext']
             del parallel['root_segtext']
             del parallel['par_string']
-            del parallel['root_string']            
+            del parallel['root_string']
             parallel['root_filename'] = parallel['root_segnr'][0].split(':')[0]
             parallels_to_be_inserted.append(parallel)
     random.shuffle(parallels_to_be_inserted)
@@ -231,7 +231,8 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
             collection.importBulk(parallels_to_be_inserted[x:x+chunksize])
         except CreationError as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
-    collection.ensureHashIndex(['root_filename'], unique = False) # I am not shure if this is the right place to add the index...
+    # I am not shure if this is the right place to add the index...
+    collection.ensureHashIndex(['root_filename'], unique=False)
 
 
 def load_menu_collection(menu_collection, language, db):
@@ -300,16 +301,28 @@ def calculate_parallel_totals():
         for sourcecat in sourcecol["categories"]:
             sourcecol_dict.update(sourcecat)
 
-        language_collection_list = get_collection_list_for_language(language, query_collection_list.result)
+        language_collection_list = get_collection_list_for_language(
+                                        language,
+                                        query_collection_list.result
+                                        )
 
         for targetcollection in language_collection_list:
-            selected_category_dict = get_categories_for_language_collection(targetcollection, query_collection_list.result)
+            selected_category_dict = get_categories_for_language_collection(
+                                        targetcollection,
+                                        query_collection_list.result
+                                        )
 
             counted_parallels = []
             for cat, catname in sourcecol_dict.items():
                 all_files = get_files_per_category_from_db(cat, language)
 
-                add_category_totals_to_db(all_files, cat, targetcollection, selected_category_dict)
+                add_category_totals_to_db(
+                    all_files,
+                    cat,
+                    targetcollection,
+                    selected_category_dict,
+                    language
+                    )
 
                 total_parlist = {}
                 for filename in all_files:
@@ -332,54 +345,69 @@ def calculate_parallel_totals():
                         ]
                     )
 
-            load_categories_parallelcounts(sourcecollection, targetcollection, counted_parallels, get_database())
+            load_parallelcounts(
+                                sourcecollection,
+                                targetcollection,
+                                counted_parallels
+                                )
 
 
-def add_category_totals_to_db(all_files, category, targetcollection, selected_category_dict):
-    # for each collection, the totals of each category in that collection to each other collection of that same language are calculated
+def add_category_totals_to_db(
+    all_files,
+    category,
+    targetcollection,
+    selected_category_dict,
+    language
+):
+    # for each collection, the totals of each category in that collection
+    # to each other collection of that same language are calculated
     counted_parallels = []
     for filename in all_files:
+        file_counted_parallels = []
         parallel_count = filename["totallengthcount"]
         for categoryname in selected_category_dict:
+            weight_value = 0
             if categoryname in parallel_count:
-                counted_parallels.append(
-                    [
-                        filename["filename"],
-                        "R_"
-                        + categoryname
-                        + " "
-                        + selected_category_dict[categoryname],
-                        parallel_count[categoryname],
-                    ]
-                )
-            else:
-                counted_parallels.append(
-                    [
-                        filename["filename"],
-                        "R_"
-                        + categoryname
-                        + " "
-                        + selected_category_dict[categoryname],
-                        0,
-                    ]
-                )
-    load_categories_parallelcounts(category, targetcollection, counted_parallels, get_database())
+                weight_value = parallel_count[categoryname]
+            file_counted_parallels.append(
+                [
+                    filename["filename"],
+                    "R_"
+                    + categoryname
+                    + " "
+                    + selected_category_dict[categoryname],
+                    weight_value,
+                ]
+            )
+        load_parallelcounts(
+                    language+"_"+filename["filename"],
+                    targetcollection,
+                    file_counted_parallels
+                    )
+        counted_parallels += file_counted_parallels
+    load_parallelcounts(
+            language+"_"+category,
+            targetcollection,
+            counted_parallels
+            )
 
 
-def load_categories_parallelcounts(
-    sourcename: str, targetname: str, totallengthcount: list, connection: Connection
+def load_parallelcounts(
+    sourcename: str, targetname: str, totallengthcount: list
 ):
-    collection = connection[COLLECTION_CATEGORIES_PARALLELCOUNT]
-    doc = collection.createDocument()
-    doc._key = sourcename+"_"+targetname
-    doc["sourcecollection"] = sourcename
-    doc["targetcollection"] = targetname
-    doc["totallengthcount"] = totallengthcount
-    collection.ensureHashIndex(['sourcecollection'], unique = False)
-    try:
-        doc.save()
-    except CreationError as e:
-        print("Could not load file. Error: ", e)
+    if totallengthcount:
+        connection = get_database()
+        collection = connection[COLLECTION_CATEGORIES_PARALLELCOUNT]
+        doc = collection.createDocument()
+        doc._key = sourcename+"_"+targetname
+        doc["sourcecollection"] = sourcename
+        doc["targetcollection"] = targetname
+        doc["totallengthcount"] = totallengthcount
+        collection.ensureHashIndex(['sourcecollection'], unique = False)
+        try:
+            doc.save()
+        except CreationError as e:
+            print("Could not load file. Error: ", e)
 
 
 def get_collection_list_for_language(language, allcols):

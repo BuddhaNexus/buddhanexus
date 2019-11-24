@@ -424,10 +424,12 @@ async def get_graph_for_file(
 
     collection_keys = []
     total_collection_dict = {}
+    histogram_data = []
 
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
+        histogram_data.append([parallel["textname"], count_this_parallel])
         collection_key = re.search(COLLECTION_PATTERN, parallel["textname"])
 
         if not collection_key:
@@ -460,9 +462,12 @@ async def get_graph_for_file(
             {key + " " + collections_with_full_name[key]: total_collection_dict[key]}
         )
 
+    unsorted_graphdata_list = list(map(list, parallel_graph_name_list.items()))
+
     # returns a list of the data as needed by Google Graphs
     return {
-        "graphdata": list(map(list, parallel_graph_name_list.items())),
+        "piegraphdata": sorted(unsorted_graphdata_list, reverse=True, key=lambda x: x[1]),
+        "histogramgraphdata": sorted(histogram_data, reverse=True, key=lambda x: x[1]),
     }
 
 
@@ -474,9 +479,7 @@ async def get_visual_view_for_file(
     Endpoint for visual view
     """
     database = get_db()
-    if re.search("^[A-Z][a-z]+$", searchterm):
-        searchterm = language + "_" + searchterm
-
+    searchterm = language + "_" + searchterm
     query_collection_list = database.AQLQuery(
         query=QUERY_COLLECTION_TOTALS,
         bindVars={"sourcecollection": searchterm, "selected": selected},
