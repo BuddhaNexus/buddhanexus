@@ -429,7 +429,7 @@ async def get_graph_for_file(
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
-        histogram_data.append([parallel["textname"],count_this_parallel])
+        histogram_data.append([parallel["textname"], count_this_parallel])
         collection_key = re.search(COLLECTION_PATTERN, parallel["textname"])
 
         if not collection_key:
