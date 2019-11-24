@@ -424,13 +424,18 @@ async def get_graph_for_file(
 
     collection_keys = []
     total_collection_dict = {}
-    histogram_data = []
+    total_histogram_dict = {}
 
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
-        histogram_data.append([parallel["textname"], count_this_parallel])
-        collection_key = re.search(COLLECTION_PATTERN, parallel["textname"])
+        target_filename = parallel["textname"]
+        if target_filename in total_histogram_dict.keys():
+            total_histogram_dict[target_filename] += count_this_parallel
+        else:
+            total_histogram_dict[target_filename] = count_this_parallel
+
+        collection_key = re.search(COLLECTION_PATTERN, target_filename)
 
         if not collection_key:
             continue
@@ -463,6 +468,10 @@ async def get_graph_for_file(
         )
 
     unsorted_graphdata_list = list(map(list, parallel_graph_name_list.items()))
+
+    histogram_data = []
+    for name, count in total_histogram_dict.items():
+        histogram_data.append([name, count])
 
     # returns a list of the data as needed by Google Graphs
     return {
