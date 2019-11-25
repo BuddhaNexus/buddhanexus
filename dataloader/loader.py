@@ -364,25 +364,22 @@ def add_category_totals_to_db(
     counted_parallels = []
     for filename in all_files:
         file_counted_parallels = []
+        file_counted_parallels_no_zeros = []
         parallel_count = filename["totallengthcount"]
         for categoryname in selected_category_dict:
             weight_value = 0
             if categoryname in parallel_count:
                 weight_value = parallel_count[categoryname]
-            file_counted_parallels.append(
-                [
-                    filename["filename"],
-                    selected_category_dict[categoryname].rstrip()
-                    + "_("
-                    + categoryname
-                    + ")",
-                    weight_value,
-                ]
-            )
+            new_paralllel_entry = [filename["filename"],
+                    selected_category_dict[categoryname].rstrip() + "_(" + categoryname + ")",
+                    weight_value]
+            file_counted_parallels.append(new_paralllel_entry)
+            if weight_value > 0:
+                file_counted_parallels_no_zeros.append(new_paralllel_entry)
         load_parallelcounts(
                     language+"_"+filename["filename"],
                     targetcollection,
-                    file_counted_parallels
+                    file_counted_parallels_no_zeros
                     )
         counted_parallels += file_counted_parallels
     load_parallelcounts(
