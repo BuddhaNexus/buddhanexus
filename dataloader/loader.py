@@ -1,8 +1,20 @@
+import json
 import os
+import sys
 import re
 import random
 from collections import Counter, OrderedDict
-from pyArango.connection import *
+
+from pyArango.connection import Connection
+from pyArango.theExceptions import CreationError
+
+from models_dataloader import Parallel, Segment, MenuItem
+from dataloader_utils import (
+    get_database,
+    execute_in_parallel,
+    should_download_file,
+    get_segments_and_parallels_from_gzipped_remote_file,
+)
 from constants import (
     DEFAULT_LANGS,
     COLLECTION_PARALLELS,
@@ -13,22 +25,12 @@ from constants import (
     COLLECTION_FILES_PARALLELCOUNT,
     COLLECTION_CATEGORIES_PARALLELCOUNT,
 )
-from models_dataloader import Parallel, Segment, MenuItem
-from utils import (
-    get_database,
-    execute_in_parallel,
-    should_download_file,
-    get_segments_and_parallels_from_gzipped_remote_file,
-    get_segments_and_parallels_from_gzipped_local_file,
-)
 
-import sys
-
-PACKAGE_PARENT = ".."
+# Snippet to allow importing from the api project
 SCRIPT_DIR = os.path.dirname(
     os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
 )
-sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, "..")))
 
 from api.db_actions import get_files_per_category_from_db
 from api.db_connection import get_db

@@ -21,7 +21,7 @@ from loader import (
     load_all_menu_categories,
     calculate_parallel_totals,
 )
-from utils import get_db_connection
+from dataloader_utils import get_db_connection
 
 
 @task
