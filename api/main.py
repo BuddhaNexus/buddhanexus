@@ -326,10 +326,7 @@ async def get_file_text_segments_and_parallels(
         active_segment = unquote(active_segment)
         try:
             text_segment_count_query_result = get_db().AQLQuery(
-                query=QUERY_SEGMENT_COUNT,
-                bindVars={
-                    "segmentnr": active_segment,
-                },
+                query=QUERY_SEGMENT_COUNT, bindVars={"segmentnr": active_segment}
             )
             start_int = text_segment_count_query_result.result[0] - 100
         except DocumentNotFoundError as error:
@@ -475,7 +472,9 @@ async def get_graph_for_file(
 
     # returns a list of the data as needed by Google Graphs
     return {
-        "piegraphdata": sorted(unsorted_graphdata_list, reverse=True, key=lambda x: x[1]),
+        "piegraphdata": sorted(
+            unsorted_graphdata_list, reverse=True, key=lambda x: x[1]
+        ),
         "histogramgraphdata": sorted(histogram_data, reverse=True, key=lambda x: x[1]),
     }
 

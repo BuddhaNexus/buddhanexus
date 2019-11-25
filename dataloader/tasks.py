@@ -89,7 +89,12 @@ def clean_segment_collections(c):
     :param c: invoke.py context object
     """
     db = get_db_connection()[DB_NAME]
-    for name in (COLLECTION_SEGMENTS, COLLECTION_PARALLELS, COLLECTION_FILES, COLLECTION_FILES_PARALLELCOUNT):
+    for name in (
+        COLLECTION_SEGMENTS,
+        COLLECTION_PARALLELS,
+        COLLECTION_FILES,
+        COLLECTION_FILES_PARALLELCOUNT,
+    ):
         db[name].empty()
     print("segment collections cleaned.")
 
@@ -139,9 +144,7 @@ def load_menu_files(c):
 
 @task
 def calculate_collection_totals(c):
-    print(
-        "Calculating collection totals from loaded data"
-    )
+    print("Calculating collection totals from loaded data")
     calculate_parallel_totals()
 
     print("Parallel totals calculation completed.")

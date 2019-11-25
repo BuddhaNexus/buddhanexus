@@ -38,6 +38,7 @@ class ParallelsCollection(BaseModel):
     """
     Collection of multiple parallels with the same characteristics
     """
+
     parallelIDList: list
     score: int
     par_length: int
