@@ -339,8 +339,8 @@ def calculate_parallel_totals():
                 for key, value in total_parlist.items():
                     counted_parallels.append(
                         [
-                            "L_" + cat + " " + catname,
-                            "R_" + key + " " + selected_category_dict[key],
+                            catname + " (" + cat + ")",
+                            selected_category_dict[key].rstrip() + "_(" + key + ")",
                             value,
                         ]
                     )
@@ -372,10 +372,10 @@ def add_category_totals_to_db(
             file_counted_parallels.append(
                 [
                     filename["filename"],
-                    "R_"
+                    selected_category_dict[categoryname].rstrip()
+                    + "_("
                     + categoryname
-                    + " "
-                    + selected_category_dict[categoryname],
+                    + ")",
                     weight_value,
                 ]
             )
