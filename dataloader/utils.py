@@ -1,7 +1,12 @@
+"""
+Utilities for interacting with the database and other tasks
+"""
+
 import gzip
 import io
 import json
 import os
+import re
 
 import urlfetch
 from pyArango.connection import Connection
@@ -21,6 +26,7 @@ def get_db_connection() -> Connection:
 
 
 def get_database() -> Connection:
+    """ Return database instance """
     return get_db_connection()[DB_NAME]
 
 
@@ -43,7 +49,8 @@ def execute_in_parallel(task, items, threads) -> None:
     :param threads: number of CPU threads to spawn
     """
     if threads == 1:
-        [task(items[i]) for i in trange(len(items))]
+        for i in trange(len(items)):
+            task(items[i])
     else:
         ParallelJobRunner(n_jobs=threads)(
             delayed(lambda i: task(items[i]))(i) for i in trange(len(items))
@@ -55,11 +62,11 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    if file_lang == LANG_PALI and file_name.startswith("dn"):
+    if file_lang == LANG_PALI and file_name.startswith("mn"):
         return True
-    elif file_lang == LANG_CHINESE and file_name.startswith("T31"):
+    if file_lang == LANG_CHINESE and file_name.startswith('T31'):
         return True
-    elif file_lang == LANG_TIBETAN and file_name.startswith("T06"):
+    if file_lang == LANG_TIBETAN and file_name.startswith("T06"):
         return True
     else:
         return False
@@ -78,9 +85,31 @@ def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
     try:
         with gzip.open(file_bytes) as f:
             parsed = json.loads(f.read())
-            segments, parallels = parsed
+            segments, parallels = parsed[:2]
             f.close()
             return [segments, parallels]
     except OSError as os_error:
         print(f"Could not load the gzipped file {file_url}. Error: ", os_error)
         return [None, None]
+
+
+def get_segments_and_parallels_from_gzipped_local_file(file_path: str) -> list:
+    """
+    Give file path as parameter, then:
+    1. Open file
+    2. Unpack it in memory
+    3. Return segments and parallels
+
+    :param file_path: path to the gzipped file
+    """
+
+    try:
+        with gzip.open(file_path, "rt") as f:
+            parsed = json.loads(f.read())
+            segments, parallels = parsed[:2]
+            f.close()
+            return [segments, parallels]
+    except OSError as os_error:
+        print(f"Could not load the gzipped local file {file_path}. Error: ", os_error)
+        return [None, None]
+

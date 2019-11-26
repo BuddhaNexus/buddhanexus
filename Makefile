@@ -46,14 +46,22 @@ load-segment-data:
 load-data:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
 	@docker exec -t dataloader bash -c "invoke load-segment-files"
+	@docker exec -t dataloader bash -c "invoke clean-totals-collection"
+	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
 
 # Load all data - asynchronously
 load-data-async:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
 	@docker exec -t dataloader bash -c "invoke load-segment-files --threaded"
+	@docker exec -t dataloader bash -c "invoke clean-totals-collection"
+	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
 
 clean-db:
 	@docker exec -t dataloader bash -c "invoke clean-all-collections"
+
+clean-totals:
+	@docker exec -t dataloader bash -c "invoke clean-totals-collection"
+	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
 
 clean-db-menu-data:
 	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
@@ -65,6 +73,14 @@ clean-db-segment-data:
 list-tasks:
 	@docker exec -t dataloader bash -c "invoke --list"
 
-# Enter the docker container
 enter-dataloader:
 	@docker exec -ti dataloader bash
+
+enter-api:
+	@docker exec -ti fastapi bash
+
+lint-dataloader:
+	@docker exec -t dataloader bash -c 'pylint ./*.py'
+
+lint-api:
+	@docker exec -t fastapi bash -c 'pylint ./api/*.py'

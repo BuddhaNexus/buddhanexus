@@ -40,7 +40,7 @@ services:
       - .:/opt/buddhanexus
     env_file:
       - .env
-    command: uvicorn --host 0.0.0.0 api.main:app --reload
+    command: uvicorn --host 0.0.0.0 api.main:APP --reload
     restart: always
     depends_on:
       - arangodb
