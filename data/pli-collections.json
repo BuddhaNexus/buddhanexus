@@ -35,11 +35,24 @@
       "pli-tv-bi-pm",
       "pli-tv-bu-vb",
       "pli-tv-bi-vb",
+      "pli-tv-kd",
       "pli-tv-pvr"
     ]
   },
   {
     "collection": "Abhidhamma",
     "categories": ["ds", "vb", "dt", "pp", "kv", "ya", "patthana"]
+  },
+  {
+    "collection": "Atthakatha",
+    "categories": ["atk-s", "atk-vin", "atk-abh"]
+  },
+  {
+    "collection": "Tika",
+    "categories": ["tika-s", "tika-vin", "tika-abh"]
+  },
+  {
+    "collection": "Anya",
+    "categories": ["anya-e"]
   }
 ]
