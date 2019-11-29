@@ -73,6 +73,7 @@ LET file_parallels = (
             root_segnr: p.root_segnr, 
             root_seg_text: root_seg_text,
             par_length: p.par_length, 
+            root_length: p.root_length,
             par_pos_beg: p.par_pos_beg,
             "co-occ": p["co-occ"],
             score: p.score
