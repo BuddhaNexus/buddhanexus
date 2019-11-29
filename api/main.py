@@ -353,7 +353,9 @@ async def get_file_text_segments_and_parallels(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "limitcollection": limit_collection,
+                "limitcollection": get_collection_files_regex(
+                    limit_collection, get_language_from_filename(file_name)
+                ),
             },
         )
         return text_segments_query_result.result[0]
@@ -535,7 +537,9 @@ async def get_counts_for_file(
             "score": score,
             "parlength": par_length,
             "coocc": co_occ,
-            "limitcollection": limit_collection,
+            "limitcollection": get_collection_files_regex(
+                limit_collection, get_language_from_filename(file_name)
+            )
         },
     )
     return {"parallel_count": query_graph_result.result}
