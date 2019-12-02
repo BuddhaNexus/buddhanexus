@@ -26,18 +26,25 @@ def get_collection_files_regex(limit_collection, language) -> List:
     :param limit_collection: The list of collections to limit to
     :param language: The desired language
     :return: The regular expressions to test if resource belongs to a given collection
+    if a collection is prefixed with !, we exclude it from the results!
     """
-    teststring = []
+    teststring_positive = []
+    teststring_negative = []
     if language in ("tib", "chn"):
         for file in limit_collection:
-            teststring.append("^" + file)
+            if not "!" in file:
+                teststring_positive.append("^" + file)
+            else:
+                teststring_negative.append("^" + file.replace("!",""))
+                
+    # TODO: We need to make the exclusion pattern from above work with pāli; I don't yet understand the naming scheme in pāli well enough to do this confidently, maybe Vimala you can have a look?
     elif language == "pli":
         for file in limit_collection:
             if number_exists(file):
                 teststring.append("^" + file + ":")
             else:
                 teststring.append("^" + file + r"[0-9\-]")
-    return teststring
+    return [teststring_positive,teststring_negative]
 
 
 def number_exists(input_string) -> bool:

@@ -41,13 +41,21 @@ LET file_parallels = (
         FILTER p.par_length >= @parlength
         FILTER p["co-occ"] <= @coocc
         LET collection_filter_test = (
-            FOR item IN @limitcollection
+            FOR item IN @limitcollection1
             RETURN REGEX_TEST(p.par_segnr[0], item)
         )
-        LET fits_collection = (@limitcollection != []) 
+        LET fits_collection = (@limitcollection1 != []) 
             ? POSITION(collection_filter_test, true) 
             : true
         FILTER fits_collection == true
+        LET collection_filter_test2 = (
+            FOR item IN @limitcollection2
+            RETURN REGEX_TEST(p.par_segnr[0], item)
+        )
+        LET fits_collection2 = (@limitcollection2 != []) 
+            ? POSITION(collection_filter_test2, false) 
+            : true
+        FILTER fits_collection2 == true
         SORT p.@sortkey @sortdirection
         LIMIT 50 * @page, 50
         let root_seg_text = (
@@ -169,15 +177,21 @@ let parallels =  (
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
             LET filtertest = (
-                FOR item IN @limitcollection
+                FOR item IN @limitcollection1
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
-                LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                LET filternr = (@limitcollection1 != []) ? POSITION(filtertest, true) : true
                 FILTER filternr == true     
-                RETURN { root_offset_beg: p.root_offset_beg,
-                         root_offset_end: p.root_offset_end,
-                         root_segnr : p.root_segnr,
-                         id: p._key }
+                LET filtertest2 = (
+                    FOR item IN @limitcollection2
+                        RETURN REGEX_TEST(p.par_segnr[0], item)
+                    )
+                    LET filternr2 = (@limitcollection2 != []) ? POSITION(filtertest2, false) : true
+                    FILTER filternr2 == true
+                    RETURN { root_offset_beg: p.root_offset_beg,
+                             root_offset_end: p.root_offset_end,
+                             root_segnr : p.root_segnr,
+                             id: p._key }
     )
 RETURN { textleft: segments,
          parallel_ids: parallel_ids,
@@ -193,17 +207,23 @@ RETURN (
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
             LET filtertest = (
-                FOR item IN @limitcollection
+                FOR item IN @limitcollection1
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
-                LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                LET filternr = (@limitcollection1 != []) ? POSITION(filtertest, true) : true
                 FILTER filternr == true     
-                let par_segtext = (
-                    FOR segnr IN p.par_segnr
-                        FOR segment IN segments
-                            FILTER segment._key == segnr
-                            RETURN segment.segtext
-                   )
+                LET filtertest2 = (
+                    FOR item IN @limitcollection2
+                        RETURN REGEX_TEST(p.par_segnr[0], item)
+                    )
+                    LET filternr2 = (@limitcollection2 != []) ? POSITION(filtertest2, false) : true
+                    FILTER filternr2 == true
+                    let par_segtext = (
+                        FOR segnr IN p.par_segnr
+                            FOR segment IN segments
+                                FILTER segment._key == segnr
+                                RETURN segment.segtext
+                       )
                 RETURN {
                     par_segnr: p.par_segnr, 
                     par_offset_beg: p.par_offset_beg, 
@@ -248,17 +268,23 @@ FOR p IN parallels
 QUERY_TOTAL_NUMBERS = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
-    LIMIT 15000
     LET filtertest = (
-        FOR item IN @limitcollection
+        FOR item IN @limitcollection1
             RETURN REGEX_TEST(p.par_segnr[0], item)
         )
-        LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+        LET filternr = (@limitcollection1 != []) ? POSITION(filtertest, true) : true
         FILTER filternr == true
-        FILTER p.score >= @score
-        FILTER p.par_length >= @parlength
-        FILTER p["co-occ"] <= @coocc
-        COLLECT WITH COUNT INTO length
+        LET filtertest2 = (
+            FOR item IN @limitcollection2
+                RETURN REGEX_TEST(p.par_segnr[0], item)
+            )
+            LET filternr2 = (@limitcollection2 != []) ? POSITION(filtertest2, false) : true
+            FILTER filternr2 == true
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
+            LIMIT 15000
+            COLLECT WITH COUNT INTO length
 RETURN length
 """
 
