@@ -37,13 +37,19 @@ def get_collection_files_regex(limit_collection, language) -> List:
             else:
                 teststring_negative.append("^" + file.replace("!",""))
                 
-    # TODO: We need to make the exclusion pattern from above work with pāli; I don't yet understand the naming scheme in pāli well enough to do this confidently, maybe Vimala you can have a look?
     elif language == "pli":
         for file in limit_collection:
-            if number_exists(file):
-                teststring.append("^" + file + ":")
+            if not "!" in file:
+                if number_exists(file):
+                    teststring_positive.append("^" + file + ":")
+                else:
+                    teststring_positive.append("^" + file + r"[0-9\-]")
             else:
-                teststring.append("^" + file + r"[0-9\-]")
+                if number_exists(file):
+                    teststring_negative.append("^" + file.replace("!","") + ":")
+                else:
+                    teststring_negative.append("^" + file.replace("!","") + r"[0-9\-]")
+
     return [teststring_positive,teststring_negative]
 
 

@@ -120,8 +120,8 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
             "score": parallels.score,
             "parlength": parallels.par_length,
             "coocc": parallels.co_occ,
-            "limitcollection1": limitcollection_positive,
-            "limitcollection2": limitcollection_negative,        
+            "limitcollection_positive": limitcollection_positive,
+            "limitcollection_negative": limitcollection_negative,
         },
     )
     return {"parallels": query_result.result}
@@ -140,7 +140,7 @@ async def get_segments_for_file(
     :return: List of segments
     """
     limitcollection_positive,limitcollection_negative = get_collection_files_regex(
-        limit_collection, language)
+        limit_collection, get_language_from_filename(file_name))
 
     try:
         database = get_db()
@@ -151,8 +151,8 @@ async def get_segments_for_file(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "limitcollection1": limitcollection_positive,
-                "limitcollection2": limitcollection_negative,
+                "limitcollection_positive": limitcollection_positive,
+                "limitcollection_negative": limitcollection_negative,
             },
         )
         collection_keys = []
@@ -228,8 +228,8 @@ async def get_table_view(
                 "coocc": co_occ,
                 "sortdirection": sort_direction,
                 "sortkey": sort_key,
-                "limitcollection1": limitcollection_positive,
-                "limitcollection2": limitcollection_negative,
+                "limitcollection_positive": limitcollection_positive,
+                "limitcollection_negative": limitcollection_negative,
                 "page": page,
             },
         )
@@ -349,8 +349,6 @@ async def get_file_text_segments_and_parallels(
         start_int = 0
     limitcollection_positive,limitcollection_negative = get_collection_files_regex(
                     limit_collection, get_language_from_filename(file_name))
-    print("REGEX TEST 1",get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)))
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=QUERY_TEXT_AND_PARALLELS,
@@ -361,8 +359,8 @@ async def get_file_text_segments_and_parallels(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "limitcollection1": limitcollection_positive,
-                "limitcollection2": limitcollection_negative,                
+                "limitcollection_positive": limitcollection_positive,
+                "limitcollection_negative": limitcollection_negative,
             },
         )
         return text_segments_query_result.result[0]
@@ -546,8 +544,8 @@ async def get_counts_for_file(
             "score": score,
             "parlength": par_length,
             "coocc": co_occ,
-            "limitcollection1": limitcollection_positive,
-            "limitcollection2": limitcollection_negative,            
+            "limitcollection_positive": limitcollection_positive,
+            "limitcollection_negative": limitcollection_negative,
         },
     )
     return {"parallel_count": query_graph_result.result}
