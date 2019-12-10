@@ -111,7 +111,7 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
     :return: List of parallels for text view (middle)
     """
     language = get_language_from_filename(parallels.file_name)
-    limitcollection_positive,limitcollection_negative = get_collection_files_regex(
+    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
                     parallels.limit_collection, language)
     query_result = get_db().AQLQuery(
         query=QUERY_PARALELLS_FOR_MIDDLE_TEXT,
@@ -139,7 +139,7 @@ async def get_segments_for_file(
     Returns filtered segments belonging to a specified file.
     :return: List of segments
     """
-    limitcollection_positive,limitcollection_negative = get_collection_files_regex(
+    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name))
 
     try:
@@ -203,7 +203,7 @@ async def get_table_view(
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
-    limitcollection_positive,limitcollection_negative = get_collection_files_regex(
+    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
                     limit_collection, get_language_from_filename(file_name))
     try:
         sort_key = ""
@@ -347,7 +347,7 @@ async def get_file_text_segments_and_parallels(
             raise HTTPException(status_code=400)
     if start_int < 0:
         start_int = 0
-    limitcollection_positive,limitcollection_negative = get_collection_files_regex(
+    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
                     limit_collection, get_language_from_filename(file_name))
     try:
         text_segments_query_result = get_db().AQLQuery(
@@ -534,7 +534,7 @@ async def get_counts_for_file(
     """
     Returns number of filtered parallels
     """
-    limitcollection_positive,limitcollection_negative = get_collection_files_regex(
+    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name))
     query_graph_result = get_db().AQLQuery(
         query=QUERY_TOTAL_NUMBERS,

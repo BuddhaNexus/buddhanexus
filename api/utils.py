@@ -35,8 +35,7 @@ def get_collection_files_regex(limit_collection, language) -> List:
             if not "!" in file:
                 teststring_positive.append("^" + file)
             else:
-                teststring_negative.append("^" + file.replace("!",""))
-                
+                teststring_negative.append("^" + file.replace("!", ""))
     elif language == "pli":
         for file in limit_collection:
             if not "!" in file:
@@ -46,11 +45,11 @@ def get_collection_files_regex(limit_collection, language) -> List:
                     teststring_positive.append("^" + file + r"[0-9\-]")
             else:
                 if number_exists(file):
-                    teststring_negative.append("^" + file.replace("!","") + ":")
+                    teststring_negative.append("^" + file.replace("!", "") + ":")
                 else:
-                    teststring_negative.append("^" + file.replace("!","") + r"[0-9\-]")
+                    teststring_negative.append("^" + file.replace("!", "") + r"[0-9\-]")
 
-    return [teststring_positive,teststring_negative]
+    return [teststring_positive, teststring_negative]
 
 
 def number_exists(input_string) -> bool:
