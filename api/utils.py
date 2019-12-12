@@ -6,6 +6,7 @@ import re
 
 from typing import List
 
+COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
 def get_language_from_filename(filename) -> str:
     """
@@ -32,13 +33,13 @@ def get_collection_files_regex(limit_collection, language) -> List:
     teststring_negative = []
     if language in ("tib", "chn"):
         for file in limit_collection:
-            if not "!" in file:
+            if "!" not in file:
                 teststring_positive.append("^" + file)
             else:
                 teststring_negative.append("^" + file.replace("!", ""))
     elif language == "pli":
         for file in limit_collection:
-            if not "!" in file:
+            if "!" not in file:
                 if number_exists(file):
                     teststring_positive.append("^" + file + ":")
                 else:
@@ -59,3 +60,19 @@ def number_exists(input_string) -> bool:
     :return: `True` if the string contains numbers.
     """
     return any(char.isdigit() for char in input_string)
+
+
+def collect_segment_results(segments) -> List:
+    collection_keys = []
+    segments_result = []
+    for segment in segments:
+        if "parallels" not in segment:
+            continue
+        for parallel in segment["parallels"]:
+            for seg_nr in parallel:
+                collection_key = re.search(COLLECTION_PATTERN, seg_nr)
+                if collection_key and collection_key.group() not in collection_keys:
+                    collection_keys.append(collection_key.group())
+        segments_result.append(segment)
+
+    return segments_result, collection_keys

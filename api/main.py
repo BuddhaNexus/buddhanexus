@@ -31,7 +31,7 @@ from .db_queries import (
     QUERY_ALL_COLLECTIONS,
     QUERY_TOTAL_NUMBERS,
 )
-from .utils import get_language_from_filename, get_collection_files_regex
+from .utils import get_language_from_filename, get_collection_files_regex, collect_segment_results
 from .db_connection import get_collection, get_db
 
 APP = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -155,17 +155,7 @@ async def get_segments_for_file(
                 "limitcollection_negative": limitcollection_negative,
             },
         )
-        collection_keys = []
-        segments_result = []
-        for segment in segments_query.result:
-            if "parallels" not in segment:
-                continue
-            for parallel in segment["parallels"]:
-                for seg_nr in parallel:
-                    collection_key = re.search(COLLECTION_PATTERN, seg_nr)
-                    if collection_key and collection_key.group() not in collection_keys:
-                        collection_keys.append(collection_key.group())
-            segments_result.append(segment)
+        segments_result, collection_keys = collect_segment_results(segments_query.result)
 
         return {
             "collections": database.AQLQuery(

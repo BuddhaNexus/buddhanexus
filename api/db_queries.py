@@ -30,7 +30,7 @@ FOR file IN files
                         )
                         LET fits_collection2 = (@limitcollection_negative != []) 
                             ? POSITION(collection_filter_test2, true) 
-                            : true
+                            : false
                         FILTER fits_collection2 == false
                         FILTER p.score >= @score
                         FILTER p.par_length >= @parlength
@@ -64,7 +64,7 @@ LET file_parallels = (
         )
         LET fits_collection2 = (@limitcollection_negative != []) 
             ? POSITION(collection_filter_test2, true)
-            : true
+            : false
         FILTER fits_collection2 == false
         SORT p.@sortkey @sortdirection
         LIMIT 50 * @page, 50
@@ -196,7 +196,7 @@ let parallels =  (
                     FOR item IN @limitcollection_negative
                         RETURN REGEX_TEST(p.par_segnr[0], item)
                     )
-                    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : true
+                    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
                     FILTER filternr2 == false
                     RETURN { root_offset_beg: p.root_offset_beg,
                              root_offset_end: p.root_offset_end,
@@ -226,7 +226,7 @@ RETURN (
                     FOR item IN @limitcollection_negative
                         RETURN REGEX_TEST(p.par_segnr[0], item)
                     )
-                    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : true
+                    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
                     FILTER filternr2 == false
                     let par_segtext = (
                         FOR segnr IN p.par_segnr
@@ -286,7 +286,7 @@ FOR p IN parallels
             FOR item IN @limitcollection_negative
                 RETURN REGEX_TEST(p.par_segnr[0], item)
             )
-            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : true
+            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
             FILTER filternr2 == false
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
