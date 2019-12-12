@@ -63,6 +63,10 @@ def number_exists(input_string) -> bool:
 
 
 def collect_segment_results(segments) -> List:
+    """
+    Query results are analyzed based on what collection they are part of and put in the
+    relevant category thereof. Returns the results and the keys to the collections.
+    """
     collection_keys = []
     segments_result = []
     for segment in segments:
