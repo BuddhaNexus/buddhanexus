@@ -23,14 +23,7 @@ def get_language_from_filename(filename) -> str:
     return "pli"
 
 
-def get_collection_files_regex(limit_collection, language) -> List:
-    """
-    Returns a regular expression list for use in arangodb queries
-    :param limit_collection: The list of collections to limit to
-    :param language: The desired language
-    :return: The regular expressions to test if resource belongs to a given collection
-    if a collection is prefixed with !, we exclude it from the results!
-    """
+def create_cleaned_limit_collection(limit_collection) -> List:
     new_limit_collection = []
     for file in limit_collection:
         if re.search("[a-z]+_[A-Z][a-z]+$", file):
@@ -47,6 +40,19 @@ def get_collection_files_regex(limit_collection, language) -> List:
                     new_limit_collection.append("!"+item)
         else:
             new_limit_collection.append(file)
+
+    return new_limit_collection
+
+
+def get_collection_files_regex(limit_collection, language) -> List:
+    """
+    Returns a regular expression list for use in arangodb queries
+    :param limit_collection: The list of collections to limit to
+    :param language: The desired language
+    :return: The regular expressions to test if resource belongs to a given collection
+    if a collection is prefixed with !, we exclude it from the results!
+    """
+    new_limit_collection = create_cleaned_limit_collection(limit_collection)
 
     teststring_positive = []
     teststring_negative = []
