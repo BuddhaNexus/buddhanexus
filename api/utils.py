@@ -26,7 +26,7 @@ def get_language_from_filename(filename) -> str:
 def create_cleaned_limit_collection(limit_collection) -> List:
     """
     Check if limit_collection is a category or entire collection.
-    If a collection, fetch all the categories in that collection and add that to the 
+    If a collection, fetch all the categories in that collection and add that to the
     new_limit_collection
     """
     new_limit_collection = []
