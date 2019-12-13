@@ -485,12 +485,27 @@ async def get_visual_view_for_file(
     Endpoint for visual view
     """
     database = get_db()
-    searchterm = language + "_" + searchterm
+    languagesearchterm = language + "_" + searchterm
     query_collection_list = database.AQLQuery(
         query=QUERY_COLLECTION_TOTALS,
-        bindVars={"sourcecollection": searchterm, "selected": selected},
+        bindVars={"sourcecollection": languagesearchterm, "selected": selected},
     )
-    return {"graphdata": query_collection_list.result[0]}
+    if (len(selected) == 1 or re.search(r"^[A-Z][a-z]+$", searchterm)):
+        return {"graphdata": query_collection_list.result[0]}
+    else:
+        query_results = query_collection_list.result[0]
+        query_results_keys = []
+        graphdata = []
+        for key in query_results:
+            if not key[0] in query_results_keys:
+                query_results_keys.append(key[0])
+
+        for key in query_results_keys:
+            for result_item in query_results:
+                if result_item[0] == key:
+                    graphdata.append(result_item)
+
+        return {"graphdata": graphdata}
 
 
 @APP.get("/collections")
