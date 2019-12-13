@@ -16,12 +16,22 @@ FOR file IN files
                 FOR parallel_id IN segment.parallel_ids
                     FOR p IN parallels
                         FILTER p._key == parallel_id
-                        LET filtertest = (
-                            FOR item IN @limitcollection
-                                RETURN REGEX_TEST(p.par_segnr[0], item)
-                            )
-                        LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
-                        FILTER filternr == true
+                        LET collection_filter_test = (
+                            FOR item IN @limitcollection_positive
+                            RETURN REGEX_TEST(p.par_segnr[0], item)
+                        )
+                        LET fits_collection = (@limitcollection_positive != []) 
+                            ? POSITION(collection_filter_test, true)
+                            : true
+                        FILTER fits_collection == true
+                        LET collection_filter_test2 = (
+                            FOR item IN @limitcollection_negative
+                            RETURN REGEX_TEST(p.par_segnr[0], item)
+                        )
+                        LET fits_collection2 = (@limitcollection_negative != []) 
+                            ? POSITION(collection_filter_test2, true) 
+                            : false
+                        FILTER fits_collection2 == false
                         FILTER p.score >= @score
                         FILTER p.par_length >= @parlength
                         FILTER p["co-occ"] <= @coocc
@@ -41,13 +51,21 @@ LET file_parallels = (
         FILTER p.par_length >= @parlength
         FILTER p["co-occ"] <= @coocc
         LET collection_filter_test = (
-            FOR item IN @limitcollection
+            FOR item IN @limitcollection_positive
             RETURN REGEX_TEST(p.par_segnr[0], item)
         )
-        LET fits_collection = (@limitcollection != []) 
+        LET fits_collection = (@limitcollection_positive != []) 
             ? POSITION(collection_filter_test, true) 
             : true
         FILTER fits_collection == true
+        LET collection_filter_test2 = (
+            FOR item IN @limitcollection_negative
+            RETURN REGEX_TEST(p.par_segnr[0], item)
+        )
+        LET fits_collection2 = (@limitcollection_negative != []) 
+            ? POSITION(collection_filter_test2, true)
+            : false
+        FILTER fits_collection2 == false
         SORT p.@sortkey @sortdirection
         LIMIT 50 * @page, 50
         let root_seg_text = (
@@ -118,12 +136,27 @@ FOR category IN menu_categories
 """
 
 QUERY_CATEGORIES_FOR_LANGUAGE = """
-FOR category IN menu_categories
-    FILTER category.language == @language
-    SORT category.categorynr
-    LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
-    RETURN {category: category.category,
-            categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),categorynamepart)}
+    LET totalcollection = (
+        FOR collection IN menu_collections
+            FILTER collection.language == @language
+            SORT collection.collectionnr
+            LET language = collection.language
+            LET categorylist = (
+            FOR col_category IN collection.categories
+                FOR category IN menu_categories
+                    FILTER category.category == col_category
+                    FILTER category.language == language
+                    SORT category.categorynr
+                    LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
+                    LET categoryname = CONCAT_SEPARATOR(" ",categorynamepart,CONCAT("(",UPPER(category.category),")"))
+                    RETURN {category: category.category,
+                            categoryname: CONCAT("• ",categoryname)}
+                    )
+            RETURN APPEND([{ category: collection._key,
+                     categoryname: CONCAT(UPPER(collection.collection), " (ALL)")}],
+                     categorylist)
+        )
+    RETURN FLATTEN(totalcollection)
 """
 
 QUERY_TEXT_SEARCH = """
@@ -137,6 +170,7 @@ FOR file IN files
                      segtext: segment.segtext,
                      parallel_ids: segment.parallel_ids }
 """
+
 QUERY_SEGMENT_COUNT = """
 FOR segment IN segments
     FILTER segment._key == @segmentnr
@@ -170,15 +204,21 @@ let parallels =  (
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
             LET filtertest = (
-                FOR item IN @limitcollection
+                FOR item IN @limitcollection_positive
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
-                LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
                 FILTER filternr == true     
-                RETURN { root_offset_beg: p.root_offset_beg,
-                         root_offset_end: p.root_offset_end,
-                         root_segnr : p.root_segnr,
-                         id: p._key }
+                LET filtertest2 = (
+                    FOR item IN @limitcollection_negative
+                        RETURN REGEX_TEST(p.par_segnr[0], item)
+                    )
+                    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+                    FILTER filternr2 == false
+                    RETURN { root_offset_beg: p.root_offset_beg,
+                             root_offset_end: p.root_offset_end,
+                             root_segnr : p.root_segnr,
+                             id: p._key }
     )
 RETURN { textleft: segments,
          parallel_ids: parallel_ids,
@@ -194,17 +234,23 @@ RETURN (
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
             LET filtertest = (
-                FOR item IN @limitcollection
+                FOR item IN @limitcollection_positive
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
-                LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+                LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
                 FILTER filternr == true     
-                let par_segtext = (
-                    FOR segnr IN p.par_segnr
-                        FOR segment IN segments
-                            FILTER segment._key == segnr
-                            RETURN segment.segtext
-                   )
+                LET filtertest2 = (
+                    FOR item IN @limitcollection_negative
+                        RETURN REGEX_TEST(p.par_segnr[0], item)
+                    )
+                    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+                    FILTER filternr2 == false
+                    let par_segtext = (
+                        FOR segnr IN p.par_segnr
+                            FOR segment IN segments
+                                FILTER segment._key == segnr
+                                RETURN segment.segtext
+                       )
                 RETURN {
                     par_segnr: p.par_segnr, 
                     par_offset_beg: p.par_offset_beg, 
@@ -219,8 +265,6 @@ RETURN (
                     score: p.score,
                     "co-occ": p["co-occ"]
                 }
-
-
 )
 """
 
@@ -249,17 +293,23 @@ FOR p IN parallels
 QUERY_TOTAL_NUMBERS = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
-    LIMIT 15000
     LET filtertest = (
-        FOR item IN @limitcollection
+        FOR item IN @limitcollection_positive
             RETURN REGEX_TEST(p.par_segnr[0], item)
         )
-        LET filternr = (@limitcollection != []) ? POSITION(filtertest, true) : true
+        LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
         FILTER filternr == true
-        FILTER p.score >= @score
-        FILTER p.par_length >= @parlength
-        FILTER p["co-occ"] <= @coocc
-        COLLECT WITH COUNT INTO length
+        LET filtertest2 = (
+            FOR item IN @limitcollection_negative
+                RETURN REGEX_TEST(p.par_segnr[0], item)
+            )
+            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+            FILTER filternr2 == false
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
+            LIMIT 15000
+            COLLECT WITH COUNT INTO length
 RETURN length
 """
 
@@ -304,4 +354,10 @@ QUERY_CATEGORIES_PER_COLLECTION = """
         RETURN { collection: collection._key,
                  language: language,
                  categories: categorylist }
+"""
+
+QUERY_ONE_COLLECTION = """
+    FOR collection IN menu_collections
+        FILTER collection._key == @collectionkey
+        RETURN collection.categories
 """

@@ -235,12 +235,13 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
     collection.ensureHashIndex(['root_filename'], unique=False)
 
 
-def load_menu_collection(menu_collection, language, db):
+def load_menu_collection(menu_collection, language, collection_count, db):
     db_collection = db[COLLECTION_MENU_COLLECTIONS]
     doc = db_collection.createDocument()
     doc._key = f"{language}_{menu_collection['collection']}"
     doc.set(menu_collection)
     doc["language"] = language
+    doc["collectionnr"] = collection_count
     try:
         doc.save()
     except CreationError as e:
@@ -253,8 +254,10 @@ def load_all_menu_collections():
         with open(f"../data/{language}-collections.json") as f:
             print(f"Loading menu collections in {language}...")
             collections = json.load(f)
+            collection_count = 0
             for collection in collections:
-                load_menu_collection(collection, language, db)
+                load_menu_collection(collection, language, collection_count, db)
+                collection_count += 1
             print("✓")
 
 
