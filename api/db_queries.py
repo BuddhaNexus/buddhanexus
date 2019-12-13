@@ -135,12 +135,27 @@ FOR category IN menu_categories
 """
 
 QUERY_CATEGORIES_FOR_LANGUAGE = """
-FOR category IN menu_categories
-    FILTER category.language == @language
-    SORT category.categorynr
-    LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
-    RETURN {category: category.category,
-            categoryname: CONCAT_SEPARATOR(" ",UPPER(category.category),categorynamepart)}
+    LET totalcollection = (
+        FOR collection IN menu_collections
+            FILTER collection.language == @language
+            SORT collection.collectionnr
+            LET language = collection.language
+            LET categorylist = (
+            FOR col_category IN collection.categories
+                FOR category IN menu_categories
+                    FILTER category.category == col_category
+                    FILTER category.language == language
+                    SORT category.categorynr
+                    LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
+                    LET categoryname = CONCAT_SEPARATOR(" ",categorynamepart,CONCAT("(",UPPER(category.category),")"))
+                    RETURN {category: category.category,
+                            categoryname: CONCAT("• ",categoryname)}
+                    )
+            RETURN APPEND([{ category: collection._key,
+                     categoryname: CONCAT(UPPER(collection.collection), " (ALL)")}],
+                     categorylist)
+        )
+    RETURN FLATTEN(totalcollection)
 """
 
 QUERY_TEXT_SEARCH = """
@@ -154,6 +169,7 @@ FOR file IN files
                      segtext: segment.segtext,
                      parallel_ids: segment.parallel_ids }
 """
+
 QUERY_SEGMENT_COUNT = """
 FOR segment IN segments
     FILTER segment._key == @segmentnr
@@ -337,4 +353,10 @@ QUERY_CATEGORIES_PER_COLLECTION = """
         RETURN { collection: collection._key,
                  language: language,
                  categories: categorylist }
+"""
+
+QUERY_ONE_COLLECTION = """
+    FOR collection IN menu_collections
+        FILTER collection._key == @collectionkey
+        RETURN collection.categories
 """

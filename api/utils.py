@@ -3,8 +3,10 @@ Various utilities for interacting with data in API queries.
 """
 
 import re
-
 from typing import List
+
+from .db_queries import ( QUERY_ONE_COLLECTION )
+from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
@@ -29,16 +31,50 @@ def get_collection_files_regex(limit_collection, language) -> List:
     :return: The regular expressions to test if resource belongs to a given collection
     if a collection is prefixed with !, we exclude it from the results!
     """
+
+    """
+    First scan the limit_collection to determine if it is a a collection of multiple categories
+    and if so, find all the categories in that collection and add them to a new list.
+    """
+    new_limit_collection = []
+    for file in limit_collection:
+        if re.search("[a-z]+_[A-Z][a-z]+$", file):
+            try:
+                query = get_db().AQLQuery(
+                    query=QUERY_ONE_COLLECTION,
+                    bindVars={
+                        "collectionkey": file.replace("!", "")
+                    },
+                )
+                for item in query.result[0]:
+                    if "!" not in file:
+                        new_limit_collection.append(item)
+                    else:
+                        new_limit_collection.append("!"+item)
+
+            except DocumentNotFoundError as error:
+                print(error)
+                raise HTTPException(status_code=404, detail="Item not found")
+            except AQLQueryError as error:
+                print("AQLQueryError: ", error)
+                raise HTTPException(status_code=400, detail=error.errors)
+            except KeyError as error:
+                print("KeyError: ", error)
+                raise HTTPException(status_code=400)
+
+        else:
+            new_limit_collection.append(file)
+
     teststring_positive = []
     teststring_negative = []
     if language in ("tib", "chn"):
-        for file in limit_collection:
+        for file in new_limit_collection:
             if "!" not in file:
                 teststring_positive.append("^" + file)
             else:
                 teststring_negative.append("^" + file.replace("!", ""))
     elif language == "pli":
-        for file in limit_collection:
+        for file in new_limit_collection:
             if "!" not in file:
                 if number_exists(file):
                     teststring_positive.append("^" + file + ":")
