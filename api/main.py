@@ -490,12 +490,12 @@ async def get_visual_view_for_file(
         query=QUERY_COLLECTION_TOTALS,
         bindVars={"sourcecollection": languagesearchterm, "selected": selected},
     )
+    graphdata = []
     if (len(selected) == 1 or re.search(r"^[A-Z][a-z]+$", searchterm)):
-        return {"graphdata": query_collection_list.result[0]}
+        graphdata = query_collection_list.result[0]
     else:
         query_results = query_collection_list.result[0]
         query_results_keys = []
-        graphdata = []
         for key in query_results:
             if not key[0] in query_results_keys:
                 query_results_keys.append(key[0])
@@ -505,7 +505,7 @@ async def get_visual_view_for_file(
                 if result_item[0] == key:
                     graphdata.append(result_item)
 
-        return {"graphdata": graphdata}
+    return {"graphdata": graphdata}
 
 
 @APP.get("/collections")
