@@ -64,7 +64,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     """
     if file_lang == LANG_PALI and file_name.startswith("mn"):
         return True
-    if file_lang == LANG_CHINESE and file_name.startswith('T31'):
+    if file_lang == LANG_CHINESE and file_name.startswith("T31"):
         return True
     if file_lang == LANG_TIBETAN and file_name.startswith("T06"):
         return True
@@ -112,4 +112,3 @@ def get_segments_and_parallels_from_gzipped_local_file(file_path: str) -> list:
     except OSError as os_error:
         print(f"Could not load the gzipped local file {file_path}. Error: ", os_error)
         return [None, None]
-
