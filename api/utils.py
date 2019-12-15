@@ -5,10 +5,11 @@ Various utilities for interacting with data in API queries.
 import re
 from typing import List
 
-from .db_queries import (QUERY_ONE_COLLECTION)
+from .db_queries import QUERY_ONE_COLLECTION
 from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
+
 
 def get_language_from_filename(filename) -> str:
     """
@@ -34,15 +35,13 @@ def create_cleaned_limit_collection(limit_collection) -> List:
         if re.search("[a-z]+_[A-Z][a-z]+$", file):
             query = get_db().AQLQuery(
                 query=QUERY_ONE_COLLECTION,
-                bindVars={
-                    "collectionkey": file.replace("!", "")
-                },
+                bindVars={"collectionkey": file.replace("!", "")},
             )
             for item in query.result[0]:
                 if "!" not in file:
                     new_limit_collection.append(item)
                 else:
-                    new_limit_collection.append("!"+item)
+                    new_limit_collection.append("!" + item)
         else:
             new_limit_collection.append(file)
 

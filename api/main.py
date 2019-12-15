@@ -31,7 +31,11 @@ from .db_queries import (
     QUERY_ALL_COLLECTIONS,
     QUERY_TOTAL_NUMBERS,
 )
-from .utils import get_language_from_filename, get_collection_files_regex, collect_segment_results
+from .utils import (
+    get_language_from_filename,
+    get_collection_files_regex,
+    collect_segment_results,
+)
 from .db_connection import get_collection, get_db
 
 APP = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
@@ -94,8 +98,8 @@ async def get_parallels_for_root_seg_nr(root_segnr: str):
     :return: List of paralllel objects
     """
     aql = f"""
-    FOR p IN parallels 
-        FILTER '{root_segnr}' IN p.root_segnr 
+    FOR p IN parallels
+        FILTER '{root_segnr}' IN p.root_segnr
         RETURN p
     """
     try:
@@ -112,7 +116,8 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
     """
     language = get_language_from_filename(parallels.file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-                    parallels.limit_collection, language)
+        parallels.limit_collection, language
+    )
     query_result = get_db().AQLQuery(
         query=QUERY_PARALELLS_FOR_MIDDLE_TEXT,
         bindVars={
@@ -140,7 +145,8 @@ async def get_segments_for_file(
     :return: List of segments
     """
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name))
+        limit_collection, get_language_from_filename(file_name)
+    )
 
     try:
         database = get_db()
@@ -155,7 +161,9 @@ async def get_segments_for_file(
                 "limitcollection_negative": limitcollection_negative,
             },
         )
-        segments_result, collection_keys = collect_segment_results(segments_query.result)
+        segments_result, collection_keys = collect_segment_results(
+            segments_query.result
+        )
 
         return {
             "collections": database.AQLQuery(
@@ -194,7 +202,8 @@ async def get_table_view(
     :return: List of segments and parallels for the table view.
     """
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-                    limit_collection, get_language_from_filename(file_name))
+        limit_collection, get_language_from_filename(file_name)
+    )
     try:
         sort_key = ""
         sort_direction = "DESC"
@@ -320,10 +329,7 @@ async def get_file_text_segments_and_parallels(
         active_segment = unquote(active_segment)
         try:
             text_segment_count_query_result = get_db().AQLQuery(
-                query=QUERY_SEGMENT_COUNT,
-                bindVars={
-                    "segmentnr": active_segment,
-                },
+                query=QUERY_SEGMENT_COUNT, bindVars={"segmentnr": active_segment,},
             )
             start_int = text_segment_count_query_result.result[0] - 100
         except DocumentNotFoundError as error:
@@ -338,7 +344,8 @@ async def get_file_text_segments_and_parallels(
     if start_int < 0:
         start_int = 0
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-                    limit_collection, get_language_from_filename(file_name))
+        limit_collection, get_language_from_filename(file_name)
+    )
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=QUERY_TEXT_AND_PARALLELS,
@@ -472,7 +479,9 @@ async def get_graph_for_file(
 
     # returns a list of the data as needed by Google Graphs
     return {
-        "piegraphdata": sorted(unsorted_graphdata_list, reverse=True, key=lambda x: x[1]),
+        "piegraphdata": sorted(
+            unsorted_graphdata_list, reverse=True, key=lambda x: x[1]
+        ),
         "histogramgraphdata": sorted(histogram_data, reverse=True, key=lambda x: x[1]),
     }
 
@@ -525,7 +534,8 @@ async def get_counts_for_file(
     Returns number of filtered parallels
     """
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name))
+        limit_collection, get_language_from_filename(file_name)
+    )
     query_graph_result = get_db().AQLQuery(
         query=QUERY_TOTAL_NUMBERS,
         batchSize=100000,

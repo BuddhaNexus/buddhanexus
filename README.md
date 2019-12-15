@@ -18,10 +18,10 @@ Backend for the Buddhanexus project
 
 #### 3. Running the project
 - First, open the `.env.example` file, copy it and name the copy `.env`.
-- Modify the variables in the `.env` file. If running online, **choose a strong password for arangodb**. 
+- Modify the variables in the `.env` file. If running online, **choose a strong password for arangodb**.
 - Run `make run-dev`. This will download docker images and start all services.
 
-The API should now be accessible on port 8000.  
+The API should now be accessible on port 8000.
 
 The API Documentation is also available in the `/docs` folder.
 If running on a local machine, the address is [http://localhost:8000/docs].
@@ -29,10 +29,10 @@ If running on a local machine, the address is [http://localhost:8000/docs].
 #### 4. Loading the segment data
 So far the database is empty. To populate it, do the following:
 - (One-time) To initialize the database and create collections, run `make create-db`.
-- (Long running task) to load the data into arangodb, run `make load-data`. 
+- (Long running task) to load the data into arangodb, run `make load-data`.
 
 ###### Experimental feature:
-There is also an additional command called `make load-data-async`, 
+There is also an additional command called `make load-data-async`,
 which speeds up the data loading process by running it in parallel.
 This might overload the database depending on system resources.
 The number of threads can be modified in the `Makefile`.
