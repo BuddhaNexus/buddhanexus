@@ -361,3 +361,29 @@ QUERY_ONE_COLLECTION = """
         FILTER collection._key == @collectionkey
         RETURN collection.categories
 """
+
+QUERY_TOTAL_MENU = """
+    FOR collection IN menu_collections
+        FILTER collection.language == @language
+        LET categorylist = (
+        FOR col_category IN collection.categories
+            FOR category IN menu_categories
+                FILTER category.category == col_category
+                FILTER category.language == @language
+                SORT category.categorynr
+                LET catname = SPLIT(category.categoryname,["—","("])[0]
+                LET filelist = (
+                    FOR cat_file IN category.files
+                        FOR file in files
+                            FILTER file._key == cat_file
+                            SORT file.filenr
+                            RETURN {filename: file.filename,
+                                    displayname: file.displayName}
+                )
+                RETURN {categoryname: category.category,
+                        categorydisplayname: catname,
+                        files: filelist}
+                )
+        RETURN { collection: collection.collection,
+                 categories: categorylist }
+"""

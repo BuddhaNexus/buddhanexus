@@ -30,6 +30,7 @@ from .db_queries import (
     QUERY_COLLECTION_TOTALS,
     QUERY_ALL_COLLECTIONS,
     QUERY_TOTAL_NUMBERS,
+    QUERY_TOTAL_MENU,
 )
 from .utils import (
     get_language_from_filename,
@@ -500,7 +501,7 @@ async def get_visual_view_for_file(
         bindVars={"sourcecollection": languagesearchterm, "selected": selected},
     )
     graphdata = []
-    if (len(selected) == 1 or re.search(r"^[A-Z][a-z]+$", searchterm)):
+    if len(selected) == 1 or re.search(r"^[A-Z][a-z]+$", searchterm):
         graphdata = query_collection_list.result[0]
     else:
         query_results = query_collection_list.result[0]
@@ -564,3 +565,16 @@ async def get_counts_for_file(
         },
     )
     return {"parallel_count": query_graph_result.result}
+
+
+@APP.get("/menus/sidebar/{language}")
+async def get_data_for_sidebar_menu(language: str):
+    """
+    Endpoint for sidebar menu
+    """
+    database = get_db()
+    query_sidebar_menu = database.AQLQuery(
+        query=QUERY_TOTAL_MENU, bindVars={"language": language},
+    )
+
+    return {"navigationmenudata": query_sidebar_menu.result}
