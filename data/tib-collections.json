@@ -1,5 +1,23 @@
 [
   {
+    "collection": "Kangyur",
+    "categories": [
+      "K01",
+      "K02",
+      "K03",
+      "K04",
+      "K05",
+      "K06",
+      "K07",
+      "K08",
+      "K09",
+      "K10",
+      "K11",
+      "K12",
+      "K13"
+    ]
+  },
+  {
     "collection": "Tengyur",
     "categories": [
       "T01",
@@ -18,24 +36,6 @@
       "T14",
       "T15",
       "T16"
-    ]
-  },
-  {
-    "collection": "Kangyur",
-    "categories": [
-      "K01",
-      "K02",
-      "K03",
-      "K04",
-      "K05",
-      "K06",
-      "K07",
-      "K08",
-      "K09",
-      "K10",
-      "K11",
-      "K12",
-      "K13"
     ]
   }
 ]
