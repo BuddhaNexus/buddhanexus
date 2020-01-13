@@ -13,3 +13,4 @@ tramp
 .\#*
 # Environments
 .env
+json

@@ -283,7 +283,7 @@ FOR p IN parallels
     FILTER p["co-occ"] <= @coocc
     LET filtertest = (
         FOR item IN target
-            RETURN REGEX_TEST(p.par_segnr[0], CONCAT("^",item))
+            RETURN REGEX_TEST(p.par_segnr[0], CONCAT("^",item,"[^y]"))
         )
     LET filternr = (target != []) ? POSITION(filtertest, true) : true
     FILTER filternr == true
