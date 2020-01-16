@@ -153,6 +153,7 @@ async def get_segments_for_file(
         database = get_db()
         segments_query = database.AQLQuery(
             query=QUERY_FILE_SEGMENTS_PARALLELS,
+            batchSize=10000,
             bindVars={
                 "filename": file_name,
                 "score": score,
