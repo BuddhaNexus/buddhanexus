@@ -571,7 +571,8 @@ async def get_counts_for_file(
 
 @APP.get("/files/{file_name}/folios")
 async def get_folios_for_file(
-    file_name: str):
+    file_name: str
+):
     """
     Returns number of folios (TIB) / facsimiles (CHN)
     """

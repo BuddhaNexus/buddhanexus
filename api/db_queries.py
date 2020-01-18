@@ -175,11 +175,7 @@ QUERY_ALL_SEGMENTS = """
 FOR file IN files
     FILTER file._key == @filename
     RETURN file.segmentnrs
-
 """
-
-
-
 
 QUERY_SEGMENT_COUNT = """
 FOR segment IN segments
