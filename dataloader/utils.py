@@ -13,7 +13,7 @@ from pyArango.connection import Connection
 from tqdm import trange
 from joblib import Parallel as ParallelJobRunner, delayed
 
-from constants import DB_NAME, LANG_PALI, LANG_TIBETAN, LANG_CHINESE
+from constants import DB_NAME, LANG_PALI, LANG_TIBETAN, LANG_CHINESE, LANG_SANSKRIT
 
 
 def get_db_connection() -> Connection:
