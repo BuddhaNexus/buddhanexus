@@ -592,9 +592,8 @@ async def get_folios_for_file(
         last_segment = segments[-1]
         first_num = int(first_segment.split(':')[1].split('-')[0])
         last_num = int(last_segment.split(':')[1].split('-')[0])
-        folios = list(range(first_num,last_num+1))
+        folios = list(range(first_num, last_num+1))
     return {"folios": folios}
-
 
 
 @APP.get("/menus/sidebar/{language}")
