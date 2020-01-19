@@ -574,7 +574,7 @@ async def get_folios_for_file(
     file_name: str
 ):
     """
-    Returns number of folios (TIB) / facsimiles (CHN)
+    Returns number of folios (TIB) / facsimiles (CHN) / suttas (PLI)
     """
     lang = get_language_from_filename(file_name)
     folios = []
@@ -586,17 +586,14 @@ async def get_folios_for_file(
                 "filename": file_name,
             },
         )
+        segments = query_graph_result.result[0]
+        first_segment = segments[0]
+        last_segment = segments[-1]
         if lang == 'chn':
-            segments = query_graph_result.result[0]
-            first_segment = segments[0]
-            last_segment = segments[-1]
             first_num = int(first_segment.split(':')[1].split('-')[0])
             last_num = int(last_segment.split(':')[1].split('-')[0])
             folios = list(range(first_num, last_num+1))    
-        else if lang == 'tib':
-            segments = query_graph_result.result[0]
-            first_segment = segments[0]
-            last_segment = segments[-1]
+        elif lang == 'tib':
             first_num = int(first_segment.split(':')[1].split('-')[0][:-1])
             last_num = int(last_segment.split(':')[1].split('-')[0][:-1])
             c = 0
@@ -610,7 +607,16 @@ async def get_folios_for_file(
                 folios.append(str(number) + 'b')
             if "b" in last_folio:
                 folios.append(last_folio.replace('b','a'))
-            folios.append(last_folio)                                                   
+            folios.append(last_folio)
+        elif lang == 'pli':
+            if re.search(r"(^[as]n[0-9]|^dhp|pm)", first_segment):
+                for segment in segments:
+                    suttanr = segment.split('.')[0]
+                    if suttanr not in folios:
+                        folios.append(suttanr)
+            else:
+                folios.append("Not available")
+
     return {"folios": folios}
 
 
