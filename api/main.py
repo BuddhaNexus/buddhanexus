@@ -578,44 +578,46 @@ async def get_folios_for_file(
     """
     lang = get_language_from_filename(file_name)
     folios = []
-    if lang != "skt":
-        query_graph_result = get_db().AQLQuery(
-            query=QUERY_ALL_SEGMENTS,
-            batchSize=100000,
-            bindVars={
-                "filename": file_name,
-            },
-        )
-        segments = query_graph_result.result[0]
-        first_segment = segments[0]
-        last_segment = segments[-1]
-        if lang == 'chn':
-            first_num = int(first_segment.split(':')[1].split('-')[0])
-            last_num = int(last_segment.split(':')[1].split('-')[0])
-            folios = list(range(first_num, last_num+1))    
-        elif lang == 'tib':
-            first_num = int(first_segment.split(':')[1].split('-')[0][:-1])
-            last_num = int(last_segment.split(':')[1].split('-')[0][:-1])
-            c = 0
-            first_folio = first_segment.split(':')[1].split('-')[0]
-            last_folio = last_segment.split(':')[1].split('-')[0]
-            folios.append(first_folio)
-            if "a" in first_folio:
-                folios.append(first_folio.replace('a','b'))
-            for number in  list(range(first_num+1, last_num)):
-                folios.append(str(number) + 'a')
-                folios.append(str(number) + 'b')
-            if "b" in last_folio:
-                folios.append(last_folio.replace('b','a'))
-            folios.append(last_folio)
-        elif lang == 'pli':
-            if re.search(r"(^[as]n[0-9]|^dhp|pm)", first_segment):
-                for segment in segments:
-                    suttanr = segment.split('.')[0]
-                    if suttanr not in folios:
-                        folios.append(suttanr)
-            else:
-                folios.append("Not available")
+    if lang == "skt":
+        return;
+        
+    query_graph_result = get_db().AQLQuery(
+        query=QUERY_ALL_SEGMENTS,
+        batchSize=100000,
+        bindVars={
+            "filename": file_name,
+        },
+    )
+    segments = query_graph_result.result[0]
+    first_segment = segments[0]
+    last_segment = segments[-1]
+    if lang == 'chn':
+        first_num = int(first_segment.split(':')[1].split('-')[0])
+        last_num = int(last_segment.split(':')[1].split('-')[0])
+        folios = list(range(first_num, last_num+1))    
+    elif lang == 'tib':
+        first_num = int(first_segment.split(':')[1].split('-')[0][:-1])
+        last_num = int(last_segment.split(':')[1].split('-')[0][:-1])
+        c = 0
+        first_folio = first_segment.split(':')[1].split('-')[0]
+        last_folio = last_segment.split(':')[1].split('-')[0]
+        folios.append(first_folio)
+        if "a" in first_folio:
+            folios.append(first_folio.replace('a','b'))
+        for number in  list(range(first_num+1, last_num)):
+            folios.append(str(number) + 'a')
+            folios.append(str(number) + 'b')
+        if "b" in last_folio:
+            folios.append(last_folio.replace('b','a'))
+        folios.append(last_folio)
+    elif lang == 'pli':
+        if re.search(r"(^[as]n[0-9]|^dhp|pm)", first_segment):
+            for segment in segments:
+                suttanr = segment.split('.')[0]
+                if suttanr not in folios:
+                    folios.append(suttanr)
+        else:
+            folios.append("Not available")
 
     return {"folios": folios}
 
