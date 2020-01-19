@@ -578,8 +578,7 @@ async def get_folios_for_file(
     """
     lang = get_language_from_filename(file_name)
     folios = []
-    # at the moment this only works for Chinese
-    if lang == "chn":
+    if lang == "chn" or lang == 'tib':
         query_graph_result = get_db().AQLQuery(
             query=QUERY_ALL_SEGMENTS,
             batchSize=100000,
@@ -587,12 +586,31 @@ async def get_folios_for_file(
                 "filename": file_name,
             },
         )
-        segments = query_graph_result.result[0]
-        first_segment = segments[0]
-        last_segment = segments[-1]
-        first_num = int(first_segment.split(':')[1].split('-')[0])
-        last_num = int(last_segment.split(':')[1].split('-')[0])
-        folios = list(range(first_num, last_num+1))
+        if lang == 'chn':
+            segments = query_graph_result.result[0]
+            first_segment = segments[0]
+            last_segment = segments[-1]
+            first_num = int(first_segment.split(':')[1].split('-')[0])
+            last_num = int(last_segment.split(':')[1].split('-')[0])
+            folios = list(range(first_num, last_num+1))    
+        else:
+            segments = query_graph_result.result[0]
+            first_segment = segments[0]
+            last_segment = segments[-1]
+            first_num = int(first_segment.split(':')[1].split('-')[0][:-1])
+            last_num = int(last_segment.split(':')[1].split('-')[0][:-1])
+            c = 0
+            first_folio = first_segment.split(':')[1].split('-')[0]
+            last_folio = last_segment.split(':')[1].split('-')[0]
+            folios.append(first_folio)
+            if "a" in first_folio:
+                folios.append(first_folio.replace('a','b'))
+            for number in  list(range(first_num+1, last_num)):
+                folios.append(str(number) + 'a')
+                folios.append(str(number) + 'b')
+            if "b" in last_folio:
+                folios.append(last_folio.replace('b','a'))
+            folios.append(last_folio)                                                   
     return {"folios": folios}
 
 
