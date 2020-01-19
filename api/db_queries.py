@@ -179,7 +179,7 @@ FOR file IN files
 
 QUERY_SEGMENT_COUNT = """
 FOR segment IN segments
-    FILTER segment._key == @segmentnr
+    FILTER segment._key LIKE @segmentnr
     RETURN segment.count
 
 """

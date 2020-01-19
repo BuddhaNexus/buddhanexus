@@ -334,7 +334,7 @@ async def get_file_text_segments_and_parallels(
             text_segment_count_query_result = get_db().AQLQuery(
                 query=QUERY_SEGMENT_COUNT, bindVars={"segmentnr": active_segment,},
             )
-            start_int = text_segment_count_query_result.result[0] - 100
+            start_int = text_segment_count_query_result.result[0]
         except DocumentNotFoundError as error:
             print(error)
             raise HTTPException(status_code=404, detail="Item not found")
@@ -580,7 +580,7 @@ async def get_folios_for_file(
     folios = []
     if lang == "skt":
         return;
-        
+
     query_graph_result = get_db().AQLQuery(
         query=QUERY_ALL_SEGMENTS,
         batchSize=100000,
