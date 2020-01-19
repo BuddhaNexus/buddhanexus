@@ -7609,6 +7609,22 @@
   "filenr": 1087
 },
 {
+  "displayName": "Sthiramati: MAVT",
+  "textname": "mavt",
+  "filename": "YXmavt",
+  "category": "T06",
+  "filenr": 1085
+},
+{
+  "displayName": "Sthiramati: PSK",
+  "textname": "psk",
+  "filename": "YXpsk",
+  "category": "T06",
+  "filenr": 1085
+},
+
+    
+    {
   "displayName": "A Digital edition of the Abhisamacarika-Dharma",
   "textname": "T07abhisdhu",
   "filename": "T07abhisdhu",
@@ -7623,18 +7639,11 @@
   "filenr": 1089
 },
 {
-  "displayName": "Vasubandhu: Abhidharmakosa-bhasya 1",
-  "textname": "T07vakobhau-1",
-  "filename": "T07vakobhau-1",
+  "displayName": "Vasubandhu: Abhidharmakosa-bhasya",
+  "textname": "T07vakobhau",
+  "filename": "T07vakobhau",
   "category": "T07",
   "filenr": 1090
-},
-{
-  "displayName": "Vasubandhu: Abhidharmakosa-bhasya 2",
-  "textname": "T07vakobhau-2",
-  "filename": "T07vakobhau-2",
-  "category": "T07",
-  "filenr": 1091
 },
 {
   "displayName": "Vasubandhu: Abhidharmakosa, Karikas only",
@@ -7644,18 +7653,11 @@
   "filenr": 1092
 },
 {
-  "displayName": "Yasomitra: Sphutartha Abhidharmakosavyakhya 1",
-  "textname": "T07yabhkvyu-1",
-  "filename": "T07yabhkvyu-1",
+  "displayName": "Yasomitra: Sphutartha Abhidharmakosavyakhya",
+    "textname": "T07yabhkvyu",
+      "filename": "T07yabhkvyu",
   "category": "T07",
   "filenr": 1093
-},
-{
-  "displayName": "Yasomitra: Sphutartha Abhidharmakosavyakhya 2",
-  "textname": "T07yabhkvyu-2",
-  "filename": "T07yabhkvyu-2",
-  "category": "T07",
-  "filenr": 1094
 },
 {
   "displayName": "T09ajm_u",
