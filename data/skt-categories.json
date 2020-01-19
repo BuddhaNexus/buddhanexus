@@ -1,7 +1,7 @@
 [
     {
         "category": "T01",
-        "categoryname": "(Praises)",
+        "categoryname": "Praises",
         "files": [
             "T01bsu016_u",
             "T01bsu018_u",
@@ -258,7 +258,7 @@
     },
     {
         "category": "T11",
-        "categoryname": "(Logic)",
+        "categoryname": "Logic",
         "files": [
             "T11arhebt2u",
             "T11arhebt_u",
@@ -297,7 +297,7 @@
     },
     {
         "category": "T16",
-        "categoryname": "(Various)",
+        "categoryname": "Various",
         "files": [
             "T16namekvsu"
         ]
@@ -634,14 +634,80 @@
         ]
     },
     {
-        "category": "GV07",
+        "category": "GE07",
         "categoryname": "GE07 Mbh",
-        "files": []
+        "files": [
+            "GE07bhagvg_u",
+            "GE07bhg4c01u",
+            "GE07bhg4c02u",
+            "GE07bhg4c03u",
+            "GE07bhg4c04u",
+            "GE07bhg4c05u",
+            "GE07bhg4c06u",
+            "GE07bhg4c07u",
+            "GE07bhg4c08u",
+            "GE07bhg4c09u",
+            "GE07bhg4c10u",
+            "GE07bhg4c11u",
+            "GE07bhg4c12u",
+            "GE07bhg4c13u",
+            "GE07bhg4c14u",
+            "GE07bhg4c15u",
+            "GE07bhg4c16u",
+            "GE07bhg4c17u",
+            "GE07bhg4c18u",
+            "GE07bhg4c__u",
+            "GE07bhgce__u",
+            "GE07hv_appau",
+            "GE07hv_appiu",
+            "GE07hv_apppu",
+            "GE07hv_conau",
+            "GE07hv_coniu",
+            "GE07hv_conpu",
+            "GE07hv_cumiu",
+            "GE07mbh1-18u",
+            "GE07mbh_01_u",
+            "GE07mbh_02_u",
+            "GE07mbh_03_u",
+            "GE07mbh_04_u",
+            "GE07mbh_05_u",
+            "GE07mbh_06_u",
+            "GE07mbh_07_u",
+            "GE07mbh_08_u",
+            "GE07mbh_09_u",
+            "GE07mbh_10_u",
+            "GE07mbh_11_u",
+            "GE07mbh_12_u",
+            "GE07mbh_13_u",
+            "GE07mbh_14_u",
+            "GE07mbh_15_u",
+            "GE07mbh_16_u",
+            "GE07mbh_17_u",
+            "GE07mbh_18_u",
+            "GE07naray__u",
+            "GE07naray_bu",
+            "GE07narayriu"
+        ]
     },
     {
-        "category": "GV08",
-        "categoryname": "GE08 Ramayana",
-        "files": []
+        "category": "GE09",
+        "categoryname": "GE09 Ramayana",
+        "files": [
+            "GE09ram2-3iu",
+            "GE09ram_01_u",
+            "GE09ram_02_u",
+            "GE09ram_02au",
+            "GE09ram_02pu",
+            "GE09ram_02su",
+            "GE09ram_03_u",
+            "GE09ram_03au",
+            "GE09ram_03pu",
+            "GE09ram_04_u",
+            "GE09ram_05_u",
+            "GE09ram_06_u",
+            "GE09ram_07_u",
+            "GE09ram_1-7u"
+        ]
     },
     {
         "category": "GP10",

@@ -578,7 +578,7 @@ async def get_folios_for_file(
     """
     lang = get_language_from_filename(file_name)
     folios = []
-    if lang == "chn" or lang == 'tib':
+    if lang != "skt":
         query_graph_result = get_db().AQLQuery(
             query=QUERY_ALL_SEGMENTS,
             batchSize=100000,
@@ -593,7 +593,7 @@ async def get_folios_for_file(
             first_num = int(first_segment.split(':')[1].split('-')[0])
             last_num = int(last_segment.split(':')[1].split('-')[0])
             folios = list(range(first_num, last_num+1))    
-        else:
+        else if lang == 'tib':
             segments = query_graph_result.result[0]
             first_segment = segments[0]
             last_segment = segments[-1]
