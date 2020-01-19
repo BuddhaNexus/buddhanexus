@@ -334,7 +334,9 @@ async def get_file_text_segments_and_parallels(
             text_segment_count_query_result = get_db().AQLQuery(
                 query=QUERY_SEGMENT_COUNT, bindVars={"segmentnr": active_segment,},
             )
-            start_int = text_segment_count_query_result.result[0]
+            start_int = text_segment_count_query_result.result[0] - 100
+            if get_language_from_filename(file_name) == 'pli':
+                start_int = start_int + 100
         except DocumentNotFoundError as error:
             print(error)
             raise HTTPException(status_code=404, detail="Item not found")
