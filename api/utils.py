@@ -17,7 +17,7 @@ def get_language_from_filename(filename) -> str:
     :param filename: The key of the file
     :return: Language of the file
     """
-    if re.search(r"(TD|acip|kl[0-9])", filename):
+    if re.search(r"(TD|acip|kl[0-9]|NY)", filename):
         return "tib"
     if re.search(r"(_[TX])", filename):
         return "chn"
