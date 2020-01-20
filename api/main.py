@@ -613,13 +613,10 @@ async def get_folios_for_file(
             folios.append(last_folio.replace('b','a'))
         folios.append(last_folio)
     elif lang == 'pli':
-        if re.search(r"(^[as]n[0-9]|^dhp|pm)", first_segment):
-            for segment in segments:
-                suttanr = segment.split('.')[0]
-                if suttanr not in folios:
-                    folios.append(suttanr)
-        else:
-            folios.append("Not available")
+        for segment in segments:
+            suttanr = segment.split('.')[0]
+            if suttanr not in folios:
+                folios.append(suttanr)
 
     return {"folios": folios}
 
