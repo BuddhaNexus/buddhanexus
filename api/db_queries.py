@@ -171,11 +171,16 @@ FOR file IN files
                      parallel_ids: segment.parallel_ids }
 """
 
+QUERY_ALL_SEGMENTS = """
+FOR file IN files
+    FILTER file._key == @filename
+    RETURN file.segmentnrs
+"""
+
 QUERY_SEGMENT_COUNT = """
 FOR segment IN segments
     FILTER segment._key == @segmentnr
     RETURN segment.count
-
 """
 
 QUERY_TEXT_AND_PARALLELS = """

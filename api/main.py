@@ -17,6 +17,7 @@ from starlette.middleware.cors import CORSMiddleware
 from .models_api import ParallelsCollection
 from .db_queries import (
     QUERY_TEXT_SEARCH,
+    QUERY_ALL_SEGMENTS,
     QUERY_TEXT_AND_PARALLELS,
     QUERY_PARALELLS_FOR_MIDDLE_TEXT,
     QUERY_TABLE_VIEW,
@@ -566,6 +567,55 @@ async def get_counts_for_file(
         },
     )
     return {"parallel_count": query_graph_result.result}
+
+
+@APP.get("/files/{file_name}/folios")
+async def get_folios_for_file(
+    file_name: str
+):
+    """
+    Returns number of folios (TIB) / facsimiles (CHN) / suttas (PLI)
+    """
+    lang = get_language_from_filename(file_name)
+    folios = []
+    if lang == "skt" or (lang == 'pli' and not re.search(r"(^[as]n[0-9]|^dhp)", file_name)):
+        return
+
+    query_graph_result = get_db().AQLQuery(
+        query=QUERY_ALL_SEGMENTS,
+        batchSize=100000,
+        bindVars={
+            "filename": file_name,
+        },
+    )
+    segments = query_graph_result.result[0]
+    first_segment = segments[0]
+    last_segment = segments[-1]
+    if lang == 'chn':
+        first_num = int(first_segment.split(':')[1].split('-')[0])
+        last_num = int(last_segment.split(':')[1].split('-')[0])
+        folios = list(range(first_num, last_num+1))
+    elif lang == 'tib':
+        first_num = int(first_segment.split(':')[1].split('-')[0][:-1])
+        last_num = int(last_segment.split(':')[1].split('-')[0][:-1])
+        first_folio = first_segment.split(':')[1].split('-')[0]
+        last_folio = last_segment.split(':')[1].split('-')[0]
+        folios.append(first_folio)
+        if "a" in first_folio:
+            folios.append(first_folio.replace('a', 'b'))
+        for number in list(range(first_num+1, last_num)):
+            folios.append(str(number) + 'a')
+            folios.append(str(number) + 'b')
+        if "b" in last_folio:
+            folios.append(last_folio.replace('b', 'a'))
+        folios.append(last_folio)
+    elif lang == 'pli':
+        for segment in segments:
+            suttanr = segment.split('.')[0]
+            if suttanr not in folios:
+                folios.append(suttanr)
+
+    return {"folios": folios}
 
 
 @APP.get("/menus/sidebar/{language}")

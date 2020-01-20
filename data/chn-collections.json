@@ -1,5 +1,5 @@
 [{
-        "collection": "Taisho",
+        "collection": "Taisho_1",
         "categories": [
             "T01",
             "T02",
@@ -30,7 +30,12 @@
             "T29",
             "T30",
             "T31",
-            "T32",
+            "T32"
+        ]
+    },
+{
+        "collection": "Taisho_2",
+        "categories": [
             "T33",
             "T34",
             "T35",
