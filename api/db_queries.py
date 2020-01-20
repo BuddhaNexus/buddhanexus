@@ -179,9 +179,8 @@ FOR file IN files
 
 QUERY_SEGMENT_COUNT = """
 FOR segment IN segments
-    FILTER segment._key LIKE @segmentnr
+    FILTER segment._key == @segmentnr
     RETURN segment.count
-
 """
 
 QUERY_TEXT_AND_PARALLELS = """

@@ -331,12 +331,13 @@ async def get_file_text_segments_and_parallels(
     if active_segment != "none":
         active_segment = unquote(active_segment)
         try:
+            language = get_language_from_filename(file_name)
             text_segment_count_query_result = get_db().AQLQuery(
                 query=QUERY_SEGMENT_COUNT, bindVars={"segmentnr": active_segment,},
             )
             start_int = text_segment_count_query_result.result[0] - 100
-            if get_language_from_filename(file_name) == 'pli':
-                start_int = start_int + 100
+            if language == 'pli':
+                start_int = start_int + 97
         except DocumentNotFoundError as error:
             print(error)
             raise HTTPException(status_code=404, detail="Item not found")
@@ -580,7 +581,7 @@ async def get_folios_for_file(
     """
     lang = get_language_from_filename(file_name)
     folios = []
-    if lang == "skt":
+    if lang == "skt" or (lang == 'pli' and not re.search(r"(^[as]n[0-9]|^dhp)", file_name)):
         return
 
     query_graph_result = get_db().AQLQuery(
