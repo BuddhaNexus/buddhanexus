@@ -605,7 +605,7 @@ async def get_folios_for_file(
         folios.append(first_folio)
         if "a" in first_folio:
             folios.append(first_folio.replace('a', 'b'))
-        for number in  list(range(first_num+1, last_num)):
+        for number in list(range(first_num+1, last_num)):
             folios.append(str(number) + 'a')
             folios.append(str(number) + 'b')
         if "b" in last_folio:
