@@ -19,6 +19,8 @@ def get_language_from_filename(filename) -> str:
     """
     if re.search(r"(TD|acip|kl[0-9]|NY)", filename):
         return "tib"
+    if re.search(r"(u$|u:|^Y)", filename):
+        return "skt"
     if re.search(r"(_[TX])", filename):
         return "chn"
     return "pli"
