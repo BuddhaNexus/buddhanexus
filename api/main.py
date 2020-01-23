@@ -253,6 +253,7 @@ async def get_files_for_menu(language: str):
             batchSize=10000,
             bindVars={"language": language},
         )
+        print("RESULT",len(language_menu_query_result.result))
         return {"result": language_menu_query_result.result}
 
     except DocumentNotFoundError as error:
