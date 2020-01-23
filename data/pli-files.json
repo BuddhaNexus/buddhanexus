@@ -16935,49 +16935,49 @@
 {
   "displayName": "Milindapañha 3.8 (Mil 3.8)",
   "textname": "Mil 3.8",
-  "filename": "mil3",
+  "filename": "mil3.8",
   "category": "mil",
   "filenr": 2420
 },
 {
   "displayName": "Milindapañha 4.1 (Mil 4.1)",
   "textname": "Mil 4.1",
-  "filename": "mil4",
+  "filename": "mil4.1",
   "category": "mil",
   "filenr": 2421
 },
 {
   "displayName": "Milindapañha 4.2 (Mil 4.2)",
   "textname": "Mil 4.2",
-  "filename": "mil4",
+  "filename": "mil4.2",
   "category": "mil",
   "filenr": 2422
 },
 {
   "displayName": "Milindapañha 4.3 (Mil 4.3)",
   "textname": "Mil 4.3",
-  "filename": "mil4",
+  "filename": "mil4.3",
   "category": "mil",
   "filenr": 2423
 },
 {
   "displayName": "Milindapañha 4.4 (Mil 4.4)",
   "textname": "Mil 4.4",
-  "filename": "mil4",
+  "filename": "mil4.4",
   "category": "mil",
   "filenr": 2424
 },
 {
   "displayName": "Milindapañha 4.5 (Mil 4.5)",
   "textname": "Mil 4.5",
-  "filename": "mil4",
+  "filename": "mil4.5",
   "category": "mil",
   "filenr": 2425
 },
 {
   "displayName": "Milindapañha 4.6 (Mil 4.6)",
   "textname": "Mil 4.6",
-  "filename": "mil4",
+  "filename": "mil4.6",
   "category": "mil",
   "filenr": 2426
 },
@@ -17572,7 +17572,7 @@
 {
   "displayName": "Milindapañha 7.1 (Mil 7.1)",
   "textname": "Mil 7.1",
-  "filename": "mil7",
+  "filename": "mil7.1",
   "category": "mil",
   "filenr": 2511
 },
@@ -19607,9 +19607,9 @@
   "filenr": 2801
 },
 {
-  "displayName": "Bhikkhu Vibhaṅga Adhikaraṇasamatha 1-7 (Pli-Tv-Bu-Vb-AS 1)",
-  "textname": "Pli-Tv-Bu-Vb-AS 1",
-  "filename": "pli-tv-bu-vb-as1",
+  "displayName": "Bhikkhu Vibhaṅga Adhikaraṇasamatha 1-7 (Pli-Tv-Bu-Vb-AS 1-7)",
+  "textname": "Pli-Tv-Bu-Vb-AS 1-7",
+  "filename": "pli-tv-bu-vb-as1-7",
   "category": "pli-tv-bu-vb",
   "filenr": 2802
 },
@@ -20484,14 +20484,14 @@
 {
   "displayName": "Bhikkhunī Vibhaṅga Sekhiya 1-75 (Pli-Tv-Bi-Vb-SK 1-75)",
   "textname": "Pli-Tv-Bi-Vb-SK 1-75",
-  "filename": "pli-tv-bi-vb-sk1",
+  "filename": "pli-tv-bi-vb-sk1-75",
   "category": "pli-tv-bi-vb",
   "filenr": 2927
 },
 {
   "displayName": "Bhikkhunī Vibhaṅga Adhikaraṇasamatha 1-7 (Pli-Tv-Bi-Vb-AS 1-7)",
   "textname": "Pli-Tv-Bi-Vb-AS 1-7",
-  "filename": "pli-tv-bi-vb-as1",
+  "filename": "pli-tv-bi-vb-as1-7",
   "category": "pli-tv-bi-vb",
   "filenr": 2928
 },
@@ -21009,21 +21009,21 @@
 {
   "displayName": "Dhammasaṅgaṇī 1.1 (Ds 1.1)",
   "textname": "Ds 1.1",
-  "filename": "ds1",
+  "filename": "ds1.1",
   "category": "ds",
   "filenr": 3002
 },
 {
   "displayName": "Dhammasaṅgaṇī 1.2 (Ds 1.2)",
   "textname": "Ds 1.2",
-  "filename": "ds1",
+  "filename": "ds1.2",
   "category": "ds",
   "filenr": 3003
 },
 {
   "displayName": "Dhammasaṅgaṇī 1.3 (Ds 1.3)",
   "textname": "Ds 1.3",
-  "filename": "ds1",
+  "filename": "ds1.3",
   "category": "ds",
   "filenr": 3004
 },
@@ -23291,7 +23291,7 @@
 {
   "displayName": "Yamaka 4.3 (Ya 4.3)",
   "textname": "Ya 4.3",
-  "filename": "ya4",
+  "filename": "ya4.3",
   "category": "ya",
   "filenr": 3328
 },
@@ -23410,14 +23410,14 @@
 {
   "displayName": "Yamaka 6.3 (Ya 6.3)",
   "textname": "Ya 6.3",
-  "filename": "ya6",
+  "filename": "ya6.3",
   "category": "ya",
   "filenr": 3345
 },
 {
   "displayName": "Yamaka 7.1 (Ya 7.1)",
   "textname": "Ya 7.1",
-  "filename": "ya7",
+  "filename": "ya7.1",
   "category": "ya",
   "filenr": 3346
 },
@@ -23557,7 +23557,7 @@
 {
   "displayName": "Yamaka 9.3 (Ya 9.3)",
   "textname": "Ya 9.3",
-  "filename": "ya9",
+  "filename": "ya9.3",
   "category": "ya",
   "filenr": 3366
 },
@@ -23823,7 +23823,7 @@
 {
   "displayName": "Patthana 2.6-7 (Patthana 2.6-7)",
   "textname": "Patthana 2.6-7",
-  "filename": "patthana2",
+  "filename": "patthana2.6-7",
   "category": "patthana",
   "filenr": 3404
 },
