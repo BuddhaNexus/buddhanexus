@@ -231,8 +231,14 @@ RETURN { textleft: segments,
 """
 
 QUERY_PARALELLS_FOR_MIDDLE_TEXT = """
+let parallel_ids = (
+    FOR segment in segments
+        FILTER segment._key == @segmentnr
+        return segment.parallel_ids
+    )
+
 RETURN (
-    FOR parallel_id IN @parallel_ids
+    FOR parallel_id IN FLATTEN(parallel_ids)
         FOR p IN parallels
             FILTER p._key == parallel_id
             FILTER p.score >= @score
