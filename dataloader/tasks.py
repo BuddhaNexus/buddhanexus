@@ -1,6 +1,6 @@
 import os
 
-from arango import DatabaseCreateError, CollectionCreateError
+from arango import DatabaseCreateError, CollectionCreateError, CollectionDeleteError
 from invoke import task
 
 from dataloader_constants import (
@@ -73,8 +73,14 @@ def clean_all_collections(c):
     :param c: invoke.py context object
     """
     db = get_database()
-    for name in COLLECTION_NAMES:
-        db.delete_collection(name)
+    try:
+        for name in COLLECTION_NAMES:
+            db.delete_collection(name)
+        for name in EDGE_COLLECTION_NAMES:
+            db.delete_collection(name)
+    except CollectionDeleteError as e:
+        print("Error deleting collection %s: " % name, e)
+
     print("all collections cleaned.")
 
 
@@ -140,8 +146,9 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     print("Segment data loading completed.")
 
 
-@task()
+@task(clean_menu_collections)
 def load_menu_files(c):
+    create_collections(c, [COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES])
     print(
         "Loading menu files into database collections from inside this git repository. "
     )

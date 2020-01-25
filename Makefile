@@ -34,6 +34,9 @@ clean-all:
 create-db:
 	@docker exec -t dataloader bash -c "invoke create-db create-collections"
 
+create-collections:
+	@docker exec -t dataloader bash -c "invoke create-collections"
+
 # Load menu collections and categories based on local menu files
 load-menu-data:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
@@ -44,17 +47,17 @@ load-segment-data:
 
 # Load all (segment, parallel & menu) data
 load-data:
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-segment-files"
-	@docker exec -t dataloader bash -c "invoke clean-totals-collection"
-	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
+	@docker exec -ti dataloader bash -c "invoke load-menu-files"
+	@docker exec -ti dataloader bash -c "invoke load-segment-files"
+	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
+	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
 
 # Load all data - asynchronously
 load-data-async:
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-segment-files --threaded"
-	@docker exec -t dataloader bash -c "invoke clean-totals-collection"
-	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
+	@docker exec -ti dataloader bash -c "invoke load-menu-files"
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded"
+	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
+	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
 
 clean-db:
 	@docker exec -t dataloader bash -c "invoke clean-all-collections"

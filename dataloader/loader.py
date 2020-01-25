@@ -36,8 +36,7 @@ SCRIPT_DIR = os.path.dirname(
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.utils import get_language_from_filename
-from api.db_actions import get_files_per_category_from_db
-from api.db_queries import QUERY_CATEGORIES_PER_COLLECTION
+from api.db_queries import QUERY_CATEGORIES_PER_COLLECTION, QUERY_FILES_PER_CATEGORY
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
@@ -70,8 +69,6 @@ def load_segments_and_parallels_data_from_menu_file(
 ) -> None:
     file_url = f"{root_url}{lang}/{menu_file_json['filename']}.json.gz"
     db = get_database()
-
-    print("Loading file: ", menu_file_json["filename"])
 
     if not file_url.endswith("gz"):
         print(f"{file_url} is not a gzip file. Ignoring.")
@@ -170,10 +167,10 @@ def load_segment(
             "parallel_ids": parallel_ids,
         }
         collection.insert(doc)
-    except KeyError as e:
+    except (KeyError, AttributeError) as e:
         print("Could not load segment. Error: ", e)
     except DocumentInsertError as e:
-        print(f"Could not save segment {doc._key}. Error: ", e)
+        print(f"Could not save segment {json_segment['segnr']}. Error: ", e)
 
     return json_segment["segnr"]
 
@@ -198,10 +195,10 @@ def load_files_parallelcounts(
         "totalfilelengthcount": OrderedDict(sorted_total_file_length_count),
         "totallength": sum(total_length_count.values()),
     }
-    collection.add_hash_index(["category"], unique=False)
     try:
+        collection.add_hash_index(["category"], unique=False)
         collection.insert(doc)
-    except DocumentInsertError as e:
+    except (DocumentInsertError, IndexCreateError) as e:
         print("Could not load file. Error: ", e)
 
 
@@ -241,13 +238,13 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             parallels_to_be_inserted.append(parallel)
 
     random.shuffle(parallels_to_be_inserted)
-    collection.add_hash_index("root_filename", unique=False)
+    collection.add_hash_index(["root_filename"], unique=False)
     chunksize = 10000  # 10000 for Tibetan, 100000 for Chinese
 
     for x in range(0, len(parallels_to_be_inserted), chunksize):
         try:
             collection.insert_many(parallels_to_be_inserted[x : x + chunksize])
-        except DocumentInsertError as e:
+        except (DocumentInsertError, IndexCreateError) as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
 
@@ -311,56 +308,64 @@ def calculate_parallel_totals():
     # This takes some time to run on the full dataset.
     db = get_database()
     query_collection_cursor = db.aql.execute(QUERY_CATEGORIES_PER_COLLECTION)
+    query_collection = [doc for doc in query_collection_cursor]
 
     # for each collection, the totals to each other collection of that same language are calculated
-    for sourcecol in query_collection_cursor:
-        language = sourcecol["language"]
-        sourcecollection = sourcecol["collection"]
-        sourcecol_dict = {}
-        for sourcecat in sourcecol["categories"]:
-            sourcecol_dict.update(sourcecat)
+    for source_col in query_collection:
+        language = source_col["language"]
+        source_collection = source_col["collection"]
+        source_col_dict = {}
+        for source_cat in source_col["categories"]:
+            source_col_dict.update(source_cat)
 
         language_collection_list = get_collection_list_for_language(
-            language, query_collection_cursor
+            language, query_collection
         )
 
-        for targetcollection in language_collection_list:
+        for target_collection in language_collection_list:
             selected_category_dict = get_categories_for_language_collection(
-                targetcollection, query_collection_cursor
+                target_collection, query_collection
             )
 
             counted_parallels = []
-            for cat, catname in sourcecol_dict.items():
-                all_files = get_files_per_category_from_db(cat, language)
+            for cat, cat_name in source_col_dict.items():
+                all_files_cursor = db.aql.execute(
+                    QUERY_FILES_PER_CATEGORY,
+                    batch_size=100000,
+                    bind_vars={"searchterm": cat, "language": language},
+                )
+                all_files = [doc for doc in all_files_cursor]
 
                 add_category_totals_to_db(
-                    all_files, cat, targetcollection, selected_category_dict, language
+                    all_files, cat, target_collection, selected_category_dict, language
                 )
 
-                total_parlist = {}
+                total_par_list = {}
                 for filename in all_files:
                     parallel_count = filename["totallengthcount"]
                     for categoryname in selected_category_dict:
-                        if categoryname not in total_parlist.keys():
+                        if categoryname not in total_par_list.keys():
                             if categoryname not in parallel_count.keys():
-                                total_parlist[categoryname] = 0
+                                total_par_list[categoryname] = 0
                             else:
-                                total_parlist[categoryname] = parallel_count[
+                                total_par_list[categoryname] = parallel_count[
                                     categoryname
                                 ]
                         elif categoryname in parallel_count.keys():
-                            total_parlist[categoryname] += parallel_count[categoryname]
+                            total_par_list[categoryname] += parallel_count[categoryname]
 
-                for key, value in total_parlist.items():
+                for key, value in total_par_list.items():
                     counted_parallels.append(
                         [
-                            catname + " (" + cat + ")",
+                            cat_name + " (" + cat + ")",
                             selected_category_dict[key].rstrip() + "_(" + key + ")",
                             value,
                         ]
                     )
 
-            load_parallel_counts(sourcecollection, targetcollection, counted_parallels)
+            load_parallel_counts(
+                source_collection, target_collection, counted_parallels
+            )
 
 
 def add_category_totals_to_db(
@@ -409,10 +414,10 @@ def load_parallel_counts(source_name: str, target_name: str, total_length_count:
             "targetcollection": target_name,
             "totallengthcount": total_length_count,
         }
-        collection.add_hash_index(["sourcecollection"], unique=False)
         try:
+            collection.add_hash_index(["sourcecollection"], unique=False)
             collection.insert(doc)
-        except DocumentInsertError as e:
+        except (DocumentInsertError, IndexCreateError) as e:
             print("Could not load file. Error: ", e)
 
 
@@ -424,8 +429,10 @@ def get_collection_list_for_language(language, all_cols):
     return total_collection_list
 
 
-def get_categories_for_language_collection(language_collection, target_col):
-    for target in target_col:
+def get_categories_for_language_collection(
+    language_collection, query_collection_cursor
+):
+    for target in query_collection_cursor:
         if target["collection"] == language_collection:
             target_col_dict = {}
             for targetcat in target["categories"]:

@@ -58,12 +58,21 @@ def execute_in_parallel(task, items, threads) -> None:
     :param items: Items to iterate over, item will be passed as argument to function
     :param threads: number of CPU threads to spawn
     """
+    t = trange(len(items), desc="Loading: ")
     if threads == 1:
-        for i in trange(len(items)):
+        for i in t:
+            desc = items[i]["displayName"]
+            t.set_description("Loading: (%s)" % desc if desc else "...")
             task(items[i])
     else:
+
+        def execute_task(i):
+            desc = items[i]["displayName"]
+            t.set_description("Loading: (%s)" % desc if desc else "...")
+            task(items[i])
+
         ParallelJobRunner(n_jobs=threads)(
-            delayed(lambda i: task(items[i]))(i) for i in trange(len(items))
+            delayed(lambda i: execute_task(i))(index) for index in t
         )
 
 
