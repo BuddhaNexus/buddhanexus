@@ -41,7 +41,7 @@ from .utils import (
 )
 from .db_connection import get_collection, get_db
 
-API_PREFIX = "/api" if os.environ["PROD"] is "1" else ""
+API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 
 APP = FastAPI(title="Buddha Nexus Backend", version="0.2.0", openapi_prefix=API_PREFIX)
 
