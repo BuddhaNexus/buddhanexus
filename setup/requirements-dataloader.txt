@@ -1,4 +1,5 @@
 typing==3.7.4
+python-arango==5.2.1
 pyarango==1.3.3
 invoke==1.4.0
 htmllistparse==0.5.2

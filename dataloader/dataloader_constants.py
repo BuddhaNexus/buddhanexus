@@ -1,6 +1,9 @@
 import os
 
 DB_NAME = os.environ["ARANGO_BASE_DB_NAME"]
+ARANGO_USER = os.environ["ARANGO_USER"]
+ARANGO_PASSWORD = os.environ["ARANGO_ROOT_PASSWORD"]
+ARANGO_HOST = f"http://{os.environ['ARANGO_HOST']}:{os.environ['ARANGO_PORT']}"
 DEFAULT_SOURCE_URL = os.environ["SOURCE_FILES_URL"]
 
 LANG_TIBETAN = "tib"

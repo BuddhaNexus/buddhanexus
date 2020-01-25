@@ -5,28 +5,39 @@ Utilities for interacting with the database and other tasks
 import gzip
 import io
 import json
-import os
 
+from arango import ArangoClient
+from arango.database import StandardDatabase
 import urlfetch
-from pyArango.connection import Connection
 from tqdm import trange
 from joblib import Parallel as ParallelJobRunner, delayed
 
-from constants import DB_NAME, LANG_PALI, LANG_TIBETAN, LANG_CHINESE
+from dataloader_constants import (
+    DB_NAME,
+    LANG_PALI,
+    LANG_TIBETAN,
+    LANG_CHINESE,
+    ARANGO_USER,
+    ARANGO_PASSWORD,
+    ARANGO_HOST,
+)
 
 
-def get_db_connection() -> Connection:
-    """ Get database connection """
-    return Connection(
-        username=os.environ["ARANGO_USER"],
-        password=os.environ["ARANGO_ROOT_PASSWORD"],
-        arangoURL=f"http://{os.environ['ARANGO_HOST']}:{os.environ['ARANGO_PORT']}",
-    )
+def get_arango_client() -> ArangoClient:
+    """ Get Arango Client instance """
+    return ArangoClient(hosts=ARANGO_HOST)
 
 
-def get_database() -> Connection:
-    """ Return database instance """
-    return get_db_connection()[DB_NAME]
+def get_system_database() -> StandardDatabase:
+    """ Return system database instance """
+    client = get_arango_client()
+    return client.db("_system", username=ARANGO_USER, password=ARANGO_PASSWORD)
+
+
+def get_database() -> StandardDatabase:
+    """ Return buddhanexus database instance """
+    client = get_arango_client()
+    return client.db(DB_NAME, username=ARANGO_USER, password=ARANGO_PASSWORD)
 
 
 def get_remote_bytes(file_url) -> io.BytesIO:

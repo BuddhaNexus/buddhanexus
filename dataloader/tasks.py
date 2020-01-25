@@ -1,10 +1,9 @@
 import os
 
+from arango import DatabaseCreateError, CollectionCreateError
 from invoke import task
-from pyArango.connection import *
-from pyArango.consts import COLLECTION_EDGE_TYPE
 
-from constants import (
+from dataloader_constants import (
     DB_NAME,
     COLLECTION_NAMES,
     DEFAULT_SOURCE_URL,
@@ -14,8 +13,8 @@ from constants import (
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
     COLLECTION_FILES_PARALLEL_COUNT,
-    EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
     EDGE_COLLECTION_NAMES,
+    COLLECTION_CATEGORIES_PARALLEL_COUNT,
 )
 from loader import (
     load_segment_data_from_menu_files,
@@ -23,7 +22,7 @@ from loader import (
     load_all_menu_categories,
     calculate_parallel_totals,
 )
-from utils import get_db_connection
+from dataloader_utils import get_database, get_system_database
 
 
 @task
@@ -34,10 +33,10 @@ def create_db(c):
     :param c: invoke.py context object
     """
     try:
-        conn = get_db_connection()
-        conn.createDatabase(name=DB_NAME)
+        sys_db = get_system_database()
+        sys_db.create_database(DB_NAME)
         print(f"created {DB_NAME} database")
-    except CreationError as e:
+    except DatabaseCreateError as e:
         print("Error creating the database: ", e)
 
 
@@ -52,16 +51,16 @@ def create_collections(
     :param collections: Array of collection names to be created
     :param edge_collections: Array of edge collection names to be created
     """
-    db = get_db_connection()[DB_NAME]
+    db = get_database()
     for name in collections:
         try:
-            db.createCollection(name=name)
-        except CreationError as e:
+            db.create_collection(name)
+        except CollectionCreateError as e:
             print("Error creating collection: ", e)
     for name in edge_collections:
         try:
-            db.createCollection(name=name, className="Edges", type=3)
-        except CreationError as e:
+            db.create_collection(name, edge=True)
+        except CollectionCreateError as e:
             print("Error creating edge collection: ", e)
     print(f"created {collections} collections")
 
@@ -73,21 +72,21 @@ def clean_all_collections(c):
 
     :param c: invoke.py context object
     """
-    db = get_db_connection()[DB_NAME]
+    db = get_database()
     for name in COLLECTION_NAMES:
-        db[name].empty()
+        db.delete_collection(name)
     print("all collections cleaned.")
 
 
 @task
 def clean_totals_collection(c):
     """
-    Clear the categories_parallelcount collection
+    Clear the categories_parallel_count collection
 
     :param c: invoke.py context object
     """
-    db = get_db_connection()[DB_NAME]
-    db[EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES].empty()
+    db = get_database()
+    db.delete_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
     print("totals collection cleaned.")
 
 
@@ -98,14 +97,14 @@ def clean_segment_collections(c):
 
     :param c: invoke.py context object
     """
-    db = get_db_connection()[DB_NAME]
+    db = get_database()
     for name in (
         COLLECTION_SEGMENTS,
         COLLECTION_PARALLELS,
         COLLECTION_FILES,
         COLLECTION_FILES_PARALLEL_COUNT,
     ):
-        db[name].empty()
+        db.delete_collection(name)
     print("segment collections cleaned.")
 
 
@@ -116,9 +115,9 @@ def clean_menu_collections(c):
 
     :param c: invoke.py context object
     """
-    db = get_db_connection()[DB_NAME]
+    db = get_database()
     for name in (COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES):
-        db[name].empty()
+        db.delete_collection(name)
     print("menu data collections cleaned.")
 
 
@@ -141,13 +140,15 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     print("Segment data loading completed.")
 
 
-@task(clean_menu_collections)
+@task()
 def load_menu_files(c):
     print(
         "Loading menu files into database collections from inside this git repository. "
     )
-    load_all_menu_collections()
-    load_all_menu_categories()
+    db = get_database()
+
+    load_all_menu_collections(db)
+    load_all_menu_categories(db)
 
     print("Menu data loading completed.")
 

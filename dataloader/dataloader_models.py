@@ -1,13 +1,13 @@
 from typing import List
 
 
-class Segment:
+class Segment(dict):
     segmentnr: str
     segment: str
     lang: str
 
 
-class Parallel:
+class Parallel(dict):
     score: int
     parlength: int
     parlang: str  # Language of parallel
@@ -21,7 +21,7 @@ class Parallel:
 
 
 # Examples on the right
-class MenuItem:
+class MenuItem(dict):
     searchString: str  # "K01acip-k_lha_sa-001-001 D0001"
     textname: str  # "D0001
     filename: str  # "K01acip-k_lha_sa-001-001",
