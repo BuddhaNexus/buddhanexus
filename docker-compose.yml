@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   arangodb:
-    image: arangodb:3.4.7
+    image: arangodb:3.6.0
     expose:
       - "8529"
     container_name: "arangodb"
@@ -40,6 +40,8 @@ services:
       - .:/opt/buddhanexus
     env_file:
       - .env
+    environment:
+      - PROD=0
     command: uvicorn --host 0.0.0.0 api.main:APP --reload
     restart: always
     depends_on:

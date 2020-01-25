@@ -14,7 +14,7 @@ from constants import (
     COLLECTION_CATEGORIES_PARALLELCOUNT,
 )
 from models_dataloader import Parallel, Segment, MenuItem
-from utils import (
+from .utils import (
     get_database,
     execute_in_parallel,
     should_download_file,
