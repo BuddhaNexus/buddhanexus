@@ -321,7 +321,7 @@ RETURN length
 QUERY_COLLECTION_TOTALS = """
 RETURN FLATTEN(
     FOR target in @selected
-        FOR col IN categories_parallelcount
+        FOR col IN categories_parallel_count
             FILTER col.sourcecollection == @sourcecollection
             FILTER col.targetcollection == target
             RETURN col.totallengthcount
@@ -329,7 +329,7 @@ RETURN FLATTEN(
 """
 
 QUERY_FILES_PER_CATEGORY = """
-FOR file IN files_parallelcount
+FOR file IN files_parallel_count
     FILTER file.category == @searchterm
     FILTER file.language == @language
     SORT file.filenr

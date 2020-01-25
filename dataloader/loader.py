@@ -10,16 +10,16 @@ from constants import (
     COLLECTION_FILES,
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
-    COLLECTION_FILES_PARALLELCOUNT,
-    COLLECTION_CATEGORIES_PARALLELCOUNT,
+    COLLECTION_FILES_PARALLEL_COUNT,
+    EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+    COLLECTION_REGEX,
 )
 from models_dataloader import Parallel, Segment, MenuItem
-from .utils import (
+from utils import (
     get_database,
     execute_in_parallel,
     should_download_file,
     get_segments_and_parallels_from_gzipped_remote_file,
-    get_segments_and_parallels_from_gzipped_local_file,
 )
 
 import sys
@@ -34,8 +34,6 @@ from api.db_actions import get_files_per_category_from_db
 from api.db_connection import get_db
 from api.utils import get_language_from_filename
 from api.db_queries import QUERY_CATEGORIES_PER_COLLECTION
-
-collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
@@ -98,7 +96,6 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
     segmentnr_parallel_ids_dic = {}
     parallel_total_list = []
     parallel_file_total_list = []
-    collection_key = ""
 
     for parallel in all_parallels:
         if isinstance(
@@ -112,7 +109,7 @@ def load_segments(segments: list, all_parallels: list, connection: Connection) -
                         segmentnr_parallel_ids_dic[segmentnr].append(parallel["id"])
 
             if parallel["par_segnr"]:
-                collection_key = re.search(collection_pattern, parallel["par_segnr"][0])
+                collection_key = re.search(COLLECTION_REGEX, parallel["par_segnr"][0])
                 if collection_key:
                     parallel_total_list.append(
                         {collection_key.group(): parallel["root_length"]}
@@ -183,7 +180,7 @@ def load_files_parallelcounts(
     totalfilelengthcount: list,
     connection: Connection,
 ):
-    collection = connection[COLLECTION_FILES_PARALLELCOUNT]
+    collection = connection[COLLECTION_FILES_PARALLEL_COUNT]
     doc = collection.createDocument()
     doc._key = file["filename"]
     doc["category"] = file["category"]
@@ -395,7 +392,7 @@ def add_category_totals_to_db(
 def load_parallelcounts(sourcename: str, targetname: str, totallengthcount: list):
     if totallengthcount:
         connection = get_database()
-        collection = connection[COLLECTION_CATEGORIES_PARALLELCOUNT]
+        collection = connection[EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES]
         doc = collection.createDocument()
         doc._key = sourcename + "_" + targetname
         doc["sourcecollection"] = sourcename

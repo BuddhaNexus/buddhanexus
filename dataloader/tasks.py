@@ -2,6 +2,7 @@ import os
 
 from invoke import task
 from pyArango.connection import *
+from pyArango.consts import COLLECTION_EDGE_TYPE
 
 from constants import (
     DB_NAME,
@@ -12,8 +13,9 @@ from constants import (
     COLLECTION_FILES,
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
-    COLLECTION_FILES_PARALLELCOUNT,
-    COLLECTION_CATEGORIES_PARALLELCOUNT,
+    COLLECTION_FILES_PARALLEL_COUNT,
+    EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+    EDGE_COLLECTION_NAMES,
 )
 from loader import (
     load_segment_data_from_menu_files,
@@ -40,12 +42,15 @@ def create_db(c):
 
 
 @task(help={"collections": "Array of collections you'd like to create"})
-def create_collections(c, collections=COLLECTION_NAMES):
+def create_collections(
+    c, collections=COLLECTION_NAMES, edge_collections=EDGE_COLLECTION_NAMES
+):
     """
     Create empty collections in database
 
     :param c: invoke.py context object
     :param collections: Array of collection names to be created
+    :param edge_collections: Array of edge collection names to be created
     """
     db = get_db_connection()[DB_NAME]
     for name in collections:
@@ -53,6 +58,11 @@ def create_collections(c, collections=COLLECTION_NAMES):
             db.createCollection(name=name)
         except CreationError as e:
             print("Error creating collection: ", e)
+    for name in edge_collections:
+        try:
+            db.createCollection(name=name, className="Edges", type=3)
+        except CreationError as e:
+            print("Error creating edge collection: ", e)
     print(f"created {collections} collections")
 
 
@@ -77,7 +87,7 @@ def clean_totals_collection(c):
     :param c: invoke.py context object
     """
     db = get_db_connection()[DB_NAME]
-    db[COLLECTION_CATEGORIES_PARALLELCOUNT].empty()
+    db[EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES].empty()
     print("totals collection cleaned.")
 
 
@@ -93,7 +103,7 @@ def clean_segment_collections(c):
         COLLECTION_SEGMENTS,
         COLLECTION_PARALLELS,
         COLLECTION_FILES,
-        COLLECTION_FILES_PARALLELCOUNT,
+        COLLECTION_FILES_PARALLEL_COUNT,
     ):
         db[name].empty()
     print("segment collections cleaned.")
