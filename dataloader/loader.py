@@ -305,7 +305,7 @@ def calculate_parallel_totals():
     # This function goes over all the data and groups it into totals for the visual view
     # This takes some time to run on the full dataset.
     database = get_db()
-    query_collection_list = database.AQLQuery(query=QUERY_CATEGORIES_PER_COLLECTION,)
+    query_collection_list = database.AQLQuery(query=QUERY_CATEGORIES_PER_COLLECTION)
 
     # for each collection, the totals to each other collection of that same language are calculated
     for sourcecol in query_collection_list.result:

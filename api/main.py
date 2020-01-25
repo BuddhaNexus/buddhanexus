@@ -7,6 +7,7 @@ Todo:
 """
 
 import re
+import os
 from typing import Dict, List
 from urllib.parse import unquote
 
@@ -40,7 +41,9 @@ from .utils import (
 )
 from .db_connection import get_collection, get_db
 
-APP = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
+API_PREFIX = "/api" if os.environ["PROD"] is "1" else ""
+
+APP = FastAPI(title="Buddha Nexus Backend", version="0.2.0", openapi_prefix=API_PREFIX)
 
 APP.add_middleware(
     CORSMiddleware,
@@ -332,7 +335,7 @@ async def get_file_text_segments_and_parallels(
         active_segment = unquote(active_segment)
         try:
             text_segment_count_query_result = get_db().AQLQuery(
-                query=QUERY_SEGMENT_COUNT, bindVars={"segmentnr": active_segment,},
+                query=QUERY_SEGMENT_COUNT, bindVars={"segmentnr": active_segment}
             )
             start_int = text_segment_count_query_result.result[0] - 100
         except DocumentNotFoundError as error:
@@ -570,48 +573,44 @@ async def get_counts_for_file(
 
 
 @APP.get("/files/{file_name}/folios")
-async def get_folios_for_file(
-    file_name: str
-):
+async def get_folios_for_file(file_name: str):
     """
     Returns number of folios (TIB) / facsimiles (CHN) / suttas (PLI)
     """
     lang = get_language_from_filename(file_name)
     folios = []
-    if lang == "skt" or (lang == 'pli' and not re.search(r"(^[as]n[0-9]|^dhp)", file_name)):
+    if lang == "skt" or (
+        lang == "pli" and not re.search(r"(^[as]n[0-9]|^dhp)", file_name)
+    ):
         return
 
     query_graph_result = get_db().AQLQuery(
-        query=QUERY_ALL_SEGMENTS,
-        batchSize=100000,
-        bindVars={
-            "filename": file_name,
-        },
+        query=QUERY_ALL_SEGMENTS, batchSize=100000, bindVars={"filename": file_name}
     )
     segments = query_graph_result.result[0]
     first_segment = segments[0]
     last_segment = segments[-1]
-    if lang == 'chn':
-        first_num = int(first_segment.split(':')[1].split('-')[0])
-        last_num = int(last_segment.split(':')[1].split('-')[0])
-        folios = list(range(first_num, last_num+1))
-    elif lang == 'tib':
-        first_num = int(first_segment.split(':')[1].split('-')[0][:-1])
-        last_num = int(last_segment.split(':')[1].split('-')[0][:-1])
-        first_folio = first_segment.split(':')[1].split('-')[0]
-        last_folio = last_segment.split(':')[1].split('-')[0]
+    if lang == "chn":
+        first_num = int(first_segment.split(":")[1].split("-")[0])
+        last_num = int(last_segment.split(":")[1].split("-")[0])
+        folios = list(range(first_num, last_num + 1))
+    elif lang == "tib":
+        first_num = int(first_segment.split(":")[1].split("-")[0][:-1])
+        last_num = int(last_segment.split(":")[1].split("-")[0][:-1])
+        first_folio = first_segment.split(":")[1].split("-")[0]
+        last_folio = last_segment.split(":")[1].split("-")[0]
         folios.append(first_folio)
         if "a" in first_folio:
-            folios.append(first_folio.replace('a', 'b'))
-        for number in list(range(first_num+1, last_num)):
-            folios.append(str(number) + 'a')
-            folios.append(str(number) + 'b')
+            folios.append(first_folio.replace("a", "b"))
+        for number in list(range(first_num + 1, last_num)):
+            folios.append(str(number) + "a")
+            folios.append(str(number) + "b")
         if "b" in last_folio:
-            folios.append(last_folio.replace('b', 'a'))
+            folios.append(last_folio.replace("b", "a"))
         folios.append(last_folio)
-    elif lang == 'pli':
+    elif lang == "pli":
         for segment in segments:
-            suttanr = segment.split('.')[0]
+            suttanr = segment.split(".")[0]
             if suttanr not in folios:
                 folios.append(suttanr)
 
@@ -625,7 +624,7 @@ async def get_data_for_sidebar_menu(language: str):
     """
     database = get_db()
     query_sidebar_menu = database.AQLQuery(
-        query=QUERY_TOTAL_MENU, bindVars={"language": language},
+        query=QUERY_TOTAL_MENU, bindVars={"language": language}
     )
 
     return {"navigationmenudata": query_sidebar_menu.result}
