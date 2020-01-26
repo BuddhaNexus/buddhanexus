@@ -22,6 +22,7 @@ from dataloader_constants import (
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
     EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
     GRAPH_COLLECTIONS_CATEGORIES,
+    COLLECTION_LANGUAGES,
 )
 from main import load_segment_data_from_menu_files, calculate_parallel_totals
 from menu import (
@@ -70,6 +71,25 @@ def create_collections(
         except CollectionCreateError as e:
             print("Error creating edge collection: ", e)
     print(f"created {collections} collections")
+
+
+@task
+def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
+    """
+    Download, parse and load source data into database collections.
+
+    :param c: invoke.py context object
+    :param root_url: URL to the server where source files are stored
+    :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
+    """
+    thread_count = os.cpu_count() - 1
+    print(
+        f"Loading source files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
+    )
+
+    load_segment_data_from_menu_files(root_url, thread_count if threaded else 1)
+
+    print("Segment data loading completed.")
 
 
 @task
@@ -134,6 +154,7 @@ def clean_menu_collections(c):
             COLLECTION_MENU_COLLECTIONS,
             COLLECTION_MENU_CATEGORIES,
             EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+            COLLECTION_LANGUAGES,
         ):
             db.delete_collection(name)
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
@@ -142,28 +163,12 @@ def clean_menu_collections(c):
     print("menu data collections cleaned.")
 
 
-@task
-def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
-    """
-    Download, parse and load source data into database collections.
-
-    :param c: invoke.py context object
-    :param root_url: URL to the server where source files are stored
-    :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
-    """
-    thread_count = os.cpu_count() - 1
-    print(
-        f"Loading source files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
-    )
-
-    load_segment_data_from_menu_files(root_url, thread_count if threaded else 1)
-
-    print("Segment data loading completed.")
-
-
 @task()
 def load_menu_files(c):
-    create_collections(c, [COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES])
+    create_collections(
+        c,
+        [COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES, COLLECTION_LANGUAGES],
+    )
     print(
         "Loading menu files into database collections from inside this git repository. "
     )
