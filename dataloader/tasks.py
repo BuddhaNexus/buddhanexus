@@ -1,6 +1,11 @@
 import os
 
-from arango import DatabaseCreateError, CollectionCreateError, CollectionDeleteError
+from arango import (
+    DatabaseCreateError,
+    CollectionCreateError,
+    CollectionDeleteError,
+    GraphDeleteError,
+)
 from invoke import task
 
 from dataloader_constants import (
@@ -15,12 +20,14 @@ from dataloader_constants import (
     COLLECTION_FILES_PARALLEL_COUNT,
     EDGE_COLLECTION_NAMES,
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
+    EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+    GRAPH_COLLECTIONS_CATEGORIES,
 )
-from loader import (
-    load_segment_data_from_menu_files,
+from main import load_segment_data_from_menu_files, calculate_parallel_totals
+from menu import (
     load_all_menu_collections,
     load_all_menu_categories,
-    calculate_parallel_totals,
+    create_collections_categories_graph,
 )
 from dataloader_utils import get_database, get_system_database
 
@@ -122,8 +129,16 @@ def clean_menu_collections(c):
     :param c: invoke.py context object
     """
     db = get_database()
-    for name in (COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES):
-        db.delete_collection(name)
+    try:
+        for name in (
+            COLLECTION_MENU_COLLECTIONS,
+            COLLECTION_MENU_CATEGORIES,
+            EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+        ):
+            db.delete_collection(name)
+        db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
+    except (CollectionDeleteError, GraphDeleteError):
+        print("couldn't remove object. It probably doesn't exist.")
     print("menu data collections cleaned.")
 
 
@@ -146,7 +161,7 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     print("Segment data loading completed.")
 
 
-@task(clean_menu_collections)
+@task()
 def load_menu_files(c):
     create_collections(c, [COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES])
     print(
@@ -154,8 +169,9 @@ def load_menu_files(c):
     )
     db = get_database()
 
-    load_all_menu_collections(db)
     load_all_menu_categories(db)
+    load_all_menu_collections(db)
+    create_collections_categories_graph(db)
 
     print("Menu data loading completed.")
 

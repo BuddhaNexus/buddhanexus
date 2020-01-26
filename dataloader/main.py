@@ -12,8 +12,6 @@ from dataloader_constants import (
     COLLECTION_PARALLELS,
     COLLECTION_SEGMENTS,
     COLLECTION_FILES,
-    COLLECTION_MENU_COLLECTIONS,
-    COLLECTION_MENU_CATEGORIES,
     COLLECTION_FILES_PARALLEL_COUNT,
     COLLECTION_REGEX,
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
@@ -27,6 +25,8 @@ from dataloader_utils import (
     should_download_file,
     execute_in_parallel,
     get_segments_and_parallels_from_gzipped_remote_file,
+    get_collection_list_for_language,
+    get_categories_for_language_collection,
 )
 
 PACKAGE_PARENT = ".."
@@ -83,7 +83,7 @@ def load_segments_and_parallels_data_from_menu_file(
             segments, parallels, db
         )
         load_files_collection(menu_file_json, segmentnrs, db)
-        load_files_parallelcounts(
+        load_file_parallel_counts(
             menu_file_json, totallengthcount, totalfilelengthcount, db
         )
 
@@ -175,13 +175,13 @@ def load_segment(
     return json_segment["segnr"]
 
 
-def load_files_parallelcounts(
+def load_file_parallel_counts(
     file: MenuItem,
     total_length_count: list,  # TODO: this is not typed correctly
     total_file_length_count: list,  # TODO: same as above
     db: StandardDatabase,
 ):
-    collection = db.collection(COLLECTION_FILES_PARALLEL_COUNT)
+    db_collection = db.collection(COLLECTION_FILES_PARALLEL_COUNT)
     sorted_total_file_length_count = sorted(
         total_file_length_count.items(), key=lambda kv: kv[1], reverse=True
     )
@@ -196,18 +196,18 @@ def load_files_parallelcounts(
         "totallength": sum(total_length_count.values()),
     }
     try:
-        collection.add_hash_index(["category"], unique=False)
-        collection.insert(doc)
+        db_collection.add_hash_index(["category"], unique=False)
+        db_collection.insert(doc)
     except (DocumentInsertError, IndexCreateError) as e:
         print("Could not load file. Error: ", e)
 
 
 def load_files_collection(file: MenuItem, segmentnrs: list, db: StandardDatabase):
-    collection = db.collection(COLLECTION_FILES)
+    db_collection = db.collection(COLLECTION_FILES)
     doc = {"_key": file["filename"], "segmentnrs": segmentnrs}
     doc.update(file)
     try:
-        collection.insert(doc)
+        db_collection.insert(doc)
     except DocumentInsertError as e:
         print("Could not load file. Error: ", e)
 
@@ -219,7 +219,7 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
     :param json_parallels: Array of parallel objects to be loaded as-they-are.
     :param db: ArangoDB connection object
     """
-    collection = db.collection(COLLECTION_PARALLELS)
+    db_collection = db.collection(COLLECTION_PARALLELS)
     parallels_to_be_inserted = []
 
     for parallel in json_parallels:
@@ -238,71 +238,17 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             parallels_to_be_inserted.append(parallel)
 
     random.shuffle(parallels_to_be_inserted)
-    collection.add_hash_index(["root_filename"], unique=False)
+    db_collection.add_hash_index(["root_filename"], unique=False)
     chunksize = 10000  # 10000 for Tibetan, 100000 for Chinese
 
     for x in range(0, len(parallels_to_be_inserted), chunksize):
         try:
-            collection.insert_many(parallels_to_be_inserted[x : x + chunksize])
+            db_collection.insert_many(parallels_to_be_inserted[x : x + chunksize])
         except (DocumentInsertError, IndexCreateError) as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
 
-def load_menu_collection(menu_collection, language, collection_count, db):
-    db_collection = db.collection(COLLECTION_MENU_COLLECTIONS)
-    doc = {
-        "_key": f"{language}_{menu_collection['collection']}",
-        "language": language,
-        "collectionnr": collection_count,
-    }
-    doc.update(menu_collection)
-    try:
-        db_collection.insert(doc)
-    except DocumentInsertError as e:
-        print("Could not load menu collection. Error: ", e)
-
-
-def load_all_menu_collections(db: StandardDatabase):
-    for language in DEFAULT_LANGS:
-        with open(f"../data/{language}-collections.json") as file:
-            print(f"Loading menu collections in {language}...")
-            collections = json.load(file)
-            collection_count = 0
-            for collection in collections:
-                load_menu_collection(collection, language, collection_count, db)
-                collection_count += 1
-            print("✓")
-
-
-def load_menu_category(menu_category, category_count, language, db):
-    db_collection = db.collection(COLLECTION_MENU_CATEGORIES)
-    doc = {
-        "_key": f'{language}_{menu_category["category"]}',
-        "language": language,
-        "categorynr": category_count,
-    }
-    doc.update(menu_category)
-    try:
-        db_collection.insert(doc)
-        db_collection.add_hash_index(["category"], unique=False)
-    except DocumentInsertError as e:
-        print("Could not load menu category. Error: ", e)
-    except IndexCreateError as e:
-        print("Could create category index. Error: ", e)
-
-
-def load_all_menu_categories(db: StandardDatabase):
-    for language in DEFAULT_LANGS:
-        with open(f"../data/{language}-categories.json") as f:
-            print(f"Loading menu categories in {language}...")
-            categories = json.load(f)
-            category_count = 0
-            for category in categories:
-                load_menu_category(category, category_count, language, db)
-                category_count += 1
-            print("✓")
-
-
+# TODO: Refactor this function. Split into smaller chunks.
 def calculate_parallel_totals():
     # This function goes over all the data and groups it into totals for the visual view
     # This takes some time to run on the full dataset.
@@ -419,23 +365,3 @@ def load_parallel_counts(source_name: str, target_name: str, total_length_count:
             collection.insert(doc)
         except (DocumentInsertError, IndexCreateError) as e:
             print("Could not load file. Error: ", e)
-
-
-def get_collection_list_for_language(language, all_cols):
-    total_collection_list = []
-    for col in all_cols:
-        if col["language"] == language:
-            total_collection_list.append(col["collection"])
-    return total_collection_list
-
-
-def get_categories_for_language_collection(
-    language_collection, query_collection_cursor
-):
-    for target in query_collection_cursor:
-        if target["collection"] == language_collection:
-            target_col_dict = {}
-            for targetcat in target["categories"]:
-                target_col_dict.update(targetcat)
-
-            return target_col_dict

@@ -110,3 +110,23 @@ def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
     except OSError as os_error:
         print(f"Could not load the gzipped file {file_url}. Error: ", os_error)
         return [None, None]
+
+
+def get_collection_list_for_language(language, all_cols):
+    total_collection_list = []
+    for col in all_cols:
+        if col["language"] == language:
+            total_collection_list.append(col["collection"])
+    return total_collection_list
+
+
+def get_categories_for_language_collection(
+    language_collection, query_collection_cursor
+):
+    for target in query_collection_cursor:
+        if target["collection"] == language_collection:
+            target_col_dict = {}
+            for targetcat in target["categories"]:
+                target_col_dict.update(targetcat)
+
+            return target_col_dict
