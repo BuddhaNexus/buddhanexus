@@ -2,7 +2,7 @@
 Contains façade functions that return data queried from the database
 """
 
-from queries.db_queries import QUERY_FILES_PER_CATEGORY
+from queries.queries_main import QUERY_FILES_PER_CATEGORY
 from .db_connection import get_db
 
 

@@ -20,28 +20,29 @@ FOR category IN menu_categories
                 categoryname: UPPER(catfile)}
 """
 
+
 QUERY_CATEGORIES_FOR_LANGUAGE = """
-    LET totalcollection = (
-        FOR collection IN menu_collections
-            FILTER collection.language == @language
-            SORT collection.collectionnr
-            LET language = collection.language
-            LET categorylist = (
-            FOR col_category IN collection.categories
-                FOR category IN menu_categories
-                    FILTER category.category == col_category
-                    FILTER category.language == language
-                    SORT category.categorynr
-                    LET categorynamepart = SPLIT( cBategory.categoryname, [ "—", "(" ] )[0]
-                    LET categoryname = CONCAT_SEPARATOR(" ",categorynamepart,CONCAT("(",UPPER(category.category),")"))
-                    RETURN {category: category.category,
-                            categoryname: CONCAT("• ",categoryname)}
-                    )
-            RETURN APPEND([{ category: collection._key,
-                     categoryname: CONCAT(UPPER(collection.collection), " (ALL)")}],
-                     categorylist)
+LET total_collection = (
+    FOR collection IN 1..1 OUTBOUND CONCAT("languages/", @language) GRAPH 'collections_categories' OPTIONS { "uniqueVertices": "global", "bfs": true }
+        SORT collection.collectionnr
+        LET categorylist = (
+            FOR category IN 1..1 OUTBOUND collection._id GRAPH 'collections_categories'
+                SORT category.categorynr
+                LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
+                LET categoryname = CONCAT_SEPARATOR(" ",categorynamepart,CONCAT("(",UPPER(category.category),")"))
+                RETURN {
+                    category: category.category,
+                    categoryname: CONCAT("• ",categoryname)
+                }
         )
-    RETURN FLATTEN(totalcollection)
+        RETURN APPEND([{
+                category: collection._key,
+                categoryname: CONCAT(UPPER(collection.collection), " (ALL)")
+            }],
+            categorylist
+        )
+    )
+RETURN FLATTEN(total_collection)
 """
 
 QUERY_TOTAL_MENU = """

@@ -5,7 +5,7 @@ Various utilities for interacting with data in API queries.
 import re
 from typing import List
 
-from queries.menu import QUERY_ONE_COLLECTION
+from queries.queries_menu import QUERY_ONE_COLLECTION
 from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"

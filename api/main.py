@@ -16,7 +16,7 @@ from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
 from .models_api import ParallelsCollection
-from queries.db_queries import (
+from queries.queries_main import (
     QUERY_TEXT_SEARCH,
     QUERY_ALL_SEGMENTS,
     QUERY_TEXT_AND_PARALLELS,
@@ -29,7 +29,7 @@ from queries.db_queries import (
     QUERY_COLLECTION_TOTALS,
     QUERY_TOTAL_NUMBERS,
 )
-from queries.menu import (
+from queries.queries_menu import (
     QUERY_FILES_FOR_LANGUAGE,
     QUERY_FILES_FOR_CATEGORY,
     QUERY_CATEGORIES_FOR_LANGUAGE,
