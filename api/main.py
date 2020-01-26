@@ -16,23 +16,25 @@ from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
 from .models_api import ParallelsCollection
-from .db_queries import (
+from queries.db_queries import (
     QUERY_TEXT_SEARCH,
     QUERY_ALL_SEGMENTS,
     QUERY_TEXT_AND_PARALLELS,
     QUERY_PARALELLS_FOR_MIDDLE_TEXT,
     QUERY_TABLE_VIEW,
-    QUERY_FILES_FOR_LANGUAGE,
     QUERY_FILE_SEGMENTS_PARALLELS,
     QUERY_COLLECTION_NAMES,
     QUERY_SEGMENT_COUNT,
+    QUERY_GRAPH_VIEW,
+    QUERY_COLLECTION_TOTALS,
+    QUERY_TOTAL_NUMBERS,
+)
+from queries.menu import (
+    QUERY_FILES_FOR_LANGUAGE,
     QUERY_FILES_FOR_CATEGORY,
     QUERY_CATEGORIES_FOR_LANGUAGE,
-    QUERY_GRAPH_DATA,
-    QUERY_COLLECTION_TOTALS,
-    QUERY_ALL_COLLECTIONS,
-    QUERY_TOTAL_NUMBERS,
     QUERY_TOTAL_MENU,
+    QUERY_ALL_COLLECTIONS,
 )
 from .utils import (
     get_language_from_filename,
@@ -421,7 +423,7 @@ async def get_graph_for_file(
     """
     database = get_db()
     query_graph_result = database.AQLQuery(
-        query=QUERY_GRAPH_DATA,
+        query=QUERY_GRAPH_VIEW,
         batchSize=15000,
         bindVars={
             "filename": file_name,

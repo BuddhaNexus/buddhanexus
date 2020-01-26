@@ -36,7 +36,8 @@ SCRIPT_DIR = os.path.dirname(
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.utils import get_language_from_filename
-from api.db_queries import QUERY_CATEGORIES_PER_COLLECTION, QUERY_FILES_PER_CATEGORY
+from api.queries.db_queries import QUERY_FILES_PER_CATEGORY
+from queries.menu import QUERY_CATEGORIES_PER_COLLECTION
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
