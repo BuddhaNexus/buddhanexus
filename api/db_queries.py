@@ -220,6 +220,7 @@ let parallels =  (
                     )
                     LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
                     FILTER filternr2 == false
+                    LIMIT 1000000
                     RETURN { root_offset_beg: p.root_offset_beg,
                              root_offset_end: p.root_offset_end,
                              root_segnr : p.root_segnr,
@@ -231,8 +232,14 @@ RETURN { textleft: segments,
 """
 
 QUERY_PARALELLS_FOR_MIDDLE_TEXT = """
+let parallel_ids = (
+    FOR segment in segments
+        FILTER segment._key == @segmentnr
+        return segment.parallel_ids
+    )
+
 RETURN (
-    FOR parallel_id IN @parallel_ids
+    FOR parallel_id IN FLATTEN(parallel_ids)
         FOR p IN parallels
             FILTER p._key == parallel_id
             FILTER p.score >= @score
