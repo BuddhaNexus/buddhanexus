@@ -9095,15 +9095,15 @@
 {
   "displayName": "Nagnajit: Citralaksana (= NCit)",
   "textname": "nagcitau",
-  "filename": "nagcitau",
-  "category": "none",
+  "filename": "OTnagcitau",
+  "category": "OT",
   "filenr": 1300
 },
 {
   "displayName": "Nagnajit: Citralaksana (= NCit)",
   "textname": "nagcitpu",
-  "filename": "nagcitpu",
-  "category": "none",
+  "filename": "OTnagcitpu",
+  "category": "OT",
   "filenr": 1301
 }
 ]

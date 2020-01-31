@@ -35,7 +35,7 @@ from api.db_connection import get_db
 from api.utils import get_language_from_filename
 from api.db_queries import QUERY_CATEGORIES_PER_COLLECTION
 
-collection_pattern = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
+collection_pattern = "^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
