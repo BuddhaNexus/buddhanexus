@@ -24,6 +24,7 @@ from dataloader_constants import (
     GRAPH_COLLECTIONS_CATEGORIES,
     COLLECTION_LANGUAGES,
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
+    EDGE_COLLECTION_CATEGORY_HAS_FILES,
 )
 from main import load_segment_data_from_menu_files, calculate_parallel_totals
 from menu import (
@@ -153,9 +154,10 @@ def clean_menu_collections(c):
     for name in (
         COLLECTION_MENU_COLLECTIONS,
         COLLECTION_MENU_CATEGORIES,
-        EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
-        EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
         COLLECTION_LANGUAGES,
+        EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
+        EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+        EDGE_COLLECTION_CATEGORY_HAS_FILES,
     ):
         try:
             db.delete_collection(name)

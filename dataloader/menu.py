@@ -12,6 +12,8 @@ from dataloader_constants import (
     GRAPH_COLLECTIONS_CATEGORIES,
     COLLECTION_LANGUAGES,
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
+    EDGE_COLLECTION_CATEGORY_HAS_FILES,
+    COLLECTION_FILES,
 )
 
 
@@ -29,9 +31,15 @@ def create_collections_categories_graph(db: StandardDatabase) -> None:
         from_vertex_collections=[COLLECTION_MENU_COLLECTIONS],
         to_vertex_collections=[COLLECTION_MENU_CATEGORIES],
     )
+    # Category -> Files
+    graph.create_edge_definition(
+        edge_collection=EDGE_COLLECTION_CATEGORY_HAS_FILES,
+        from_vertex_collections=[COLLECTION_MENU_CATEGORIES],
+        to_vertex_collections=[COLLECTION_FILES],
+    )
 
 
-def create_edges_for_collection_categories(
+def create_edges_for_collection_has_categories(
     language: str,
     categories: dict,
     collection_key: str,
@@ -46,7 +54,7 @@ def create_edges_for_collection_categories(
         )
 
 
-def create_edges_for_language_collections(
+def create_edges_for_language_has_collections(
     language: str, collection_key: str, edge_db_collection: EdgeCollection
 ):
     edge_db_collection.insert(
@@ -80,13 +88,13 @@ def load_menu_collection(
         # Create vertex documents..
         collections_db_collection.insert(doc)
         # ..and edges
-        create_edges_for_collection_categories(
+        create_edges_for_collection_has_categories(
             language,
             categories,
             doc["_key"],
             collection_has_categories_edge_db_collection,
         )
-        create_edges_for_language_collections(
+        create_edges_for_language_has_collections(
             language, doc["_key"], language_has_collections_edge_db_collection
         )
     except DocumentInsertError as e:
@@ -125,18 +133,39 @@ def load_all_menu_collections(db: StandardDatabase):
             print("✓")
 
 
+def create_edges_for_category_has_files(
+    files: list, category_key: str, edge_db_collection: EdgeCollection
+):
+    for file_name in files:
+        edge_db_collection.insert(
+            {
+                "_from": f"{COLLECTION_MENU_CATEGORIES}/{category_key}",
+                "_to": f"{COLLECTION_FILES}/{file_name}",
+            }
+        )
+
+
 def load_menu_category(
-    menu_category, category_count, language, categories_db_collection
+    menu_category,
+    category_count,
+    language,
+    categories_db_collection,
+    category_has_files_edge_db_collection,
 ):
     doc = {
         "_key": f'{language}_{menu_category["category"]}',
         "language": language,
         "categorynr": category_count,
     }
+    files = menu_category["files"]
+    del menu_category["files"]
     doc.update(menu_category)
     try:
         categories_db_collection.insert(doc)
         categories_db_collection.add_hash_index(["category"], unique=False)
+        create_edges_for_category_has_files(
+            files, doc["_key"], category_has_files_edge_db_collection
+        )
     except DocumentInsertError as e:
         print("Could not load menu category. Error: ", e)
     except IndexCreateError as e:
@@ -145,6 +174,9 @@ def load_menu_category(
 
 def load_all_menu_categories(db: StandardDatabase):
     categories_db_collection = db.collection(COLLECTION_MENU_CATEGORIES)
+    category_has_files_edge_db_collection = db.collection(
+        EDGE_COLLECTION_CATEGORY_HAS_FILES
+    )
     for language in DEFAULT_LANGS:
         with open(f"../data/{language}-categories.json") as f:
             print(f"Loading menu categories in {language}...")
@@ -152,7 +184,11 @@ def load_all_menu_categories(db: StandardDatabase):
             category_count = 0
             for category in categories:
                 load_menu_category(
-                    category, category_count, language, categories_db_collection
+                    category,
+                    category_count,
+                    language,
+                    categories_db_collection,
+                    category_has_files_edge_db_collection,
                 )
                 category_count += 1
             print("✓")
