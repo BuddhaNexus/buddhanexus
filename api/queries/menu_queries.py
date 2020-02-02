@@ -79,20 +79,15 @@ FOR menu IN menu_collections
 """
 
 QUERY_CATEGORIES_PER_COLLECTION = """
-    FOR collection IN menu_collections
-        LET language = collection.language
-        LET categorylist = (
-        FOR col_category IN collection.categories
-            FOR category IN menu_categories
-                FILTER category.category == col_category
-                FILTER category.language == language
+FOR lang IN languages
+    FOR collection IN 1..1 OUTBOUND concat("languages/", lang._key) GRAPH 'collections_categories'
+        LET categories = (
+            FOR category IN 1..1 OUTBOUND collection._id GRAPH 'collections_categories'
                 SORT category.categorynr
-                LET catname = SPLIT(category.categoryname,["—","("])[0]
-                RETURN {[category["category"]]: catname }
-                )
-        RETURN { collection: collection._key,
-                 language: language,
-                 categories: categorylist }
+                    LET catname = SPLIT(category.categoryname,["—","("])[0]
+                    RETURN {[category["category"]]: catname }
+        )
+        RETURN { collection: collection._key, language: collection.language, categories: categories }
 """
 
 QUERY_ONE_COLLECTION = """

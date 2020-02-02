@@ -252,26 +252,26 @@ def calculate_parallel_totals():
     # This function goes over all the data and groups it into totals for the visual view
     # This takes some time to run on the full dataset.
     db = get_database()
-    query_collection_cursor = db.aql.execute(
+    collection_query_cursor = db.aql.execute(
         menu_queries.QUERY_CATEGORIES_PER_COLLECTION
     )
-    query_collection = [doc for doc in query_collection_cursor]
+    collections = [doc for doc in collection_query_cursor]
 
     # for each collection, the totals to each other collection of that same language are calculated
-    for source_col in query_collection:
-        language = source_col["language"]
-        source_collection = source_col["collection"]
+    for col in collections:
+        language = col["language"]
+        source_collection = col["collection"]
         source_col_dict = {}
-        for source_cat in source_col["categories"]:
+        for source_cat in col["categories"]:
             source_col_dict.update(source_cat)
 
         language_collection_list = get_collection_list_for_language(
-            language, query_collection
+            language, collections
         )
 
         for target_collection in language_collection_list:
             selected_category_dict = get_categories_for_language_collection(
-                target_collection, query_collection
+                target_collection, collections
             )
 
             counted_parallels = []

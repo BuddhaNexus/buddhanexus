@@ -126,7 +126,7 @@ def get_categories_for_language_collection(
     for target in query_collection_cursor:
         if target["collection"] == language_collection:
             target_col_dict = {}
-            for targetcat in target["categories"]:
-                target_col_dict.update(targetcat)
+            for target_cat in target["categories"]:
+                target_col_dict.update(target_cat)
 
             return target_col_dict
