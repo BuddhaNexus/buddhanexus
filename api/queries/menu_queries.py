@@ -1,23 +1,24 @@
 QUERY_FILES_FOR_LANGUAGE = """
-FOR category IN menu_categories
-    FILTER category.language == @language
-    FOR catfile IN category.files
-        FOR file IN files
-            FILTER file._key == catfile
-            SORT file.filenr
-            RETURN {displayName: file.displayName,
-                    textname: file.textname,
-                    filename: file.filename,
-                    category: file.category}
+FOR file IN 3..3 OUTBOUND concat("languages/", @language) GRAPH 'collections_categories'
+    SORT file.filenr
+    FILTER file
+    RETURN {
+        displayName: file.displayName,
+        textname: file.textname,
+        filename: file.filename,
+        category: file.category
+    }
 """
 
 QUERY_FILES_FOR_CATEGORY = """
-FOR category IN menu_categories
-    FILTER category.language == @language
+FOR category IN 2..2 OUTBOUND concat("languages/", @language) GRAPH 'collections_categories'
     SORT category.categorynr
-    FOR catfile IN category.files
-        RETURN {filename: catfile,
-                categoryname: UPPER(catfile)}
+    FOR file in 1..1 OUTBOUND category._id GRAPH 'collections_categories'
+        FILTER file
+        RETURN {
+            filename: file.filename,
+            categoryname: UPPER(file.filename)
+        }
 """
 
 QUERY_CATEGORIES_FOR_LANGUAGE = """
@@ -71,9 +72,11 @@ FOR collection IN 1..1 OUTBOUND concat("languages/", @language) GRAPH 'collectio
 
 QUERY_ALL_COLLECTIONS = """
 FOR menu IN menu_collections
-    RETURN { collectionname : menu.collection,
-             collectionlanguage: menu.language,
-             collectionkey: menu._key }
+    RETURN {
+        collectionname : menu.collection,
+        collectionlanguage: menu.language,
+        collectionkey: menu._key
+    }
 """
 
 QUERY_CATEGORIES_PER_COLLECTION = """
@@ -89,7 +92,6 @@ FOR lang IN languages
 """
 
 QUERY_ONE_COLLECTION = """
-    FOR collection IN menu_collections
-        FILTER collection._key == @collectionkey
-        RETURN collection.categories
+FOR category IN 1..1 OUTBOUND concat("menu_collections/", @collectionkey) GRAPH 'collections_categories'
+    RETURN category.category
 """

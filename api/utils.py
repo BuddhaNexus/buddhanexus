@@ -39,7 +39,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
                 query=menu_queries.QUERY_ONE_COLLECTION,
                 bindVars={"collectionkey": file.replace("!", "")},
             )
-            for item in query.result[0]:
+            for item in query.result:
                 if "!" not in file:
                     new_limit_collection.append(item)
                 else:
