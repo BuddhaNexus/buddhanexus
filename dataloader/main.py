@@ -2,6 +2,7 @@ import json
 import os
 import re
 import random
+import sys
 from collections import Counter, OrderedDict
 
 from arango import DocumentInsertError, IndexCreateError
@@ -17,9 +18,6 @@ from dataloader_constants import (
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
 )
 from dataloader_models import Parallel, Segment, MenuItem
-
-import sys
-
 from dataloader_utils import (
     get_database,
     should_download_file,
@@ -29,15 +27,15 @@ from dataloader_utils import (
     get_categories_for_language_collection,
 )
 
+# allow importing from api directory
 PACKAGE_PARENT = ".."
 SCRIPT_DIR = os.path.dirname(
     os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
+from api.queries import main_queries, menu_queries
 from api.utils import get_language_from_filename
-from api.queries.main_queries import QUERY_FILES_PER_CATEGORY
-from queries.menu_queries import QUERY_CATEGORIES_PER_COLLECTION
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
@@ -254,7 +252,9 @@ def calculate_parallel_totals():
     # This function goes over all the data and groups it into totals for the visual view
     # This takes some time to run on the full dataset.
     db = get_database()
-    query_collection_cursor = db.aql.execute(QUERY_CATEGORIES_PER_COLLECTION)
+    query_collection_cursor = db.aql.execute(
+        menu_queries.QUERY_CATEGORIES_PER_COLLECTION
+    )
     query_collection = [doc for doc in query_collection_cursor]
 
     # for each collection, the totals to each other collection of that same language are calculated
@@ -277,7 +277,7 @@ def calculate_parallel_totals():
             counted_parallels = []
             for cat, cat_name in source_col_dict.items():
                 all_files_cursor = db.aql.execute(
-                    QUERY_FILES_PER_CATEGORY,
+                    main_queries.QUERY_FILES_PER_CATEGORY,
                     batch_size=100000,
                     bind_vars={"searchterm": cat, "language": language},
                 )

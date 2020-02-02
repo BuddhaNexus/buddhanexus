@@ -17,7 +17,6 @@ from starlette.middleware.cors import CORSMiddleware
 
 from .models_api import ParallelsCollection
 from .queries import menu_queries, main_queries
-
 from .utils import (
     get_language_from_filename,
     get_collection_files_regex,
@@ -27,7 +26,7 @@ from .db_connection import get_collection, get_db
 
 API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 
-APP = FastAPI(title="Buddha Nexus Backend", version="0.2.0", openapi_prefix=API_PREFIX)
+APP = FastAPI(title="Buddha Nexus Backend", version="0.2.1", openapi_prefix=API_PREFIX)
 
 APP.add_middleware(
     CORSMiddleware,

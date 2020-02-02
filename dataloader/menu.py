@@ -15,29 +15,6 @@ from dataloader_constants import (
 )
 
 
-def create_edges_for_collection_categories(
-    language: str, menu_collection: dict, edge_db_collection: EdgeCollection
-) -> None:
-    for category_name in menu_collection["categories"]:
-        edge_db_collection.insert(
-            {
-                "_from": f"{COLLECTION_MENU_COLLECTIONS}/{menu_collection['_key']}",
-                "_to": f"{COLLECTION_MENU_CATEGORIES}/{language}_{category_name}",
-            }
-        )
-
-
-def create_edges_for_language_collections(
-    language: str, collection_key: str, edge_db_collection: EdgeCollection
-):
-    edge_db_collection.insert(
-        {
-            "_from": f"{COLLECTION_LANGUAGES}/{language}",
-            "_to": f"{COLLECTION_MENU_COLLECTIONS}/{collection_key}",
-        }
-    )
-
-
 def create_collections_categories_graph(db: StandardDatabase) -> None:
     graph = db.create_graph(GRAPH_COLLECTIONS_CATEGORIES)
     # Language -> Collections
@@ -54,29 +31,58 @@ def create_collections_categories_graph(db: StandardDatabase) -> None:
     )
 
 
+def create_edges_for_collection_categories(
+    language: str, categories: dict, edge_db_collection: EdgeCollection
+) -> None:
+    for category_name in categories:
+        edge_db_collection.insert(
+            {
+                "_from": f"{COLLECTION_MENU_COLLECTIONS}/{categories['_key']}",
+                "_to": f"{COLLECTION_MENU_CATEGORIES}/{language}_{category_name}",
+            }
+        )
+
+
+def create_edges_for_language_collections(
+    language: str, collection_key: str, edge_db_collection: EdgeCollection
+):
+    edge_db_collection.insert(
+        {
+            "_from": f"{COLLECTION_LANGUAGES}/{language}",
+            "_to": f"{COLLECTION_MENU_COLLECTIONS}/{collection_key}",
+        }
+    )
+
+
 def load_menu_collection(
     menu_collection: dict,
     language: str,
     collection_count: int,
     collections_db_collection: StandardCollection,
-    collection_categories_edge_db_collection: EdgeCollection,
-    language_collections_edge_db_collection: EdgeCollection,
+    collection_has_categories_edge_db_collection: EdgeCollection,
+    language_has_collections_edge_db_collection: EdgeCollection,
 ):
+    # Create document
     doc = {
         "_key": f"{language}_{menu_collection['collection']}",
         "language": language,
         "collectionnr": collection_count,
     }
+    # Merge with source data
     doc.update(menu_collection)
 
     try:
+        # Create vertex documents..
         collections_db_collection.insert(doc)
+        # ..and edges
         create_edges_for_collection_categories(
-            language, doc, collection_categories_edge_db_collection
+            language, doc["categories"], collection_has_categories_edge_db_collection
         )
         create_edges_for_language_collections(
-            language, doc["_key"], language_collections_edge_db_collection
+            language, doc["_key"], language_has_collections_edge_db_collection
         )
+        # clean up
+        del doc["categories"]
     except DocumentInsertError as e:
         print("Could not load menu collection. Error: ", e)
 
@@ -84,10 +90,11 @@ def load_menu_collection(
 def load_all_menu_collections(db: StandardDatabase):
     collections_db_collection = db.collection(COLLECTION_MENU_COLLECTIONS)
     languages_db_collection = db.collection(COLLECTION_LANGUAGES)
-    collection_categories_edge_db_collection = db.collection(
+    # edge collections:
+    collection_has_categories_edge_db_collection = db.collection(
         EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES
     )
-    language_collections_edge_db_collection = db.collection(
+    language_has_collections_edge_db_collection = db.collection(
         EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS
     )
 
@@ -104,8 +111,8 @@ def load_all_menu_collections(db: StandardDatabase):
                     language,
                     collection_count,
                     collections_db_collection,
-                    collection_categories_edge_db_collection,
-                    language_collections_edge_db_collection,
+                    collection_has_categories_edge_db_collection,
+                    language_has_collections_edge_db_collection,
                 )
                 collection_count += 1
             print("✓")
