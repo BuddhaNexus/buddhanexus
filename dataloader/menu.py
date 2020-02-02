@@ -32,12 +32,15 @@ def create_collections_categories_graph(db: StandardDatabase) -> None:
 
 
 def create_edges_for_collection_categories(
-    language: str, categories: dict, edge_db_collection: EdgeCollection
+    language: str,
+    categories: dict,
+    collection_key: str,
+    edge_db_collection: EdgeCollection,
 ) -> None:
     for category_name in categories:
         edge_db_collection.insert(
             {
-                "_from": f"{COLLECTION_MENU_COLLECTIONS}/{categories['_key']}",
+                "_from": f"{COLLECTION_MENU_COLLECTIONS}/{collection_key}",
                 "_to": f"{COLLECTION_MENU_CATEGORIES}/{language}_{category_name}",
             }
         )
@@ -68,7 +71,9 @@ def load_menu_collection(
         "language": language,
         "collectionnr": collection_count,
     }
-    # Merge with source data
+    # we won't need the categories array in the db, so let's store it away
+    categories = menu_collection["categories"]
+    del menu_collection["categories"]
     doc.update(menu_collection)
 
     try:
@@ -76,14 +81,16 @@ def load_menu_collection(
         collections_db_collection.insert(doc)
         # ..and edges
         create_edges_for_collection_categories(
-            language, doc["categories"], collection_has_categories_edge_db_collection
+            language,
+            categories,
+            doc["_key"],
+            collection_has_categories_edge_db_collection,
         )
         create_edges_for_language_collections(
             language, doc["_key"], language_has_collections_edge_db_collection
         )
-        # clean up
-        del doc["categories"]
     except DocumentInsertError as e:
+        print(doc["_key"])
         print("Could not load menu collection. Error: ", e)
 
 

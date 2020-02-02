@@ -23,6 +23,7 @@ from dataloader_constants import (
     EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
     GRAPH_COLLECTIONS_CATEGORIES,
     COLLECTION_LANGUAGES,
+    EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
 )
 from main import load_segment_data_from_menu_files, calculate_parallel_totals
 from menu import (
@@ -149,17 +150,22 @@ def clean_menu_collections(c):
     :param c: invoke.py context object
     """
     db = get_database()
-    try:
-        for name in (
-            COLLECTION_MENU_COLLECTIONS,
-            COLLECTION_MENU_CATEGORIES,
-            EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
-            COLLECTION_LANGUAGES,
-        ):
+    for name in (
+        COLLECTION_MENU_COLLECTIONS,
+        COLLECTION_MENU_CATEGORIES,
+        EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+        EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
+        COLLECTION_LANGUAGES,
+    ):
+        try:
             db.delete_collection(name)
+        except CollectionDeleteError:
+            print("couldn't remove object. It probably doesn't exist.")
+    try:
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
-    except (CollectionDeleteError, GraphDeleteError):
+    except GraphDeleteError:
         print("couldn't remove object. It probably doesn't exist.")
+
     print("menu data collections cleaned.")
 
 
