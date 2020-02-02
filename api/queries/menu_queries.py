@@ -25,7 +25,7 @@ QUERY_CATEGORIES_FOR_LANGUAGE = """
 LET total_collection = (
     FOR collection IN 1..1 OUTBOUND CONCAT("languages/", @language) GRAPH 'collections_categories' OPTIONS { "uniqueVertices": "global", "bfs": true }
         SORT collection.collectionnr
-        LET categorylist = (
+        LET categories = (
             FOR category IN 1..1 OUTBOUND collection._id GRAPH 'collections_categories'
                 SORT category.categorynr
                 LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
@@ -39,7 +39,7 @@ LET total_collection = (
                 category: collection._key,
                 categoryname: CONCAT(UPPER(collection.collection), " (ALL)")
             }],
-            categorylist
+            categories
         )
     )
 RETURN FLATTEN(total_collection)
