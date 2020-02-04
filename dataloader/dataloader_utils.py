@@ -81,10 +81,10 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    # if file_lang == LANG_PALI and file_name.startswith("mn"):
-    #     return True
-    # if file_lang == LANG_CHINESE and file_name.startswith("T31"):
-    #     return True
+    if file_lang == LANG_PALI and file_name.startswith("mn"):
+        return True
+    if file_lang == LANG_CHINESE and file_name.startswith("T31"):
+        return True
     if file_lang == LANG_TIBETAN and file_name.startswith("T06"):
         return True
     else:
@@ -115,25 +115,6 @@ def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
         return [None, None]
         
             
-def get_segments_and_parallels_from_gzipped_local_file(file_path: str) -> list:
-    """
-    Give file path as parameter, then:
-    1. Open file
-    2. Unpack it in memory
-    3. Return segments and parallels
-
-    :param file_path: path to the gzipped file
-    """
-
-    try:
-        with gzip.open(file_path, "rt") as f:
-            parsed = json.loads(f.read())
-            segments, parallels = parsed[:2]
-            f.close()
-            return [segments, parallels]
-    except OSError as os_error:
-        print(f"Could not load the gzipped local file {file_path}. Error: ", os_error)
-        return [None, None]
 
 
 def get_collection_list_for_language(language, all_cols):
