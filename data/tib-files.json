@@ -903,6 +903,14 @@
         "filenr": 139
     },
     {
+        "displayName": "Dx H0101",
+        "textname": "Dx H0101",
+        "filename": "K10acip-k_lha_sa-048-006",
+        "category": "K10",
+        "filenr": 139
+    },
+
+    {
         "displayName": "D0099 H0102",
         "textname": "D0099 H0102",
         "filename": "K10acip-k_lha_sa-049-001",
@@ -2002,6 +2010,29 @@
         "filenr": 297
     },
     {
+        "displayName": "Dx H0259",
+        "textname": "Dx H0259",
+        "filename": "K10acip-k_lha_sa-066-016",
+        "category": "K10",
+        "filenr": 297
+    },
+
+    {
+        "displayName": "D0258 H0260",
+        "textname": "D0258 H0260",
+        "filename": "K10acip-k_lha_sa-067-001",
+        "category": "K10",
+        "filenr": 301
+    },
+    {
+        "displayName": "D0259 H0261",
+        "textname": "D0259 H0261",
+        "filename": "K10acip-k_lha_sa-067-002",
+        "category": "K10",
+        "filenr": 301
+    },
+
+    {
         "displayName": "D0260 H0262",
         "textname": "D0260 H0262",
         "filename": "K10acip-k_lha_sa-067-003",
@@ -2219,6 +2250,14 @@
         "filenr": 331
     },
     {
+        "displayName": "Dx H0290",
+        "textname": "Dx H0290",
+        "filename": "K10acip-k_lha_sa-071-002",
+        "category": "K10",
+        "filenr": 333
+    },
+
+    {
         "displayName": "D0288 H0291",
         "textname": "D0288 H0291",
         "filename": "K10acip-k_lha_sa-071-003",
@@ -2379,6 +2418,14 @@
         "category": "K10",
         "filenr": 355
     },
+    {
+        "displayName": "Dx H0314",
+        "textname": "Dx H0314",
+        "filename": "K10acip-k_lha_sa-072-011",
+        "category": "K10",
+        "filenr": 355
+    },
+    
     {
         "displayName": "D0311 H0315",
         "textname": "D0311 H0315",
@@ -2568,6 +2615,16 @@
         "category": "K10",
         "filenr": 383
     },
+
+    {
+        "displayName": "Dx H0342",
+        "textname": "Dx H0342",
+        "filename": "K10acip-k_lha_sa-072-039",
+        "category": "K10",
+        "filenr": 383
+    },
+    
+
     {
         "displayName": "D0338 H0343",
         "textname": "D0338 H0343",
@@ -2575,6 +2632,15 @@
         "category": "K10",
         "filenr": 385
     },
+    {
+        "displayName": "Dx H0344",
+        "textname": "Dx H0344",
+        "filename": "K10acip-k_lha_sa-072-041",
+        "category": "K10",
+        "filenr": 385
+    },
+
+
     {
         "displayName": "D0339 H0345",
         "textname": "D0339 H0345",
@@ -2610,6 +2676,38 @@
         "category": "K10",
         "filenr": 391
     },
+    {
+        "displayName": "Dx H0349",
+        "textname": "Dx H0349",
+        "filename": "K10acip-k_lha_sa-074-004",
+        "category": "K10",
+        "filenr": 391
+    },
+    {
+        "displayName": "Dx H0350",
+        "textname": "Dx H0350",
+        "filename": "K10acip-k_lha_sa-074-005",
+        "category": "K10",
+        "filenr": 391
+    },
+
+    {
+        "displayName": "D0343 H0351",
+        "textname": "D0343 H0351",
+        "filename": "K10acip-k_lha_sa-075-001",
+        "category": "K10",
+        "filenr": 391
+    },
+
+    {
+        "displayName": "D0344 H0352",
+        "textname": "D0344 H0352",
+        "filename": "K10acip-k_lha_sa-075-002",
+        "category": "K10",
+        "filenr": 391
+    },
+    
+    
     {
         "displayName": "D0345 H0353",
         "textname": "D0345 H0353",
@@ -2757,6 +2855,14 @@
         "category": "K12",
         "filenr": 416
     },
+    {
+        "displayName": "Dx H0373",
+        "textname": "Dx H0373",
+        "filename": "K12acip-k_lha_sa-079-005",
+        "category": "K12",
+        "filenr": 416
+    },
+
     {
         "displayName": "D0364 H0374",
         "textname": "D0364 H0374",
@@ -3220,20 +3326,6 @@
         "filenr": 483
     },
     {
-        "displayName": "D0469.2 H0436.2",
-        "textname": "D0469.2 H0436.2",
-        "filename": "K12acip-k_lha_sa-083-020",
-        "category": "K12",
-        "filenr": 484
-    },
-    {
-        "displayName": "D0469.3 H0436.3",
-        "textname": "D0469.3 H0436.3",
-        "filename": "K12acip-k_lha_sa-083-020",
-        "category": "K12",
-        "filenr": 485
-    },
-    {
         "displayName": "D0471 H0437",
         "textname": "D0471 H0437",
         "filename": "K12acip-k_lha_sa-083-021",
@@ -3346,18 +3438,11 @@
         "filenr": 501
     },
     {
-        "displayName": "D0487 H0453",
-        "textname": "D0487 H0453",
+        "displayName": "D0487 D0470 H0453",
+        "textname": "D0487 D0470 H0453",
         "filename": "K12acip-k_lha_sa-085-005",
         "category": "K12",
         "filenr": 502
-    },
-    {
-        "displayName": "D0470 H0453",
-        "textname": "D0470 H0453",
-        "filename": "K12acip-k_lha_sa-085-005",
-        "category": "K12",
-        "filenr": 503
     },
     {
         "displayName": "D0488 H0454",
@@ -3458,6 +3543,15 @@
         "filenr": 517
     },
     {
+        "displayName": "Dx H0468",
+        "textname": "Dx H0468",
+        "filename": "K12acip-k_lha_sa-087-003",
+        "category": "K12",
+        "filenr": 517
+    },
+
+
+    {
         "displayName": "D0501 H0469",
         "textname": "D0501 H0469",
         "filename": "K12acip-k_lha_sa-087-004",
@@ -3492,6 +3586,22 @@
         "category": "K12",
         "filenr": 523
     },
+        {
+        "displayName": "Dx H0474",
+        "textname": "Dx H0474",
+        "filename": "K12acip-k_lha_sa-087-009",
+        "category": "K12",
+        "filenr": 523
+    },
+        {
+        "displayName": "Dx H0475",
+        "textname": "Dx H0475",
+        "filename": "K12acip-k_lha_sa-087-010",
+        "category": "K12",
+        "filenr": 523
+    },
+
+    
     {
         "displayName": "D0506=D0885 H0476",
         "textname": "D0506=D0885 H0476",
@@ -3976,13 +4086,6 @@
         "filenr": 594
     },
     {
-        "displayName": "D0593.2 H0544.2",
-        "textname": "D0593.2 H0544.2",
-        "filename": "K12acip-k_lha_sa-090-028",
-        "category": "K12",
-        "filenr": 595
-    },
-    {
         "displayName": "D0599=D0983 H0545",
         "textname": "D0599=D0983 H0545",
         "filename": "K12acip-k_lha_sa-090-029",
@@ -4039,19 +4142,29 @@
         "filenr": 603
     },
     {
-        "displayName": "D0560 H0553",
-        "textname": "D0560 H0553",
+        "displayName": "D0560 D0710=D0930 H0553",
+        "textname": "D0560 D0710=D0930 H0553",
         "filename": "K12acip-k_lha_sa-090-037",
         "category": "K12",
         "filenr": 604
     },
     {
-        "displayName": "D0710=D0930 H0553",
-        "textname": "D0710=D0930 H0553",
-        "filename": "K12acip-k_lha_sa-090-037",
+        "displayName": "Dx H0554",
+        "textname": "Dx H0554",
+        "filename": "K12acip-k_lha_sa-090-038",
         "category": "K12",
-        "filenr": 605
+        "filenr": 604
     },
+
+        {
+        "displayName": "Dx H0555",
+        "textname": "Dx H0555",
+        "filename": "K12acip-k_lha_sa-090-039",
+        "category": "K12",
+        "filenr": 604
+    },
+
+
     {
         "displayName": "D0510=D0982 H0556",
         "textname": "D0510=D0982 H0556",
@@ -4115,6 +4228,14 @@
         "category": "K12",
         "filenr": 616
     },
+    {
+        "displayName": "Dx H0565",
+        "textname": "Dx H0565",
+        "filename": "K12acip-k_lha_sa-090-049",
+        "category": "K12",
+        "filenr": 616
+    },
+
     {
         "displayName": "D0651=D1040 H0566",
         "textname": "D0651=D1040 H0566",
@@ -4592,18 +4713,11 @@
         "filenr": 685
     },
     {
-        "displayName": "(a)",
-        "textname": "(a)",
+        "displayName": "D0663 D0664 H0633A H0633B",
+        "textname": "D0663 D0664 H0633A H0633B",
         "filename": "K12acip-k_lha_sa-091-024",
         "category": "K12",
         "filenr": 686
-    },
-    {
-        "displayName": "(b)",
-        "textname": "(b)",
-        "filename": "K12acip-k_lha_sa-091-024",
-        "category": "K12",
-        "filenr": 687
     },
     {
         "displayName": "D0667 H0634",
@@ -4809,6 +4923,14 @@
         "filenr": 716
     },
     {
+        "displayName": "Dx H0662",
+        "textname": "Dx H0662",
+        "filename": "K12acip-k_lha_sa-091-054",
+        "category": "K12",
+        "filenr": 716
+    },
+
+    {
         "displayName": "D0696=D0910 H0663",
         "textname": "D0696=D0910 H0663",
         "filename": "K12acip-k_lha_sa-092-001",
@@ -4844,18 +4966,11 @@
         "filenr": 722
     },
     {
-        "displayName": "D0705=D0900 H0668",
-        "textname": "D0705=D0900 H0668",
+        "displayName": "D0705=D0900 D0706 H0668",
+        "textname": "D0705=D0900 D0706 H0668",
         "filename": "K12acip-k_lha_sa-092-006",
         "category": "K12",
         "filenr": 723
-    },
-    {
-        "displayName": "D0706 H0668",
-        "textname": "D0706 H0668",
-        "filename": "K12acip-k_lha_sa-092-006",
-        "category": "K12",
-        "filenr": 724
     },
     {
         "displayName": "D0769=D0971 H0669",
@@ -5208,25 +5323,11 @@
         "filenr": 774
     },
     {
-        "displayName": "D0773=D0969.2 H0715.2",
-        "textname": "D0773=D0969.2 H0715.2",
-        "filename": "K12acip-k_lha_sa-096-005",
-        "category": "K12",
-        "filenr": 775
-    },
-    {
         "displayName": "D0774=D1074 H0716",
         "textname": "D0774=D1074 H0716",
         "filename": "K12acip-k_lha_sa-096-006",
         "category": "K12",
         "filenr": 776
-    },
-    {
-        "displayName": "D0774=D1074.2 H0716.2",
-        "textname": "D0774=D1074.2 H0716.2",
-        "filename": "K12acip-k_lha_sa-096-006",
-        "category": "K12",
-        "filenr": 777
     },
     {
         "displayName": "D0775=D1075 H0717",
@@ -5236,32 +5337,11 @@
         "filenr": 778
     },
     {
-        "displayName": "D0775=D1075.2 H0717.2",
-        "textname": "D0775=D1075.2 H0717.2",
-        "filename": "K12acip-k_lha_sa-096-007",
-        "category": "K12",
-        "filenr": 779
-    },
-    {
         "displayName": "D0776=D1076 H0718",
         "textname": "D0776=D1076 H0718",
         "filename": "K12acip-k_lha_sa-096-008",
         "category": "K12",
         "filenr": 780
-    },
-    {
-        "displayName": "D0776=D1076.2 H0718.2",
-        "textname": "D0776=D1076.2 H0718.2",
-        "filename": "K12acip-k_lha_sa-096-008",
-        "category": "K12",
-        "filenr": 781
-    },
-    {
-        "displayName": "D0777=D1011 H0719",
-        "textname": "D0777=D1011 H0719",
-        "filename": "K12acip-k_lha_sa-096-009",
-        "category": "K12",
-        "filenr": 782
     },
     {
         "displayName": "D0777=D1011.2 H0719.2",
@@ -5276,13 +5356,6 @@
         "filename": "K12acip-k_lha_sa-096-010",
         "category": "K12",
         "filenr": 784
-    },
-    {
-        "displayName": "D0778=D1012.2 H0720.2",
-        "textname": "D0778=D1012.2 H0720.2",
-        "filename": "K12acip-k_lha_sa-096-010",
-        "category": "K12",
-        "filenr": 785
     },
     {
         "displayName": "D0779=D1049 H0721",
@@ -5318,13 +5391,6 @@
         "filename": "K12acip-k_lha_sa-096-015",
         "category": "K12",
         "filenr": 790
-    },
-    {
-        "displayName": "D0522=D0848.2 H0725.2",
-        "textname": "D0522=D0848.2 H0725.2",
-        "filename": "K12acip-k_lha_sa-096-015",
-        "category": "K12",
-        "filenr": 791
     },
     {
         "displayName": "D0783=D1060 H0726",
@@ -5746,6 +5812,14 @@
         "category": "K12",
         "filenr": 851
     },
+    {
+        "displayName": "Dx H0786",
+        "textname": "D0x H0786",
+        "filename": "K12acip-k_lha_sa-096-076",
+        "category": "K12",
+        "filenr": 851
+    },
+
     {
         "displayName": "D0450 H0787",
         "textname": "D0450 H0787",
