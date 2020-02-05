@@ -100,7 +100,10 @@ def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
 
     :param file_url: URL to the gzipped file
     """
-    file_bytes = get_remote_bytes(file_url)
+    if "http" in file_url:
+        file_bytes = get_remote_bytes(file_url)
+    else:
+        file_bytes = file_url
     try:
         with gzip.open(file_bytes) as f:
             parsed = json.loads(f.read())
@@ -110,6 +113,8 @@ def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
     except OSError as os_error:
         print(f"Could not load the gzipped file {file_url}. Error: ", os_error)
         return [None, None]
+        
+            
 
 
 def get_collection_list_for_language(language, all_cols):
