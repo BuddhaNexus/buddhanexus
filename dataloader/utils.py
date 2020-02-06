@@ -62,12 +62,14 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    if file_lang == LANG_PALI and file_name.startswith("mn"):
+    # if file_lang == LANG_PALI:
+    #     return True
+    # if file_lang == LANG_CHINESE:
+    #     return True
+    if file_lang == LANG_TIBETAN and not "NY"  in file_name:
         return True
-    if file_lang == LANG_CHINESE and file_name.startswith("T31"):
-        return True
-    if file_lang == LANG_TIBETAN and file_name.startswith("T06"):
-        return True
+    # if file_lang == LANG_SANSKRIT:
+    #     return True    
     else:
         return False
 

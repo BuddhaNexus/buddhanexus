@@ -220,7 +220,7 @@ let parallels =  (
                     )
                     LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
                     FILTER filternr2 == false
-                    LIMIT 1000000
+                    LIMIT 100000
                     RETURN { root_offset_beg: p.root_offset_beg,
                              root_offset_end: p.root_offset_end,
                              root_segnr : p.root_segnr,

@@ -75,7 +75,7 @@ def load_segments_and_parallels_data_from_menu_file(
         print(f"{file_url} is not a gzip file. Ignoring.")
         return
 
-    [segments, parallels] = get_segments_and_parallels_from_gzipped_remote_file(
+    [segments, parallels] = get_segments_and_parallels_from_gzipped_local_file(
         file_url
     )
 
@@ -245,7 +245,7 @@ def load_parallels(json_parallels: [Parallel], connection: Connection) -> None:
         except CreationError as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
     # I am not shure if this is the right place to add the index...
-    collection.ensureHashIndex(["root_filename"], unique=False)
+
 
 
 def load_menu_collection(menu_collection, language, collection_count, db):
@@ -300,7 +300,10 @@ def load_all_menu_categories():
                 category_count += 1
             print("✓")
 
-
+def create_indicies():
+    collection = connection[COLLECTION_PARALLELS]
+    collection.ensureHashIndex(["root_filename"], unique=False)
+            
 def calculate_parallel_totals():
     # This function goes over all the data and groups it into totals for the visual view
     # This takes some time to run on the full dataset.

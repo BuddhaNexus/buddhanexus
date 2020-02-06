@@ -20,6 +20,7 @@ from loader import (
     load_all_menu_collections,
     load_all_menu_categories,
     calculate_parallel_totals,
+    create_indicies
 )
 from utils import get_db_connection
 
@@ -141,6 +142,12 @@ def load_menu_files(c):
 
     print("Menu data loading completed.")
 
+
+@task
+def add_indicies(c):
+    print("Creating Indicies")
+    create_indicies()
+    print("Creation of indicies done.")
 
 @task
 def calculate_collection_totals(c):
