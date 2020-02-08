@@ -23,7 +23,6 @@ from dataloader_utils import (
     should_download_file,
     execute_in_parallel,
     get_segments_and_parallels_from_gzipped_remote_file,
-    get_segments_and_parallels_from_gzipped_local_file,
     get_collection_list_for_language,
     get_categories_for_language_collection,
 )
