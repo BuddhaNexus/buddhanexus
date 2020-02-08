@@ -1,8 +1,9 @@
 typing==3.7.4
-pyarango==1.3.2
-invoke==1.2.0
-htmllistparse==0.5
-urlfetch==1.1.2
-tqdm==4.32.2
-joblib==0.13.2
-pre-commit==1.20.0
+python-arango==5.2.1
+pyarango==1.3.3
+invoke==1.4.0
+htmllistparse==0.5.2
+urlfetch==1.1.3
+tqdm==4.42.0
+joblib==0.14.1
+pre-commit==1.21.0

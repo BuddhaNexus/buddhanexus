@@ -1,9 +1,14 @@
 import os
 
+from arango import (
+    DatabaseCreateError,
+    CollectionCreateError,
+    CollectionDeleteError,
+    GraphDeleteError,
+)
 from invoke import task
-from pyArango.connection import *
 
-from constants import (
+from dataloader_constants import (
     DB_NAME,
     COLLECTION_NAMES,
     DEFAULT_SOURCE_URL,
@@ -12,17 +17,26 @@ from constants import (
     COLLECTION_FILES,
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
-    COLLECTION_FILES_PARALLELCOUNT,
-    COLLECTION_CATEGORIES_PARALLELCOUNT,
+    COLLECTION_FILES_PARALLEL_COUNT,
+    EDGE_COLLECTION_NAMES,
+    COLLECTION_CATEGORIES_PARALLEL_COUNT,
+    EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+    GRAPH_COLLECTIONS_CATEGORIES,
+    COLLECTION_LANGUAGES,
+    EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
+    EDGE_COLLECTION_CATEGORY_HAS_FILES,
 )
-from loader import (
+from main import (
     load_segment_data_from_menu_files,
+    calculate_parallel_totals,
+    create_indicies,
+)
+from menu import (
     load_all_menu_collections,
     load_all_menu_categories,
-    calculate_parallel_totals,
-    create_indicies
+    create_collections_categories_graph,
 )
-from utils import get_db_connection
+from dataloader_utils import get_database, get_system_database
 
 
 @task
@@ -33,84 +47,36 @@ def create_db(c):
     :param c: invoke.py context object
     """
     try:
-        conn = get_db_connection()
-        conn.createDatabase(name=DB_NAME)
+        sys_db = get_system_database()
+        sys_db.create_database(DB_NAME)
         print(f"created {DB_NAME} database")
-    except CreationError as e:
+    except DatabaseCreateError as e:
         print("Error creating the database: ", e)
 
 
 @task(help={"collections": "Array of collections you'd like to create"})
-def create_collections(c, collections=COLLECTION_NAMES):
+def create_collections(
+    c, collections=COLLECTION_NAMES, edge_collections=EDGE_COLLECTION_NAMES
+):
     """
     Create empty collections in database
 
     :param c: invoke.py context object
     :param collections: Array of collection names to be created
+    :param edge_collections: Array of edge collection names to be created
     """
-    db = get_db_connection()[DB_NAME]
+    db = get_database()
     for name in collections:
         try:
-            db.createCollection(name=name)
-        except CreationError as e:
+            db.create_collection(name)
+        except CollectionCreateError as e:
             print("Error creating collection: ", e)
+    for name in edge_collections:
+        try:
+            db.create_collection(name, edge=True)
+        except CollectionCreateError as e:
+            print("Error creating edge collection: ", e)
     print(f"created {collections} collections")
-
-
-@task
-def clean_all_collections(c):
-    """
-    Clear all the database collections completely.
-
-    :param c: invoke.py context object
-    """
-    db = get_db_connection()[DB_NAME]
-    for name in COLLECTION_NAMES:
-        db[name].empty()
-    print("all collections cleaned.")
-
-
-@task
-def clean_totals_collection(c):
-    """
-    Clear the categories_parallelcount collection
-
-    :param c: invoke.py context object
-    """
-    db = get_db_connection()[DB_NAME]
-    db[COLLECTION_CATEGORIES_PARALLELCOUNT].empty()
-    print("totals collection cleaned.")
-
-
-@task
-def clean_segment_collections(c):
-    """
-    Clear the segment database collections completely.
-
-    :param c: invoke.py context object
-    """
-    db = get_db_connection()[DB_NAME]
-    for name in (
-        COLLECTION_SEGMENTS,
-        COLLECTION_PARALLELS,
-        COLLECTION_FILES,
-        COLLECTION_FILES_PARALLELCOUNT,
-    ):
-        db[name].empty()
-    print("segment collections cleaned.")
-
-
-@task
-def clean_menu_collections(c):
-    """
-    Clear the menu database collections completely.
-
-    :param c: invoke.py context object
-    """
-    db = get_db_connection()[DB_NAME]
-    for name in (COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES):
-        db[name].empty()
-    print("menu data collections cleaned.")
 
 
 @task
@@ -132,13 +98,97 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     print("Segment data loading completed.")
 
 
-@task(clean_menu_collections)
+@task
+def clean_all_collections(c):
+    """
+    Clear all the database collections completely.
+
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    try:
+        for name in COLLECTION_NAMES:
+            db.delete_collection(name)
+        for name in EDGE_COLLECTION_NAMES:
+            db.delete_collection(name)
+    except CollectionDeleteError as e:
+        print("Error deleting collection %s: " % name, e)
+
+    print("all collections cleaned.")
+
+
+@task
+def clean_totals_collection(c):
+    """
+    Clear the categories_parallel_count collection
+
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    db.delete_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
+    print("totals collection cleaned.")
+
+
+@task
+def clean_segment_collections(c):
+    """
+    Clear the segment database collections completely.
+
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    for name in (
+        COLLECTION_SEGMENTS,
+        COLLECTION_PARALLELS,
+        COLLECTION_FILES,
+        COLLECTION_FILES_PARALLEL_COUNT,
+    ):
+        db.delete_collection(name)
+    print("segment collections cleaned.")
+
+
+@task
+def clean_menu_collections(c):
+    """
+    Clear the menu database collections completely.
+
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    for name in (
+        COLLECTION_MENU_COLLECTIONS,
+        COLLECTION_MENU_CATEGORIES,
+        COLLECTION_LANGUAGES,
+        EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
+        EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+        EDGE_COLLECTION_CATEGORY_HAS_FILES,
+    ):
+        try:
+            db.delete_collection(name)
+        except CollectionDeleteError:
+            print("couldn't remove object. It probably doesn't exist.")
+    try:
+        db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
+    except GraphDeleteError:
+        print("couldn't remove object. It probably doesn't exist.")
+
+    print("menu data collections cleaned.")
+
+
+@task()
 def load_menu_files(c):
+    create_collections(
+        c,
+        [COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES, COLLECTION_LANGUAGES],
+    )
     print(
         "Loading menu files into database collections from inside this git repository. "
     )
-    load_all_menu_collections()
-    load_all_menu_categories()
+    db = get_database()
+
+    load_all_menu_categories(db)
+    load_all_menu_collections(db)
+    create_collections_categories_graph(db)
 
     print("Menu data loading completed.")
 
@@ -148,6 +198,7 @@ def add_indicies(c):
     print("Creating Indicies")
     create_indicies()
     print("Creation of indicies done.")
+
 
 @task
 def calculate_collection_totals(c):

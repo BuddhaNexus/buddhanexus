@@ -7,6 +7,7 @@ Todo:
 """
 
 import re
+import os
 from typing import Dict, List
 from urllib.parse import unquote
 
@@ -15,24 +16,7 @@ from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
 from .models_api import ParallelsCollection
-from .db_queries import (
-    QUERY_TEXT_SEARCH,
-    QUERY_ALL_SEGMENTS,
-    QUERY_TEXT_AND_PARALLELS,
-    QUERY_PARALELLS_FOR_MIDDLE_TEXT,
-    QUERY_TABLE_VIEW,
-    QUERY_FILES_FOR_LANGUAGE,
-    QUERY_FILE_SEGMENTS_PARALLELS,
-    QUERY_COLLECTION_NAMES,
-    QUERY_SEGMENT_COUNT,
-    QUERY_FILES_FOR_CATEGORY,
-    QUERY_CATEGORIES_FOR_LANGUAGE,
-    QUERY_GRAPH_DATA,
-    QUERY_COLLECTION_TOTALS,
-    QUERY_ALL_COLLECTIONS,
-    QUERY_TOTAL_NUMBERS,
-    QUERY_TOTAL_MENU,
-)
+from .queries import menu_queries, main_queries
 from .utils import (
     get_language_from_filename,
     get_collection_files_regex,
@@ -40,7 +24,9 @@ from .utils import (
 )
 from .db_connection import get_collection, get_db
 
-APP = FastAPI(title="Buddha Nexus Backend", version="0.1.0", openapi_prefix="/api")
+API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
+
+APP = FastAPI(title="Buddha Nexus Backend", version="0.2.1", openapi_prefix=API_PREFIX)
 
 APP.add_middleware(
     CORSMiddleware,
@@ -121,7 +107,7 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
         parallels.limit_collection, language
     )
     query_result = get_db().AQLQuery(
-        query=QUERY_PARALELLS_FOR_MIDDLE_TEXT,
+        query=main_queries.QUERY_PARALELLS_FOR_MIDDLE_TEXT,
         bindVars={
             "segmentnr": parallels.segmentnr,
             "score": parallels.score,
@@ -153,7 +139,7 @@ async def get_segments_for_file(
     try:
         database = get_db()
         segments_query = database.AQLQuery(
-            query=QUERY_FILE_SEGMENTS_PARALLELS,
+            query=main_queries.QUERY_FILE_SEGMENTS_PARALLELS,
             batchSize=10000,
             bindVars={
                 "filename": file_name,
@@ -170,7 +156,7 @@ async def get_segments_for_file(
 
         return {
             "collections": database.AQLQuery(
-                query=QUERY_COLLECTION_NAMES,
+                query=main_queries.QUERY_COLLECTION_NAMES,
                 bindVars={
                     "collections": collection_keys,
                     "language": get_language_from_filename(file_name),
@@ -222,7 +208,7 @@ async def get_table_view(
             sort_key = "par_length"
 
         query = get_db().AQLQuery(
-            query=QUERY_TABLE_VIEW,
+            query=main_queries.QUERY_TABLE_VIEW,
             bindVars={
                 "filename": file_name,
                 "score": score,
@@ -249,7 +235,7 @@ async def get_files_for_menu(language: str):
     """
     try:
         language_menu_query_result = get_db().AQLQuery(
-            query=QUERY_FILES_FOR_LANGUAGE,
+            query=menu_queries.QUERY_FILES_FOR_LANGUAGE,
             batchSize=10000,
             bindVars={"language": language},
         )
@@ -273,7 +259,7 @@ async def get_files_for_filter_menu(language: str):
     """
     try:
         file_filter_query_result = get_db().AQLQuery(
-            query=QUERY_FILES_FOR_CATEGORY,
+            query=menu_queries.QUERY_FILES_FOR_CATEGORY,
             batchSize=10000,
             bindVars={"language": language},
         )
@@ -297,7 +283,7 @@ async def get_categories_for_filter_menu(language: str):
     """
     try:
         category_filter_query_result = get_db().AQLQuery(
-            query=QUERY_CATEGORIES_FOR_LANGUAGE,
+            query=menu_queries.QUERY_CATEGORIES_FOR_LANGUAGE,
             batchSize=500,
             bindVars={"language": language},
         )
@@ -332,7 +318,8 @@ async def get_file_text_segments_and_parallels(
         active_segment = unquote(active_segment)
         try:
             text_segment_count_query_result = get_db().AQLQuery(
-                query=QUERY_SEGMENT_COUNT, bindVars={"segmentnr": active_segment,},
+                query=main_queries.QUERY_SEGMENT_COUNT,
+                bindVars={"segmentnr": active_segment},
             )
             start_int = text_segment_count_query_result.result[0] - 100
         except DocumentNotFoundError as error:
@@ -351,7 +338,7 @@ async def get_file_text_segments_and_parallels(
     )
     try:
         text_segments_query_result = get_db().AQLQuery(
-            query=QUERY_TEXT_AND_PARALLELS,
+            query=main_queries.QUERY_TEXT_AND_PARALLELS,
             bindVars={
                 "filename": file_name,
                 "limit": limit,
@@ -384,7 +371,7 @@ async def search_file_text_segments(file_name: str, search_string: str):
     try:
         search_string = search_string.lower()
         text_segments_query_result = get_db().AQLQuery(
-            query=QUERY_TEXT_SEARCH,
+            query=main_queries.QUERY_TEXT_SEARCH,
             batchSize=100000,
             bindVars={
                 "filename": file_name,
@@ -418,7 +405,7 @@ async def get_graph_for_file(
     """
     database = get_db()
     query_graph_result = database.AQLQuery(
-        query=QUERY_GRAPH_DATA,
+        query=main_queries.QUERY_GRAPH_VIEW,
         batchSize=15000,
         bindVars={
             "filename": file_name,
@@ -457,7 +444,7 @@ async def get_graph_for_file(
 
     # find the proper full names vor each collection
     collections = database.AQLQuery(
-        query=QUERY_COLLECTION_NAMES,
+        query=main_queries.QUERY_COLLECTION_NAMES,
         bindVars={
             "collections": collection_keys,
             "language": get_language_from_filename(file_name),
@@ -499,7 +486,7 @@ async def get_visual_view_for_file(
     database = get_db()
     languagesearchterm = language + "_" + searchterm
     query_collection_list = database.AQLQuery(
-        query=QUERY_COLLECTION_TOTALS,
+        query=main_queries.QUERY_COLLECTION_TOTALS,
         bindVars={"sourcecollection": languagesearchterm, "selected": selected},
     )
     graphdata = []
@@ -526,7 +513,9 @@ async def get_all_collections():
     Returns list of all available collections.
     """
     try:
-        collections_query_result = get_db().AQLQuery(query=QUERY_ALL_COLLECTIONS)
+        collections_query_result = get_db().AQLQuery(
+            query=menu_queries.QUERY_ALL_COLLECTIONS
+        )
         return {"result": collections_query_result.result}
 
     except DocumentNotFoundError as error:
@@ -555,7 +544,7 @@ async def get_counts_for_file(
         limit_collection, get_language_from_filename(file_name)
     )
     query_graph_result = get_db().AQLQuery(
-        query=QUERY_TOTAL_NUMBERS,
+        query=main_queries.QUERY_TOTAL_NUMBERS,
         batchSize=100000,
         bindVars={
             "filename": file_name,
@@ -582,7 +571,9 @@ async def get_folios_for_file(file_name: str):
         return
 
     query_graph_result = get_db().AQLQuery(
-        query=QUERY_ALL_SEGMENTS, batchSize=100000, bindVars={"filename": file_name,},
+        query=main_queries.QUERY_ALL_SEGMENTS,
+        batchSize=100000,
+        bindVars={"filename": file_name},
     )
     segments = query_graph_result.result[0]
     first_segment = segments[0]
@@ -621,7 +612,7 @@ async def get_data_for_sidebar_menu(language: str):
     """
     database = get_db()
     query_sidebar_menu = database.AQLQuery(
-        query=QUERY_TOTAL_MENU, bindVars={"language": language},
+        query=menu_queries.QUERY_TOTAL_MENU, bindVars={"language": language}
     )
 
     return {"navigationmenudata": query_sidebar_menu.result}
