@@ -23,6 +23,7 @@ from dataloader_utils import (
     should_download_file,
     execute_in_parallel,
     get_segments_and_parallels_from_gzipped_remote_file,
+    get_segments_and_parallels_from_gzipped_local_file,
     get_collection_list_for_language,
     get_categories_for_language_collection,
 )
@@ -36,6 +37,8 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.queries import main_queries, menu_queries
 from api.utils import get_language_from_filename
+
+collection_pattern = "^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
@@ -245,6 +248,11 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             db_collection.insert_many(parallels_to_be_inserted[x : x + chunksize])
         except (DocumentInsertError, IndexCreateError) as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
+
+
+def create_indicies():
+    collection = connection[COLLECTION_PARALLELS]
+    collection.ensureHashIndex(["root_filename"], unique=False)
 
 
 # TODO: Refactor this function. Split into smaller chunks.

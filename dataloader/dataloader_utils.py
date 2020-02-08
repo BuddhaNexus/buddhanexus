@@ -81,11 +81,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    if file_lang == LANG_PALI and file_name.startswith("mn"):
-        return True
-    if file_lang == LANG_CHINESE and file_name.startswith("T31"):
-        return True
-    if file_lang == LANG_TIBETAN and file_name.startswith("T06"):
+    if file_lang == LANG_TIBETAN and "NY" not in file_name:
         return True
     else:
         return False
@@ -113,8 +109,6 @@ def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
     except OSError as os_error:
         print(f"Could not load the gzipped file {file_url}. Error: ", os_error)
         return [None, None]
-        
-            
 
 
 def get_collection_list_for_language(language, all_cols):

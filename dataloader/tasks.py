@@ -26,7 +26,11 @@ from dataloader_constants import (
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
 )
-from main import load_segment_data_from_menu_files, calculate_parallel_totals
+from main import (
+    load_segment_data_from_menu_files,
+    calculate_parallel_totals,
+    create_indicies,
+)
 from menu import (
     load_all_menu_collections,
     load_all_menu_categories,
@@ -187,6 +191,13 @@ def load_menu_files(c):
     create_collections_categories_graph(db)
 
     print("Menu data loading completed.")
+
+
+@task
+def add_indicies(c):
+    print("Creating Indicies")
+    create_indicies()
+    print("Creation of indicies done.")
 
 
 @task

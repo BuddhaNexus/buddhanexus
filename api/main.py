@@ -36,7 +36,7 @@ APP.add_middleware(
     allow_headers=["*"],
 )
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"
+COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 @APP.get("/")

@@ -1635,11 +1635,11 @@
         ]
     },
     {
-        "category": "none",
+        "category": "OT",
         "categoryname": "Miscellaneous",
         "files": [
-            "nagcitau",
-            "nagcitpu"
+            "OTnagcitau",
+            "OTnagcitpu"
         ]
     }
 ]
