@@ -45,6 +45,11 @@ load-menu-data:
 load-segment-data:
 	@docker exec -t dataloader bash -c "invoke load-segment-files"
 
+# Load segment & parallel data from remote url based on local menu files.
+build-search-index:
+	@docker exec -t dataloader bash -c "invoke build-search-index"
+
+
 # Load all (segment, parallel & menu) data
 load-data:
 	@docker exec -ti dataloader bash -c "invoke load-menu-files"
