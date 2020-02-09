@@ -1,5 +1,5 @@
 import os
-
+import gzip
 from arango import (
     DatabaseCreateError,
     CollectionCreateError,
@@ -26,11 +26,7 @@ from dataloader_constants import (
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
 )
-from main import (
-    load_segment_data_from_menu_files,
-    calculate_parallel_totals,
-    create_indicies,
-)
+from main import load_segment_data_from_menu_files, calculate_parallel_totals,load_search_index
 from menu import (
     load_all_menu_collections,
     load_all_menu_categories,
@@ -97,6 +93,16 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
 
     print("Segment data loading completed.")
 
+@task
+def build_search_index(c, index_url=DEFAULT_SOURCE_URL + "/search_index.json.gz"):
+    """
+    Load index data for search index from path defined in .env.
+    """
+    db = get_database()
+    load_search_index(index_url,db)
+    print("Search index data loading completed.")
+
+    
 
 @task
 def clean_all_collections(c):

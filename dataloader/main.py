@@ -1,10 +1,11 @@
 import json
 import os
 import re
+import gzip
 import random
 import sys
 from collections import Counter, OrderedDict
-
+from tqdm import tqdm as tqdm
 from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 
@@ -15,6 +16,7 @@ from dataloader_constants import (
     COLLECTION_FILES,
     COLLECTION_FILES_PARALLEL_COUNT,
     COLLECTION_REGEX,
+    COLLECTION_SEARCH_INDEX,
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
 )
 from dataloader_models import Parallel, Segment, MenuItem
@@ -142,6 +144,43 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
 
     return segmentnrs, totallengthcount, totalfilelengthcount
 
+def load_search_index(path, db: StandardDatabase):
+    with gzip.open(path) as f:
+        # print(f"\nLoading file index data...")
+        # index_data = json.load(f)
+        # print(f"\nInserting file index data into DB...")
+        collection = db.collection(COLLECTION_SEARCH_INDEX)
+        # # we have to do this in chunk, otherwise it will fail with broken_pipe
+        # chunksize = 10000
+        # for i in tqdm(range(0,len(index_data),chunksize)):
+        #     collection.insert_many(index_data[i:i+chunksize])
+        print(f"\nDone loading index data...")
+        print(f"\Creating View...")
+        db.create_analyzer(
+            name='buddhanexus_analyzer',
+            analyzer_type='delimiter',
+            properties={'delimiter':' '},
+            features=[]
+        )
+        db.create_arangosearch_view(
+            name='search_index_view',
+            properties={'cleanupIntervalStep': 0, "links" : { 
+                COLLECTION_SEARCH_INDEX : {
+                    "analyzers" : [ 
+                        "identity" ],
+                     "fields" : { 
+                         "search_string_precise" : { 
+                             "analyzers" : [ 
+                                 "buddhanexus_analyzer"
+                             ]] 
+                         } 
+                     }, 
+                    "includeAllFields" : True, 
+                    "storeValues" : "none", 
+                    "trackListPositions" : False 
+                }
+            }
+            })
 
 def load_segment(
     json_segment: Segment, count: int, parallel_ids: list, db: StandardDatabase
