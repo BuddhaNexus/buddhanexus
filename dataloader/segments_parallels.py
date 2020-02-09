@@ -318,7 +318,7 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
 
-def create_indicies():
+def create_indices():
     collection = connection[COLLECTION_PARALLELS]
     collection.ensureHashIndex(["root_filename"], unique=False)
 
@@ -422,6 +422,7 @@ def add_category_totals_to_db(
             file_counted_parallels_no_zeros,
         )
         counted_parallels += file_counted_parallels
+
     load_parallel_counts(
         language + "_" + category, target_collection, counted_parallels
     )

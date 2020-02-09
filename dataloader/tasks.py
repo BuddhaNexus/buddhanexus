@@ -28,7 +28,14 @@ from dataloader_constants import (
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
 )
-from main import load_segment_data_from_menu_files, calculate_parallel_totals,load_search_index
+
+from segments_parallels import (
+    load_segment_data_from_menu_files,
+    create_indices,
+    load_search_index
+    calculate_parallel_totals,
+)
+
 from menu import (
     load_all_menu_collections,
     load_all_menu_categories,
@@ -135,12 +142,16 @@ def clean_all_collections(c):
     """
     db = get_database()
     try:
+        clean_menu_collections(c)
         for name in COLLECTION_NAMES:
             db.delete_collection(name)
         for name in EDGE_COLLECTION_NAMES:
             db.delete_collection(name)
+        db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % name, e)
+    except GraphDeleteError:
+        print("couldn't remove graph. It probably doesn't exist.")
 
     print("all collections cleaned.")
 
@@ -222,10 +233,10 @@ def load_menu_files(c):
 
 
 @task
-def add_indicies(c):
-    print("Creating Indicies")
-    create_indicies()
-    print("Creation of indicies done.")
+def add_indices(c):
+    print("Creating Indices")
+    create_indices()
+    print("Creation of indices done.")
 
 
 @task

@@ -63,7 +63,7 @@ load-data-async:
 	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded"
 	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
 	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
-	@docker exec -ti dataloader bash -c "invoke create-indicies"
+	@docker exec -ti dataloader bash -c "invoke create-indices"
 
 clean-db:
 	@docker exec -t dataloader bash -c "invoke clean-all-collections"
