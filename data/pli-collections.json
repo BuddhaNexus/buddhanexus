@@ -1,25 +1,40 @@
 [
   {
-    "collection": "Suttas",
+    "collection": "Suttas-Early-1",
     "categories": [
       "dn",
       "mn",
       "sn",
-      "an",
+      "an"
+    ]
+  },
+  {
+    "collection": "Suttas-Early-2",
+    "categories": [
       "kp",
       "dhp",
       "ud",
       "iti",
       "snp",
+      "thag",
+      "thig"
+    ]
+  },
+  {
+    "collection": "Suttas-Late-1",
+    "categories": [
       "vv",
       "pv",
-      "thag",
-      "thig",
       "tha-ap",
       "thi-ap",
       "bv",
       "cp",
-      "ja",
+      "ja"
+    ]
+  },
+  {
+    "collection": "Suttas-Late-2",
+    "categories": [
       "mnd",
       "cnd",
       "ps",
