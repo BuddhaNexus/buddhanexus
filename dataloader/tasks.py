@@ -11,6 +11,8 @@ from invoke import task
 from dataloader_constants import (
     DB_NAME,
     COLLECTION_NAMES,
+    INDEX_COLLECTION_NAMES,
+    INDEX_VIEW_NAMES,
     DEFAULT_SOURCE_URL,
     COLLECTION_SEGMENTS,
     COLLECTION_PARALLELS,
@@ -94,14 +96,34 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     print("Segment data loading completed.")
 
 @task
-def build_search_index(c, index_url=DEFAULT_SOURCE_URL + "/search_index.json.gz"):
+def build_search_index(c, index_url=DEFAULT_SOURCE_URL + "/search_index.json.gz",index_url_chn=DEFAULT_SOURCE_URL + "/search_index_chn.json.gz"):
     """
     Load index data for search index from path defined in .env.
     """
     db = get_database()
-    load_search_index(index_url,db)
+    collections = INDEX_COLLECTION_NAMES
+    for name in collections:
+        db.create_collection(name)
+    load_search_index(index_url,index_url_chn,db)
     print("Search index data loading completed.")
 
+@task
+def clean_search_index(c):
+    """
+    Clear all the search index views and collections.
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    try:
+        for name in INDEX_COLLECTION_NAMES:
+            db.delete_collection(name)
+        for name in INDEX_VIEW_NAMES:
+            db.delete_view(name)
+
+    except CollectionDeleteError as e:
+        print("Error deleting collection %s: " % name, e)
+
+    print("search index cleaned.")
     
 
 @task

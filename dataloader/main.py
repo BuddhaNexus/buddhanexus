@@ -17,6 +17,9 @@ from dataloader_constants import (
     COLLECTION_FILES_PARALLEL_COUNT,
     COLLECTION_REGEX,
     COLLECTION_SEARCH_INDEX,
+    COLLECTION_SEARCH_INDEX_CHN,
+    VIEW_SEARCH_INDEX,
+    VIEW_SEARCH_INDEX_CHN,
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
 )
 from dataloader_models import Parallel, Segment, MenuItem
@@ -144,26 +147,20 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
 
     return segmentnrs, totallengthcount, totalfilelengthcount
 
-def load_search_index(path, db: StandardDatabase):
+def load_search_index(path,path_chn, db: StandardDatabase):
     with gzip.open(path) as f:
-        # print(f"\nLoading file index data...")
-        # index_data = json.load(f)
-        # print(f"\nInserting file index data into DB...")
+        print(f"\nLoading file index data...")
+        index_data = json.load(f)
+        print(f"\nInserting file index data into DB...")
         collection = db.collection(COLLECTION_SEARCH_INDEX)
-        # # we have to do this in chunk, otherwise it will fail with broken_pipe
-        # chunksize = 10000
-        # for i in tqdm(range(0,len(index_data),chunksize)):
-        #     collection.insert_many(index_data[i:i+chunksize])
+        # we have to do this in chunk, otherwise it will fail with broken_pipe
+        chunksize = 10000
+        for i in tqdm(range(0,len(index_data),chunksize)):
+            collection.insert_many(index_data[i:i+chunksize])
         print(f"\nDone loading index data...")
-        print(f"\Creating View...")
-        db.create_analyzer(
-            name='buddhanexus_analyzer',
-            analyzer_type='delimiter',
-            properties={'delimiter':' '},
-            features=[]
-        )
+        print(f"\nCreating View...")
         db.create_arangosearch_view(
-            name='search_index_view',
+            name=VIEW_SEARCH_INDEX,
             properties={'cleanupIntervalStep': 0, "links" : { 
                 COLLECTION_SEARCH_INDEX : {
                     "analyzers" : [ 
@@ -171,17 +168,50 @@ def load_search_index(path, db: StandardDatabase):
                      "fields" : { 
                          "search_string_precise" : { 
                              "analyzers" : [ 
-                                 "buddhanexus_analyzer"
-                             ]] 
-                         } 
-                     }, 
+                                 "text_en"
+                             ]},
+                         "search_string_fuzzy" : { 
+                             "analyzers" : [ 
+                                 "text_en"
+                             ]} 
+
+                         }
+                     }},
                     "includeAllFields" : True, 
                     "storeValues" : "none", 
                     "trackListPositions" : False 
                 }
-            }
+            )
+    with gzip.open(path_chn) as f:
+        print(f"\nLoading file index data Chinese...")
+        index_data = json.load(f)
+        print(f"\nInserting file index data Chinese into DB...")
+        collection = db.collection(COLLECTION_SEARCH_INDEX_CHN)
+        chunksize = 10000
+        for i in tqdm(range(0,len(index_data),chunksize)):
+            collection.insert_many(index_data[i:i+chunksize])
+        print(f"\nDone loading index data Chn...")
+        print(f"\nCreating View...")
+        db.create_arangosearch_view(
+            name=VIEW_SEARCH_INDEX_CHN,
+            properties={'cleanupIntervalStep': 0, "links" : { 
+                COLLECTION_SEARCH_INDEX_CHN : {
+                    "analyzers" : [ 
+                        "identity" ],
+                     "fields" : { 
+                         "search_string_precise" : { 
+                             "analyzers" : [ 
+                                 "text_zh"
+                             ]
+                         }
+                     }}}, 
+                    "includeAllFields" : True, 
+                    "storeValues" : "none", 
+                    "trackListPositions" : False 
             })
 
+
+        
 def load_segment(
     json_segment: Segment, count: int, parallel_ids: list, db: StandardDatabase
 ) -> str:
