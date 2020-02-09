@@ -68,6 +68,10 @@ load-data-async:
 clean-db:
 	@docker exec -t dataloader bash -c "invoke clean-all-collections"
 
+clean-search-index:
+	@docker exec -t dataloader bash -c "invoke clean-search-index"
+
+
 clean-totals:
 	@docker exec -t dataloader bash -c "invoke clean-totals-collection"
 	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
