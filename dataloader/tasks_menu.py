@@ -4,6 +4,7 @@ from arango import DocumentInsertError, IndexCreateError
 from arango.collection import StandardCollection, EdgeCollection
 from arango.database import StandardDatabase
 
+from dataloader_utils import get_language_name
 from dataloader_constants import (
     COLLECTION_MENU_COLLECTIONS,
     DEFAULT_LANGS,
@@ -15,7 +16,6 @@ from dataloader_constants import (
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
     COLLECTION_FILES,
 )
-from dataloader_utils import get_language_name
 
 
 def create_collections_categories_graph(db: StandardDatabase) -> None:

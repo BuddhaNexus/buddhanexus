@@ -35,10 +35,8 @@ LET total_collection = (
                     categoryname: CONCAT("• ",categoryname)
                 }
         )
-        RETURN APPEND([{
-                category: collection._key,
-                categoryname: CONCAT(UPPER(collection.collection), " (ALL)")
-            }],
+        RETURN APPEND(
+            [{ category: collection._key, categoryname: CONCAT(UPPER(collection.collection), " (ALL)") }],
             categories
         )
     )
@@ -88,7 +86,7 @@ FOR lang IN languages
                     LET catname = SPLIT(category.categoryname,["—","("])[0]
                     RETURN {[category["category"]]: catname }
         )
-        RETURN { collection: collection._key, language: collection.language, categories: categories }
+    RETURN { collection: collection._key, language: collection.language, categories: categories }
 """
 
 QUERY_ONE_COLLECTION = """

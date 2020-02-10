@@ -25,13 +25,15 @@ from dataloader_constants import (
     COLLECTION_LANGUAGES,
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
+    GRAPH_FILES_SEGMENTS,
 )
-from segments_parallels import (
+from tasks_segments_parallels import (
     load_segment_data_from_menu_files,
     create_indices,
     calculate_parallel_totals,
+    create_files_segments_graph,
 )
-from menu import (
+from tasks_menu import (
     load_all_menu_collections,
     load_all_menu_categories,
     create_collections_categories_graph,
@@ -70,7 +72,7 @@ def create_collections(
         try:
             db.create_collection(name)
         except CollectionCreateError as e:
-            print("Error creating collection: ", e)
+            print(f"Error creating collection {name}: ", e)
     for name in edge_collections:
         try:
             db.create_collection(name, edge=True)
@@ -94,6 +96,7 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     )
 
     load_segment_data_from_menu_files(root_url, thread_count if threaded else 1)
+    create_files_segments_graph(db)
 
     print("Segment data loading completed.")
 
@@ -107,12 +110,12 @@ def clean_all_collections(c):
     """
     db = get_database()
     try:
-        clean_menu_collections(c)
         for name in COLLECTION_NAMES:
             db.delete_collection(name)
         for name in EDGE_COLLECTION_NAMES:
             db.delete_collection(name)
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
+        db.delete_graph(GRAPH_FILES_SEGMENTS)
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % name, e)
     except GraphDeleteError:
@@ -148,7 +151,16 @@ def clean_segment_collections(c):
         COLLECTION_FILES,
         COLLECTION_FILES_PARALLEL_COUNT,
     ):
-        db.delete_collection(name)
+        try:
+            db.delete_collection(name)
+        except CollectionDeleteError:
+            print(f"couldn't remove object {name}. It probably doesn't exist.")
+    try:
+        db.delete_graph(GRAPH_FILES_SEGMENTS)
+    except GraphDeleteError:
+        print(
+            f"couldn't remove graph {GRAPH_FILES_SEGMENTS}. It probably doesn't exist."
+        )
     print("segment collections cleaned.")
 
 
@@ -171,11 +183,13 @@ def clean_menu_collections(c):
         try:
             db.delete_collection(name)
         except CollectionDeleteError:
-            print("couldn't remove object. It probably doesn't exist.")
+            print(f"couldn't remove object {name}. It probably doesn't exist.")
     try:
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
     except GraphDeleteError:
-        print("couldn't remove object. It probably doesn't exist.")
+        print(
+            f"couldn't remove object {GRAPH_COLLECTIONS_CATEGORIES}. It probably doesn't exist."
+        )
 
     print("menu data collections cleaned.")
 

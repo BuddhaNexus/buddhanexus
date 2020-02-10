@@ -16,6 +16,8 @@ from dataloader_constants import (
     COLLECTION_FILES_PARALLEL_COUNT,
     COLLECTION_REGEX,
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
+    GRAPH_FILES_SEGMENTS,
+    EDGE_COLLECTION_FILE_HAS_SEGMENTS,
 )
 from dataloader_models import Parallel, Segment, MenuItem
 from dataloader_utils import (
@@ -38,6 +40,16 @@ from api.queries import main_queries, menu_queries
 from api.utils import get_language_from_filename
 
 collection_pattern = "^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
+
+
+def create_files_segments_graph(db: StandardDatabase) -> None:
+    graph = db.create_graph(GRAPH_FILES_SEGMENTS)
+    # Files -> Segments
+    graph.create_edge_definition(
+        edge_collection=EDGE_COLLECTION_FILE_HAS_SEGMENTS,
+        from_vertex_collections=[COLLECTION_FILES],
+        to_vertex_collections=[COLLECTION_SEGMENTS],
+    )
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
@@ -203,12 +215,19 @@ def load_file_parallel_counts(
         print("Could not load file. Error: ", e)
 
 
-def load_files_collection(file: MenuItem, segmentnrs: list, db: StandardDatabase):
-    db_collection = db.collection(COLLECTION_FILES)
-    doc = {"_key": file["filename"], "segmentnrs": segmentnrs}
+def load_files_collection(file: MenuItem, segment_keys: list, db: StandardDatabase):
+    files_db_collection = db.collection(COLLECTION_FILES)
+    file_segments_edge_collection = db.collection(EDGE_COLLECTION_FILE_HAS_SEGMENTS)
+    file_key = file["filename"]
+    doc = {"_key": file_key}
     doc.update(file)
+
+    segment_edge_documents = map(
+        lambda segment_key: {"_from": file_key, "_to": segment_key}, segment_keys
+    )
     try:
-        db_collection.insert(doc)
+        files_db_collection.insert(doc)
+        file_segments_edge_collection.insert_many(segment_edge_documents)
     except DocumentInsertError as e:
         print("Could not load file. Error: ", e)
 
