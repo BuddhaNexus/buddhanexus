@@ -20,6 +20,7 @@ from dataloader_constants import (
     ARANGO_USER,
     ARANGO_PASSWORD,
     ARANGO_HOST,
+    LANG_SANSKRIT,
 )
 
 
@@ -129,3 +130,16 @@ def get_categories_for_language_collection(
                 target_col_dict.update(target_cat)
 
             return target_col_dict
+
+
+def get_language_name(language_key):
+    if language_key == LANG_CHINESE:
+        return "Chinese"
+    elif language_key == LANG_TIBETAN:
+        return "Tibetan"
+    elif language_key == LANG_PALI:
+        return "Pali"
+    elif language_key == LANG_SANSKRIT:
+        return "Sanskrit"
+    else:
+        return "Unknown"

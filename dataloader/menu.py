@@ -15,6 +15,7 @@ from dataloader_constants import (
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
     COLLECTION_FILES,
 )
+from dataloader_utils import get_language_name
 
 
 def create_collections_categories_graph(db: StandardDatabase) -> None:
@@ -114,7 +115,9 @@ def load_all_menu_collections(db: StandardDatabase):
     )
 
     for language in DEFAULT_LANGS:
-        languages_db_collection.insert({"_key": language})
+        languages_db_collection.insert(
+            {"_key": language, "name": get_language_name(language)}
+        )
 
         with open(f"../data/{language}-collections.json") as file:
             print(f"Loading menu collections in {language}...")
