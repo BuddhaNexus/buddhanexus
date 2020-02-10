@@ -6,6 +6,7 @@ from arango import (
     CollectionDeleteError,
     GraphDeleteError,
 )
+from arango.database import StandardDatabase
 from invoke import task
 
 from dataloader_constants import (
@@ -26,6 +27,7 @@ from dataloader_constants import (
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
     GRAPH_FILES_SEGMENTS,
+    EDGE_COLLECTION_FILE_HAS_SEGMENTS,
 )
 from tasks_segments_parallels import (
     load_segment_data_from_menu_files,
@@ -96,7 +98,6 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     )
 
     load_segment_data_from_menu_files(root_url, thread_count if threaded else 1)
-    create_files_segments_graph(db)
 
     print("Segment data loading completed.")
 
@@ -137,6 +138,19 @@ def clean_totals_collection(c):
     print("totals collection cleaned.")
 
 
+def empty_collection(collection_name: str, db: StandardDatabase, edge: bool = False):
+    try:
+        db.delete_collection(collection_name)
+    except CollectionDeleteError:
+        print(
+            f"couldn't remove collection: {collection_name}. It probably doesn't exist."
+        )
+    try:
+        db.create_collection(collection_name, edge=edge)
+    except CollectionCreateError:
+        print(f"couldn't create collection: {collection_name}")
+
+
 @task
 def clean_segment_collections(c):
     """
@@ -145,21 +159,21 @@ def clean_segment_collections(c):
     :param c: invoke.py context object
     """
     db = get_database()
+
     for name in (
         COLLECTION_SEGMENTS,
         COLLECTION_PARALLELS,
         COLLECTION_FILES,
         COLLECTION_FILES_PARALLEL_COUNT,
     ):
-        try:
-            db.delete_collection(name)
-        except CollectionDeleteError:
-            print(f"couldn't remove object {name}. It probably doesn't exist.")
+        empty_collection(name, db)
+        empty_collection(EDGE_COLLECTION_FILE_HAS_SEGMENTS, db, edge=True)
+
     try:
         db.delete_graph(GRAPH_FILES_SEGMENTS)
     except GraphDeleteError:
         print(
-            f"couldn't remove graph {GRAPH_FILES_SEGMENTS}. It probably doesn't exist."
+            f"couldn't remove graph: {GRAPH_FILES_SEGMENTS}. It probably doesn't exist."
         )
     print("segment collections cleaned.")
 
@@ -176,14 +190,14 @@ def clean_menu_collections(c):
         COLLECTION_MENU_COLLECTIONS,
         COLLECTION_MENU_CATEGORIES,
         COLLECTION_LANGUAGES,
+    ):
+        empty_collection(name, db)
+    for name in (
         EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
         EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
         EDGE_COLLECTION_CATEGORY_HAS_FILES,
     ):
-        try:
-            db.delete_collection(name)
-        except CollectionDeleteError:
-            print(f"couldn't remove object {name}. It probably doesn't exist.")
+        empty_collection(name, db, edge=True)
     try:
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
     except GraphDeleteError:
@@ -196,20 +210,13 @@ def clean_menu_collections(c):
 
 @task()
 def load_menu_files(c):
-    create_collections(
-        c,
-        [COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES, COLLECTION_LANGUAGES],
-    )
-    print(
-        "Loading menu files into database collections from inside this git repository. "
-    )
+    print("Loading menu collections...")
     db = get_database()
-
     load_all_menu_categories(db)
     load_all_menu_collections(db)
     create_collections_categories_graph(db)
 
-    print("Menu data loading completed.")
+    print("Menu data loading completed!")
 
 
 @task

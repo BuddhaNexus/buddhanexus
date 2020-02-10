@@ -42,7 +42,8 @@ from api.utils import get_language_from_filename
 collection_pattern = "^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
-def create_files_segments_graph(db: StandardDatabase) -> None:
+def create_files_segments_graph() -> None:
+    db = get_database()
     graph = db.create_graph(GRAPH_FILES_SEGMENTS)
     # Files -> Segments
     graph.create_edge_definition(
@@ -75,6 +76,7 @@ def load_segment_data_from_menu_files(root_url: str, threads: int):
                 filtered_file_data,
                 threads,
             )
+    create_files_segments_graph()
 
 
 def load_segments_and_parallels_data_from_menu_file(
@@ -222,11 +224,18 @@ def load_files_collection(file: MenuItem, segment_keys: list, db: StandardDataba
     doc = {"_key": file_key}
     doc.update(file)
 
-    segment_edge_documents = map(
-        lambda segment_key: {"_from": file_key, "_to": segment_key}, segment_keys
-    )
+    segment_edge_documents = [
+        {
+            "_from": f"{COLLECTION_FILES}/{file_key}",
+            "_to": f"{COLLECTION_SEGMENTS}/{segment_key}",
+        }
+        for segment_key in segment_keys
+    ]
     try:
         files_db_collection.insert(doc)
+        # for segment_edge_doc in segment_edge_documents:
+        #     print(segment_edge_doc)
+        #     file_segments_edge_collection.insert(segment_edge_doc)
         file_segments_edge_collection.insert_many(segment_edge_documents)
     except DocumentInsertError as e:
         print("Could not load file. Error: ", e)
