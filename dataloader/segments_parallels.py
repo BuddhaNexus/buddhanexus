@@ -22,6 +22,11 @@ from dataloader_constants import (
     VIEW_SEARCH_INDEX_CHN,
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
 )
+from views_properties import (
+    PROPERTIES_SEARCH_INDEX,
+    PROPERTIES_SEARCH_INDEX_CHN
+    )
+
 from dataloader_models import Parallel, Segment, MenuItem
 from dataloader_utils import (
     get_database,
@@ -161,28 +166,11 @@ def load_search_index(path,path_chn, db: StandardDatabase):
         print(f"\nCreating View...")
         db.create_arangosearch_view(
             name=VIEW_SEARCH_INDEX,
-            properties={'cleanupIntervalStep': 0, "links" : { 
-                COLLECTION_SEARCH_INDEX : {
-                    "analyzers" : [ 
-                        "identity" ],
-                     "fields" : { 
-                         "search_string_precise" : { 
-                             "analyzers" : [ 
-                                 "text_en"
-                             ]},
-                         "search_string_fuzzy" : { 
-                             "analyzers" : [ 
-                                 "text_en"
-                             ]} 
+            properties= PROPERTIES_SEARCH_INDEX)
+        print("\nDone creating View")
 
-                         }
-                     }},
-                    "includeAllFields" : True, 
-                    "storeValues" : "none", 
-                    "trackListPositions" : False 
-                }
-            )
-    with gzip.open(path_chn) as f:
+def load_search_index_chn(path, db: StandardDatabase):        
+    with gzip.open(path) as f:
         print(f"\nLoading file index data Chinese...")
         index_data = json.load(f)
         print(f"\nInserting file index data Chinese into DB...")
@@ -194,22 +182,8 @@ def load_search_index(path,path_chn, db: StandardDatabase):
         print(f"\nCreating View...")
         db.create_arangosearch_view(
             name=VIEW_SEARCH_INDEX_CHN,
-            properties={'cleanupIntervalStep': 0, "links" : { 
-                COLLECTION_SEARCH_INDEX_CHN : {
-                    "analyzers" : [ 
-                        "identity" ],
-                     "fields" : { 
-                         "search_string_precise" : { 
-                             "analyzers" : [ 
-                                 "text_zh"
-                             ]
-                         }
-                     }}}, 
-                    "includeAllFields" : True, 
-                    "storeValues" : "none", 
-                    "trackListPositions" : False 
-            })
-
+            properties=PROPERTIES_SEARCH_INDEX_CHN)
+        print("\nDone creating View for Chinese")
 
         
 def load_segment(
@@ -308,7 +282,7 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             parallels_to_be_inserted.append(parallel)
 
     random.shuffle(parallels_to_be_inserted)
-    db_collection.add_hash_index(["root_filename"], unique=False)
+
     chunksize = 10000  # 10000 for Tibetan, 100000 for Chinese
 
     for x in range(0, len(parallels_to_be_inserted), chunksize):
@@ -318,9 +292,9 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
 
-def create_indices():
-    collection = connection[COLLECTION_PARALLELS]
-    collection.ensureHashIndex(["root_filename"], unique=False)
+def create_indices(db: StandardDatabase):
+    db_collection = db.collection(COLLECTION_PARALLELS)
+    db_collection.add_hash_index(["root_filename"], unique=False)
 
 
 # TODO: Refactor this function. Split into smaller chunks.

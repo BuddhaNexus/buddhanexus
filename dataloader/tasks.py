@@ -32,14 +32,14 @@ from dataloader_constants import (
 from segments_parallels import (
     load_segment_data_from_menu_files,
     create_indices,
-    load_search_index
-    calculate_parallel_totals,
+    load_search_index,
+    calculate_parallel_totals
 )
 
 from menu import (
     load_all_menu_collections,
     load_all_menu_categories,
-    create_collections_categories_graph,
+    create_collections_categories_graph
 )
 from dataloader_utils import get_database, get_system_database
 
@@ -233,9 +233,10 @@ def load_menu_files(c):
 
 
 @task
-def add_indices(c):
+def add_indicies(c):
+    db = get_database()
     print("Creating Indices")
-    create_indices()
+    create_indices(db)
     print("Creation of indices done.")
 
 
