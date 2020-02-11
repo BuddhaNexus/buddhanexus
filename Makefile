@@ -45,15 +45,18 @@ load-menu-data:
 load-segment-data:
 	@docker exec -t dataloader bash -c "invoke load-segment-files"
 
-# Load segment & parallel data from remote url based on local menu files.
+# Load & build the search-index
 build-search-index:
 	@docker exec -t dataloader bash -c "invoke build-search-index"
 
+add-segment-index:
+	@docker exec -ti dataloader bash -c "invoke add-indicies"
 
 # Load all (segment, parallel & menu) data
 load-data:
 	@docker exec -ti dataloader bash -c "invoke load-menu-files"
 	@docker exec -ti dataloader bash -c "invoke load-segment-files"
+	@docker exec -ti dataloader bash -c "invoke add-indicies"
 	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
 	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
 
@@ -68,6 +71,7 @@ load-data-async:
 clean-db:
 	@docker exec -t dataloader bash -c "invoke clean-all-collections"
 
+# clean & remove the search-index
 clean-search-index:
 	@docker exec -t dataloader bash -c "invoke clean-search-index"
 

@@ -152,7 +152,7 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
 
     return segmentnrs, totallengthcount, totalfilelengthcount
 
-def load_search_index(path,path_chn, db: StandardDatabase):
+def load_search_index(path, db: StandardDatabase):
     with gzip.open(path) as f:
         print(f"\nLoading file index data...")
         index_data = json.load(f)

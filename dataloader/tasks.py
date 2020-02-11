@@ -33,6 +33,7 @@ from segments_parallels import (
     load_segment_data_from_menu_files,
     create_indices,
     load_search_index,
+    load_search_index_chn,
     calculate_parallel_totals
 )
 
@@ -111,7 +112,8 @@ def build_search_index(c, index_url=DEFAULT_SOURCE_URL + "/search_index.json.gz"
     collections = INDEX_COLLECTION_NAMES
     for name in collections:
         db.create_collection(name)
-    load_search_index(index_url,index_url_chn,db)
+    load_search_index(index_url,db)
+    load_search_index_chn(index_url_chn,db)
     print("Search index data loading completed.")
 
 @task
