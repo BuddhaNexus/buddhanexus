@@ -221,22 +221,26 @@ def load_files_collection(file: MenuItem, segment_keys: list, db: StandardDataba
     files_db_collection = db.collection(COLLECTION_FILES)
     file_segments_edge_collection = db.collection(EDGE_COLLECTION_FILE_HAS_SEGMENTS)
     file_key = file["filename"]
-    doc = {"_key": file_key}
+    doc = {"_key": file_key, "segment_keys": segment_keys}
     doc.update(file)
 
-    segment_edge_documents = [
-        {
-            "_from": f"{COLLECTION_FILES}/{file_key}",
-            "_to": f"{COLLECTION_SEGMENTS}/{segment_key}",
-        }
-        for segment_key in segment_keys
-    ]
     try:
         files_db_collection.insert(doc)
-        # for segment_edge_doc in segment_edge_documents:
-        #     print(segment_edge_doc)
-        #     file_segments_edge_collection.insert(segment_edge_doc)
-        file_segments_edge_collection.insert_many(segment_edge_documents)
+
+        # insert n documents at a time
+        BATCH_SIZE = 1000
+        batched_edge_docs = []
+        for i, segment_key in enumerate(segment_keys):
+            edge_doc = {
+                "_from": f"{COLLECTION_FILES}/{file_key}",
+                "_to": f"{COLLECTION_SEGMENTS}/{segment_key}",
+            }
+            batched_edge_docs.append(edge_doc)
+            if i % BATCH_SIZE == 0:
+                file_segments_edge_collection.insert_many(batched_edge_docs)
+                batched_edge_docs = []
+        # insert the remaining documents
+        file_segments_edge_collection.insert_many(batched_edge_docs)
     except DocumentInsertError as e:
         print("Could not load file. Error: ", e)
 

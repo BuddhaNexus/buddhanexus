@@ -1,11 +1,52 @@
 """
-Contains all database queries used by buddhanexus.
+Contains all database queries related to segments and parallels found inside files.
 
 Todo:
 - When this gets too big (>300 lines), consider splitting this into
   several files inside a "queries" directory.
 """
 
+# todo
+QUERY_ALL_SEGMENTS = """
+FOR file IN files
+    FILTER file._key == @filename
+    RETURN file.segmentnrs
+"""
+
+# todo
+QUERY_COLLECTION_NAMES = """
+RETURN (
+    FOR category IN menu_categories
+        FILTER category.language == @language
+        SORT category.categorynr
+        FOR collection_key IN @collections
+            FILTER category["category"] == collection_key
+            RETURN { [category["category"]]: category.categoryname }
+)
+"""
+
+# todo
+QUERY_SEGMENT_COUNT = """
+FOR segment IN segments
+    FILTER segment._key == @segmentnr
+    RETURN segment.count
+"""
+
+# todo
+QUERY_TEXT_SEARCH = """
+FOR file IN files
+    FILTER file._key == @filename
+    FOR segmentnr IN file.segmentnrs
+        FOR segment in segments
+            FILTER segment._key == segmentnr
+            FILTER LIKE(segment.segtext, @search_string, true)
+            RETURN { segnr: segment.segnr,
+                     segtext: segment.segtext,
+                     parallel_ids: segment.parallel_ids }
+"""
+
+
+# todo
 QUERY_FILE_SEGMENTS_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
@@ -42,6 +83,7 @@ FOR file IN files
             { "segmentnr": segmentnr }
 """
 
+# todo
 QUERY_TABLE_VIEW = """
 LET file_parallels = (
     FOR p IN parallels
@@ -102,41 +144,8 @@ RETURN {
 }
 """
 
-QUERY_COLLECTION_NAMES = """
-RETURN (
-    FOR category IN menu_categories
-        FILTER category.language == @language
-        SORT category.categorynr
-        FOR collection_key IN @collections
-            FILTER category["category"] == collection_key
-            RETURN { [category["category"]]: category.categoryname }
-)
-"""
 
-QUERY_TEXT_SEARCH = """
-FOR file IN files
-    FILTER file._key == @filename
-    FOR segmentnr IN file.segmentnrs
-        FOR segment in segments
-            FILTER segment._key == segmentnr
-            FILTER LIKE(segment.segtext, @search_string, true)
-            RETURN { segnr: segment.segnr,
-                     segtext: segment.segtext,
-                     parallel_ids: segment.parallel_ids }
-"""
-
-QUERY_ALL_SEGMENTS = """
-FOR file IN files
-    FILTER file._key == @filename
-    RETURN file.segmentnrs
-"""
-
-QUERY_SEGMENT_COUNT = """
-FOR segment IN segments
-    FILTER segment._key == @segmentnr
-    RETURN segment.count
-"""
-
+# todo
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
@@ -185,6 +194,7 @@ RETURN { textleft: segments,
          parallels: parallels}
 """
 
+# todo
 QUERY_PARALELLS_FOR_MIDDLE_TEXT = """
 let parallel_ids = (
     FOR segment in segments
@@ -234,6 +244,7 @@ RETURN (
 )
 """
 
+# todo
 QUERY_GRAPH_VIEW = """
 LET target = FLATTEN(
     FOR targetitem IN @targetcollection
@@ -256,6 +267,7 @@ FOR p IN parallels
     RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length}
 """
 
+# todo
 QUERY_TOTAL_NUMBERS = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
@@ -279,6 +291,7 @@ FOR p IN parallels
 RETURN length
 """
 
+# todo
 QUERY_COLLECTION_TOTALS = """
 RETURN FLATTEN(
     FOR target in @selected
@@ -286,14 +299,17 @@ RETURN FLATTEN(
             FILTER col.sourcecollection == @sourcecollection
             FILTER col.targetcollection == target
             RETURN col.totallengthcount
-            )
+        )
 """
 
+# todo
 QUERY_FILES_PER_CATEGORY = """
 FOR file IN files_parallel_count
     FILTER file.category == @searchterm
     FILTER file.language == @language
     SORT file.filenr
-    RETURN { filename: file._key,
-             totallengthcount: file.totallengthcount }
+    RETURN {
+        filename: file._key,
+        totallengthcount: file.totallengthcount
+    }
 """
