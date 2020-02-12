@@ -16,6 +16,7 @@ from dataloader_constants import (
     DB_NAME,
     LANG_PALI,
     LANG_TIBETAN,
+    LANG_SANSKRIT,
     LANG_CHINESE,
     ARANGO_USER,
     ARANGO_PASSWORD,
@@ -81,7 +82,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    if file_lang == LANG_TIBETAN and file_name.startswith("T06"):
+    if file_lang == LANG_TIBETAN:
         return True
     else:
         return False

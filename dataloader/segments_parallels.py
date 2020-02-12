@@ -1,10 +1,11 @@
 import json
 import os
 import re
+import gzip
 import random
 import sys
 from collections import Counter, OrderedDict
-
+from tqdm import tqdm as tqdm
 from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 
@@ -15,8 +16,17 @@ from dataloader_constants import (
     COLLECTION_FILES,
     COLLECTION_FILES_PARALLEL_COUNT,
     COLLECTION_REGEX,
+    COLLECTION_SEARCH_INDEX,
+    COLLECTION_SEARCH_INDEX_CHN,
+    VIEW_SEARCH_INDEX,
+    VIEW_SEARCH_INDEX_CHN,
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
 )
+from views_properties import (
+    PROPERTIES_SEARCH_INDEX,
+    PROPERTIES_SEARCH_INDEX_CHN
+    )
+
 from dataloader_models import Parallel, Segment, MenuItem
 from dataloader_utils import (
     get_database,
@@ -142,7 +152,40 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
 
     return segmentnrs, totallengthcount, totalfilelengthcount
 
+def load_search_index(path, db: StandardDatabase):
+    with gzip.open(path) as f:
+        print(f"\nLoading file index data...")
+        index_data = json.load(f)
+        print(f"\nInserting file index data into DB...")
+        collection = db.collection(COLLECTION_SEARCH_INDEX)
+        # we have to do this in chunk, otherwise it will fail with broken_pipe
+        chunksize = 10000
+        for i in tqdm(range(0,len(index_data),chunksize)):
+            collection.insert_many(index_data[i:i+chunksize])
+        print(f"\nDone loading index data...")
+        print(f"\nCreating View...")
+        db.create_arangosearch_view(
+            name=VIEW_SEARCH_INDEX,
+            properties= PROPERTIES_SEARCH_INDEX)
+        print("\nDone creating View")
 
+def load_search_index_chn(path, db: StandardDatabase):        
+    with gzip.open(path) as f:
+        print(f"\nLoading file index data Chinese...")
+        index_data = json.load(f)
+        print(f"\nInserting file index data Chinese into DB...")
+        collection = db.collection(COLLECTION_SEARCH_INDEX_CHN)
+        chunksize = 10000
+        for i in tqdm(range(0,len(index_data),chunksize)):
+            collection.insert_many(index_data[i:i+chunksize])
+        print(f"\nDone loading index data Chn...")
+        print(f"\nCreating View...")
+        db.create_arangosearch_view(
+            name=VIEW_SEARCH_INDEX_CHN,
+            properties=PROPERTIES_SEARCH_INDEX_CHN)
+        print("\nDone creating View for Chinese")
+
+        
 def load_segment(
     json_segment: Segment, count: int, parallel_ids: list, db: StandardDatabase
 ) -> str:
@@ -239,7 +282,7 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             parallels_to_be_inserted.append(parallel)
 
     random.shuffle(parallels_to_be_inserted)
-    db_collection.add_hash_index(["root_filename"], unique=False)
+
     chunksize = 10000  # 10000 for Tibetan, 100000 for Chinese
 
     for x in range(0, len(parallels_to_be_inserted), chunksize):
@@ -249,9 +292,9 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
 
-def create_indices():
-    collection = connection[COLLECTION_PARALLELS]
-    collection.ensureHashIndex(["root_filename"], unique=False)
+def create_indices(db: StandardDatabase):
+    db_collection = db.collection(COLLECTION_PARALLELS)
+    db_collection.add_hash_index(["root_filename"], unique=False)
 
 
 # TODO: Refactor this function. Split into smaller chunks.
