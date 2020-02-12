@@ -6,7 +6,7 @@ Todo:
   several files inside a "queries" directory.
 
 # Progress:
-Rewrote 1/13 queries
+Rewrote 1/9 queries
 """
 
 QUERY_ALL_SEGMENTS = """
@@ -14,7 +14,6 @@ FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
     RETURN segment._key
 """
 
-# todo
 QUERY_SEGMENT_COUNT = """
 FOR segment IN segments
     FILTER segment._key == @segmentnr
@@ -22,18 +21,15 @@ FOR segment IN segments
 """
 
 # todo
-QUERY_TEXT_SEARCH = """
-FOR file IN files
-    FILTER file._key == @filename
-    FOR segmentnr IN file.segmentnrs
-        FOR segment in segments
-            FILTER segment._key == segmentnr
-            FILTER LIKE(segment.segtext, @search_string, true)
-            RETURN { segnr: segment.segnr,
-                     segtext: segment.segtext,
-                     parallel_ids: segment.parallel_ids }
+QUERY_COLLECTION_TOTALS = """
+RETURN FLATTEN(
+    FOR target in @selected
+        FOR col IN categories_parallel_count
+            FILTER col.sourcecollection == @sourcecollection
+            FILTER col.targetcollection == target
+            RETURN col.totallengthcount
+        )
 """
-
 
 # todo
 QUERY_FILE_SEGMENTS_PARALLELS = """
@@ -281,24 +277,14 @@ RETURN length
 """
 
 # todo
-QUERY_COLLECTION_TOTALS = """
-RETURN FLATTEN(
-    FOR target in @selected
-        FOR col IN categories_parallel_count
-            FILTER col.sourcecollection == @sourcecollection
-            FILTER col.targetcollection == target
-            RETURN col.totallengthcount
-        )
-"""
-
-# todo
-QUERY_FILES_PER_CATEGORY = """
-FOR file IN files_parallel_count
-    FILTER file.category == @searchterm
-    FILTER file.language == @language
-    SORT file.filenr
-    RETURN {
-        filename: file._key,
-        totallengthcount: file.totallengthcount
-    }
+QUERY_TEXT_SEARCH = """
+FOR file IN files
+    FILTER file._key == @filename
+    FOR segmentnr IN file.segmentnrs
+        FOR segment in segments
+            FILTER segment._key == segmentnr
+            FILTER LIKE(segment.segtext, @search_string, true)
+            RETURN { segnr: segment.segnr,
+                     segtext: segment.segtext,
+                     parallel_ids: segment.parallel_ids }
 """

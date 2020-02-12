@@ -8,6 +8,7 @@ from collections import Counter, OrderedDict
 from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 
+import queries.menu_queries
 from dataloader_constants import (
     DEFAULT_LANGS,
     COLLECTION_PARALLELS,
@@ -314,16 +315,20 @@ def calculate_parallel_totals():
             )
 
             counted_parallels = []
-            for cat, cat_name in source_col_dict.items():
+            for category, cat_name in source_col_dict.items():
                 all_files_cursor = db.aql.execute(
-                    main_queries.QUERY_FILES_PER_CATEGORY,
+                    queries.menu_queries.QUERY_FILES_PER_CATEGORY,
                     batch_size=100000,
-                    bind_vars={"searchterm": cat, "language": language},
+                    bind_vars={"category": category, "language": language},
                 )
                 all_files = [doc for doc in all_files_cursor]
 
                 add_category_totals_to_db(
-                    all_files, cat, target_collection, selected_category_dict, language
+                    all_files,
+                    category,
+                    target_collection,
+                    selected_category_dict,
+                    language,
                 )
 
                 total_par_list = {}
@@ -343,7 +348,7 @@ def calculate_parallel_totals():
                 for key, value in total_par_list.items():
                     counted_parallels.append(
                         [
-                            cat_name + " (" + cat + ")",
+                            cat_name + " (" + category + ")",
                             selected_category_dict[key].rstrip() + "_(" + key + ")",
                             value,
                         ]

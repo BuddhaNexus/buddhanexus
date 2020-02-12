@@ -101,6 +101,19 @@ RETURN (
         SORT category.categorynr
         FOR collection_key IN @collections
             FILTER category["category"] == collection_key
-            RETURN { [category["category"]]: category.categoryname }
+            RETURN {
+                [category["category"]]: category.categoryname
+            }
 )
+"""
+
+QUERY_FILES_PER_CATEGORY = """
+FOR file IN files_parallel_count
+    FILTER file.category == @category
+    FILTER file.language == @language
+    SORT file.filenr
+    RETURN {
+        filename: file._key,
+        totallengthcount: file.totallengthcount
+    }
 """
