@@ -93,3 +93,14 @@ QUERY_ONE_COLLECTION = """
 FOR category IN 1..1 OUTBOUND concat("menu_collections/", @collectionkey) GRAPH 'collections_categories'
     RETURN category.category
 """
+
+QUERY_COLLECTION_NAMES = """
+RETURN (
+    FOR category IN menu_categories
+        FILTER category.language == @language
+        SORT category.categorynr
+        FOR collection_key IN @collections
+            FILTER category["category"] == collection_key
+            RETURN { [category["category"]]: category.categoryname }
+)
+"""

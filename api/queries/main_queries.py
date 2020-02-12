@@ -4,25 +4,14 @@ Contains all database queries related to segments and parallels found inside fil
 Todo:
 - When this gets too big (>300 lines), consider splitting this into
   several files inside a "queries" directory.
+
+# Progress:
+Rewrote 1/13 queries
 """
 
-# todo
 QUERY_ALL_SEGMENTS = """
-FOR file IN files
-    FILTER file._key == @filename
-    RETURN file.segmentnrs
-"""
-
-# todo
-QUERY_COLLECTION_NAMES = """
-RETURN (
-    FOR category IN menu_categories
-        FILTER category.language == @language
-        SORT category.categorynr
-        FOR collection_key IN @collections
-            FILTER category["category"] == collection_key
-            RETURN { [category["category"]]: category.categoryname }
-)
+FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
+    RETURN segment._key
 """
 
 # todo

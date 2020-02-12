@@ -15,6 +15,7 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
+import queries.menu_queries
 from .models_api import ParallelsCollection
 from .queries import menu_queries, main_queries
 from .utils import (
@@ -156,7 +157,7 @@ async def get_segments_for_file(
 
         return {
             "collections": database.AQLQuery(
-                query=main_queries.QUERY_COLLECTION_NAMES,
+                query=queries.menu_queries.QUERY_COLLECTION_NAMES,
                 bindVars={
                     "collections": collection_keys,
                     "language": get_language_from_filename(file_name),
@@ -444,7 +445,7 @@ async def get_graph_for_file(
 
     # find the proper full names vor each collection
     collections = database.AQLQuery(
-        query=main_queries.QUERY_COLLECTION_NAMES,
+        query=queries.menu_queries.QUERY_COLLECTION_NAMES,
         bindVars={
             "collections": collection_keys,
             "language": get_language_from_filename(file_name),
@@ -575,7 +576,7 @@ async def get_folios_for_file(file_name: str):
         batchSize=100000,
         bindVars={"filename": file_name},
     )
-    segments = query_graph_result.result[0]
+    segments = query_graph_result.result
     first_segment = segments[0]
     last_segment = segments[-1]
     if lang == "chn":
