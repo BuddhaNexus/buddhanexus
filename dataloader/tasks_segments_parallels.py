@@ -95,10 +95,10 @@ def load_segments_and_parallels_data_from_menu_file(
     )
 
     if segments:
-        segmentnrs, totallengthcount, totalfilelengthcount = load_segments(
+        segment_keys, totallengthcount, totalfilelengthcount = load_segments(
             segments, parallels, db
         )
-        load_files_collection(menu_file_json, segmentnrs, db)
+        load_files_collection(menu_file_json, segment_keys, db)
         load_file_parallel_counts(
             menu_file_json, totallengthcount, totalfilelengthcount, db
         )
@@ -109,7 +109,7 @@ def load_segments_and_parallels_data_from_menu_file(
 
 def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> list:
     """ Returns list of segment numbers. """
-    segmentnrs = []
+    segment_keys = []
     segmentnr_parallel_ids_dic = {}
     parallel_total_list = []
     parallel_file_total_list = []
@@ -119,11 +119,11 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
             parallel, dict
         ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
             if parallel["root_segnr"]:
-                for segmentnr in parallel["root_segnr"]:
-                    if not segmentnr in segmentnr_parallel_ids_dic.keys():
-                        segmentnr_parallel_ids_dic[segmentnr] = [parallel["id"]]
+                for segment_key in parallel["root_segnr"]:
+                    if not segment_key in segmentnr_parallel_ids_dic.keys():
+                        segmentnr_parallel_ids_dic[segment_key] = [parallel["id"]]
                     else:
-                        segmentnr_parallel_ids_dic[segmentnr].append(parallel["id"])
+                        segmentnr_parallel_ids_dic[segment_key].append(parallel["id"])
 
             if parallel["par_segnr"]:
                 collection_key = re.search(COLLECTION_REGEX, parallel["par_segnr"][0])
@@ -143,8 +143,8 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
         if isinstance(segment, dict):
             if segment["segnr"] in segmentnr_parallel_ids_dic.keys():
                 parallel_ids = segmentnr_parallel_ids_dic[segment["segnr"]]
-            segmentnr = load_segment(segment, segment_count, parallel_ids, db)
-            segmentnrs.append(segmentnr)
+            segment_key = load_segment(segment, segment_count, parallel_ids, db)
+            segment_keys.append(segment_key)
             segment_count += 1
 
     totallengthcount = Counter()
@@ -155,7 +155,7 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
     for totalparallelcount in parallel_file_total_list:
         totalfilelengthcount += Counter(totalparallelcount)
 
-    return segmentnrs, totallengthcount, totalfilelengthcount
+    return segment_keys, totallengthcount, totalfilelengthcount
 
 
 def load_segment(

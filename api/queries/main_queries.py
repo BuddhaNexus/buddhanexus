@@ -6,7 +6,7 @@ Todo:
   several files inside a "queries" directory.
 
 # Progress:
-Rewrote 1/9 queries
+Rewrote 1/8 queries
 """
 
 QUERY_ALL_SEGMENTS = """
@@ -20,7 +20,7 @@ FOR segment IN segments
     RETURN segment.count
 """
 
-# todo
+# TODO: what is "selected"? Find better name
 QUERY_COLLECTION_TOTALS = """
 RETURN FLATTEN(
     FOR target in @selected
@@ -35,7 +35,7 @@ RETURN FLATTEN(
 QUERY_FILE_SEGMENTS_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
-    FOR segmentnr IN file.segmentnrs
+    FOR segmentnr IN file.segment_keys
         LET seg_parallels = (
             FOR segment IN segments
                 FILTER segment._key == segmentnr
@@ -135,7 +135,7 @@ QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
     let segments = (
-        FOR segmentnr IN file.segmentnrs
+        FOR segmentnr IN file.segment_keys
             LIMIT @startint, @limit
             FOR segment in segments
                 FILTER segment._key == segmentnr
@@ -280,9 +280,9 @@ RETURN length
 QUERY_TEXT_SEARCH = """
 FOR file IN files
     FILTER file._key == @filename
-    FOR segmentnr IN file.segmentnrs
+    FOR segment_key IN file.segment_keys
         FOR segment in segments
-            FILTER segment._key == segmentnr
+            FILTER segment._key == segment_key
             FILTER LIKE(segment.segtext, @search_string, true)
             RETURN { segnr: segment.segnr,
                      segtext: segment.segtext,

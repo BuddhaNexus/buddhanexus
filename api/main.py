@@ -479,20 +479,23 @@ async def get_graph_for_file(
 
 @APP.get("/visual/{searchterm}")
 async def get_visual_view_for_file(
-    searchterm: str, language: str, selected: List[str] = Query([])
+    # TODO: what is "selected"? Find better name
+    searchterm: str,
+    language: str,
+    selected: List[str] = Query([]),
 ):
     """
     Endpoint for visual view
     """
     database = get_db()
-    languagesearchterm = language + "_" + searchterm
+    language_search_term = language + "_" + searchterm
     query_collection_list = database.AQLQuery(
         query=main_queries.QUERY_COLLECTION_TOTALS,
-        bindVars={"sourcecollection": languagesearchterm, "selected": selected},
+        bindVars={"sourcecollection": language_search_term, "selected": selected},
     )
-    graphdata = []
+    graph_data = []
     if len(selected) == 1 or re.search(r"^[A-Z][a-z]+$", searchterm):
-        graphdata = query_collection_list.result[0]
+        graph_data = query_collection_list.result[0]
     else:
         query_results = query_collection_list.result[0]
         query_results_keys = []
@@ -503,9 +506,9 @@ async def get_visual_view_for_file(
         for key in query_results_keys:
             for result_item in query_results:
                 if result_item[0] == key:
-                    graphdata.append(result_item)
+                    graph_data.append(result_item)
 
-    return {"graphdata": graphdata}
+    return {"graphdata": graph_data}
 
 
 @APP.get("/collections")
