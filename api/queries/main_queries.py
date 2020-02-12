@@ -31,8 +31,9 @@ RETURN FLATTEN(
         )
 """
 
-# todo
-QUERY_FILE_SEGMENTS_PARALLELS = """
+# get segments for file and parallels of segment
+# todo delete after comparison
+OLD_QUERY_FILE_SEGMENTS_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename
     FOR segmentnr IN file.segment_keys
@@ -66,6 +67,38 @@ FOR file IN files
         RETURN seg_parallels[0] ?
             { "segmentnr": segmentnr, "parallels": seg_parallels } :
             { "segmentnr": segmentnr }
+"""
+
+QUERY_FILE_SEGMENTS_PARALLELS = """
+FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
+    LET seg_parallels = (
+        FOR parallel_id IN segment.parallel_ids
+            FOR p IN parallels
+                FILTER p._key == parallel_id
+                LET collection_filter_test = (
+                    FOR item IN @limitcollection_positive
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+                LET fits_collection = (@limitcollection_positive != [])
+                    ? POSITION(collection_filter_test, true)
+                    : true
+                FILTER fits_collection == true
+                LET collection_filter_test2 = (
+                    FOR item IN @limitcollection_negative
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+                LET fits_collection2 = (@limitcollection_negative != [])
+                    ? POSITION(collection_filter_test2, true)
+                    : false
+                FILTER fits_collection2 == false
+                FILTER p.score >= @score
+                FILTER p.par_length >= @parlength
+                FILTER p["co-occ"] <= @coocc
+                RETURN p.par_segnr
+        )
+    RETURN seg_parallels[0] ?
+        { "segmentnr": segment._key, "parallels": seg_parallels } :
+        { "segmentnr": segment._key }
 """
 
 # todo
