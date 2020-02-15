@@ -162,7 +162,7 @@ async def get_segments_for_file(
                     "collections": collection_keys,
                     "language": get_language_from_filename(file_name),
                 },
-            ).result[0],
+            ).result,
             "segments": segments_result,
         }
 

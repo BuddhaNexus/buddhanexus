@@ -2,11 +2,13 @@ from typing import List
 
 
 class Segment(dict):
-    segmentnr: str
-    segment: str
+    segnr: str
+    segtext: str
     lang: str
+    position: int
 
 
+# todo: check if up to date
 class Parallel(dict):
     score: int
     parlength: int
@@ -20,7 +22,7 @@ class Parallel(dict):
     root_segnr: List[str]
 
 
-# Examples on the right
+# todo: check if up to date
 class MenuItem(dict):
     searchString: str  # "K01acip-k_lha_sa-001-001 D0001"
     textname: str  # "D0001

@@ -72,33 +72,31 @@ FOR file IN files
 QUERY_FILE_SEGMENTS_PARALLELS = """
 FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
     LET seg_parallels = (
-        FOR parallel_id IN segment.parallel_ids
-            FOR p IN parallels
-                FILTER p._key == parallel_id
-                LET collection_filter_test = (
-                    FOR item IN @limitcollection_positive
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-                LET fits_collection = (@limitcollection_positive != [])
-                    ? POSITION(collection_filter_test, true)
-                    : true
-                FILTER fits_collection == true
-                LET collection_filter_test2 = (
-                    FOR item IN @limitcollection_negative
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-                LET fits_collection2 = (@limitcollection_negative != [])
-                    ? POSITION(collection_filter_test2, true)
-                    : false
-                FILTER fits_collection2 == false
-                FILTER p.score >= @score
-                FILTER p.par_length >= @parlength
-                FILTER p["co-occ"] <= @coocc
-                RETURN p.par_segnr
-        )
-    RETURN seg_parallels[0] ?
-        { "segmentnr": segment._key, "parallels": seg_parallels } :
-        { "segmentnr": segment._key }
+        FOR p IN 1..1 OUTBOUND segment GRAPH 'files_segments'
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
+
+            LET collection_filter_test = (
+                FOR item IN @limitcollection_positive
+                RETURN REGEX_TEST(p.par_segnr[0], item)
+            )
+            LET fits_collection = (@limitcollection_positive != [])
+                ? POSITION(collection_filter_test, true)
+                : true
+            FILTER fits_collection == true
+            LET collection_filter_test2 = (
+                FOR item IN @limitcollection_negative
+                RETURN REGEX_TEST(p.par_segnr[0], item)
+            )
+            LET fits_collection2 = (@limitcollection_negative != [])
+                ? POSITION(collection_filter_test2, true)
+                : false
+            FILTER fits_collection2 == false
+
+            RETURN p.par_segnr
+    )
+    RETURN { "segmentnr": segment._key, "parallels": seg_parallels[0] }
 """
 
 # todo

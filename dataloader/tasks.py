@@ -28,12 +28,12 @@ from dataloader_constants import (
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
     GRAPH_FILES_SEGMENTS,
     EDGE_COLLECTION_FILE_HAS_SEGMENTS,
+    EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
 )
 from tasks_segments_parallels import (
     load_segment_data_from_menu_files,
     create_indices,
     calculate_parallel_totals,
-    create_files_segments_graph,
 )
 from tasks_menu import (
     load_all_menu_collections,
@@ -110,17 +110,20 @@ def clean_all_collections(c):
     :param c: invoke.py context object
     """
     db = get_database()
+    current_name = ""
     try:
         for name in COLLECTION_NAMES:
+            current_name = name
             db.delete_collection(name)
         for name in EDGE_COLLECTION_NAMES:
+            current_name = name
             db.delete_collection(name)
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
         db.delete_graph(GRAPH_FILES_SEGMENTS)
     except CollectionDeleteError as e:
-        print("Error deleting collection %s: " % name, e)
-    except GraphDeleteError:
-        print("couldn't remove graph. It probably doesn't exist.")
+        print("Error deleting collection %s: " % current_name, e)
+    except GraphDeleteError as e:
+        print("couldn't remove graph. It probably doesn't exist.", e)
 
     print("all collections cleaned.")
 
@@ -141,12 +144,11 @@ def clean_totals_collection(c):
 def empty_collection(collection_name: str, db: StandardDatabase, edge: bool = False):
     try:
         db.delete_collection(collection_name)
+        db.create_collection(collection_name, edge=edge)
     except CollectionDeleteError:
         print(
             f"couldn't remove collection: {collection_name}. It probably doesn't exist."
         )
-    try:
-        db.create_collection(collection_name, edge=edge)
     except CollectionCreateError:
         print(f"couldn't create collection: {collection_name}")
 
@@ -160,18 +162,21 @@ def clean_segment_collections(c):
     """
     db = get_database()
 
-    for name in (
-        COLLECTION_SEGMENTS,
-        COLLECTION_PARALLELS,
-        COLLECTION_FILES,
-        COLLECTION_FILES_PARALLEL_COUNT,
-    ):
-        empty_collection(name, db)
-        empty_collection(EDGE_COLLECTION_FILE_HAS_SEGMENTS, db, edge=True)
-
     try:
         db.delete_graph(GRAPH_FILES_SEGMENTS)
-    except GraphDeleteError:
+        for name in (
+            COLLECTION_SEGMENTS,
+            COLLECTION_PARALLELS,
+            COLLECTION_FILES,
+            COLLECTION_FILES_PARALLEL_COUNT,
+        ):
+            empty_collection(name, db)
+        for name in (
+            EDGE_COLLECTION_FILE_HAS_SEGMENTS,
+            EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
+        ):
+            empty_collection(name, db, edge=True)
+    except (GraphDeleteError, CollectionDeleteError):
         print(
             f"couldn't remove graph: {GRAPH_FILES_SEGMENTS}. It probably doesn't exist."
         )
@@ -186,25 +191,24 @@ def clean_menu_collections(c):
     :param c: invoke.py context object
     """
     db = get_database()
-    for name in (
-        COLLECTION_MENU_COLLECTIONS,
-        COLLECTION_MENU_CATEGORIES,
-        COLLECTION_LANGUAGES,
-    ):
-        empty_collection(name, db)
-    for name in (
-        EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
-        EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
-        EDGE_COLLECTION_CATEGORY_HAS_FILES,
-    ):
-        empty_collection(name, db, edge=True)
     try:
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
-    except GraphDeleteError:
+        for name in (
+            COLLECTION_MENU_COLLECTIONS,
+            COLLECTION_MENU_CATEGORIES,
+            COLLECTION_LANGUAGES,
+        ):
+            empty_collection(name, db)
+        for name in (
+            EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
+            EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+            EDGE_COLLECTION_CATEGORY_HAS_FILES,
+        ):
+            empty_collection(name, db, edge=True)
+    except (GraphDeleteError, CollectionDeleteError):
         print(
             f"couldn't remove object {GRAPH_COLLECTIONS_CATEGORIES}. It probably doesn't exist."
         )
-
     print("menu data collections cleaned.")
 
 

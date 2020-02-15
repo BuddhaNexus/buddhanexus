@@ -8,7 +8,6 @@ from collections import Counter, OrderedDict
 from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 
-import queries.menu_queries
 from dataloader_constants import (
     DEFAULT_LANGS,
     COLLECTION_PARALLELS,
@@ -19,6 +18,7 @@ from dataloader_constants import (
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
     GRAPH_FILES_SEGMENTS,
     EDGE_COLLECTION_FILE_HAS_SEGMENTS,
+    EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
 )
 from dataloader_models import Parallel, Segment, MenuItem
 from dataloader_utils import (
@@ -37,7 +37,7 @@ SCRIPT_DIR = os.path.dirname(
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
-from api.queries import main_queries, menu_queries
+from api.queries import menu_queries, main_queries
 from api.utils import get_language_from_filename
 
 collection_pattern = "^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
@@ -51,6 +51,12 @@ def create_files_segments_graph() -> None:
         edge_collection=EDGE_COLLECTION_FILE_HAS_SEGMENTS,
         from_vertex_collections=[COLLECTION_FILES],
         to_vertex_collections=[COLLECTION_SEGMENTS],
+    )
+    # Segments -> Parallels
+    graph.create_edge_definition(
+        edge_collection=EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
+        from_vertex_collections=[COLLECTION_SEGMENTS],
+        to_vertex_collections=[COLLECTION_PARALLELS],
     )
 
 
@@ -107,6 +113,31 @@ def load_segments_and_parallels_data_from_menu_file(
         load_parallels(parallels, db)
 
 
+def load_segment_parallel_edges(
+    segment_key: int, parallel_ids: [Parallel], db: StandardDatabase
+):
+    segment_parallels_edge_db_collection = db.collection(
+        EDGE_COLLECTION_SEGMENT_HAS_PARALLELS
+    )
+    try:
+        batch_size = 1000
+        batched_edge_docs = []
+        for i, parallel_id in enumerate(parallel_ids):
+            edge_doc = {
+                "_from": f"{COLLECTION_SEGMENTS}/{segment_key}",
+                "_to": f"{COLLECTION_PARALLELS}/{parallel_id}",
+            }
+            batched_edge_docs.append(edge_doc)
+            if i % batch_size == 0:
+                segment_parallels_edge_db_collection.insert_many(batched_edge_docs)
+                batched_edge_docs = []
+        # insert the remaining documents
+        segment_parallels_edge_db_collection.insert_many(batched_edge_docs)
+
+    except DocumentInsertError as e:
+        print(f"Could not create edges. Segment: {segment_key}. Error: ", e)
+
+
 def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> list:
     """ Returns list of segment numbers. """
     segment_keys = []
@@ -120,7 +151,7 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
         ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
             if parallel["root_segnr"]:
                 for segment_key in parallel["root_segnr"]:
-                    if not segment_key in segmentnr_parallel_ids_dic.keys():
+                    if segment_key not in segmentnr_parallel_ids_dic.keys():
                         segmentnr_parallel_ids_dic[segment_key] = [parallel["id"]]
                     else:
                         segmentnr_parallel_ids_dic[segment_key].append(parallel["id"])
@@ -143,7 +174,12 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
         if isinstance(segment, dict):
             if segment["segnr"] in segmentnr_parallel_ids_dic.keys():
                 parallel_ids = segmentnr_parallel_ids_dic[segment["segnr"]]
+
+            # Loads segment into database
+            # todo: remove parallel_ids table
             segment_key = load_segment(segment, segment_count, parallel_ids, db)
+            load_segment_parallel_edges(segment["segnr"], parallel_ids, db)
+
             segment_keys.append(segment_key)
             segment_count += 1
 
@@ -228,8 +264,7 @@ def load_files_collection(file: MenuItem, segment_keys: list, db: StandardDataba
     try:
         files_db_collection.insert(doc)
 
-        # insert n documents at a time
-        BATCH_SIZE = 1000
+        batch_size = 1000
         batched_edge_docs = []
         for i, segment_key in enumerate(segment_keys):
             edge_doc = {
@@ -237,7 +272,7 @@ def load_files_collection(file: MenuItem, segment_keys: list, db: StandardDataba
                 "_to": f"{COLLECTION_SEGMENTS}/{segment_key}",
             }
             batched_edge_docs.append(edge_doc)
-            if i % BATCH_SIZE == 0:
+            if i % batch_size == 0:
                 file_segments_edge_collection.insert_many(batched_edge_docs)
                 batched_edge_docs = []
         # insert the remaining documents
@@ -317,7 +352,7 @@ def calculate_parallel_totals():
             counted_parallels = []
             for category, cat_name in source_col_dict.items():
                 all_files_cursor = db.aql.execute(
-                    queries.menu_queries.QUERY_FILES_PER_CATEGORY,
+                    menu_queries.QUERY_FILES_PER_CATEGORY,
                     batch_size=100000,
                     bind_vars={"category": category, "language": language},
                 )

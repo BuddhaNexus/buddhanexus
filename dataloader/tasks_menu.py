@@ -38,11 +38,6 @@ def create_collections_categories_graph(db: StandardDatabase) -> None:
         from_vertex_collections=[COLLECTION_MENU_CATEGORIES],
         to_vertex_collections=[COLLECTION_FILES],
     )
-    # graph.create_edge_definition(
-    #     edge_collection=EDGE_COLLECTION_FILE_HAS_SEGMENTS,
-    #     from_vertex_collections=[COLLECTION_FILES],
-    #     to_vertex_collections=[COLLECTION_SEGMENTS],
-    # )
 
 
 def create_edges_for_collection_has_categories(
@@ -175,7 +170,7 @@ def load_menu_category(
             files, doc["_key"], category_has_files_edge_db_collection
         )
     except DocumentInsertError as e:
-        print("Could not load menu category. Error: ", e)
+        print(f"Could not load menu category {menu_category['category']}. Error: ", e)
     except IndexCreateError as e:
         print("Could create category index. Error: ", e)
 
