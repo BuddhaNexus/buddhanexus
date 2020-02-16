@@ -15,7 +15,6 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
-import queries.menu_queries
 from .models_api import ParallelsCollection
 from .queries import menu_queries, main_queries
 from .utils import (
@@ -30,11 +29,7 @@ API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 APP = FastAPI(title="Buddha Nexus Backend", version="0.2.1", openapi_prefix=API_PREFIX)
 
 APP.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NY|[A-Z]+[0-9]+|[a-z\-]+)"
@@ -151,13 +146,14 @@ async def get_segments_for_file(
                 "limitcollection_negative": limitcollection_negative,
             },
         )
+
         segments_result, collection_keys = collect_segment_results(
             segments_query.result
         )
 
         return {
             "collections": database.AQLQuery(
-                query=queries.menu_queries.QUERY_COLLECTION_NAMES,
+                query=menu_queries.QUERY_COLLECTION_NAMES,
                 bindVars={
                     "collections": collection_keys,
                     "language": get_language_from_filename(file_name),
@@ -445,7 +441,7 @@ async def get_graph_for_file(
 
     # find the proper full names vor each collection
     collections = database.AQLQuery(
-        query=queries.menu_queries.QUERY_COLLECTION_NAMES,
+        query=menu_queries.QUERY_COLLECTION_NAMES,
         bindVars={
             "collections": collection_keys,
             "language": get_language_from_filename(file_name),
