@@ -16,6 +16,7 @@ from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
 from .models_api import ParallelsCollection
+from .search import search_utils
 from .queries import menu_queries, main_queries, search_queries
 from .utils import (
     get_language_from_filename,
@@ -624,8 +625,16 @@ async def get_search_results(search_string: str):
     :return: List of search results
     """
     database = get_db()
-    query_search = database.AQLQuery(
-        query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string}
-    )
-    return {"search_results": query_search.result}
+    search_string_precise, search_string_fuzzy, lang = search_utils.preprocess_search_string(search_string)
+    query_search_precise = []
+    if lang == 'chn':
+        query_search_precise = database.AQLQuery(
+            query=search_queries.QUERY_SEARCH_CHINESE, bindVars={"search_string": search_string_precise}
+        )
+    else:
+        query_search_precise = database.AQLQuery(
+            query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string_precise}        
+        )
+    result = search_utils.postprocess_results(osearch_string_precise,query_search_precise.result)
+    return {"searchResults": result}
 
