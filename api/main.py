@@ -16,7 +16,7 @@ from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
 from .models_api import ParallelsCollection
-from .queries import menu_queries, main_queries
+from .queries import menu_queries, main_queries, search_queries
 from .utils import (
     get_language_from_filename,
     get_collection_files_regex,
@@ -616,3 +616,16 @@ async def get_data_for_sidebar_menu(language: str):
     )
 
     return {"navigationmenudata": query_sidebar_menu.result}
+
+@APP.get("/search/{search_string}")
+async def get_search_results(search_string: str):
+    """
+    Returns search results for given search string.
+    :return: List of search results
+    """
+    database = get_db()
+    query_search = database.AQLQuery(
+        query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string}
+    )
+    return {"search_results": query_search.result}
+
