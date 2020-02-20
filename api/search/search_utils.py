@@ -10,5 +10,4 @@ def preprocess_search_string(search_string):
 
 
 def postprocess_results(search_string, results):
-    # for result in results:        
     return results
