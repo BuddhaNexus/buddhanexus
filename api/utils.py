@@ -62,7 +62,7 @@ def get_collection_files_regex(limit_collection, language) -> List:
 
     teststring_positive = []
     teststring_negative = []
-    if language in ("tib", "chn"):
+    if language in ("tib", "chn", "skt"):
         for file in new_limit_collection:
             if "!" not in file:
                 teststring_positive.append("^" + file)
