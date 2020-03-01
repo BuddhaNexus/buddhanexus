@@ -71,7 +71,7 @@ def get_collection_files_regex(limit_collection, language) -> List:
     elif language == "pli":
         for file in new_limit_collection:
             if "!" not in file:
-                if number_exists(file) or ("pm" in file):
+                if number_exists(file) or ("pm" in file) or ("dhp" in file):
                     teststring_positive.append("^" + file + ":")
                 else:
                     teststring_positive.append("^" + file + r"[0-9\-]")
