@@ -635,6 +635,6 @@ async def get_search_results(search_string: str):
         query_search_precise = database.AQLQuery(
             query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string_precise}        
         )
-    result = search_utils.postprocess_results(osearch_string_precise,query_search_precise.result)
+    result = search_utils.postprocess_results(search_string_precise,query_search_precise.result)
     return {"searchResults": result}
 
