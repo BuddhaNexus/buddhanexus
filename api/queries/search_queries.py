@@ -1,16 +1,3 @@
-QUERY_SEARCH_TIB = """
-FOR d IN search_index_tib_view 
-    SEARCH PHRASE(d.search_string_precise, @search_string, 'tibetan_analyzer') 
-    RETURN d
-"""
-
-QUERY_SEARCH_SKT_PLI = """
-FOR d IN search_index_skt_pli_view 
-    SEARCH PHRASE(d.search_string_precise, @search_string, 'sanskrit_analyzer') 
-    RETURN d
-"""
-
-
 QUERY_SEARCH = """
 LET chinese_results = (
     FOR d IN search_index_chn_view 

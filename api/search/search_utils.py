@@ -12,7 +12,7 @@ def preprocess_search_string(search_string):
     return search_string, search_string_fuzzy
 
 def tag_sanskrit(sanskrit_string):
-    return bn_analyzer.tag_sanskrit(sanskrit_string)
+    return bn_analyzer.tag_sanskrit(sanskrit_string[:150])
 
 def get_offsets(search_string, segment_text):
     allowed_distance = 0
@@ -48,6 +48,6 @@ def postprocess_results(search_string, results):
         result['centeredness'] = centeredness
         result['distance'] = distance
     results = remove_duplicate_results(results)
-    results = remove_duplicate_results(results)
+    results = remove_duplicate_results(results) # yes, we have to do this twice to make sure that no duplicates remain 
     results = sorted(results, key = lambda i: i['distance']) 
     return results

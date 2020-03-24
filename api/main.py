@@ -626,7 +626,6 @@ async def get_search_results(search_string: str):
     """
     database = get_db()
     search_string_precise, search_string_fuzzy = search_utils.preprocess_search_string(search_string)
-    query_results = []
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string_precise, "search_string_fuzzy": search_string_fuzzy},batchSize=2000, rawResults=True       
     )

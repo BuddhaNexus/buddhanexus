@@ -100,7 +100,7 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     :param root_url: URL to the server where source files are stored
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
-    thread_count = os.cpu_count() - 15
+    thread_count = os.cpu_count() - 1
     print(
         f"Loading source files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
     )
