@@ -640,5 +640,5 @@ async def tag_sanskrit(sanskrit_string: str):
     Stemming + Tagging for Sanskrit
     :return: String with tagged Sanskrit
     """
-    result = search_utils.tag_sanskrit(Sanskrit_string)
+    result = search_utils.tag_sanskrit(sanskrit_string)
     return {"tagged": result}
