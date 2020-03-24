@@ -262,12 +262,11 @@ RETURN (
 
 # todo
 QUERY_GRAPH_VIEW = """
-LET target = FLATTEN(
-    FOR targetitem IN @targetcollection
-        FOR collection IN menu_collections
-            FILTER collection._key == targetitem
-            RETURN collection.categories
-        )
+LET filter_target = FLATTEN(
+    FOR target_item IN @targetcollection
+        FOR category IN 1..1 OUTBOUND concat("menu_collections/", target_item) GRAPH 'collections_categories'
+            RETURN category.category
+    )
 FOR p IN parallels
     FILTER p.root_filename == @filename
     LIMIT 15000
@@ -275,10 +274,10 @@ FOR p IN parallels
     FILTER p.par_length >= @parlength
     FILTER p["co-occ"] <= @coocc
     LET filtertest = (
-        FOR item IN target
+        FOR item IN filter_target
             RETURN REGEX_TEST(p.par_segnr[0], CONCAT("^",item,"[^y]"))
         )
-    LET filternr = (target != []) ? POSITION(filtertest, true) : true
+    LET filternr = (filter_target != []) ? POSITION(filtertest, true) : true
     FILTER filternr == true
     RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length}
 """

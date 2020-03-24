@@ -16,6 +16,7 @@ from dataloader_constants import (
     DB_NAME,
     LANG_PALI,
     LANG_TIBETAN,
+    LANG_SANSKRIT,
     LANG_CHINESE,
     ARANGO_USER,
     ARANGO_PASSWORD,

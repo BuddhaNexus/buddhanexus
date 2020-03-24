@@ -1,5 +1,5 @@
 import os
-
+import gzip
 from arango import (
     DatabaseCreateError,
     CollectionCreateError,
@@ -12,6 +12,8 @@ from invoke import task
 from dataloader_constants import (
     DB_NAME,
     COLLECTION_NAMES,
+    INDEX_COLLECTION_NAMES,
+    INDEX_VIEW_NAMES,
     DEFAULT_SOURCE_URL,
     COLLECTION_SEGMENTS,
     COLLECTION_PARALLELS,
@@ -33,6 +35,8 @@ from dataloader_constants import (
 from tasks_segments_parallels import (
     load_segment_data_from_menu_files,
     create_indices,
+    load_search_index,
+    load_search_index_chn,
     calculate_parallel_totals,
 )
 from tasks_menu import (
@@ -100,6 +104,43 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     load_segment_data_from_menu_files(root_url, thread_count if threaded else 1)
 
     print("Segment data loading completed.")
+
+
+@task
+def build_search_index(
+    c,
+    index_url=DEFAULT_SOURCE_URL + "/search_index.json.gz",
+    index_url_chn=DEFAULT_SOURCE_URL + "/search_index_chn.json.gz",
+):
+    """
+    Load index data for search index from path defined in .env.
+    """
+    db = get_database()
+    collections = INDEX_COLLECTION_NAMES
+    for name in collections:
+        db.create_collection(name)
+    load_search_index(index_url, db)
+    load_search_index_chn(index_url_chn, db)
+    print("Search index data loading completed.")
+
+
+@task
+def clean_search_index(c):
+    """
+    Clear all the search index views and collections.
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    try:
+        for name in INDEX_COLLECTION_NAMES:
+            db.delete_collection(name)
+        for name in INDEX_VIEW_NAMES:
+            db.delete_view(name)
+
+    except CollectionDeleteError as e:
+        print("Error deleting collection %s: " % name, e)
+
+    print("search index cleaned.")
 
 
 @task
@@ -224,9 +265,10 @@ def load_menu_files(c):
 
 
 @task
-def add_indices(c):
+def add_indicies(c):
+    db = get_database()
     print("Creating Indices")
-    create_indices()
+    create_indices(db)
     print("Creation of indices done.")
 
 

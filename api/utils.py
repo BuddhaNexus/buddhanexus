@@ -34,7 +34,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
     """
     new_limit_collection = []
     for file in limit_collection:
-        if re.search("[a-z]+_[A-Z][a-z]+$", file):
+        if re.search("[a-z]+_[A-Z][a-z]+[a-z1-2EL-]+$", file):
             query = get_db().AQLQuery(
                 query=menu_queries.QUERY_ONE_COLLECTION,
                 bindVars={"collectionkey": file.replace("!", "")},
@@ -62,7 +62,7 @@ def get_collection_files_regex(limit_collection, language) -> List:
 
     teststring_positive = []
     teststring_negative = []
-    if language in ("tib", "chn"):
+    if language in ("tib", "chn", "skt"):
         for file in new_limit_collection:
             if "!" not in file:
                 teststring_positive.append("^" + file)
@@ -71,7 +71,7 @@ def get_collection_files_regex(limit_collection, language) -> List:
     elif language == "pli":
         for file in new_limit_collection:
             if "!" not in file:
-                if number_exists(file) or ("pm" in file):
+                if number_exists(file) or ("pm" in file) or ("dhp" in file):
                     teststring_positive.append("^" + file + ":")
                 else:
                     teststring_positive.append("^" + file + r"[0-9\-]")
