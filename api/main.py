@@ -625,11 +625,16 @@ async def get_search_results(search_string: str):
     :return: List of search results
     """
     database = get_db()
-    search_string_precise, search_string_fuzzy = search_utils.preprocess_search_string(search_string)
-    query_search = database.AQLQuery(
-        query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string_precise, "search_string_fuzzy": search_string_fuzzy},batchSize=300, rawResults=True       
-    )
-    query_result = query_search.result[0][:300]
+    result = []
+    search_string_length = len(search_string)
+    if search_string_length > 6 and search_string_length < 150:
+        search_string_precise, search_string_fuzzy = search_utils.preprocess_search_string(search_string)
+
+
+        query_search = database.AQLQuery(
+            query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string_precise, "search_string_fuzzy": search_string_fuzzy},batchSize=300, rawResults=True       
+        )
+        query_result = query_search.result[0][:300]
     result = search_utils.postprocess_results(search_string_precise,query_result)
     return {"searchResults": result}
 
