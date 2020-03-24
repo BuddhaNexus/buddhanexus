@@ -176,6 +176,7 @@ def clean_totals_collection(c):
     """
     db = get_database()
     db.delete_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
+    db.create_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
     print("totals collection cleaned.")
 
 
