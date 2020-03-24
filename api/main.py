@@ -37,7 +37,7 @@ APP.add_middleware(
     allow_headers=["*"],
 )
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NY|[A-Z]+[0-9]+|[a-z\-]+)"
+COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 @APP.get("/")
@@ -627,9 +627,9 @@ async def get_search_results(search_string: str):
     database = get_db()
     search_string_precise, search_string_fuzzy = search_utils.preprocess_search_string(search_string)
     query_search = database.AQLQuery(
-        query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string_precise, "search_string_fuzzy": search_string_fuzzy},batchSize=2000, rawResults=True       
+        query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string_precise, "search_string_fuzzy": search_string_fuzzy},batchSize=300, rawResults=True       
     )
-    query_result = query_search.result[0][:2000]
+    query_result = query_search.result[0][:300]
     result = search_utils.postprocess_results(search_string_precise,query_result)
     return {"searchResults": result}
 
