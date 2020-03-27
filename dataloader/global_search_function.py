@@ -93,7 +93,6 @@ def load_search_index_chn(path, db: StandardDatabase):
         print("\nDone creating View for Chinese")
 
 def create_analyzers(db: StandardDatabase):
-    print(db.analyzer('text_zh'))
     db.create_analyzer(
         name=TIBETAN_ANALYZER,
         analyzer_type='text',
@@ -132,12 +131,7 @@ def create_analyzers(db: StandardDatabase):
 
 
     )
-    # db.create_analyzer(
-    #     name=CHINESE_ANALYZER,
-    #     analyzer_type='text_zh',
-    #     properties={"min": 3, "max":5, "preserveOriginal": False},
-    #     features=[]
-    # )
+
 
 def clean_analyzers(db: StandardDatabase):
     for analyzer in ANALYZER_NAMES:

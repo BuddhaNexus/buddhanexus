@@ -315,6 +315,7 @@ async def get_file_text_segments_and_parallels(
     """
     start_int = 0
     limit = 200
+    print("LIMIT COLLECTION",limit_collection)
     if active_segment != "none":
         active_segment = unquote(active_segment)
         try:
@@ -337,6 +338,8 @@ async def get_file_text_segments_and_parallels(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
+    print("LIMIT COLLECTION POSITIVE",limitcollection_positive)
+    print("LIMIT COLLECTION NEGATIVE",limitcollection_negative)
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
@@ -627,14 +630,11 @@ async def get_search_results(search_string: str):
     database = get_db()
     result = []
     search_string_length = len(search_string)
-    if search_string_length > 6 and search_string_length < 150:
-        search_string_precise, search_string_fuzzy = search_utils.preprocess_search_string(search_string)
-
-
-        query_search = database.AQLQuery(
+    search_string_precise, search_string_fuzzy = search_utils.preprocess_search_string(search_string)
+    query_search = database.AQLQuery(
             query=search_queries.QUERY_SEARCH, bindVars={"search_string": search_string_precise, "search_string_fuzzy": search_string_fuzzy},batchSize=300, rawResults=True       
         )
-        query_result = query_search.result[0][:300]
+    query_result = query_search.result[0]
     result = search_utils.postprocess_results(search_string_precise,query_result)
     return {"searchResults": result}
 

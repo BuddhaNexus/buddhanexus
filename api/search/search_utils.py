@@ -1,14 +1,11 @@
 import re
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
-import time 
 from fuzzysearch import levenshtein_ngram
 
 bn_analyzer = bn_translate.analyzer()
 
 def preprocess_search_string(search_string):
-    search_string_fuzzy = ""
-    if not  re.search(u'[\u4e00-\u9fff]', search_string):
-        search_string_fuzzy = bn_analyzer.stem_sanskrit(search_string)
+    search_string_fuzzy = bn_analyzer.stem_sanskrit(search_string)
     return search_string, search_string_fuzzy
 
 def tag_sanskrit(sanskrit_string):
@@ -48,6 +45,7 @@ def postprocess_results(search_string, results):
         result['centeredness'] = centeredness
         result['distance'] = distance
     results = remove_duplicate_results(results)
-    results = remove_duplicate_results(results) # yes, we have to do this twice to make sure that no duplicates remain 
+    results = remove_duplicate_results(results) # yes, we have to do this twice to make sure that no duplicates remain
+    results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
     results = sorted(results, key = lambda i: i['distance']) 
     return results

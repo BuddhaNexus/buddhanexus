@@ -2,12 +2,14 @@ QUERY_SEARCH = """
 LET chinese_results = (
     FOR d IN search_index_chn_view 
         SEARCH PHRASE(d.search_string_precise, @search_string, 'text_zh') 
+        LIMIT 100
         RETURN d
     )
 
 let tibetan_precise_results = (
     FOR d IN search_index_tib_view 
         SEARCH PHRASE(d.search_string_precise, @search_string, 'tibetan_analyzer') 
+        LIMIT 100
         RETURN d
     )
 let tibetan_fuzzy_results = (
