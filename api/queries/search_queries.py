@@ -21,6 +21,7 @@ let tibetan_fuzzy_results = (
 let skt_pli_results = (
     FOR d IN search_index_skt_pli_view 
         SEARCH PHRASE(d.search_string_precise, @search_string, 'sanskrit_analyzer') 
+        LIMIT 100
         RETURN d
     )
 let skt_pli_results_fuzzy = (
