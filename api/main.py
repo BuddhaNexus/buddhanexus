@@ -631,10 +631,10 @@ async def get_search_results(search_string: str):
         query=search_queries.QUERY_SEARCH,
         bindVars={"search_string": search_string_precise,
                   "search_string_fuzzy": search_string_fuzzy},
-        batchSize=300, rawResults=True       
+        batchSize=300, rawResults=True
         )
     query_result = query_search.result[0]
-    result = search_utils.postprocess_results(search_string_precise,query_result)
+    result = search_utils.postprocess_results(search_string_precise, query_result)
     return {"searchResults": result}
 
 @APP.get("/sanskrittagger/{sanskrit_string}")
