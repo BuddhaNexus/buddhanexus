@@ -31,44 +31,6 @@ RETURN FLATTEN(
         )
 """
 
-# get segments for file and parallels of segment
-# todo delete after comparison
-OLD_QUERY_FILE_SEGMENTS_PARALLELS = """
-FOR file IN files
-    FILTER file._key == @filename
-    FOR segmentnr IN file.segment_keys
-        LET seg_parallels = (
-            FOR segment IN segments
-                FILTER segment._key == segmentnr
-                FOR parallel_id IN segment.parallel_ids
-                    FOR p IN parallels
-                        FILTER p._key == parallel_id
-                        LET collection_filter_test = (
-                            FOR item IN @limitcollection_positive
-                            RETURN REGEX_TEST(p.par_segnr[0], item)
-                        )
-                        LET fits_collection = (@limitcollection_positive != [])
-                            ? POSITION(collection_filter_test, true)
-                            : true
-                        FILTER fits_collection == true
-                        LET collection_filter_test2 = (
-                            FOR item IN @limitcollection_negative
-                            RETURN REGEX_TEST(p.par_segnr[0], item)
-                        )
-                        LET fits_collection2 = (@limitcollection_negative != [])
-                            ? POSITION(collection_filter_test2, true)
-                            : false
-                        FILTER fits_collection2 == false
-                        FILTER p.score >= @score
-                        FILTER p.par_length >= @parlength
-                        FILTER p["co-occ"] <= @coocc
-                        RETURN p.par_segnr
-            )
-        RETURN seg_parallels[0] ?
-            { "segmentnr": segmentnr, "parallels": seg_parallels } :
-            { "segmentnr": segmentnr }
-"""
-
 QUERY_FILE_SEGMENTS_PARALLELS = """
 FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
     LET seg_parallels = (
@@ -119,8 +81,8 @@ LET file_parallels = (
         LET collection_filter_test2 = (
             FOR item IN @limitcollection_negative
             RETURN REGEX_TEST(p.par_segnr[0], item)
-        )
-        LET fits_collection2 = (@limitcollection_negative != [])
+        )t
+        LET fits_collection2 = (@limitcollection_negaive != [])
             ? POSITION(collection_filter_test2, true)
             : false
         FILTER fits_collection2 == false
@@ -158,6 +120,61 @@ LET file_parallels = (
 RETURN {
     parallels: file_parallels
 }
+"""
+
+GRAPH_QUERY_TABLE_VIEW = """
+FOR p IN parallels
+    FILTER p.root_filename == @filename
+    LIMIT 200000
+    FILTER p.score >= @score
+    FILTER p.par_length >= @parlength
+    FILTER p["co-occ"] <= @coocc
+    LET collection_filter_test = (
+        FOR item IN @limitcollection_positive
+        RETURN REGEX_TEST(p.par_segnr[0], item)
+    )
+    LET fits_collection = (@limitcollection_positive != [])
+        ? POSITION(collection_filter_test, true)
+        : true
+    FILTER fits_collection == true
+    LET collection_filter_test2 = (
+        FOR item IN @limitcollection_negative
+        RETURN REGEX_TEST(p.par_segnr[0], item)
+    )
+    LET fits_collection2 = (@limitcollection_negative != [])
+        ? POSITION(collection_filter_test2, true)
+        : false
+    FILTER fits_collection2 == false
+    SORT p.@sortkey @sortdirection
+    LIMIT 50 * @page, 50
+    let root_seg_text = (
+        FOR segnr IN p.root_segnr
+            FOR segment IN segments
+                FILTER segment._key == segnr
+                RETURN segment.segtext
+    )
+    let par_segment = (
+        FOR segnr IN p.par_segnr
+            FOR segment IN segments
+                FILTER segment._key == segnr
+                RETURN segment.segtext
+    )
+    RETURN {
+        par_segnr: p.par_segnr,
+        par_offset_beg: p.par_offset_beg,
+        par_offset_end: p.par_offset_end,
+        root_offset_beg: p.root_offset_beg,
+        root_offset_end: p.root_offset_end-1,
+        par_segment: par_segment,
+        file_name: p.id,
+        root_segnr: p.root_segnr,
+        root_seg_text: root_seg_text,
+        par_length: p.par_length,
+        root_length: p.root_length,
+        par_pos_beg: p.par_pos_beg,
+        "co-occ": p["co-occ"],
+        score: p.score
+    }
 """
 
 

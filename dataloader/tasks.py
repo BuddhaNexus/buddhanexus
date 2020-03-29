@@ -1,5 +1,4 @@
 import os
-import gzip
 from arango import (
     DatabaseCreateError,
     CollectionCreateError,

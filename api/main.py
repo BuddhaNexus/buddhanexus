@@ -190,22 +190,22 @@ async def get_table_view(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
-    try:
-        sort_key = ""
-        sort_direction = "DESC"
-        if sort_method == "position":
-            sort_key = "root_pos_beg"
-            sort_direction = "ASC"
-        if sort_method == "quoted-text":
-            sort_key = "par_pos_beg"
-            sort_direction = "ASC"
-        if sort_method == "length":
-            sort_key = "root_length"
-        if sort_method == "length2":
-            sort_key = "par_length"
+    sort_key = ""
+    sort_direction = "DESC"
+    if sort_method == "position":
+        sort_key = "root_pos_beg"
+        sort_direction = "ASC"
+    if sort_method == "quoted-text":
+        sort_key = "par_pos_beg"
+        sort_direction = "ASC"
+    if sort_method == "length":
+        sort_key = "root_length"
+    if sort_method == "length2":
+        sort_key = "par_length"
 
+    try:
         query = get_db().AQLQuery(
-            query=main_queries.QUERY_TABLE_VIEW,
+            query=main_queries.GRAPH_QUERY_TABLE_VIEW,
             bindVars={
                 "filename": file_name,
                 "score": score,
@@ -218,7 +218,7 @@ async def get_table_view(
                 "page": page,
             },
         )
-        return query.result[0]
+        return query.result
 
     except KeyError as error:
         print("KeyError: ", error)

@@ -24,6 +24,7 @@ from dataloader_constants import (
     GRAPH_FILES_SEGMENTS,
     EDGE_COLLECTION_FILE_HAS_SEGMENTS,
     EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
+    EDGE_COLLECTION_FILE_HAS_PARALLELS,
 )
 from views_properties import PROPERTIES_SEARCH_INDEX, PROPERTIES_SEARCH_INDEX_CHN
 
@@ -65,6 +66,13 @@ def create_files_segments_graph() -> None:
         from_vertex_collections=[COLLECTION_SEGMENTS],
         to_vertex_collections=[COLLECTION_PARALLELS],
     )
+    # Files -> Parallels
+    # TODO: fill with data
+    # graph.create_edge_definition(
+    #     edge_collection=EDGE_COLLECTION_FILE_HAS_PARALLELS,
+    #     from_vertex_collections=[COLLECTION_FILES],
+    #     to_vertex_collections=[COLLECTION_PARALLELS],
+    # )
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
@@ -331,10 +339,15 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
     :param db: ArangoDB connection object
     """
     db_collection = db.collection(COLLECTION_PARALLELS)
+    files_parallels_edge_db_collection = db.collection(
+        EDGE_COLLECTION_FILE_HAS_PARALLELS
+    )
     parallels_to_be_inserted = []
+    root_file_parallel_edges_to_be_inserted = []
 
     for parallel in json_parallels:
         if isinstance(parallel, dict):
+            root_filename = parallel["root_segnr"][0].split(":")[0]
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
@@ -345,16 +358,27 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             del parallel["root_segtext"]
             del parallel["par_string"]
             del parallel["root_string"]
-            parallel["root_filename"] = parallel["root_segnr"][0].split(":")[0]
+            # todo: delete the root_filename key after it's not needed anymore
+            parallel["root_filename"] = root_filename
+
+            # root_file_parallel_edges_to_be_inserted.append(
+            #     {
+            #         "_from": f"{COLLECTION_FILES}/{root_filename}",
+            #         "_to": f"{COLLECTION_PARALLELS}/{parallel['id']}",
+            #     }
+            # )
             parallels_to_be_inserted.append(parallel)
 
     random.shuffle(parallels_to_be_inserted)
 
-    chunksize = 10000  # 10000 for Tibetan, 100000 for Chinese
+    chunksize = 10000
 
-    for x in range(0, len(parallels_to_be_inserted), chunksize):
+    for i in range(0, len(parallels_to_be_inserted), chunksize):
         try:
-            db_collection.insert_many(parallels_to_be_inserted[x : x + chunksize])
+            db_collection.insert_many(parallels_to_be_inserted[i : i + chunksize])
+            # files_parallels_edge_db_collection.insert_many(
+            #     root_file_parallel_edges_to_be_inserted[i : i + chunksize]
+            # )
         except (DocumentInsertError, IndexCreateError) as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
