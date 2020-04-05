@@ -35,10 +35,8 @@ LET total_collection = (
                     categoryname: CONCAT("• ",categoryname)
                 }
         )
-        RETURN APPEND([{
-                category: collection._key,
-                categoryname: CONCAT(UPPER(collection.collection), " (ALL)")
-            }],
+        RETURN APPEND(
+            [{ category: collection._key, categoryname: CONCAT(UPPER(collection.collection), " (ALL)") }],
             categories
         )
     )
@@ -88,10 +86,34 @@ FOR lang IN languages
                     LET catname = SPLIT(category.categoryname,["—","("])[0]
                     RETURN {[category["category"]]: catname }
         )
-        RETURN { collection: collection._key, language: collection.language, categories: categories }
+    RETURN { collection: collection._key, language: collection.language, categories: categories }
 """
 
 QUERY_ONE_COLLECTION = """
 FOR category IN 1..1 OUTBOUND concat("menu_collections/", @collectionkey) GRAPH 'collections_categories'
     RETURN category.category
+"""
+
+QUERY_COLLECTION_NAMES = """
+RETURN (
+    FOR category IN menu_categories
+        FILTER category.language == @language
+        SORT category.categorynr
+        FOR collection_key IN @collections
+            FILTER category["category"] == collection_key
+            RETURN {
+                [category["category"]]: category.categoryname
+            }
+)
+"""
+
+QUERY_FILES_PER_CATEGORY = """
+FOR file IN files_parallel_count
+    FILTER file.category == @category
+    FILTER file.language == @language
+    SORT file.filenr
+    RETURN {
+        filename: file._key,
+        totallengthcount: file.totallengthcount
+    }
 """

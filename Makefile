@@ -75,6 +75,7 @@ load-data-async:
 
 clean-db:
 	@docker exec -t dataloader bash -c "invoke clean-all-collections"
+	@docker exec -t dataloader bash -c "invoke create-db create-collections"
 
 # clean & remove the search-index
 clean-search-index:
@@ -84,10 +85,10 @@ clean-totals:
 	@docker exec -t dataloader bash -c "invoke clean-totals-collection"
 	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
 
-clean-db-menu-data:
+clean-menu-data:
 	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
 
-clean-db-segment-data:
+clean-segments:
 	@docker exec -t dataloader bash -c "invoke clean-segment-collections"
 
 # List available commands for the dataloader

@@ -4,6 +4,7 @@ from arango import DocumentInsertError, IndexCreateError
 from arango.collection import StandardCollection, EdgeCollection
 from arango.database import StandardDatabase
 
+from dataloader_utils import get_language_name
 from dataloader_constants import (
     COLLECTION_MENU_COLLECTIONS,
     DEFAULT_LANGS,
@@ -114,7 +115,9 @@ def load_all_menu_collections(db: StandardDatabase):
     )
 
     for language in DEFAULT_LANGS:
-        languages_db_collection.insert({"_key": language})
+        languages_db_collection.insert(
+            {"_key": language, "name": get_language_name(language)}
+        )
 
         with open(f"../data/{language}-collections.json") as file:
             print(f"Loading menu collections in {language}...")
@@ -167,7 +170,7 @@ def load_menu_category(
             files, doc["_key"], category_has_files_edge_db_collection
         )
     except DocumentInsertError as e:
-        print("Could not load menu category. Error: ", e)
+        print(f"Could not load menu category {menu_category['category']}. Error: ", e)
     except IndexCreateError as e:
         print("Could create category index. Error: ", e)
 

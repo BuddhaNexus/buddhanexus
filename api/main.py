@@ -30,11 +30,7 @@ API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 APP = FastAPI(title="Buddha Nexus Backend", version="0.2.1", openapi_prefix=API_PREFIX)
 
 APP.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NY|[A-Z]+[0-9]+|[a-z\-]+)"
@@ -108,7 +104,7 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
         parallels.limit_collection, language
     )
     query_result = get_db().AQLQuery(
-        query=main_queries.QUERY_PARALELLS_FOR_MIDDLE_TEXT,
+        query=main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
         bindVars={
             "segmentnr": parallels.segmentnr,
             "score": parallels.score,
@@ -151,18 +147,19 @@ async def get_segments_for_file(
                 "limitcollection_negative": limitcollection_negative,
             },
         )
+
         segments_result, collection_keys = collect_segment_results(
             segments_query.result
         )
 
         return {
             "collections": database.AQLQuery(
-                query=main_queries.QUERY_COLLECTION_NAMES,
+                query=menu_queries.QUERY_COLLECTION_NAMES,
                 bindVars={
                     "collections": collection_keys,
                     "language": get_language_from_filename(file_name),
                 },
-            ).result[0],
+            ).result,
             "segments": segments_result,
         }
 
@@ -194,20 +191,20 @@ async def get_table_view(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
-    try:
-        sort_key = ""
-        sort_direction = "DESC"
-        if sort_method == "position":
-            sort_key = "root_pos_beg"
-            sort_direction = "ASC"
-        if sort_method == "quoted-text":
-            sort_key = "par_pos_beg"
-            sort_direction = "ASC"
-        if sort_method == "length":
-            sort_key = "root_length"
-        if sort_method == "length2":
-            sort_key = "par_length"
+    sort_key = ""
+    sort_direction = "DESC"
+    if sort_method == "position":
+        sort_key = "root_pos_beg"
+        sort_direction = "ASC"
+    if sort_method == "quoted-text":
+        sort_key = "par_pos_beg"
+        sort_direction = "ASC"
+    if sort_method == "length":
+        sort_key = "root_length"
+    if sort_method == "length2":
+        sort_key = "par_length"
 
+    try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,
             bindVars={
@@ -222,7 +219,7 @@ async def get_table_view(
                 "page": page,
             },
         )
-        return query.result[0]
+        return query.result
 
     except KeyError as error:
         print("KeyError: ", error)
@@ -445,7 +442,7 @@ async def get_graph_for_file(
 
     # find the proper full names vor each collection
     collections = database.AQLQuery(
-        query=main_queries.QUERY_COLLECTION_NAMES,
+        query=menu_queries.QUERY_COLLECTION_NAMES,
         bindVars={
             "collections": collection_keys,
             "language": get_language_from_filename(file_name),
@@ -479,20 +476,23 @@ async def get_graph_for_file(
 
 @APP.get("/visual/{searchterm}")
 async def get_visual_view_for_file(
-    searchterm: str, language: str, selected: List[str] = Query([])
+    # TODO: what is "selected"? Find better name
+    searchterm: str,
+    language: str,
+    selected: List[str] = Query([]),
 ):
     """
     Endpoint for visual view
     """
     database = get_db()
-    languagesearchterm = language + "_" + searchterm
+    language_search_term = language + "_" + searchterm
     query_collection_list = database.AQLQuery(
         query=main_queries.QUERY_COLLECTION_TOTALS,
-        bindVars={"sourcecollection": languagesearchterm, "selected": selected},
+        bindVars={"sourcecollection": language_search_term, "selected": selected},
     )
-    graphdata = []
+    graph_data = []
     if len(selected) == 1 or re.search(r"^[A-Z][a-z]+$", searchterm):
-        graphdata = query_collection_list.result[0]
+        graph_data = query_collection_list.result[0]
     else:
         query_results = query_collection_list.result[0]
         query_results_keys = []
@@ -503,9 +503,9 @@ async def get_visual_view_for_file(
         for key in query_results_keys:
             for result_item in query_results:
                 if result_item[0] == key:
-                    graphdata.append(result_item)
+                    graph_data.append(result_item)
 
-    return {"graphdata": graphdata}
+    return {"graphdata": graph_data}
 
 
 @APP.get("/collections")
@@ -556,7 +556,7 @@ async def get_counts_for_file(
             "limitcollection_negative": limitcollection_negative,
         },
     )
-    return {"parallel_count": query_graph_result.result}
+    return {"parallel_count": query_graph_result.result[0]}
 
 
 @APP.get("/files/{file_name}/folios")
@@ -576,7 +576,7 @@ async def get_folios_for_file(file_name: str):
         batchSize=100000,
         bindVars={"filename": file_name},
     )
-    segments = query_graph_result.result[0]
+    segments = query_graph_result.result
     first_segment = segments[0]
     last_segment = segments[-1]
     if lang == "chn":

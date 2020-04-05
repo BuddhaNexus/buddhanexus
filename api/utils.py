@@ -101,7 +101,7 @@ def collect_segment_results(segments) -> List:
     collection_keys = []
     segments_result = []
     for segment in segments:
-        if "parallels" not in segment:
+        if "parallels" not in segment or segment["parallels"] is None:
             continue
         for parallel in segment["parallels"]:
             for seg_nr in parallel:
