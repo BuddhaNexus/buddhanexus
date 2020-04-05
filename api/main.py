@@ -205,7 +205,7 @@ async def get_table_view(
 
     try:
         query = get_db().AQLQuery(
-            query=main_queries.GRAPH_QUERY_TABLE_VIEW,
+            query=main_queries.QUERY_TABLE_VIEW,
             bindVars={
                 "filename": file_name,
                 "score": score,

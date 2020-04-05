@@ -22,6 +22,7 @@ from dataloader_constants import (
     VIEW_SEARCH_INDEX_CHN,
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
     GRAPH_FILES_SEGMENTS,
+    GRAPH_FILES_PARALLELS,
     EDGE_COLLECTION_FILE_HAS_SEGMENTS,
     EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
     EDGE_COLLECTION_FILE_HAS_PARALLELS,
@@ -53,26 +54,26 @@ collection_pattern = "^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
 
 def create_files_segments_graph() -> None:
     db = get_database()
-    graph = db.create_graph(GRAPH_FILES_SEGMENTS)
+    files_segments_graph = db.create_graph(GRAPH_FILES_SEGMENTS)
+    files_parallels_graph = db.create_graph(GRAPH_FILES_PARALLELS)
     # Files -> Segments
-    graph.create_edge_definition(
+    files_segments_graph.create_edge_definition(
         edge_collection=EDGE_COLLECTION_FILE_HAS_SEGMENTS,
         from_vertex_collections=[COLLECTION_FILES],
         to_vertex_collections=[COLLECTION_SEGMENTS],
     )
     # Segments -> Parallels
-    graph.create_edge_definition(
+    files_segments_graph.create_edge_definition(
         edge_collection=EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
         from_vertex_collections=[COLLECTION_SEGMENTS],
         to_vertex_collections=[COLLECTION_PARALLELS],
     )
     # Files -> Parallels
-    # TODO: fill with data
-    # graph.create_edge_definition(
-    #     edge_collection=EDGE_COLLECTION_FILE_HAS_PARALLELS,
-    #     from_vertex_collections=[COLLECTION_FILES],
-    #     to_vertex_collections=[COLLECTION_PARALLELS],
-    # )
+    files_parallels_graph.create_edge_definition(
+        edge_collection=EDGE_COLLECTION_FILE_HAS_PARALLELS,
+        from_vertex_collections=[COLLECTION_FILES],
+        to_vertex_collections=[COLLECTION_PARALLELS],
+    )
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int):
@@ -361,12 +362,12 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             # todo: delete the root_filename key after it's not needed anymore
             parallel["root_filename"] = root_filename
 
-            # root_file_parallel_edges_to_be_inserted.append(
-            #     {
-            #         "_from": f"{COLLECTION_FILES}/{root_filename}",
-            #         "_to": f"{COLLECTION_PARALLELS}/{parallel['id']}",
-            #     }
-            # )
+            root_file_parallel_edges_to_be_inserted.append(
+                {
+                    "_from": f"{COLLECTION_FILES}/{root_filename}",
+                    "_to": f"{COLLECTION_PARALLELS}/{parallel['id']}",
+                }
+            )
             parallels_to_be_inserted.append(parallel)
 
     random.shuffle(parallels_to_be_inserted)
@@ -376,9 +377,9 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
     for i in range(0, len(parallels_to_be_inserted), chunksize):
         try:
             db_collection.insert_many(parallels_to_be_inserted[i : i + chunksize])
-            # files_parallels_edge_db_collection.insert_many(
-            #     root_file_parallel_edges_to_be_inserted[i : i + chunksize]
-            # )
+            files_parallels_edge_db_collection.insert_many(
+                root_file_parallel_edges_to_be_inserted[i : i + chunksize]
+            )
         except (DocumentInsertError, IndexCreateError) as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
 

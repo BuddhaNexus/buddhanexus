@@ -60,5 +60,6 @@ EDGE_COLLECTION_NAMES = (
 
 GRAPH_COLLECTIONS_CATEGORIES = "collections_categories"
 GRAPH_FILES_SEGMENTS = "files_segments"
+GRAPH_FILES_PARALLELS = "files_parallels"
 
 COLLECTION_REGEX = "^(pli-tv-b[ui]-vb|[A-Z]+[0-9]+|[a-z\-]+)"

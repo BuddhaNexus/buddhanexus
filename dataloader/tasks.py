@@ -28,6 +28,7 @@ from dataloader_constants import (
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
     GRAPH_FILES_SEGMENTS,
+    GRAPH_FILES_PARALLELS,
     EDGE_COLLECTION_FILE_HAS_SEGMENTS,
     EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
 )
@@ -160,6 +161,7 @@ def clean_all_collections(c):
             db.delete_collection(name)
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
         db.delete_graph(GRAPH_FILES_SEGMENTS)
+        db.delete_graph(GRAPH_FILES_PARALLELS)
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % current_name, e)
     except GraphDeleteError as e:
@@ -204,6 +206,7 @@ def clean_segment_collections(c):
 
     try:
         db.delete_graph(GRAPH_FILES_SEGMENTS)
+        db.delete_graph(GRAPH_FILES_PARALLELS)
         for name in (
             COLLECTION_SEGMENTS,
             COLLECTION_PARALLELS,
