@@ -15,8 +15,9 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
+from .search import search_utils
 from .models_api import ParallelsCollection
-from .queries import menu_queries, main_queries
+from .queries import menu_queries, main_queries, search_queries
 from .utils import (
     get_language_from_filename,
     get_collection_files_regex,
@@ -616,3 +617,38 @@ async def get_data_for_sidebar_menu(language: str):
     )
 
     return {"navigationmenudata": query_sidebar_menu.result}
+
+
+@APP.get("/search/{search_string}")
+async def get_search_results(search_string: str):
+    """
+    Returns search results for given search string.
+    :return: List of search results
+    """
+    database = get_db()
+    result = []
+    search_string_precise, search_string_fuzzy = search_utils.preprocess_search_string(
+        search_string
+    )
+    query_search = database.AQLQuery(
+        query=search_queries.QUERY_SEARCH,
+        bindVars={
+            "search_string": search_string_precise,
+            "search_string_fuzzy": search_string_fuzzy,
+        },
+        batchSize=300,
+        rawResults=True,
+    )
+    query_result = query_search.result[0]
+    result = search_utils.postprocess_results(search_string_precise, query_result)
+    return {"searchResults": result}
+
+
+@APP.get("/sanskrittagger/{sanskrit_string}")
+async def tag_sanskrit(sanskrit_string: str):
+    """
+    Stemming + Tagging for Sanskrit
+    :return: String with tagged Sanskrit
+    """
+    result = search_utils.tag_sanskrit(sanskrit_string)
+    return {"tagged": result}

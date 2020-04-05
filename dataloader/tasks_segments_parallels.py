@@ -16,10 +16,6 @@ from dataloader_constants import (
     COLLECTION_FILES,
     COLLECTION_FILES_PARALLEL_COUNT,
     COLLECTION_REGEX,
-    COLLECTION_SEARCH_INDEX,
-    COLLECTION_SEARCH_INDEX_CHN,
-    VIEW_SEARCH_INDEX,
-    VIEW_SEARCH_INDEX_CHN,
     COLLECTION_CATEGORIES_PARALLEL_COUNT,
     GRAPH_FILES_SEGMENTS,
     GRAPH_FILES_PARALLELS,
@@ -27,7 +23,7 @@ from dataloader_constants import (
     EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
     EDGE_COLLECTION_FILE_HAS_PARALLELS,
 )
-from views_properties import PROPERTIES_SEARCH_INDEX, PROPERTIES_SEARCH_INDEX_CHN
+
 
 from dataloader_models import Parallel, Segment, MenuItem
 from dataloader_utils import (
@@ -208,41 +204,6 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
         totalfilelengthcount += Counter(totalparallelcount)
 
     return segment_keys, totallengthcount, totalfilelengthcount
-
-
-def load_search_index(path, db: StandardDatabase):
-    with gzip.open(path) as f:
-        print(f"\nLoading file index data...")
-        index_data = json.load(f)
-        print(f"\nInserting file index data into DB...")
-        collection = db.collection(COLLECTION_SEARCH_INDEX)
-        # we have to do this in chunk, otherwise it will fail with broken_pipe
-        chunksize = 10000
-        for i in tqdm(range(0, len(index_data), chunksize)):
-            collection.insert_many(index_data[i : i + chunksize])
-        print(f"\nDone loading index data...")
-        print(f"\nCreating View...")
-        db.create_arangosearch_view(
-            name=VIEW_SEARCH_INDEX, properties=PROPERTIES_SEARCH_INDEX
-        )
-        print("\nDone creating View")
-
-
-def load_search_index_chn(path, db: StandardDatabase):
-    with gzip.open(path) as f:
-        print(f"\nLoading file index data Chinese...")
-        index_data = json.load(f)
-        print(f"\nInserting file index data Chinese into DB...")
-        collection = db.collection(COLLECTION_SEARCH_INDEX_CHN)
-        chunksize = 10000
-        for i in tqdm(range(0, len(index_data), chunksize)):
-            collection.insert_many(index_data[i : i + chunksize])
-        print(f"\nDone loading index data Chn...")
-        print(f"\nCreating View...")
-        db.create_arangosearch_view(
-            name=VIEW_SEARCH_INDEX_CHN, properties=PROPERTIES_SEARCH_INDEX_CHN
-        )
-        print("\nDone creating View for Chinese")
 
 
 def load_segment(
