@@ -32,9 +32,15 @@ from dataloader_constants import (
 from segments_parallels import (
     load_segment_data_from_menu_files,
     create_indices,
-    load_search_index,
-    load_search_index_chn,
     calculate_parallel_totals
+)
+
+from global_search_function import (
+    load_search_index_skt_pli,
+    load_search_index_tib,
+    load_search_index_chn,
+    create_analyzers,
+    clean_analyzers
 )
 
 from menu import (
@@ -104,16 +110,20 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     print("Segment data loading completed.")
 
 @task
-def build_search_index(c, index_url=DEFAULT_SOURCE_URL + "/search_index.json.gz",index_url_chn=DEFAULT_SOURCE_URL + "/search_index_chn.json.gz"):
+def build_search_index(c, index_url_skt_pli=DEFAULT_SOURCE_URL + "/search_index_sanskrit_pali.json.gz",
+                       index_url_tib=DEFAULT_SOURCE_URL + "/search_index_tibetan.json.gz",
+                       index_url_chn=DEFAULT_SOURCE_URL + "/search_index_chn.json.gz"):
     """
     Load index data for search index from path defined in .env.
     """
     db = get_database()
+    create_analyzers(db)
     collections = INDEX_COLLECTION_NAMES
     for name in collections:
         db.create_collection(name)
-    load_search_index(index_url,db)
+    load_search_index_skt_pli(index_url_skt_pli,db)
     load_search_index_chn(index_url_chn,db)
+    load_search_index_tib(index_url_tib,db)
     print("Search index data loading completed.")
 
 @task
@@ -128,10 +138,9 @@ def clean_search_index(c):
             db.delete_collection(name)
         for name in INDEX_VIEW_NAMES:
             db.delete_view(name)
-
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % name, e)
-
+    clean_analyzers(db)
     print("search index cleaned.")
     
 
