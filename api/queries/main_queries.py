@@ -242,31 +242,28 @@ FOR p IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_parallels'
     }
 """
 
-# todo
 QUERY_TOTAL_NUMBERS = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
     LET filtertest = (
         FOR item IN @limitcollection_positive
             RETURN REGEX_TEST(p.par_segnr[0], item)
-        )
-        LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
-        FILTER filternr == true
-        LET filtertest2 = (
-            FOR item IN @limitcollection_negative
-                RETURN REGEX_TEST(p.par_segnr[0], item)
-            )
-            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-            FILTER filternr2 == false
-            FILTER p.score >= @score
-            FILTER p.par_length >= @parlength
-            FILTER p["co-occ"] <= @coocc
-            LIMIT 15000
-            COLLECT WITH COUNT INTO length
-RETURN length
+    )
+    FILTER (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
+    LET filtertest2 = (
+        FOR item IN @limitcollection_negative
+            RETURN REGEX_TEST(p.par_segnr[0], item)
+    )
+    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+    FILTER filternr2 == false
+    FILTER p.score >= @score
+    FILTER p.par_length >= @parlength
+    FILTER p["co-occ"] <= @coocc
+    LIMIT 15000
+    COLLECT WITH COUNT INTO length
+    RETURN length
 """
 
-# todo
 QUERY_TEXT_SEARCH = """
 FOR file IN files
     FILTER file._key == @filename

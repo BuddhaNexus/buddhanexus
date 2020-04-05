@@ -555,7 +555,7 @@ async def get_counts_for_file(
             "limitcollection_negative": limitcollection_negative,
         },
     )
-    return {"parallel_count": query_graph_result.result}
+    return {"parallel_count": query_graph_result.result[0]}
 
 
 @APP.get("/files/{file_name}/folios")
