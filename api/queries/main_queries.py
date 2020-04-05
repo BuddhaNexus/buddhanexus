@@ -172,7 +172,6 @@ RETURN {
 }
 """
 
-# todo
 QUERY_PARALLELS_FOR_MIDDLE_TEXT = """
 LET parallel_ids = (
     FOR segment in segments
@@ -220,15 +219,14 @@ FOR parallel_id IN FLATTEN(parallel_ids)
             }
 """
 
-# todo
 QUERY_GRAPH_VIEW = """
 LET filter_target = FLATTEN(
     FOR target_item IN @targetcollection
         FOR category IN 1..1 OUTBOUND concat("menu_collections/", target_item) GRAPH 'collections_categories'
             RETURN category.category
-    )
-FOR p IN parallels
-    FILTER p.root_filename == @filename
+)
+
+FOR p IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_parallels'
     LIMIT 15000
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
@@ -236,10 +234,12 @@ FOR p IN parallels
     LET filtertest = (
         FOR item IN filter_target
             RETURN REGEX_TEST(p.par_segnr[0], CONCAT("^",item,"[^y]"))
-        )
-    LET filternr = (filter_target != []) ? POSITION(filtertest, true) : true
-    FILTER filternr == true
-    RETURN { "textname": SPLIT(p.par_segnr[0],":")[0], "parlength": p.par_length}
+    )
+    FILTER (filter_target != []) ? POSITION(filtertest, true) : true
+    RETURN {
+        "textname": SPLIT(p.par_segnr[0],":")[0],
+        "parlength": p.par_length
+    }
 """
 
 # todo
