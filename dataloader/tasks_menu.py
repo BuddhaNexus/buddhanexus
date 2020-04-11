@@ -1,6 +1,6 @@
 import json
 
-from arango import DocumentInsertError, IndexCreateError
+from arango import DocumentInsertError, DocumentUpdateError, IndexCreateError
 from arango.collection import StandardCollection, EdgeCollection
 from arango.database import StandardDatabase
 
@@ -19,25 +19,26 @@ from dataloader_constants import (
 
 
 def create_collections_categories_graph(db: StandardDatabase) -> None:
-    graph = db.create_graph(GRAPH_COLLECTIONS_CATEGORIES)
-    # Language -> Collections
-    graph.create_edge_definition(
-        edge_collection=EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
-        from_vertex_collections=[COLLECTION_LANGUAGES],
-        to_vertex_collections=[COLLECTION_MENU_COLLECTIONS],
-    )
-    # Collection -> Categories
-    graph.create_edge_definition(
-        edge_collection=EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
-        from_vertex_collections=[COLLECTION_MENU_COLLECTIONS],
-        to_vertex_collections=[COLLECTION_MENU_CATEGORIES],
-    )
-    # Category -> Files
-    graph.create_edge_definition(
-        edge_collection=EDGE_COLLECTION_CATEGORY_HAS_FILES,
-        from_vertex_collections=[COLLECTION_MENU_CATEGORIES],
-        to_vertex_collections=[COLLECTION_FILES],
-    )
+    if not db.has_graph(GRAPH_COLLECTIONS_CATEGORIES):
+        graph = db.create_graph(GRAPH_COLLECTIONS_CATEGORIES)
+        # Language -> Collections
+        graph.create_edge_definition(
+            edge_collection=EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
+            from_vertex_collections=[COLLECTION_LANGUAGES],
+            to_vertex_collections=[COLLECTION_MENU_COLLECTIONS],
+        )
+        # Collection -> Categories
+        graph.create_edge_definition(
+            edge_collection=EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+            from_vertex_collections=[COLLECTION_MENU_COLLECTIONS],
+            to_vertex_collections=[COLLECTION_MENU_CATEGORIES],
+        )
+        # Category -> Files
+        graph.create_edge_definition(
+            edge_collection=EDGE_COLLECTION_CATEGORY_HAS_FILES,
+            from_vertex_collections=[COLLECTION_MENU_CATEGORIES],
+            to_vertex_collections=[COLLECTION_FILES],
+        )
 
 
 def create_edges_for_collection_has_categories(
@@ -115,9 +116,14 @@ def load_all_menu_collections(db: StandardDatabase):
     )
 
     for language in DEFAULT_LANGS:
-        languages_db_collection.insert(
-            {"_key": language, "name": get_language_name(language)}
-        )
+        try:
+            languages_db_collection.update(
+                {"_key": language, "name": get_language_name(language)}
+            )
+        except DocumentUpdateError as e:
+            languages_db_collection.insert(
+                {"_key": language, "name": get_language_name(language)}
+            )
 
         with open(f"../data/{language}-collections.json") as file:
             print(f"Loading menu collections in {language}...")

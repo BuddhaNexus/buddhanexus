@@ -85,12 +85,12 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     """
     # if file_lang == LANG_CHINESE:
     #     return True
-    if file_lang == LANG_PALI:
-        return True
-    # # if file_lang == LANG_SANSKRIT:
-    # #     return True
-    # if file_lang == LANG_TIBETAN and not "NY" in file_name and not "K" in file_name:
+    # if file_lang == LANG_PALI:
     #     return True
+    # if file_lang == LANG_SANSKRIT:
+    #     return True
+    if file_lang == LANG_TIBETAN and not "NY" in file_name:
+        return True
     else:
         return False
 
