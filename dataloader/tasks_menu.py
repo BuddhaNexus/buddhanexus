@@ -1,6 +1,6 @@
 import json
 
-from arango import DocumentInsertError, IndexCreateError
+from arango import DocumentInsertError, DocumentUpdateError, IndexCreateError
 from arango.collection import StandardCollection, EdgeCollection
 from arango.database import StandardDatabase
 
@@ -19,6 +19,8 @@ from dataloader_constants import (
 
 
 def create_collections_categories_graph(db: StandardDatabase) -> None:
+    if db.has_graph(GRAPH_COLLECTIONS_CATEGORIES):
+        return    
     graph = db.create_graph(GRAPH_COLLECTIONS_CATEGORIES)
     # Language -> Collections
     graph.create_edge_definition(
@@ -115,9 +117,14 @@ def load_all_menu_collections(db: StandardDatabase):
     )
 
     for language in DEFAULT_LANGS:
-        languages_db_collection.insert(
-            {"_key": language, "name": get_language_name(language)}
-        )
+        try:
+            languages_db_collection.update(
+                {"_key": language, "name": get_language_name(language)}
+            )
+        except DocumentUpdateError as e:
+            languages_db_collection.insert(
+                {"_key": language, "name": get_language_name(language)}
+            )
 
         with open(f"../data/{language}-collections.json") as file:
             print(f"Loading menu collections in {language}...")
