@@ -178,6 +178,33 @@ def clean_all_collections(c):
 
     print("all collections cleaned.")
 
+def clean_pali(c):
+    """
+    Clear all the pali data from the database.
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    current_name = ""
+    try:
+        for name in COLLECTION_NAMES:
+            current_name = name
+            db.delete_collection(name)
+        for name in EDGE_COLLECTION_NAMES:
+            current_name = name
+            db.delete_collection(name)
+        db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
+        db.delete_graph(GRAPH_FILES_SEGMENTS)
+        db.delete_graph(GRAPH_FILES_PARALLELS)
+    except CollectionDeleteError as e:
+        print("Error deleting collection %s: " % current_name, e)
+    except GraphDeleteError as e:
+        print("couldn't remove graph. It probably doesn't exist.", e)
+
+    print("all collections cleaned.")
+
+
+
+    
 
 @task
 def clean_totals_collection(c):
