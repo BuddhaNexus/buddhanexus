@@ -12,6 +12,7 @@ from arango.database import StandardDatabase
 from dataloader_constants import (
     DEFAULT_LANGS,
     COLLECTION_PARALLELS,
+    COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_SEGMENTS,
     COLLECTION_FILES,
     COLLECTION_FILES_PARALLEL_COUNT,
@@ -50,6 +51,8 @@ collection_pattern = "^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
 
 def create_files_segments_graph() -> None:
     db = get_database()
+    if db.has_graph(GRAPH_FILES_SEGMENTS):
+        return
     files_segments_graph = db.create_graph(GRAPH_FILES_SEGMENTS)
     files_parallels_graph = db.create_graph(GRAPH_FILES_PARALLELS)
     # Files -> Segments
@@ -72,12 +75,11 @@ def create_files_segments_graph() -> None:
     )
 
 
-def load_segment_data_from_menu_files(root_url: str, threads: int):
-    for language in DEFAULT_LANGS:
+def load_segment_data_from_menu_files(root_url: str, threads: int, list_of_langs: list):
+    for language in list_of_langs:
         with open(f"../data/{language}-files.json") as f:
             print(f"\nLoading segment data from menu files in {language}:...")
             files_data = json.load(f)
-
             filtered_file_data = (
                 [
                     file
@@ -116,13 +118,14 @@ def load_segments_and_parallels_data_from_menu_file(
         segment_keys, totallengthcount, totalfilelengthcount = load_segments(
             segments, parallels, db
         )
-        load_files_collection(menu_file_json, segment_keys, db)
+        load_files_collection(menu_file_json, segment_keys, lang, db)
         load_file_parallel_counts(
             menu_file_json, totallengthcount, totalfilelengthcount, db
         )
 
     if parallels:
         load_parallels(parallels, db)
+        load_parallels_sorted(parallels, db,menu_file_json['filename'])
 
 
 def load_segment_parallel_edges(
@@ -154,20 +157,28 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
     """ Returns list of segment numbers. """
     segment_keys = []
     segmentnr_parallel_ids_dic = {}
+    segmentnr_parallel_ids_dic_limited = {}
     parallel_total_list = []
     parallel_file_total_list = []
 
     for parallel in all_parallels:
         if isinstance(
             parallel, dict
-        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future.
+        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future. TODO 4/20: check if this problem still exists, maybe we can rid of it
             if parallel["root_segnr"]:
                 for segment_key in parallel["root_segnr"]:
                     if segment_key not in segmentnr_parallel_ids_dic.keys():
                         segmentnr_parallel_ids_dic[segment_key] = [parallel["id"]]
                     else:
                         segmentnr_parallel_ids_dic[segment_key].append(parallel["id"])
+                    # the limited-dic collects only the first 20 parallels, because we don't need more for the text-view. 
+                    if parallel['co-occ'] <= 20:
+                        if segment_key not in segmentnr_parallel_ids_dic_limited.keys():
+                            segmentnr_parallel_ids_dic_limited[segment_key] = [parallel["id"]]
+                        else:
+                            segmentnr_parallel_ids_dic_limited[segment_key].append(parallel["id"])
 
+                        
             if parallel["par_segnr"]:
                 collection_key = re.search(COLLECTION_REGEX, parallel["par_segnr"][0])
                 if collection_key:
@@ -183,13 +194,16 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
     segment_count = 0
     for segment in segments:
         parallel_ids = []
+        parallel_ids_limited = []
         if isinstance(segment, dict):
             if segment["segnr"] in segmentnr_parallel_ids_dic.keys():
                 parallel_ids = segmentnr_parallel_ids_dic[segment["segnr"]]
+            if segment["segnr"] in segmentnr_parallel_ids_dic_limited.keys():
+                parallel_ids_limited = segmentnr_parallel_ids_dic_limited[segment["segnr"]]
 
             # Loads segment into database
             # todo: remove parallel_ids table
-            segment_key = load_segment(segment, segment_count, parallel_ids, db)
+            segment_key = load_segment(segment, segment_count, parallel_ids,parallel_ids_limited, db)
             load_segment_parallel_edges(segment["segnr"], parallel_ids, db)
 
             segment_keys.append(segment_key)
@@ -207,7 +221,7 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
 
 
 def load_segment(
-    json_segment: Segment, count: int, parallel_ids: list, db: StandardDatabase
+        json_segment: Segment, count: int, parallel_ids: list, parallel_ids_limited: list, db: StandardDatabase
 ) -> str:
     """
     Given a single segment object, load it into the `segments` collection.
@@ -229,6 +243,7 @@ def load_segment(
             "position": json_segment["position"],
             "count": count,
             "parallel_ids": parallel_ids,
+            "parallel_ids_limited": parallel_ids_limited
         }
         collection.insert(doc)
     except (KeyError, AttributeError) as e:
@@ -266,11 +281,11 @@ def load_file_parallel_counts(
         print("Could not load file. Error: ", e)
 
 
-def load_files_collection(file: MenuItem, segment_keys: list, db: StandardDatabase):
+def load_files_collection(file: MenuItem, segment_keys: list,lang: str, db: StandardDatabase):
     files_db_collection = db.collection(COLLECTION_FILES)
     file_segments_edge_collection = db.collection(EDGE_COLLECTION_FILE_HAS_SEGMENTS)
     file_key = file["filename"]
-    doc = {"_key": file_key, "segment_keys": segment_keys}
+    doc = {"_key": file_key, "segment_keys": segment_keys,"language":lang}
     doc.update(file)
 
     try:
@@ -301,6 +316,8 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
     :param db: ArangoDB connection object
     """
     db_collection = db.collection(COLLECTION_PARALLELS)
+    db_collection_sorted = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
+    
     files_parallels_edge_db_collection = db.collection(
         EDGE_COLLECTION_FILE_HAS_PARALLELS
     )
@@ -322,7 +339,6 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             del parallel["root_string"]
             # todo: delete the root_filename key after it's not needed anymore
             parallel["root_filename"] = root_filename
-
             root_file_parallel_edges_to_be_inserted.append(
                 {
                     "_from": f"{COLLECTION_FILES}/{root_filename}",
@@ -331,7 +347,6 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             )
             parallels_to_be_inserted.append(parallel)
 
-    random.shuffle(parallels_to_be_inserted)
 
     chunksize = 10000
 
@@ -345,6 +360,57 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
 
+
+def load_parallels_sorted(json_parallels: [Parallel], db: StandardDatabase,filename: str) -> None:
+    """
+    Given an array of parallel objects, load them all into the `sorted parallels` collection presorted.
+
+    :param json_parallels: Array of parallel objects to be loaded as-they-are.
+    :param db: ArangoDB connection object
+
+    """
+
+    db_collection_sorted = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
+    # I wonder if this can be done more efficiently, a lot of spaghetti code...    
+    parallels_sorted_by_src_position = sorted(json_parallels, key=lambda k: k['root_pos_beg'])
+    ids_sorted_by_src_position = []
+    for parallel in parallels_sorted_by_src_position:
+        ids_sorted_by_src_position.append(parallel['id'])
+        
+    parallels_sorted_by_tgt_position = sorted(json_parallels, key=lambda k: k['par_pos_beg'])                                           
+    ids_sorted_by_tgt_position = []
+    for parallel in parallels_sorted_by_tgt_position:
+        ids_sorted_by_tgt_position.append(parallel['id'])
+
+    parallels_sorted_by_length_par = sorted(json_parallels, key=lambda k: k['par_length'])                                          
+    ids_sorted_by_length_par = []
+    for parallel in parallels_sorted_by_length_par:
+        ids_sorted_by_length_par.append(parallel['id'])
+
+    parallels_sorted_by_length_root = sorted(json_parallels, key=lambda k: k['root_length'])
+    ids_sorted_by_length_root = []
+    for parallel in parallels_sorted_by_length_root:
+        ids_sorted_by_length_root.append(parallel['id'])
+    ids_sorted_by_length_par.reverse()
+    ids_sorted_by_length_root.reverse()
+
+    ids_sorted_random = ids_sorted_by_length_root
+    random.shuffle(ids_sorted_random)
+    
+    src_lang = json_parallels[0]['src_lang']
+    try:
+        db_collection_sorted.insert({'_key':filename,
+                                     'filename':filename,
+                                     'lang':src_lang,
+                                     'parallels_sorted_by_src_pos': ids_sorted_by_src_position,
+                                     'parallels_sorted_by_tgt_pos': ids_sorted_by_tgt_position,
+                                     'parallels_sorted_by_length_src': ids_sorted_by_length_root,
+                                     'parallels_randomized': ids_sorted_random,
+                                     'parallels_sorted_by_length_tgt': ids_sorted_by_length_par})
+    except (DocumentInsertError, IndexCreateError) as e:
+        print(f"Could not save sorted parallel for {filename}. Error: ", e)
+
+        
 def create_indices(db: StandardDatabase):
     db_collection = db.collection(COLLECTION_PARALLELS)
     db_collection.add_hash_index(["root_filename"], unique=False)

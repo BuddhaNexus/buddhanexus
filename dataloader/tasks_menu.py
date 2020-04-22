@@ -19,26 +19,27 @@ from dataloader_constants import (
 
 
 def create_collections_categories_graph(db: StandardDatabase) -> None:
-    if not db.has_graph(GRAPH_COLLECTIONS_CATEGORIES):
-        graph = db.create_graph(GRAPH_COLLECTIONS_CATEGORIES)
-        # Language -> Collections
-        graph.create_edge_definition(
-            edge_collection=EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
-            from_vertex_collections=[COLLECTION_LANGUAGES],
-            to_vertex_collections=[COLLECTION_MENU_COLLECTIONS],
-        )
-        # Collection -> Categories
-        graph.create_edge_definition(
-            edge_collection=EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
-            from_vertex_collections=[COLLECTION_MENU_COLLECTIONS],
-            to_vertex_collections=[COLLECTION_MENU_CATEGORIES],
-        )
-        # Category -> Files
-        graph.create_edge_definition(
-            edge_collection=EDGE_COLLECTION_CATEGORY_HAS_FILES,
-            from_vertex_collections=[COLLECTION_MENU_CATEGORIES],
-            to_vertex_collections=[COLLECTION_FILES],
-        )
+    if db.has_graph(GRAPH_COLLECTIONS_CATEGORIES):
+        return
+    graph = db.create_graph(GRAPH_COLLECTIONS_CATEGORIES)
+    # Language -> Collections
+    graph.create_edge_definition(
+        edge_collection=EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
+        from_vertex_collections=[COLLECTION_LANGUAGES],
+        to_vertex_collections=[COLLECTION_MENU_COLLECTIONS],
+    )
+    # Collection -> Categories
+    graph.create_edge_definition(
+        edge_collection=EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
+        from_vertex_collections=[COLLECTION_MENU_COLLECTIONS],
+        to_vertex_collections=[COLLECTION_MENU_CATEGORIES],
+    )
+    # Category -> Files
+    graph.create_edge_definition(
+        edge_collection=EDGE_COLLECTION_CATEGORY_HAS_FILES,
+        from_vertex_collections=[COLLECTION_MENU_CATEGORIES],
+        to_vertex_collections=[COLLECTION_FILES],
+    )
 
 
 def create_edges_for_collection_has_categories(
