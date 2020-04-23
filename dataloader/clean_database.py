@@ -9,7 +9,6 @@ from tqdm import tqdm as tqdm
 
 
 from dataloader_constants import (
-    DB_NAME,
     COLLECTION_NAMES,
     INDEX_COLLECTION_NAMES,
     INDEX_VIEW_NAMES,
@@ -32,10 +31,6 @@ from dataloader_constants import (
     GRAPH_FILES_PARALLELS,
     EDGE_COLLECTION_FILE_HAS_SEGMENTS,
     EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
-    LANG_TIBETAN,
-    LANG_PALI,
-    LANG_CHINESE,
-    LANG_SANSKRIT
 )
 
 from dataloader_utils import get_database, get_system_database
