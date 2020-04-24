@@ -133,7 +133,7 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threa
     
 
 @task
-def build_search_index(
+def create_search_index(
     c,
     index_url_skt_pli=DEFAULT_SOURCE_URL + "/search_index_sanskrit_pali.json.gz",
     index_url_tib=DEFAULT_SOURCE_URL + "/search_index_tibetan.json.gz",
