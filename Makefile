@@ -49,18 +49,19 @@ load-segment-data:
 load-segment-data-async:
 	@docker exec -t dataloader bash -c "invoke load-segment-files --threaded"
 
+
 # Load & build the search-index
 create-search-index:
 	@docker exec -t dataloader bash -c "invoke create-search-index"
 
 add-segment-index:
-	@docker exec -ti dataloader bash -c "invoke add-indicies"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
 
 # Load all (segment, parallel & menu) data
 load-data:
 	@docker exec -ti dataloader bash -c "invoke load-menu-files"
 	@docker exec -ti dataloader bash -c "invoke load-segment-files"
-	@docker exec -ti dataloader bash -c "invoke add-indicies"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
 	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
 	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
@@ -76,6 +77,58 @@ load-data-async:
 clean-db:
 	@docker exec -t dataloader bash -c "invoke clean-all-collections"
 	@docker exec -t dataloader bash -c "invoke create-db create-collections"
+
+# these commands are for loading individual datasets asynchronously
+load-sanskrit-data:
+	@docker exec -ti dataloader bash -c "invoke load-menu-files"
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=skt"
+	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
+	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
+
+load-tibetan-data:
+	@docker exec -ti dataloader bash -c "invoke load-menu-files"
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=tib"
+	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
+	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
+
+load-chinese-data:
+	@docker exec -ti dataloader bash -c "invoke load-menu-files"
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=chn"
+	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
+	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
+
+load-pali-data:
+	@docker exec -ti dataloader bash -c "invoke load-menu-files"
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=pli"
+	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
+	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
+
+
+# the following four commands are for partial unloading of individual datasets
+clean-tibetan-data:
+	@docker exec -t dataloader bash -c "invoke clean-tibetan"
+	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
+	@docker exec -t dataloader bash -c "invoke load-menu-files"
+
+clean-sanskrit-data:
+	@docker exec -t dataloader bash -c "invoke clean-sanskrit"
+	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
+	@docker exec -t dataloader bash -c "invoke load-menu-files"
+
+clean-chinese-data:
+	@docker exec -t dataloader bash -c "invoke clean-chinese"
+	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
+	@docker exec -t dataloader bash -c "invoke load-menu-files"
+
+clean-pali-data:
+	@docker exec -t dataloader bash -c "invoke clean-pali"
+	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
+	@docker exec -t dataloader bash -c "invoke load-menu-files"
+
 
 # clean & remove the search-index
 clean-search-index:

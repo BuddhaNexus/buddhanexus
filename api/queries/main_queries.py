@@ -63,9 +63,16 @@ FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
 
 # TODO: this query is slow because of sorting. Figure out how to sort more efficiently.
 QUERY_TABLE_VIEW = """
-FOR p IN parallels
-    FILTER p.root_filename == @filename
-    LIMIT 200000
+FOR f IN parallels_sorted_file
+    FILTER f._key == @filename
+    LET current_parallels = (
+    FOR current_parallel in f.@sortkey
+        FOR p in parallels
+            filter p._key == current_parallel
+            return p 
+    )
+
+for p in current_parallels
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
     FILTER p["co-occ"] <= @coocc
@@ -85,7 +92,7 @@ FOR p IN parallels
         ? POSITION(collection_filter_test2, true)
         : false
     FILTER fits_collection2 == false
-    SORT p.@sortkey @sortdirection
+    
     LIMIT 50 * @page, 50
     let root_seg_text = (
         FOR segnr IN p.root_segnr
@@ -224,10 +231,20 @@ LET filter_target = FLATTEN(
     FOR target_item IN @targetcollection
         FOR category IN 1..1 OUTBOUND concat("menu_collections/", target_item) GRAPH 'collections_categories'
             RETURN category.category
-)
+    )
 
-FOR p IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_parallels'
-    LIMIT 15000
+
+FOR f in parallels_sorted_file
+    filter f._key == @filename
+    let current_parallels = (
+    for current_parallel in slice(f.parallels_randomized,0,15000)
+        for p in parallels
+            filter p._key == current_parallel
+            return p 
+    )
+
+
+FOR p IN current_parallels
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
     FILTER p["co-occ"] <= @coocc

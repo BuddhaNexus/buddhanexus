@@ -192,17 +192,14 @@ async def get_table_view(
         limit_collection, get_language_from_filename(file_name)
     )
     sort_key = ""
-    sort_direction = "DESC"
     if sort_method == "position":
-        sort_key = "root_pos_beg"
-        sort_direction = "ASC"
+        sort_key = "parallels_sorted_by_src_pos"
     if sort_method == "quoted-text":
-        sort_key = "par_pos_beg"
-        sort_direction = "ASC"
+        sort_key = "parallels_sorted_by_tgt_pos"
     if sort_method == "length":
-        sort_key = "root_length"
+        sort_key = "parallels_sorted_by_length_src"
     if sort_method == "length2":
-        sort_key = "par_length"
+        sort_key = "parallels_sorted_by_length_tgt"
 
     try:
         query = get_db().AQLQuery(
@@ -212,7 +209,6 @@ async def get_table_view(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "sortdirection": sort_direction,
                 "sortkey": sort_key,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,

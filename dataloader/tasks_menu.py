@@ -20,7 +20,8 @@ from dataloader_constants import (
 
 def create_collections_categories_graph(db: StandardDatabase) -> None:
     if db.has_graph(GRAPH_COLLECTIONS_CATEGORIES):
-        return    
+        return
+    
     graph = db.create_graph(GRAPH_COLLECTIONS_CATEGORIES)
     # Language -> Collections
     graph.create_edge_definition(
