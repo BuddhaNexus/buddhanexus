@@ -75,8 +75,8 @@ def create_files_segments_graph() -> None:
     )
 
 
-def load_segment_data_from_menu_files(root_url: str, threads: int, list_of_langs: list):
-    for language in list_of_langs:
+def load_segment_data_from_menu_files(root_url: str, threads: int, langs: list):
+    for language in langs:
         with open(f"../data/{language}-files.json") as f:
             print(f"\nLoading segment data from menu files in {language}:...")
             files_data = json.load(f)
@@ -373,24 +373,17 @@ def load_parallels_sorted(json_parallels: [Parallel], db: StandardDatabase,filen
     db_collection_sorted = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
     # I wonder if this can be done more efficiently, a lot of spaghetti code...    
     parallels_sorted_by_src_position = sorted(json_parallels, key=lambda k: k['root_pos_beg'])
-    ids_sorted_by_src_position = []
-    for parallel in parallels_sorted_by_src_position:
-        ids_sorted_by_src_position.append(parallel['id'])
+    ids_sorted_by_src_position = map(lambda parallel: parallel['id'], parallels_sorted_by_src_position)
         
-    parallels_sorted_by_tgt_position = sorted(json_parallels, key=lambda k: k['par_pos_beg'])                                           
-    ids_sorted_by_tgt_position = []
-    for parallel in parallels_sorted_by_tgt_position:
-        ids_sorted_by_tgt_position.append(parallel['id'])
+    parallels_sorted_by_tgt_position = sorted(json_parallels, key=lambda k: k['par_pos_beg'])
+    ids_sorted_by_tgt_position = map(lambda parallel: parallel['id'], parallels_sorted_by_tgt_position)
 
     parallels_sorted_by_length_par = sorted(json_parallels, key=lambda k: k['par_length'])                                          
-    ids_sorted_by_length_par = []
-    for parallel in parallels_sorted_by_length_par:
-        ids_sorted_by_length_par.append(parallel['id'])
+    ids_sorted_by_length_par = map(lambda parallel: parallel['id'], parallels_sorted_by_length_par)
 
     parallels_sorted_by_length_root = sorted(json_parallels, key=lambda k: k['root_length'])
-    ids_sorted_by_length_root = []
-    for parallel in parallels_sorted_by_length_root:
-        ids_sorted_by_length_root.append(parallel['id'])
+    ids_sorted_by_length_root = map(lambda parallel: parallel['id'], parallels_sorted_by_length_root)
+
     ids_sorted_by_length_par.reverse()
     ids_sorted_by_length_root.reverse()
 

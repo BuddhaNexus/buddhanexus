@@ -65,9 +65,9 @@ FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
 QUERY_TABLE_VIEW = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
-    let current_parallels = (
-    for current_parallel in f.@sortkey
-        for p in parallels
+    LET current_parallels = (
+    FOR current_parallel in f.@sortkey
+        FOR p in parallels
             filter p._key == current_parallel
             return p 
     )

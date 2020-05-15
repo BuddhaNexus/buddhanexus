@@ -118,7 +118,7 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threa
     :param root_url: URL to the server where source files are stored
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
-    thread_count = os.cpu_count() - 1
+    thread_count = 10#os.cpu_count() - 1
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
         lang = [''.join(lang)]
@@ -278,7 +278,7 @@ def load_menu_files(c):
 
 
 @task
-def add_indicies(c):
+def add_indices(c):
     db = get_database()
     print("Creating Indices")
     create_indices(db)
