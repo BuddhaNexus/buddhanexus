@@ -1,6 +1,5 @@
 import re
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
-import multiprocessing
 from fuzzysearch import levenshtein_ngram
 
 bn_analyzer = bn_translate.analyzer()
