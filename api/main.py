@@ -306,6 +306,10 @@ async def get_file_text_segments_and_parallels(
     """
     Endpoint for text view
     """
+    parallel_ids_type = "parallel_ids_limited"
+    # when the limit_collection filter is active, we have to fetch all possible parallels and cannot rely on the limited ones anymore
+    if len(limit_collection) > 0:
+        parallel_ids_type = "parallel_ids" 
     start_int = 0
     limit = 200
     if active_segment != "none":
@@ -334,6 +338,7 @@ async def get_file_text_segments_and_parallels(
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
             bindVars={
+                "parallel_ids_type": parallel_ids_type,
                 "filename": file_name,
                 "limit": limit,
                 "startint": start_int,

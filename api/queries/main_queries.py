@@ -136,7 +136,7 @@ FOR file IN files
                 RETURN {
                     segnr: segment.segnr,
                     segtext: segment.segtext,
-                    parallel_ids: segment.parallel_ids
+                    parallel_ids: segment.@parallel_ids_type
                 }
         )
 
