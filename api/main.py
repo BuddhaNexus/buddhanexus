@@ -8,6 +8,7 @@ Todo:
 
 import re
 import os
+import time
 from typing import Dict, List
 from urllib.parse import unquote
 
@@ -623,6 +624,7 @@ async def get_data_for_sidebar_menu(language: str):
 
 @APP.get("/search/{search_string}")
 async def get_search_results(search_string: str):
+    time_before = time.time()
     """
     Returns search results for given search string.
     :return: List of search results
@@ -644,7 +646,10 @@ async def get_search_results(search_string: str):
         rawResults=True,
     )
     query_result = query_search.result[0]
+    print("TIME FOR QUERYING",time.time() - time_before)
+    time_before = time.time()
     result = search_utils.postprocess_results(search_string, query_result)
+    print("TIME FOR POSTPROCESSING",time.time() - time_before)
     return {"searchResults": result}
 
 

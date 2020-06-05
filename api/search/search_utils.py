@@ -71,10 +71,15 @@ def process_result(result,search_string):
         pass
 
 def postprocess_results(search_string, results):
+    time_before = time.time()
     for result in results:
         result = process_result(result,search_string)
     results = [x for x in results if 'centeredness' in x]
-    results = remove_duplicate_results(results)    
+    print("TIME FOR LEVENSHTEIN",time.time() - time_before)
+    time_before = time.time()
+    results = remove_duplicate_results(results)
+    print("TIME FOR REMOVING DUPLICATES",time.time() - time_before)
+
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
     results = sorted(results, key = lambda i: i['distance']) 
     return results[:2000] # make sure we only return a max. number of 2000 results
