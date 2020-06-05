@@ -307,9 +307,10 @@ async def get_file_text_segments_and_parallels(
     Endpoint for text view
     """
     parallel_ids_type = "parallel_ids_limited"
-    # when the limit_collection filter is active, we have to fetch all possible parallels and cannot rely on the limited ones anymore
+    # when the limit_collection filter is active,
+    # we have to fetch all possible parallels.
     if len(limit_collection) > 0:
-        parallel_ids_type = "parallel_ids" 
+        parallel_ids_type = "parallel_ids"
     start_int = 0
     limit = 200
     if active_segment != "none":
@@ -642,7 +643,6 @@ async def get_search_results(search_string: str):
         batchSize=300,
         rawResults=True,
     )
-    print("TIME FOR QUERYING",time.time() - time_before)
     query_result = query_search.result[0]
     result = search_utils.postprocess_results(search_string, query_result)
     return {"searchResults": result}
