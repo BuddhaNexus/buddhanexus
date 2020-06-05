@@ -623,20 +623,23 @@ async def get_search_results(search_string: str):
     """
     database = get_db()
     result = []
-    search_string_precise, search_string_fuzzy = search_utils.preprocess_search_string(
+    search_strings = search_utils.preprocess_search_string(
         search_string
     )
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH,
         bindVars={
-            "search_string": search_string_precise,
-            "search_string_fuzzy": search_string_fuzzy,
+            "search_string_tib": search_strings['tib'],
+            "search_string_chn": search_strings['chn'],
+            "search_string_skt": search_strings['skt'],
+            "search_string_skt_fuzzy": search_strings['skt_fuzzy']
         },
         batchSize=300,
         rawResults=True,
     )
+    print("TIME FOR QUERYING",time.time() - time_before)
     query_result = query_search.result[0]
-    result = search_utils.postprocess_results(search_string_precise, query_result)
+    result = search_utils.postprocess_results(search_string, query_result)
     return {"searchResults": result}
 
 
