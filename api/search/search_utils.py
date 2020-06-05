@@ -71,7 +71,6 @@ def process_result(result,search_string):
         pass
 
 def postprocess_results(search_string, results):
-    time_before = time.time()
     for result in results:
         result = process_result(result,search_string)
     results = [x for x in results if 'centeredness' in x]
