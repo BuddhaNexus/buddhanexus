@@ -164,15 +164,15 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
     for parallel in all_parallels:
         if isinstance(
             parallel, dict
-        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future. TODO 4/20: check if this problem still exists, maybe we can rid of it
+        ):  # this relates to a strange bug in the generated data, I hope I can fix it in the future. TODO 4/20: check if this problem still exists, maybe we can get rid of it
             if parallel["root_segnr"]:
                 for segment_key in parallel["root_segnr"]:
                     if segment_key not in segmentnr_parallel_ids_dic.keys():
                         segmentnr_parallel_ids_dic[segment_key] = [parallel["id"]]
                     else:
                         segmentnr_parallel_ids_dic[segment_key].append(parallel["id"])
-                    # the limited-dic collects only the first 20 parallels, because we don't need more for the text-view. 
-                    if parallel['co-occ'] <= 20:
+                    # the limited-dic collects only the first 10 parallels, because we don't need more for the text-view. 
+                    if parallel['co-occ'] <= 10:
                         if segment_key not in segmentnr_parallel_ids_dic_limited.keys():
                             segmentnr_parallel_ids_dic_limited[segment_key] = [parallel["id"]]
                         else:
