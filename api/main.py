@@ -312,7 +312,7 @@ async def get_file_text_segments_and_parallels(
     if len(limit_collection) > 0:
         parallel_ids_type = "parallel_ids"
     start_int = 0
-    limit = 200
+    limit = 400
     if active_segment != "none":
         active_segment = unquote(active_segment)
         try:
@@ -320,7 +320,7 @@ async def get_file_text_segments_and_parallels(
                 query=main_queries.QUERY_SEGMENT_COUNT,
                 bindVars={"segmentnr": active_segment},
             )
-            start_int = text_segment_count_query_result.result[0] - 100
+            start_int = text_segment_count_query_result.result[0] - 200
         except DocumentNotFoundError as error:
             print(error)
             raise HTTPException(status_code=404, detail="Item not found")
