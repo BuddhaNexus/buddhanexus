@@ -79,7 +79,8 @@ async def get_segment(lang: str, key: str) -> Dict[str, str]:
 @APP.get("/parallels/{root_segnr}")
 async def get_parallels_for_root_seg_nr(root_segnr: str):
     """
-    Returns parallels for given root_    :return: List of paralllel objects
+    Returns parallels for given root_segnr.
+    :return: List of paralllel objects
     """
     aql = f"""
     FOR p IN parallels
