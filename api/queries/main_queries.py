@@ -65,63 +65,56 @@ FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
 QUERY_TABLE_VIEW = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
-    LET current_parallels = (
-    FOR current_parallel in f.@sortkey
+    FOR current_parallel in SLICE(f.@sortkey,100 * @page, 100)
         FOR p in parallels
-            filter p._key == current_parallel
-            return p 
-    )
-
-for p in current_parallels
-    FILTER p.score >= @score
-    FILTER p.par_length >= @parlength
-    FILTER p["co-occ"] <= @coocc
-    LET collection_filter_test = (
-        FOR item IN @limitcollection_positive
-        RETURN REGEX_TEST(p.par_segnr[0], item)
-    )
-    LET fits_collection = (@limitcollection_positive != [])
-        ? POSITION(collection_filter_test, true)
-        : true
-    FILTER fits_collection == true
-    LET collection_filter_test2 = (
-        FOR item IN @limitcollection_negative
-        RETURN REGEX_TEST(p.par_segnr[0], item)
-    )
-    LET fits_collection2 = (@limitcollection_negative != [])
-        ? POSITION(collection_filter_test2, true)
-        : false
-    FILTER fits_collection2 == false
-    
-    LIMIT 50 * @page, 50
-    let root_seg_text = (
-        FOR segnr IN p.root_segnr
-            FOR segment IN segments
-                FILTER segment._key == segnr
-                RETURN segment.segtext
-    )
-    let par_segment = (
-        FOR segnr IN p.par_segnr
-            FOR segment IN segments
-                FILTER segment._key == segnr
-                RETURN segment.segtext
-    )
-    RETURN {
-        par_segnr: p.par_segnr,
-        par_offset_beg: p.par_offset_beg,
-        par_offset_end: p.par_offset_end,
-        root_offset_beg: p.root_offset_beg,
-        root_offset_end: p.root_offset_end-1,
-        par_segment: par_segment,
-        file_name: p.id,
-        root_segnr: p.root_segnr,
-        root_seg_text: root_seg_text,
-        par_length: p.par_length,
-        root_length: p.root_length,
-        par_pos_beg: p.par_pos_beg,
-        "co-occ": p["co-occ"],
-        score: p.score
-    }
+            FILTER p._key == current_parallel
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
+            LET collection_filter_test = (
+                FOR item IN @limitcollection_positive
+                RETURN REGEX_TEST(p.par_segnr[0], item)
+            )
+            LET fits_collection = (@limitcollection_positive != [])
+                ? POSITION(collection_filter_test, true)
+                : true
+            FILTER fits_collection == true
+            LET collection_filter_test2 = (
+                FOR item IN @limitcollection_negative
+                RETURN REGEX_TEST(p.par_segnr[0], item)
+            )
+            LET fits_collection2 = (@limitcollection_negative != [])
+                ? POSITION(collection_filter_test2, true)
+                : false
+            FILTER fits_collection2 == false
+                let root_seg_text = (
+                FOR segnr IN p.root_segnr
+                    FOR segment IN segments
+                        FILTER segment._key == segnr
+                        RETURN segment.segtext
+            )
+            let par_segment = (
+                FOR segnr IN p.par_segnr
+                    FOR segment IN segments
+                        FILTER segment._key == segnr
+                        RETURN segment.segtext
+            )
+            RETURN {
+                par_segnr: p.par_segnr,
+                par_offset_beg: p.par_offset_beg,
+                par_offset_end: p.par_offset_end,
+                root_offset_beg: p.root_offset_beg,
+                root_offset_end: p.root_offset_end-1,
+                par_segment: par_segment,
+                file_name: p.id,
+                root_segnr: p.root_segnr,
+                root_seg_text: root_seg_text,
+                par_length: p.par_length,
+                root_length: p.root_length,
+                par_pos_beg: p.par_pos_beg,
+                "co-occ": p["co-occ"],
+                score: p.score
+            }
 """
 
 
