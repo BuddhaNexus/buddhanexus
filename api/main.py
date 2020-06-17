@@ -76,22 +76,6 @@ async def get_segment(lang: str, key: str) -> Dict[str, str]:
         return error
 
 
-@APP.get("/parallels/{root_segnr}")
-async def get_parallels_for_root_seg_nr(root_segnr: str):
-    """
-    Returns parallels for given root_segnr.
-    :return: List of paralllel objects
-    """
-    aql = f"""
-    FOR p IN parallels
-        FILTER '{root_segnr}' IN p.root_segnr
-        RETURN p
-    """
-    try:
-        query_result = get_db().AQLQuery(query=aql)
-        return query_result.result
-    except (DocumentNotFoundError, KeyError) as error:
-        return error
 
 
 @APP.post("/parallels-for-middle/")

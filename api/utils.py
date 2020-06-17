@@ -17,13 +17,14 @@ def get_language_from_filename(filename) -> str:
     :param filename: The key of the file
     :return: Language of the file
     """
+    lang = "pli"
     if re.search(r"[DH][0-9][0-9][0-9]", filename):
-        return "tib"
+        lang = "tib"
     elif re.search(r"(u$|u:|^Y)", filename):
-        return "skt"
+        lang =  "skt"
     elif re.search(r"(_[TX])", filename):
-        return "chn"
-    return "pli"
+        lang = "chn"
+    return lang
 
 
 def create_cleaned_limit_collection(limit_collection) -> List:
