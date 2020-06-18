@@ -7,6 +7,7 @@ from arango import (
 from arango.database import StandardDatabase
 from tqdm import tqdm as tqdm
 
+from global_search_function import clean_analyzers
 
 from dataloader_constants import (
     COLLECTION_NAMES,
@@ -42,7 +43,8 @@ def clean_search_index_db():
     db = get_database()
     try:
         for name in INDEX_COLLECTION_NAMES:
-            db.delete_collection(name)
+            if db.has_collection(name):
+                db.delete_collection(name)
         for name in INDEX_VIEW_NAMES:
             db.delete_view(name)
     except CollectionDeleteError as e:

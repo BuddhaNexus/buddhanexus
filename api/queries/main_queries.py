@@ -9,10 +9,12 @@ Todo:
 Rewrote 1/8 queries
 """
 
-QUERY_ALL_SEGMENTS = """
-FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
-    RETURN segment._key
+QUERY_FOLIOS = """
+FOR file IN files
+    FILTER file._key == @filename
+    RETURN file.folios
 """
+
 
 QUERY_SEGMENT_COUNT = """
 FOR segment IN segments
@@ -61,7 +63,7 @@ FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
     RETURN { "segmentnr": segment._key, "parallels": seg_parallels[0] }
 """
 
-# TODO: this query is slow because of sorting. Figure out how to sort more efficiently.
+
 QUERY_TABLE_VIEW = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
