@@ -105,10 +105,9 @@ def collect_segment_results(segments) -> List:
         if "parallels" not in segment or segment["parallels"] is None:
             continue
         for parallel in segment["parallels"]:
-            for seg_nr in parallel:
-                collection_key = re.search(COLLECTION_PATTERN, seg_nr)
-                if collection_key and collection_key.group() not in collection_keys:
-                    collection_keys.append(collection_key.group())
+            collection_key = re.search(COLLECTION_PATTERN, parallel)
+            if collection_key and collection_key.group() not in collection_keys:
+                collection_keys.append(collection_key.group())
         segments_result.append(segment)
 
     return segments_result, collection_keys
