@@ -205,7 +205,7 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
                     else:
                         segmentnr_parallel_ids_dic[segment_key].append(parallel["id"])
                     # the limited-dic collects only the first 10 parallels, because we don't need more for the text-view. 
-                    if parallel['co-occ'] <= 10:
+                    if parallel['co-occ'] <= 20:
                         if segment_key not in segmentnr_parallel_ids_dic_limited.keys():
                             segmentnr_parallel_ids_dic_limited[segment_key] = [parallel["id"]]
                         else:
