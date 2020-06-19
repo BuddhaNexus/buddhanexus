@@ -290,7 +290,8 @@ async def get_file_text_segments_and_parallels(
     """
     Endpoint for text view
     """
-    parallel_ids_type = "parallel_ids_limited"
+    #parallel_ids_type = "parallel_ids_limited"
+    parallel_ids_type = "parallel_ids"
     # when the limit_collection filter is active,
     # we have to fetch all possible parallels.
     if len(limit_collection) > 0:
@@ -588,6 +589,7 @@ async def get_search_results(search_string: str):
     search_strings = search_utils.preprocess_search_string(
         search_string
     )
+    print("SEARCH STRINGS",search_strings)
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH,
         bindVars={
