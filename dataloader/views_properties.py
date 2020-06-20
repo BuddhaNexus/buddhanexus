@@ -27,7 +27,7 @@ PROPERTIES_SEARCH_INDEX_TIB_FUZZY = {
         COLLECTION_SEARCH_INDEX_TIB: {
             "analyzers": [TIBETAN_FUZZY_ANALYZER],
             "fields": {
-                "search_string_precise": {"analyzers": [TIBETAN_FUZZY_ANALYZER]}
+                "search_string_fuzzy": {"analyzers": [TIBETAN_FUZZY_ANALYZER]}
             },
         }
     },

@@ -10,10 +10,11 @@ def preprocess_search_string(search_string):
     skt = ""
     skt_fuzzy = bn_analyzer.stem_sanskrit(search_string)
     if skt_fuzzy == "":
-        tib = search_string
+        tib = bn_analyzer.stem_tibetan(search_string)
         chn = search_string
     else:
         skt = search_string
+    print("TIBETAN SEARCH STRING",tib)
     return {"skt": skt,
             "skt_fuzzy":skt_fuzzy,
             "tib": tib,
