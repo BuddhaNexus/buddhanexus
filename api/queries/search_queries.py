@@ -6,15 +6,9 @@ LET chinese_results = (
         RETURN d
     )
 
-let tibetan_precise_results = (
-    FOR d IN search_index_tib_view
-        SEARCH PHRASE(d.search_string_precise, @search_string_tib, 'tibetan_analyzer')
-        LIMIT 1000
-        RETURN d
-    )
 let tibetan_fuzzy_results = (
     FOR d IN search_index_tib_fuzzy_view
-        SEARCH PHRASE(d.search_string_precise, @search_string_tib, 'tibetan_fuzzy_analyzer')
+        SEARCH PHRASE(d.search_string_fuzzy, @search_string_tib, 'tibetan_fuzzy_analyzer')
         LIMIT 1000
         RETURN d
     )
@@ -30,5 +24,5 @@ let skt_pli_results_fuzzy = (
         LIMIT 1000
         RETURN d
     )
-RETURN FLATTEN([chinese_results, tibetan_precise_results,tibetan_fuzzy_results,skt_pli_results,skt_pli_results_fuzzy])
+RETURN FLATTEN([chinese_results, tibetan_fuzzy_results,skt_pli_results,skt_pli_results_fuzzy])
 """
