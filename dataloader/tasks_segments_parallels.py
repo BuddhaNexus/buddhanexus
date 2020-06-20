@@ -11,6 +11,10 @@ from arango.database import StandardDatabase
 
 from dataloader_constants import (
     DEFAULT_LANGS,
+    LANG_PALI,
+    LANG_CHINESE,
+    LANG_TIBETAN,
+    LANG_SANSKRIT,
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_SEGMENTS,
@@ -99,6 +103,35 @@ def load_segment_data_from_menu_files(root_url: str, threads: int, langs: list):
             )
     create_files_segments_graph()
 
+def get_folios_from_segment_keys(segment_keys, lang):
+    folios = []
+    first_segment = segment_keys[0]
+    last_segment = segment_keys[-1]
+    if lang == LANG_CHINESE:
+        first_num = int(first_segment.split(":")[1].split("-")[0])
+        last_num = int(last_segment.split(":")[1].split("-")[0])
+        folios = list(range(first_num, last_num + 1))
+    elif lang == LANG_TIBETAN:
+        first_num = int(first_segment.split(":")[1].split("-")[0][:-1])
+        last_num = int(last_segment.split(":")[1].split("-")[0][:-1])
+        first_folio = first_segment.split(":")[1].split("-")[0]
+        last_folio = last_segment.split(":")[1].split("-")[0]
+        folios.append(first_folio)
+        if "a" in first_folio:
+            folios.append(first_folio.replace("a", "b"))
+        for number in list(range(first_num + 1, last_num)):
+            folios.append(str(number) + "a")
+            folios.append(str(number) + "b")
+        if "b" in last_folio:
+            folios.append(last_folio.replace("b", "a"))
+        folios.append(last_folio)
+    elif lang == LANG_PALI:
+        for segment in segments:
+            suttanr = segment.split(".")[0]
+            if suttanr not in folios:
+                folios.append(suttanr)
+    return folios
+    
 
 def load_segments_and_parallels_data_from_menu_file(
     menu_file_json, lang: str, root_url: str
@@ -172,7 +205,7 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
                     else:
                         segmentnr_parallel_ids_dic[segment_key].append(parallel["id"])
                     # the limited-dic collects only the first 10 parallels, because we don't need more for the text-view. 
-                    if parallel['co-occ'] <= 10:
+                    if parallel['co-occ'] <= 20:
                         if segment_key not in segmentnr_parallel_ids_dic_limited.keys():
                             segmentnr_parallel_ids_dic_limited[segment_key] = [parallel["id"]]
                         else:
@@ -208,7 +241,6 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
 
             segment_keys.append(segment_key)
             segment_count += 1
-
     totallengthcount = Counter()
     for totalcount in parallel_total_list:
         totallengthcount += Counter(totalcount)
@@ -285,7 +317,8 @@ def load_files_collection(file: MenuItem, segment_keys: list,lang: str, db: Stan
     files_db_collection = db.collection(COLLECTION_FILES)
     file_segments_edge_collection = db.collection(EDGE_COLLECTION_FILE_HAS_SEGMENTS)
     file_key = file["filename"]
-    doc = {"_key": file_key, "segment_keys": segment_keys,"language":lang}
+    folios = get_folios_from_segment_keys(segment_keys,lang)
+    doc = {"_key": file_key, "segment_keys": segment_keys, "folios" : folios, "language":lang}
     doc.update(file)
 
     try:
@@ -373,16 +406,16 @@ def load_parallels_sorted(json_parallels: [Parallel], db: StandardDatabase,filen
     db_collection_sorted = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
     # I wonder if this can be done more efficiently, a lot of spaghetti code...    
     parallels_sorted_by_src_position = sorted(json_parallels, key=lambda k: k['root_pos_beg'])
-    ids_sorted_by_src_position = map(lambda parallel: parallel['id'], parallels_sorted_by_src_position)
+    ids_sorted_by_src_position = list(map(lambda parallel: parallel['id'], parallels_sorted_by_src_position))
         
     parallels_sorted_by_tgt_position = sorted(json_parallels, key=lambda k: k['par_pos_beg'])
-    ids_sorted_by_tgt_position = map(lambda parallel: parallel['id'], parallels_sorted_by_tgt_position)
+    ids_sorted_by_tgt_position = list(map(lambda parallel: parallel['id'], parallels_sorted_by_tgt_position))
 
     parallels_sorted_by_length_par = sorted(json_parallels, key=lambda k: k['par_length'])                                          
-    ids_sorted_by_length_par = map(lambda parallel: parallel['id'], parallels_sorted_by_length_par)
+    ids_sorted_by_length_par = list(map(lambda parallel: parallel['id'], parallels_sorted_by_length_par))
 
     parallels_sorted_by_length_root = sorted(json_parallels, key=lambda k: k['root_length'])
-    ids_sorted_by_length_root = map(lambda parallel: parallel['id'], parallels_sorted_by_length_root)
+    ids_sorted_by_length_root = list(map(lambda parallel: parallel['id'], parallels_sorted_by_length_root))
 
     ids_sorted_by_length_par.reverse()
     ids_sorted_by_length_root.reverse()
@@ -444,7 +477,6 @@ def calculate_parallel_totals():
                     bind_vars={"category": category, "language": language},
                 )
                 all_files = [doc for doc in all_files_cursor]
-
                 add_category_totals_to_db(
                     all_files,
                     category,

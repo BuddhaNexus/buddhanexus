@@ -49,6 +49,7 @@ from global_search_function import (
     load_search_index_chn,
     create_analyzers,
     clean_analyzers,
+    create_search_views
 )
 
 from tasks_menu import (
@@ -147,9 +148,10 @@ def create_search_index(
     collections = INDEX_COLLECTION_NAMES
     for name in collections:
         db.create_collection(name)
-    load_search_index_skt_pli(index_url_skt_pli, db)
-    load_search_index_chn(index_url_chn, db)
+    #load_search_index_skt_pli(index_url_skt_pli, db)
+    #load_search_index_chn(index_url_chn, db)
     load_search_index_tib(index_url_tib, db)
+    create_search_views(db)
     print("Search index data loading completed.")
 
 

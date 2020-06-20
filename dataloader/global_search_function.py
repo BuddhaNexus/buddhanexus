@@ -49,10 +49,6 @@ def load_search_index_skt_pli(path, db: StandardDatabase):
         for i in tqdm(range(0, len(index_data), chunksize)):
             collection.insert_many(index_data[i : i + chunksize])
         print(f"\nDone loading index data sanskrit+pali...")
-        print(f"\nCreating View...")
-        db.create_arangosearch_view(
-            name=VIEW_SEARCH_INDEX_SKT_PLI, properties=PROPERTIES_SEARCH_INDEX_SKT_PLI
-        )
         print("\nDone creating View")
 
 
@@ -67,15 +63,6 @@ def load_search_index_tib(path, db: StandardDatabase):
         for i in tqdm(range(0, len(index_data), chunksize)):
             collection.insert_many(index_data[i : i + chunksize])
         print(f"\nDone loading Tibetan index data...")
-        print(f"\nCreating View...")
-        db.create_arangosearch_view(
-            name=VIEW_SEARCH_INDEX_TIB, properties=PROPERTIES_SEARCH_INDEX_TIB
-        )
-        db.create_arangosearch_view(
-            name=VIEW_SEARCH_INDEX_TIB_FUZZY,
-            properties=PROPERTIES_SEARCH_INDEX_TIB_FUZZY,
-        )
-
         print("\nDone creating View")
 
 
@@ -89,10 +76,7 @@ def load_search_index_chn(path, db: StandardDatabase):
         for i in tqdm(range(0, len(index_data), chunksize)):
             collection.insert_many(index_data[i : i + chunksize])
         print(f"\nDone loading index data Chn...")
-        print(f"\nCreating View...")
-        db.create_arangosearch_view(
-            name=VIEW_SEARCH_INDEX_CHN, properties=PROPERTIES_SEARCH_INDEX_CHN
-        )
+
         print("\nDone creating View for Chinese")
 
 
@@ -133,6 +117,27 @@ def create_analyzers(db: StandardDatabase):
         features=["position", "norm", "frequency"],
     )
 
+def create_search_views(db: StandardDatabase):
+    print(f"\nCreating Sanskrit+Pali search views...")
+    db.create_arangosearch_view(
+        name=VIEW_SEARCH_INDEX_SKT_PLI, properties=PROPERTIES_SEARCH_INDEX_SKT_PLI
+    )
+    
+    print(f"\nCreating Tibetan search views...")
+    db.create_arangosearch_view(
+        name=VIEW_SEARCH_INDEX_TIB, properties=PROPERTIES_SEARCH_INDEX_TIB
+    )
+    db.create_arangosearch_view(
+        name=VIEW_SEARCH_INDEX_TIB_FUZZY,
+        properties=PROPERTIES_SEARCH_INDEX_TIB_FUZZY,
+    )
+    
+    print(f"\nCreating Chinese search view...")
+    db.create_arangosearch_view(
+        name=VIEW_SEARCH_INDEX_CHN, properties=PROPERTIES_SEARCH_INDEX_CHN
+    )
+    
+    
 
 def clean_analyzers(db: StandardDatabase):
     for analyzer in ANALYZER_NAMES:
