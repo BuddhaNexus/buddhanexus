@@ -23,7 +23,7 @@
     },
     {
         "category": "K02",
-        "categoryname": "BUM",
+        "categoryname": "'BUM",
         "files": [
             "K02D0008_H0009",
             "K02D0008-2_H0009-2",
@@ -935,7 +935,7 @@
     },
     {
         "category": "T01",
-        "categoryname": "BSTOD TSOGS",
+        "categoryname": "BSTOD TSHOGS",
         "files": [
             "T01D1109",
             "T01D1110",
@@ -3869,7 +3869,7 @@
     },
     {
         "category": "T05",
-        "categoryname": "MDO GREL",
+        "categoryname": "MDO 'GREL",
         "files": [
             "T05D3981",
             "T05D3982",
@@ -4143,7 +4143,7 @@
     },
     {
         "category": "T11",
-        "categoryname": "TSAD MA",
+        "categoryname": "TSHAD MA",
         "files": [
             "T11D4203",
             "T11D4204",
