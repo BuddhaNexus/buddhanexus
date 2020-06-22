@@ -60,7 +60,7 @@ FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
 
             RETURN p.par_segnr
     )
-    RETURN { "segmentnr": segment._key, "parallels": seg_parallels[0] }
+    RETURN { "segmentnr": segment._key, "parallels": seg_parallels }
 """
 
 
