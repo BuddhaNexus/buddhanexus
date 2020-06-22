@@ -586,8 +586,9 @@ async def get_search_results(search_string: str):
     """
     database = get_db()
     result = []
+
     search_strings = search_utils.preprocess_search_string(
-        search_string
+        search_string[:150]
     )
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH,
