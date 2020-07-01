@@ -126,7 +126,7 @@ def get_folios_from_segment_keys(segment_keys, lang):
             folios.append(last_folio.replace("b", "a"))
         folios.append(last_folio)
     elif lang == LANG_PALI:
-        for segment in segments:
+        for segment in segment_keys:
             suttanr = segment.split(".")[0]
             if suttanr not in folios:
                 folios.append(suttanr)
