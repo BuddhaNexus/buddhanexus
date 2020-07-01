@@ -4,6 +4,7 @@ FOR file IN 3..3 OUTBOUND concat("languages/", @language) GRAPH 'collections_cat
     FILTER file
     RETURN {
         displayName: file.displayName,
+        search_field: file.search_field,
         textname: file.textname,
         filename: file.filename,
         category: file.category
