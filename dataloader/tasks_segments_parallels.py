@@ -318,7 +318,8 @@ def load_files_collection(file: MenuItem, segment_keys: list,lang: str, db: Stan
     file_segments_edge_collection = db.collection(EDGE_COLLECTION_FILE_HAS_SEGMENTS)
     file_key = file["filename"]
     folios = get_folios_from_segment_keys(segment_keys,lang)
-    doc = {"_key": file_key, "segment_keys": segment_keys, "folios" : folios, "language":lang}
+    search_field = file['textname'] + " " + file['displayName'] 
+    doc = {"_key": file_key, "segment_keys": segment_keys, "folios" : folios, "language":lang, "search_field" : search_field}
     doc.update(file)
 
     try:
