@@ -54,7 +54,7 @@ FOR collection IN 1..1 OUTBOUND concat("languages/", @language) GRAPH 'collectio
                 FOR file IN 1..1 OUTBOUND category._id GRAPH 'collections_categories'
                     SORT file.filenr
                     FILTER file
-                    RETURN { filename: file.filename, displayname: file.displayName }
+                    RETURN { filename: file.filename, textname: file.textname, displayname: file.displayName }
             )
             RETURN {
                 categoryname: category.category,
