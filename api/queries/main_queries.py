@@ -67,7 +67,7 @@ FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
 QUERY_TABLE_VIEW = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
-    FOR current_parallel in SLICE(f.@sortkey,100 * @page, 100)
+    FOR current_parallel in f.@sortkey 
         FOR p in parallels
             FILTER p._key == current_parallel
             FILTER p.score >= @score
@@ -101,6 +101,7 @@ FOR f IN parallels_sorted_file
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
+            LIMIT 100 * @page,100
             RETURN {
                 par_segnr: p.par_segnr,
                 par_offset_beg: p.par_offset_beg,
