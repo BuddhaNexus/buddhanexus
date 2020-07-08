@@ -5,6 +5,7 @@ Utilities for interacting with the database and other tasks
 import gzip
 import io
 import json
+import re
 
 from arango import ArangoClient
 from arango.database import StandardDatabase
@@ -150,3 +151,15 @@ def get_language_name(language_key):
         return "Sanskrit"
     else:
         return "Unknown"
+
+
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    '''
+        alist.sort(key=natural_keys) sorts in human order
+        http://nedbatchelder.com/blog/200712/human_sorting.html
+        (See Toothy's implementation in the comments)
+        '''
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]

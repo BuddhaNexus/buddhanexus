@@ -38,6 +38,7 @@ from dataloader_utils import (
     get_segments_and_parallels_from_gzipped_remote_file,
     get_collection_list_for_language,
     get_categories_for_language_collection,
+    natural_keys
 )
 
 # allow importing from api directory
@@ -409,7 +410,7 @@ def load_parallels_sorted(json_parallels: [Parallel], db: StandardDatabase,filen
     parallels_sorted_by_src_position = sorted(json_parallels, key=lambda k: k['root_pos_beg'])
     ids_sorted_by_src_position = list(map(lambda parallel: parallel['id'], parallels_sorted_by_src_position))
         
-    parallels_sorted_by_tgt_position = sorted(json_parallels, key=lambda k: k['par_pos_beg'])
+    parallels_sorted_by_tgt_position = sorted(json_parallels, key=lambda k: natural_keys(k['par_segnr'][0]))
     ids_sorted_by_tgt_position = list(map(lambda parallel: parallel['id'], parallels_sorted_by_tgt_position))
 
     parallels_sorted_by_length_par = sorted(json_parallels, key=lambda k: k['par_length'])                                          
