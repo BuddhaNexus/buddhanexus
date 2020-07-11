@@ -106,26 +106,21 @@ def load_segment_data_from_menu_files(root_url: str, threads: int, langs: list):
 
 def get_folios_from_segment_keys(segment_keys, lang):
     folios = []
-    first_segment = segment_keys[0]
-    last_segment = segment_keys[-1]
     if lang == LANG_CHINESE:
-        first_num = int(first_segment.split(":")[1].split("-")[0])
-        last_num = int(last_segment.split(":")[1].split("-")[0])
-        folios = list(range(first_num, last_num + 1))
+        last_num = ''
+        for segment_key in segment_keys:
+            num = segment_key.split("_")[1].split(":")[0]
+            if num != last_num:
+                folios.append({"num": num, "segment_nr": segment_key})
+                last_num = num
+        
     elif lang == LANG_TIBETAN:
-        first_num = int(first_segment.split(":")[1].split("-")[0][:-1])
-        last_num = int(last_segment.split(":")[1].split("-")[0][:-1])
-        first_folio = first_segment.split(":")[1].split("-")[0]
-        last_folio = last_segment.split(":")[1].split("-")[0]
-        folios.append(first_folio)
-        if "a" in first_folio:
-            folios.append(first_folio.replace("a", "b"))
-        for number in list(range(first_num + 1, last_num)):
-            folios.append(str(number) + "a")
-            folios.append(str(number) + "b")
-        if "b" in last_folio:
-            folios.append(last_folio.replace("b", "a"))
-        folios.append(last_folio)
+        last_num = ''
+        for segment_key in segment_keys:
+            num = segment_key.split(":")[1].split("-")[0]
+            if num != last_num:
+                folios.append({"num": num, "segment_nr": segment_key})
+                last_num = num
     elif lang == LANG_PALI:
         for segment in segment_keys:
             suttanr = segment.split(".")[0]
