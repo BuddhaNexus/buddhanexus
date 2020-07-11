@@ -552,7 +552,6 @@ async def get_folios_for_file(file_name: str):
     Returns number of folios (TIB) / facsimiles (CHN) / suttas (PLI)
     """
     lang = get_language_from_filename(file_name)
-    print("FOLIOS LANG",lang)
     if lang == "skt" or (
         lang == "pli" and not re.search(r"(^[as]n[0-9]|^dhp)", file_name)
     ):
