@@ -61,7 +61,6 @@ add-segment-index:
 load-data:
 	@docker exec -ti dataloader bash -c "invoke load-menu-files"
 	@docker exec -ti dataloader bash -c "invoke load-segment-files"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
 	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
 	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
