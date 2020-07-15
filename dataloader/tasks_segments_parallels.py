@@ -124,7 +124,7 @@ def get_folios_from_segment_keys(segment_keys, lang):
     elif lang == LANG_PALI:
         last_num = ''
         for segment_key in segment_keys:
-            num = segment_key.split(".")[0]
+            num = segment_key.split(".")[0].split(":")[1]
             if num != last_num:
                 folios.append({"num": num, "segment_nr": segment_key})
                 last_num = num
