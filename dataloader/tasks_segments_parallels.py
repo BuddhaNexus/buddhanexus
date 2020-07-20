@@ -361,6 +361,7 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
     for parallel in json_parallels:
         if isinstance(parallel, dict):
             root_filename = parallel["root_segnr"][0].split(":")[0]
+            root_filename = re.sub("_[0-9][0-9][0-9]","",root_filename)
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
