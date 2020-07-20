@@ -124,10 +124,13 @@ def get_folios_from_segment_keys(segment_keys, lang):
     elif lang == LANG_PALI:
         last_num = ''
         for segment_key in segment_keys:
-            num = segment_key.split(".")[0].split(":")[1]
-            if num != last_num:
-                folios.append({"num": num, "segment_nr": segment_key})
-                last_num = num
+            if re.search(r"^([as]n\d|dhp)", segment_key):
+                num = segment_key.split(".")[0].split(":")[1]
+                if num != last_num:
+                    folios.append({"num": num, "segment_nr": segment_key})
+                    last_num = num
+            else:
+                break
     return folios
     
 
@@ -209,7 +212,6 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
                         else:
                             segmentnr_parallel_ids_dic_limited[segment_key].append(parallel["id"])
 
-                        
             if parallel["par_segnr"]:
                 collection_key = re.search(COLLECTION_REGEX, parallel["par_segnr"][0])
                 if collection_key:
