@@ -8,6 +8,7 @@ def preprocess_search_string(search_string):
     tib = ""
     chn = ""
     skt = ""
+    search_string = search_string.lower()
     skt_fuzzy = bn_analyzer.stem_sanskrit(search_string)
     if skt_fuzzy == "":
         tib = bn_analyzer.stem_tibetan(search_string)
