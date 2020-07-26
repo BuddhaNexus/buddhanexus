@@ -355,6 +355,7 @@ async def search_file_text_segments(file_name: str, search_string: str):
     """
     try:
         search_string = search_string.lower()
+        search_string = search_string.replace("’","'")
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_SEARCH,
             batchSize=100000,
