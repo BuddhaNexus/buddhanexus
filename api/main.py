@@ -355,6 +355,7 @@ async def search_file_text_segments(file_name: str, search_string: str):
     """
     try:
         search_string = search_string.lower()
+        search_string = search_string.replace("’", "'")
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_SEARCH,
             batchSize=100000,
@@ -614,3 +615,23 @@ async def tag_sanskrit(sanskrit_string: str):
     """
     result = search_utils.tag_sanskrit(sanskrit_string)
     return {"tagged": result}
+
+@APP.get("/displayname/{segmentnr}")
+async def get_displayname(segmentnr: str):
+    """
+    Returns the displayName for a segmentnr.
+    """
+    lang = get_language_from_filename(segmentnr)
+    filename = segmentnr.split(':')[0]
+    if lang == "chn":
+        filename = re.sub(r"_[0-9]+", "", filename)
+    database = get_db()
+    query_displayname = database.AQLQuery(
+        query=main_queries.QUERY_DISPLAYNAME,
+        bindVars={
+            "filename": filename
+        },
+        rawResults=True
+    )
+    query_result = query_displayname.result[0]
+    return {"displayData": query_result}

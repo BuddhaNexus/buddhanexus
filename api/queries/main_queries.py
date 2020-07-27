@@ -288,3 +288,11 @@ FOR file IN files
                      segtext: segment.segtext,
                      parallel_ids: segment.parallel_ids }
 """
+
+QUERY_DISPLAYNAME = """
+FOR file IN files
+    FILTER file._key == @filename
+    RETURN file.displayName
+"""
+
+
