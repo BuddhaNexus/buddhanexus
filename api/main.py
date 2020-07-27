@@ -624,7 +624,7 @@ async def get_displayname(segmentnr: str):
     lang = get_language_from_filename(segmentnr)
     filename = segmentnr.split(':')[0]
     if lang == "chn":
-        filename = re.sub(r"_[0-9]+", "", filename)    
+        filename = re.sub(r"_[0-9]+", "", filename)
     database = get_db()
     query_displayname = database.AQLQuery(
         query=main_queries.QUERY_DISPLAYNAME,
