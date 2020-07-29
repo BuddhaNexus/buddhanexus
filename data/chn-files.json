@@ -11648,25 +11648,11 @@
     "filenr": 1664
 },
 {
-    "displayName": "辯中邊論 1",
-    "textname": "T31_1600-001",
+    "displayName": "辯中邊論",
+    "textname": "T31_1600",
     "filename": "T31n1600",
     "category": "T31",
     "filenr": 1665
-},
-{
-    "displayName": "辯中邊論 2",
-    "textname": "T31_1600-002",
-    "filename": "T31n1600-002",
-    "category": "T31",
-    "filenr": 1666
-},
-{
-    "displayName": "辯中邊論 3",
-    "textname": "T31_1600-003",
-    "filename": "T31n1600-003",
-    "category": "T31",
-    "filenr": 1667
 },
 {
     "displayName": "辯中邊論頌",
@@ -25541,5 +25527,5 @@
     "filename": "X88n1671",
     "category": "X88",
     "filenr": 3649
-},
+}
 ]
