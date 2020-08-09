@@ -1,24 +1,60 @@
 [
   {
-    "collection": "Tengyur",
+    "collection": "Sūtrapiṭaka",
     "categories": [
-      "T01",
-      "T02",
-      "T03",
-      "T04",
-      "T05",
-      "T06",
-      "T07",
-      "T09",
-      "T10",
-      "T11",
-      "T15",
-      "T16"
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S09",
+      "S10"
     ]
   },
   {
-    "collection": "Kangyur",
-    "categories": ["K01", "K02", "K10"]
+    "collection": "Vinayapiṭaka",
+    "categories": [
+      "V01",
+      "V02",
+      "V03",
+      "V04",
+      "V05"
+    ]
+  },
+  {
+    "collection": "Śāstrapiṭaka",
+    "categories": [
+      "SA01",
+      "SA02",
+      "SA03",
+      "SA04",
+      "SA05",
+      "SA06",
+      "SA07",
+      "SA08",
+      "SA09",
+      "SA10",
+      "SA11",
+      "SA12",
+      "SA13",
+      "SA14",
+      "SA15",
+      "SA16",
+      "SA17",
+      "SA18",
+      "SA19",
+      "SA20",
+      "SA21",
+      "SA22",
+      "SA23",
+      "SA24",
+      "SA25",
+      "SA26",
+      "SA27",
+      "SA28"
+    ]
   },
   {
     "collection": "Buddhist",
