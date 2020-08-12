@@ -89,6 +89,7 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
     )
     query_result = get_db().AQLQuery(
         query=main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
+        batchSize=10000,
         bindVars={
             "segmentnr": parallels.segmentnr,
             "score": parallels.score,
