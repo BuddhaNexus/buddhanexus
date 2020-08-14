@@ -1,6 +1,6 @@
 [
   {
-    "collection": "Sūtrapiṭaka",
+    "collection": "Sutrapitaka",
     "categories": [
       "S01",
       "S02",
@@ -8,13 +8,12 @@
       "S04",
       "S05",
       "S06",
-      "S07",
-      "S09",
+      "S08",
       "S10"
     ]
   },
   {
-    "collection": "Vinayapiṭaka",
+    "collection": "Vinayapitaka",
     "categories": [
       "V01",
       "V02",
@@ -24,12 +23,10 @@
     ]
   },
   {
-    "collection": "Śāstrapiṭaka",
+    "collection": "Sastrapitaka",
     "categories": [
       "SA01",
       "SA02",
-      "SA03",
-      "SA04",
       "SA05",
       "SA06",
       "SA07",
@@ -37,7 +34,6 @@
       "SA09",
       "SA10",
       "SA11",
-      "SA12",
       "SA13",
       "SA14",
       "SA15",
@@ -47,13 +43,7 @@
       "SA19",
       "SA20",
       "SA21",
-      "SA22",
-      "SA23",
-      "SA24",
-      "SA25",
-      "SA26",
-      "SA27",
-      "SA28"
+      "SA22"
     ]
   },
   {
