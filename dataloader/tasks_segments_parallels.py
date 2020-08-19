@@ -51,8 +51,6 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 from api.queries import menu_queries, main_queries
 from api.utils import get_language_from_filename
 
-collection_pattern = "^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
-
 
 def create_files_segments_graph() -> None:
     db = get_database()
