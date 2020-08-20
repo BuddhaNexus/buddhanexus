@@ -1,6 +1,6 @@
 [
-  {
-    "collection": "Sutrapitaka",
+{
+    "collection": "Buddhist",
     "categories": [
       "S01",
       "S02",
@@ -9,22 +9,12 @@
       "S05",
       "S06",
       "S08",
-      "S10"
-    ]
-  },
-  {
-    "collection": "Vinayapitaka",
-    "categories": [
+      "S10",
       "V01",
       "V02",
       "V03",
       "V04",
-      "V05"
-    ]
-  },
-  {
-    "collection": "Sastrapitaka",
-    "categories": [
+      "V05",
       "SA01",
       "SA02",
       "SA05",
@@ -43,12 +33,9 @@
       "SA19",
       "SA20",
       "SA21",
-      "SA22"
+      "SA22",
+      "XX"
     ]
-  },
-  {
-    "collection": "Other-Buddhist",
-    "categories": ["XX"]
   },
   {
     "collection": "Veda",

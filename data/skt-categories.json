@@ -1,6 +1,6 @@
 [{
     "category": "S01",
-    "categoryname": "Avadāna",
+    "categoryname": "Avadāna (Sūtra)",
     "files": [
         "S01ahovcs_u",
         "S01divav29u",
@@ -27,7 +27,7 @@
 },
 {
     "category": "S02",
-    "categoryname": "Dhāraṇī",
+    "categoryname": "Dhāraṇī (Sūtra)",
     "files": [
         "S02dhvajkdu",
         "S02dhvajkeu",
@@ -57,7 +57,7 @@
 },
 {
     "category": "S03",
-    "categoryname": "Jātaka",
+    "categoryname": "Jātaka (Sūtra)",
     "files": [
         "S03ajm_u",
         "S03bsa032_u",
@@ -68,7 +68,7 @@
 },
 {
     "category": "S04",
-    "categoryname": "Mahāyānasūtra",
+    "categoryname": "Mahāyānasūtra (Sūtra)",
     "files": [
         "S04ajitsvyu",
         "S04bsu006_u",
@@ -120,7 +120,7 @@
 },
 {
     "category": "S05",
-    "categoryname": "Nirdeśa",
+    "categoryname": "Nirdeśa (Sūtra)",
     "files": [
         "S05bsu013_u",
         "S05bsu027_u"
@@ -128,7 +128,7 @@
 },
 {
     "category": "S06",
-    "categoryname": "Prajñāpāramitā",
+    "categoryname": "Prajñāpāramitā (Sūtra)",
     "files": [
         "S06adhsatpu",
         "S06bsu056_u",
@@ -170,7 +170,7 @@
 },
 {
     "category": "S08",
-    "categoryname": "Tantra",
+    "categoryname": "Tantra (Sūtra)",
     "files": [
         "S08bsu041_u",
         "S08abhnispu",
@@ -197,21 +197,21 @@
 },
 {
     "category": "V01",
-    "categoryname": "Mahāsāṃghikāna",
+    "categoryname": "Mahāsāṃghikāna (Vinaya)",
     "files": [
         "V01bsu046_u"
     ]
 },
 {
     "category": "V02",
-    "categoryname": "Sarvāstivāda",
+    "categoryname": "Sarvāstivāda (Vinaya)",
     "files": [
         "V02prmosu_u"
     ]
 },
 {
     "category": "V03",
-    "categoryname": "Mūlasarvāstivāda",
+    "categoryname": "Mūlasarvāstivāda (Vinaya)",
     "files": [
         "V03vinv16_u",
         "V03vinv06_u",
@@ -239,7 +239,7 @@
 },
 {
     "category": "V04",
-    "categoryname": "Lokuttaravāda",
+    "categoryname": "Lokuttaravāda  (Vinaya)",
     "files": [
         "V04prmosulu"
     ]
@@ -257,7 +257,7 @@
 },
 {
     "category": "SA01",
-    "categoryname": "Abhidharma",
+    "categoryname": "Abhidharma (Śāstra)",
     "files": [
         "SA01vabhdiku",
         "SA01vabhdilu",
@@ -273,14 +273,14 @@
 },
 {
     "category": "SA02",
-    "categoryname": "Advayatantraṭīkā",
+    "categoryname": "Advayatantraṭīkā (Śāstra)",
     "files": [
         "SA02narsekou"
     ]
 },
 {
     "category": "SA05",
-    "categoryname": "Stotra",
+    "categoryname": "Stotra (Śāstra)",
     "files": [
         "SA05nagast_u",
         "SA05busto1_u",
@@ -299,7 +299,7 @@
 },
 {
     "category": "SA06",
-    "categoryname": "Darśana",
+    "categoryname": "Darśana (Śāstra)",
     "files": [
         "SA06bsa042_u",
         "SA06bsa045_u"
@@ -307,7 +307,7 @@
 },
 {
     "category": "SA07",
-    "categoryname": "Kāvya",
+    "categoryname": "Kāvya (Śāstra)",
     "files": [
         "SA07bghsic_u",
         "SA07subhrk_u",
@@ -316,14 +316,14 @@
 },
 {
     "category": "SA08",
-    "categoryname": "Kośa",
+    "categoryname": "Kośa (Śāstra)",
     "files": [
         "SA08bsa007_u"
     ]
 },
 {
     "category": "SA09",
-    "categoryname": "Lekha",
+    "categoryname": "Lekha (Śāstra)",
     "files": [
         "SA09bsa067_u",
         "SA09cansisyu",
@@ -332,7 +332,7 @@
 },
 {
     "category": "SA10",
-    "categoryname": "Madhyamaka",
+    "categoryname": "Madhyamaka (Śāstra)",
     "files": [
         "SA10bsa028_u",
         "SA10bsa009_u",
@@ -356,7 +356,7 @@
 },
 {
     "category": "SA11",
-    "categoryname": "Madhyamaka-yogācāra",
+    "categoryname": "Madhyamaka-yogācāra (Śāstra)",
     "files": [
         "SA11bsa041_u",
         "SA11bsa047_u",
@@ -395,14 +395,14 @@
 },
 {
     "category": "SA13",
-    "categoryname": "Nīti",
+    "categoryname": "Nīti (Śāstra)",
     "files": [
         "SA13bsa060_u"
     ]
 },
 {
     "category": "SA14",
-    "categoryname": "Prajñāpāramitā",
+    "categoryname": "Prajñāpāramitā (Śāstra)",
     "files": [
         "SA14bsa026_u",
         "SA14abhisamu",
@@ -415,7 +415,7 @@
 },
 {
     "category": "SA15",
-    "categoryname": "Pramāṇa",
+    "categoryname": "Pramāṇa (Śāstra)",
     "files": [
         "SA15bsa001_u",
         "SA15bsa002_u",
@@ -456,14 +456,14 @@
 },
 {
     "category": "SA16",
-    "categoryname": "Sautrāntika",
+    "categoryname": "Sautrāntika (Śāstra)",
     "files": [
         "SA16hvsatssu"
     ]
 },
 {
     "category": "SA17",
-    "categoryname": "Śilpaśāstra",
+    "categoryname": "Śilpaśāstra (Śāstra)",
     "files": [
         "SA17nagcitpu",
         "SA17bsa044_u",
@@ -474,7 +474,7 @@
 },
 {
     "category": "SA18",
-    "categoryname": "Vinaya",
+    "categoryname": "Vinaya (Śāstra)",
     "files": [
         "SA18jsphustu",
         "SA18sghancsu"
@@ -482,7 +482,7 @@
 },
 {
     "category": "SA19",
-    "categoryname": "Vividha",
+    "categoryname": "Vividha (Śāstra)",
     "files": [
         "SA19bsa062_u",
         "SA19nagsaliu",
@@ -492,7 +492,7 @@
 },
 {
     "category": "SA20",
-    "categoryname": "Yogācāra",
+    "categoryname": "Yogācāra (Śāstra)",
     "files": [
         "SA20bsa058_u",
         "SA20vasbocpu",
@@ -520,7 +520,7 @@
 },
 {
     "category": "SA21",
-    "categoryname": "Yoginītantraṭīkā",
+    "categoryname": "Yoginītantraṭīkā (Śāstra)",
     "files": [
         "SA21nitkarpu",
         "SA21sunytjsu"
@@ -528,7 +528,7 @@
 },
 {
     "category": "SA22",
-    "categoryname": "Yogottaratantraṭīkā",
+    "categoryname": "Yogottaratantraṭīkā (Śāstra)",
     "files": [
         "SA22bsa006_u",
         "SA22dipguhsu",
