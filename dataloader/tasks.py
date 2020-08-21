@@ -44,7 +44,8 @@ from tasks_segments_parallels import (
 )
 
 from global_search_function import (
-    load_search_index_skt_pli,
+    load_search_index_skt,
+    load_search_index_pli,
     load_search_index_tib,
     load_search_index_chn,
     create_analyzers,
@@ -130,13 +131,11 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threa
     
     print("Segment data loading completed.")
 
-
-    
-
 @task
 def create_search_index(
     c,
-    index_url_skt_pli=DEFAULT_SOURCE_URL + "/search_index_sanskrit_pali.json.gz",
+    index_url_skt=DEFAULT_SOURCE_URL + "/search_index_sanskrit.json.gz",
+    index_url_pli=DEFAULT_SOURCE_URL + "/search_index_pali.json.gz",
     index_url_tib=DEFAULT_SOURCE_URL + "/search_index_tibetan.json.gz",
     index_url_chn=DEFAULT_SOURCE_URL + "/search_index_chn.json.gz",
 ):
@@ -148,8 +147,9 @@ def create_search_index(
     collections = INDEX_COLLECTION_NAMES
     for name in collections:
         db.create_collection(name)
-    #load_search_index_skt_pli(index_url_skt_pli, db)
-    #load_search_index_chn(index_url_chn, db)
+    load_search_index_skt(index_url_skt, db)
+    load_search_index_pli(index_url_pli, db)
+    load_search_index_chn(index_url_chn, db)
     load_search_index_tib(index_url_tib, db)
     create_search_views(db)
     print("Search index data loading completed.")

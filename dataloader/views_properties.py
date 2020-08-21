@@ -1,10 +1,12 @@
 from dataloader_constants import (
-    COLLECTION_SEARCH_INDEX_SKT_PLI,
+    COLLECTION_SEARCH_INDEX_SKT,
+    COLLECTION_SEARCH_INDEX_PLI,
     COLLECTION_SEARCH_INDEX_TIB,
     COLLECTION_SEARCH_INDEX_CHN,
     TIBETAN_ANALYZER,
     TIBETAN_FUZZY_ANALYZER,
-    SANSKRIT_PALI_ANALYZER,
+    SANSKRIT_ANALYZER,
+    PALI_ANALYZER,
     CHINESE_ANALYZER,
 )
 
@@ -37,14 +39,30 @@ PROPERTIES_SEARCH_INDEX_TIB_FUZZY = {
 }
 
 
-PROPERTIES_SEARCH_INDEX_SKT_PLI = {
+PROPERTIES_SEARCH_INDEX_SKT = {
     "cleanupIntervalStep": 0,
     "links": {
-        COLLECTION_SEARCH_INDEX_SKT_PLI: {
-            "analyzers": [SANSKRIT_PALI_ANALYZER],
+        COLLECTION_SEARCH_INDEX_SKT: {
+            "analyzers": [SANSKRIT_ANALYZER],
             "fields": {
-                "search_string_precise": {"analyzers": [SANSKRIT_PALI_ANALYZER]},
-                "search_string_fuzzy": {"analyzers": [SANSKRIT_PALI_ANALYZER]},
+                "search_string_precise": {"analyzers": [SANSKRIT_ANALYZER]},
+                "search_string_fuzzy": {"analyzers": [SANSKRIT_ANALYZER]},
+            },
+        }
+    },
+    "includeAllFields": True,
+    "storeValues": "none",
+    "trackListPositions": False,
+}
+
+PROPERTIES_SEARCH_INDEX_PLI = {
+    "cleanupIntervalStep": 0,
+    "links": {
+        COLLECTION_SEARCH_INDEX_PLI: {
+            "analyzers": [PALI_ANALYZER],
+            "fields": {
+                "search_string_precise": {"analyzers": [PALI_ANALYZER]},
+                "search_string_fuzzy": {"analyzers": [PALI_ANALYZER]},
             },
         }
     },
