@@ -112,9 +112,12 @@ QUERY_FILES_PER_CATEGORY = """
 FOR file IN files_parallel_count
     FILTER file.category == @category
     FILTER file.language == @language
-    SORT file.filenr
-    RETURN {
-        filename: file._key,
-        totallengthcount: file.totallengthcount
-    }
+    FOR filename in files
+        FILTER filename._key == file._key
+        SORT file.filenr
+        RETURN {
+            filename: file._key,
+            displayName: filename.displayName,
+            totallengthcount: file.totallengthcount
+        }
 """

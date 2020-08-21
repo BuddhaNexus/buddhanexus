@@ -527,8 +527,13 @@ def add_category_totals_to_db(
             weight_value = 0
             if categoryname in parallel_count:
                 weight_value = parallel_count[categoryname]
+
+            displayFileName = filename["filename"]
+            if language == 'skt' or language == 'pli':
+                displayFileName += ' ['+filename["displayName"]+']'
+
             new_paralllel_entry = [
-                filename["filename"],
+                displayFileName,
                 selected_category_dict[categoryname].rstrip()
                 + "_("
                 + categoryname
