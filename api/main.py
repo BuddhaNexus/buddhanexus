@@ -592,12 +592,14 @@ async def get_search_results(search_string: str):
     search_strings = search_utils.preprocess_search_string(
         search_string[:150]
     )
+    print("SEARCH STRINGS",search_strings)
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH,
         bindVars={
             "search_string_tib": search_strings['tib'],
             "search_string_chn": search_strings['chn'],
             "search_string_skt": search_strings['skt'],
+            "search_string_pli": search_strings['pli'],            
             "search_string_skt_fuzzy": search_strings['skt_fuzzy']
         },
         batchSize=300,
