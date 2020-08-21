@@ -598,7 +598,7 @@ async def get_search_results(search_string: str):
             "search_string_tib": search_strings['tib'],
             "search_string_chn": search_strings['chn'],
             "search_string_skt": search_strings['skt'],
-            "search_string_pli": search_strings['pli'],            
+            "search_string_pli": search_strings['pli'],
             "search_string_skt_fuzzy": search_strings['skt_fuzzy']
         },
         batchSize=300,
