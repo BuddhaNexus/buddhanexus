@@ -150,13 +150,13 @@ async def get_segments_for_file(
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/files/{file_name}/table")
@@ -204,7 +204,7 @@ async def get_table_view(
 
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/menus/{language}")
@@ -222,13 +222,13 @@ async def get_files_for_menu(language: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/menus/filter/{language}")
@@ -246,13 +246,13 @@ async def get_files_for_filter_menu(language: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/menus/category/{language}")
@@ -270,13 +270,13 @@ async def get_categories_for_filter_menu(language: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/files/{file_name}/textandparallels")
@@ -309,13 +309,13 @@ async def get_file_text_segments_and_parallels(
             start_int = text_segment_count_query_result.result[0] - 400
         except DocumentNotFoundError as error:
             print(error)
-            raise HTTPException(status_code=404, detail="Item not found")
+            raise HTTPException(status_code=404, detail="Item not found") from error
         except AQLQueryError as error:
             print("AQLQueryError: ", error)
-            raise HTTPException(status_code=400, detail=error.errors)
+            raise HTTPException(status_code=400, detail=error.errors) from error
         except KeyError as error:
             print("KeyError: ", error)
-            raise HTTPException(status_code=400)
+            raise HTTPException(status_code=400) from error
     if start_int < 0:
         start_int = 0
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
@@ -340,13 +340,13 @@ async def get_file_text_segments_and_parallels(
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/files/{file_name}/searchtext")
@@ -369,13 +369,13 @@ async def search_file_text_segments(file_name: str, search_string: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/files/{file_name}/graph")
@@ -510,13 +510,13 @@ async def get_all_collections():
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/parallels/{file_name}/count")
