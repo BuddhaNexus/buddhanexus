@@ -530,7 +530,7 @@ def add_category_totals_to_db(
 
             displayFileName = filename["filename"]
             if language == 'skt' or language == 'pli':
-                displayFileName += ' ['+filename["displayName"]+']'
+                displayFileName = filename["displayName"] + ' ('+displayFileName+')'
 
             new_paralllel_entry = [
                 displayFileName,
