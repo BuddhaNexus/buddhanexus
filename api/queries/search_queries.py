@@ -12,17 +12,26 @@ let tibetan_fuzzy_results = (
         LIMIT 1000
         RETURN d
     )
-let skt_pli_results = (
-    FOR d IN search_index_skt_pli_view
+let skt_results = (
+    FOR d IN search_index_skt_view
         SEARCH PHRASE(d.search_string_precise, @search_string_skt, 'sanskrit_analyzer')
         LIMIT 1000
         RETURN d
     )
-let skt_pli_results_fuzzy = (
-    FOR d IN search_index_skt_pli_view
+let skt_results_fuzzy = (
+    FOR d IN search_index_skt_view
         SEARCH PHRASE(d.search_string_fuzzy, @search_string_skt_fuzzy, 'sanskrit_analyzer')
         LIMIT 1000
         RETURN d
     )
-RETURN FLATTEN([chinese_results, tibetan_fuzzy_results,skt_pli_results,skt_pli_results_fuzzy])
+
+let pli_results = (
+    FOR d IN search_index_pli_view
+        SEARCH PHRASE(d.search_string_fuzzy, @search_string_pli, 'pali_analyzer')
+        LIMIT 1000
+        RETURN d
+    )
+
+
+RETURN FLATTEN([chinese_results, tibetan_fuzzy_results,skt_results,skt_results_fuzzy,pli_results])
 """
