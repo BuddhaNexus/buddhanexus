@@ -8,8 +8,10 @@ def preprocess_search_string(search_string):
     tib = ""
     chn = ""
     skt = ""
+    pli = ""
     search_string = search_string.lower()
     skt_fuzzy = bn_analyzer.stem_sanskrit(search_string)
+    pli = bn_analyzer.stem_pali(search_string)
     tib_preprocessed = search_string.replace("’", "'")
     if skt_fuzzy == "":
         tib = bn_analyzer.stem_tibetan(tib_preprocessed)
@@ -19,6 +21,7 @@ def preprocess_search_string(search_string):
     return {"skt": skt,
             "skt_fuzzy":skt_fuzzy,
             "tib": tib,
+            "pli": pli,            
             "chn": chn}
 
 def tag_sanskrit(sanskrit_string):
