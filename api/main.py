@@ -105,6 +105,7 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
 @APP.get("/files/{file_name}/segments")
 async def get_segments_for_file(
     file_name: str,
+    page: int,
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
@@ -130,6 +131,7 @@ async def get_segments_for_file(
                 "coocc": co_occ,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
+                "page": page,
             },
         )
 
