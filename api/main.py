@@ -617,7 +617,8 @@ async def tag_sanskrit(sanskrit_string: str):
     Stemming + Tagging for Sanskrit
     :return: String with tagged Sanskrit
     """
-    result = search_utils.tag_sanskrit(sanskrit_string)
+    result = search_utils.tag_sanskrit(sanskrit_string).replace("\n"," # ")
+    print("TAGGED RESULT",result)
     return {"tagged": result}
 
 @APP.get("/displayname/{segmentnr}")
