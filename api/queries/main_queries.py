@@ -297,3 +297,10 @@ FOR file IN files
 """
 
 
+QUERY_GRETIL_LINK = """
+FOR file IN files
+    FILTER file._key == @filename
+    RETURN file.gretil_link
+"""
+
+
