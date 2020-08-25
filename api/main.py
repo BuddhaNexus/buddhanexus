@@ -643,10 +643,11 @@ async def get_displayname(segmentnr: str):
 
 
 @APP.get("/gretillink/{segmentnr}")
-async def get_displayname(segmentnr: str):
+async def get_gretillink(segmentnr: str):
     """
     Returns the displayName for a segmentnr.
     """
+    query_result = {"gretilLink": ""}
     lang = get_language_from_filename(segmentnr)
     if lang == "skt":
         filename = segmentnr.split(':')[0]
@@ -659,6 +660,4 @@ async def get_displayname(segmentnr: str):
             rawResults=True
         )
         query_result = query_displayname.result[0]
-        return {"gretilLink": query_result}
-    else:
-        return {"gretilLink": ""}
+    return query_result
