@@ -105,6 +105,7 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
 @APP.get("/files/{file_name}/segments")
 async def get_segments_for_file(
     file_name: str,
+    page: int,
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
@@ -130,6 +131,7 @@ async def get_segments_for_file(
                 "coocc": co_occ,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
+                "page": page,
             },
         )
 
@@ -615,7 +617,7 @@ async def tag_sanskrit(sanskrit_string: str):
     Stemming + Tagging for Sanskrit
     :return: String with tagged Sanskrit
     """
-    result = search_utils.tag_sanskrit(sanskrit_string)
+    result = search_utils.tag_sanskrit(sanskrit_string).replace("\n"," # ")
     return {"tagged": result}
 
 @APP.get("/displayname/{segmentnr}")
