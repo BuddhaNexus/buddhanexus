@@ -659,5 +659,5 @@ async def get_gretillink(segmentnr: str):
             },
             rawResults=True
         )
-        query_result = query_displayname.result[0]
+        query_result = {"gretilLink": query_displayname.result[0]}
     return query_result
