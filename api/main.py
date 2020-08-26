@@ -639,3 +639,24 @@ async def get_displayname(segmentnr: str):
     )
     query_result = query_displayname.result[0]
     return {"displayData": query_result}
+
+
+@APP.get("/gretillink/{segmentnr}")
+async def get_gretillink(segmentnr: str):
+    """
+    Returns the displayName for a segmentnr.
+    """
+    query_result = {"gretilLink": ""}
+    lang = get_language_from_filename(segmentnr)
+    if lang == "skt":
+        filename = segmentnr.split(':')[0]
+        database = get_db()
+        query_displayname = database.AQLQuery(
+            query=main_queries.QUERY_GRETIL_LINK,
+            bindVars={
+                "filename": filename
+            },
+            rawResults=True
+        )
+        query_result = {"gretilLink": query_displayname.result[0]}
+    return query_result

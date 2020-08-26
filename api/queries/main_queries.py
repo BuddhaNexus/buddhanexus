@@ -293,7 +293,14 @@ FOR file IN files
 QUERY_DISPLAYNAME = """
 FOR file IN files
     FILTER file._key == @filename
-    RETURN [file.displayName, file.textname]
+    RETURN [file.displayName, file.textname, file.gretil_link]
+"""
+
+
+QUERY_GRETIL_LINK = """
+FOR file IN files
+    FILTER file._key == @filename
+    RETURN file.gretil_link
 """
 
 
