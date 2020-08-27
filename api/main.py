@@ -454,7 +454,19 @@ async def get_graph_for_file(
 
     histogram_data = []
     for name, count in total_histogram_dict.items():
-        histogram_data.append([name, count])
+        displayname = name
+        query_displayname = database.AQLQuery(
+            query=main_queries.QUERY_DISPLAYNAME,
+            bindVars={
+                "filename": name
+            },
+            rawResults=True
+        )
+        displayname_results = query_displayname.result
+        if displayname_results:
+            displayname = displayname_results[0][0] + ' (' + displayname_results[0][1] + ')'
+
+        histogram_data.append([displayname, count])
 
     # returns a list of the data as needed by Google Graphs
     return {
