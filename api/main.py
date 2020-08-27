@@ -412,7 +412,6 @@ async def get_graph_for_file(
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
-        #target_filename = parallel["textname"]
         target_filename = re.sub("_[0-9][0-9][0-9]","",parallel["textname"])
         if target_filename in total_histogram_dict.keys():
             total_histogram_dict[target_filename] += count_this_parallel
