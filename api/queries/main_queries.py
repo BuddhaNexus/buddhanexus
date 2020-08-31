@@ -236,7 +236,7 @@ LET filter_target = FLATTEN(
 FOR f in parallels_sorted_file
     filter f._key == @filename
     let current_parallels = (
-    for current_parallel in slice(f.parallels_randomized,0,15000)
+    for current_parallel in slice(f.parallels_randomized,0,2500)
         for p in parallels
             filter p._key == current_parallel
             return p 
