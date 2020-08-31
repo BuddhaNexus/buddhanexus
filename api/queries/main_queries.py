@@ -35,7 +35,7 @@ RETURN FLATTEN(
 
 QUERY_FILE_SEGMENTS_PARALLELS = """
 FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
-    LIMIT 50 * @page,50
+
     LET seg_parallels = (
         FOR p IN 1..1 OUTBOUND segment GRAPH 'files_segments'
             FILTER p.score >= @score
@@ -61,6 +61,8 @@ FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
 
             RETURN p.par_segnr
     )
+    FILTER LENGTH(seg_parallels) > 0
+    LIMIT 50 * @page,50
     RETURN { "segmentnr": segment._key, "parallels": seg_parallels }
 """
 
