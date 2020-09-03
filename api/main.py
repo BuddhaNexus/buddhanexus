@@ -565,13 +565,9 @@ async def get_counts_for_file(
 @APP.get("/files/{file_name}/folios")
 async def get_folios_for_file(file_name: str):
     """
-    Returns number of folios (TIB) / facsimiles (CHN) / suttas (PLI)
+    Returns number of folios (TIB) / facsimiles (CHN) / suttas/PTS nrs/segments (PLI) / segments (SKT)
     """
     lang = get_language_from_filename(file_name)
-    if lang == "skt" or (
-        lang == "pli" and not re.search(r"(^[as]n[0-9]|^dhp)", file_name)
-    ):
-        return
     query_graph_result = get_db().AQLQuery(
         query=main_queries.QUERY_FOLIOS,
         batchSize=100000,
