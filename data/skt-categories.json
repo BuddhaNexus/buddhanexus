@@ -573,7 +573,7 @@
 },
 {
     "category": "GV00",
-    "categoryname": "GV00 Veda 1 Sam",
+    "categoryname": "GV00 Samhita (Veda 1)",
     "files": [
         "GV00avs___u",
         "GV00maitrs_pu",
@@ -582,7 +582,7 @@
 },
 {
     "category": "GV01",
-    "categoryname": "GV01 Veda 1 Sam/1_rv",
+    "categoryname": "GV01 Samhita Rgveda (Veda 1)",
     "files": [
         "GV01rv_01_u",
         "GV01rv_02_u",
@@ -620,7 +620,7 @@
 },
 {
     "category": "GV02",
-    "categoryname": "GV02 Veda 2 Bra",
+    "categoryname": "GV02 Brahmana (Veda 2)",
     "files": [
         "GV02gopbra_u",
         "GV02gopthbru",
@@ -630,7 +630,7 @@
 },
 {
     "category": "GV03",
-    "categoryname": "GV03 Veda 2 Bra/Satapath",
+    "categoryname": "GV03 Satapatha-Brahmana (Veda 2)",
     "files": [
         "GV03sb_01_u",
         "GV03sb_02_u",
@@ -649,14 +649,14 @@
 },
 {
     "category": "GV04",
-    "categoryname": "GV04 Veda 3 Ara",
+    "categoryname": "GV04 Aranyaka (Veda 3)",
     "files": [
         "GV04sankharu"
     ]
 },
 {
     "category": "GV05",
-    "categoryname": "GV05 Veda 4 Upa",
+    "categoryname": "GV05 Upanisad (Veda)",
     "files": [
         "GV05agsas_1u",
         "GV05agsas_2u",
@@ -692,7 +692,7 @@
 },
 {
     "category": "GV06",
-    "categoryname": "GV06 Veda 5 Vedang",
+    "categoryname": "GV06 Vedanga (Veda 5)",
     "files": [
         "GV06apastgcu",
         "GV06apsulb_u",
@@ -715,7 +715,7 @@
 },
 {
     "category": "GE07",
-    "categoryname": "GE07 Mbh",
+    "categoryname": "GE07 Mahabharata",
     "files": [
         "GE07bhg4c01u",
         "GE07bhg4c02u",
@@ -776,7 +776,7 @@
 },
 {
     "category": "GP10",
-    "categoryname": "GP10 Bhagp",
+    "categoryname": "GP10 Bhagavata-Purana",
     "files": [
         "GP10bhp_01u",
         "GP10bhp_02u",
@@ -795,14 +795,14 @@
 },
 {
     "category": "GP11",
-    "categoryname": "GP11 Brahmap",
+    "categoryname": "GP11 Brahma-Purana",
     "files": [
         "GP11brahmppu"
     ]
 },
 {
     "category": "GP12",
-    "categoryname": "GP12",
+    "categoryname": "GP12 Other Purana",
     "files": [
         "GP12agp_bi_u",
         "GP12brndp1_u",
@@ -884,7 +884,7 @@
 },
 {
     "category": "GR14",
-    "categoryname": "GR14 Vaisn",
+    "categoryname": "GR14 Vaisnava",
     "files": [
         "GR14astavgpu",
         "GR14bhrgus_u",
@@ -924,7 +924,7 @@
 },
 {
     "category": "GK16",
-    "categoryname": "GK16 Poetry 1 Alam",
+    "categoryname": "GK16 Alamkara (Poetry 1)",
     "files": [
         "GK16andhvc1u",
         "GK16andhvc2u",
@@ -974,7 +974,7 @@
 },
 {
     "category": "GK17",
-    "categoryname": "GK17 Poetry 1 Chandas",
+    "categoryname": "GK17 Chandas (Poetry 1)",
     "files": [
         "GK17chandovu",
         "GK17jvrtmspu",
@@ -984,7 +984,7 @@
 },
 {
     "category": "GK18",
-    "categoryname": "GK18 Poetry 1 Natya",
+    "categoryname": "GK18 Natya (Poetry 1)",
     "files": [
         "GK18bharnatu",
         "GK18dhandasu"
@@ -992,7 +992,7 @@
 },
 {
     "category": "GK19",
-    "categoryname": "GK19 Poetry 2 Kavya",
+    "categoryname": "GK19 Kavya (Poetry 2)",
     "files": [
         "GK19aghatkvu",
         "GK19akadambu",
@@ -1074,7 +1074,7 @@
 },
 {
     "category": "GK20",
-    "categoryname": "GK20 Poetry 3 Drama",
+    "categoryname": "GK20 Drama (Poetry 3)",
     "files": [
         "GK20bhasdutu",
         "GK20bhassv_u",
@@ -1092,7 +1092,7 @@
 },
 {
     "category": "GK21",
-    "categoryname": "GK21 Poetry 4 Narr",
+    "categoryname": "GK21 Narrative Literature (Poetry 4)",
     "files": [
         "GK21brkas_pu",
         "GK21hitop_u",
@@ -1105,7 +1105,7 @@
 },
 {
     "category": "GK22",
-    "categoryname": "GK22 Poetry 5 Subhas",
+    "categoryname": "GK22 Subhasita (Poetry 5)",
     "files": [
         "GK22bharst_u",
         "GK22ksdarppu",
@@ -1118,7 +1118,7 @@
 },
 {
     "category": "GK23",
-    "categoryname": "GK23 Poetry 6 Hist",
+    "categoryname": "GK23 Historical (Poetry 6)",
     "files": [
         "GK23jonart_pu",
         "GK23kaulpradsam_u"
@@ -1126,7 +1126,7 @@
 },
 {
     "category": "GS24",
-    "categoryname": "GS24 Sastra 1 Gram",
+    "categoryname": "GS24 Grammer (Śāstra 1)",
     "files": [
         "GS24jvkasipu",
         "GS24panini_u",
@@ -1141,7 +1141,7 @@
 },
 {
     "category": "GS25",
-    "categoryname": "GS25 Sastra 2 Lex",
+    "categoryname": "GS25 Lexicography (Śāstra 2)",
     "files": [
         "GS25amark1pu",
         "GS25amark2_u",
@@ -1150,7 +1150,7 @@
 },
 {
     "category": "GS26",
-    "categoryname": "GS26 Sastra 3 Phil",
+    "categoryname": "GS26 Philosophy (Śāstra 3)",
     "files": [
         "GS26jaytuppu",
         "GS26sarvmtsu",
@@ -1159,7 +1159,7 @@
 },
 {
     "category": "GSP27",
-    "categoryname": "GSP27 Sastra 3 Phil Advaita",
+    "categoryname": "GSP27 Philosophy Advaita (Śāstra 3)",
     "files": [
         "GSP27moksop_u",
         "GSP27motik_1u",
@@ -1170,7 +1170,7 @@
 },
 {
     "category": "GSP28",
-    "categoryname": "GSP28 Sastra 3 Phil Mimamsa",
+    "categoryname": "GSP28 Philosophy Mimansa (Śāstra 3)",
     "files": [
         "GSP28dhebta_u",
         "GSP28durdhpru",
@@ -1214,7 +1214,7 @@
 },
 {
     "category": "GSP29",
-    "categoryname": "GSP29 Sastra 3 Phil Nyaya",
+    "categoryname": "GSP29 Philosophy Nyaya (Śāstra 3)",
     "files": [
         "GSP29antarkpu",
         "GSP29antsdi_u",
@@ -1248,7 +1248,7 @@
 },
 {
     "category": "GSP30",
-    "categoryname": "GSP30 Sastra 3 Phil Saiva",
+    "categoryname": "GSP30 Philosophy Saiva (Śāstra 3)",
     "files": [
         "GSP30abhiprvu",
         "GSP30abhmal1u",
@@ -1280,7 +1280,7 @@
 },
 {
     "category": "GSP31",
-    "categoryname": "GSP31 Sastra 3 Phil Samkhya",
+    "categoryname": "GSP31 Philosophy Samkhya (Śāstra 3)",
     "files": [
         "GSP31bhgank_u",
         "GSP31iskamatu",
@@ -1305,7 +1305,7 @@
 },
 {
     "category": "GSP32",
-    "categoryname": "GSP32 Sastra 3 Phil Vaisesik",
+    "categoryname": "GSP32 Philosophy Vaisesika (Śāstra 3)",
     "files": [
         "GSP32paddhs_u",
         "GSP32vaisessu",
@@ -1315,7 +1315,7 @@
 },
 {
     "category": "GSP33",
-    "categoryname": "GSP33 Sastra 3 Phil Vedanta",
+    "categoryname": "GSP33 Philosophy Vedanta (Śāstra 3)",
     "files": [
         "GSP33bbdip11u",
         "GSP33bbdip12u",
@@ -1369,7 +1369,7 @@
 },
 {
     "category": "GSP34",
-    "categoryname": "GSP34 Sastra 3 Phil Yoga",
+    "categoryname": "GSP34 Philosophy Yoga (Śāstra 3)",
     "files": [
         "GSP34ghers_pu",
         "GSP34hathyopu",
@@ -1381,7 +1381,7 @@
 },
 {
     "category": "GSD36",
-    "categoryname": "GSD36 Sastra 4 Dharma Smrti",
+    "categoryname": "GSD36 Dharmasastra Smrti (Śāstra 4)",
     "files": [
         "GSD36angirspu",
         "GSD36brhasp_u",
@@ -1403,7 +1403,7 @@
 },
 {
     "category": "GSD37",
-    "categoryname": "GSD37 Sastra 4 Dharma Sutra",
+    "categoryname": "GSD37 Dharmasastra Sutra (Śāstra 4)",
     "files": [
         "GSD37apastd_u",
         "GSD37baudhd_u",
@@ -1415,14 +1415,14 @@
 },
 {
     "category": "GS38",
-    "categoryname": "GS38 Sastra 5 Artha",
+    "categoryname": "GS38 Arthasastra (Śāstra 5)",
     "files": [
         "GS38kautil_u"
     ]
 },
 {
     "category": "GS39",
-    "categoryname": "GS39 Sastra 6 Kama",
+    "categoryname": "GS39 Kamasastra (Śāstra 6)",
     "files": [
         "GS39jyopancu",
         "GS39kamasufu",
@@ -1433,7 +1433,7 @@
 },
 {
     "category": "GS40",
-    "categoryname": "GS40 Sastra 7 Ayur",
+    "categoryname": "GS40 Ayurveda, alchemy (Śāstra 7)",
     "files": [
         "GS40anandk_u",
         "GS40bhavpr_u",
@@ -1459,7 +1459,7 @@
 },
 {
     "category": "GS41",
-    "categoryname": "GS41 Sastra 8 Jyot",
+    "categoryname": "GS41 Astrology, astronomy, mathematics (Śāstra 8)",
     "files": [
         "GS41aryabh_u",
         "GS41aryabhcu",
