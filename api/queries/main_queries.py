@@ -36,8 +36,11 @@ RETURN FLATTEN(
 QUERY_FILE_SEGMENTS_PARALLELS = """
 FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
 
+    FILTER REGEX_MATCHES(segment._key, @start_folio, true)
+
     LET seg_parallels = (
         FOR p IN 1..1 OUTBOUND segment GRAPH 'files_segments'
+            FILTER REGEX_MATCHES(p.root_segnr[0], @start_folio, true)
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc

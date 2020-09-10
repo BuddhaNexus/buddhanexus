@@ -111,14 +111,18 @@ async def get_segments_for_file(
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
+    folio: str = "",
 ):
     """
     Returns filtered segments belonging to a specified file.
     :return: List of segments
     """
+    language = get_language_from_filename(file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)
+        limit_collection, language
     )
+
+    start_folio = get_folio_regex(language, file_name, folio)
 
     try:
         database = get_db()
@@ -133,6 +137,7 @@ async def get_segments_for_file(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
+                "start_folio": start_folio,
             },
         )
 
