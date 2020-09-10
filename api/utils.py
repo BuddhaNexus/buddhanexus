@@ -115,7 +115,7 @@ def collect_segment_results(segments) -> List:
 
 def get_folio_regex(language, file_name, folio):
     start_folio = ""
-    if folio and folio != 'None':
+    if folio:
         if language == 'pli':
             if re.search(r"^(anya|tika|atk)", file_name):
                 start_folio = file_name + ":" + folio[:-1] + "[0-9][._]"
