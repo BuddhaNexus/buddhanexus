@@ -77,8 +77,6 @@ async def get_segment(lang: str, key: str) -> Dict[str, str]:
         return error
 
 
-
-
 @APP.post("/parallels-for-middle/")
 async def get_parallels_for_middle(parallels: ParallelsCollection):
     """
@@ -106,7 +104,7 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
 @APP.get("/files/{file_name}/segments")
 async def get_segments_for_file(
     file_name: str,
-    page: int,
+    page: int = 0,
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
@@ -122,8 +120,6 @@ async def get_segments_for_file(
         limit_collection, language
     )
 
-    start_folio = get_folio_regex(language, file_name, folio)
-
     try:
         database = get_db()
         segments_query = database.AQLQuery(
@@ -137,7 +133,7 @@ async def get_segments_for_file(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
-                "start_folio": start_folio,
+                "start_folio": get_folio_regex(language, file_name, folio),
             },
         )
 
