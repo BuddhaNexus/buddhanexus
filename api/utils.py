@@ -115,6 +115,10 @@ def collect_segment_results(segments) -> List:
 
 
 def get_folio_regex(language, file_name, folio) -> str:
+    """
+    Creates a regular expression for use in the AD Queries based on the language and
+    file so as to match the segment numbers therein.
+    """
     start_folio = ""
     if folio:
         if language == 'pli':
