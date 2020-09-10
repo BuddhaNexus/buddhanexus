@@ -652,11 +652,14 @@ async def get_displayname(segmentnr: str):
         },
         rawResults=True
     )
+    query_dictionary = {}
     if query_displayname.result:
         query_result = query_displayname.result[0]
-        return {"displayData": query_result}
+        query_dictionary = {"displayData": query_result}
     else:
         return
+
+    return query_dictionary
 
 
 @APP.get("/gretillink/{segmentnr}")

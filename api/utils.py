@@ -113,7 +113,8 @@ def collect_segment_results(segments) -> List:
 
     return segments_result, collection_keys
 
-def get_folio_regex(language, file_name, folio):
+
+def get_folio_regex(language, file_name, folio) -> str:
     start_folio = ""
     if folio:
         if language == 'pli':
@@ -136,4 +137,3 @@ def get_folio_regex(language, file_name, folio):
             start_folio = file_name + "_" + folio + ":"
 
     return start_folio
-
