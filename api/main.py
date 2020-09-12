@@ -138,10 +138,7 @@ async def get_segments_for_file(
                 "start_folio": get_folio_regex(language, file_name, folio),
             },
         )
-        numbers_view_data = create_numbers_view_data(table_query.result)
-        segments_result, collection_keys = collect_segment_results(
-            numbers_view_data
-        )
+        segments_result, collection_keys = collect_segment_results( create_numbers_view_data(table_query.result))
 
         return {
             "collections": database.AQLQuery(
