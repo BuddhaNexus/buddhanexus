@@ -114,6 +114,7 @@ def collect_segment_results(segments) -> List:
     return segments_result, collection_keys
 
 
+
 def create_numbers_view_data(table_results):
     """
     This function converts the table-view output into a format that is usable for the numbers-view.
@@ -132,4 +133,31 @@ def create_numbers_view_data(table_results):
         result.append(entry)
     return result
 
+def get_folio_regex(language, file_name, folio) -> str:
+    """
+    Creates a regular expression for use in the AD Queries based on the language and
+    file so as to match the segment numbers therein.
+    """
+    start_folio = ""
+    if folio:
+        if language == 'pli':
+            if re.search(r"^(anya|tika|atk)", file_name):
+                start_folio = file_name + ":" + folio[:-1] + "[0-9][._]"
+            else:
+                start_folio = file_name + ":" + folio + "[._]"
+        elif language == 'skt':
+            if re.search(r"^(XXdhppat)", file_name):
+                start_folio = file_name + ":pdhp_" + folio + "_"
+            elif re.search(r"^(S10udanav)", file_name):
+                start_folio = file_name + ":uv_" + folio + "_"
+            elif re.search(r"^(OT)", file_name):
+                start_folio = file_name + ":" + folio + "_"
+            else:
+                start_folio = file_name + ":" + folio[:-1] + "[0-9](_[0-9]+)*$"
+        elif language == 'tib':
+            start_folio = file_name + ":" + folio + "-"
+        elif language == 'chn':
+            start_folio = file_name + "_" + folio + ":"
+
+    return start_folio
 

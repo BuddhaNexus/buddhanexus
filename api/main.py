@@ -23,6 +23,7 @@ from .utils import (
     get_language_from_filename,
     get_collection_files_regex,
     collect_segment_results,
+    get_folio_regex
 )
 from .db_connection import get_collection, get_db
 
@@ -77,8 +78,6 @@ async def get_segment(lang: str, key: str) -> Dict[str, str]:
         return error
 
 
-
-
 @APP.post("/parallels-for-middle/")
 async def get_parallels_for_middle(parallels: ParallelsCollection):
     """
@@ -106,18 +105,20 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
 @APP.get("/files/{file_name}/segments")
 async def get_segments_for_file(
     file_name: str,
-    page: int,
+    page: int = 0,
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
+    folio: str = "",
 ):
     """
     Returns filtered segments belonging to a specified file.
     :return: List of segments
     """
+    language = get_language_from_filename(file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)
+        limit_collection, language
     )
 
     try:
@@ -134,6 +135,7 @@ async def get_segments_for_file(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
+                "start_folio": get_folio_regex(language, file_name, folio),
             },
         )
         numbers_view_data = create_numbers_view_data(table_query.result)
@@ -172,13 +174,15 @@ async def get_table_view(
     limit_collection: List[str] = Query([]),
     page: int = 0,
     sort_method: str = "position",
+    folio: str = "",
 ):
     """
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
+    language = get_language_from_filename(file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)
+        limit_collection, language
     )
     sort_key = ""
     if sort_method == "position":
@@ -189,6 +193,8 @@ async def get_table_view(
         sort_key = "parallels_sorted_by_length_src"
     if sort_method == "length2":
         sort_key = "parallels_sorted_by_length_tgt"
+
+    start_folio = get_folio_regex(language, file_name, folio)
 
     try:
         query = get_db().AQLQuery(
@@ -202,6 +208,7 @@ async def get_table_view(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
+                "start_folio": start_folio,
             },
         )
         return query.result
@@ -630,6 +637,7 @@ async def tag_sanskrit(sanskrit_string: str):
     result = search_utils.tag_sanskrit(sanskrit_string).replace("\n"," # ")
     return {"tagged": result}
 
+
 @APP.get("/displayname/{segmentnr}")
 async def get_displayname(segmentnr: str):
     """
@@ -647,8 +655,14 @@ async def get_displayname(segmentnr: str):
         },
         rawResults=True
     )
-    query_result = query_displayname.result[0]
-    return {"displayData": query_result}
+    query_dictionary = {}
+    if query_displayname.result:
+        query_result = query_displayname.result[0]
+        query_dictionary = {"displayData": query_result}
+    else:
+        return
+
+    return query_dictionary
 
 
 @APP.get("/gretillink/{segmentnr}")

@@ -39,6 +39,7 @@ FOR f IN parallels_sorted_file
     FOR current_parallel in f.@sortkey 
         FOR p in parallels
             FILTER p._key == current_parallel
+            FILTER REGEX_MATCHES(p.root_segnr[0], @start_folio, true)
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
