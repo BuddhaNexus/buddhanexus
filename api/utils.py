@@ -127,7 +127,7 @@ def create_numbers_view_data(table_results):
             else:
                 result_dic[segment_nr] = [table_result['par_segnr']]
     result = []
-    for segment_nr in result_dic.keys():
+    for segment_nr in result_dic:
         entry = { "segmentnr": segment_nr,
                   "parallels": result_dic[segment_nr]}
         result.append(entry)
@@ -160,4 +160,3 @@ def get_folio_regex(language, file_name, folio) -> str:
             start_folio = file_name + "_" + folio + ":"
 
     return start_folio
-
