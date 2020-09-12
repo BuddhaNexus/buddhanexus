@@ -136,7 +136,6 @@ async def get_segments_for_file(
                 "page": page,
             },
         )
-        print("TABLE VIEW DATA",table_query.result)
         numbers_view_data = create_numbers_view_data(table_query.result)
         segments_result, collection_keys = collect_segment_results(
             numbers_view_data

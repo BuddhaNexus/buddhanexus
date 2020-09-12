@@ -113,7 +113,11 @@ def collect_segment_results(segments) -> List:
 
     return segments_result, collection_keys
 
+
 def create_numbers_view_data(table_results):
+    """
+    This function converts the table-view output into a format that is usable for the numbers-view.
+    """
     result_dic = {}
     for table_result in table_results:
         for segment_nr in table_result['root_segnr']:

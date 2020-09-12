@@ -258,10 +258,8 @@ def clean_chinese(c):
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_CHINESE)
-    
 
     
-
 @task()
 def load_menu_files(c):
     print("Loading menu collections...")
@@ -280,16 +278,7 @@ def add_indices(c):
     create_indices(db)
     print("Creation of indices done.")
 
-@task
-def remove_duplicates(c):
-    db = get_database()
-    print("Removing duplicates")
-    remove_duplicates(db)
-    print("Removal of duplicates done.")
-
-
     
-
 @task
 def calculate_collection_totals(c):
     print("Calculating collection totals from loaded data")
