@@ -21,12 +21,7 @@ from dataloader_constants import (
     COLLECTION_FILES,
     COLLECTION_FILES_PARALLEL_COUNT,
     COLLECTION_REGEX,
-    COLLECTION_CATEGORIES_PARALLEL_COUNT,
-    GRAPH_FILES_SEGMENTS,
-    GRAPH_FILES_PARALLELS,
-    EDGE_COLLECTION_FILE_HAS_SEGMENTS,
-    EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
-    EDGE_COLLECTION_FILE_HAS_PARALLELS,
+    COLLECTION_CATEGORIES_PARALLEL_COUNT
 )
 
 
@@ -52,31 +47,6 @@ from api.queries import menu_queries, main_queries
 from api.utils import get_language_from_filename
 
 
-def create_files_segments_graph() -> None:
-    db = get_database()
-    if db.has_graph(GRAPH_FILES_SEGMENTS):
-        return
-    files_segments_graph = db.create_graph(GRAPH_FILES_SEGMENTS)
-    files_parallels_graph = db.create_graph(GRAPH_FILES_PARALLELS)
-    # Files -> Segments
-    files_segments_graph.create_edge_definition(
-        edge_collection=EDGE_COLLECTION_FILE_HAS_SEGMENTS,
-        from_vertex_collections=[COLLECTION_FILES],
-        to_vertex_collections=[COLLECTION_SEGMENTS],
-    )
-    # Segments -> Parallels
-    files_segments_graph.create_edge_definition(
-        edge_collection=EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
-        from_vertex_collections=[COLLECTION_SEGMENTS],
-        to_vertex_collections=[COLLECTION_PARALLELS],
-    )
-    # Files -> Parallels
-    files_parallels_graph.create_edge_definition(
-        edge_collection=EDGE_COLLECTION_FILE_HAS_PARALLELS,
-        from_vertex_collections=[COLLECTION_FILES],
-        to_vertex_collections=[COLLECTION_PARALLELS],
-    )
-
 
 def load_segment_data_from_menu_files(root_url: str, threads: int, langs: list):
     for language in langs:
@@ -100,7 +70,7 @@ def load_segment_data_from_menu_files(root_url: str, threads: int, langs: list):
                 filtered_file_data,
                 threads,
             )
-    create_files_segments_graph()
+
 
 
 def get_folios_from_segment_keys(segment_keys, lang):
@@ -180,29 +150,7 @@ def load_segments_and_parallels_data_from_menu_file(
         load_parallels_sorted(parallels, db,menu_file_json['filename'])
 
 
-def load_segment_parallel_edges(
-    segment_key: int, parallel_ids: [Parallel], db: StandardDatabase
-):
-    segment_parallels_edge_db_collection = db.collection(
-        EDGE_COLLECTION_SEGMENT_HAS_PARALLELS
-    )
-    try:
-        batch_size = 1000
-        batched_edge_docs = []
-        for i, parallel_id in enumerate(parallel_ids):
-            edge_doc = {
-                "_from": f"{COLLECTION_SEGMENTS}/{segment_key}",
-                "_to": f"{COLLECTION_PARALLELS}/{parallel_id}",
-            }
-            batched_edge_docs.append(edge_doc)
-            if i % batch_size == 0:
-                segment_parallels_edge_db_collection.insert_many(batched_edge_docs)
-                batched_edge_docs = []
-        # insert the remaining documents
-        segment_parallels_edge_db_collection.insert_many(batched_edge_docs)
 
-    except DocumentInsertError as e:
-        print(f"Could not create edges. Segment: {segment_key}. Error: ", e)
 
 
 def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> list:
@@ -255,7 +203,6 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
             # Loads segment into database
             # todo: remove parallel_ids table
             segment_key = load_segment(segment, segment_count, parallel_ids,parallel_ids_limited, db)
-            load_segment_parallel_edges(segment["segnr"], parallel_ids, db)
 
             segment_keys.append(segment_key)
             segment_count += 1
@@ -333,29 +280,13 @@ def load_file_parallel_counts(
 
 def load_files_collection(file: MenuItem, segment_keys: list,lang: str, db: StandardDatabase):
     files_db_collection = db.collection(COLLECTION_FILES)
-    file_segments_edge_collection = db.collection(EDGE_COLLECTION_FILE_HAS_SEGMENTS)
     file_key = file["filename"]
     folios = get_folios_from_segment_keys(segment_keys,lang)
     search_field = file['textname'] + " " + file['displayName'] 
     doc = {"_key": file_key, "segment_keys": segment_keys, "folios" : folios, "language":lang, "search_field" : search_field}
     doc.update(file)
-
     try:
         files_db_collection.insert(doc)
-
-        batch_size = 1000
-        batched_edge_docs = []
-        for i, segment_key in enumerate(segment_keys):
-            edge_doc = {
-                "_from": f"{COLLECTION_FILES}/{file_key}",
-                "_to": f"{COLLECTION_SEGMENTS}/{segment_key}",
-            }
-            batched_edge_docs.append(edge_doc)
-            if i % batch_size == 0:
-                file_segments_edge_collection.insert_many(batched_edge_docs)
-                batched_edge_docs = []
-        # insert the remaining documents
-        file_segments_edge_collection.insert_many(batched_edge_docs)
     except DocumentInsertError as e:
         print("Could not load file. Error: ", e)
 
@@ -369,10 +300,6 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
     """
     db_collection = db.collection(COLLECTION_PARALLELS)
     db_collection_sorted = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
-    
-    files_parallels_edge_db_collection = db.collection(
-        EDGE_COLLECTION_FILE_HAS_PARALLELS
-    )
     parallels_to_be_inserted = []
     root_file_parallel_edges_to_be_inserted = []
 
@@ -406,9 +333,6 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
     for i in range(0, len(parallels_to_be_inserted), chunksize):
         try:
             db_collection.insert_many(parallels_to_be_inserted[i : i + chunksize])
-            files_parallels_edge_db_collection.insert_many(
-                root_file_parallel_edges_to_be_inserted[i : i + chunksize]
-            )
         except (DocumentInsertError, IndexCreateError) as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
@@ -460,6 +384,7 @@ def load_parallels_sorted(json_parallels: [Parallel], db: StandardDatabase,filen
 def create_indices(db: StandardDatabase):
     db_collection = db.collection(COLLECTION_PARALLELS)
     db_collection.add_hash_index(["root_filename"], unique=False)
+    db_collection.add_hash_index(["src_lang"], unique=False)
 
 
 # TODO: Refactor this function. Split into smaller chunks.

@@ -33,40 +33,6 @@ RETURN FLATTEN(
         )
 """
 
-QUERY_FILE_SEGMENTS_PARALLELS = """
-FOR segment IN 1..1 OUTBOUND concat("files/", @filename) GRAPH 'files_segments'
-
-    LET seg_parallels = (
-        FOR p IN 1..1 OUTBOUND segment GRAPH 'files_segments'
-            FILTER p.score >= @score
-            FILTER p.par_length >= @parlength
-            FILTER p["co-occ"] <= @coocc
-
-            LET collection_filter_test = (
-                FOR item IN @limitcollection_positive
-                RETURN REGEX_TEST(p.par_segnr[0], item)
-            )
-            LET fits_collection = (@limitcollection_positive != [])
-                ? POSITION(collection_filter_test, true)
-                : true
-            FILTER fits_collection == true
-            LET collection_filter_test2 = (
-                FOR item IN @limitcollection_negative
-                RETURN REGEX_TEST(p.par_segnr[0], item)
-            )
-            LET fits_collection2 = (@limitcollection_negative != [])
-                ? POSITION(collection_filter_test2, true)
-                : false
-            FILTER fits_collection2 == false
-
-            RETURN p.par_segnr
-    )
-    FILTER LENGTH(seg_parallels) > 0
-    LIMIT 50 * @page,50
-    RETURN { "segmentnr": segment._key, "parallels": seg_parallels }
-"""
-
-
 QUERY_TABLE_VIEW = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename

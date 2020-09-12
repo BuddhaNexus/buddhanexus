@@ -112,3 +112,20 @@ def collect_segment_results(segments) -> List:
         segments_result.append(segment)
 
     return segments_result, collection_keys
+
+def create_numbers_view_data(table_results):
+    result_dic = {}
+    for table_result in table_results:
+        for segment_nr in table_result['root_segnr']:
+            if segment_nr in result_dic:
+                result_dic[segment_nr].append(table_result['par_segnr'])
+            else:
+                result_dic[segment_nr] = [table_result['par_segnr']]
+    result = []
+    for segment_nr in result_dic.keys():
+        entry = { "segmentnr": segment_nr,
+                  "parallels": result_dic[segment_nr]}
+        result.append(entry)
+    return result
+
+

@@ -28,10 +28,7 @@ from dataloader_constants import (
     COLLECTION_LANGUAGES,
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
-    GRAPH_FILES_SEGMENTS,
-    GRAPH_FILES_PARALLELS,
-    EDGE_COLLECTION_FILE_HAS_SEGMENTS,
-    EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
+
 )
 
 from dataloader_utils import get_database, get_system_database
@@ -66,8 +63,6 @@ def clean_all_collections_db():
             current_name = name
             db.delete_collection(name)
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
-        db.delete_graph(GRAPH_FILES_SEGMENTS)
-        db.delete_graph(GRAPH_FILES_PARALLELS)
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % current_name, e)
     except GraphDeleteError as e:
@@ -114,11 +109,6 @@ def clean_segment_collections_db():
             COLLECTION_FILES_PARALLEL_COUNT,
         ):
             empty_collection(name, db)
-        for name in (
-            EDGE_COLLECTION_FILE_HAS_SEGMENTS,
-            EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
-        ):
-            empty_collection(name, db, edge=True)
     except (GraphDeleteError, CollectionDeleteError):
         print(
             f"couldn't remove graph: {GRAPH_FILES_SEGMENTS}. It probably doesn't exist."

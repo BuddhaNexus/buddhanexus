@@ -19,6 +19,7 @@ from .search import search_utils
 from .models_api import ParallelsCollection
 from .queries import menu_queries, main_queries, search_queries
 from .utils import (
+    create_numbers_view_data,
     get_language_from_filename,
     get_collection_files_regex,
     collect_segment_results,
@@ -121,22 +122,24 @@ async def get_segments_for_file(
 
     try:
         database = get_db()
-        segments_query = database.AQLQuery(
-            query=main_queries.QUERY_FILE_SEGMENTS_PARALLELS,
+        table_query = database.AQLQuery(
+            query=main_queries.QUERY_TABLE_VIEW,
             batchSize=10000,
             bindVars={
                 "filename": file_name,
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "sortkey": "parallels_sorted_by_src_pos",
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
             },
         )
-
+        print("TABLE VIEW DATA",table_query.result)
+        numbers_view_data = create_numbers_view_data(table_query.result)
         segments_result, collection_keys = collect_segment_results(
-            segments_query.result
+            numbers_view_data
         )
 
         return {
