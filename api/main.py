@@ -99,7 +99,7 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
             "limitcollection_negative": limitcollection_negative,
         },
     )
-    return {"parallels": query_result.result}
+    return {"parallels": query_result.result[0]}
 
 
 @APP.get("/files/{file_name}/segments")
