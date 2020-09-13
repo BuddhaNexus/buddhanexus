@@ -115,17 +115,18 @@ def collect_segment_results(segments) -> List:
 
 
 
-def create_numbers_view_data(table_results):
+def create_numbers_view_data(table_results,folio_regex):
     """
     This function converts the table-view output into a format that is usable for the numbers-view.
     """
     result_dic = {}
     for table_result in table_results:
         for segment_nr in table_result['root_segnr']:
-            if segment_nr in result_dic:
-                result_dic[segment_nr].append(table_result['par_segnr'])
-            else:
-                result_dic[segment_nr] = [table_result['par_segnr']]
+            if re.search(folio_regex,segment_nr):
+                if segment_nr in result_dic:
+                    result_dic[segment_nr].append(table_result['par_segnr'])
+                else:
+                    result_dic[segment_nr] = [table_result['par_segnr']]
     result = []
     for segment_nr in result_dic:
         entry = { "segmentnr": segment_nr,

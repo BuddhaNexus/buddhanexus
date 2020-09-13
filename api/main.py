@@ -120,7 +120,6 @@ async def get_segments_for_file(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-
     try:
         database = get_db()
         table_query = database.AQLQuery(
@@ -139,7 +138,7 @@ async def get_segments_for_file(
             },
         )
         segments_result, collection_keys = collect_segment_results(
-            create_numbers_view_data(table_query.result)
+            create_numbers_view_data(table_query.result,get_folio_regex(language, file_name, folio))
         )
 
         return {
@@ -194,7 +193,6 @@ async def get_table_view(
         sort_key = "parallels_sorted_by_length_tgt"
 
     start_folio = get_folio_regex(language, file_name, folio)
-
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,
