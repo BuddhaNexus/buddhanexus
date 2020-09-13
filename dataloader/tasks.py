@@ -27,10 +27,6 @@ from dataloader_constants import (
     COLLECTION_LANGUAGES,
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
-    GRAPH_FILES_SEGMENTS,
-    GRAPH_FILES_PARALLELS,
-    EDGE_COLLECTION_FILE_HAS_SEGMENTS,
-    EDGE_COLLECTION_SEGMENT_HAS_PARALLELS,
     LANG_TIBETAN,
     LANG_PALI,
     LANG_CHINESE,
@@ -188,8 +184,6 @@ def clean_pali(c):
             current_name = name
             db.delete_collection(name)
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
-        db.delete_graph(GRAPH_FILES_SEGMENTS)
-        db.delete_graph(GRAPH_FILES_PARALLELS)
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % current_name, e)
     except GraphDeleteError as e:
@@ -264,10 +258,8 @@ def clean_chinese(c):
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_CHINESE)
-    
 
     
-
 @task()
 def load_menu_files(c):
     print("Loading menu collections...")
@@ -286,7 +278,7 @@ def add_indices(c):
     create_indices(db)
     print("Creation of indices done.")
 
-
+    
 @task
 def calculate_collection_totals(c):
     print("Calculating collection totals from loaded data")
