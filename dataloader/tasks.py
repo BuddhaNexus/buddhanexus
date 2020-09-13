@@ -40,7 +40,8 @@ from tasks_segments_parallels import (
 )
 
 from tasks_multilingual import (
-    load_multilingual_parallels
+    load_multilingual_parallels,
+    clean_multi
 )
 
 from global_search_function import (
@@ -145,6 +146,15 @@ def load_multi_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     load_multilingual_parallels(root_url, thread_count if threaded else 1)    
     print("Segment data loading completed.")
 
+
+@task
+def clean_multi_data(c):
+    """
+    Clear the multilingual data from the database
+
+    :param c: invoke.py context object
+    """
+    clean_multi()
 
     
 @task
