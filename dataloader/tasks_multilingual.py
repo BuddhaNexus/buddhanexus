@@ -48,8 +48,7 @@ def add_multi_parallels_to_segments(parallels,db_segments_collection):
                         current_doc['parallel_ids_multi'] = list(dict.fromkeys(current_doc['parallel_ids_multi']))
                     else:
                         current_doc['parallel_ids_multi'] = [parallel['id']]
-                    db_segments_collection.delete(current_doc)
-                    db_segments_collection.insert(current_doc)
+                    db_segments_collection.update(current_doc)
             except (KeyError, AttributeError) as e:
                 print("Could not load multilingual parallels into segment. Error: ", e)
             except DocumentInsertError as e:

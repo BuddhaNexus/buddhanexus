@@ -107,6 +107,15 @@ load-pali-data:
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
 
+load-multi-data:
+	@docker exec -ti dataloader bash -c "invoke load-multi-files"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
+
+
+clean-multi-data:
+	@docker exec -t dataloader bash -c "invoke clean-multi-data"
+
+
 # the following four commands are for partial unloading of individual datasets
 clean-tibetan-data:
 	@docker exec -t dataloader bash -c "invoke clean-tibetan"
@@ -127,7 +136,6 @@ clean-pali-data:
 	@docker exec -t dataloader bash -c "invoke clean-pali"
 	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
-
 
 # clean & remove the search-index
 clean-search-index:
