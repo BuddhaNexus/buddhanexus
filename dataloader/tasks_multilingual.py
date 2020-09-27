@@ -1,5 +1,7 @@
+import multiprocessing
 import json
 import os
+import gzip 
 
 from arango.database import StandardDatabase
 
@@ -17,16 +19,22 @@ def load_multilingual_parallels(root_url: str, threads: int):
     Iterates over all the files in json/multi and loads them into the a separate collection.
     """
     root_url = root_url + "multi/"
+    filename_list = []
+    for current_file in os.listdir(root_url):
+        filename = os.fsdecode(current_file)
+        filename_list.append(root_url + filename)
+    print(filename_list)
+    pool = multiprocessing.Pool(processes=threads)
+    pool.map(load_multilingual_file, filename_list)
+    pool.close()
+
+
+def load_multilingual_file(filepath):
     db = get_database()
     db_multi_collection = db.collection(COLLECTION_PARALLELS_MULTI)
     db_segments_collection = db.collection(COLLECTION_SEGMENTS)
-    for current_file in os.listdir(root_url):
-        filename = os.fsdecode(current_file)
-        load_multilingual_file(root_url + filename,db_multi_collection,db_segments_collection)
-
-def load_multilingual_file(filepath,db_multi_collection,db_segments_collection):
     print("Loading",filepath)
-    with open(filepath,'r') as current_file:
+    with gzip.open(filepath,'r') as current_file:
         json_data = json.load(current_file)
         for parallel in json_data:
             parallel["_key"] = parallel["id"]

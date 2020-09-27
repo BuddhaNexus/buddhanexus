@@ -319,12 +319,6 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             del parallel["root_string"]
             # todo: delete the root_filename key after it's not needed anymore
             parallel["root_filename"] = root_filename
-            root_file_parallel_edges_to_be_inserted.append(
-                {
-                    "_from": f"{COLLECTION_FILES}/{root_filename}",
-                    "_to": f"{COLLECTION_PARALLELS}/{parallel['id']}",
-                }
-            )
             parallels_to_be_inserted.append(parallel)
 
 

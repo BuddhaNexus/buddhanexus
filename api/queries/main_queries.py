@@ -134,6 +134,7 @@ let parallels =  (
                 )
             LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
             FILTER filternr2 == false
+            FILTER POSITION(@multi_lingual,p.tgt_lang)
             LIMIT 100000
             RETURN {
                 root_offset_beg: p.root_offset_beg,
@@ -147,6 +148,7 @@ let parallels_multi =  (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
+            FILTER POSITION(@multi_lingual,p.tgt_lang)
             RETURN {
                 root_offset_beg: p.root_offset_beg,
                 root_offset_end: p.root_offset_end,
@@ -194,6 +196,8 @@ let parallels = (
                                 FILTER segment._key == segnr
                                 RETURN segment.segtext
                        )
+                FILTER POSITION(@multi_lingual,p.tgt_lang)
+
                 RETURN {
                     par_segnr: p.par_segnr,
                     par_offset_beg: p.par_offset_beg,
@@ -214,12 +218,13 @@ let parallels_multi = (
     FOR parallel_id IN FLATTEN(parallel_ids)
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
+            FILTER POSITION(@multi_lingual,p.tgt_lang)
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
                         FILTER segment._key == segnr
                         RETURN segment.segtext
-            )
+            )         
             RETURN {
                 par_segnr: p.par_segnr,
                 par_offset_beg: p.par_offset_beg,

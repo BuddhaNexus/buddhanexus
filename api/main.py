@@ -87,7 +87,6 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         parallels.limit_collection, language
     )
-    print(multi_lingual)
     query_result = get_db().AQLQuery(
         query=main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
         batchSize=10000,
@@ -96,10 +95,12 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
             "score": parallels.score,
             "parlength": parallels.par_length,
             "coocc": parallels.co_occ,
+            "multi_lingual": parallels.multi_lingual,
             "limitcollection_positive": limitcollection_positive,
             "limitcollection_negative": limitcollection_negative,
         },
     )
+    print("RETURN PARALLELS MIDDLE",query_result.result[0])
     return {"parallels": query_result.result[0]}
 
 
@@ -332,7 +333,7 @@ async def get_file_text_segments_and_parallels(
         limit_collection, get_language_from_filename(file_name)
     )
     try:
-        print(multi_lingual)
+        print("MULTI LANG ARRAY",multi_lingual)
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
             bindVars={
@@ -343,6 +344,7 @@ async def get_file_text_segments_and_parallels(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "multi_lingual":multi_lingual,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
             },
