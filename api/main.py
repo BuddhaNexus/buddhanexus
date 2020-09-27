@@ -87,6 +87,7 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         parallels.limit_collection, language
     )
+    print(multi_lingual)
     query_result = get_db().AQLQuery(
         query=main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
         batchSize=10000,
@@ -295,6 +296,7 @@ async def get_file_text_segments_and_parallels(
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
+    multi_lingual: List[str] = Query([]),
 ):
     """
     Endpoint for text view
@@ -330,6 +332,7 @@ async def get_file_text_segments_and_parallels(
         limit_collection, get_language_from_filename(file_name)
     )
     try:
+        print(multi_lingual)
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
             bindVars={

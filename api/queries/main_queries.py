@@ -126,21 +126,21 @@ let parallels =  (
                 FOR item IN @limitcollection_positive
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
-                LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
-                FILTER filternr == true
-                LET filtertest2 = (
-                    FOR item IN @limitcollection_negative
-                        RETURN REGEX_TEST(p.par_segnr[0], item)
-                    )
-                    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-                    FILTER filternr2 == false
-                    LIMIT 100000
-                    RETURN {
-                        root_offset_beg: p.root_offset_beg,
-                        root_offset_end: p.root_offset_end,
-                        root_segnr : p.root_segnr,
-                        id: p._key
-                    }
+            LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
+            FILTER filternr == true
+            LET filtertest2 = (
+                FOR item IN @limitcollection_negative
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+            FILTER filternr2 == false
+            LIMIT 100000
+            RETURN {
+                root_offset_beg: p.root_offset_beg,
+                root_offset_end: p.root_offset_end,
+                root_segnr : p.root_segnr,
+                id: p._key
+            }
     )
 
 let parallels_multi =  (
