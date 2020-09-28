@@ -100,7 +100,6 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
             "limitcollection_negative": limitcollection_negative,
         },
     )
-    print("RETURN PARALLELS MIDDLE",query_result.result[0])
     return {"parallels": query_result.result[0]}
 
 
@@ -333,7 +332,6 @@ async def get_file_text_segments_and_parallels(
         limit_collection, get_language_from_filename(file_name)
     )
     try:
-        print("MULTI LANG ARRAY",multi_lingual)
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
             bindVars={
@@ -686,3 +684,23 @@ async def get_gretillink(segmentnr: str):
         )
         query_result = {"gretilLink": query_displayname.result[0]}
     return query_result
+
+
+# returns a list of the available languages of matches for the given file.
+@APP.get("/multilingual/{filename}")
+async def get_multilingual(filename: str):
+    """
+    Returns the displayName for a segmentnr.
+    """
+    query_result = {"langList": []}
+    database = get_db()
+    query_displayname = database.AQLQuery(
+        query=main_queries.QUERY_MULTILINGUAL_LANGS,
+        bindVars={
+            "filename": filename
+        },
+        rawResults=True
+        )
+    query_result = {"langList": query_displayname.result[0]}
+    return query_result
+
