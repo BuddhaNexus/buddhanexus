@@ -43,7 +43,7 @@ FOR f IN parallels_sorted_file
                 FOR current_segnr IN p.root_segnr
                 RETURN REGEX_TEST(current_segnr, @start_folio)
             )
-            FILTER POSITION(folio_regex_test,true)
+            FILTER POSITION(folio_regex_test, true)
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
@@ -106,7 +106,7 @@ FOR file IN files
                 RETURN {
                     segnr: segment.segnr,
                     segtext: segment.segtext,
-                    parallel_ids: segment.@parallel_ids_type
+                    parallel_ids: APPEND(segment.@parallel_ids_type, segment.parallel_ids_multi)
                 }
         )
 
@@ -126,26 +126,41 @@ let parallels =  (
                 FOR item IN @limitcollection_positive
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
-                LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
-                FILTER filternr == true
-                LET filtertest2 = (
-                    FOR item IN @limitcollection_negative
-                        RETURN REGEX_TEST(p.par_segnr[0], item)
-                    )
-                    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-                    FILTER filternr2 == false
-                    LIMIT 100000
-                    RETURN {
-                        root_offset_beg: p.root_offset_beg,
-                        root_offset_end: p.root_offset_end,
-                        root_segnr : p.root_segnr,
-                        id: p._key
-                    }
+            LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
+            FILTER filternr == true
+            LET filtertest2 = (
+                FOR item IN @limitcollection_negative
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+            FILTER filternr2 == false
+            FILTER POSITION(@multi_lingual, p.tgt_lang)
+            LIMIT 100000
+            RETURN {
+                root_offset_beg: p.root_offset_beg,
+                root_offset_end: p.root_offset_end,
+                root_segnr : p.root_segnr,
+                id: p._key
+            }
     )
-RETURN {
+
+let parallels_multi =  (
+    FOR parallel_id IN parallel_ids
+        FOR p IN parallels_multi
+            FILTER p._key == parallel_id
+            FILTER POSITION(@multi_lingual, p.tgt_lang)
+            RETURN {
+                root_offset_beg: p.root_offset_beg,
+                root_offset_end: p.root_offset_end,
+                root_segnr : p.root_segnr,
+                id: p._key
+            }
+    )
+
+RETURN { 
     textleft: segments,
     parallel_ids: parallel_ids,
-    parallels: parallels
+    parallels: APPEND(parallels, parallels_multi)
 }
 """
 
@@ -153,33 +168,36 @@ QUERY_PARALLELS_FOR_MIDDLE_TEXT = """
 LET parallel_ids = (
     FOR segment in segments
         FILTER segment._key == @segmentnr
-        RETURN segment.parallel_ids
+        RETURN APPEND(segment.parallel_ids, segment.parallel_ids_multi)
     )
 
-FOR parallel_id IN FLATTEN(parallel_ids)
-    FOR p IN parallels
-        FILTER p._key == parallel_id
-        FILTER p.score >= @score
-        FILTER p.par_length >= @parlength
-        FILTER p["co-occ"] <= @coocc
-        LET filtertest = (
-            FOR item IN @limitcollection_positive
-                RETURN REGEX_TEST(p.par_segnr[0], item)
-            )
+let parallels = (
+    FOR parallel_id IN FLATTEN(parallel_ids)
+        FOR p IN parallels
+            FILTER p._key == parallel_id
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
+            LET filtertest = (
+                FOR item IN @limitcollection_positive
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
             LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
             FILTER filternr == true
             LET filtertest2 = (
                 FOR item IN @limitcollection_negative
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
-                LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-                FILTER filternr2 == false
-                LET par_segtext = (
-                    FOR segnr IN p.par_segnr
-                        FOR segment IN segments
-                            FILTER segment._key == segnr
-                            RETURN segment.segtext
-                   )
+            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+            FILTER filternr2 == false
+            LET par_segtext = (
+                FOR segnr IN p.par_segnr
+                    FOR segment IN segments
+                        FILTER segment._key == segnr
+                        RETURN segment.segtext
+               )
+            FILTER POSITION(@multi_lingual, p.tgt_lang)
+
             RETURN {
                 par_segnr: p.par_segnr,
                 par_offset_beg: p.par_offset_beg,
@@ -194,6 +212,36 @@ FOR parallel_id IN FLATTEN(parallel_ids)
                 score: p.score,
                 "co-occ": p["co-occ"]
             }
+)
+
+let parallels_multi = (
+    FOR parallel_id IN FLATTEN(parallel_ids)
+        FOR p IN parallels_multi
+            FILTER p._key == parallel_id
+            FILTER POSITION(@multi_lingual,p.tgt_lang)
+            LET par_segtext = (
+                FOR segnr IN p.par_segnr
+                    FOR segment IN segments
+                        FILTER segment._key == segnr
+                        RETURN segment.segtext
+            )         
+            RETURN {
+                par_segnr: p.par_segnr,
+                par_offset_beg: p.par_offset_beg,
+                par_offset_end: p.par_offset_end,
+                root_offset_beg: p.root_offset_beg,
+                root_offset_end: p.root_offset_end-1,
+                par_segtext: par_segtext,
+                file_name: p.id,
+                root_segnr: p.root_segnr,
+                par_length: p.par_length,
+                par_pos_beg: p.par_pos_beg,
+                score: p.score,
+                "co-occ": p["co-occ"]
+            }
+)
+
+RETURN APPEND(parallels,parallels_multi)
 """
 
 QUERY_GRAPH_VIEW = """
@@ -277,3 +325,30 @@ FOR file IN files
 """
 
 
+QUERY_MULTILINGUAL_LANGS = """
+FOR file IN files
+    FILTER file._key == @filename
+    LET segments = (
+        FOR segmentnr IN file.segment_keys
+            LIMIT 100
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                RETURN {
+                    parallel_ids: segment.parallel_ids_multi
+                }
+        )
+
+LET parallel_ids = UNIQUE(FLATTEN(
+    FOR segment in segments
+        RETURN segment.parallel_ids
+))
+
+let lang_list =  (
+    FOR parallel_id IN parallel_ids
+        FOR p IN parallels_multi
+            FILTER p._key == parallel_id
+            RETURN p.tgt_lang            
+    )
+
+RETURN UNIQUE(lang_list)
+"""

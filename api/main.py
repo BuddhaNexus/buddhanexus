@@ -95,11 +95,12 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
             "score": parallels.score,
             "parlength": parallels.par_length,
             "coocc": parallels.co_occ,
+            "multi_lingual": parallels.multi_lingual,
             "limitcollection_positive": limitcollection_positive,
             "limitcollection_negative": limitcollection_negative,
         },
     )
-    return {"parallels": query_result.result}
+    return {"parallels": query_result.result[0]}
 
 
 @APP.get("/files/{file_name}/segments")
@@ -295,6 +296,7 @@ async def get_file_text_segments_and_parallels(
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
+    multi_lingual: List[str] = Query([]),
 ):
     """
     Endpoint for text view
@@ -340,6 +342,7 @@ async def get_file_text_segments_and_parallels(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "multi_lingual": multi_lingual,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
             },
@@ -680,4 +683,23 @@ async def get_gretillink(segmentnr: str):
             rawResults=True
         )
         query_result = {"gretilLink": query_displayname.result[0]}
+    return query_result
+
+
+# returns a list of the available languages of matches for the given file.
+@APP.get("/multilingual/{filename}")
+async def get_multilingual(filename: str):
+    """
+    Returns the displayName for a segmentnr.
+    """
+    query_result = {"langList": []}
+    database = get_db()
+    query_displayname = database.AQLQuery(
+        query=main_queries.QUERY_MULTILINGUAL_LANGS,
+        bindVars={
+            "filename": filename
+        },
+        rawResults=True
+        )
+    query_result = {"langList": query_displayname.result[0]}
     return query_result
