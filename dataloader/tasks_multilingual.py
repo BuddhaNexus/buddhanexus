@@ -23,7 +23,6 @@ def load_multilingual_parallels(root_url: str, threads: int):
     for current_file in os.listdir(root_url):
         filename = os.fsdecode(current_file)
         filename_list.append(root_url + filename)
-    print(filename_list)
     pool = multiprocessing.Pool(processes=threads)
     pool.map(load_multilingual_file, filename_list)
     pool.close()
@@ -33,8 +32,8 @@ def load_multilingual_file(filepath):
     db = get_database()
     db_multi_collection = db.collection(COLLECTION_PARALLELS_MULTI)
     db_segments_collection = db.collection(COLLECTION_SEGMENTS)
-    print("Loading",filepath)
-    with gzip.open(filepath,'r') as current_file:
+    print("Loading", filepath)
+    with gzip.open(filepath, 'r') as current_file:
         json_data = json.load(current_file)
         for parallel in json_data:
             parallel["_key"] = parallel["id"]
@@ -42,10 +41,10 @@ def load_multilingual_file(filepath):
             db_multi_collection.insert_many(json_data)
         except (DocumentInsertError, IndexCreateError) as e:
             print(f"Could not save multilingual parallels. Error: ", e)    
-        add_multi_parallels_to_segments(json_data,db_segments_collection)
+        add_multi_parallels_to_segments(json_data, db_segments_collection)
 
         
-def add_multi_parallels_to_segments(parallels,db_segments_collection):
+def add_multi_parallels_to_segments(parallels, db_segments_collection):
     for parallel in parallels:
         for segment_nr in parallel['root_segnr']:
             current_doc = db_segments_collection.get(segment_nr)

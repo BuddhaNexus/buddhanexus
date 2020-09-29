@@ -342,7 +342,7 @@ async def get_file_text_segments_and_parallels(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "multi_lingual":multi_lingual,
+                "multi_lingual": multi_lingual,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
             },
@@ -703,4 +703,3 @@ async def get_multilingual(filename: str):
         )
     query_result = {"langList": query_displayname.result[0]}
     return query_result
-

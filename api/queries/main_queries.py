@@ -43,7 +43,7 @@ FOR f IN parallels_sorted_file
                 FOR current_segnr IN p.root_segnr
                 RETURN REGEX_TEST(current_segnr, @start_folio)
             )
-            FILTER POSITION(folio_regex_test,true)
+            FILTER POSITION(folio_regex_test, true)
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
@@ -134,7 +134,7 @@ let parallels =  (
                 )
             LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
             FILTER filternr2 == false
-            FILTER POSITION(@multi_lingual,p.tgt_lang)
+            FILTER POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
             RETURN {
                 root_offset_beg: p.root_offset_beg,
@@ -148,7 +148,7 @@ let parallels_multi =  (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
-            FILTER POSITION(@multi_lingual,p.tgt_lang)
+            FILTER POSITION(@multi_lingual, p.tgt_lang)
             RETURN {
                 root_offset_beg: p.root_offset_beg,
                 root_offset_end: p.root_offset_end,
@@ -160,7 +160,7 @@ let parallels_multi =  (
 RETURN { 
     textleft: segments,
     parallel_ids: parallel_ids,
-    parallels: APPEND(parallels,parallels_multi)
+    parallels: APPEND(parallels, parallels_multi)
 }
 """
 
@@ -168,7 +168,7 @@ QUERY_PARALLELS_FOR_MIDDLE_TEXT = """
 LET parallel_ids = (
     FOR segment in segments
         FILTER segment._key == @segmentnr
-        RETURN APPEND(segment.parallel_ids,segment.parallel_ids_multi)
+        RETURN APPEND(segment.parallel_ids, segment.parallel_ids_multi)
     )
 
 let parallels = (
@@ -182,36 +182,36 @@ let parallels = (
                 FOR item IN @limitcollection_positive
                     RETURN REGEX_TEST(p.par_segnr[0], item)
                 )
-                LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
-                FILTER filternr == true
-                LET filtertest2 = (
-                    FOR item IN @limitcollection_negative
-                        RETURN REGEX_TEST(p.par_segnr[0], item)
-                    )
-                    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-                    FILTER filternr2 == false
-                    LET par_segtext = (
-                        FOR segnr IN p.par_segnr
-                            FOR segment IN segments
-                                FILTER segment._key == segnr
-                                RETURN segment.segtext
-                       )
-                FILTER POSITION(@multi_lingual,p.tgt_lang)
+            LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
+            FILTER filternr == true
+            LET filtertest2 = (
+                FOR item IN @limitcollection_negative
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+            FILTER filternr2 == false
+            LET par_segtext = (
+                FOR segnr IN p.par_segnr
+                    FOR segment IN segments
+                        FILTER segment._key == segnr
+                        RETURN segment.segtext
+               )
+            FILTER POSITION(@multi_lingual, p.tgt_lang)
 
-                RETURN {
-                    par_segnr: p.par_segnr,
-                    par_offset_beg: p.par_offset_beg,
-                    par_offset_end: p.par_offset_end,
-                    root_offset_beg: p.root_offset_beg,
-                    root_offset_end: p.root_offset_end-1,
-                    par_segtext: par_segtext,
-                    file_name: p.id,
-                    root_segnr: p.root_segnr,
-                    par_length: p.par_length,
-                    par_pos_beg: p.par_pos_beg,
-                    score: p.score,
-                    "co-occ": p["co-occ"]
-                }
+            RETURN {
+                par_segnr: p.par_segnr,
+                par_offset_beg: p.par_offset_beg,
+                par_offset_end: p.par_offset_end,
+                root_offset_beg: p.root_offset_beg,
+                root_offset_end: p.root_offset_end-1,
+                par_segtext: par_segtext,
+                file_name: p.id,
+                root_segnr: p.root_segnr,
+                par_length: p.par_length,
+                par_pos_beg: p.par_pos_beg,
+                score: p.score,
+                "co-occ": p["co-occ"]
+            }
 )
 
 let parallels_multi = (

@@ -128,7 +128,7 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threa
     print(
         f"Loading source files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
     )
-    load_segment_data_from_menu_files(root_url, thread_count if threaded else 1,lang)
+    load_segment_data_from_menu_files(root_url, thread_count if threaded else 1, lang)
     
     print("Segment data loading completed.")
 
@@ -144,7 +144,7 @@ def load_multi_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     thread_count = 10#os.cpu_count() - 1
     # this is a hack to work around the way parameters are passed via invoke
     load_multilingual_parallels(root_url, thread_count if threaded else 1)    
-    print("Segment data loading completed.")
+    print("Multi-lingual data loading completed.")
 
 
 @task
