@@ -35,7 +35,7 @@ APP.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NY|[A-Z]+[0-9]+|[a-z\-]+)"
+COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 @APP.get("/")
@@ -448,7 +448,7 @@ async def get_graph_for_file(
             "language": get_language_from_filename(file_name),
         },
     )
-
+    
     collections_with_full_name = {}
     for collection_result in collections.result[0]:
         collections_with_full_name.update(collection_result)

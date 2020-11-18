@@ -8,7 +8,7 @@ from typing import List
 from .queries import menu_queries
 from .db_connection import get_db
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NY|[A-Z]+[0-9]+|[a-z\-]+)"
+COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|NK[0-9]+|(?![N])[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 def get_language_from_filename(filename) -> str:
@@ -18,7 +18,7 @@ def get_language_from_filename(filename) -> str:
     :return: Language of the file
     """
     lang = "pli"
-    if re.search(r"[DH][0-9][0-9][0-9]", filename):
+    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG", filename):
         lang = "tib"
     elif re.search(r"(u$|u:|^Y)", filename):
         lang = "skt"
@@ -35,7 +35,8 @@ def create_cleaned_limit_collection(limit_collection) -> List:
     """
     new_limit_collection = []
     for file in limit_collection:
-        if re.search("[a-z]+_[A-Z][a-z]+[a-z1-2EL-]+$", file):
+        if re.search("([a-z]+_[A-Z][a-z]+[a-z1-2EL-]+$)|tib_Ny", file):
+            print("DETECTED",file)
             query = get_db().AQLQuery(
                 query=menu_queries.QUERY_ONE_COLLECTION,
                 bindVars={"collectionkey": file.replace("!", "")},
@@ -46,6 +47,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
                 else:
                     new_limit_collection.append("!" + item)
         else:
+            print("NOT DETECTED",file)
             new_limit_collection.append(file)
 
     return new_limit_collection
