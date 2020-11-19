@@ -448,7 +448,7 @@ async def get_graph_for_file(
             "language": get_language_from_filename(file_name),
         },
     )
-    
+
     collections_with_full_name = {}
     for collection_result in collections.result[0]:
         collections_with_full_name.update(collection_result)
