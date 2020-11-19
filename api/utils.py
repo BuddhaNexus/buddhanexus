@@ -8,7 +8,8 @@ from typing import List
 from .queries import menu_queries
 from .db_connection import get_db
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|NK[0-9]+|(?![N])[A-Z]+[0-9]+|[a-z\-]+)"
+
+COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 def get_language_from_filename(filename) -> str:

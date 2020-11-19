@@ -90,7 +90,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
         return True
     if file_lang == LANG_SANSKRIT:
         return True
-    if file_lang == LANG_TIBETAN:
+    if file_lang == LANG_TIBETAN and "N" in file_name:
         return True
     else:
         return False
