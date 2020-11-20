@@ -273,6 +273,8 @@ def load_file_parallel_counts(
     }
     try:
         db_collection.add_hash_index(["category"], unique=False)
+        if db_collection.get(file['filename']):
+            db_collection.delete(file['filename'])
         db_collection.insert(doc)
     except (DocumentInsertError, IndexCreateError) as e:
         print("Could not load file. Error: ", e)

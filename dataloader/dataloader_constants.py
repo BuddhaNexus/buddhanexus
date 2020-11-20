@@ -86,5 +86,4 @@ EDGE_COLLECTION_NAMES = (
 
 GRAPH_COLLECTIONS_CATEGORIES = "collections_categories"
 
-
-COLLECTION_REGEX = "^(pli-tv-b[ui]-vb|XX|OT|[A-Z]+[0-9]+|[a-z\-]+)"
+COLLECTION_REGEX = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
