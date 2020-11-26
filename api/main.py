@@ -225,12 +225,13 @@ async def get_multilang(
         page: int = 0,
         search_string: str = "",
 ):
-    language = get_language_from_filename(file_name)
-    start_folio = get_folio_regex(language, file_name, folio)
     """
     Endpoint for the multilingual table view. Accepts Parallel languages
     :return: List of segments and parallels for the table view.
     """
+    
+    language = get_language_from_filename(file_name)
+    start_folio = get_folio_regex(language, file_name, folio)
     language = get_language_from_filename(file_name)
     try:
         query = get_db().AQLQuery(
@@ -251,8 +252,6 @@ async def get_multilang(
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
-
-    
 
 @APP.get("/menus/{language}")
 async def get_files_for_menu(language: str):
