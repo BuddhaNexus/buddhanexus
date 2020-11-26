@@ -63,13 +63,13 @@ FOR f IN parallels_sorted_file
                 ? POSITION(collection_filter_test2, true)
                 : false
             FILTER fits_collection2 == false
-                let root_seg_text = (
+            LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
-            let par_segment = (
+            LET par_segment = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
                         FILTER segment._key == segnr
@@ -93,6 +93,48 @@ FOR f IN parallels_sorted_file
                 score: p.score
             }
 """
+
+QUERY_MULTILINGUAL = """
+LET parallel_ids = (
+    FOR file IN files
+        FILTER file._key == @filename
+        FOR segmentnr IN file.segment_keys
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                RETURN segment.parallel_ids_multi
+                
+        )
+
+FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
+    FOR p IN parallels_multi
+        FILTER p._key == parallel_id
+        LET folio_regex_test = (
+            FOR current_segnr IN p.root_segnr
+            RETURN REGEX_TEST(current_segnr, @start_folio)
+        )
+        FILTER LIKE(p.root_string, @search_string, true) || LIKE(p.par_string, @search_string, true)
+        FILTER POSITION(folio_regex_test, true)
+        FILTER POSITION(@multi_lingual, p.tgt_lang)
+        LIMIT 100 * @page,100
+        RETURN {
+            par_segnr: [p.par_segnr[0]],
+            par_offset_beg: 0,
+            par_offset_end: 0,
+            root_offset_beg: 0,
+            root_offset_end: 0,
+            par_segment: [p.par_string],
+            file_name: p.id,
+            root_segnr: [p.root_segnr[0]],
+            root_seg_text: [p.root_string],
+            par_length: p.par_length,
+            root_length: p.root_length,
+            par_pos_beg: p.par_pos_beg,
+            "co-occ": p["co-occ"],
+            score: p.score
+        }
+"""
+
+
 
 
 QUERY_TEXT_AND_PARALLELS = """
