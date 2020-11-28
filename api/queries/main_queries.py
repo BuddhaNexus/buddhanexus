@@ -366,6 +366,14 @@ FOR file IN files
     RETURN file.gretil_link
 """
 
+QUERY_BDRC_LINK = """
+FOR file IN files
+    FILTER file._key == @filename
+    RETURN file.bdrc_link
+"""
+
+
+
 
 QUERY_MULTILINGUAL_LANGS = """
 FOR file IN files

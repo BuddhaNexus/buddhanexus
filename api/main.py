@@ -644,7 +644,7 @@ async def get_search_results(search_string: str):
     """
     database = get_db()
     result = []
-
+    search_string = search_string.lower()
     search_strings = search_utils.preprocess_search_string(
         search_string[:150]
     )
@@ -661,6 +661,7 @@ async def get_search_results(search_string: str):
         rawResults=True,
     )
     query_result = query_search.result[0]
+    print("RESULT",query_result)
     result = search_utils.postprocess_results(search_string, query_result)
     return {"searchResults": result}
 
@@ -702,12 +703,12 @@ async def get_displayname(segmentnr: str):
     return query_dictionary
 
 
-@APP.get("/gretillink/{segmentnr}")
-async def get_gretillink(segmentnr: str):
+@APP.get("/externallink/{segmentnr}")
+async def get_external_link(segmentnr: str):
     """
-    Returns the displayName for a segmentnr.
+    Returns the external link for a segmentnr.
     """
-    query_result = {"gretilLink": ""}
+    query_result = {"link": ""}
     lang = get_language_from_filename(segmentnr)
     if lang == "skt":
         filename = segmentnr.split(':')[0]
@@ -719,8 +720,23 @@ async def get_gretillink(segmentnr: str):
             },
             rawResults=True
         )
-        query_result = {"gretilLink": query_displayname.result[0]}
+        query_result = {"link": query_displayname.result[0]}
+    if lang == "tib":
+        filename = segmentnr.split(':')[0]
+        database = get_db()
+        query_displayname = database.AQLQuery(
+            query=main_queries.QUERY_BDRC_LINK,
+            bindVars={
+                "filename": filename
+            },
+            rawResults=True
+        )
+        query_result = {"link": query_displayname.result[0]}
+        
     return query_result
+
+
+
 
 
 # returns a list of the available languages of matches for the given file.
