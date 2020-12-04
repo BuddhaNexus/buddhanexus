@@ -83,3 +83,18 @@ def postprocess_results(search_string, results):
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
     results = sorted(results, key = lambda i: i['distance']) 
     return results[:200] # make sure we return a fixed number of results
+
+def process_multilang_result(result_list,search_string):
+    if search_string == '':
+        return result_list
+    
+    for result in result_list:
+        if search_string in result["root_seg_text"][0]:
+            beg,end, = get_offsets(search_string,result["root_seg_text"][0])[:2]
+            result['root_offset_beg'] = beg
+            result['root_offset_end'] = end
+        if search_string in result["par_segment"][0]:
+            beg,end, = get_offsets(search_string,result["par_segment"][0])[:2]
+            result['par_offset_beg'] = beg
+            result['par_offset_end'] = end        
+    return result_list

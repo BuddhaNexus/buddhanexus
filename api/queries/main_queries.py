@@ -15,7 +15,6 @@ FOR file IN files
     RETURN file.folios
 """
 
-
 QUERY_SEGMENT_COUNT = """
 FOR segment IN segments
     FILTER segment._key == @segmentnr
@@ -63,13 +62,13 @@ FOR f IN parallels_sorted_file
                 ? POSITION(collection_filter_test2, true)
                 : false
             FILTER fits_collection2 == false
-                let root_seg_text = (
+            LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
-            let par_segment = (
+            LET par_segment = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
                         FILTER segment._key == segnr
@@ -94,6 +93,44 @@ FOR f IN parallels_sorted_file
             }
 """
 
+QUERY_MULTILINGUAL = """
+LET parallel_ids = (
+    FOR file IN files
+        FILTER file._key == @filename
+        FOR segmentnr IN file.segment_keys
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                RETURN segment.parallel_ids_multi
+        )
+
+FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
+    FOR p IN parallels_multi
+        FILTER p._key == parallel_id
+        LET folio_regex_test = (
+            FOR current_segnr IN p.root_segnr
+            RETURN REGEX_TEST(current_segnr, @start_folio)
+        )
+        FILTER LIKE(p.root_string, @search_string, true) || LIKE(p.par_string, @search_string, true)
+        FILTER POSITION(folio_regex_test, true)
+        FILTER POSITION(@multi_lingual, p.tgt_lang)
+        LIMIT 100 * @page,100
+        RETURN {
+            par_segnr: [p.par_segnr[0]],
+            par_offset_beg: 0,
+            par_offset_end: 0,
+            root_offset_beg: 0,
+            root_offset_end: 0,
+            par_segment: [p.par_string],
+            file_name: p.id,
+            root_segnr: [p.root_segnr[0]],
+            root_seg_text: [p.root_string],
+            par_length: p.par_length,
+            root_length: p.root_length,
+            par_pos_beg: p.par_pos_beg,
+            "co-occ": p["co-occ"],
+            score: p.score
+        }
+"""
 
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
@@ -115,7 +152,7 @@ LET parallel_ids = UNIQUE(FLATTEN(
         RETURN segment.parallel_ids
 ))
 
-let parallels =  (
+LET parallels =  (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels
             FILTER p._key == parallel_id
@@ -144,7 +181,7 @@ let parallels =  (
             }
     )
 
-let parallels_multi =  (
+LET parallels_multi =  (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
@@ -171,7 +208,7 @@ LET parallel_ids = (
         RETURN APPEND(segment.parallel_ids, segment.parallel_ids_multi)
     )
 
-let parallels = (
+LET parallels = (
     FOR parallel_id IN FLATTEN(parallel_ids)
         FOR p IN parallels
             FILTER p._key == parallel_id
@@ -214,7 +251,7 @@ let parallels = (
             }
 )
 
-let parallels_multi = (
+LET parallels_multi = (
     FOR parallel_id IN FLATTEN(parallel_ids)
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
@@ -251,16 +288,14 @@ LET filter_target = FLATTEN(
             RETURN category.category
     )
 
-
 FOR f in parallels_sorted_file
     filter f._key == @filename
-    let current_parallels = (
+    LET current_parallels = (
     for current_parallel in slice(f.parallels_randomized,0,2500)
         for p in parallels
             filter p._key == current_parallel
             return p 
     )
-
 
 FOR p IN current_parallels
     FILTER p.score >= @score
@@ -317,13 +352,17 @@ FOR file IN files
     RETURN [file.displayName, file.textname, file.gretil_link]
 """
 
-
 QUERY_GRETIL_LINK = """
 FOR file IN files
     FILTER file._key == @filename
     RETURN file.gretil_link
 """
 
+QUERY_BDRC_LINK = """
+FOR file IN files
+    FILTER file._key == @filename
+    RETURN file.bdrc_link
+"""
 
 QUERY_MULTILINGUAL_LANGS = """
 FOR file IN files
@@ -343,7 +382,7 @@ LET parallel_ids = UNIQUE(FLATTEN(
         RETURN segment.parallel_ids
 ))
 
-let lang_list =  (
+LET lang_list =  (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
