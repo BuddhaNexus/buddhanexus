@@ -216,20 +216,19 @@ async def get_table_view(
         raise HTTPException(status_code=400) from error
 
 
-
 @APP.get("/files/{file_name}/multilang")
 async def get_multilang(
     file_name: str,
     multi_lingual: List[str] = Query([]),
-        folio: str = "",
-        page: int = 0,
-        search_string: str = "",
+    folio: str = "",
+    page: int = 0,
+    search_string: str = "",
 ):
     """
     Endpoint for the multilingual table view. Accepts Parallel languages
     :return: List of segments and parallels for the table view.
     """
-    
+
     language = get_language_from_filename(file_name)
     start_folio = get_folio_regex(language, file_name, folio)
     language = get_language_from_filename(file_name)
@@ -243,7 +242,6 @@ async def get_multilang(
                 "page": page,
                 "start_folio": start_folio,
                 "search_string": "%" + search_string + "%",
-
             },
         )
         result = search_utils.process_multilang_result(query.result,search_string)
@@ -252,6 +250,7 @@ async def get_multilang(
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
+
 
 @APP.get("/menus/{language}")
 async def get_files_for_menu(language: str):
@@ -661,7 +660,6 @@ async def get_search_results(search_string: str):
         rawResults=True,
     )
     query_result = query_search.result[0]
-    print("RESULT",query_result)
     result = search_utils.postprocess_results(search_string, query_result)
     return {"searchResults": result}
 
@@ -732,11 +730,8 @@ async def get_external_link(segmentnr: str):
             rawResults=True
         )
         query_result = {"link": query_displayname.result[0]}
-        
+
     return query_result
-
-
-
 
 
 # returns a list of the available languages of matches for the given file.
