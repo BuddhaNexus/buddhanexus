@@ -661,8 +661,8 @@ async def get_search_results(search_string: str):
         rawResults=True,
     )
     query_result = query_search.result[0]
-    print("RESULT",query_result)
     result = search_utils.postprocess_results(search_string, query_result)
+    print("RESULT",result)
     return {"searchResults": result}
 
 
