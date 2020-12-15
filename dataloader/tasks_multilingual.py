@@ -29,6 +29,9 @@ def load_multilingual_parallels(root_url: str, threads: int):
     pool.close()
 
 def update_filename(filename,tgt_lang,db):
+    """
+    Adds the available languages to the file entry for menus etc.
+    """
     db_file_collection = db.collection(COLLECTION_FILES)    
     current_file = db_file_collection.get(filename)
     if 'available_lang' in current_file:
@@ -80,7 +83,6 @@ def add_multi_parallels_to_segments(parallels, db_segments_collection):
 def clean_multi():
     """
     Deletes the multilingual data from the db.
-    Currently, the multilingual parallel ids remain attached to the segment-ids. 
     """
     db = get_database()    
     db.delete_collection(COLLECTION_PARALLELS_MULTI)
