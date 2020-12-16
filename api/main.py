@@ -255,13 +255,18 @@ async def get_multilang(
 @APP.get("/menus/{language}")
 async def get_files_for_menu(language: str):
     """
-    Endpoint that returns list of file IDs in a given language
+    Endpoint that returns list of file IDs in a given language or all files available in multilang if the language is multi.
     """
+    menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
+    current_bindVars = {"language": language}
+    if language == "multi":
+        menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
+        current_bindVars = {}
     try:
         language_menu_query_result = get_db().AQLQuery(
-            query=menu_queries.QUERY_FILES_FOR_LANGUAGE,
+            query=menu_query,
             batchSize=10000,
-            bindVars={"language": language},
+            bindVars=current_bindVars
         )
         return {"result": language_menu_query_result.result}
 

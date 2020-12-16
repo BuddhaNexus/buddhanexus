@@ -12,6 +12,19 @@ FOR file IN 3..3 OUTBOUND concat("languages/", @language) GRAPH 'collections_cat
     }
 """
 
+QUERY_FILES_FOR_MULTILANG = """
+FOR file in files
+    FILTER LENGTH(file.available_lang) > 0
+    RETURN {
+        displayName: file.displayName,
+        search_field: file.search_field,
+        textname: file.textname,
+        filename: file.filename,
+        category: file.category,
+        available_lang: file.available_lang
+    }
+"""
+
 QUERY_FILES_FOR_CATEGORY = """
 FOR category IN 2..2 OUTBOUND concat("languages/", @language) GRAPH 'collections_categories'
     SORT category.categorynr
