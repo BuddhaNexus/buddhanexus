@@ -15,6 +15,8 @@ FOR file IN 3..3 OUTBOUND concat("languages/", @language) GRAPH 'collections_cat
 QUERY_FILES_FOR_MULTILANG = """
 FOR file in files
     FILTER LENGTH(file.available_lang) > 0
+    SORT file.language DESC
+    SORT file.filename DESC
     RETURN {
         displayName: file.displayName,
         search_field: file.search_field,
