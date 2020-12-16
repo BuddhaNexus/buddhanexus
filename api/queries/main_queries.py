@@ -367,27 +367,5 @@ FOR file IN files
 QUERY_MULTILINGUAL_LANGS = """
 FOR file IN files
     FILTER file._key == @filename
-    LET segments = (
-        FOR segmentnr IN file.segment_keys
-            LIMIT 100
-            FOR segment in segments
-                FILTER segment._key == segmentnr
-                RETURN {
-                    parallel_ids: segment.parallel_ids_multi
-                }
-        )
-
-LET parallel_ids = UNIQUE(FLATTEN(
-    FOR segment in segments
-        RETURN segment.parallel_ids
-))
-
-LET lang_list =  (
-    FOR parallel_id IN parallel_ids
-        FOR p IN parallels_multi
-            FILTER p._key == parallel_id
-            RETURN p.tgt_lang            
-    )
-
-RETURN UNIQUE(lang_list)
+    RETURN UNIQUE(FLATTEN([file.language, file.available_lang]))
 """
