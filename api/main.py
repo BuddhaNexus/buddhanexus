@@ -255,7 +255,7 @@ async def get_multilang(
 @APP.get("/menus/{language}")
 async def get_files_for_menu(language: str):
     """
-    Endpoint that returns list of file IDs in a given language 
+    Endpoint that returns list of file IDs in a given language
     or all files available in multilang if the language is multi.
     """
     menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
