@@ -32,7 +32,7 @@ def update_filename(filename,tgt_lang,db):
     """
     Adds the available languages to the file entry for menus etc.
     """
-    db_file_collection = db.collection(COLLECTION_FILES)    
+    db_file_collection = db.collection(COLLECTION_FILES)
     current_file = db_file_collection.get(filename)
     if 'available_lang' in current_file:
         current_file['available_lang'].append(tgt_lang)
@@ -40,7 +40,6 @@ def update_filename(filename,tgt_lang,db):
         current_file['available_lang'] = [tgt_lang]
     db_file_collection.update(current_file)
 
-    
 def load_multilingual_file(filepath):
     db = get_database()
     db_multi_collection = db.collection(COLLECTION_PARALLELS_MULTI)
@@ -50,9 +49,9 @@ def load_multilingual_file(filepath):
     with gzip.open(filepath, 'r') as current_file:
         json_data = json.load(current_file)
         filename = json_data[0]['root_segnr'][0].split(':')[0]
-        tgt_lang = json_data[0]['tgt_lang']        
+        tgt_lang = json_data[0]['tgt_lang']
         update_filename(filename,tgt_lang,db)
-        
+
         for parallel in json_data:
             parallel["_key"] = parallel["id"]
         try:
@@ -84,7 +83,7 @@ def clean_multi():
     """
     Deletes the multilingual data from the db.
     """
-    db = get_database()    
+    db = get_database()
     db.delete_collection(COLLECTION_PARALLELS_MULTI)
     db_file_collection = db.collection(COLLECTION_FILES)
     db_segments_collection = db.collection(COLLECTION_SEGMENTS)
@@ -105,5 +104,3 @@ def clean_multi():
                         print(f"Could not remove multilingual segment {segment_nr}. Error: ", e)
                 file['available_lang'] = []
                 db_file_collection.update(file)
-                
-                
