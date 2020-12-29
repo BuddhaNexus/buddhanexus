@@ -260,7 +260,6 @@ async def get_files_for_menu(language: str):
     """
     menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
     current_bind_vars = {"language": language}
-    print("CURRENT_BIND_VARS",current_bind_vars)        
     if language == "multi":
         menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
         current_bind_vars = {}
@@ -634,7 +633,6 @@ async def get_data_for_sidebar_menu(language: str):
     """
     Endpoint for sidebar menu
     """
-    print("SIDEBAR LANG",language)
     database = get_db()
     query_sidebar_menu = database.AQLQuery(
         query=menu_queries.QUERY_TOTAL_MENU, bindVars={"language": language}
