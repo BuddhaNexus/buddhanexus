@@ -373,6 +373,8 @@ async def get_file_text_segments_and_parallels(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
+    print("LIMIT COLLECTION POSITIVE",limitcollection_positive)
+    print("LIMIT COLLECTION NEGATIVE",limitcollection_negative)    
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
