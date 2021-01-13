@@ -342,8 +342,8 @@
     },
     {
         "displayName": "'phags pa shes rab kyi pha rol tu phyin pa bdun brgya pa zhes bya ba theg pa chen po'i mdo (ārya-saptaśatikā-nāma-prajñāpāramitā-mahāyāna-sūtra)",
-        "textname": "D0024 H0015",
-        "filename": "K06D0024_H0015",
+        "textname": "D0024=D0090 H0015",
+        "filename": "K06D0024=D0090_H0015",
         "category": "K06",
         "filenr": 39,
         "alt_filename": "K06acip-k_lha_sa-034-002",
@@ -1018,7 +1018,7 @@
     {
         "displayName": "D0090 H0090",
         "textname": "D0090 H0090",
-        "filename": "K08D0090_H0090",
+        "filename": "K08D0090=D0024_H0090",
         "category": "K08",
         "filenr": 114,
         "alt_filename": "K08acip-k_lha_sa-040-011",
@@ -1993,8 +1993,8 @@
     },
     {
         "displayName": "'phags pa lha mo chen mo dpal lung bstan pa (ārya-śrīmahādevī-vyākaraṇa)",
-        "textname": "D0193 H0194",
-        "filename": "K10D0193_H0194",
+        "textname": "D0193=D0739 H0194",
+        "filename": "K10D0193=D0739_H0194",
         "category": "K10",
         "filenr": 223,
         "alt_filename": "K10acip-k_lha_sa-061-013",
@@ -4162,8 +4162,8 @@
     },
     {
         "displayName": "dpal rdo rje gtum po thugs gsang ba'i rgyud phyi ma'i phyi ma (śrī-vajracaṇḍacittaguhyatantra-uttara-uttara)",
-        "textname": "D0460B(39b6-7) H0428",
-        "filename": "K12D0460B(39b6-7)_H0428",
+        "textname": "D0460B(39b6-7)=D0952 H0428",
+        "filename": "K12D0460B(39b6-7)=D0952_H0428",
         "category": "K12",
         "filenr": 465,
         "alt_filename": "K12acip-k_lha_sa-083-012"
@@ -4224,8 +4224,8 @@
     },
     {
         "displayName": "dpal rdo rje 'jigs byed kyi rtog pa'i rgyud kyi rgyal po (śrī-vajrabhairavakalpa-tantrarājā)",
-        "textname": "D0470 H0453",
-        "filename": "K12D0470_H0453",
+        "textname": "D0470 H0435",
+        "filename": "K12D0470_H0435",
         "category": "K12",
         "filenr": 472,
         "alt_filename": "K12acip-k_lha_sa-083-019"
@@ -4385,8 +4385,8 @@
     },
     {
         "displayName": "dpal mchog dang po zhes bya ba theg pa chen po'i rtog pa'i rgyal po (śrī-paramādya-nāma-mahāyānakalparājā)",
-        "textname": "D0487 D0470 H0453",
-        "filename": "K12D0487_D0470_H0453",
+        "textname": "D0487 H0453",
+        "filename": "K12D0487_H0453",
         "category": "K12",
         "filenr": 490,
         "alt_filename": "K12acip-k_lha_sa-085-005"
@@ -4518,9 +4518,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RK0499"
     },
     {
-        "displayName": "Dx H0468",
-        "textname": "Dx H0468",
-        "filename": "K12Dx_H0468",
+        "displayName": "D0748=D0948 H0468",
+        "textname": "D0748=D0948 H0468",
+        "filename": "K12D0748=D0948_H0468",
         "category": "K12",
         "filenr": 505,
         "alt_filename": "K12acip-k_lha_sa-087-003",
@@ -4645,8 +4645,8 @@
     },
     {
         "displayName": "'phags pa 'jam dpal gyi rtsa ba'i rgyud (ārya-mañjuśrīmūlatantra)",
-        "textname": "D0543=D0861 H0482",
-        "filename": "K12D0543=D0861_H0482",
+        "textname": "D0534=D0861 H0482",
+        "filename": "K12D0534=D0861_H0482",
         "category": "K12",
         "filenr": 519,
         "alt_filename": "K12acip-k_lha_sa-088-003"
@@ -4733,9 +4733,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RK0671"
     },
     {
-        "displayName": "D0678 H0492",
-        "textname": "D0678 H0492",
-        "filename": "K12D0678_H0492",
+        "displayName": "D0678=D0867 H0492",
+        "textname": "D0678=D0867 H0492",
+        "filename": "K12D0678=D0867_H0492",
         "category": "K12",
         "filenr": 529,
         "alt_filename": "K12acip-k_lha_sa-088-013",
@@ -4761,8 +4761,8 @@
     },
     {
         "displayName": "'phags pa dri ma med pa zhes bya ba'i gzungs (ārya-vimala-nāma-dhāraṇī)",
-        "textname": "D0517=D0496 H0495",
-        "filename": "K12D0517=D0496_H0495",
+        "textname": "D0517=D0871 H0495",
+        "filename": "K12D0517=D0871_H0495",
         "category": "K12",
         "filenr": 532,
         "alt_filename": "K12acip-k_lha_sa-088-016"
@@ -5102,8 +5102,8 @@
     },
     {
         "displayName": "'phags pa rig sngags kyi rgyal mo rma bya'i yang snying zhes bya ba (ārya-mayūrī-vidyāgarbha-nāma)",
-        "textname": "D0560 H0553",
-        "filename": "K12D0560_H0553",
+        "textname": "D0560 H0533",
+        "filename": "K12D0560_H0533",
         "category": "K12",
         "filenr": 570,
         "alt_filename": "K12acip-k_lha_sa-090-017"
@@ -5280,9 +5280,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RK0609"
     },
     {
-        "displayName": "'phags pa rig sngags kyi rgyal mo rma bya'i yang snying zhes bya ba (ārya-mayūrī-vidyāgarbha-nāma)",
-        "textname": "D0560 D0710=D0930 H0553",
-        "filename": "K12D0560_D0710=D0930_H0553",
+        "displayName": "stong 'gyur zhes bya ba'i gzungs",
+        "textname": "D0710=D0930 H0553",
+        "filename": "K12D0710=D0930_H0553",
         "category": "K12",
         "filenr": 590,
         "alt_filename": "K12acip-k_lha_sa-090-037",
@@ -5371,8 +5371,8 @@
     },
     {
         "displayName": "sman gtong ba'i tshe sman la sngags kyis gdab pa ",
-        "textname": "D0505B(286a6-7) H0563",
-        "filename": "K12D0505B(286a6-7)_H0563",
+        "textname": "D0505B(286a6-7)=[D1059B(190a1-190a2)] H0563",
+        "filename": "K12D0505B(286a6-7)=[D1059B(190a1-190a2)]_H0563",
         "category": "K12",
         "filenr": 600,
         "alt_filename": "K12acip-k_lha_sa-090-047"
@@ -5514,8 +5514,8 @@
     },
     {
         "displayName": "mchog thob pa'i rig sngags (agravidyāmantra)",
-        "textname": "D0742 H0579",
-        "filename": "K12D0742_H0579",
+        "textname": "D0742=D1036 H0579",
+        "filename": "K12D0742=D1036_H0579",
         "category": "K12",
         "filenr": 616,
         "alt_filename": "K12acip-k_lha_sa-090-063",
@@ -5523,8 +5523,8 @@
     },
     {
         "displayName": "'phags pa pad ma'i spyan zhes bya ba'i gzungs ",
-        "textname": "D0539 H0580",
-        "filename": "K12D0539_H0580",
+        "textname": "D0539A-G H0580 (cf. D1069–1074, D774, D866)",
+        "filename": "K12D0539A-G_H0580",
         "category": "K12",
         "filenr": 617,
         "alt_filename": "K12acip-k_lha_sa-090-064"
@@ -6070,8 +6070,8 @@
     },
     {
         "displayName": "lha'i dbang po brgya byin gyis bstod pa ",
-        "textname": "D0673=D1089 H0640",
-        "filename": "K12D0673=D1089_H0640",
+        "textname": "D0673A=D1089 H0640",
+        "filename": "K12D0673A=D1089_H0640",
         "category": "K12",
         "filenr": 678,
         "alt_filename": "K12acip-k_lha_sa-091-031",
@@ -6239,9 +6239,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RK0689"
     },
     {
-        "displayName": "D0688 H0658",
-        "textname": "D0688 H0658",
-        "filename": "K12D0688_H0658",
+        "displayName": "D0688=D0902 H0658",
+        "textname": "D0688=D0902 H0658",
+        "filename": "K12D0688=D0902_H0658",
         "category": "K12",
         "filenr": 697,
         "alt_filename": "K12acip-k_lha_sa-091-050",
@@ -6258,17 +6258,17 @@
     },
     {
         "displayName": "'phags pa n'i la kang ṭḥa zhes bya ba'i gzungs (ārya-nīlakaṇṭha-nāma-dhāraṇī)",
-        "textname": "D0697 H0660",
-        "filename": "K12D0697_H0660",
+        "textname": "D0697=D0905 H0660",
+        "filename": "K12D0697=D0905_H0660",
         "category": "K12",
         "filenr": 699,
         "alt_filename": "K12acip-k_lha_sa-091-052",
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RK0691"
     },
     {
-        "displayName": "'phags pa me kha la zhes bya ba'i gzungs (ārya-mekhalā-nāma-dhāraṇī)",
-        "textname": "D0772 H0661",
-        "filename": "K12D0772_H0661",
+        "displayName": "phags pa spyan ras gzigs dbang phyug yid bzhin gyi nor bu'i rtog pa las smon lam 'byung ba",
+        "textname": "D0722 H0714",
+        "filename": "K12D0722_H0714",
         "category": "K12",
         "filenr": 700,
         "alt_filename": "K12acip-k_lha_sa-091-053"
@@ -6599,8 +6599,8 @@
     },
     {
         "displayName": "rdo rje phra mo thogs pa med pa zhes bya ba'i gzungs (vajrasūkṣma-apratihata-nāma-dhāraṇī)",
-        "textname": "D0753 H0696",
-        "filename": "K12D0753_H0696",
+        "textname": "D0753=D0955 H0696",
+        "filename": "K12D0753=D0955_H0696",
         "category": "K12",
         "filenr": 737,
         "alt_filename": "K12acip-k_lha_sa-094-006",
@@ -6680,8 +6680,8 @@
     },
     {
         "displayName": "'phags pa bgegs sel ba'i gzungs (ārya-vighnavināyaka-dhāraṇī)",
-        "textname": "D0655 H0705",
-        "filename": "K12D0655_H0705",
+        "textname": "D0655=D0959 H0705",
+        "filename": "K12D06555=D0959_H0705",
         "category": "K12",
         "filenr": 746,
         "alt_filename": "K12acip-k_lha_sa-094-015",
@@ -7262,8 +7262,8 @@
     },
     {
         "displayName": "'phags pa spyan ras gzigs dbang phyug yid bzhin gyi nor bu'i rtog ba las smon lam 'byung ba ",
-        "textname": "D0812=D1094 H0769",
-        "filename": "K12D0812=D1094_H0769",
+        "textname": "K12D0722=D0812=D1094 H0661",
+        "filename": "K12D0722=D0812=D1094_H0661",
         "category": "K12",
         "filenr": 811,
         "alt_filename": "K12acip-k_lha_sa-096-059",
@@ -7450,9 +7450,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RK0452"
     },
     {
-        "displayName": "D0572 H0790",
-        "textname": "D0572 H0790",
-        "filename": "K12D0572_H0790",
+        "displayName": "D0572=D0993 H0790",
+        "textname": "D0572=D0993 H0790",
+        "filename": "K12D0572=D0993_H0790",
         "category": "K12",
         "filenr": 832,
         "alt_filename": "K12acip-k_lha_sa-096-080",
@@ -7642,8 +7642,16 @@
     },
     {
         "displayName": "bdud rtsi chen po mchog gi lung (sarvapañcāmṛtasārasiddhimahādukahṛdayānaparavittvanāṣṭa)",
-        "textname": "D0841(1-8).8 H0805.8",
-        "filename": "K12D0841(1-8)-8_H0805-8",
+        "textname": "D0841(1-8).8A H0805.8A",
+        "filename": "K12D0841(1-8)-8A_H0805-8A",
+        "category": "K12",
+        "filenr": 854,
+        "alt_filename": "K12acip-k_lha_sa-099-013"
+    },
+    {
+        "displayName": "bdud rtsi chen po mchog gi lung (sarvapañcāmṛtasārasiddhimahādukahṛdayānaparavittvanāṣṭa)",
+        "textname": "D0841(1-8).8B H0805.8B",
+        "filename": "K12D0841(1-8)-8B_H0805-8B",
         "category": "K12",
         "filenr": 854,
         "alt_filename": "K12acip-k_lha_sa-099-013"
@@ -8630,9 +8638,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RT0344"
     },
     {
-        "displayName": "D1215",
-        "textname": "D1215",
-        "filename": "T02D1215",
+        "displayName": "D1215=D1606",
+        "textname": "D1215=D1606",
+        "filename": "T02D1215=D1606",
         "category": "T02",
         "filenr": 964,
         "alt_filename": "T02TD1215E",
@@ -12183,9 +12191,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RT4334"
     },
     {
-        "displayName": "D1606",
-        "textname": "D1606",
-        "filename": "T02D1606",
+        "displayName": "D1606=D1215",
+        "textname": "D1606=D1215",
+        "filename": "T02D1606=D1215",
         "category": "T02",
         "filenr": 1359,
         "alt_filename": "T02TD1606E",
@@ -15654,8 +15662,8 @@
     },
     {
         "displayName": "dpal de kho na nyid grub pa (śrītattvasiddhi)",
-        "textname": "D1985",
-        "filename": "T02D1985",
+        "textname": "D1985=D2262",
+        "filename": "T02D1985=D2262",
         "category": "T02",
         "filenr": 1745,
         "alt_filename": "T02TD1985E",
@@ -18170,8 +18178,8 @@
     },
     {
         "displayName": "dpal de kho na nyid grub pa (śrītattvasiddhi)",
-        "textname": "D2262",
-        "filename": "T02D2262",
+        "textname": "D2262=D1985",
+        "filename": "T02D2262=D1985",
         "category": "T02",
         "filenr": 2025,
         "alt_filename": "T02TD2262E",
@@ -21969,9 +21977,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RT1500"
     },
     {
-        "displayName": "D2677",
-        "textname": "D2677",
-        "filename": "T02D2677",
+        "displayName": "D2677=D2905",
+        "textname": "D2677=D2905",
+        "filename": "T02D2677=D2905",
         "category": "T02",
         "filenr": 2449,
         "alt_filename": "T02TD2677E",
@@ -22582,8 +22590,8 @@
     },
     {
         "displayName": "'phags pa spyan ras gzigs dbang phyug gi sgrub thabs brgya rtsa brgyad pa (āryāvalokiteśvarāṣṭottaraśatakasādhana)",
-        "textname": "D2741",
-        "filename": "T02D2741",
+        "textname": "D2741=D2854",
+        "filename": "T02D2741=D2854",
         "category": "T02",
         "filenr": 2517,
         "alt_filename": "T02TD2741E",
@@ -24075,9 +24083,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RT1730"
     },
     {
-        "displayName": "D2905",
-        "textname": "D2905",
-        "filename": "T02D2905",
+        "displayName": "D2905=D2677",
+        "textname": "D2905=D2677",
+        "filename": "T02D2905=D2677",
         "category": "T02",
         "filenr": 2683,
         "alt_filename": "T02TD2905E",
@@ -27712,8 +27720,8 @@
     },
     {
         "displayName": "dpal rdo rje gdan gyi sgrub thabs (śrīvajrāsanasādhana)",
-        "textname": "D3306",
-        "filename": "T02D3306",
+        "textname": "D3306=D3402",
+        "filename": "T02D3306=D3402",
         "category": "T02",
         "filenr": 3087,
         "alt_filename": "T02TD3306E",
@@ -28576,8 +28584,8 @@
     },
     {
         "displayName": "dpal rdo rje gdan gyi sgrub thabs (śrīvajrāsanasādhana)",
-        "textname": "D3402",
-        "filename": "T02D3402",
+        "textname": "D3402=D3306",
+        "filename": "T02D3402=D3306",
         "category": "T02",
         "filenr": 3183,
         "alt_filename": "T02TD3402E",
@@ -31905,9 +31913,9 @@
         "bdrc_link": "http://purl.bdrc.io/resource/WA0RT2588"
     },
     {
-        "displayName": "D3771",
-        "textname": "D3771",
-        "filename": "T02D3771",
+        "displayName": "gtor ma'i phreng ba (balimālikā)",
+        "textname": "D3771=D4456",
+        "filename": "T02D3771=D4456",
         "category": "T02",
         "filenr": 3553,
         "alt_filename": "T02TD3771E",
@@ -38320,8 +38328,8 @@
     },
     {
         "displayName": "gtor ma'i phreng ba (balimālikā)",
-        "textname": "D4456",
-        "filename": "T16D4456",
+        "textname": "D4456=D3771",
+        "filename": "T16D4456=D3771",
         "category": "T16",
         "filenr": 4272,
         "alt_filename": "T16TD4456E",
@@ -50285,6 +50293,14 @@
         "category": "NK093",
         "filenr": 5979
     },
+    {
+        "displayName": "",
+        "textname": "NK093(ge)002",
+        "filename": "NK093(ge)002",
+        "category": "NK093",
+        "filenr": 5979
+    },
+
     {
         "displayName": "dpal spyi mdo dgongs pa 'dus pa'i 'grel pa rnal 'byor nyi ma gsal bar byed pa'i legs bshad gzi ldan 'char kha'i 'od snang glegs bam bzhi pa/",
         "textname": "NK094(nge)001",
