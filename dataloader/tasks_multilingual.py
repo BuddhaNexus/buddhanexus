@@ -17,8 +17,7 @@ from dataloader_utils import (
 )
 
 def should_download_file(filename):
-    if "1394" in filename:
-        return True
+    return True
 
 
 def load_multilingual_parallels(root_url: str, threads: int):
@@ -57,17 +56,18 @@ def load_multilingual_file(filepath):
     print("Loading", filepath)
     with gzip.open(filepath, 'r') as current_file:
         json_data = json.load(current_file)
-        filename = json_data[0]['root_segnr'][0].split(':')[0]
-        tgt_lang = json_data[0]['tgt_lang']
-        update_filename(filename,tgt_lang,db)
+        if json_data[0]:
+            filename = json_data[0]['root_segnr'][0].split(':')[0]
+            tgt_lang = json_data[0]['tgt_lang']
+            update_filename(filename,tgt_lang,db)
 
-        for parallel in json_data:
-            parallel["_key"] = parallel["id"]
-        try:
-            db_multi_collection.insert_many(json_data)
-        except (DocumentInsertError, IndexCreateError) as e:
-            print(f"Could not save multilingual parallels. Error: ", e)    
-        add_multi_parallels_to_segments(json_data, db_segments_collection)
+            for parallel in json_data:
+                parallel["_key"] = parallel["id"]
+            try:
+                db_multi_collection.insert_many(json_data)
+            except (DocumentInsertError, IndexCreateError) as e:
+                print(f"Could not save multilingual parallels. Error: ", e)    
+            add_multi_parallels_to_segments(json_data, db_segments_collection)
 
         
 def add_multi_parallels_to_segments(parallels, db_segments_collection):
