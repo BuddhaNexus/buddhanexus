@@ -104,12 +104,12 @@ def get_folios_from_segment_keys(segment_keys, lang):
     elif lang == LANG_SANSKRIT:
         last_num = ''
         for segment_key in segment_keys:
-            if re.search(r"^(XXdhppat|S10udanav)", segment_key):
-                num = segment_key.split(":")[1].split("_")[1]
-                if num != last_num:
-                    folios.append({"num": num, "segment_nr": segment_key})
-                    last_num = num
-            elif re.search(r"^(OT)", segment_key):
+            # if re.search(r"^(XXdhppat|S10udanav)", segment_key):
+            #     num = segment_key.split(":")[1].split("_")[1]
+            #     if num != last_num:
+            #         folios.append({"num": num, "segment_nr": segment_key})
+            #         last_num = num
+            if re.search(r"^(OT)", segment_key):
                 num = segment_key.split(":")[1].split("_")[0].strip('x')
                 if num != last_num:
                     folios.append({"num": num, "segment_nr": segment_key})
@@ -125,6 +125,7 @@ def get_folios_from_segment_keys(segment_keys, lang):
 def load_segments_and_parallels_data_from_menu_file(
     menu_file_json, lang: str, root_url: str
 ) -> None:
+    print("MENU FILE JSON",menu_file_json)
     file_url = f"{root_url}{lang}/{menu_file_json['filename']}.json.gz"
     db = get_database()
 

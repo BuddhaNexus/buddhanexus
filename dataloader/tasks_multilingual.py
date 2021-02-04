@@ -1,5 +1,6 @@
 import multiprocessing
 import json
+import re
 import os
 import gzip 
 
@@ -15,6 +16,11 @@ from dataloader_utils import (
     get_database
 )
 
+def should_download_file(filename):
+    if "1394" in filename:
+        return True
+
+
 def load_multilingual_parallels(root_url: str, threads: int):
     """
     Iterates over all the files in json/multi and loads them into the a separate collection.
@@ -23,12 +29,15 @@ def load_multilingual_parallels(root_url: str, threads: int):
     filename_list = []
     for current_file in os.listdir(root_url):
         filename = os.fsdecode(current_file)
-        filename_list.append(root_url + filename)
+        if should_download_file(filename):
+            filename_list.append(root_url + filename)
     pool = multiprocessing.Pool(processes=threads)
     pool.map(load_multilingual_file, filename_list)
     pool.close()
 
 def update_filename(filename,tgt_lang,db):
+    filename = re.sub("_[0-9][0-9][0-9]","",filename)
+    print("CURRENT FILENAME",filename)
     """
     Adds the available languages to the file entry for menus etc.
     """
