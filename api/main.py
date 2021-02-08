@@ -372,10 +372,9 @@ async def get_file_text_segments_and_parallels(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
-    try:
-        text_segments_query_result = get_db().AQLQuery(
-            query=main_queries.QUERY_TEXT_AND_PARALLELS,
-            bindVars={
+    print("LIMIT COLLECTION POSITIVE",limitcollection_positive)
+    print("LIMIT COLLECTION NEGATIVE",limitcollection_negative)
+    current_bind_vars ={
                 "parallel_ids_type": parallel_ids_type,
                 "filename": file_name,
                 "limit": limit,
@@ -386,8 +385,14 @@ async def get_file_text_segments_and_parallels(
                 "multi_lingual": multi_lingual,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
-            },
+            }
+    print(current_bind_vars)
+    try:
+        text_segments_query_result = get_db().AQLQuery(
+            query=main_queries.QUERY_TEXT_AND_PARALLELS,
+            bindVars=current_bind_vars,
         )
+        #print("RETURN RESULT",text_segments_query_result.result[0]['parallels'])
         return text_segments_query_result.result[0]
 
     except DocumentNotFoundError as error:

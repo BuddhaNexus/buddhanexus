@@ -17,7 +17,8 @@ from dataloader_utils import (
 )
 
 def should_download_file(filename):
-    return True
+    if "D0543" in filename:
+        return True
 
 
 def load_multilingual_parallels(root_url: str, threads: int):
