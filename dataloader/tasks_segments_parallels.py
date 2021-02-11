@@ -382,6 +382,9 @@ def create_indices(db: StandardDatabase):
     db_collection = db.collection(COLLECTION_PARALLELS)
     db_collection.add_hash_index(["root_filename"], unique=False)
     db_collection.add_hash_index(["src_lang"], unique=False)
+    db_collection = db.collection(COLLECTION_FILES)
+    db_collection.add_hash_index(["language"], unique=False)
+    db_collection.add_hash_index(["category"], unique=False)
 
 
 # TODO: Refactor this function. Split into smaller chunks.
