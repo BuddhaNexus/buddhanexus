@@ -1,7 +1,7 @@
 QUERY_FILES_FOR_LANGUAGE = """
-FOR file IN 3..3 OUTBOUND concat("languages/", @language) GRAPH 'collections_categories'
+FOR file IN files
+    FILTER file.language == @language
     SORT file.filenr
-    FILTER file
     RETURN {
         displayName: file.displayName,
         search_field: file.search_field,
