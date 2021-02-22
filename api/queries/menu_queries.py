@@ -27,13 +27,12 @@ FOR file in files
 """
 
 QUERY_FILES_FOR_CATEGORY = """
-FOR category IN 2..2 OUTBOUND concat("languages/", @language) GRAPH 'collections_categories'
-    SORT category.categorynr
-    FOR file in 1..1 OUTBOUND category._id GRAPH 'collections_categories'
-        FILTER file
+FOR file IN files
+        FILTER file.language == @language
+        SORT file.filenr
         RETURN {
             filename: file.filename,
-            categoryname: UPPER(file.filename)
+            categoryname: CONCAT(file.textname," ",file.displayName)
         }
 """
 

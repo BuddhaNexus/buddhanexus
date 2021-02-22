@@ -292,6 +292,7 @@ async def get_files_for_filter_menu(language: str):
             batchSize=10000,
             bindVars={"language": language},
         )
+        print("FILTER ITEMS",file_filter_query_result.result)
         return {"filteritems": file_filter_query_result.result}
 
     except DocumentNotFoundError as error:
