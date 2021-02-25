@@ -222,6 +222,7 @@ async def get_multilang(
     multi_lingual: List[str] = Query([]),
     folio: str = "",
     page: int = 0,
+    score: int = 0,
     search_string: str = "",
 ):
     """
@@ -240,6 +241,7 @@ async def get_multilang(
                 "filename": file_name,
                 "multi_lingual": multi_lingual,
                 "page": page,
+                "score": score,
                 "start_folio": start_folio,
                 "search_string": "%" + search_string + "%",
             },

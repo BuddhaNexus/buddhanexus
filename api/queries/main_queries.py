@@ -113,6 +113,7 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
         FILTER LIKE(p.root_string, @search_string, true) || LIKE(p.par_string, @search_string, true)
         FILTER POSITION(folio_regex_test, true)
         FILTER POSITION(@multi_lingual, p.tgt_lang)
+        FILTER p.score >= @score
         LIMIT 100 * @page,100
         RETURN {
             par_segnr: [p.par_segnr[0]],
