@@ -17,8 +17,8 @@ from dataloader_utils import (
 )
 
 def should_download_file(filename):
-    if "D0543" in filename:
-        return True
+    #if "D0543" in filename:
+    return True
 
 
 def load_multilingual_parallels(root_url: str, threads: int):
@@ -57,7 +57,7 @@ def load_multilingual_file(filepath):
     print("Loading", filepath)
     with gzip.open(filepath, 'r') as current_file:
         json_data = json.load(current_file)
-        if json_data[0]:
+        if len(json_data) > 0:
             filename = json_data[0]['root_segnr'][0].split(':')[0]
             tgt_lang = json_data[0]['tgt_lang']
             update_filename(filename,tgt_lang,db)
@@ -109,7 +109,7 @@ def clean_multi():
                             current_doc['parallel_ids_multi'] = []
                             db_segments_collection.update(current_doc)
                     except (KeyError, AttributeError) as e:
-                        print("Could not renive multilingual parallels from segment. Error: ", e)
+                        print("Could not remove multilingual parallels from segment. Error: ", e)
                     except DocumentInsertError as e:
                         print(f"Could not remove multilingual segment {segment_nr}. Error: ", e)
                 file['available_lang'] = []

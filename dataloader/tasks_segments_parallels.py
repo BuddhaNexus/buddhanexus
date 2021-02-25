@@ -377,6 +377,8 @@ def load_parallels_sorted(json_parallels: [Parallel], db: StandardDatabase,filen
     except (DocumentInsertError, IndexCreateError) as e:
         print(f"Could not save sorted parallel for {filename}. Error: ", e)
 
+
+
         
 def create_indices(db: StandardDatabase):
     db_collection = db.collection(COLLECTION_PARALLELS)
@@ -515,3 +517,5 @@ def load_parallel_counts(source_name: str, target_name: str, total_length_count:
             collection.insert(doc)
         except (DocumentInsertError, IndexCreateError) as e:
             print("Could not load file. Error: ", e)
+
+
