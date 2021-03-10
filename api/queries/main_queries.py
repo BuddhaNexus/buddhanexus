@@ -306,12 +306,12 @@ FOR p IN current_parallels
         FOR item IN filter_target
             RETURN REGEX_TEST(p.par_segnr[0], CONCAT("^",item,"[^y]"))
     )
-    FILTER (filter_target != []) ? POSITION(filtertest, true) : true
+    FILTER  true IN filtertest || filtertest == []
     RETURN {
         "textname": SPLIT(p.par_segnr[0],":")[0],
-        "parlength": p.par_length
-    }
-"""
+        "parlength": p.par_length,
+        "filtertest":filtertest
+    }"""
 
 QUERY_TOTAL_NUMBERS = """
 FOR p IN parallels

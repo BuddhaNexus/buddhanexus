@@ -294,7 +294,6 @@ async def get_files_for_filter_menu(language: str):
             batchSize=10000,
             bindVars={"language": language},
         )
-        print("FILTER ITEMS",file_filter_query_result.result)
         return {"filteritems": file_filter_query_result.result}
 
     except DocumentNotFoundError as error:
@@ -375,8 +374,6 @@ async def get_file_text_segments_and_parallels(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
-    print("LIMIT COLLECTION POSITIVE",limitcollection_positive)
-    print("LIMIT COLLECTION NEGATIVE",limitcollection_negative)
     current_bind_vars ={
                 "parallel_ids_type": parallel_ids_type,
                 "filename": file_name,
@@ -389,7 +386,6 @@ async def get_file_text_segments_and_parallels(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
             }
-    print(current_bind_vars)
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
@@ -462,7 +458,6 @@ async def get_graph_for_file(
             "targetcollection": target_collection,
         },
     )
-
     collection_keys = []
     total_collection_dict = {}
     total_histogram_dict = {}
@@ -602,9 +597,12 @@ async def get_counts_for_file(
     """
     Returns number of filtered parallels
     """
+    print("LIMIT COLLECTION",limit_collection)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
+    print("LIMIT COLLECTION POSITIVE",limitcollection_positive)
+    print("LIMIT COLLECTION NEGATIVE",limitcollection_negative)
     query_graph_result = get_db().AQLQuery(
         query=main_queries.QUERY_TOTAL_NUMBERS,
         batchSize=100000,
@@ -674,7 +672,6 @@ async def get_search_results(search_string: str):
     )
     query_result = query_search.result[0]
     result = search_utils.postprocess_results(search_string, query_result)
-    print("RESULT",result)
     return {"searchResults": result}
 
 
