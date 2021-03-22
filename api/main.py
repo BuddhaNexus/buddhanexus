@@ -719,29 +719,16 @@ async def get_external_link(segmentnr: str):
     """
     query_result = {"link": ""}
     lang = get_language_from_filename(segmentnr)
-    if lang == "skt":
-        filename = segmentnr.split(':')[0]
-        database = get_db()
-        query_displayname = database.AQLQuery(
-            query=main_queries.QUERY_GRETIL_LINK,
-            bindVars={
-                "filename": filename
-            },
-            rawResults=True
-        )
-        query_result = {"link": query_displayname.result[0]}
-    if lang == "tib":
-        filename = segmentnr.split(':')[0]
-        database = get_db()
-        query_displayname = database.AQLQuery(
-            query=main_queries.QUERY_BDRC_LINK,
-            bindVars={
-                "filename": filename
-            },
-            rawResults=True
-        )
-        query_result = {"link": query_displayname.result[0]}
-
+    filename = segmentnr.split(':')[0]
+    database = get_db()
+    query_displayname = database.AQLQuery(
+        query=main_queries.QUERY_LINK,
+        bindVars={
+            "filename": filename
+        },
+        rawResults=True
+    )
+    query_result = {"link": query_displayname.result[0]}
     return query_result
 
 

@@ -1,41 +1,42 @@
 [
-{
-    "collection": "Buddhist",
+    {
+    "collection": "Kangyur",
     "categories": [
-      "S01",
-      "S02",
-      "S03",
-      "S04",
-      "S05",
-      "S06",
-      "S08",
-      "S10",
-      "V01",
-      "V02",
-      "V03",
-      "V04",
-      "V05",
-      "SA01",
-      "SA02",
-      "SA05",
-      "SA06",
-      "SA07",
-      "SA08",
-      "SA09",
-      "SA10",
-      "SA11",
-      "SA13",
-      "SA14",
-      "SA15",
-      "SA16",
-      "SA17",
-      "SA18",
-      "SA19",
-      "SA20",
-      "SA21",
-      "SA22",
-      "XX"
+      "K01",
+      "K02",
+      "K03",
+      "K05",
+      "K06",
+      "K07",
+      "K08",
+      "K09",
+      "K10",
+      "K12"
     ]
+  },
+  {
+    "collection": "Tengyur",
+    "categories": [
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08",
+      "T09",
+      "T10",
+      "T11",
+      "T12",
+      "T14",
+      "T15",
+      "T16"
+    ]
+  },
+  {
+    "collection": "Buddhist",
+      "categories": ["XX"]
   },
   {
     "collection": "Veda",
@@ -87,9 +88,5 @@
       "GS40",
       "GS41"
     ]
-  },
-  {
-    "collection": "Other",
-    "categories": ["OT"]
   }
 ]

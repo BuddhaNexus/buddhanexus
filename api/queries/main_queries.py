@@ -353,16 +353,10 @@ FOR file IN files
     RETURN [file.displayName, file.textname, file.gretil_link]
 """
 
-QUERY_GRETIL_LINK = """
+QUERY_LINK = """
 FOR file IN files
     FILTER file._key == @filename
-    RETURN file.gretil_link
-"""
-
-QUERY_BDRC_LINK = """
-FOR file IN files
-    FILTER file._key == @filename
-    RETURN file.bdrc_link
+    RETURN file.link
 """
 
 QUERY_MULTILINGUAL_LANGS = """
