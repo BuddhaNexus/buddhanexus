@@ -11,7 +11,8 @@
       "K08",
       "K09",
       "K10",
-      "K12"
+      "K12",
+      "K14"
     ]
   },
   {
@@ -31,11 +32,12 @@
       "T12",
       "T14",
       "T15",
-      "T16"
+      "T16",
+      "T17"
     ]
   },
   {
-    "collection": "Buddhist",
+    "collection": "Other",
       "categories": ["XX"]
   },
   {
