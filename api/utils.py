@@ -5,7 +5,7 @@ Various utilities for interacting with data in API queries.
 import re
 from typing import List
 
-from .queries import menu_queries
+from .queries import menu_queries,main_queries
 from .db_connection import get_db
 
 
@@ -163,3 +163,34 @@ def get_folio_regex(language, file_name, folio) -> str:
             start_folio = file_name + "_" + folio + ":"
 
     return start_folio
+
+def add_source_information(filename,query_result):
+    """
+    Checks if a special source string is stored in the database. If not, it will return a generic message based on a regex pattern. 
+    Currently only works for SKT.
+    """
+    lang = get_language_from_filename(filename)
+    if lang == "skt":
+        query_source_information = get_db().AQLQuery(
+            query=main_queries.QUERY_SOURCE,
+            bindVars={
+                "filename": filename
+            },
+            rawResults=True
+        )
+        source_id =  query_source_information.result[0]['source_id']
+        source_string =  query_source_information.result[0]['source_string']
+        if source_id == "GRETIL":
+            source_string = "The source of this text is GRETIL (Göttingen Register of Electronic Texts in Indian Languages). Click on the link above to access the original etext with full header Information."
+        if source_id == "DSBC":
+            source_string = "The source of this text is the Digital Sanskrit Buddhist Canon project. Click on the link above to access the original etext with full header Information."
+        source_segment = {
+            "segnr":"source:0",
+            "segtext": source_string,
+            "position": -1,
+            "lang": "eng",
+            "parallel_ids": []
+            }
+        query_result['textleft'].insert(0,source_segment)
+        print("LEFTTEXT",query_result['textleft'][0:3])
+    return query_result

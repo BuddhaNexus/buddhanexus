@@ -359,6 +359,16 @@ FOR file IN files
     RETURN file.link
 """
 
+QUERY_SOURCE = """
+FOR file IN files
+    FILTER file._key == @filename
+    RETURN {
+        source_id: file.source,
+        source_string: file.source_string
+   }
+"""
+
+
 QUERY_MULTILINGUAL_LANGS = """
 FOR file IN files
     FILTER file._key == @filename

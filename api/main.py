@@ -23,7 +23,8 @@ from .utils import (
     get_language_from_filename,
     get_collection_files_regex,
     collect_segment_results,
-    get_folio_regex
+    get_folio_regex,
+    add_source_information
 )
 from .db_connection import get_collection, get_db
 
@@ -391,7 +392,8 @@ async def get_file_text_segments_and_parallels(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
             bindVars=current_bind_vars,
         )
-        #print("RETURN RESULT",text_segments_query_result.result[0]['parallels'])
+        add_source_information(file_name,text_segments_query_result.result[0])
+        #print("RETURN RESULT",text_segments_query_result.result[0]['textleft'])
         return text_segments_query_result.result[0]
 
     except DocumentNotFoundError as error:

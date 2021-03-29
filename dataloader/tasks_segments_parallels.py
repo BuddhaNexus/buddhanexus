@@ -4,6 +4,7 @@ import re
 import gzip
 import random
 import sys
+import unidecode
 from collections import Counter, OrderedDict
 from tqdm import tqdm as tqdm
 from arango import DocumentInsertError, IndexCreateError
@@ -104,6 +105,7 @@ def get_folios_from_segment_keys(segment_keys, lang):
     elif lang == LANG_SANSKRIT:
         last_num = ''
         for segment_key in segment_keys:
+            # TODO: Ask Vimala whether we need this?
             # if re.search(r"^(XXdhppat|S10udanav)", segment_key):
             #     num = segment_key.split(":")[1].split("_")[1]
             #     if num != last_num:
@@ -125,7 +127,6 @@ def get_folios_from_segment_keys(segment_keys, lang):
 def load_segments_and_parallels_data_from_menu_file(
     menu_file_json, lang: str, root_url: str
 ) -> None:
-    print("MENU FILE JSON",menu_file_json)
     file_url = f"{root_url}{lang}/{menu_file_json['filename']}.json.gz"
     db = get_database()
 
@@ -285,7 +286,7 @@ def load_files_collection(file: MenuItem, segment_keys: list,lang: str, db: Stan
     files_db_collection = db.collection(COLLECTION_FILES)
     file_key = file["filename"]
     folios = get_folios_from_segment_keys(segment_keys,lang)
-    search_field = file['textname'] + " " + file['displayName'] 
+    search_field = file['textname'] + " " + file['displayName'] + " " + unidecode.unidecode(file['displayName']) 
     doc = {"_key": file_key, "segment_keys": segment_keys, "folios" : folios, "language":lang, "search_field" : search_field}
     doc.update(file)
     try:
@@ -388,6 +389,19 @@ def create_indices(db: StandardDatabase):
     db_collection.add_hash_index(["language"], unique=False)
     db_collection.add_hash_index(["category"], unique=False)
 
+def load_sources(db: StandardDatabase,root_url):
+    source_json_path = root_url + "sources.json"
+    db_file_collection = db.collection(COLLECTION_FILES)
+    with open(source_json_path,"rb") as f:
+        source_list = json.load(f)
+    for entry in source_list:
+        filename = entry['filename']
+        current_file = db_file_collection.get(filename)
+        if current_file:
+            current_file['source_string'] = entry['source']
+            print(current_file)
+            db_file_collection.update(current_file)
+    
 
 # TODO: Refactor this function. Split into smaller chunks.
 def calculate_parallel_totals():
