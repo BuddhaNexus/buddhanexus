@@ -81,10 +81,8 @@ def postprocess_results(search_string, results):
     new_results = []
     for result in results:
         new_results.append(process_result(result,search_string))
-    print("NEW RESULTS",new_results)
     results = [x for x in new_results if x is not None]    
     results = [x for x in results if 'centeredness' in x]
-    print("CURRENT RESULTS",results)        
     results = remove_duplicate_results(results)
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
     results = sorted(results, key = lambda i: i['distance']) 

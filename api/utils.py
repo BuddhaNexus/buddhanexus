@@ -167,7 +167,7 @@ def get_folio_regex(language, file_name, folio) -> str:
 def add_source_information(filename,query_result):
     """
     Checks if a special source string is stored in the database. If not, it will return a generic message based on a regex pattern. 
-    Currently only works for SKT.
+    Currently only works for SKT. TODO: We might want to add this to Pali/Chn/Tib as well in the future!
     """
     lang = get_language_from_filename(filename)
     if lang == "skt":
@@ -192,5 +192,5 @@ def add_source_information(filename,query_result):
             "parallel_ids": []
             }
         query_result['textleft'].insert(0,source_segment)
-        print("LEFTTEXT",query_result['textleft'][0:3])
+        query_result['textleft'] = query_result['textleft'][:800]        
     return query_result

@@ -392,8 +392,8 @@ async def get_file_text_segments_and_parallels(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
             bindVars=current_bind_vars,
         )
-        add_source_information(file_name,text_segments_query_result.result[0])
-        #print("RETURN RESULT",text_segments_query_result.result[0]['textleft'])
+        if start_int == 0:
+            add_source_information(file_name,text_segments_query_result.result[0])
         return text_segments_query_result.result[0]
 
     except DocumentNotFoundError as error:
@@ -599,12 +599,9 @@ async def get_counts_for_file(
     """
     Returns number of filtered parallels
     """
-    print("LIMIT COLLECTION",limit_collection)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
-    print("LIMIT COLLECTION POSITIVE",limitcollection_positive)
-    print("LIMIT COLLECTION NEGATIVE",limitcollection_negative)
     query_graph_result = get_db().AQLQuery(
         query=main_queries.QUERY_TOTAL_NUMBERS,
         batchSize=100000,

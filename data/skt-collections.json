@@ -1,6 +1,6 @@
 [
     {
-    "collection": "Kangyur",
+    "collection": "Buddhist_Scriptures",
     "categories": [
       "K01",
       "K02",
@@ -16,7 +16,7 @@
     ]
   },
   {
-    "collection": "Tengyur",
+    "collection": "Buddhist_Non-Scriptures",
     "categories": [
       "T01",
       "T02",
