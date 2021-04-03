@@ -37,7 +37,6 @@ def load_multilingual_parallels(root_url: str, threads: int):
 
 def update_filename(filename,tgt_lang,db):
     filename = re.sub("_[0-9][0-9][0-9]","",filename)
-    print("CURRENT FILENAME",filename)
     """
     Adds the available languages to the file entry for menus etc.
     """
