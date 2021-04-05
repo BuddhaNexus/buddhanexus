@@ -183,14 +183,14 @@ def add_source_information(filename,query_result):
         source_id =  query_source_information.result[0]['source_id']
         source_string =  query_source_information.result[0]['source_string']
         if source_id == "GRETIL":
-            source_string = """The source of this text is GRETIL 
-                               (Göttingen Register of Electronic Texts in Indian Languages). 
-                               Click on the link above to access the original etext 
+            source_string = """The source of this text is GRETIL
+                               (Göttingen Register of Electronic Texts in Indian Languages).
+                               Click on the link above to access the original etext
                                with full header Information."""
         if source_id == "DSBC":
-            source_string = """The source of this text is the Digital 
-                               Sanskrit Buddhist Canon project. 
-                               Click on the link above to access the 
+            source_string = """The source of this text is the Digital
+                               Sanskrit Buddhist Canon project.
+                               Click on the link above to access the
                                original etext with full header Information."""
         source_segment = {
             "segnr":"source:0",
