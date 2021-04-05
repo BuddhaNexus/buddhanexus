@@ -25,7 +25,6 @@ from dataloader_constants import (
     LANG_SANSKRIT,
 )
 
-
 def get_arango_client() -> ArangoClient:
     """ Get Arango Client instance """
     return ArangoClient(hosts=ARANGO_HOST)
@@ -84,7 +83,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    if file_lang == LANG_CHINESE and not "_0220" in file_name:
+    if file_lang == LANG_CHINESE:
         return True
     if file_lang == LANG_PALI:
         return True

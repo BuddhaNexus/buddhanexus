@@ -315,9 +315,6 @@ def add_sources(c):
     print("adding source information")
     load_sources(db,DEFAULT_SOURCE_URL)
 
-
-    
-    
 @task
 def calculate_collection_totals(c):
     print("Calculating collection totals from loaded data")
