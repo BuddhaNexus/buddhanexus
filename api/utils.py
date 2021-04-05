@@ -166,8 +166,10 @@ def get_folio_regex(language, file_name, folio) -> str:
 
 def add_source_information(filename,query_result):
     """
-    Checks if a special source string is stored in the database. If not, it will return a generic message based on a regex pattern. 
-    Currently only works for SKT. TODO: We might want to add this to Pali/Chn/Tib as well in the future!
+    Checks if a special source string is stored in the database.
+    If not, it will return a generic message based on a regex pattern.
+    Currently only works for SKT.
+    TODO: We might want to add this to Pali/Chn/Tib as well in the future!
     """
     lang = get_language_from_filename(filename)
     if lang == "skt":
@@ -181,9 +183,15 @@ def add_source_information(filename,query_result):
         source_id =  query_source_information.result[0]['source_id']
         source_string =  query_source_information.result[0]['source_string']
         if source_id == "GRETIL":
-            source_string = "The source of this text is GRETIL (Göttingen Register of Electronic Texts in Indian Languages). Click on the link above to access the original etext with full header Information."
+            source_string = """The source of this text is GRETIL 
+                               (Göttingen Register of Electronic Texts in Indian Languages). 
+                               Click on the link above to access the original etext 
+                               with full header Information."""
         if source_id == "DSBC":
-            source_string = "The source of this text is the Digital Sanskrit Buddhist Canon project. Click on the link above to access the original etext with full header Information."
+            source_string = """The source of this text is the Digital 
+                               Sanskrit Buddhist Canon project. 
+                               Click on the link above to access the 
+                               original etext with full header Information."""
         source_segment = {
             "segnr":"source:0",
             "segtext": source_string,
@@ -192,5 +200,5 @@ def add_source_information(filename,query_result):
             "parallel_ids": []
             }
         query_result['textleft'].insert(0,source_segment)
-        query_result['textleft'] = query_result['textleft'][:800]        
+        query_result['textleft'] = query_result['textleft'][:800]
     return query_result

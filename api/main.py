@@ -258,18 +258,19 @@ async def get_multilang(
 @APP.get("/menus/{language}")
 async def get_files_for_menu(language: str):
     """
-    Endpoint that returns list of file IDs in a given language or all files available in multilang if the language is multi.
+    Endpoint that returns list of file IDs in a given language or
+    all files available in multilang if the language is multi.
     """
     menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
-    current_bindVars = {"language": language}
+    current_bind_vars = {"language": language}
     if language == "multi":
         menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
-        current_bindVars = {}
+        current_bind_vars = {}
     try:
         language_menu_query_result = get_db().AQLQuery(
             query=menu_query,
             batchSize=10000,
-            bindVars=current_bindVars
+            bindVars=current_bind_vars
         )
         return {"result": language_menu_query_result.result}
 
@@ -352,7 +353,6 @@ async def get_file_text_segments_and_parallels(
     if len(limit_collection) > 0:
         parallel_ids_type = "parallel_ids"
     start_int = 0
-    limit = 800
     if active_segment != "none":
         active_segment = unquote(active_segment)
         try:
@@ -378,7 +378,7 @@ async def get_file_text_segments_and_parallels(
     current_bind_vars ={
                 "parallel_ids_type": parallel_ids_type,
                 "filename": file_name,
-                "limit": limit,
+                "limit": 800,
                 "startint": start_int,
                 "score": score,
                 "parlength": par_length,
@@ -717,7 +717,6 @@ async def get_external_link(segmentnr: str):
     Returns the external link for a segmentnr.
     """
     query_result = {"link": ""}
-    lang = get_language_from_filename(segmentnr)
     filename = segmentnr.split(':')[0]
     database = get_db()
     query_displayname = database.AQLQuery(
