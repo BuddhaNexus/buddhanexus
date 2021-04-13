@@ -16,9 +16,11 @@ from dataloader_utils import (
     get_database
 )
 
-def should_download_file(filename):
-    #if "D0543" in filename:
-    return True
+# The below function is used for debugging purposes only.
+# Uncomment it if needed.
+# def should_download_file(filename):
+#     #if "D0543" in filename:
+#     return True
 
 
 def load_multilingual_parallels(root_url: str, threads: int):
@@ -29,8 +31,8 @@ def load_multilingual_parallels(root_url: str, threads: int):
     filename_list = []
     for current_file in os.listdir(root_url):
         filename = os.fsdecode(current_file)
-        if should_download_file(filename):
-            filename_list.append(root_url + filename)
+        # if should_download_file(filename):
+        filename_list.append(root_url + filename)
     pool = multiprocessing.Pool(processes=threads)
     pool.map(load_multilingual_file, filename_list)
     pool.close()
