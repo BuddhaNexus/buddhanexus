@@ -25,7 +25,7 @@ def preprocess_search_string(search_string):
             "chn": chn}
 
 def tag_sanskrit(sanskrit_string):
-    return bn_analyzer.tag_sanskrit(sanskrit_string[:150])
+    return bn_analyzer.tag_sanskrit(sanskrit_string[:150].lower())
 
 def get_offsets(search_string, segment_text):
     allowed_distance = 0
