@@ -57,6 +57,10 @@ create-search-index:
 add-segment-index:
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
+add-sources:
+	@docker exec -ti dataloader bash -c "invoke add-sources"
+
+
 # Load all (segment, parallel & menu) data
 load-data:
 	@docker exec -ti dataloader bash -c "invoke load-menu-files"
@@ -84,6 +88,7 @@ load-sanskrit-data:
 	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
 	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
+	@docker exec -ti dataloader bash -c "invoke add-sources"
 
 load-tibetan-data:
 	@docker exec -ti dataloader bash -c "invoke load-menu-files"

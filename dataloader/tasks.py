@@ -37,6 +37,7 @@ from tasks_segments_parallels import (
     load_segment_data_from_menu_files,
     create_indices,
     calculate_parallel_totals,
+    load_sources,
 )
 
 from tasks_multilingual import (
@@ -308,7 +309,12 @@ def add_indices(c):
     create_indices(db)
     print("Creation of indices done.")
 
-    
+@task
+def add_sources(c):
+    db = get_database()
+    print("adding source information")
+    load_sources(db,DEFAULT_SOURCE_URL)
+
 @task
 def calculate_collection_totals(c):
     print("Calculating collection totals from loaded data")

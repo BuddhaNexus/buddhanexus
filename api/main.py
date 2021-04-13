@@ -23,7 +23,8 @@ from .utils import (
     get_language_from_filename,
     get_collection_files_regex,
     collect_segment_results,
-    get_folio_regex
+    get_folio_regex,
+    add_source_information
 )
 from .db_connection import get_collection, get_db
 
@@ -222,6 +223,7 @@ async def get_multilang(
     multi_lingual: List[str] = Query([]),
     folio: str = "",
     page: int = 0,
+    score: int = 0,
     search_string: str = "",
 ):
     """
@@ -240,6 +242,7 @@ async def get_multilang(
                 "filename": file_name,
                 "multi_lingual": multi_lingual,
                 "page": page,
+                "score": score,
                 "start_folio": start_folio,
                 "search_string": "%" + search_string + "%",
             },
@@ -255,8 +258,8 @@ async def get_multilang(
 @APP.get("/menus/{language}")
 async def get_files_for_menu(language: str):
     """
-    Endpoint that returns list of file IDs in a given language
-    or all files available in multilang if the language is multi.
+    Endpoint that returns list of file IDs in a given language or
+    all files available in multilang if the language is multi.
     """
     menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
     current_bind_vars = {"language": language}
@@ -267,7 +270,7 @@ async def get_files_for_menu(language: str):
         language_menu_query_result = get_db().AQLQuery(
             query=menu_query,
             batchSize=10000,
-            bindVars= current_bind_vars
+            bindVars=current_bind_vars
         )
         return {"result": language_menu_query_result.result}
 
@@ -350,7 +353,6 @@ async def get_file_text_segments_and_parallels(
     if len(limit_collection) > 0:
         parallel_ids_type = "parallel_ids"
     start_int = 0
-    limit = 800
     if active_segment != "none":
         active_segment = unquote(active_segment)
         try:
@@ -373,13 +375,10 @@ async def get_file_text_segments_and_parallels(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
-    try:
-        text_segments_query_result = get_db().AQLQuery(
-            query=main_queries.QUERY_TEXT_AND_PARALLELS,
-            bindVars={
+    current_bind_vars ={
                 "parallel_ids_type": parallel_ids_type,
                 "filename": file_name,
-                "limit": limit,
+                "limit": 800,
                 "startint": start_int,
                 "score": score,
                 "parlength": par_length,
@@ -387,8 +386,14 @@ async def get_file_text_segments_and_parallels(
                 "multi_lingual": multi_lingual,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
-            },
+            }
+    try:
+        text_segments_query_result = get_db().AQLQuery(
+            query=main_queries.QUERY_TEXT_AND_PARALLELS,
+            bindVars=current_bind_vars,
         )
+        if start_int == 0:
+            add_source_information(file_name,text_segments_query_result.result[0])
         return text_segments_query_result.result[0]
 
     except DocumentNotFoundError as error:
@@ -455,7 +460,6 @@ async def get_graph_for_file(
             "targetcollection": target_collection,
         },
     )
-
     collection_keys = []
     total_collection_dict = {}
     total_histogram_dict = {}
@@ -713,30 +717,16 @@ async def get_external_link(segmentnr: str):
     Returns the external link for a segmentnr.
     """
     query_result = {"link": ""}
-    lang = get_language_from_filename(segmentnr)
-    if lang == "skt":
-        filename = segmentnr.split(':')[0]
-        database = get_db()
-        query_displayname = database.AQLQuery(
-            query=main_queries.QUERY_GRETIL_LINK,
-            bindVars={
-                "filename": filename
-            },
-            rawResults=True
-        )
-        query_result = {"link": query_displayname.result[0]}
-    if lang == "tib":
-        filename = segmentnr.split(':')[0]
-        database = get_db()
-        query_displayname = database.AQLQuery(
-            query=main_queries.QUERY_BDRC_LINK,
-            bindVars={
-                "filename": filename
-            },
-            rawResults=True
-        )
-        query_result = {"link": query_displayname.result[0]}
-
+    filename = segmentnr.split(':')[0]
+    database = get_db()
+    query_displayname = database.AQLQuery(
+        query=main_queries.QUERY_LINK,
+        bindVars={
+            "filename": filename
+        },
+        rawResults=True
+    )
+    query_result = {"link": query_displayname.result[0]}
     return query_result
 
 

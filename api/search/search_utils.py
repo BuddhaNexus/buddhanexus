@@ -64,20 +64,24 @@ def remove_duplicate_results(results):
             return_results.append(result)
     return return_results
                 
-def process_result(result,search_string):
+def process_result(result_pair,search_string):
+    result,multilang_results = result_pair
     try:
         beg, end, centeredness,distance = get_offsets(search_string,result['search_string_precise'])
         result['offset_beg'] = beg
         result['offset_end'] = end
         result['centeredness'] = centeredness
         result['distance'] = distance
+        result['multilang_results'] = multilang_results
         return result
     except (RuntimeError, TypeError, NameError):
         pass
 
 def postprocess_results(search_string, results):
+    new_results = []
     for result in results:
-        result = process_result(result,search_string)
+        new_results.append(process_result(result,search_string))
+    results = [x for x in new_results if x is not None]    
     results = [x for x in results if 'centeredness' in x]
     results = remove_duplicate_results(results)
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]

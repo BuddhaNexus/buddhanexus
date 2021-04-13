@@ -4,6 +4,7 @@ import re
 import gzip
 import random
 import sys
+import unidecode
 from collections import Counter, OrderedDict
 from tqdm import tqdm as tqdm
 from arango import DocumentInsertError, IndexCreateError
@@ -109,7 +110,7 @@ def get_folios_from_segment_keys(segment_keys, lang):
                 if num != last_num:
                     folios.append({"num": num, "segment_nr": segment_key})
                     last_num = num
-            elif re.search(r"^(OT)", segment_key):
+            if re.search(r"^(OT)", segment_key):
                 num = segment_key.split(":")[1].split("_")[0].strip('x')
                 if num != last_num:
                     folios.append({"num": num, "segment_nr": segment_key})
@@ -284,7 +285,7 @@ def load_files_collection(file: MenuItem, segment_keys: list,lang: str, db: Stan
     files_db_collection = db.collection(COLLECTION_FILES)
     file_key = file["filename"]
     folios = get_folios_from_segment_keys(segment_keys,lang)
-    search_field = file['textname'] + " " + file['displayName'] 
+    search_field = file['textname'] + " " + file['displayName'] + " " + unidecode.unidecode(file['displayName']) 
     doc = {"_key": file_key, "segment_keys": segment_keys, "folios" : folios, "language":lang, "search_field" : search_field}
     doc.update(file)
     try:
@@ -376,12 +377,30 @@ def load_parallels_sorted(json_parallels: [Parallel], db: StandardDatabase,filen
     except (DocumentInsertError, IndexCreateError) as e:
         print(f"Could not save sorted parallel for {filename}. Error: ", e)
 
+
+
         
 def create_indices(db: StandardDatabase):
     db_collection = db.collection(COLLECTION_PARALLELS)
     db_collection.add_hash_index(["root_filename"], unique=False)
     db_collection.add_hash_index(["src_lang"], unique=False)
+    db_collection = db.collection(COLLECTION_FILES)
+    db_collection.add_hash_index(["language"], unique=False)
+    db_collection.add_hash_index(["category"], unique=False)
 
+def load_sources(db: StandardDatabase,root_url):
+    source_json_path = root_url + "sources.json"
+    db_file_collection = db.collection(COLLECTION_FILES)
+    with open(source_json_path,"rb") as f:
+        source_list = json.load(f)
+    for entry in source_list:
+        filename = entry['filename']
+        current_file = db_file_collection.get(filename)
+        if current_file:
+            current_file['source_string'] = entry['source']
+            print(current_file)
+            db_file_collection.update(current_file)
+    
 
 # TODO: Refactor this function. Split into smaller chunks.
 def calculate_parallel_totals():

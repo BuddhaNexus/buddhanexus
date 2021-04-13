@@ -1,5 +1,6 @@
 import multiprocessing
 import json
+import re
 import os
 import gzip 
 
@@ -15,6 +16,13 @@ from dataloader_utils import (
     get_database
 )
 
+# The below function is used for debugging purposes only.
+# Uncomment it if needed.
+# def should_download_file(filename):
+#     #if "D0543" in filename:
+#     return True
+
+
 def load_multilingual_parallels(root_url: str, threads: int):
     """
     Iterates over all the files in json/multi and loads them into the a separate collection.
@@ -23,12 +31,14 @@ def load_multilingual_parallels(root_url: str, threads: int):
     filename_list = []
     for current_file in os.listdir(root_url):
         filename = os.fsdecode(current_file)
+        # if should_download_file(filename):
         filename_list.append(root_url + filename)
     pool = multiprocessing.Pool(processes=threads)
     pool.map(load_multilingual_file, filename_list)
     pool.close()
 
 def update_filename(filename,tgt_lang,db):
+    filename = re.sub("_[0-9][0-9][0-9]","",filename)
     """
     Adds the available languages to the file entry for menus etc.
     """
@@ -48,17 +58,18 @@ def load_multilingual_file(filepath):
     print("Loading", filepath)
     with gzip.open(filepath, 'r') as current_file:
         json_data = json.load(current_file)
-        filename = json_data[0]['root_segnr'][0].split(':')[0]
-        tgt_lang = json_data[0]['tgt_lang']
-        update_filename(filename,tgt_lang,db)
+        if len(json_data) > 0:
+            filename = json_data[0]['root_segnr'][0].split(':')[0]
+            tgt_lang = json_data[0]['tgt_lang']
+            update_filename(filename,tgt_lang,db)
 
-        for parallel in json_data:
-            parallel["_key"] = parallel["id"]
-        try:
-            db_multi_collection.insert_many(json_data)
-        except (DocumentInsertError, IndexCreateError) as e:
-            print(f"Could not save multilingual parallels. Error: ", e)    
-        add_multi_parallels_to_segments(json_data, db_segments_collection)
+            for parallel in json_data:
+                parallel["_key"] = parallel["id"]
+            try:
+                db_multi_collection.insert_many(json_data)
+            except (DocumentInsertError, IndexCreateError) as e:
+                print(f"Could not save multilingual parallels. Error: ", e)    
+            add_multi_parallels_to_segments(json_data, db_segments_collection)
 
         
 def add_multi_parallels_to_segments(parallels, db_segments_collection):
@@ -99,7 +110,7 @@ def clean_multi():
                             current_doc['parallel_ids_multi'] = []
                             db_segments_collection.update(current_doc)
                     except (KeyError, AttributeError) as e:
-                        print("Could not renive multilingual parallels from segment. Error: ", e)
+                        print("Could not remove multilingual parallels from segment. Error: ", e)
                     except DocumentInsertError as e:
                         print(f"Could not remove multilingual segment {segment_nr}. Error: ", e)
                 file['available_lang'] = []

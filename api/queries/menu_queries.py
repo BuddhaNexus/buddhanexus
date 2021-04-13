@@ -1,7 +1,7 @@
 QUERY_FILES_FOR_LANGUAGE = """
-FOR file IN 3..3 OUTBOUND concat("languages/", @language) GRAPH 'collections_categories'
+FOR file IN files
+    FILTER file.language == @language
     SORT file.filenr
-    FILTER file
     RETURN {
         displayName: file.displayName,
         search_field: file.search_field,
@@ -15,8 +15,7 @@ FOR file IN 3..3 OUTBOUND concat("languages/", @language) GRAPH 'collections_cat
 QUERY_FILES_FOR_MULTILANG = """
 FOR file in files
     FILTER LENGTH(file.available_lang) > 0
-    SORT file.language ASC
-    SORT file.filename ASC
+    SORT file.language, file.filename ASC
     RETURN {
         displayName: file.displayName,
         search_field: file.search_field,
@@ -28,13 +27,12 @@ FOR file in files
 """
 
 QUERY_FILES_FOR_CATEGORY = """
-FOR category IN 2..2 OUTBOUND concat("languages/", @language) GRAPH 'collections_categories'
-    SORT category.categorynr
-    FOR file in 1..1 OUTBOUND category._id GRAPH 'collections_categories'
-        FILTER file
+FOR file IN files
+        FILTER file.language == @language
+        SORT file.filenr
         RETURN {
             filename: file.filename,
-            categoryname: UPPER(file.filename)
+            categoryname: CONCAT(file.textname," ",file.displayName)
         }
 """
 
@@ -67,7 +65,9 @@ FOR collection IN 1..1 OUTBOUND concat("languages/", @language) GRAPH 'collectio
             SORT category.categorynr
             LET catname = SPLIT(category.categoryname,["—","("])[0]
             LET filelist = (
-                FOR file IN 1..1 OUTBOUND category._id GRAPH 'collections_categories'
+                FOR file IN files
+                    FILTER file.language == category.language
+                    FILTER file.category == category.category
                     SORT file.filenr
                     FILTER file
                     RETURN { filename: file.filename, textname: file.textname, displayname: file.displayName, available_lang : file.available_lang}
@@ -81,8 +81,7 @@ FOR collection IN 1..1 OUTBOUND concat("languages/", @language) GRAPH 'collectio
     RETURN {
         collection: collection.collection,
         categories: categories
-    }
-"""
+    }"""
 
 
 QUERY_ALL_COLLECTIONS = """

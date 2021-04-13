@@ -113,6 +113,7 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
         FILTER LIKE(p.root_string, @search_string, true) || LIKE(p.par_string, @search_string, true)
         FILTER POSITION(folio_regex_test, true)
         FILTER POSITION(@multi_lingual, p.tgt_lang)
+        FILTER p.score >= @score
         LIMIT 100 * @page,100
         RETURN {
             par_segnr: [p.par_segnr[0]],
@@ -305,12 +306,12 @@ FOR p IN current_parallels
         FOR item IN filter_target
             RETURN REGEX_TEST(p.par_segnr[0], CONCAT("^",item,"[^y]"))
     )
-    FILTER (filter_target != []) ? POSITION(filtertest, true) : true
+    FILTER  true IN filtertest || filtertest == []
     RETURN {
         "textname": SPLIT(p.par_segnr[0],":")[0],
-        "parlength": p.par_length
-    }
-"""
+        "parlength": p.par_length,
+        "filtertest":filtertest
+    }"""
 
 QUERY_TOTAL_NUMBERS = """
 FOR p IN parallels
@@ -352,17 +353,21 @@ FOR file IN files
     RETURN [file.displayName, file.textname, file.gretil_link]
 """
 
-QUERY_GRETIL_LINK = """
+QUERY_LINK = """
 FOR file IN files
     FILTER file._key == @filename
-    RETURN file.gretil_link
+    RETURN file.link
 """
 
-QUERY_BDRC_LINK = """
+QUERY_SOURCE = """
 FOR file IN files
     FILTER file._key == @filename
-    RETURN file.bdrc_link
+    RETURN {
+        source_id: file.source,
+        source_string: file.source_string
+   }
 """
+
 
 QUERY_MULTILINGUAL_LANGS = """
 FOR file IN files
