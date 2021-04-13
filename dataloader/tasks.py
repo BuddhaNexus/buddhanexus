@@ -1,11 +1,11 @@
 import os
-import gzip
 from arango import (
     DatabaseCreateError,
     CollectionCreateError,
     CollectionDeleteError,
     GraphDeleteError,
 )
+from arango.database import StandardDatabase
 from invoke import task
 
 from dataloader_constants import (
@@ -27,22 +27,50 @@ from dataloader_constants import (
     COLLECTION_LANGUAGES,
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
+    LANG_TIBETAN,
+    LANG_PALI,
+    LANG_CHINESE,
+    LANG_SANSKRIT,
+    DEFAULT_LANGS
 )
-
-from segments_parallels import (
+from tasks_segments_parallels import (
     load_segment_data_from_menu_files,
     create_indices,
-    load_search_index,
-    load_search_index_chn,
-    calculate_parallel_totals
+    calculate_parallel_totals,
+    load_sources,
 )
 
-from menu import (
+from tasks_multilingual import (
+    load_multilingual_parallels,
+    clean_multi
+)
+
+from global_search_function import (
+    load_search_index_skt,
+    load_search_index_pli,
+    load_search_index_tib,
+    load_search_index_chn,
+    create_analyzers,
+    clean_analyzers,
+    create_search_views
+)
+
+from tasks_menu import (
     load_all_menu_collections,
     load_all_menu_categories,
-    create_collections_categories_graph
+    create_collections_categories_graph,
 )
 from dataloader_utils import get_database, get_system_database
+
+from clean_database import (
+    clean_search_index_db,
+    clean_all_collections_db,
+    clean_totals_collection_db,
+    clean_segment_collections_db,
+    clean_menu_collections_db,
+    clean_all_lang_db
+)
+    
 
 
 @task
@@ -76,7 +104,7 @@ def create_collections(
         try:
             db.create_collection(name)
         except CollectionCreateError as e:
-            print("Error creating collection: ", e)
+            print(f"Error creating collection {name}: ", e)
     for name in edge_collections:
         try:
             db.create_collection(name, edge=True)
@@ -86,7 +114,7 @@ def create_collections(
 
 
 @task
-def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
+def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=False):
     """
     Download, parse and load source data into database collections.
 
@@ -94,27 +122,65 @@ def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     :param root_url: URL to the server where source files are stored
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
-    thread_count = os.cpu_count() - 1
+    thread_count = 10#os.cpu_count() - 1
+    # this is a hack to work around the way parameters are passed via invoke
+    if lang != DEFAULT_LANGS:
+        lang = [''.join(lang)]
     print(
         f"Loading source files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
     )
-
-    load_segment_data_from_menu_files(root_url, thread_count if threaded else 1)
-
+    load_segment_data_from_menu_files(root_url, thread_count if threaded else 1, lang)
+    
     print("Segment data loading completed.")
 
 @task
-def build_search_index(c, index_url=DEFAULT_SOURCE_URL + "/search_index.json.gz",index_url_chn=DEFAULT_SOURCE_URL + "/search_index_chn.json.gz"):
+def load_multi_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
+    """
+    Download, parse and load multilingual data into database collections.
+
+    :param c: invoke.py context object
+    :param root_url: URL to the server where source files are stored
+    :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
+    """
+    thread_count = 10#os.cpu_count() - 1
+    # this is a hack to work around the way parameters are passed via invoke
+    load_multilingual_parallels(root_url, thread_count if threaded else 1)    
+    print("Multi-lingual data loading completed.")
+
+
+@task
+def clean_multi_data(c):
+    """
+    Clear the multilingual data from the database
+
+    :param c: invoke.py context object
+    """
+    clean_multi()
+
+    
+@task
+def create_search_index(
+    c,
+    index_url_skt=DEFAULT_SOURCE_URL + "/search_index_sanskrit.json.gz",
+    index_url_pli=DEFAULT_SOURCE_URL + "/search_index_pali.json.gz",
+    index_url_tib=DEFAULT_SOURCE_URL + "/search_index_tibetan.json.gz",
+    index_url_chn=DEFAULT_SOURCE_URL + "/search_index_chn.json.gz",
+):
     """
     Load index data for search index from path defined in .env.
     """
     db = get_database()
+    create_analyzers(db)
     collections = INDEX_COLLECTION_NAMES
     for name in collections:
         db.create_collection(name)
-    load_search_index(index_url,db)
-    load_search_index_chn(index_url_chn,db)
+    load_search_index_skt(index_url_skt, db)
+    load_search_index_pli(index_url_pli, db)
+    load_search_index_chn(index_url_chn, db)
+    load_search_index_tib(index_url_tib, db)
+    create_search_views(db)
     print("Search index data loading completed.")
+
 
 @task
 def clean_search_index(c):
@@ -122,19 +188,9 @@ def clean_search_index(c):
     Clear all the search index views and collections.
     :param c: invoke.py context object
     """
-    db = get_database()
-    try:
-        for name in INDEX_COLLECTION_NAMES:
-            db.delete_collection(name)
-        for name in INDEX_VIEW_NAMES:
-            db.delete_view(name)
+    clean_search_index_db()
 
-    except CollectionDeleteError as e:
-        print("Error deleting collection %s: " % name, e)
-
-    print("search index cleaned.")
     
-
 @task
 def clean_all_collections(c):
     """
@@ -142,21 +198,33 @@ def clean_all_collections(c):
 
     :param c: invoke.py context object
     """
+    clean_all_collections_db()
+
+def clean_pali(c):
+    """
+    Clear all the pali data from the database.
+    :param c: invoke.py context object
+    """
     db = get_database()
+    current_name = ""
     try:
-        clean_menu_collections(c)
         for name in COLLECTION_NAMES:
+            current_name = name
             db.delete_collection(name)
         for name in EDGE_COLLECTION_NAMES:
+            current_name = name
             db.delete_collection(name)
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
     except CollectionDeleteError as e:
-        print("Error deleting collection %s: " % name, e)
-    except GraphDeleteError:
-        print("couldn't remove graph. It probably doesn't exist.")
+        print("Error deleting collection %s: " % current_name, e)
+    except GraphDeleteError as e:
+        print("couldn't remove graph. It probably doesn't exist.", e)
 
     print("all collections cleaned.")
 
+
+
+    
 
 @task
 def clean_totals_collection(c):
@@ -165,12 +233,9 @@ def clean_totals_collection(c):
 
     :param c: invoke.py context object
     """
-    db = get_database()
-    db.delete_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
-    db.create_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
-    print("totals collection cleaned.")
+    clean_totals_collection_db()
 
-
+    
 @task
 def clean_segment_collections(c):
     """
@@ -178,17 +243,9 @@ def clean_segment_collections(c):
 
     :param c: invoke.py context object
     """
-    db = get_database()
-    for name in (
-        COLLECTION_SEGMENTS,
-        COLLECTION_PARALLELS,
-        COLLECTION_FILES,
-        COLLECTION_FILES_PARALLEL_COUNT,
-    ):
-        db.delete_collection(name)
-    print("segment collections cleaned.")
+    clean_segment_collections_db()
 
-
+    
 @task
 def clean_menu_collections(c):
     """
@@ -196,52 +253,67 @@ def clean_menu_collections(c):
 
     :param c: invoke.py context object
     """
-    db = get_database()
-    for name in (
-        COLLECTION_MENU_COLLECTIONS,
-        COLLECTION_MENU_CATEGORIES,
-        COLLECTION_LANGUAGES,
-        EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
-        EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
-        EDGE_COLLECTION_CATEGORY_HAS_FILES,
-    ):
-        try:
-            db.delete_collection(name)
-        except CollectionDeleteError:
-            print("couldn't remove object. It probably doesn't exist.")
-    try:
-        db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
-    except GraphDeleteError:
-        print("couldn't remove object. It probably doesn't exist.")
+    clean_menu_collections_db()
 
-    print("menu data collections cleaned.")
+@task
+def clean_tibetan(c):
+    """
+    Clear the menu database collections completely.
 
+    :param c: invoke.py context object
+    """
+    clean_all_lang_db(LANG_TIBETAN)
+@task
+def clean_sanskrit(c):
+    """
+    Clear the menu database collections completely.
 
+    :param c: invoke.py context object
+    """
+    clean_all_lang_db(LANG_SANSKRIT)
+
+@task
+def clean_pali(c):
+    """
+    Clear the menu database collections completely.
+
+    :param c: invoke.py context object
+    """
+    clean_all_lang_db(LANG_PALI)
+
+@task
+def clean_chinese(c):
+    """
+    Clear the menu database collections completely.
+
+    :param c: invoke.py context object
+    """
+    clean_all_lang_db(LANG_CHINESE)
+
+    
 @task()
 def load_menu_files(c):
-    create_collections(
-        c,
-        [COLLECTION_MENU_COLLECTIONS, COLLECTION_MENU_CATEGORIES, COLLECTION_LANGUAGES],
-    )
-    print(
-        "Loading menu files into database collections from inside this git repository. "
-    )
+    print("Loading menu collections...")
     db = get_database()
-
     load_all_menu_categories(db)
     load_all_menu_collections(db)
     create_collections_categories_graph(db)
 
-    print("Menu data loading completed.")
+    print("Menu data loading completed!")
 
 
 @task
-def add_indicies(c):
+def add_indices(c):
     db = get_database()
     print("Creating Indices")
     create_indices(db)
     print("Creation of indices done.")
 
+@task
+def add_sources(c):
+    db = get_database()
+    print("adding source information")
+    load_sources(db,DEFAULT_SOURCE_URL)
 
 @task
 def calculate_collection_totals(c):

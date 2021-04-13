@@ -1,6 +1,22 @@
 [
+    {
+    "collection": "Buddhist_Scriptures",
+    "categories": [
+      "K01",
+      "K02",
+      "K03",
+      "K05",
+      "K06",
+      "K07",
+      "K08",
+      "K09",
+      "K10",
+      "K12",
+      "K14"
+    ]
+  },
   {
-    "collection": "Tengyur",
+    "collection": "Buddhist_Non-Scriptures",
     "categories": [
       "T01",
       "T02",
@@ -9,20 +25,20 @@
       "T05",
       "T06",
       "T07",
+      "T08",
       "T09",
       "T10",
       "T11",
+      "T12",
+      "T14",
       "T15",
-      "T16"
+      "T16",
+      "T17"
     ]
   },
   {
-    "collection": "Kangyur",
-    "categories": ["K01", "K02", "K10"]
-  },
-  {
-    "collection": "Buddhist",
-    "categories": ["XX"]
+    "collection": "Other",
+      "categories": ["XX"]
   },
   {
     "collection": "Veda",
@@ -54,7 +70,7 @@
     ]
   },
   {
-    "collection": "Sastra",
+    "collection": "Treatises",
     "categories": [
       "GS24",
       "GS25",
@@ -74,9 +90,5 @@
       "GS40",
       "GS41"
     ]
-  },
-  {
-    "collection": "Other",
-    "categories": ["OT"]
   }
 ]

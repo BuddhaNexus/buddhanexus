@@ -5,6 +5,7 @@ Utilities for interacting with the database and other tasks
 import gzip
 import io
 import json
+import re
 
 from arango import ArangoClient
 from arango.database import StandardDatabase
@@ -21,8 +22,8 @@ from dataloader_constants import (
     ARANGO_USER,
     ARANGO_PASSWORD,
     ARANGO_HOST,
+    LANG_SANSKRIT,
 )
-
 
 def get_arango_client() -> ArangoClient:
     """ Get Arango Client instance """
@@ -82,6 +83,12 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
+    if file_lang == LANG_CHINESE:
+        return True
+    if file_lang == LANG_PALI:
+        return True
+    if file_lang == LANG_SANSKRIT:
+        return True
     if file_lang == LANG_TIBETAN:
         return True
     else:
@@ -130,3 +137,28 @@ def get_categories_for_language_collection(
                 target_col_dict.update(target_cat)
 
             return target_col_dict
+
+
+def get_language_name(language_key):
+    if language_key == LANG_CHINESE:
+        return "Chinese"
+    elif language_key == LANG_TIBETAN:
+        return "Tibetan"
+    elif language_key == LANG_PALI:
+        return "Pali"
+    elif language_key == LANG_SANSKRIT:
+        return "Sanskrit"
+    else:
+        return "Unknown"
+
+
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    '''
+        alist.sort(key=natural_keys) sorts in human order
+        http://nedbatchelder.com/blog/200712/human_sorting.html
+        (See Toothy's implementation in the comments)
+        '''
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]

@@ -5,10 +5,11 @@ Various utilities for interacting with data in API queries.
 import re
 from typing import List
 
-from .queries import menu_queries
+from .queries import menu_queries,main_queries
 from .db_connection import get_db
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NY|[A-Z]+[0-9]+|[a-z\-]+)"
+
+COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 def get_language_from_filename(filename) -> str:
@@ -17,13 +18,14 @@ def get_language_from_filename(filename) -> str:
     :param filename: The key of the file
     :return: Language of the file
     """
-    if re.search(r"(TD|acip|kl[0-9]|NY)", filename):
-        return "tib"
-    if re.search(r"(u$|u:|^Y)", filename):
-        return "skt"
-    if re.search(r"(_[TX])", filename):
-        return "chn"
-    return "pli"
+    lang = "pli"
+    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG", filename):
+        lang = "tib"
+    elif re.search(r"(u$|u:|^Y|^XX)", filename):
+        lang = "skt"
+    elif re.search(r"[TX][0-9][0-9]n[0-9]", filename):
+        lang = "chn"
+    return lang
 
 
 def create_cleaned_limit_collection(limit_collection) -> List:
@@ -34,9 +36,10 @@ def create_cleaned_limit_collection(limit_collection) -> List:
     """
     new_limit_collection = []
     for file in limit_collection:
-        if re.search("[a-z]+_[A-Z][a-z]+[a-z1-2EL-]+$", file):
+        if re.search("([a-z]+_[A-Z][a-z]+[a-z1-2EL-]+$)|tib_Ny", file):
             query = get_db().AQLQuery(
                 query=menu_queries.QUERY_ONE_COLLECTION,
+                batchSize=1000,
                 bindVars={"collectionkey": file.replace("!", "")},
             )
             for item in query.result:
@@ -101,7 +104,7 @@ def collect_segment_results(segments) -> List:
     collection_keys = []
     segments_result = []
     for segment in segments:
-        if "parallels" not in segment:
+        if "parallels" not in segment or segment["parallels"] is None:
             continue
         for parallel in segment["parallels"]:
             for seg_nr in parallel:
@@ -111,3 +114,91 @@ def collect_segment_results(segments) -> List:
         segments_result.append(segment)
 
     return segments_result, collection_keys
+
+
+
+def create_numbers_view_data(table_results,folio_regex):
+    """
+    This function converts the table-view output into a format that is usable for the numbers-view.
+    """
+    result_dic = {}
+    for table_result in table_results:
+        for segment_nr in table_result['root_segnr']:
+            if re.search(folio_regex,segment_nr):
+                if segment_nr in result_dic:
+                    result_dic[segment_nr].append(table_result['par_segnr'])
+                else:
+                    result_dic[segment_nr] = [table_result['par_segnr']]
+    result = []
+    for segment_nr in result_dic:
+        entry = { "segmentnr": segment_nr,
+                  "parallels": result_dic[segment_nr]}
+        result.append(entry)
+    return result
+
+def get_folio_regex(language, file_name, folio) -> str:
+    """
+    Creates a regular expression for use in the AD Queries based on the language and
+    file so as to match the segment numbers therein.
+    """
+    start_folio = ""
+    if folio:
+        if language == 'pli':
+            if re.search(r"^(anya|tika|atk)", file_name):
+                start_folio = file_name + ":" + folio[:-1] + "[0-9][._]"
+            else:
+                start_folio = file_name + ":" + folio + "[._]"
+        elif language == 'skt':
+            if re.search(r"^(XXdhppat)", file_name):
+                start_folio = file_name + ":pdhp_" + folio + "_"
+            elif re.search(r"^(S10udanav)", file_name):
+                start_folio = file_name + ":uv_" + folio + "_"
+            elif re.search(r"^(OT)", file_name):
+                start_folio = file_name + ":" + folio + "_"
+            else:
+                start_folio = file_name + ":" + folio[:-1] + "[0-9](_[0-9]+)*$"
+        elif language == 'tib':
+            start_folio = file_name + ":" + folio + "-"
+        elif language == 'chn':
+            start_folio = file_name + "_" + folio + ":"
+
+    return start_folio
+
+def add_source_information(filename,query_result):
+    """
+    Checks if a special source string is stored in the database.
+    If not, it will return a generic message based on a regex pattern.
+    Currently only works for SKT.
+    TODO: We might want to add this to Pali/Chn/Tib as well in the future!
+    """
+    lang = get_language_from_filename(filename)
+    if lang == "skt":
+        query_source_information = get_db().AQLQuery(
+            query=main_queries.QUERY_SOURCE,
+            bindVars={
+                "filename": filename
+            },
+            rawResults=True
+        )
+        source_id =  query_source_information.result[0]['source_id']
+        source_string =  query_source_information.result[0]['source_string']
+        if source_id == "GRETIL":
+            source_string = """The source of this text is GRETIL
+                               (Göttingen Register of Electronic Texts in Indian Languages).
+                               Click on the link above to access the original etext
+                               with full header Information."""
+        if source_id == "DSBC":
+            source_string = """The source of this text is the Digital
+                               Sanskrit Buddhist Canon project.
+                               Click on the link above to access the
+                               original etext with full header Information."""
+        source_segment = {
+            "segnr":"source:0",
+            "segtext": source_string,
+            "position": -1,
+            "lang": "eng",
+            "parallel_ids": []
+            }
+        query_result['textleft'].insert(0,source_segment)
+        query_result['textleft'] = query_result['textleft'][:800]
+    return query_result

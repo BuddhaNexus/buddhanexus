@@ -15,12 +15,16 @@ from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
 
+from .search import search_utils
 from .models_api import ParallelsCollection
-from .queries import menu_queries, main_queries
+from .queries import menu_queries, main_queries, search_queries
 from .utils import (
+    create_numbers_view_data,
     get_language_from_filename,
     get_collection_files_regex,
     collect_segment_results,
+    get_folio_regex,
+    add_source_information
 )
 from .db_connection import get_collection, get_db
 
@@ -29,14 +33,10 @@ API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 APP = FastAPI(title="Buddha Nexus Backend", version="0.2.1", openapi_prefix=API_PREFIX)
 
 APP.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NY|[A-Z]+[0-9]+|[a-z\-]+)"
+COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 @APP.get("/")
@@ -79,24 +79,6 @@ async def get_segment(lang: str, key: str) -> Dict[str, str]:
         return error
 
 
-@APP.get("/parallels/{root_segnr}")
-async def get_parallels_for_root_seg_nr(root_segnr: str):
-    """
-    Returns parallels for given root_segnr.
-    :return: List of paralllel objects
-    """
-    aql = f"""
-    FOR p IN parallels
-        FILTER '{root_segnr}' IN p.root_segnr
-        RETURN p
-    """
-    try:
-        query_result = get_db().AQLQuery(query=aql)
-        return query_result.result
-    except (DocumentNotFoundError, KeyError) as error:
-        return error
-
-
 @APP.post("/parallels-for-middle/")
 async def get_parallels_for_middle(parallels: ParallelsCollection):
     """
@@ -107,73 +89,80 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
         parallels.limit_collection, language
     )
     query_result = get_db().AQLQuery(
-        query=main_queries.QUERY_PARALELLS_FOR_MIDDLE_TEXT,
+        query=main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
+        batchSize=10000,
         bindVars={
             "segmentnr": parallels.segmentnr,
             "score": parallels.score,
             "parlength": parallels.par_length,
             "coocc": parallels.co_occ,
+            "multi_lingual": parallels.multi_lingual,
             "limitcollection_positive": limitcollection_positive,
             "limitcollection_negative": limitcollection_negative,
         },
     )
-    return {"parallels": query_result.result}
+    return {"parallels": query_result.result[0]}
 
 
 @APP.get("/files/{file_name}/segments")
 async def get_segments_for_file(
     file_name: str,
+    page: int = 0,
     score: int = 0,
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
+    folio: str = "",
 ):
     """
     Returns filtered segments belonging to a specified file.
     :return: List of segments
     """
+    language = get_language_from_filename(file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)
+        limit_collection, language
     )
-
     try:
         database = get_db()
-        segments_query = database.AQLQuery(
-            query=main_queries.QUERY_FILE_SEGMENTS_PARALLELS,
+        table_query = database.AQLQuery(
+            query=main_queries.QUERY_TABLE_VIEW,
             batchSize=10000,
             bindVars={
                 "filename": file_name,
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "sortkey": "parallels_sorted_by_src_pos",
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
+                "page": page,
+                "start_folio": get_folio_regex(language, file_name, folio),
             },
         )
         segments_result, collection_keys = collect_segment_results(
-            segments_query.result
+            create_numbers_view_data(table_query.result,get_folio_regex(language, file_name, folio))
         )
 
         return {
             "collections": database.AQLQuery(
-                query=main_queries.QUERY_COLLECTION_NAMES,
+                query=menu_queries.QUERY_COLLECTION_NAMES,
                 bindVars={
                     "collections": collection_keys,
                     "language": get_language_from_filename(file_name),
                 },
-            ).result[0],
+            ).result,
             "segments": segments_result,
         }
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/files/{file_name}/table")
@@ -185,28 +174,28 @@ async def get_table_view(
     limit_collection: List[str] = Query([]),
     page: int = 0,
     sort_method: str = "position",
+    folio: str = "",
 ):
     """
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
+    language = get_language_from_filename(file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)
+        limit_collection, language
     )
-    try:
-        sort_key = ""
-        sort_direction = "DESC"
-        if sort_method == "position":
-            sort_key = "root_pos_beg"
-            sort_direction = "ASC"
-        if sort_method == "quoted-text":
-            sort_key = "par_pos_beg"
-            sort_direction = "ASC"
-        if sort_method == "length":
-            sort_key = "root_length"
-        if sort_method == "length2":
-            sort_key = "par_length"
+    sort_key = ""
+    if sort_method == "position":
+        sort_key = "parallels_sorted_by_src_pos"
+    if sort_method == "quoted-text":
+        sort_key = "parallels_sorted_by_tgt_pos"
+    if sort_method == "length":
+        sort_key = "parallels_sorted_by_length_src"
+    if sort_method == "length2":
+        sort_key = "parallels_sorted_by_length_tgt"
 
+    start_folio = get_folio_regex(language, file_name, folio)
+    try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,
             bindVars={
@@ -214,42 +203,86 @@ async def get_table_view(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "sortdirection": sort_direction,
                 "sortkey": sort_key,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
+                "start_folio": start_folio,
             },
         )
-        return query.result[0]
+        return query.result
 
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
+
+
+@APP.get("/files/{file_name}/multilang")
+async def get_multilang(
+    file_name: str,
+    multi_lingual: List[str] = Query([]),
+    folio: str = "",
+    page: int = 0,
+    score: int = 0,
+    search_string: str = "",
+):
+    """
+    Endpoint for the multilingual table view. Accepts Parallel languages
+    :return: List of segments and parallels for the table view.
+    """
+
+    language = get_language_from_filename(file_name)
+    start_folio = get_folio_regex(language, file_name, folio)
+    language = get_language_from_filename(file_name)
+    try:
+        query = get_db().AQLQuery(
+            query=main_queries.QUERY_MULTILINGUAL,
+            batchSize=1000,
+            bindVars={
+                "filename": file_name,
+                "multi_lingual": multi_lingual,
+                "page": page,
+                "score": score,
+                "start_folio": start_folio,
+                "search_string": "%" + search_string + "%",
+            },
+        )
+        result = search_utils.process_multilang_result(query.result,search_string)
+        return result
+
+    except KeyError as error:
+        print("KeyError: ", error)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/menus/{language}")
 async def get_files_for_menu(language: str):
     """
-    Endpoint that returns list of file IDs in a given language
+    Endpoint that returns list of file IDs in a given language or
+    all files available in multilang if the language is multi.
     """
+    menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
+    current_bind_vars = {"language": language}
+    if language == "multi":
+        menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
+        current_bind_vars = {}
     try:
         language_menu_query_result = get_db().AQLQuery(
-            query=menu_queries.QUERY_FILES_FOR_LANGUAGE,
+            query=menu_query,
             batchSize=10000,
-            bindVars={"language": language},
+            bindVars=current_bind_vars
         )
         return {"result": language_menu_query_result.result}
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/menus/filter/{language}")
@@ -267,13 +300,13 @@ async def get_files_for_filter_menu(language: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/menus/category/{language}")
@@ -291,13 +324,13 @@ async def get_categories_for_filter_menu(language: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/files/{file_name}/textandparallels")
@@ -308,12 +341,18 @@ async def get_file_text_segments_and_parallels(
     par_length: int = 0,
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
+    multi_lingual: List[str] = Query([]),
 ):
     """
     Endpoint for text view
     """
+    #parallel_ids_type = "parallel_ids_limited"
+    parallel_ids_type = "parallel_ids"
+    # when the limit_collection filter is active,
+    # we have to fetch all possible parallels.
+    if len(limit_collection) > 0:
+        parallel_ids_type = "parallel_ids"
     start_int = 0
-    limit = 200
     if active_segment != "none":
         active_segment = unquote(active_segment)
         try:
@@ -321,46 +360,51 @@ async def get_file_text_segments_and_parallels(
                 query=main_queries.QUERY_SEGMENT_COUNT,
                 bindVars={"segmentnr": active_segment},
             )
-            start_int = text_segment_count_query_result.result[0] - 100
+            start_int = text_segment_count_query_result.result[0] - 400
         except DocumentNotFoundError as error:
             print(error)
-            raise HTTPException(status_code=404, detail="Item not found")
+            raise HTTPException(status_code=404, detail="Item not found") from error
         except AQLQueryError as error:
             print("AQLQueryError: ", error)
-            raise HTTPException(status_code=400, detail=error.errors)
+            raise HTTPException(status_code=400, detail=error.errors) from error
         except KeyError as error:
             print("KeyError: ", error)
-            raise HTTPException(status_code=400)
+            raise HTTPException(status_code=400) from error
     if start_int < 0:
         start_int = 0
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
-    try:
-        text_segments_query_result = get_db().AQLQuery(
-            query=main_queries.QUERY_TEXT_AND_PARALLELS,
-            bindVars={
+    current_bind_vars ={
+                "parallel_ids_type": parallel_ids_type,
                 "filename": file_name,
-                "limit": limit,
+                "limit": 800,
                 "startint": start_int,
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
+                "multi_lingual": multi_lingual,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
-            },
+            }
+    try:
+        text_segments_query_result = get_db().AQLQuery(
+            query=main_queries.QUERY_TEXT_AND_PARALLELS,
+            bindVars=current_bind_vars,
         )
+        if start_int == 0:
+            add_source_information(file_name,text_segments_query_result.result[0])
         return text_segments_query_result.result[0]
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/files/{file_name}/searchtext")
@@ -370,6 +414,7 @@ async def search_file_text_segments(file_name: str, search_string: str):
     """
     try:
         search_string = search_string.lower()
+        search_string = search_string.replace("’", "'")
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_SEARCH,
             batchSize=100000,
@@ -382,13 +427,13 @@ async def search_file_text_segments(file_name: str, search_string: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/files/{file_name}/graph")
@@ -415,7 +460,6 @@ async def get_graph_for_file(
             "targetcollection": target_collection,
         },
     )
-
     collection_keys = []
     total_collection_dict = {}
     total_histogram_dict = {}
@@ -423,7 +467,7 @@ async def get_graph_for_file(
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
-        target_filename = parallel["textname"]
+        target_filename = re.sub("_[0-9][0-9][0-9]","",parallel["textname"])
         if target_filename in total_histogram_dict.keys():
             total_histogram_dict[target_filename] += count_this_parallel
         else:
@@ -444,7 +488,7 @@ async def get_graph_for_file(
 
     # find the proper full names vor each collection
     collections = database.AQLQuery(
-        query=main_queries.QUERY_COLLECTION_NAMES,
+        query=menu_queries.QUERY_COLLECTION_NAMES,
         bindVars={
             "collections": collection_keys,
             "language": get_language_from_filename(file_name),
@@ -465,7 +509,19 @@ async def get_graph_for_file(
 
     histogram_data = []
     for name, count in total_histogram_dict.items():
-        histogram_data.append([name, count])
+        displayname = name
+        query_displayname = database.AQLQuery(
+            query=main_queries.QUERY_DISPLAYNAME,
+            bindVars={
+                "filename": name
+            },
+            rawResults=True
+        )
+        displayname_results = query_displayname.result
+        if displayname_results:
+            displayname = displayname_results[0][0] + ' (' + displayname_results[0][1] + ')'
+
+        histogram_data.append([displayname, count])
 
     # returns a list of the data as needed by Google Graphs
     return {
@@ -478,20 +534,23 @@ async def get_graph_for_file(
 
 @APP.get("/visual/{searchterm}")
 async def get_visual_view_for_file(
-    searchterm: str, language: str, selected: List[str] = Query([])
+    # TODO: what is "selected"? Find better name
+    searchterm: str,
+    language: str,
+    selected: List[str] = Query([]),
 ):
     """
     Endpoint for visual view
     """
     database = get_db()
-    languagesearchterm = language + "_" + searchterm
+    language_search_term = language + "_" + searchterm
     query_collection_list = database.AQLQuery(
         query=main_queries.QUERY_COLLECTION_TOTALS,
-        bindVars={"sourcecollection": languagesearchterm, "selected": selected},
+        bindVars={"sourcecollection": language_search_term, "selected": selected},
     )
-    graphdata = []
+    graph_data = []
     if len(selected) == 1 or re.search(r"^[A-Z][a-z]+$", searchterm):
-        graphdata = query_collection_list.result[0]
+        graph_data = query_collection_list.result[0]
     else:
         query_results = query_collection_list.result[0]
         query_results_keys = []
@@ -502,9 +561,9 @@ async def get_visual_view_for_file(
         for key in query_results_keys:
             for result_item in query_results:
                 if result_item[0] == key:
-                    graphdata.append(result_item)
+                    graph_data.append(result_item)
 
-    return {"graphdata": graphdata}
+    return {"graphdata": graph_data}
 
 
 @APP.get("/collections")
@@ -520,13 +579,13 @@ async def get_all_collections():
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors)
+        raise HTTPException(status_code=400, detail=error.errors) from error
     except KeyError as error:
         print("KeyError: ", error)
-        raise HTTPException(status_code=400)
+        raise HTTPException(status_code=400) from error
 
 
 @APP.get("/parallels/{file_name}/count")
@@ -555,53 +614,21 @@ async def get_counts_for_file(
             "limitcollection_negative": limitcollection_negative,
         },
     )
-    return {"parallel_count": query_graph_result.result}
+    return {"parallel_count": query_graph_result.result[0]}
 
 
 @APP.get("/files/{file_name}/folios")
 async def get_folios_for_file(file_name: str):
     """
-    Returns number of folios (TIB) / facsimiles (CHN) / suttas (PLI)
+    Returns number of folios (TIB) / facsimiles (CHN) /
+    suttas/PTS nrs/segments (PLI) / segments (SKT)
     """
-    lang = get_language_from_filename(file_name)
-    folios = []
-    if lang == "skt" or (
-        lang == "pli" and not re.search(r"(^[as]n[0-9]|^dhp)", file_name)
-    ):
-        return
-
     query_graph_result = get_db().AQLQuery(
-        query=main_queries.QUERY_ALL_SEGMENTS,
+        query=main_queries.QUERY_FOLIOS,
         batchSize=100000,
         bindVars={"filename": file_name},
     )
-    segments = query_graph_result.result[0]
-    first_segment = segments[0]
-    last_segment = segments[-1]
-    if lang == "chn":
-        first_num = int(first_segment.split(":")[1].split("-")[0])
-        last_num = int(last_segment.split(":")[1].split("-")[0])
-        folios = list(range(first_num, last_num + 1))
-    elif lang == "tib":
-        first_num = int(first_segment.split(":")[1].split("-")[0][:-1])
-        last_num = int(last_segment.split(":")[1].split("-")[0][:-1])
-        first_folio = first_segment.split(":")[1].split("-")[0]
-        last_folio = last_segment.split(":")[1].split("-")[0]
-        folios.append(first_folio)
-        if "a" in first_folio:
-            folios.append(first_folio.replace("a", "b"))
-        for number in list(range(first_num + 1, last_num)):
-            folios.append(str(number) + "a")
-            folios.append(str(number) + "b")
-        if "b" in last_folio:
-            folios.append(last_folio.replace("b", "a"))
-        folios.append(last_folio)
-    elif lang == "pli":
-        for segment in segments:
-            suttanr = segment.split(".")[0]
-            if suttanr not in folios:
-                folios.append(suttanr)
-
+    folios = query_graph_result.result[0]
     return {"folios": folios}
 
 
@@ -616,3 +643,107 @@ async def get_data_for_sidebar_menu(language: str):
     )
 
     return {"navigationmenudata": query_sidebar_menu.result}
+
+
+@APP.get("/search/{search_string}")
+async def get_search_results(search_string: str):
+    """
+    Returns search results for given search string.
+    :return: List of search results
+    """
+    database = get_db()
+    result = []
+    search_string = search_string.lower()
+    search_strings = search_utils.preprocess_search_string(
+        search_string[:150]
+    )
+    query_search = database.AQLQuery(
+        query=search_queries.QUERY_SEARCH,
+        bindVars={
+            "search_string_tib": search_strings['tib'],
+            "search_string_chn": search_strings['chn'],
+            "search_string_skt": search_strings['skt'],
+            "search_string_pli": search_strings['pli'],
+            "search_string_skt_fuzzy": search_strings['skt_fuzzy']
+        },
+        batchSize=300,
+        rawResults=True,
+    )
+    query_result = query_search.result[0]
+    result = search_utils.postprocess_results(search_string, query_result)
+    return {"searchResults": result}
+
+
+@APP.get("/sanskrittagger/{sanskrit_string}")
+async def tag_sanskrit(sanskrit_string: str):
+    """
+    Stemming + Tagging for Sanskrit
+    :return: String with tagged Sanskrit
+    """
+    result = search_utils.tag_sanskrit(sanskrit_string).replace("\n"," # ")
+    return {"tagged": result}
+
+
+@APP.get("/displayname/{segmentnr}")
+async def get_displayname(segmentnr: str):
+    """
+    Returns the displayName for a segmentnr.
+    """
+    lang = get_language_from_filename(segmentnr)
+    filename = segmentnr.split(':')[0]
+    if lang == "chn":
+        filename = re.sub(r"_[0-9]+", "", filename)
+    database = get_db()
+    query_displayname = database.AQLQuery(
+        query=main_queries.QUERY_DISPLAYNAME,
+        bindVars={
+            "filename": filename
+        },
+        rawResults=True
+    )
+    query_dictionary = {}
+    if query_displayname.result:
+        query_result = query_displayname.result[0]
+        query_dictionary = {"displayData": query_result}
+    else:
+        return
+
+    return query_dictionary
+
+
+@APP.get("/externallink/{segmentnr}")
+async def get_external_link(segmentnr: str):
+    """
+    Returns the external link for a segmentnr.
+    """
+    query_result = {"link": ""}
+    filename = segmentnr.split(':')[0]
+    database = get_db()
+    query_displayname = database.AQLQuery(
+        query=main_queries.QUERY_LINK,
+        bindVars={
+            "filename": filename
+        },
+        rawResults=True
+    )
+    query_result = {"link": query_displayname.result[0]}
+    return query_result
+
+
+# returns a list of the available languages of matches for the given file.
+@APP.get("/multilingual/{filename}")
+async def get_multilingual(filename: str):
+    """
+    Returns the displayName for a segmentnr.
+    """
+    query_result = {"langList": []}
+    database = get_db()
+    query_displayname = database.AQLQuery(
+        query=main_queries.QUERY_MULTILINGUAL_LANGS,
+        bindVars={
+            "filename": filename
+        },
+        rawResults=True
+        )
+    query_result = {"langList": query_displayname.result[0]}
+    return query_result

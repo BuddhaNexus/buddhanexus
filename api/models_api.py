@@ -38,9 +38,11 @@ class ParallelsCollection(BaseModel):
     """
     Collection of multiple parallels with the same characteristics
     """
+
     segmentnr: str
     score: int
     par_length: int
     co_occ: int
     limit_collection: list
+    multi_lingual: list
     file_name: str
