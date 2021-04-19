@@ -187,6 +187,7 @@ LET parallels_multi =  (
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
             FILTER POSITION(@multi_lingual, p.tgt_lang)
+            FILTER p.score >= @score
             RETURN {
                 root_offset_beg: p.root_offset_beg,
                 root_offset_end: p.root_offset_end,
@@ -248,7 +249,9 @@ LET parallels = (
                 par_length: p.par_length,
                 par_pos_beg: p.par_pos_beg,
                 score: p.score,
-                "co-occ": p["co-occ"]
+                "co-occ": p["co-occ"],
+                lang: p.tgt_lang,
+                length: p.par_length
             }
 )
 
@@ -256,6 +259,7 @@ LET parallels_multi = (
     FOR parallel_id IN FLATTEN(parallel_ids)
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
+            FILTER p.score >= @score
             FILTER POSITION(@multi_lingual,p.tgt_lang)
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
@@ -279,7 +283,14 @@ LET parallels_multi = (
             }
 )
 
-RETURN APPEND(parallels,parallels_multi)
+LET return_parallels = (
+    for p in parallels
+        SORT p.score DESC, p.length DESC
+
+        return p
+    )
+
+RETURN APPEND(parallels_multi,return_parallels)
 """
 
 QUERY_GRAPH_VIEW = """
