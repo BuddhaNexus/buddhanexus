@@ -32,7 +32,10 @@ FOR file IN files
         SORT file.filenr
         RETURN {
             filename: file.filename,
-            categoryname: CONCAT(file.textname," ",file.displayName)
+            categoryname: file.textname,
+            displayname: file.displayName,
+            search_field: file.search_field
+
         }
 """
 
