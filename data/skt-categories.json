@@ -699,6 +699,18 @@
         ]
     },
     {
+        "category": "T13",
+        "categoryname": "Cikitsāvidyā",
+        "files": [
+            "T13bghsic_u",
+            "T13davyasou",
+            "T13n929u",
+            "T13n2940u",
+            "T13n2976u",
+            "T13n3004u"
+        ]
+    },
+    {
         "category": "T14",
         "categoryname": "Śilpavidyā",
         "files": [
@@ -1670,10 +1682,5 @@
             "GS41yogay1_u",
             "GS41yogay2_u"
         ]
-    },
-    {
-        "category": "OT",
-        "categoryname": "Miscellaneous",
-        "files": []
     }
 ]
