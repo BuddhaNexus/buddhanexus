@@ -148,7 +148,6 @@
             "K10bsu024_u",
             "K10bsu025_u",
             "K10bsu026_u",
-            "K10bsu027_u",
             "K10bsu031_u",
             "K10bsu032_u",
             "K10bsu034_u",
@@ -551,6 +550,7 @@
         "categoryname": "Sūtra Commentaries",
         "files": [
             "T05bsa062_u",
+            "T05bsu027_u",
             "T05n1110u",
             "T05nagsaliu"
         ]
@@ -699,6 +699,18 @@
         ]
     },
     {
+        "category": "T13",
+        "categoryname": "Cikitsāvidyā",
+        "files": [
+            "T13bghsic_u",
+            "T13davyasou",
+            "T13n929u",
+            "T13n2940u",
+            "T13n2976u",
+            "T13n3004u"
+        ]
+    },
+    {
         "category": "T14",
         "categoryname": "Śilpavidyā",
         "files": [
@@ -772,7 +784,8 @@
         "files": [
             "GV00avs___u",
             "GV00maitrs_pu",
-            "GV00samavedu"
+            "GV00samavedu",
+            "GV00sa_paippalAdasaMhitA"
         ]
     },
     {
@@ -1462,6 +1475,8 @@
             "GSP30partrvpu",
             "GSP30parypanu",
             "GSP30pratyabu",
+            "GSP30sa_avadhUtasiddha-bhagavadbhaktistotra",
+            "GSP30sa_kSemarAja-bhairavAnukaraNastotra",
             "GSP30spandkau",
             "GSP30tantralu",
             "GSP30timudghu",
@@ -1575,6 +1590,14 @@
         ]
     },
     {
+        "category": "GSP35",
+        "categoryname": "GSP35 (Śāstra 3)",
+        "files": [
+            "GSP35sa_bhAskarakaNTha-mokSopAyaTIkA",
+            "GSP35sa_mokSopAya"
+        ]
+    },
+    {
         "category": "GSD36",
         "categoryname": "GSD36 Dharmaśāstra Smṛti (Śāstra 4)",
         "files": [
@@ -1588,6 +1611,7 @@
             "GSD36nars2_pu",
             "GSD36pars1__u",
             "GSD36pars2_pu",
+            "GSD36sa_vijJAnezvara-mitAkSarA",
             "GSD36visnu_pu",
             "GSD36yajn2_pu",
             "GSD36ys182_pu",
@@ -1670,10 +1694,5 @@
             "GS41yogay1_u",
             "GS41yogay2_u"
         ]
-    },
-    {
-        "category": "OT",
-        "categoryname": "Miscellaneous",
-        "files": []
     }
 ]
