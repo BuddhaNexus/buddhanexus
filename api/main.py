@@ -261,11 +261,13 @@ async def get_files_for_menu(language: str):
     Endpoint that returns list of file IDs in a given language or
     all files available in multilang if the language is multi.
     """
-    menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
-    current_bind_vars = {"language": language}
     if language == "multi":
         menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
         current_bind_vars = {}
+    else:
+        menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
+        current_bind_vars = {"language": language}
+
     try:
         language_menu_query_result = get_db().AQLQuery(
             query=menu_query,
@@ -638,8 +640,16 @@ async def get_data_for_sidebar_menu(language: str):
     Endpoint for sidebar menu
     """
     database = get_db()
+
+    if language == "multi":
+        menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
+        current_bind_vars = {}
+    else:
+        menu_query = menu_queries.QUERY_TOTAL_MENU
+        current_bind_vars = {"language": language}
+
     query_sidebar_menu = database.AQLQuery(
-        query=menu_queries.QUERY_TOTAL_MENU, bindVars={"language": language}
+        query=menu_query, bindVars=current_bind_vars
     )
 
     return {"navigationmenudata": query_sidebar_menu.result}
