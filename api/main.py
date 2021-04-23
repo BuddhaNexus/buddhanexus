@@ -649,7 +649,7 @@ async def get_data_for_sidebar_menu(language: str):
         current_bind_vars = {"language": language}
 
     query_sidebar_menu = database.AQLQuery(
-        query=menu_query, bindVars=current_bind_vars
+        query=menu_query, bindVars=current_bind_vars, batchSize=10000
     )
 
     return {"navigationmenudata": query_sidebar_menu.result}
