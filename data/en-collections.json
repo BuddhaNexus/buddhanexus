@@ -21,53 +21,11 @@
     ]
   },
   {
-    "collection": "en-Suttas-Late-1",
-    "categories": [
-      "en-vv",
-      "en-pv",
-      "en-tha-ap",
-      "en-thi-ap",
-      "en-bv",
-      "en-cp",
-      "en-ja"
-    ]
-  },
-  {
-    "collection": "en-Suttas-Late-2",
-    "categories": [
-      "en-mnd",
-      "en-cnd",
-      "en-ps",
-      "en-ne",
-      "en-pe",
-      "en-mil"
-    ]
-  },
-  {
     "collection": "en-Vinaya",
     "categories": [
-      "en-pli-tv-bu-pm",
-      "en-pli-tv-bi-pm",
       "en-pli-tv-bu-vb",
       "en-pli-tv-bi-vb",
       "en-pli-tv-kd",
-      "en-pli-tv-pvr"
     ]
-  },
-  {
-    "collection": "en-Abhidhamma",
-    "categories": ["ds", "vb", "dt", "pp", "kv", "ya", "patthana"]
-  },
-  {
-    "collection": "en-Atthakatha",
-    "categories": ["atk-s", "atk-vin", "atk-abh"]
-  },
-  {
-    "collection": "en-Tika",
-    "categories": ["tika-s", "tika-vin", "tika-abh"]
-  },
-  {
-    "collection": "en-Anya",
-    "categories": ["anya-e"]
   }
 ]

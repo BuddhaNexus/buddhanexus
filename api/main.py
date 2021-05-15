@@ -10,6 +10,7 @@ import re
 import os
 from typing import Dict, List
 from urllib.parse import unquote
+from aksharamukha import transliterate
 
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
@@ -413,6 +414,7 @@ async def get_file_text_segments_and_parallels(
 async def get_file_text_segments(
     file_name: str,
     active_segment: str = "none",
+    transmode: str = "wylie",
 ):
     """
     Endpoint for english view
@@ -442,7 +444,14 @@ async def get_file_text_segments(
             bindVars=current_bind_vars,
         )
 
-        return text_segments_query_result.result[0]
+        text_left = text_segments_query_result.result[0]['textleft']
+        if transmode == 'uni':
+            for segment in text_left:
+                segment['segtext'] = transliterate.process('IAST', 'Devanagari', segment['segtext'])
+
+        text_right = text_segments_query_result.result[0]['textright']
+
+        return {'textleft': text_left, 'textright': text_right}
 
     except DocumentNotFoundError as error:
         print(error)
