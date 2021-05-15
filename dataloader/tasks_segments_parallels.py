@@ -284,7 +284,7 @@ def load_files_collection(file: MenuItem, segment_keys: list,lang: str, db: Stan
     files_db_collection = db.collection(COLLECTION_FILES)
     file_key = file["filename"]
     folios = get_folios_from_segment_keys(segment_keys,lang)
-    search_field = file['textname'] + " " + file['displayName'] + " " + unidecode.unidecode(file['displayName']) 
+    search_field = file['textname'] + " " + file['displayName'] + " (" + unidecode.unidecode(file['displayName']) + ")"
     doc = {"_key": file_key, "segment_keys": segment_keys, "folios" : folios, "language":lang, "search_field" : search_field}
     doc.update(file)
     try:

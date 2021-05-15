@@ -373,8 +373,7 @@ async def get_file_text_segments_and_parallels(
         except KeyError as error:
             print("KeyError: ", error)
             raise HTTPException(status_code=400) from error
-    if start_int < 0:
-        start_int = 0
+    start_int = max(start_int, 0)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
