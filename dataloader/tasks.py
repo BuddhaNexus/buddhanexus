@@ -32,6 +32,7 @@ from dataloader_constants import (
     LANG_CHINESE,
     LANG_SANSKRIT,
     LANG_ENGLISH,
+    LANG_AI,
     DEFAULT_LANGS
 )
 from tasks_segments_parallels import (
@@ -290,6 +291,7 @@ def clean_english(c):
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_ENGLISH)
+    clean_all_lang_db(LANG_AI)
 
 @task
 def clean_chinese(c):

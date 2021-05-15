@@ -117,6 +117,7 @@ load-multi-data:
 
 load-english-data:
 	@docker exec -ti dataloader bash -c "invoke load-segment-files --lang=en"
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --lang=ai"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
 clean-multi-data:

@@ -420,21 +420,21 @@ async def get_file_text_segments(
     Endpoint for english view
     """
     pli_start_int = 0
+    ai_start_int = 0
     en_start_int = 0
     if active_segment != "none":
-        
         if '_' in active_segment:
             pli_start_int = get_start_integer(active_segment)
+            ai_start_int = get_start_integer('ai-'+active_segment.split('_')[0])
             en_start_int = get_start_integer('en-'+active_segment.split('_')[0])
-        else:
-            pli_start_int = get_start_integer(active_segment+'_0')
-            en_start_int = get_start_integer('en-'+active_segment)
 
     current_bind_vars ={
                 "plifilename": file_name,
+                "aifilename": 'ai-'+file_name,
                 "enfilename": 'en-'+file_name,
                 "limit": 800,
                 "plistartint": pli_start_int,
+                "aistartint": ai_start_int,
                 "enstartint": en_start_int,
             }
 
@@ -449,9 +449,10 @@ async def get_file_text_segments(
             for segment in text_left:
                 segment['segtext'] = transliterate.process('IAST', 'Devanagari', segment['segtext'])
 
+        text_middle = text_segments_query_result.result[0]['textmiddle']
         text_right = text_segments_query_result.result[0]['textright']
 
-        return {'textleft': text_left, 'textright': text_right}
+        return {'textleft': text_left, 'textmiddle': text_middle, 'textright': text_right}
 
     except DocumentNotFoundError as error:
         print(error)

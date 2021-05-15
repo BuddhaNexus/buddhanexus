@@ -160,8 +160,22 @@ FOR enfile IN files
                 }
         )
 
+FOR aifile IN files
+    FILTER aifile._key == @aifilename
+    LET aisegments = (
+        FOR aisegmentnr IN aifile.segment_keys
+            LIMIT @aistartint, @limit
+            FOR segment in segments
+                FILTER segment._key == aisegmentnr
+                RETURN {
+                    segnr: segment.segnr,
+                    segtext: segment.segtext
+                }
+        )
+
 RETURN { 
     textleft: plisegments,
+    textmiddle: aisegments,
     textright: ensegments
 }
 """
