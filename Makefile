@@ -106,20 +106,24 @@ load-chinese-data:
 
 load-pali-data:
 	@docker exec -ti dataloader bash -c "invoke load-menu-files"
-	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=pli"
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --lang=pli"
 	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
 	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
-
 
 load-multi-data:
 	@docker exec -ti dataloader bash -c "invoke load-multi-files"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
+load-english-data:
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --lang=en"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
 
 clean-multi-data:
 	@docker exec -t dataloader bash -c "invoke clean-multi-data"
 
+clean-english-data:
+	@docker exec -t dataloader bash -c "invoke clean-english"
 
 # the following four commands are for partial unloading of individual datasets
 clean-tibetan-data:

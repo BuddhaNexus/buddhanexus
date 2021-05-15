@@ -4,10 +4,11 @@ Various utilities for interacting with data in API queries.
 
 import re
 from typing import List
+from urllib.parse import unquote
 
-from .queries import menu_queries,main_queries
+from .queries import menu_queries, main_queries
 from .db_connection import get_db
-
+from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
@@ -202,3 +203,31 @@ def add_source_information(filename,query_result):
         query_result['textleft'].insert(0,source_segment)
         query_result['textleft'] = query_result['textleft'][:800]
     return query_result
+
+
+def get_start_integer(active_segment):
+
+    start_int = 0
+    active_segment = unquote(active_segment)
+    try:
+        text_segment_count_query_result = get_db().AQLQuery(
+            query=main_queries.QUERY_SEGMENT_COUNT,
+            bindVars={"segmentnr": active_segment},
+        )
+        if text_segment_count_query_result.result:
+            start_int = text_segment_count_query_result.result[0] - 400
+
+    except DocumentNotFoundError as error:
+        print(error)
+        raise HTTPException(status_code=404, detail="Active Segment Item not found") from error
+    except AQLQueryError as error:
+        print("AQLQueryError: ", error)
+        raise HTTPException(status_code=400, detail=error.errors) from error
+    except KeyError as error:
+        print("KeyError: ", error)
+        raise HTTPException(status_code=400) from error
+
+    if start_int < 0:
+       start_int = 0
+
+    return start_int

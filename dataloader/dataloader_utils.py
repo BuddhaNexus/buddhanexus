@@ -19,6 +19,7 @@ from dataloader_constants import (
     LANG_TIBETAN,
     LANG_SANSKRIT,
     LANG_CHINESE,
+    LANG_ENGLISH,
     ARANGO_USER,
     ARANGO_PASSWORD,
     ARANGO_HOST,
@@ -83,13 +84,15 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    if file_lang == LANG_CHINESE:
+    # if file_lang == LANG_CHINESE:
+    #     return True
+    if file_lang == LANG_PALI and file_name.startswith('mn'):
         return True
-    if file_lang == LANG_PALI:
-        return True
-    if file_lang == LANG_SANSKRIT:
-        return True
-    if file_lang == LANG_TIBETAN:
+    # if file_lang == LANG_SANSKRIT:
+    #     return True
+    # if file_lang == LANG_TIBETAN:
+    #     return True
+    if file_lang == LANG_ENGLISH and file_name.startswith('en-mn'):
         return True
     else:
         return False
@@ -148,6 +151,8 @@ def get_language_name(language_key):
         return "Pali"
     elif language_key == LANG_SANSKRIT:
         return "Sanskrit"
+    elif language_key == LANG_ENGLISH:
+        return "English"
     else:
         return "Unknown"
 

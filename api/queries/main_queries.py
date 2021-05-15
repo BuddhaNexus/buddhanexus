@@ -133,6 +133,39 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
         }
 """
 
+QUERY_FILE_TEXT = """
+FOR file IN files
+    FILTER file._key == @plifilename
+    LET plisegments = (
+        FOR segmentnr IN file.segment_keys
+            LIMIT @plistartint, @limit
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                RETURN {
+                    segnr: segment.segnr,
+                    segtext: segment.segtext
+                }
+        )
+
+FOR enfile IN files
+    FILTER enfile._key == @enfilename
+    LET ensegments = (
+        FOR ensegmentnr IN enfile.segment_keys
+            LIMIT @enstartint, @limit
+            FOR segment in segments
+                FILTER segment._key == ensegmentnr
+                RETURN {
+                    segnr: segment.segnr,
+                    segtext: segment.segtext
+                }
+        )
+
+RETURN { 
+    textleft: plisegments,
+    textright: ensegments
+}
+"""
+
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename

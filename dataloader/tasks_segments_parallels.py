@@ -16,6 +16,7 @@ from dataloader_constants import (
     LANG_CHINESE,
     LANG_TIBETAN,
     LANG_SANSKRIT,
+    LANG_ENGLISH,
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_SEGMENTS,
@@ -120,6 +121,7 @@ def get_folios_from_segment_keys(segment_keys, lang):
                 if num.endswith('0') and num != last_num:
                     folios.append({"num": num, "segment_nr": segment_key})
                     last_num = num
+
     return folios
     
 
@@ -149,9 +151,6 @@ def load_segments_and_parallels_data_from_menu_file(
     if parallels:
         load_parallels(parallels, db)
         load_parallels_sorted(parallels, db,menu_file_json['filename'])
-
-
-
 
 
 def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> list:

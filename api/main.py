@@ -24,7 +24,8 @@ from .utils import (
     get_collection_files_regex,
     collect_segment_results,
     get_folio_regex,
-    add_source_information
+    add_source_information,
+    get_start_integer
 )
 from .db_connection import get_collection, get_db
 
@@ -396,6 +397,52 @@ async def get_file_text_segments_and_parallels(
         )
         if start_int == 0:
             add_source_information(file_name,text_segments_query_result.result[0])
+        return text_segments_query_result.result[0]
+
+    except DocumentNotFoundError as error:
+        print(error)
+        raise HTTPException(status_code=404, detail="Item not found") from error
+    except AQLQueryError as error:
+        print("AQLQueryError: ", error)
+        raise HTTPException(status_code=400, detail=error.errors) from error
+    except KeyError as error:
+        print("KeyError: ", error)
+        raise HTTPException(status_code=400) from error
+
+
+@APP.get("/files/{file_name}/filetext")
+async def get_file_text_segments(
+    file_name: str,
+    active_segment: str = "none",
+):
+    """
+    Endpoint for english view
+    """
+    pli_start_int = 0
+    en_start_int = 0
+    if active_segment != "none":
+        
+        if '_' in active_segment:
+            pli_start_int = get_start_integer(active_segment)
+            en_start_int = get_start_integer('en-'+active_segment.split('_')[0])
+        else:
+            pli_start_int = get_start_integer(active_segment+'_0')
+            en_start_int = get_start_integer('en-'+active_segment)
+
+    current_bind_vars ={
+                "plifilename": file_name,
+                "enfilename": 'en-'+file_name,
+                "limit": 800,
+                "plistartint": pli_start_int,
+                "enstartint": en_start_int,
+            }
+
+    try:
+        text_segments_query_result = get_db().AQLQuery(
+            query=main_queries.QUERY_FILE_TEXT,
+            bindVars=current_bind_vars,
+        )
+
         return text_segments_query_result.result[0]
 
     except DocumentNotFoundError as error:
