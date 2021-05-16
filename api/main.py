@@ -357,6 +357,7 @@ async def get_file_text_segments_and_parallels(
     if len(limit_collection) > 0:
         parallel_ids_type = "parallel_ids"
 
+    start_int = 0
     if active_segment != "none":
         start_int = get_start_integer(active_segment)
 
