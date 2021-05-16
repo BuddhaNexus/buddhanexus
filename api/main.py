@@ -26,7 +26,8 @@ from .utils import (
     collect_segment_results,
     get_folio_regex,
     add_source_information,
-    get_start_integer
+    get_start_integer,
+    get_file_text
 )
 from .db_connection import get_collection, get_db
 
@@ -428,41 +429,15 @@ async def get_file_text_segments(
             ai_start_int = get_start_integer('ai-'+active_segment.split('_')[0])
             en_start_int = get_start_integer('en-'+active_segment.split('_')[0])
 
-    current_bind_vars ={
-                "plifilename": file_name,
-                "aifilename": 'ai-'+file_name,
-                "enfilename": 'en-'+file_name,
-                "limit": 800,
-                "plistartint": pli_start_int,
-                "aistartint": ai_start_int,
-                "enstartint": en_start_int,
-            }
+    text_left = get_file_text(file_name, pli_start_int)
+    text_middle = get_file_text('ai-'+file_name, ai_start_int)
+    text_right = get_file_text('en-'+file_name, en_start_int)
 
-    try:
-        text_segments_query_result = get_db().AQLQuery(
-            query=main_queries.QUERY_FILE_TEXT,
-            bindVars=current_bind_vars,
-        )
+    if transmode == 'uni':
+        for segment in text_left:
+            segment['segtext'] = transliterate.process('IAST', 'Devanagari', segment['segtext'])
 
-        text_left = text_segments_query_result.result[0]['textleft']
-        if transmode == 'uni':
-            for segment in text_left:
-                segment['segtext'] = transliterate.process('IAST', 'Devanagari', segment['segtext'])
-
-        text_middle = text_segments_query_result.result[0]['textmiddle']
-        text_right = text_segments_query_result.result[0]['textright']
-
-        return {'textleft': text_left, 'textmiddle': text_middle, 'textright': text_right}
-
-    except DocumentNotFoundError as error:
-        print(error)
-        raise HTTPException(status_code=404, detail="Item not found") from error
-    except AQLQueryError as error:
-        print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors) from error
-    except KeyError as error:
-        print("KeyError: ", error)
-        raise HTTPException(status_code=400) from error
+    return {'textleft': text_left, 'textmiddle': text_middle, 'textright': text_right}
 
 
 @APP.get("/files/{file_name}/searchtext")

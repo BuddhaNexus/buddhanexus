@@ -87,7 +87,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     """
     # if file_lang == LANG_CHINESE:
     #     return True
-    if file_lang == LANG_PALI and file_name.startswith('mn'):
+    if file_lang == LANG_PALI and (file_name.startswith('mn') or file_name.startswith('dn')):
         return True
     # if file_lang == LANG_SANSKRIT:
     #     return True
@@ -95,7 +95,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
     #     return True
     if file_lang == LANG_ENGLISH and file_name.startswith('en-mn'):
         return True
-    if file_lang == LANG_AI and file_name.startswith('ai-mn'):
+    if file_lang == LANG_AI and (file_name.startswith('ai-mn') or file_name.startswith('ai-dn')):
         return True
     else:
         return False

@@ -135,10 +135,10 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
 
 QUERY_FILE_TEXT = """
 FOR file IN files
-    FILTER file._key == @plifilename
-    LET plisegments = (
+    FILTER file._key == @filename
+    LET segments = (
         FOR segmentnr IN file.segment_keys
-            LIMIT @plistartint, @limit
+            LIMIT @startint, @limit
             FOR segment in segments
                 FILTER segment._key == segmentnr
                 RETURN {
@@ -147,36 +147,8 @@ FOR file IN files
                 }
         )
 
-FOR enfile IN files
-    FILTER enfile._key == @enfilename
-    LET ensegments = (
-        FOR ensegmentnr IN enfile.segment_keys
-            LIMIT @enstartint, @limit
-            FOR segment in segments
-                FILTER segment._key == ensegmentnr
-                RETURN {
-                    segnr: segment.segnr,
-                    segtext: segment.segtext
-                }
-        )
-
-FOR aifile IN files
-    FILTER aifile._key == @aifilename
-    LET aisegments = (
-        FOR aisegmentnr IN aifile.segment_keys
-            LIMIT @aistartint, @limit
-            FOR segment in segments
-                FILTER segment._key == aisegmentnr
-                RETURN {
-                    segnr: segment.segnr,
-                    segtext: segment.segtext
-                }
-        )
-
 RETURN { 
-    textleft: plisegments,
-    textmiddle: aisegments,
-    textright: ensegments
+    filetext: segments
 }
 """
 

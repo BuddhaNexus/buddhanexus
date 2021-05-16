@@ -231,3 +231,33 @@ def get_start_integer(active_segment):
        start_int = 0
 
     return start_int
+
+
+def get_file_text(file_name, start_int):
+
+    current_bind_vars ={
+                "filename": file_name,
+                "limit": 800,
+                "startint": start_int,
+            }
+
+    try:
+        text_segments_query_result = get_db().AQLQuery(
+            query=main_queries.QUERY_FILE_TEXT,
+            bindVars=current_bind_vars,
+        )
+
+        if text_segments_query_result.result:
+            return text_segments_query_result.result[0]['filetext']
+        else:
+            return []
+
+    except DocumentNotFoundError as error:
+        print(error)
+        raise HTTPException(status_code=404, detail="Item not found") from error
+    except AQLQueryError as error:
+        print("AQLQueryError: ", error)
+        raise HTTPException(status_code=400, detail=error.errors) from error
+    except KeyError as error:
+        print("KeyError: ", error)
+        raise HTTPException(status_code=400) from error
