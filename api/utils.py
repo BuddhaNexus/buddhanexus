@@ -189,7 +189,7 @@ def add_source_information(filename,query_result):
                                with full header Information."""
         if source_id == "DSBC":
             source_string = """The source of this text is the Digital
-                               Sanskrit Buddhist Canon project.
+                               Sanskrit Buddhist Canon project at the University of the West.
                                Click on the link above to access the
                                original etext with full header Information."""
         source_segment = {

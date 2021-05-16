@@ -17,6 +17,7 @@ FOR file in files
     FILTER LENGTH(file.available_lang) > 0
     SORT file.language, file.filename ASC
     RETURN {
+        filelanguage: file.language,
         displayName: file.displayName,
         search_field: file.search_field,
         textname: file.textname,
@@ -32,7 +33,10 @@ FOR file IN files
         SORT file.filenr
         RETURN {
             filename: file.filename,
-            categoryname: CONCAT(file.textname," ",file.displayName)
+            categoryname: file.textname,
+            displayname: file.displayName,
+            search_field: file.search_field
+
         }
 """
 

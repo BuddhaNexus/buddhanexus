@@ -261,11 +261,13 @@ async def get_files_for_menu(language: str):
     Endpoint that returns list of file IDs in a given language or
     all files available in multilang if the language is multi.
     """
-    menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
-    current_bind_vars = {"language": language}
     if language == "multi":
         menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
         current_bind_vars = {}
+    else:
+        menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
+        current_bind_vars = {"language": language}
+
     try:
         language_menu_query_result = get_db().AQLQuery(
             query=menu_query,
@@ -370,8 +372,7 @@ async def get_file_text_segments_and_parallels(
         except KeyError as error:
             print("KeyError: ", error)
             raise HTTPException(status_code=400) from error
-    if start_int < 0:
-        start_int = 0
+    start_int = max(start_int, 0)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
@@ -638,8 +639,16 @@ async def get_data_for_sidebar_menu(language: str):
     Endpoint for sidebar menu
     """
     database = get_db()
+
+    if language == "multi":
+        menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
+        current_bind_vars = {}
+    else:
+        menu_query = menu_queries.QUERY_TOTAL_MENU
+        current_bind_vars = {"language": language}
+
     query_sidebar_menu = database.AQLQuery(
-        query=menu_queries.QUERY_TOTAL_MENU, bindVars={"language": language}
+        query=menu_query, bindVars=current_bind_vars, batchSize=10000
     )
 
     return {"navigationmenudata": query_sidebar_menu.result}
