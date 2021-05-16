@@ -258,7 +258,7 @@ def get_file_text(file_name, start_int):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found") from error
+        raise HTTPException(status_code=404, detail="QUERY_FILE_TEXT Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
