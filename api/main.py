@@ -357,25 +357,10 @@ async def get_file_text_segments_and_parallels(
     # we have to fetch all possible parallels.
     if len(limit_collection) > 0:
         parallel_ids_type = "parallel_ids"
-    start_int = 0
+
     if active_segment != "none":
-        active_segment = unquote(active_segment)
-        try:
-            text_segment_count_query_result = get_db().AQLQuery(
-                query=main_queries.QUERY_SEGMENT_COUNT,
-                bindVars={"segmentnr": active_segment},
-            )
-            start_int = text_segment_count_query_result.result[0] - 400
-        except DocumentNotFoundError as error:
-            print(error)
-            raise HTTPException(status_code=404, detail="Item not found") from error
-        except AQLQueryError as error:
-            print("AQLQueryError: ", error)
-            raise HTTPException(status_code=400, detail=error.errors) from error
-        except KeyError as error:
-            print("KeyError: ", error)
-            raise HTTPException(status_code=400) from error
-    start_int = max(start_int, 0)
+        start_int = get_start_integer(active_segment)
+
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )

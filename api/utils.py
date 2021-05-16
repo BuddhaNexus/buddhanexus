@@ -5,10 +5,11 @@ Various utilities for interacting with data in API queries.
 import re
 from typing import List
 from urllib.parse import unquote
+from fastapi import HTTPException
+from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 
 from .queries import menu_queries, main_queries
 from .db_connection import get_db
-from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
@@ -206,7 +207,9 @@ def add_source_information(filename,query_result):
 
 
 def get_start_integer(active_segment):
-
+    """
+    Gets start integer for the folio segment that is called for.
+    """
     start_int = 0
     active_segment = unquote(active_segment)
     try:
@@ -227,14 +230,15 @@ def get_start_integer(active_segment):
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
 
-    if start_int < 0:
-       start_int = 0
+    start_int = max(start_int, 0)
 
     return start_int
 
 
 def get_file_text(file_name, start_int):
-
+    """
+    Gets file segments and numbers only from start_int onwards with max 800 segments.
+    """
     current_bind_vars ={
                 "filename": file_name,
                 "limit": 800,
@@ -249,8 +253,8 @@ def get_file_text(file_name, start_int):
 
         if text_segments_query_result.result:
             return text_segments_query_result.result[0]['filetext']
-        else:
-            return []
+
+        return []
 
     except DocumentNotFoundError as error:
         print(error)
