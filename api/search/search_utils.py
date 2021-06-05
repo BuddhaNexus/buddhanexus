@@ -81,11 +81,16 @@ def postprocess_results(search_string, results):
     new_results = []
     for result in results:
         new_results.append(process_result(result,search_string))
+        
     results = [x for x in new_results if x is not None]    
     results = [x for x in results if 'centeredness' in x]
     results = remove_duplicate_results(results)
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
-    results = sorted(results, key = lambda i: i['distance']) 
+    # First sort according to string similarity, next sort if multilang is present; the idea is that first the multilang results are shown, then the other with increasing distance
+    results = sorted(results, key = lambda i: i['distance'])
+    results = results[::-1]
+    results = sorted(results, key = lambda i: len(i['multilang_results']))
+    results = results[::-1]
     return results[:200] # make sure we return a fixed number of results
 
 def process_multilang_result(result_list,search_string):
