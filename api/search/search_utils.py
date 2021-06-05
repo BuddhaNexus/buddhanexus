@@ -14,7 +14,7 @@ def preprocess_search_string(search_string):
     pli = bn_analyzer.stem_pali(search_string)
     tib_preprocessed = search_string.replace("’", "'")
     if skt_fuzzy == "":
-        tib = bn_analyzer.stem_tibetan(tib_preprocessed)
+        tib = bn_analyzer.stem_tibetan(tib_preprocessed)#.replace("ba\n","ba")
         chn = search_string
     else:
         skt = search_string
@@ -31,7 +31,7 @@ def get_offsets(search_string, segment_text):
     allowed_distance = 0
     max_distance = len(search_string) / 5
     match = []
-    while len(match) == 0 and allowed_distance <= max_distance:        
+    while len(match) == 0 and allowed_distance <= max_distance:
         match = list(levenshtein_ngram.find_near_matches_levenshtein_ngrams(search_string,segment_text, max_l_dist=allowed_distance))
         allowed_distance += 1
     if match:
@@ -56,7 +56,7 @@ def remove_duplicate_results(results):
         for current_segnr in current_result['segment_nr']:
             for query_result in results_by_segnr[current_segnr]:
                 if not query_result['segment_nr'][0] == current_result['segment_nr'][0]:
-                    if current_result['centeredness'] >= query_result['centeredness']:
+                    if current_result['centeredness'] >= query_result['centeredness'] and not 'disabled' in query_result:
                         current_result['disabled'] = True
     return_results = []
     for result in results:
