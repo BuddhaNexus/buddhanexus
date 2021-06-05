@@ -41,7 +41,7 @@ LET combined_results = (
                 RETURN segment.parallel_ids_multi
             )
         LET multilang_results = (
-            FOR parallel_id IN multilang_parallel_ids
+            FOR parallel_id IN FLATTEN(multilang_parallel_ids)
                 FOR p in parallels_multi
                     FILTER p._key == parallel_id
                     RETURN {
