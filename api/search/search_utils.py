@@ -30,10 +30,8 @@ def tag_sanskrit(sanskrit_string):
 def get_offsets(search_string, segment_text):
     allowed_distance = 0
     max_distance = len(search_string) / 5
-    print("MAX_DISTANCE",max_distance)
     match = []
     while len(match) == 0 and allowed_distance <= max_distance:
-        print("MAX DISTANCE",max_distance,allowed_distance)
         match = list(levenshtein_ngram.find_near_matches_levenshtein_ngrams(search_string,segment_text, max_l_dist=allowed_distance))
         allowed_distance += 1
     if match:
@@ -85,7 +83,6 @@ def postprocess_results(search_string, results):
         new_results.append(process_result(result,search_string))
     results = [x for x in new_results if x is not None]    
     results = [x for x in results if 'centeredness' in x]
-    print("RESULTS",results)
     results = remove_duplicate_results(results)
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
     results = sorted(results, key = lambda i: i['distance']) 
