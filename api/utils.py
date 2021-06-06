@@ -235,20 +235,14 @@ def get_start_integer(active_segment):
     return start_int
 
 
-def get_file_text(file_name, start_int):
+def get_file_text(file_name):
     """
     Gets file segments and numbers only from start_int onwards with max 800 segments.
     """
-    current_bind_vars ={
-                "filename": file_name,
-                "limit": 800,
-                "startint": start_int,
-            }
-
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_FILE_TEXT,
-            bindVars=current_bind_vars,
+            bindVars={"filename": file_name},
         )
 
         if text_segments_query_result.result:

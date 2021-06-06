@@ -138,7 +138,6 @@ FOR file IN files
     FILTER file._key == @filename
     LET segments = (
         FOR segmentnr IN file.segment_keys
-            LIMIT @startint, @limit
             FOR segment in segments
                 FILTER segment._key == segmentnr
                 RETURN {

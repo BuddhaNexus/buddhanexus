@@ -405,18 +405,9 @@ async def get_file_text_segments(
     """
     Endpoint for english view
     """
-    pli_start_int = 0
-    ai_start_int = 0
-    en_start_int = 0
-    if active_segment != "none":
-        if '_' in active_segment:
-            pli_start_int = get_start_integer(active_segment)
-            ai_start_int = get_start_integer('ai-'+active_segment.split('_')[0])
-            en_start_int = get_start_integer('en-'+active_segment.split('_')[0])
-
-    text_left = get_file_text(file_name, pli_start_int)
-    text_middle = get_file_text('ai-'+file_name, ai_start_int)
-    text_right = get_file_text('en-'+file_name, en_start_int)
+    text_left = get_file_text(file_name)
+    text_middle = get_file_text('ai-'+file_name)
+    text_right = get_file_text('en-'+file_name)
 
     if transmode == 'uni':
         for segment in text_left:
