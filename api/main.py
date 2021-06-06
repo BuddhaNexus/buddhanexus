@@ -280,7 +280,7 @@ async def get_files_for_menu(language: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="QUERY_FILES_FOR_MULTILANG/LANGUAGE Item not found") from error
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
@@ -304,7 +304,7 @@ async def get_files_for_filter_menu(language: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="QUERY_FILES_FOR_CATEGORY Item not found") from error
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
@@ -328,7 +328,7 @@ async def get_categories_for_filter_menu(language: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="QUERY_CATEGORIES_FOR_LANGUAGE Item not found") from error
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
@@ -387,7 +387,7 @@ async def get_file_text_segments_and_parallels(
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="QUERY_TEXT_AND_PARALLELS Item not found") from error
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
@@ -399,7 +399,6 @@ async def get_file_text_segments_and_parallels(
 @APP.get("/files/{file_name}/filetext")
 async def get_file_text_segments(
     file_name: str,
-    active_segment: str = "none",
     transmode: str = "wylie",
 ):
     """
@@ -588,7 +587,7 @@ async def get_all_collections():
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="QUERY_ALL_COLLECTIONS Item not found") from error
+        raise HTTPException(status_code=404, detail="Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
