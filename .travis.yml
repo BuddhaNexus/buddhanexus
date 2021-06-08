@@ -7,5 +7,5 @@ install:
   - pip install pylint
   - pip install aksharamukha
 script:
-  - pylint ./api/*.py --disable=fixme,bad-continuation,too-many-arguments,too-few-public-methods --extension-pkg-whitelist=pydantic
+  - pylint ./api/*.py --disable=fixme,bad-continuation,too-many-arguments,too-few-public-methods,duplicate-code --extension-pkg-whitelist=pydantic
 #  - pylint ./dataloader/**/*.py --disable=fixme,bad-continuation,too-many-arguments  TODO: re-enable
