@@ -51,6 +51,7 @@
         "category": "K01",
         "filenr": 6,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu046_u.htm",
+        "link2": "https://suttacentral.net/san-mg-bu-pm",
         "source": "GRETIL"
     },
     {
@@ -70,6 +71,7 @@
         "filenr": 8,
         "chapters": [],
         "link": "http://www.dsbcproject.org/canon-text/book/88",
+        "link2": "https://suttacentral.net/san-lo-vi",
         "source": "DSBC"
     },
     {
@@ -149,6 +151,7 @@
         "category": "K01",
         "filenr": 16,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/prmosu_u.htm",
+        "link2": "https://suttacentral.net/san-sarv-bu-pm-tf11",
         "source": "GRETIL"
     },
     {
@@ -158,6 +161,7 @@
         "category": "K01",
         "filenr": 17,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/prmosubu.htm",
+        "link2": "https://suttacentral.net/san-mu-bu-pm-gbm3",
         "source": "GRETIL"
     },
     {
@@ -167,6 +171,7 @@
         "category": "K01",
         "filenr": 18,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/prmosufu.htm",
+        "link2": "https://suttacentral.net/san-mu-bu-pm-gbm2",
         "source": "GRETIL"
     },
     {
@@ -176,6 +181,7 @@
         "category": "K01",
         "filenr": 19,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/prmosulu.htm",
+        "link2": "https://suttacentral.net/san-lo-bu-pm",
         "source": "GRETIL"
     },
     {
@@ -203,6 +209,7 @@
         "category": "K01",
         "filenr": 22,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/vinv01_u.htm",
+        "link2": "https://suttacentral.net/san-mu-kd",
         "source": "GRETIL"
     },
     {
@@ -726,6 +733,7 @@
         "category": "K10",
         "filenr": 80,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/anitysuu.htm",
+        "link2": "https://suttacentral.net/sf299",
         "source": "GRETIL"
     },
     {
@@ -735,6 +743,7 @@
         "category": "K10",
         "filenr": 81,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/avsata_u.htm",
+        "link2": "https://suttacentral.net/avs",
         "source": "GRETIL"
     },
     {
@@ -753,6 +762,7 @@
         "category": "K10",
         "filenr": 83,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu001_u.htm",
+        "link2": "https://suttacentral.net/sf146",
         "source": "GRETIL"
     },
     {
@@ -843,6 +853,7 @@
         "category": "K10",
         "filenr": 93,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu022_u.htm",
+        "link2": "https://suttacentral.net/lal",
         "source": "GRETIL"
     },
     {
@@ -996,6 +1007,7 @@
         "category": "K10",
         "filenr": 110,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/divyav_u.htm",
+        "link2": "https://suttacentral.net/divy",
         "source": "GRETIL"
     },
     {
@@ -1014,6 +1026,7 @@
         "category": "K10",
         "filenr": 112,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/dvtasutu.htm",
+        "link2": "https://suttacentral.net/sf104",
         "source": "GRETIL"
     },
     {
@@ -1023,6 +1036,7 @@
         "category": "K10",
         "filenr": 113,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/ekottaru.htm",
+        "link2": "https://suttacentral.net/sf177",
         "source": "GRETIL"
     },
     {
@@ -1113,6 +1127,7 @@
         "category": "K10",
         "filenr": 123,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/mkarmviu.htm",
+        "link2": "https://suttacentral.net/mkv",
         "source": "GRETIL"
     },
     {
@@ -1241,6 +1256,7 @@
         "category": "K10",
         "filenr": 136,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/nidansyu.htm",
+        "link2": "https://suttacentral.net/sf150",
         "source": "GRETIL"
     },
     {
@@ -1268,6 +1284,7 @@
         "category": "K10",
         "filenr": 139,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/samyu_wu.htm",
+        "link2": "https://suttacentral.net/sf78",
         "source": "GRETIL"
     },
     {
@@ -1772,6 +1789,7 @@
         "category": "K14",
         "filenr": 194,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/dhppat_u.htm",
+        "link2": "https://suttacentral.net/pdhp",
         "source": "GRETIL"
     },
     {
@@ -1781,6 +1799,7 @@
         "category": "K14",
         "filenr": 195,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/mavadsuu.htm",
+        "link2": "https://suttacentral.net/sf36",
         "source": "GRETIL"
     },
     {
@@ -1790,6 +1809,7 @@
         "category": "K14",
         "filenr": 196,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/mhvastuu.htm",
+        "link2": "https://suttacentral.net/san-lo-mvu",
         "source": "GRETIL"
     },
     {
@@ -1799,6 +1819,7 @@
         "category": "K14",
         "filenr": 197,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/mpsu_w_u.htm",
+        "link2": "https://suttacentral.net/sf245",
         "source": "GRETIL"
     },
     {
@@ -1808,6 +1829,7 @@
         "category": "K14",
         "filenr": 198,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/msudarsu.htm",
+        "link2": "https://suttacentral.net/sf102",
         "source": "GRETIL"
     },
     {
@@ -1838,6 +1860,7 @@
         "filenr": 201,
         "chapters": [],
         "link": "http://www.dsbcproject.org/canon-text/book/38",
+        "link2": "https://suttacentral.net/sf271",
         "source": "DSBC"
     },
     {
@@ -4424,6 +4447,7 @@
         "category": "T06",
         "filenr": 465,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/6_sastra/3_phil/buddh/asycsaru.htm",
+        "link2": "https://suttacentral.net/sag",
         "source": "GRETIL"
     },
     {
@@ -4594,6 +4618,7 @@
         "category": "T06",
         "filenr": 483,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/srabhusu.htm",
+        "link2": "https://suttacentral.net/sbh",
         "source": "GRETIL"
     },
     {
@@ -4630,6 +4655,7 @@
         "category": "T07",
         "filenr": 487,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/dhrmsk_u.htm",
+        "link2": "https://suttacentral.net/dk",
         "source": "GRETIL"
     },
     {
@@ -4693,6 +4719,7 @@
         "category": "T07",
         "filenr": 492,
         "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/udanav_u.htm",
+        "link2": "https://suttacentral.net/uv",
         "source": "GRETIL"
     },
     {
@@ -5600,6 +5627,7 @@
         "filenr": 588,
         "chapters": [],
         "link": "http://www.dsbcproject.org/canon-text/book/232",
+        "link2": "https://suttacentral.net/san-mu-mpt-bu-pm",
         "source": "DSBC"
     },
     {
