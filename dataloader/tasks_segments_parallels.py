@@ -105,13 +105,8 @@ def get_folios_from_segment_keys(segment_keys, lang):
     elif lang == LANG_SANSKRIT:
         last_num = ''
         for segment_key in segment_keys:
-            if re.search(r"^(XXdhppat|S10udanav)", segment_key):
+            if re.search(r"^(K14dhppat|T07udanav)", segment_key):
                 num = segment_key.split(":")[1].split("_")[1]
-                if num != last_num:
-                    folios.append({"num": num, "segment_nr": segment_key})
-                    last_num = num
-            if re.search(r"^(OT)", segment_key):
-                num = segment_key.split(":")[1].split("_")[0].strip('x')
                 if num != last_num:
                     folios.append({"num": num, "segment_nr": segment_key})
                     last_num = num
