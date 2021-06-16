@@ -1327,11 +1327,30 @@
     "source": "GRETIL"
 },
 {
+    "displayName": "Udānavarga",
+    "textname": "K10 udanav_u",
+    "filename": "K10udanav_u",
+    "category": "K10",
+    "filenr": 144,
+    "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/udanav_u.htm",
+    "link2": "https://suttacentral.net/uv",
+    "source": "GRETIL"
+},
+{
+    "displayName": "Udānavarga de Subaši",
+    "textname": "K10 uvs_sc",
+    "filename": "K10uvs_sc",
+    "category": "K10",
+    "filenr": 145,
+    "link": "https://suttacentral.net/uvs",
+    "source": "SC"
+},
+{
     "displayName": "Vimalakīrtinirdeśa",
     "textname": "K10 vimkn_u",
     "filename": "K10vimkn_u",
     "category": "K10",
-    "filenr": 144,
+    "filenr": 146,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/vimkn_u.htm",
     "source": "GRETIL"
 },
@@ -1340,7 +1359,7 @@
     "textname": "K10 sf18_sc",
     "filename": "K10sf18_sc",
     "category": "K10",
-    "filenr": 145,
+    "filenr": 147,
     "link": "https://suttacentral.net/sf18/san/enomoto",
     "source": "SC"
 },
@@ -1349,7 +1368,7 @@
     "textname": "K10 sf68_sc",
     "filename": "K10sf68_sc",
     "category": "K10",
-    "filenr": 146,
+    "filenr": 148,
     "link": "https://suttacentral.net/sf68/san/hartmann",
     "source": "SC"
 },
@@ -1358,7 +1377,7 @@
     "textname": "K10 sf73_sc",
     "filename": "K10sf73_sc",
     "category": "K10",
-    "filenr": 147,
+    "filenr": 149,
     "link": "https://suttacentral.net/sf73/san/hoernle",
     "source": "SC"
 },
@@ -1367,7 +1386,7 @@
     "textname": "K10 sf74_sc",
     "filename": "K10sf74_sc",
     "category": "K10",
-    "filenr": 148,
+    "filenr": 150,
     "link": "https://suttacentral.net/sf74/san/hoernle",
     "source": "SC"
 },
@@ -1376,7 +1395,7 @@
     "textname": "K10 sf75_sc",
     "filename": "K10sf75_sc",
     "category": "K10",
-    "filenr": 149,
+    "filenr": 151,
     "link": "https://suttacentral.net/sf75/san/hoernle",
     "source": "SC"
 },
@@ -1385,7 +1404,7 @@
     "textname": "K10 sf89_sc",
     "filename": "K10sf89_sc",
     "category": "K10",
-    "filenr": 150,
+    "filenr": 152,
     "link": "https://suttacentral.net/sf89/san/vallee",
     "source": "SC"
 },
@@ -1394,7 +1413,7 @@
     "textname": "K10 sf90_sc",
     "filename": "K10sf90_sc",
     "category": "K10",
-    "filenr": 151,
+    "filenr": 153,
     "link": "https://suttacentral.net/sf90/san/vallee",
     "source": "SC"
 },
@@ -1403,7 +1422,7 @@
     "textname": "K10 sf101_sc",
     "filename": "K10sf101_sc",
     "category": "K10",
-    "filenr": 152,
+    "filenr": 154,
     "link": "https://suttacentral.net/sf101/san/matsumura",
     "source": "SC"
 },
@@ -1412,7 +1431,7 @@
     "textname": "K10 sf107_sc",
     "filename": "K10sf107_sc",
     "category": "K10",
-    "filenr": 153,
+    "filenr": 155,
     "link": "https://suttacentral.net/sf107/san/mittal-schlingoff",
     "source": "SC"
 },
@@ -1421,7 +1440,7 @@
     "textname": "K10 sf137_sc",
     "filename": "K10sf137_sc",
     "category": "K10",
-    "filenr": 154,
+    "filenr": 156,
     "link": "https://suttacentral.net/sf137/san/sander",
     "source": "SC"
 },
@@ -1430,7 +1449,7 @@
     "textname": "K10 sf140_sc",
     "filename": "K10sf140_sc",
     "category": "K10",
-    "filenr": 155,
+    "filenr": 157,
     "link": "https://suttacentral.net/sf140/san/waldschmidt-sander",
     "source": "SC"
 },
@@ -1439,7 +1458,7 @@
     "textname": "K10 sf241_sc",
     "filename": "K10sf241_sc",
     "category": "K10",
-    "filenr": 156,
+    "filenr": 158,
     "link": "https://suttacentral.net/sf241/san/waldschmidt",
     "source": "SC"
 },
@@ -1448,7 +1467,7 @@
     "textname": "K10 sf253_sc",
     "filename": "K10sf253_sc",
     "category": "K10",
-    "filenr": 157,
+    "filenr": 159,
     "link": "https://suttacentral.net/sf253/san/waldschmidt",
     "source": "SC"
 },
@@ -1457,7 +1476,7 @@
     "textname": "K10 sf258_sc",
     "filename": "K10sf258_sc",
     "category": "K10",
-    "filenr": 158,
+    "filenr": 160,
     "link": "https://suttacentral.net/sf258/san/waldschmidt",
     "source": "SC"
 },
@@ -1466,7 +1485,7 @@
     "textname": "K10 sf264_sc",
     "filename": "K10sf264_sc",
     "category": "K10",
-    "filenr": 159,
+    "filenr": 161,
     "link": "https://suttacentral.net/sf264/san/waldschmidt",
     "source": "SC"
 },
@@ -1475,7 +1494,7 @@
     "textname": "K10 sf265_sc",
     "filename": "K10sf265_sc",
     "category": "K10",
-    "filenr": 160,
+    "filenr": 162,
     "link": "https://suttacentral.net/sf265/san/waldschmidt",
     "source": "SC"
 },
@@ -1484,7 +1503,7 @@
     "textname": "K10 sf276_sc",
     "filename": "K10sf276_sc",
     "category": "K10",
-    "filenr": 161,
+    "filenr": 163,
     "link": "https://suttacentral.net/sf276/san/waldschmidt",
     "source": "SC"
 },
@@ -1493,7 +1512,7 @@
     "textname": "K10 sf277_sc",
     "filename": "K10sf277_sc",
     "category": "K10",
-    "filenr": 162,
+    "filenr": 164,
     "link": "https://suttacentral.net/sf277/san/waldschmidt",
     "source": "SC"
 },
@@ -1502,7 +1521,7 @@
     "textname": "K10 sf279_sc",
     "filename": "K10sf279_sc",
     "category": "K10",
-    "filenr": 163,
+    "filenr": 165,
     "link": "https://suttacentral.net/sf279/san/waldschmidt",
     "source": "SC"
 },
@@ -1511,7 +1530,7 @@
     "textname": "K10 sf280_sc",
     "filename": "K10sf280_sc",
     "category": "K10",
-    "filenr": 164,
+    "filenr": 166,
     "link": "https://suttacentral.net/sf280/san/waldschmidt",
     "source": "SC"
 },
@@ -1520,7 +1539,7 @@
     "textname": "K10 sf284_sc",
     "filename": "K10sf284_sc",
     "category": "K10",
-    "filenr": 165,
+    "filenr": 167,
     "link": "https://suttacentral.net/sf284/san/waldschmidt",
     "source": "SC"
 },
@@ -1529,7 +1548,7 @@
     "textname": "K12 adhsatpu",
     "filename": "K12adhsatpu",
     "category": "K12",
-    "filenr": 166,
+    "filenr": 168,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/adhsatpu.htm",
     "source": "GRETIL"
 },
@@ -1538,7 +1557,7 @@
     "textname": "K12 bsu003_u",
     "filename": "K12bsu003_u",
     "category": "K12",
-    "filenr": 167,
+    "filenr": 169,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu003_u.htm",
     "source": "GRETIL"
 },
@@ -1547,7 +1566,7 @@
     "textname": "K12 bsu004_u",
     "filename": "K12bsu004_u",
     "category": "K12",
-    "filenr": 168,
+    "filenr": 170,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu004_u.htm",
     "source": "GRETIL"
 },
@@ -1556,7 +1575,7 @@
     "textname": "K12 bsu007_u",
     "filename": "K12bsu007_u",
     "category": "K12",
-    "filenr": 169,
+    "filenr": 171,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu007_u.htm",
     "source": "GRETIL"
 },
@@ -1565,7 +1584,7 @@
     "textname": "K12 bsu012_u",
     "filename": "K12bsu012_u",
     "category": "K12",
-    "filenr": 170,
+    "filenr": 172,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu012_u.htm",
     "source": "GRETIL"
 },
@@ -1574,7 +1593,7 @@
     "textname": "K12 bsu035_u",
     "filename": "K12bsu035_u",
     "category": "K12",
-    "filenr": 171,
+    "filenr": 173,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu035_u.htm",
     "source": "GRETIL"
 },
@@ -1583,7 +1602,7 @@
     "textname": "K12 bsu041_u",
     "filename": "K12bsu041_u",
     "category": "K12",
-    "filenr": 172,
+    "filenr": 174,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu041_u.htm",
     "source": "GRETIL"
 },
@@ -1592,7 +1611,7 @@
     "textname": "K12 bsu050_u",
     "filename": "K12bsu050_u",
     "category": "K12",
-    "filenr": 173,
+    "filenr": 175,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu050_u.htm",
     "source": "GRETIL"
 },
@@ -1601,7 +1620,7 @@
     "textname": "K12 bsu055_u",
     "filename": "K12bsu055_u",
     "category": "K12",
-    "filenr": 174,
+    "filenr": 176,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu055_u.htm",
     "source": "GRETIL"
 },
@@ -1610,7 +1629,7 @@
     "textname": "K12 bsu056_u",
     "filename": "K12bsu056_u",
     "category": "K12",
-    "filenr": 175,
+    "filenr": 177,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu056_u.htm",
     "source": "GRETIL"
 },
@@ -1619,7 +1638,7 @@
     "textname": "K12 dhvajkdu",
     "filename": "K12dhvajkdu",
     "category": "K12",
-    "filenr": 176,
+    "filenr": 178,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/dhvajkdu.htm",
     "source": "GRETIL"
 },
@@ -1628,7 +1647,7 @@
     "textname": "K12 dhvajkeu",
     "filename": "K12dhvajkeu",
     "category": "K12",
-    "filenr": 177,
+    "filenr": 179,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/dhvajkeu.htm",
     "source": "GRETIL"
 },
@@ -1637,7 +1656,7 @@
     "textname": "K12 ekmuhr_u",
     "filename": "K12ekmuhr_u",
     "category": "K12",
-    "filenr": 178,
+    "filenr": 180,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/ekmuhr_u.htm",
     "source": "GRETIL"
 },
@@ -1646,7 +1665,7 @@
     "textname": "K12 ganphrdu",
     "filename": "K12ganphrdu",
     "category": "K12",
-    "filenr": 179,
+    "filenr": 181,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/ganphrdu.htm",
     "source": "GRETIL"
 },
@@ -1655,7 +1674,7 @@
     "textname": "K12 grahmdhu",
     "filename": "K12grahmdhu",
     "category": "K12",
-    "filenr": 180,
+    "filenr": 182,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/grahmdhu.htm",
     "source": "GRETIL"
 },
@@ -1664,7 +1683,7 @@
     "textname": "K12 madadh_u",
     "filename": "K12madadh_u",
     "category": "K12",
-    "filenr": 181,
+    "filenr": 183,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/madadh_u.htm",
     "source": "GRETIL"
 },
@@ -1673,7 +1692,7 @@
     "textname": "K12 mahpratu",
     "filename": "K12mahpratu",
     "category": "K12",
-    "filenr": 182,
+    "filenr": 184,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/mahpratu.htm",
     "source": "GRETIL"
 },
@@ -1682,7 +1701,7 @@
     "textname": "K12 manivdhu",
     "filename": "K12manivdhu",
     "category": "K12",
-    "filenr": 183,
+    "filenr": 185,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/manivdhu.htm",
     "source": "GRETIL"
 },
@@ -1691,7 +1710,7 @@
     "textname": "K12 manjn1pu",
     "filename": "K12manjn1pu",
     "category": "K12",
-    "filenr": 184,
+    "filenr": 186,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/manjn1pu.htm",
     "source": "GRETIL"
 },
@@ -1700,7 +1719,7 @@
     "textname": "K12 manjnspu",
     "filename": "K12manjnspu",
     "category": "K12",
-    "filenr": 185,
+    "filenr": 187,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/manjnspu.htm",
     "source": "GRETIL"
 },
@@ -1709,7 +1728,7 @@
     "textname": "K12 maricdhu",
     "filename": "K12maricdhu",
     "category": "K12",
-    "filenr": 186,
+    "filenr": 188,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/maricdhu.htm",
     "source": "GRETIL"
 },
@@ -1718,7 +1737,7 @@
     "textname": "K12 mekhdh_u",
     "filename": "K12mekhdh_u",
     "category": "K12",
-    "filenr": 187,
+    "filenr": 189,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/mekhdh_u.htm",
     "source": "GRETIL"
 },
@@ -1727,7 +1746,7 @@
     "textname": "K12 mpratpru",
     "filename": "K12mpratpru",
     "category": "K12",
-    "filenr": 188,
+    "filenr": 190,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/mpratpru.htm",
     "source": "GRETIL"
 },
@@ -1736,7 +1755,7 @@
     "textname": "K12 mprsvdhu",
     "filename": "K12mprsvdhu",
     "category": "K12",
-    "filenr": 189,
+    "filenr": 191,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/mprsvdhu.htm",
     "source": "GRETIL"
 },
@@ -1745,7 +1764,7 @@
     "textname": "K12 mspram_u",
     "filename": "K12mspram_u",
     "category": "K12",
-    "filenr": 190,
+    "filenr": 192,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/mspram_u.htm",
     "source": "GRETIL"
 },
@@ -1754,7 +1773,7 @@
     "textname": "K12 220u",
     "filename": "K12n220u",
     "category": "K12",
-    "filenr": 191,
+    "filenr": 193,
     "chapters": [],
     "link": "http://www.dsbcproject.org/canon-text/book/18",
     "source": "DSBC"
@@ -1764,7 +1783,7 @@
     "textname": "K12 221u",
     "filename": "K12n221u",
     "category": "K12",
-    "filenr": 192,
+    "filenr": 194,
     "chapters": [],
     "link": "http://www.dsbcproject.org/canon-text/book/19",
     "source": "DSBC"
@@ -1774,7 +1793,7 @@
     "textname": "K12 259u",
     "filename": "K12n259u",
     "category": "K12",
-    "filenr": 193,
+    "filenr": 195,
     "chapters": [],
     "link": "http://www.dsbcproject.org/canon-text/book/24",
     "source": "DSBC"
@@ -1784,7 +1803,7 @@
     "textname": "K12 283u",
     "filename": "K12n283u",
     "category": "K12",
-    "filenr": 194,
+    "filenr": 196,
     "chapters": [],
     "link": "http://www.dsbcproject.org/canon-text/book/36",
     "source": "DSBC"
@@ -1794,7 +1813,7 @@
     "textname": "K12 2920u",
     "filename": "K12n2920u",
     "category": "K12",
-    "filenr": 195,
+    "filenr": 197,
     "chapters": [],
     "link": "http://www.dsbcproject.org/canon-text/book/792",
     "source": "DSBC"
@@ -1804,7 +1823,7 @@
     "textname": "K12 2922u",
     "filename": "K12n2922u",
     "category": "K12",
-    "filenr": 196,
+    "filenr": 198,
     "chapters": [],
     "link": "http://www.dsbcproject.org/canon-text/book/794",
     "source": "DSBC"
@@ -1814,7 +1833,7 @@
     "textname": "K12 2949u",
     "filename": "K12n2949u",
     "category": "K12",
-    "filenr": 197,
+    "filenr": 199,
     "chapters": [],
     "link": "http://www.dsbcproject.org/canon-text/book/820",
     "source": "DSBC"
@@ -1824,7 +1843,7 @@
     "textname": "K12 2967u",
     "filename": "K12n2967u",
     "category": "K12",
-    "filenr": 198,
+    "filenr": 200,
     "chapters": [],
     "link": "http://www.dsbcproject.org/canon-text/book/723",
     "source": "DSBC"
@@ -1834,7 +1853,7 @@
     "textname": "K12 2990u",
     "filename": "K12n2990u",
     "category": "K12",
-    "filenr": 199,
+    "filenr": 201,
     "chapters": [],
     "link": "http://www.dsbcproject.org/canon-text/book/862",
     "source": "DSBC"
@@ -1844,7 +1863,7 @@
     "textname": "K12 namekvsu",
     "filename": "K12namekvsu",
     "category": "K12",
-    "filenr": 200,
+    "filenr": 202,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/namekvsu.htm",
     "source": "GRETIL"
 },
@@ -1853,7 +1872,7 @@
     "textname": "K12 prajnhsu",
     "filename": "K12prajnhsu",
     "category": "K12",
-    "filenr": 201,
+    "filenr": 203,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/prajnhsu.htm",
     "source": "GRETIL"
 },
@@ -1862,7 +1881,7 @@
     "textname": "K12 sarvttsu",
     "filename": "K12sarvttsu",
     "category": "K12",
-    "filenr": 202,
+    "filenr": 204,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/sarvttsu.htm",
     "source": "GRETIL"
 },
@@ -1871,7 +1890,7 @@
     "textname": "K12 sdurst_u",
     "filename": "K12sdurst_u",
     "category": "K12",
-    "filenr": 203,
+    "filenr": 205,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/sdurst_u.htm",
     "source": "GRETIL"
 },
@@ -1880,7 +1899,7 @@
     "textname": "K12 tarb108u",
     "filename": "K12tarb108u",
     "category": "K12",
-    "filenr": 204,
+    "filenr": 206,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/tarb108u.htm",
     "source": "GRETIL"
 },
@@ -1889,7 +1908,7 @@
     "textname": "K12 vajvidhu",
     "filename": "K12vajvidhu",
     "category": "K12",
-    "filenr": 205,
+    "filenr": 207,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/vajvidhu.htm",
     "source": "GRETIL"
 },
@@ -1898,7 +1917,7 @@
     "textname": "K12 vjviddhu",
     "filename": "K12vjviddhu",
     "category": "K12",
-    "filenr": 206,
+    "filenr": 208,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/vjviddhu.htm",
     "source": "GRETIL"
 },
@@ -1907,7 +1926,7 @@
     "textname": "K12 Xbsu017_u",
     "filename": "K12Xbsu017_u",
     "category": "K12",
-    "filenr": 207,
+    "filenr": 209,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu017_u.htm",
     "source": "GRETIL"
 },
@@ -1916,7 +1935,7 @@
     "textname": "K14 ahovk1_u",
     "filename": "K14ahovk1_u",
     "category": "K14",
-    "filenr": 208,
+    "filenr": 210,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/ahovk1_u.htm",
     "source": "GRETIL"
 },
@@ -1925,7 +1944,7 @@
     "textname": "K14 ahovk2_u",
     "filename": "K14ahovk2_u",
     "category": "K14",
-    "filenr": 209,
+    "filenr": 211,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/ahovk2_u.htm",
     "source": "GRETIL"
 },
@@ -1934,7 +1953,7 @@
     "textname": "K14 ajitsvyu",
     "filename": "K14ajitsvyu",
     "category": "K14",
-    "filenr": 210,
+    "filenr": 212,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/ajitsvyu.htm",
     "source": "GRETIL"
 },
@@ -1943,7 +1962,7 @@
     "textname": "K14 amoghapu",
     "filename": "K14amoghapu",
     "category": "K14",
-    "filenr": 211,
+    "filenr": 213,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/amoghapu.htm",
     "source": "GRETIL"
 },
@@ -1952,7 +1971,7 @@
     "textname": "K14 bsa052_u",
     "filename": "K14bsa052_u",
     "category": "K14",
-    "filenr": 212,
+    "filenr": 214,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/6_sastra/3_phil/buddh/bsa052_u.htm",
     "source": "GRETIL"
 },
@@ -1961,7 +1980,7 @@
     "textname": "K14 bsu002_u",
     "filename": "K14bsu002_u",
     "category": "K14",
-    "filenr": 213,
+    "filenr": 215,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu002_u.htm",
     "source": "GRETIL"
 },
@@ -1970,28 +1989,9 @@
     "textname": "K14 bsu015_u",
     "filename": "K14bsu015_u",
     "category": "K14",
-    "filenr": 214,
+    "filenr": 216,
     "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/bsu015_u.htm",
     "source": "GRETIL"
-},
-{
-    "displayName": "Udānavarga",
-    "textname": "K14 udanav_u",
-    "filename": "K14udanav_u",
-    "category": "K14",
-    "filenr": 215,
-    "link": "http://gretil.sub.uni-goettingen.de/gretil/1_sanskr/4_rellit/buddh/udanav_u.htm",
-    "link2": "https://suttacentral.net/uv",
-    "source": "GRETIL"
-},
-{
-    "displayName": "Udānavarga de Subaši",
-    "textname": "K14 uvs_sc",
-    "filename": "K14uvs_sc",
-    "category": "K14",
-    "filenr": 216,
-    "link": "https://suttacentral.net/uvs",
-    "source": "SC"
 },
 {
     "displayName": "Patna Dharmapada",
