@@ -19,6 +19,8 @@ from dataloader_constants import (
     LANG_TIBETAN,
     LANG_SANSKRIT,
     LANG_CHINESE,
+    LANG_ENGLISH,
+    LANG_AI,
     ARANGO_USER,
     ARANGO_PASSWORD,
     ARANGO_HOST,
@@ -91,6 +93,10 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
         return True
     if file_lang == LANG_TIBETAN:
         return True
+    if file_lang == LANG_ENGLISH:
+        return True
+    if file_lang == LANG_AI:
+        return True
     else:
         return False
 
@@ -148,6 +154,10 @@ def get_language_name(language_key):
         return "Pali"
     elif language_key == LANG_SANSKRIT:
         return "Sanskrit"
+    elif language_key == LANG_ENGLISH:
+        return "English"
+    elif language_key == LANG_AI:
+        return "Artificial"
     else:
         return "Unknown"
 

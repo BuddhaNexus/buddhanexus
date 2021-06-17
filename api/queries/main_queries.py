@@ -133,6 +133,24 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
         }
 """
 
+QUERY_FILE_TEXT = """
+FOR file IN files
+    FILTER file._key == @filename
+    LET segments = (
+        FOR segmentnr IN file.segment_keys
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                RETURN {
+                    segnr: segment.segnr,
+                    segtext: segment.segtext
+                }
+        )
+
+RETURN { 
+    filetext: segments
+}
+"""
+
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file._key == @filename

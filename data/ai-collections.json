@@ -1,0 +1,73 @@
+[
+  {
+    "collection": "ai-Suttas-Early-1",
+    "categories": [
+      "ai-dn",
+      "ai-mn",
+      "ai-sn",
+      "ai-an"
+    ]
+  },
+  {
+    "collection": "ai-Suttas-Early-2",
+    "categories": [
+      "ai-kp",
+      "ai-dhp",
+      "ai-ud",
+      "ai-iti",
+      "ai-snp",
+      "ai-thag",
+      "ai-thig"
+    ]
+  },
+  {
+    "collection": "ai-Suttas-Late-1",
+    "categories": [
+      "ai-vv",
+      "ai-pv",
+      "ai-tha-ap",
+      "ai-thi-ap",
+      "ai-bv",
+      "ai-cp",
+      "ai-ja"
+    ]
+  },
+  {
+    "collection": "ai-Suttas-Late-2",
+    "categories": [
+      "ai-mnd",
+      "ai-cnd",
+      "ai-ps",
+      "ai-ne",
+      "ai-pe",
+      "ai-mil"
+    ]
+  },
+  {
+    "collection": "ai-Vinaya",
+    "categories": [
+      "ai-pli-tv-bu-pm",
+      "ai-pli-tv-bi-pm",
+      "ai-pli-tv-bu-vb",
+      "ai-pli-tv-bi-vb",
+      "ai-pli-tv-kd",
+      "ai-pli-tv-pvr"
+    ]
+  },
+  {
+    "collection": "ai-Abhidhamma",
+    "categories": ["ds", "vb", "dt", "pp", "kv", "ya", "patthana"]
+  },
+  {
+    "collection": "ai-Atthakatha",
+    "categories": ["atk-s", "atk-vin", "atk-abh"]
+  },
+  {
+    "collection": "ai-Tika",
+    "categories": ["tika-s", "tika-vin", "tika-abh"]
+  },
+  {
+    "collection": "ai-Anya",
+    "categories": ["anya-e"]
+  }
+]

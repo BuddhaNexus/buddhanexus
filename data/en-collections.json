@@ -1,0 +1,31 @@
+[
+  {
+    "collection": "en-Suttas-Early-1",
+    "categories": [
+      "en-dn",
+      "en-mn",
+      "en-sn",
+      "en-an"
+    ]
+  },
+  {
+    "collection": "en-Suttas-Early-2",
+    "categories": [
+      "en-kp",
+      "en-dhp",
+      "en-ud",
+      "en-iti",
+      "en-snp",
+      "en-thag",
+      "en-thig"
+    ]
+  },
+  {
+    "collection": "en-Vinaya",
+    "categories": [
+      "en-pli-tv-bu-vb",
+      "en-pli-tv-bi-vb",
+      "en-pli-tv-kd"
+    ]
+  }
+]

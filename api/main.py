@@ -9,7 +9,7 @@ Todo:
 import re
 import os
 from typing import Dict, List
-from urllib.parse import unquote
+from aksharamukha import transliterate
 
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
@@ -24,7 +24,9 @@ from .utils import (
     get_collection_files_regex,
     collect_segment_results,
     get_folio_regex,
-    add_source_information
+    add_source_information,
+    get_start_integer,
+    get_file_text
 )
 from .db_connection import get_collection, get_db
 
@@ -156,7 +158,7 @@ async def get_segments_for_file(
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found") from error
+        raise HTTPException(status_code=404, detail="QUERY_TABLE_VIEW Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
@@ -354,25 +356,11 @@ async def get_file_text_segments_and_parallels(
     # we have to fetch all possible parallels.
     if len(limit_collection) > 0:
         parallel_ids_type = "parallel_ids"
+
     start_int = 0
     if active_segment != "none":
-        active_segment = unquote(active_segment)
-        try:
-            text_segment_count_query_result = get_db().AQLQuery(
-                query=main_queries.QUERY_SEGMENT_COUNT,
-                bindVars={"segmentnr": active_segment},
-            )
-            start_int = text_segment_count_query_result.result[0] - 400
-        except DocumentNotFoundError as error:
-            print(error)
-            raise HTTPException(status_code=404, detail="Item not found") from error
-        except AQLQueryError as error:
-            print("AQLQueryError: ", error)
-            raise HTTPException(status_code=400, detail=error.errors) from error
-        except KeyError as error:
-            print("KeyError: ", error)
-            raise HTTPException(status_code=400) from error
-    start_int = max(start_int, 0)
+        start_int = get_start_integer(active_segment)
+
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
@@ -408,6 +396,25 @@ async def get_file_text_segments_and_parallels(
         raise HTTPException(status_code=400) from error
 
 
+@APP.get("/files/{file_name}/filetext")
+async def get_file_text_segments(
+    file_name: str,
+    transmode: str = "wylie",
+):
+    """
+    Endpoint for english view
+    """
+    text_left = get_file_text(file_name)
+    text_middle = get_file_text('ai-'+file_name)
+    text_right = get_file_text('en-'+file_name)
+
+    if transmode == 'uni':
+        for segment in text_left:
+            segment['segtext'] = transliterate.process('IAST', 'Devanagari', segment['segtext'])
+
+    return {'textleft': text_left, 'textmiddle': text_middle, 'textright': text_right}
+
+
 @APP.get("/files/{file_name}/searchtext")
 async def search_file_text_segments(file_name: str, search_string: str):
     """
@@ -428,7 +435,7 @@ async def search_file_text_segments(file_name: str, search_string: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Item not found") from error
+        raise HTTPException(status_code=404, detail="QUERY_TEXT_SEARCH Item not found") from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error

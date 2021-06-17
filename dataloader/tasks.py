@@ -31,6 +31,8 @@ from dataloader_constants import (
     LANG_PALI,
     LANG_CHINESE,
     LANG_SANSKRIT,
+    LANG_ENGLISH,
+    LANG_AI,
     DEFAULT_LANGS
 )
 from tasks_segments_parallels import (
@@ -147,7 +149,6 @@ def load_multi_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     load_multilingual_parallels(root_url, thread_count if threaded else 1)    
     print("Multi-lingual data loading completed.")
 
-
 @task
 def clean_multi_data(c):
     """
@@ -199,6 +200,7 @@ def clean_all_collections(c):
     :param c: invoke.py context object
     """
     clean_all_collections_db()
+
 
 def clean_pali(c):
     """
@@ -280,6 +282,16 @@ def clean_pali(c):
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_PALI)
+
+@task
+def clean_english(c):
+    """
+    Clear the menu database collections completely.
+
+    :param c: invoke.py context object
+    """
+    clean_all_lang_db(LANG_ENGLISH)
+    clean_all_lang_db(LANG_AI)
 
 @task
 def clean_chinese(c):

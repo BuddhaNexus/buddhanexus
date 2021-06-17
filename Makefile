@@ -49,7 +49,6 @@ load-segment-data:
 load-segment-data-async:
 	@docker exec -t dataloader bash -c "invoke load-segment-files --threaded"
 
-
 # Load & build the search-index
 create-search-index:
 	@docker exec -t dataloader bash -c "invoke create-search-index"
@@ -59,7 +58,6 @@ add-segment-index:
 
 add-sources:
 	@docker exec -ti dataloader bash -c "invoke add-sources"
-
 
 # Load all (segment, parallel & menu) data
 load-data:
@@ -111,15 +109,20 @@ load-pali-data:
 	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
-
 load-multi-data:
 	@docker exec -ti dataloader bash -c "invoke load-multi-files"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
+load-english-data:
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=en"
+	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=ai"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
 
 clean-multi-data:
 	@docker exec -t dataloader bash -c "invoke clean-multi-data"
 
+clean-english-data:
+	@docker exec -t dataloader bash -c "invoke clean-english"
 
 # the following four commands are for partial unloading of individual datasets
 clean-tibetan-data:
