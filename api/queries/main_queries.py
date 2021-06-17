@@ -361,13 +361,13 @@ FOR file IN files
 QUERY_DISPLAYNAME = """
 FOR file IN files
     FILTER file._key == @filename
-    RETURN [file.displayName, file.textname, file.link]
+    RETURN [file.displayName, file.textname, file.link, file.link2]
 """
 
 QUERY_LINK = """
 FOR file IN files
     FILTER file._key == @filename
-    RETURN file.link
+    RETURN [file.link, file.link2]
 """
 
 QUERY_SOURCE = """
