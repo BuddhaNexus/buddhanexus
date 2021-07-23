@@ -56,18 +56,18 @@
   },
   {
     "collection": "ai-Abhidhamma",
-    "categories": ["ds", "vb", "dt", "pp", "kv", "ya", "patthana"]
+    "categories": ["ai-ds", "ai-vb", "ai-dt", "ai-pp", "ai-kv", "ai-ya", "ai-patthana"]
   },
   {
     "collection": "ai-Atthakatha",
-    "categories": ["atk-s", "atk-vin", "atk-abh"]
+    "categories": ["ai-atk-s", "ai-atk-vin", "ai-atk-abh"]
   },
   {
     "collection": "ai-Tika",
-    "categories": ["tika-s", "tika-vin", "tika-abh"]
+    "categories": ["ai-tika-s", "ai-tika-vin", "ai-tika-abh"]
   },
   {
     "collection": "ai-Anya",
-    "categories": ["anya-e"]
+    "categories": ["ai-anya-e"]
   }
 ]
