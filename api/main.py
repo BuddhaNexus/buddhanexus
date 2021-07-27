@@ -507,7 +507,7 @@ async def get_graph_for_file(
         collections_with_full_name.update(collection_result)
 
     parallel_graph_name_list = {}
-    for key in total_collection_dict:
+    for key, value in total_collection_dict.items():
         parallel_graph_name_list.update(
             {key + " " + collections_with_full_name[key]: total_collection_dict[key]}
         )
