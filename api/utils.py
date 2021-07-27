@@ -132,7 +132,7 @@ def create_numbers_view_data(table_results,folio_regex):
                 else:
                     result_dic[segment_nr] = [table_result['par_segnr']]
     result = []
-    for segment_nr, value in result_dic.items():
+    for segment_nr in result_dic:
         entry = { "segmentnr": segment_nr,
                   "parallels": result_dic[segment_nr]}
         result.append(entry)
