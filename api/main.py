@@ -396,7 +396,7 @@ async def get_file_text_segments_and_parallels(
         raise HTTPException(status_code=400) from error
 
 
-@APP.get("/files/{file_name}/multitext")
+@APP.get("/files/{file_name}/filetext")
 async def get_file_text_segments(
     file_name: str,
     transmode: str = "wylie",
