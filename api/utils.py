@@ -259,4 +259,3 @@ def get_file_text(file_name):
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
-

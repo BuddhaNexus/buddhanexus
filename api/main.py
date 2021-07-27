@@ -414,9 +414,6 @@ async def get_file_text_segments(
 
     return {'textleft': text_left, 'textmiddle': text_middle, 'textright': text_right}
 
-
-
-
 @APP.get("/files/{file_name}/searchtext")
 async def search_file_text_segments(file_name: str, search_string: str):
     """
@@ -511,7 +508,7 @@ async def get_graph_for_file(
 
     parallel_graph_name_list = {}
     for key in total_collection_dict.keys():
-        parallel_graph_name_list.update(            
+        parallel_graph_name_list.update(
             {key + " " + collections_with_full_name[key]: total_collection_dict[key]}
         )
 
