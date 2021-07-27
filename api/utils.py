@@ -132,7 +132,7 @@ def create_numbers_view_data(table_results,folio_regex):
                 else:
                     result_dic[segment_nr] = [table_result['par_segnr']]
     result = []
-    for segment_nr in result_dic.items():
+    for segment_nr in result_dic.keys():
         entry = { "segmentnr": segment_nr,
                   "parallels": result_dic[segment_nr]}
         result.append(entry)
@@ -236,6 +236,31 @@ def get_start_integer(active_segment):
 
 
 def get_file_text(file_name):
+    """
+    Gets file segments and numbers only from start_int onwards with max 800 segments.
+    """
+    try:
+        text_segments_query_result = get_db().AQLQuery(
+            query=main_queries.QUERY_FILE_TEXT,
+            bindVars={"filename": file_name},
+        )
+
+        if text_segments_query_result.result:
+            return text_segments_query_result.result[0]['filetext']
+
+        return []
+
+    except DocumentNotFoundError as error:
+        print(error)
+        raise HTTPException(status_code=404, detail="QUERY_FILE_TEXT Item not found") from error
+    except AQLQueryError as error:
+        print("AQLQueryError: ", error)
+        raise HTTPException(status_code=400, detail=error.errors) from error
+    except KeyError as error:
+        print("KeyError: ", error)
+        raise HTTPException(status_code=400) from error
+
+def get_file_multi(file_name):
     """
     Gets file segments and numbers only from start_int onwards with max 800 segments.
     """

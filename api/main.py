@@ -404,6 +404,23 @@ async def get_file_text_segments(
     """
     Endpoint for english view
     """
+    text_left, text_middle = get_file_multi(file_name)
+
+    if transmode == 'uni':
+        for segment in text_left:
+            segment['segtext'] = transliterate.process('IAST', 'Devanagari', segment['segtext'])
+
+    return {'textleft': text_left, 'textmiddle': text_middle}
+
+
+@APP.get("/files/{file_name}/multitext")
+async def get_file_text_segments(
+    file_name: str,
+    transmode: str = "wylie",
+):
+    """
+    Endpoint for english view
+    """
     text_left = get_file_text(file_name)
     text_middle = get_file_text('ai-'+file_name)
     text_right = get_file_text('en-'+file_name)
@@ -413,6 +430,8 @@ async def get_file_text_segments(
             segment['segtext'] = transliterate.process('IAST', 'Devanagari', segment['segtext'])
 
     return {'textleft': text_left, 'textmiddle': text_middle, 'textright': text_right}
+
+
 
 
 @APP.get("/files/{file_name}/searchtext")
@@ -508,8 +527,8 @@ async def get_graph_for_file(
         collections_with_full_name.update(collection_result)
 
     parallel_graph_name_list = {}
-    for key in total_collection_dict.items():
-        parallel_graph_name_list.update(
+    for key in total_collection_dict.keys():
+        parallel_graph_name_list.update(            
             {key + " " + collections_with_full_name[key]: total_collection_dict[key]}
         )
 
