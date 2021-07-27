@@ -396,23 +396,6 @@ async def get_file_text_segments_and_parallels(
         raise HTTPException(status_code=400) from error
 
 
-@APP.get("/files/{file_name}/filetext")
-async def get_file_text_segments(
-    file_name: str,
-    transmode: str = "wylie",
-):
-    """
-    Endpoint for english view
-    """
-    text_left, text_middle = get_file_multi(file_name)
-
-    if transmode == 'uni':
-        for segment in text_left:
-            segment['segtext'] = transliterate.process('IAST', 'Devanagari', segment['segtext'])
-
-    return {'textleft': text_left, 'textmiddle': text_middle}
-
-
 @APP.get("/files/{file_name}/multitext")
 async def get_file_text_segments(
     file_name: str,
