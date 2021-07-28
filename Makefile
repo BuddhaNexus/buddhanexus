@@ -115,7 +115,6 @@ load-multi-data:
 
 load-english-data:
 	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=en"
-	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=ai"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
 load-ai-data:
@@ -127,6 +126,9 @@ clean-multi-data:
 
 clean-english-data:
 	@docker exec -t dataloader bash -c "invoke clean-english"
+
+clean-ai-data:
+	@docker exec -t dataloader bash -c "invoke clean-ai"
 
 # the following four commands are for partial unloading of individual datasets
 clean-tibetan-data:
