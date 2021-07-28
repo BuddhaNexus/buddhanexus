@@ -5,7 +5,9 @@ from arango import (
     CollectionDeleteError,
     GraphDeleteError,
 )
+
 from arango.database import StandardDatabase
+
 from invoke import task
 
 from dataloader_constants import (
@@ -35,6 +37,7 @@ from dataloader_constants import (
     LANG_AI,
     DEFAULT_LANGS
 )
+
 from tasks_segments_parallels import (
     load_segment_data_from_menu_files,
     create_indices,
@@ -62,6 +65,7 @@ from tasks_menu import (
     load_all_menu_categories,
     create_collections_categories_graph,
 )
+
 from dataloader_utils import get_database, get_system_database
 
 from clean_database import (
@@ -73,8 +77,6 @@ from clean_database import (
     clean_all_lang_db
 )
     
-
-
 @task
 def create_db(c):
     """
@@ -88,7 +90,6 @@ def create_db(c):
         print(f"created {DB_NAME} database")
     except DatabaseCreateError as e:
         print("Error creating the database: ", e)
-
 
 @task(help={"collections": "Array of collections you'd like to create"})
 def create_collections(
@@ -113,7 +114,6 @@ def create_collections(
         except CollectionCreateError as e:
             print("Error creating edge collection: ", e)
     print(f"created {collections} collections")
-
 
 @task
 def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=False):
@@ -158,7 +158,6 @@ def clean_multi_data(c):
     """
     clean_multi()
 
-    
 @task
 def create_search_index(
     c,
@@ -182,7 +181,6 @@ def create_search_index(
     create_search_views(db)
     print("Search index data loading completed.")
 
-
 @task
 def clean_search_index(c):
     """
@@ -190,7 +188,6 @@ def clean_search_index(c):
     :param c: invoke.py context object
     """
     clean_search_index_db()
-
     
 @task
 def clean_all_collections(c):
@@ -200,7 +197,6 @@ def clean_all_collections(c):
     :param c: invoke.py context object
     """
     clean_all_collections_db()
-
 
 def clean_pali(c):
     """
@@ -224,10 +220,6 @@ def clean_pali(c):
 
     print("all collections cleaned.")
 
-
-
-    
-
 @task
 def clean_totals_collection(c):
     """
@@ -236,7 +228,6 @@ def clean_totals_collection(c):
     :param c: invoke.py context object
     """
     clean_totals_collection_db()
-
     
 @task
 def clean_segment_collections(c):
@@ -246,7 +237,6 @@ def clean_segment_collections(c):
     :param c: invoke.py context object
     """
     clean_segment_collections_db()
-
     
 @task
 def clean_menu_collections(c):
@@ -260,15 +250,16 @@ def clean_menu_collections(c):
 @task
 def clean_tibetan(c):
     """
-    Clear the menu database collections completely.
+    Clear tibetan segments collections completely.
 
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_TIBETAN)
+
 @task
 def clean_sanskrit(c):
     """
-    Clear the menu database collections completely.
+    Clear sanskrit segments collections completely.
 
     :param c: invoke.py context object
     """
@@ -277,7 +268,7 @@ def clean_sanskrit(c):
 @task
 def clean_pali(c):
     """
-    Clear the menu database collections completely.
+    Clear pali segments collections completely.
 
     :param c: invoke.py context object
     """
@@ -286,22 +277,29 @@ def clean_pali(c):
 @task
 def clean_english(c):
     """
-    Clear the menu database collections completely.
+    Clear english segments collections completely.
 
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_ENGLISH)
+
+@task
+def clean_ai(c):
+    """
+    Clear ai segments collections completely.
+
+    :param c: invoke.py context object
+    """
     clean_all_lang_db(LANG_AI)
 
 @task
 def clean_chinese(c):
     """
-    Clear the menu database collections completely.
+    Clear chinese segments collections completely.
 
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_CHINESE)
-
     
 @task()
 def load_menu_files(c):
@@ -312,7 +310,6 @@ def load_menu_files(c):
     create_collections_categories_graph(db)
 
     print("Menu data loading completed!")
-
 
 @task
 def add_indices(c):
