@@ -93,6 +93,54 @@ FOR f IN parallels_sorted_file
             }
 """
 
+QUERY_TABLE_DOWNLOAD = """
+FOR f IN parallels_sorted_file
+    FILTER f._key == @filename
+    FOR current_parallel in f.@sortkey 
+        FOR p in parallels
+            FILTER p._key == current_parallel
+            FILTER p.score >= @score
+            FILTER p.par_length >= @parlength
+            FILTER p["co-occ"] <= @coocc
+            LET collection_filter_test = (
+                FOR item IN @limitcollection_positive
+                RETURN REGEX_TEST(p.par_segnr[0], item)
+            )
+            LET fits_collection = (@limitcollection_positive != [])
+                ? POSITION(collection_filter_test, true)
+                : true
+            FILTER fits_collection == true
+            LET collection_filter_test2 = (
+                FOR item IN @limitcollection_negative
+                RETURN REGEX_TEST(p.par_segnr[0], item)
+            )
+            LET fits_collection2 = (@limitcollection_negative != [])
+                ? POSITION(collection_filter_test2, true)
+                : false
+            FILTER fits_collection2 == false
+            LET root_seg_text = (
+                FOR segnr IN p.root_segnr
+                    FOR segment IN segments
+                        FILTER segment._key == segnr
+                        RETURN segment.segtext
+            )
+            LET par_segment = (
+                FOR segnr IN p.par_segnr
+                    FOR segment IN segments
+                        FILTER segment._key == segnr
+                        RETURN segment.segtext
+            )
+            RETURN {
+                par_segnr: p.par_segnr,
+                par_segment: par_segment,
+                root_segnr: p.root_segnr,
+                root_seg_text: root_seg_text,
+                par_length: p.par_length,
+                root_length: p.root_length,
+                score: p.score
+            }
+"""
+
 QUERY_MULTILINGUAL = """
 LET parallel_ids = (
     FOR file IN files

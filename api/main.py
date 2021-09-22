@@ -219,6 +219,53 @@ async def get_table_view(
         raise HTTPException(status_code=400) from error
 
 
+@APP.get("/files/{file_name}/tabledownload")
+async def get_table_download(
+    file_name: str,
+    score: int = 0,
+    par_length: int = 0,
+    co_occ: int = 0,
+    limit_collection: List[str] = Query([]),
+    sort_method: str = "position",
+):
+    """
+    Endpoint for the download table. Accepts filters.
+    :return: List of segments and parallels for the downloaded table view.
+    """
+    language = get_language_from_filename(file_name)
+    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
+        limit_collection, language
+    )
+    sort_key = ""
+    if sort_method == "position":
+        sort_key = "parallels_sorted_by_src_pos"
+    if sort_method == "quoted-text":
+        sort_key = "parallels_sorted_by_tgt_pos"
+    if sort_method == "length":
+        sort_key = "parallels_sorted_by_length_src"
+    if sort_method == "length2":
+        sort_key = "parallels_sorted_by_length_tgt"
+
+    try:
+        query = get_db().AQLQuery(
+            query=main_queries.QUERY_TABLE_DOWNLOAD,
+            bindVars={
+                "filename": file_name,
+                "score": score,
+                "parlength": par_length,
+                "coocc": co_occ,
+                "sortkey": sort_key,
+                "limitcollection_positive": limitcollection_positive,
+                "limitcollection_negative": limitcollection_negative,
+            },
+        )
+        return query.result
+
+    except KeyError as error:
+        print("KeyError: ", error)
+        raise HTTPException(status_code=400) from error
+
+
 @APP.get("/files/{file_name}/multilang")
 async def get_multilang(
     file_name: str,
