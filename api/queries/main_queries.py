@@ -35,7 +35,7 @@ RETURN FLATTEN(
 QUERY_TABLE_VIEW = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
-    FOR current_parallel in f.@sortkey 
+    FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
             LET folio_regex_test = (
@@ -96,9 +96,14 @@ FOR f IN parallels_sorted_file
 QUERY_TABLE_DOWNLOAD = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
-    FOR current_parallel in f.@sortkey 
+    FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
+            LET folio_regex_test = (
+                FOR current_segnr IN p.root_segnr
+                RETURN REGEX_TEST(current_segnr, @start_folio)
+            )
+            FILTER POSITION(folio_regex_test, true)
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
@@ -194,7 +199,7 @@ FOR file IN files
                 }
         )
 
-RETURN { 
+RETURN {
     filetext: segments
 }
 """
@@ -262,7 +267,7 @@ LET parallels_multi =  (
             }
     )
 
-RETURN { 
+RETURN {
     textleft: segments,
     parallel_ids: parallel_ids,
     parallels: APPEND(parallels, parallels_multi)
@@ -332,7 +337,7 @@ LET parallels_multi = (
                     FOR segment IN segments
                         FILTER segment._key == segnr
                         RETURN segment.segtext
-            )         
+            )
             RETURN {
                 par_segnr: p.par_segnr,
                 par_offset_beg: p.par_offset_beg,
@@ -372,7 +377,7 @@ FOR f in parallels_sorted_file
     for current_parallel in slice(f.parallels_randomized,0,2500)
         for p in parallels
             filter p._key == current_parallel
-            return p 
+            return p
     )
 
 FOR p IN current_parallels

@@ -8,6 +8,7 @@ Todo:
 
 import re
 import os
+import xlsxwriter
 from typing import Dict, List
 from aksharamukha import transliterate
 
@@ -26,7 +27,7 @@ from .utils import (
     get_folio_regex,
     add_source_information,
     get_start_integer,
-    get_file_text
+    get_file_text,
 )
 from .db_connection import get_collection, get_db
 
@@ -142,7 +143,9 @@ async def get_segments_for_file(
             },
         )
         segments_result, collection_keys = collect_segment_results(
-            create_numbers_view_data(table_query.result,get_folio_regex(language, file_name, folio))
+            create_numbers_view_data(
+                table_query.result, get_folio_regex(language, file_name, folio)
+            )
         )
 
         return {
@@ -158,7 +161,9 @@ async def get_segments_for_file(
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="QUERY_TABLE_VIEW Item not found") from error
+        raise HTTPException(
+            status_code=404, detail="QUERY_TABLE_VIEW Item not found"
+        ) from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
@@ -227,6 +232,7 @@ async def get_table_download(
     co_occ: int = 0,
     limit_collection: List[str] = Query([]),
     sort_method: str = "position",
+    folio: str = "",
 ):
     """
     Endpoint for the download table. Accepts filters.
@@ -246,6 +252,8 @@ async def get_table_download(
     if sort_method == "length2":
         sort_key = "parallels_sorted_by_length_tgt"
 
+    start_folio = get_folio_regex(language, file_name, folio)
+
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_DOWNLOAD,
@@ -257,9 +265,74 @@ async def get_table_download(
                 "sortkey": sort_key,
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
+                "start_folio": start_folio,
             },
         )
-        return query.result
+
+        # Create a workbook and add a worksheet.
+        workbook = xlsxwriter.Workbook(file_name + "_download.xlsx")
+        worksheet = workbook.add_worksheet()
+
+        header_fields = [
+            "Inquiry Segment Nr.",
+            "Inquiry text length",
+            "Inquiry Text",
+            "Hit Segment Nr.",
+            "Hit Segment Length",
+            "Hit Segment Score",
+            "Hit Segment Text",
+        ]
+        filters_fields = (
+            ["Similarity Score: ", score],
+            ["Min. Match Length: ", par_length],
+            ["Nr. Co-occurances: ", co_occ],
+            ["Sorting Method: ", sort_method],
+            ["Exclude filter: ", limitcollection_negative],
+            ["Include filter: ", limitcollection_positive],
+        )
+
+        # Writing header
+        worksheet.write(0, 0, "BuddhaNexus.net")
+        worksheet.write(1, 0, "Parallels data download for " + file_name)
+
+        row = 3
+        for filter_type, filter_value in filters_fields:
+            worksheet.write(row, 0, filter_type)
+            worksheet.write(row, 1, filter_value)
+            row += 1
+
+        col = 0
+        for item in header_fields:
+            worksheet.write(10, col, item)
+            col += 1
+
+        # Iterate over the data and write it out row by row.
+        for parallel in query.result:
+            row = 11
+            root_segment_nr = parallel.root_segnr[0]
+            if len(parallel.root_segnr) > 1:
+                root_segment_nr += (
+                    "–" + parallel.root_segnr[len(parallel.root_segnr) - 1]
+                )
+            root_segment_text = " ".join(parallel.root_seg_text)
+
+            par_segment_nr = parallel.par_segnr[0]
+            if len(parallel.par_segnr) > 1:
+                par_segment_nr += "–" + parallel.par_segnr[len(parallel.par_segnr) - 1]
+            par_segment_text = " ".join(parallel.par_segment)
+
+            worksheet.write(row, 0, root_segment_nr)
+            worksheet.write(row, 1, parallel.root_length)
+            worksheet.write(row, 2, root_segment_text)
+            worksheet.write(row, 3, par_segment_nr)
+            worksheet.write(row, 4, parallel.par_length)
+            worksheet.write(row, 5, parallel.score)
+            worksheet.write(row, 6, par_segment_text)
+            row += 1
+
+        workbook.close()
+
+        return workbook
 
     except KeyError as error:
         print("KeyError: ", error)
@@ -296,7 +369,7 @@ async def get_multilang(
                 "search_string": "%" + search_string + "%",
             },
         )
-        result = search_utils.process_multilang_result(query.result,search_string)
+        result = search_utils.process_multilang_result(query.result, search_string)
         return result
 
     except KeyError as error:
@@ -319,9 +392,7 @@ async def get_files_for_menu(language: str):
 
     try:
         language_menu_query_result = get_db().AQLQuery(
-            query=menu_query,
-            batchSize=10000,
-            bindVars=current_bind_vars
+            query=menu_query, batchSize=10000, bindVars=current_bind_vars
         )
         return {"result": language_menu_query_result.result}
 
@@ -397,7 +468,7 @@ async def get_file_text_segments_and_parallels(
     """
     Endpoint for text view
     """
-    #parallel_ids_type = "parallel_ids_limited"
+    # parallel_ids_type = "parallel_ids_limited"
     parallel_ids_type = "parallel_ids"
     # when the limit_collection filter is active,
     # we have to fetch all possible parallels.
@@ -411,25 +482,25 @@ async def get_file_text_segments_and_parallels(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, get_language_from_filename(file_name)
     )
-    current_bind_vars ={
-                "parallel_ids_type": parallel_ids_type,
-                "filename": file_name,
-                "limit": 800,
-                "startint": start_int,
-                "score": score,
-                "parlength": par_length,
-                "coocc": co_occ,
-                "multi_lingual": multi_lingual,
-                "limitcollection_positive": limitcollection_positive,
-                "limitcollection_negative": limitcollection_negative,
-            }
+    current_bind_vars = {
+        "parallel_ids_type": parallel_ids_type,
+        "filename": file_name,
+        "limit": 800,
+        "startint": start_int,
+        "score": score,
+        "parlength": par_length,
+        "coocc": co_occ,
+        "multi_lingual": multi_lingual,
+        "limitcollection_positive": limitcollection_positive,
+        "limitcollection_negative": limitcollection_negative,
+    }
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_TEXT_AND_PARALLELS,
             bindVars=current_bind_vars,
         )
         if start_int == 0:
-            add_source_information(file_name,text_segments_query_result.result[0])
+            add_source_information(file_name, text_segments_query_result.result[0])
         return text_segments_query_result.result[0]
 
     except DocumentNotFoundError as error:
@@ -452,14 +523,17 @@ async def get_file_text_segments(
     Endpoint for english view
     """
     text_left = get_file_text(file_name)
-    text_middle = get_file_text('ai-'+file_name)
-    text_right = get_file_text('en-'+file_name)
+    text_middle = get_file_text("ai-" + file_name)
+    text_right = get_file_text("en-" + file_name)
 
-    if transmode == 'uni':
+    if transmode == "uni":
         for segment in text_left:
-            segment['segtext'] = transliterate.process('IAST', 'Devanagari', segment['segtext'])
+            segment["segtext"] = transliterate.process(
+                "IAST", "Devanagari", segment["segtext"]
+            )
 
-    return {'textleft': text_left, 'textmiddle': text_middle, 'textright': text_right}
+    return {"textleft": text_left, "textmiddle": text_middle, "textright": text_right}
+
 
 @APP.get("/files/{file_name}/searchtext")
 async def search_file_text_segments(file_name: str, search_string: str):
@@ -481,7 +555,9 @@ async def search_file_text_segments(file_name: str, search_string: str):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="QUERY_TEXT_SEARCH Item not found") from error
+        raise HTTPException(
+            status_code=404, detail="QUERY_TEXT_SEARCH Item not found"
+        ) from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
@@ -521,7 +597,7 @@ async def get_graph_for_file(
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
-        target_filename = re.sub("_[0-9][0-9][0-9]","",parallel["textname"])
+        target_filename = re.sub("_[0-9][0-9][0-9]", "", parallel["textname"])
         if target_filename in total_histogram_dict.keys():
             total_histogram_dict[target_filename] += count_this_parallel
         else:
@@ -566,14 +642,14 @@ async def get_graph_for_file(
         displayname = name
         query_displayname = database.AQLQuery(
             query=main_queries.QUERY_DISPLAYNAME,
-            bindVars={
-                "filename": name
-            },
-            rawResults=True
+            bindVars={"filename": name},
+            rawResults=True,
         )
         displayname_results = query_displayname.result
         if displayname_results:
-            displayname = displayname_results[0][0] + ' (' + displayname_results[0][1] + ')'
+            displayname = (
+                displayname_results[0][0] + " (" + displayname_results[0][1] + ")"
+            )
 
         histogram_data.append([displayname, count])
 
@@ -716,17 +792,15 @@ async def get_search_results(search_string: str):
     database = get_db()
     result = []
     search_string = search_string.lower()
-    search_strings = search_utils.preprocess_search_string(
-        search_string[:150]
-    )
+    search_strings = search_utils.preprocess_search_string(search_string[:150])
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH,
         bindVars={
-            "search_string_tib": search_strings['tib'],
-            "search_string_chn": search_strings['chn'],
-            "search_string_skt": search_strings['skt'],
-            "search_string_pli": search_strings['pli'],
-            "search_string_skt_fuzzy": search_strings['skt_fuzzy']
+            "search_string_tib": search_strings["tib"],
+            "search_string_chn": search_strings["chn"],
+            "search_string_skt": search_strings["skt"],
+            "search_string_pli": search_strings["pli"],
+            "search_string_skt_fuzzy": search_strings["skt_fuzzy"],
         },
         batchSize=300,
         rawResults=True,
@@ -742,7 +816,7 @@ async def tag_sanskrit(sanskrit_string: str):
     Stemming + Tagging for Sanskrit
     :return: String with tagged Sanskrit
     """
-    result = search_utils.tag_sanskrit(sanskrit_string).replace("\n"," # ")
+    result = search_utils.tag_sanskrit(sanskrit_string).replace("\n", " # ")
     return {"tagged": result}
 
 
@@ -752,16 +826,14 @@ async def get_displayname(segmentnr: str):
     Returns the displayName for a segmentnr.
     """
     lang = get_language_from_filename(segmentnr)
-    filename = segmentnr.split(':')[0]
+    filename = segmentnr.split(":")[0]
     if lang == "chn":
         filename = re.sub(r"_[0-9]+", "", filename)
     database = get_db()
     query_displayname = database.AQLQuery(
         query=main_queries.QUERY_DISPLAYNAME,
-        bindVars={
-            "filename": filename
-        },
-        rawResults=True
+        bindVars={"filename": filename},
+        rawResults=True,
     )
     query_dictionary = {}
     if query_displayname.result:
@@ -779,14 +851,10 @@ async def get_external_link(segmentnr: str):
     Returns the external link for a segmentnr.
     """
     query_result = {"link": ""}
-    filename = segmentnr.split(':')[0]
+    filename = segmentnr.split(":")[0]
     database = get_db()
     query_displayname = database.AQLQuery(
-        query=main_queries.QUERY_LINK,
-        bindVars={
-            "filename": filename
-        },
-        rawResults=True
+        query=main_queries.QUERY_LINK, bindVars={"filename": filename}, rawResults=True
     )
     query_result = {"link": query_displayname.result[0]}
     return query_result
@@ -802,10 +870,8 @@ async def get_multilingual(filename: str):
     database = get_db()
     query_displayname = database.AQLQuery(
         query=main_queries.QUERY_MULTILINGUAL_LANGS,
-        bindVars={
-            "filename": filename
-        },
-        rawResults=True
-        )
+        bindVars={"filename": filename},
+        rawResults=True,
+    )
     query_result = {"langList": query_displayname.result[0]}
     return query_result
