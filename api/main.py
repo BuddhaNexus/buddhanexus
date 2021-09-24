@@ -257,6 +257,7 @@ async def get_table_download(
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_DOWNLOAD,
+            batchSize=500000,
             bindVars={
                 "filename": file_name,
                 "score": score,
@@ -270,7 +271,10 @@ async def get_table_download(
         )
 
         # Create a workbook and add a worksheet.
-        workbook = xlsxwriter.Workbook(file_name + "_download.xlsx")
+        workbook = xlsxwriter.Workbook(
+            "download/" + file_name + "_download.xlsx",
+            {"constant_memory": True, "use_zip64": True},
+        )
         worksheet = workbook.add_worksheet()
 
         header_fields = [
@@ -306,33 +310,35 @@ async def get_table_download(
             worksheet.write(10, col, item)
             col += 1
 
+        row = 11
         # Iterate over the data and write it out row by row.
         for parallel in query.result:
-            row = 11
-            root_segment_nr = parallel['root_segnr'][0]
-            if len(parallel['root_segnr']) > 1:
+            root_segment_nr = parallel["root_segnr"][0]
+            if len(parallel["root_segnr"]) > 1:
                 root_segment_nr += (
-                    "–" + parallel['root_segnr'][len(parallel['root_segnr']) - 1]
+                    "–" + parallel["root_segnr"][len(parallel["root_segnr"]) - 1]
                 )
-            root_segment_text = " ".join(parallel['root_seg_text'])
+            root_segment_text = " ".join(parallel["root_seg_text"])
 
-            par_segment_nr = parallel['par_segnr'][0]
-            if len(parallel['par_segnr']) > 1:
-                par_segment_nr += "–" + parallel['par_segnr'][len(parallel['par_segnr']) - 1]
-            par_segment_text = " ".join(parallel['par_segment'])
+            par_segment_nr = parallel["par_segnr"][0]
+            if len(parallel["par_segnr"]) > 1:
+                par_segment_nr += (
+                    "–" + parallel["par_segnr"][len(parallel["par_segnr"]) - 1]
+                )
+            par_segment_text = " ".join(parallel["par_segment"])
 
             worksheet.write(row, 0, root_segment_nr)
-            worksheet.write(row, 1, parallel['root_length'])
+            worksheet.write(row, 1, parallel["root_length"])
             worksheet.write(row, 2, root_segment_text)
             worksheet.write(row, 3, par_segment_nr)
-            worksheet.write(row, 4, parallel['par_length'])
-            worksheet.write(row, 5, parallel['score'])
+            worksheet.write(row, 4, parallel["par_length"])
+            worksheet.write(row, 5, parallel["score"])
             worksheet.write(row, 6, par_segment_text)
             row += 1
 
         workbook.close()
-        print("GOT HERE")
-        return workbook
+        # Bogus filelink return
+        return "https://bswa.org/bswp/wp-content/uploads/2021/06/Ajahn_Brahmali_Why_Samatha_and_Vipassana_are_Inseparable.pdf"
 
     except KeyError as error:
         print("KeyError: ", error)
