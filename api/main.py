@@ -297,8 +297,8 @@ async def get_table_download(
 
         row = 3
         for filter_type, filter_value in filters_fields:
-            worksheet.write(row, 0, filter_type)
-            worksheet.write(row, 1, filter_value)
+            worksheet.write(row, 0, str(filter_type))
+            worksheet.write(row, 1, str(filter_value))
             row += 1
 
         col = 0
@@ -309,29 +309,29 @@ async def get_table_download(
         # Iterate over the data and write it out row by row.
         for parallel in query.result:
             row = 11
-            root_segment_nr = parallel.root_segnr[0]
-            if len(parallel.root_segnr) > 1:
+            root_segment_nr = parallel['root_segnr'][0]
+            if len(parallel['root_segnr']) > 1:
                 root_segment_nr += (
-                    "–" + parallel.root_segnr[len(parallel.root_segnr) - 1]
+                    "–" + parallel['root_segnr'][len(parallel['root_segnr']) - 1]
                 )
-            root_segment_text = " ".join(parallel.root_seg_text)
+            root_segment_text = " ".join(parallel['root_seg_text'])
 
-            par_segment_nr = parallel.par_segnr[0]
-            if len(parallel.par_segnr) > 1:
-                par_segment_nr += "–" + parallel.par_segnr[len(parallel.par_segnr) - 1]
-            par_segment_text = " ".join(parallel.par_segment)
+            par_segment_nr = parallel['par_segnr'][0]
+            if len(parallel['par_segnr']) > 1:
+                par_segment_nr += "–" + parallel['par_segnr'][len(parallel['par_segnr']) - 1]
+            par_segment_text = " ".join(parallel['par_segment'])
 
             worksheet.write(row, 0, root_segment_nr)
-            worksheet.write(row, 1, parallel.root_length)
+            worksheet.write(row, 1, parallel['root_length'])
             worksheet.write(row, 2, root_segment_text)
             worksheet.write(row, 3, par_segment_nr)
-            worksheet.write(row, 4, parallel.par_length)
-            worksheet.write(row, 5, parallel.score)
+            worksheet.write(row, 4, parallel['par_length'])
+            worksheet.write(row, 5, parallel['score'])
             worksheet.write(row, 6, par_segment_text)
             row += 1
 
         workbook.close()
-
+        print("GOT HERE")
         return workbook
 
     except KeyError as error:
