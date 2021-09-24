@@ -295,19 +295,50 @@ async def get_table_download(
             ["Include filter: ", limitcollection_positive],
         )
 
+        # Defining formats
+        worksheet.set_row(0, 30)
+        worksheet.set_row(1, 20)
+        worksheet.set_row(10, 40)
+        worksheet.set_column("A:A", 30)
+        worksheet.set_column("B:B", 16)
+        worksheet.set_column("C:C", 50)
+        worksheet.set_column("D:D", 30)
+        worksheet.set_column("E:F", 16)
+        worksheet.set_column("G:G", 50)
+
+        subtitle_format = workbook.add_format(
+            {"bold": True, "font_size": 16, "font_color": "#7c3a00"}
+        )
+        filters_format = workbook.add_format(
+            {"bold": True, "font_size": 10, "font_color": "#7c3a00"}
+        )
+        header_format = workbook.add_format(
+            {
+                "text_wrap": True,
+                "valign": "top",
+                "bold": True,
+                "font_size": 12,
+                "font_color": "#7c3a00",
+                "bg_color": "#ffdaa1",
+            }
+        )
+        filter_values_format = workbook.add_format({"align": "center"})
+
         # Writing header
-        worksheet.write(0, 0, "BuddhaNexus.net")
-        worksheet.write(1, 0, "Parallels data download for " + file_name)
+        worksheet.insert_image("A1", "buddhanexus_small.jpg")
+        worksheet.write(
+            0, 1, "Matches table download for " + file_name.upper(), subtitle_format
+        )
 
         row = 3
         for filter_type, filter_value in filters_fields:
-            worksheet.write(row, 0, str(filter_type))
-            worksheet.write(row, 1, str(filter_value))
+            worksheet.write(row, 1, str(filter_type), filters_format)
+            worksheet.write(row, 2, str(filter_value), filter_values_format)
             row += 1
 
         col = 0
         for item in header_fields:
-            worksheet.write(10, col, item)
+            worksheet.write(10, col, item, header_format)
             col += 1
 
         row = 11
@@ -327,13 +358,31 @@ async def get_table_download(
                 )
             par_segment_text = " ".join(parallel["par_segment"])
 
-            worksheet.write(row, 0, root_segment_nr)
-            worksheet.write(row, 1, parallel["root_length"])
-            worksheet.write(row, 2, root_segment_text)
-            worksheet.write(row, 3, par_segment_nr)
-            worksheet.write(row, 4, parallel["par_length"])
-            worksheet.write(row, 5, parallel["score"])
-            worksheet.write(row, 6, par_segment_text)
+            text_cell_segments = workbook.add_format(
+                {"valign": "vjustify", "text_wrap": True}
+            )
+            text_cell_text = workbook.add_format(
+                {"valign": "vjustify", "text_wrap": True}
+            )
+            text_cell_numbers = workbook.add_format(
+                {"align": "center", "valign": "vjustify"}
+            )
+            if (row % 2) == 0:
+                text_cell_segments.set_bg_color("#ffeed4")
+                text_cell_numbers.set_bg_color("#ffeed4")
+                text_cell_text.set_bg_color("#ffeed4")
+            else:
+                text_cell_segments.set_bg_color("white")
+                text_cell_numbers.set_bg_color("white")
+                text_cell_text.set_bg_color("white")
+
+            worksheet.write(row, 0, root_segment_nr, text_cell_segments)
+            worksheet.write(row, 1, parallel["root_length"], text_cell_numbers)
+            worksheet.write(row, 2, root_segment_text, text_cell_text)
+            worksheet.write(row, 3, par_segment_nr, text_cell_segments)
+            worksheet.write(row, 4, parallel["par_length"], text_cell_numbers)
+            worksheet.write(row, 5, parallel["score"], text_cell_numbers)
+            worksheet.write(row, 6, par_segment_text, text_cell_text)
             row += 1
 
         workbook.close()
