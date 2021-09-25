@@ -269,10 +269,10 @@ async def get_table_download(
                 "start_folio": start_folio,
             },
         )
-
+        file_location = "download/" + file_name + "_download.xlsx"
         # Create a workbook and add a worksheet.
         workbook = xlsxwriter.Workbook(
-            "download/" + file_name + "_download.xlsx",
+            file_location,
             {"constant_memory": True, "use_zip64": True},
         )
         worksheet = workbook.add_worksheet()
@@ -387,7 +387,8 @@ async def get_table_download(
 
         workbook.close()
         # Bogus filelink return
-        return "https://bswa.org/bswp/wp-content/uploads/2021/06/Ajahn_Brahmali_Why_Samatha_and_Vipassana_are_Inseparable.pdf"
+        print("DONE")
+        return file_location
 
     except KeyError as error:
         print("KeyError: ", error)
