@@ -81,7 +81,7 @@ def run_table_download(query,file_name,score,par_length, co_occ, sort_method, li
         worksheet.write(row, 2, str(filter_value), filter_values_format)
         row += 1
     worksheet.write(row, 1, "Max. number of results", filters_format)
-    worksheet.write(row, 1, "10,000", filter_values_format)
+    worksheet.write(row, 2, "10,000", filter_values_format)
     col = 0
     for item in header_fields:
         worksheet.write(10, col, item, header_format)
