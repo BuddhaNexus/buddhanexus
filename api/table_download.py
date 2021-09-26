@@ -146,5 +146,4 @@ def run_table_download(query,file_name,score,par_length, co_occ, sort_method, li
         row += 1
 
     workbook.close()
-    # Bogus filelink return
     return file_location
