@@ -141,9 +141,14 @@ FOR f IN parallels_sorted_file
                 par_segment: par_segment,
                 root_segnr: p.root_segnr,
                 root_seg_text: root_seg_text,
+                root_offset_beg: p.root_offset_beg,
+                root_offset_end: p.root_offset_end,
+                par_offset_beg: p.par_offset_beg,
+                par_offset_end: p.par_offset_end,
                 par_length: p.par_length,
                 root_length: p.root_length,
-                score: p.score
+                score: p.score,
+                src_lang: p.src_lang
             }
 """
 
