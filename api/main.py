@@ -268,7 +268,17 @@ async def get_table_download(
                 "start_folio": start_folio,
             },
         )
-        return run_table_download(query,file_name,score,par_length, co_occ, sort_method, limitcollection_positive,limitcollection_negative)
+        return run_table_download(
+            query,
+            file_name,
+            score,
+            par_length,
+            co_occ,
+            sort_method,
+            limitcollection_positive,
+            limitcollection_negative,
+            folio,
+        )
 
     except KeyError as error:
         print("KeyError: ", error)

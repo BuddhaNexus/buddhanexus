@@ -92,7 +92,6 @@ FOR f IN parallels_sorted_file
                 score: p.score
             }
 """
-
 QUERY_TABLE_DOWNLOAD = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
