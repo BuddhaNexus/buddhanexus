@@ -40,37 +40,36 @@ def run_table_download(
         "Inquiry match length",
         "Inquiry match text",
         "Hit text name",
+        "Hit text number",
         hit_segment_field,
         "Hit match length",
         "Match score",
         "Hit match text",
     ]
     filters_fields = (
-        [inquiry_segment_field + ": ", folio],
-        ["Similarity Score: ", score],
-        ["Min. Match Length: ", par_length],
-        ["Nr. Co-occurances: ", co_occ],
-        ["Sorting Method: ", sort_method],
-        ["Exclude filter: ", limitcollection_negative],
-        ["Include filter: ", limitcollection_positive],
-        ["Max. number of results: ", "10,000"],
+        [inquiry_segment_field, folio],
+        ["Similarity Score", score],
+        ["Min. Match Length", par_length],
+        ["Nr. Co-occurances", co_occ],
+        ["Sorting Method", sort_method],
+        ["Exclude filter", limitcollection_negative],
+        ["Include filter", limitcollection_positive],
+        ["Max. number of results", "10,000"],
     )
 
-    segment_field_width = 30
-    if lang == "tib":
-        segment_field_width = 16
     # Defining formats
     worksheet.set_row(0, 30)
     worksheet.set_row(1, 25)
-    worksheet.set_row(12, 40)
-    worksheet.set_column("A:A", 30)
-    worksheet.set_column("B:B", 20)
+    worksheet.set_row(12, 50)
+    worksheet.set_column("A:A", 16)
+    worksheet.set_column("B:B", 10)
     worksheet.set_column("C:C", 50)
-    worksheet.set_column("D:D", 30)
-    worksheet.set_column("E:E", segment_field_width)
+    worksheet.set_column("D:D", 20)
+    worksheet.set_column("E:E", 10)
     worksheet.set_column("F:F", 16)
-    worksheet.set_column("G:G", 16)
-    worksheet.set_column("H:H", 50)
+    worksheet.set_column("G:G", 10)
+    worksheet.set_column("H:H", 10)
+    worksheet.set_column("I:I", 50)
 
     title_format = workbook.add_format(
         {"bold": True, "font_size": 16, "font_color": "#7c3a00"}
@@ -95,16 +94,16 @@ def run_table_download(
 
     full_root_filename = get_displayname(file_name, lang)
     # Writing header
-    worksheet.insert_image("A1", "buddhanexus_small.jpg")
+    worksheet.insert_image("D4", "buddhanexus_smaller.jpg")
     worksheet.write(
-        0, 1, "Matches table download for " + file_name.upper(), title_format
+        0, 1, "Matches table download for " + full_root_filename[1], title_format
     )
-    worksheet.write(1, 1, full_root_filename, subtitle_format)
+    worksheet.write(1, 1, full_root_filename[0], subtitle_format)
 
     row = 3
     for filter_type, filter_value in filters_fields:
+        worksheet.write(row, 0, str(filter_value), filter_values_format)
         worksheet.write(row, 1, str(filter_type), filters_format)
-        worksheet.write(row, 2, str(filter_value), filter_values_format)
         row += 1
 
     col = 0
@@ -115,13 +114,14 @@ def run_table_download(
     row = 13
     # Iterate over the data and write it out row by row.
     for parallel in query.result:
-        root_segment_nr = parallel["root_segnr"][0]
-        if len(parallel["root_segnr"]) > 1:
-            root_segment_nr += (
-                "–" + parallel["root_segnr"][len(parallel["root_segnr"]) - 1]
-            )
+        root_segment_nr = parallel["root_segnr"][0].split(":")[1]
         if lang == "tib":
-            root_segment_nr = parallel["root_segnr"][0].split(":")[1].split("-")[0]
+            root_segment_nr = root_segment_nr.split("-")[0]
+        elif len(parallel["root_segnr"]) > 1:
+            root_segment_nr += (
+                "–"
+                + parallel["root_segnr"][len(parallel["root_segnr"]) - 1].split(":")[1]
+            )
         root_segment_text = " ".join(parallel["root_seg_text"])
         root_offset_beg = parallel["root_offset_beg"]
         root_offset_end = len(root_segment_text) - (
@@ -129,13 +129,15 @@ def run_table_download(
         )
         root_segment_text = root_segment_text[root_offset_beg:root_offset_end]
 
-        par_segment_nr = parallel["par_segnr"][0]
-        if len(parallel["par_segnr"]) > 1:
-            par_segment_nr += (
-                "–" + parallel["par_segnr"][len(parallel["par_segnr"]) - 1]
-            )
+        par_segment_nr = parallel["par_segnr"][0].split(":")[1]
         if lang == "tib":
-            par_segment_nr = parallel["par_segnr"][0].split(":")[1].split("-")[0]
+            par_segment_nr = par_segment_nr.split("-")[0]
+        elif len(parallel["par_segnr"]) > 1:
+            par_segment_nr += (
+                "–"
+                + parallel["par_segnr"][len(parallel["par_segnr"]) - 1].split(":")[1]
+            )
+
         par_segment_text = " ".join(parallel["par_segment"])
         par_offset_beg = parallel["par_offset_beg"]
         try:
@@ -145,7 +147,13 @@ def run_table_download(
             par_segment_text = par_segment_text[par_offset_beg:par_offset_end]
         except:
             par_segment_text = par_segment_text
-        par_text_name = get_displayname(parallel["par_segnr"][0], lang)
+
+        par_text_name = ""
+        par_text_number = ""
+        par_text_list = get_displayname(parallel["par_segnr"][0], lang)
+        if par_text_list:
+            par_text_name = par_text_list[0]
+            par_text_number = par_text_list[1]
 
         text_cell_segments = workbook.add_format(
             {"valign": "vjustify", "text_wrap": True}
@@ -164,10 +172,11 @@ def run_table_download(
         worksheet.write(row, 1, parallel["root_length"], text_cell_numbers)
         worksheet.write(row, 2, root_segment_text, text_cell_segments)
         worksheet.write(row, 3, par_text_name, text_cell_segments)
-        worksheet.write(row, 4, par_segment_nr, text_cell_segments)
-        worksheet.write(row, 5, parallel["par_length"], text_cell_numbers)
-        worksheet.write(row, 6, parallel["score"], text_cell_numbers)
-        worksheet.write(row, 7, par_segment_text, text_cell_segments)
+        worksheet.write(row, 4, par_text_number, text_cell_segments)
+        worksheet.write(row, 5, par_segment_nr, text_cell_segments)
+        worksheet.write(row, 6, parallel["par_length"], text_cell_numbers)
+        worksheet.write(row, 7, parallel["score"], text_cell_numbers)
+        worksheet.write(row, 8, par_segment_text, text_cell_segments)
         row += 1
 
     workbook.close()
@@ -186,5 +195,6 @@ def get_displayname(segmentnr, lang):
     )
 
     if query_displayname.result:
-        full_name = query_displayname.result[0][0]
+        full_name = query_displayname.result[0]
+    print(full_name)
     return full_name
