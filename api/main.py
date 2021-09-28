@@ -29,7 +29,7 @@ from .utils import (
     get_file_text,
 )
 from .db_connection import get_collection, get_db
-from .table_download import run_table_download
+from .table_download import run_table_download, run_table_download_columns
 
 API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 
@@ -268,15 +268,14 @@ async def get_table_download(
                 "start_folio": start_folio,
             },
         )
-        return run_table_download(
+        return run_table_download_columns(
             query,
             file_name,
             score,
             par_length,
             co_occ,
             sort_method,
-            limitcollection_positive,
-            limitcollection_negative,
+            limit_collection,
             folio,
         )
 
