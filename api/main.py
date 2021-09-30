@@ -268,7 +268,7 @@ async def get_table_download(
                 "start_folio": start_folio,
             },
         )
-        return run_table_download_columns(
+        return run_table_download(
             query,
             file_name,
             score,

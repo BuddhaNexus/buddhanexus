@@ -1,3 +1,4 @@
+import re
 import xlsxwriter
 
 from .queries import main_queries
@@ -26,33 +27,29 @@ def run_table_download(
     worksheet.center_horizontally()
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
 
-    inquiry_segment_field = "Inquiry text segments"
+    segment_field = "Inquiry text segments"
     hit_segment_field = "Hit text segments"
     if lang == "tib":
-        inquiry_segment_field = "Inquiry text folio"
-        hit_segment_field = "Hit text folio"
+        segment_field = "Text folio"        
     if lang == "pli":
-        inquiry_segment_field = "Inquiry text PTS nr"
-        hit_segment_field = "Hit text PTS nr"
+        segment_field = "Text PTS nr"        
     if lang == "chn":
-        inquiry_segment_field = "Inquiry text facsimile"
-        hit_segment_field = "Hit text facsimile"
+        segment_field = "Text facsimile"
     header_fields = [
-        inquiry_segment_field,
-        "Inquiry match length",
-        "Inquiry match text",
-        "Hit text name",
-        "Hit text number",
-        hit_segment_field,
-        "Hit match length",
-        "Match score",
-        "Hit match text",
+        "Role",
+        "Text number",
+        "Full text name",
+        segment_field,
+        "Length",
+        "Score",
+        "Match text",
+
     ]
 
     stringify_limit_collection = " ".join(map(str, limit_collection))
 
     filters_fields = (
-        [inquiry_segment_field, folio],
+        [segment_field, folio],
         ["Similarity Score", score],
         ["Min. Match Length", par_length],
         ["Nr. Co-occurances", co_occ],
@@ -65,15 +62,13 @@ def run_table_download(
     worksheet.set_row(0, 30)
     worksheet.set_row(1, 25)
     worksheet.set_row(12, 50)
-    worksheet.set_column("A:A", 16)
-    worksheet.set_column("B:B", 10)
-    worksheet.set_column("C:C", 50)
-    worksheet.set_column("D:D", 20)
+    worksheet.set_column("A:A", 10)
+    worksheet.set_column("B:B", 16)
+    worksheet.set_column("C:C", 30)
+    worksheet.set_column("D:D", 10)
     worksheet.set_column("E:E", 10)
-    worksheet.set_column("F:F", 16)
-    worksheet.set_column("G:G", 10)
-    worksheet.set_column("H:H", 10)
-    worksheet.set_column("I:I", 50)
+    worksheet.set_column("F:F", 10)
+    worksheet.set_column("G:G", 100)
 
     title_format = workbook.add_format(
         {"bold": True, "font_size": 16, "font_color": "#7c3a00"}
@@ -158,30 +153,41 @@ def run_table_download(
         if par_text_list:
             par_text_name = par_text_list[0]
             par_text_number = par_text_list[1]
-
-        text_cell_segments = workbook.add_format(
+        inquiry_text_cell_segments = workbook.add_format(
             {"valign": "vjustify", "text_wrap": True}
         )
-        text_cell_numbers = workbook.add_format(
+        inquiry_text_cell_numbers = workbook.add_format(
             {"align": "center", "valign": "vjustify"}
         )
-        if (row % 2) == 0:
-            text_cell_segments.set_bg_color("#ffeed4")
-            text_cell_numbers.set_bg_color("#ffeed4")
-        else:
-            text_cell_segments.set_bg_color("white")
-            text_cell_numbers.set_bg_color("white")
+        hit_text_cell_segments = workbook.add_format(
+            {"valign": "vjustify", "text_wrap": True}
+        )
+        hit_text_cell_numbers = workbook.add_format(
+            {"align": "center", "valign": "vjustify"}
+        )
 
-        worksheet.write(row, 0, root_segment_nr, text_cell_segments)
-        worksheet.write(row, 1, parallel["root_length"], text_cell_numbers)
-        worksheet.write(row, 2, root_segment_text, text_cell_segments)
-        worksheet.write(row, 3, par_text_name, text_cell_segments)
-        worksheet.write(row, 4, par_text_number, text_cell_segments)
-        worksheet.write(row, 5, par_segment_nr, text_cell_segments)
-        worksheet.write(row, 6, parallel["par_length"], text_cell_numbers)
-        worksheet.write(row, 7, parallel["score"], text_cell_numbers)
-        worksheet.write(row, 8, par_segment_text, text_cell_segments)
-        row += 1
+        # define colors here
+        inquiry_text_cell_segments.set_bg_color("white")
+        inquiry_text_cell_numbers.set_bg_color("white")
+        hit_text_cell_segments.set_bg_color("#ffeed4")
+        hit_text_cell_numbers.set_bg_color("#ffeed4")
+        
+        worksheet.write(row, 0, "Inquiry", inquiry_text_cell_segments)
+        worksheet.write(row, 1, full_root_filename[1], inquiry_text_cell_segments)
+        worksheet.write(row, 2, full_root_filename[0], inquiry_text_cell_segments)
+        worksheet.write(row, 3, root_segment_nr, inquiry_text_cell_segments)
+        worksheet.write(row, 4, parallel["root_length"], inquiry_text_cell_numbers)
+        worksheet.write(row, 5, parallel["score"], inquiry_text_cell_numbers)
+        worksheet.write(row, 6, root_segment_text, inquiry_text_cell_segments)
+
+        worksheet.write(row+1, 0, "Hit", hit_text_cell_segments)
+        worksheet.write(row+1, 1, par_text_number, hit_text_cell_segments)
+        worksheet.write(row+1, 2, par_text_name, hit_text_cell_segments)
+        worksheet.write(row+1, 3, par_segment_nr, hit_text_cell_segments)
+        worksheet.write(row+1, 4, parallel["par_length"], hit_text_cell_numbers)
+        worksheet.write(row+1, 5, parallel["score"], hit_text_cell_numbers)
+        worksheet.write(row+1, 6, par_segment_text, hit_text_cell_segments)
+        row += 2
 
     workbook.close()
     return file_location
