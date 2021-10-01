@@ -1,3 +1,8 @@
+"""
+This file contains the functions needed to create Excel
+worksheets for download
+"""
+
 import re
 import xlsxwriter
 
@@ -15,6 +20,9 @@ def run_table_download(
     limit_collection,
     folio,
 ):
+    """
+    Creates an Excel workbook with data given
+    """
     file_location = "download/" + file_name + "_download.xlsx"
     lang = query.result[0]["src_lang"]
     # Create a workbook and add a worksheet.
@@ -207,6 +215,9 @@ def run_table_download(
 
 
 def get_displayname(segmentnr, lang):
+    """
+    Downloads the displaynames for the worksheet
+    """
     filename = segmentnr.split(":")[0]
     if lang == "chn":
         filename = re.sub(r"_[0-9]+", "", filename)
@@ -232,6 +243,9 @@ def run_table_download_columns(
     limit_collection,
     folio,
 ):
+    """
+    Creates an Excel workbook with data given
+    """
     file_location = "download/" + file_name + "_download.xlsx"
     lang = query.result[0]["src_lang"]
     # Create a workbook and add a worksheet.
