@@ -29,7 +29,7 @@ from .utils import (
     get_file_text,
 )
 from .db_connection import get_collection, get_db
-from .table_download import run_table_download, run_table_download_columns
+from .table_download import run_table_download
 
 API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 

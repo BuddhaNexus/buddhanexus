@@ -26,15 +26,17 @@ def run_table_download(
     worksheet.set_landscape()
     worksheet.center_horizontally()
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
+    worksheet.hide_gridlines(2)
 
     segment_field = "Inquiry text segments"
     hit_segment_field = "Hit text segments"
     if lang == "tib":
-        segment_field = "Text folio"        
+        segment_field = "Text folio"
     if lang == "pli":
-        segment_field = "Text PTS nr"        
+        segment_field = "Text PTS nr"
     if lang == "chn":
         segment_field = "Text facsimile"
+
     header_fields = [
         "Role",
         "Text number",
@@ -43,7 +45,6 @@ def run_table_download(
         "Length",
         "Score",
         "Match text",
-
     ]
 
     stringify_limit_collection = " ".join(map(str, limit_collection))
@@ -71,17 +72,30 @@ def run_table_download(
     worksheet.set_column("G:G", 100)
 
     title_format = workbook.add_format(
-        {"bold": True, "font_size": 16, "font_color": "#7c3a00"}
+        {
+            "bold": True,
+            "font_size": 16,
+            "font_color": "#7c3a00",
+            "align": "center",
+            "text_wrap": True,
+        }
     )
     subtitle_format = workbook.add_format(
-        {"bold": True, "font_size": 14, "font_color": "#7c3a00"}
+        {
+            "bold": True,
+            "font_size": 14,
+            "align": "center",
+            "font_color": "#7c3a00",
+            "text_wrap": True,
+        }
     )
     filters_format = workbook.add_format(
-        {"bold": True, "font_size": 10, "font_color": "#7c3a00"}
+        {"bold": True, "font_size": 10, "font_color": "#7c3a00", "text_wrap": True}
     )
     header_format = workbook.add_format(
         {
             "text_wrap": True,
+            "align": "center",
             "valign": "top",
             "bold": True,
             "font_size": 12,
@@ -89,15 +103,30 @@ def run_table_download(
             "bg_color": "#ffdaa1",
         }
     )
-    filter_values_format = workbook.add_format({"align": "center"})
+    filter_values_format = workbook.add_format({"align": "center", "text_wrap": True})
+
+    inquiry_text_cell_segments = workbook.add_format(
+        {"text_wrap": True, "bg_color": "white"}
+    )
+    inquiry_text_cell_numbers = workbook.add_format(
+        {"align": "center", "bg_color": "white"}
+    )
+    hit_text_cell_segments = workbook.add_format(
+        {"text_wrap": True, "bg_color": "#ffeed4"}
+    )
+    hit_text_cell_numbers = workbook.add_format(
+        {"align": "center", "bg_color": "#ffeed4"}
+    )
+
+    inbetween_row_format = workbook.add_format({"bg_color": "white"})
 
     full_root_filename = get_displayname(file_name, lang)
     # Writing header
     worksheet.insert_image("D4", "buddhanexus_smaller.jpg")
-    worksheet.write(
-        0, 1, "Matches table download for " + full_root_filename[1], title_format
+    worksheet.merge_range(
+        0, 0, 0, 5, "Matches table download for " + full_root_filename[1], title_format
     )
-    worksheet.write(1, 1, full_root_filename[0], subtitle_format)
+    worksheet.merge_range(1, 0, 1, 5, full_root_filename[0], subtitle_format)
 
     row = 3
     for filter_type, filter_value in filters_fields:
@@ -153,25 +182,7 @@ def run_table_download(
         if par_text_list:
             par_text_name = par_text_list[0]
             par_text_number = par_text_list[1]
-        inquiry_text_cell_segments = workbook.add_format(
-            {"valign": "vjustify", "text_wrap": True}
-        )
-        inquiry_text_cell_numbers = workbook.add_format(
-            {"align": "center", "valign": "vjustify"}
-        )
-        hit_text_cell_segments = workbook.add_format(
-            {"valign": "vjustify", "text_wrap": True}
-        )
-        hit_text_cell_numbers = workbook.add_format(
-            {"align": "center", "valign": "vjustify"}
-        )
 
-        # define colors here
-        inquiry_text_cell_segments.set_bg_color("white")
-        inquiry_text_cell_numbers.set_bg_color("white")
-        hit_text_cell_segments.set_bg_color("#ffeed4")
-        hit_text_cell_numbers.set_bg_color("#ffeed4")
-        
         worksheet.write(row, 0, "Inquiry", inquiry_text_cell_segments)
         worksheet.write(row, 1, full_root_filename[1], inquiry_text_cell_segments)
         worksheet.write(row, 2, full_root_filename[0], inquiry_text_cell_segments)
@@ -180,14 +191,16 @@ def run_table_download(
         worksheet.write(row, 5, parallel["score"], inquiry_text_cell_numbers)
         worksheet.write(row, 6, root_segment_text, inquiry_text_cell_segments)
 
-        worksheet.write(row+1, 0, "Hit", hit_text_cell_segments)
-        worksheet.write(row+1, 1, par_text_number, hit_text_cell_segments)
-        worksheet.write(row+1, 2, par_text_name, hit_text_cell_segments)
-        worksheet.write(row+1, 3, par_segment_nr, hit_text_cell_segments)
-        worksheet.write(row+1, 4, parallel["par_length"], hit_text_cell_numbers)
-        worksheet.write(row+1, 5, parallel["score"], hit_text_cell_numbers)
-        worksheet.write(row+1, 6, par_segment_text, hit_text_cell_segments)
-        row += 2
+        worksheet.write(row + 1, 0, "Hit", hit_text_cell_segments)
+        worksheet.write(row + 1, 1, par_text_number, hit_text_cell_segments)
+        worksheet.write(row + 1, 2, par_text_name, hit_text_cell_segments)
+        worksheet.write(row + 1, 3, par_segment_nr, hit_text_cell_segments)
+        worksheet.write(row + 1, 4, parallel["par_length"], hit_text_cell_numbers)
+        worksheet.write(row + 1, 5, parallel["score"], hit_text_cell_numbers)
+        worksheet.write(row + 1, 6, par_segment_text, hit_text_cell_segments)
+
+        worksheet.set_row(row + 2, 1, inbetween_row_format)
+        row += 3
 
     workbook.close()
     return file_location
