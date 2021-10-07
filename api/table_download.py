@@ -174,15 +174,15 @@ def run_table_download(
                 + parallel["par_segnr"][len(parallel["par_segnr"]) - 1].split(":")[1]
             )
 
-        par_segment_text = " ".join(parallel["par_segment"])
+        par_segment_text_joined = " ".join(parallel["par_segment"])
         par_offset_beg = parallel["par_offset_beg"]
         try:
-            par_offset_end = len(par_segment_text) - (
+            par_offset_end = len(par_segment_text_joined) - (
                 len(parallel["par_segment"][-1]) - parallel["par_offset_end"]
             )
-            par_segment_text = par_segment_text[par_offset_beg:par_offset_end]
+            par_segment_text = par_segment_text_joined[par_offset_beg:par_offset_end]
         except:
-            par_segment_text = par_segment_text
+            par_segment_text = par_segment_text_joined
 
         par_text_name = ""
         par_text_number = ""
@@ -405,15 +405,15 @@ def run_table_download_columns(
                 + parallel["par_segnr"][len(parallel["par_segnr"]) - 1].split(":")[1]
             )
 
-        par_segment_text = " ".join(parallel["par_segment"])
+        par_segment_text_joined = " ".join(parallel["par_segment"])
         par_offset_beg = parallel["par_offset_beg"]
         try:
-            par_offset_end = len(par_segment_text) - (
+            par_offset_end = len(par_segment_text_joined) - (
                 len(parallel["par_segment"][-1]) - parallel["par_offset_end"]
             )
-            par_segment_text = par_segment_text[par_offset_beg:par_offset_end]
+            par_segment_text = par_segment_text_joined[par_offset_beg:par_offset_end]
         except:
-            par_segment_text = par_segment_text
+            par_segment_text = par_segment_text_joined
 
         par_text_name = ""
         par_text_number = ""
