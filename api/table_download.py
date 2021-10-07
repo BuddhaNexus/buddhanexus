@@ -37,7 +37,6 @@ def run_table_download(
     worksheet.hide_gridlines(2)
 
     segment_field = "Inquiry text segments"
-    hit_segment_field = "Hit text segments"
     if lang == "tib":
         segment_field = "Text folio"
     if lang == "pli":
@@ -181,7 +180,7 @@ def run_table_download(
                 len(parallel["par_segment"][-1]) - parallel["par_offset_end"]
             )
             par_segment_text = par_segment_text_joined[par_offset_beg:par_offset_end]
-        except:
+        except IndexError:
             par_segment_text = par_segment_text_joined
 
         par_text_name = ""
@@ -412,7 +411,7 @@ def run_table_download_columns(
                 len(parallel["par_segment"][-1]) - parallel["par_offset_end"]
             )
             par_segment_text = par_segment_text_joined[par_offset_beg:par_offset_end]
-        except:
+        except IndexError:
             par_segment_text = par_segment_text_joined
 
         par_text_name = ""
