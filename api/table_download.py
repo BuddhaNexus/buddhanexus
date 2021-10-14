@@ -66,68 +66,57 @@ def run_table_download(
     worksheet.set_column("F:F", 7)
     worksheet.set_column("G:G", 100)
 
-    (
-        title_format,
-        subtitle_format,
-        filters_format,
-        header_format,
-        filter_values_format,
-        inquiry_text_cell_segments,
-        inquiry_text_cell_numbers,
-        hit_text_cell_segments,
-        hit_text_cell_numbers,
-        inbetween_row_format,
-    ) = add_formatting_workbook(workbook)
+    workbook_formats = add_formatting_workbook(workbook)
 
     full_root_filename = get_displayname(file_name, query.result[0]["src_lang"])
     # Writing header
     worksheet.insert_image("D4", "buddhanexus_smaller.jpg")
     worksheet.merge_range(
-        0, 0, 0, 5, "Matches table download for " + full_root_filename[1], title_format
+        0,
+        0,
+        0,
+        5,
+        "Matches table download for " + full_root_filename[1],
+        workbook_formats[0],
     )
-    worksheet.merge_range(1, 0, 1, 5, full_root_filename[0], subtitle_format)
+    worksheet.merge_range(1, 0, 1, 5, full_root_filename[0], workbook_formats[1])
 
     row = 3
     for filter_type, filter_value in filters_fields:
-        worksheet.write(row, 1, str(filter_value), filter_values_format)
-        worksheet.write(row, 2, str(filter_type), filters_format)
+        worksheet.write(row, 1, str(filter_value), workbook_formats[4])
+        worksheet.write(row, 2, str(filter_type), workbook_formats[2])
         row += 1
 
     col = 0
     for item in header_fields:
-        worksheet.write(12, col, item, header_format)
+        worksheet.write(12, col, item, workbook_formats[3])
         col += 1
 
     row = 13
     # Iterate over the data and write it out row by row.
     for parallel in query.result:
 
-        (
-            root_segment_nr,
-            root_segment_text,
-            par_text_number,
-            par_text_name,
-            par_segment_nr,
-            par_segment_text,
-        ) = get_spreadsheet_values(parallel, query.result[0]["src_lang"])
+        spreadsheet_values = get_spreadsheet_values(
+            parallel, query.result[0]["src_lang"]
+        )
 
-        worksheet.write(row, 0, "Inquiry", inquiry_text_cell_segments)
-        worksheet.write(row, 1, full_root_filename[1], inquiry_text_cell_segments)
-        worksheet.write(row, 2, full_root_filename[0], inquiry_text_cell_segments)
-        worksheet.write(row, 3, root_segment_nr, inquiry_text_cell_segments)
-        worksheet.write(row, 4, parallel["root_length"], inquiry_text_cell_numbers)
-        worksheet.write(row, 5, parallel["score"], inquiry_text_cell_numbers)
-        worksheet.write(row, 6, root_segment_text, inquiry_text_cell_segments)
+        worksheet.write(row, 0, "Inquiry", workbook_formats[5])
+        worksheet.write(row, 1, full_root_filename[1], workbook_formats[5])
+        worksheet.write(row, 2, full_root_filename[0], workbook_formats[5])
+        worksheet.write(row, 3, spreadsheet_values[0], workbook_formats[5])
+        worksheet.write(row, 4, parallel["root_length"], workbook_formats[6])
+        worksheet.write(row, 5, parallel["score"], workbook_formats[6])
+        worksheet.write(row, 6, spreadsheet_values[1], workbook_formats[5])
 
-        worksheet.write(row + 1, 0, "Hit", hit_text_cell_segments)
-        worksheet.write(row + 1, 1, par_text_number, hit_text_cell_segments)
-        worksheet.write(row + 1, 2, par_text_name, hit_text_cell_segments)
-        worksheet.write(row + 1, 3, par_segment_nr, hit_text_cell_segments)
-        worksheet.write(row + 1, 4, parallel["par_length"], hit_text_cell_numbers)
-        worksheet.write(row + 1, 5, parallel["score"], hit_text_cell_numbers)
-        worksheet.write(row + 1, 6, par_segment_text, hit_text_cell_segments)
+        worksheet.write(row + 1, 0, "Hit", workbook_formats[7])
+        worksheet.write(row + 1, 1, spreadsheet_values[2], workbook_formats[7])
+        worksheet.write(row + 1, 2, spreadsheet_values[3], workbook_formats[7])
+        worksheet.write(row + 1, 3, spreadsheet_values[4], workbook_formats[7])
+        worksheet.write(row + 1, 4, parallel["par_length"], workbook_formats[8])
+        worksheet.write(row + 1, 5, parallel["score"], workbook_formats[8])
+        worksheet.write(row + 1, 6, spreadsheet_values[5], workbook_formats[7])
 
-        worksheet.set_row(row + 2, 1, inbetween_row_format)
+        worksheet.set_row(row + 2, 1, workbook_formats[9])
         row += 3
 
     workbook.close()
