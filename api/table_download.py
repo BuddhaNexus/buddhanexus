@@ -23,11 +23,9 @@ def run_table_download(
     """
     Creates an Excel workbook with data given
     """
-    file_location = "download/" + file_name + "_download.xlsx"
-    lang = query.result[0]["src_lang"]
     # Create a workbook and add a worksheet.
     workbook = xlsxwriter.Workbook(
-        file_location,
+        "download/" + file_name + "_download.xlsx",
         {"constant_memory": True, "use_zip64": True},
     )
     worksheet = workbook.add_worksheet()
@@ -36,33 +34,23 @@ def run_table_download(
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
     worksheet.hide_gridlines(2)
 
-    segment_field = "segments"
-    if lang == "tib":
-        segment_field = "Folio"
-    if lang == "pli":
-        segment_field = "PTS nr"
-    if lang == "chn":
-        segment_field = "facsimile"
-
     header_fields = [
         "Role",
         "Text number",
         "Full text name",
-        segment_field,
+        get_segment_field(query.result[0]["src_lang"]),
         "Length",
         "Score",
         "Match text",
     ]
 
-    stringify_limit_collection = " ".join(map(str, limit_collection))
-
     filters_fields = (
-        [segment_field, folio],
+        [get_segment_field(query.result[0]["src_lang"]), folio],
         ["Similarity Score", score],
         ["Min. Match Length", par_length],
         ["Nr. Co-occurances", co_occ],
         ["Sorting Method", sort_method],
-        ["Filters", stringify_limit_collection],
+        ["Filters", " ".join(map(str, limit_collection))],
         ["Max. number of results", "10,000"],
     )
 
@@ -78,6 +66,78 @@ def run_table_download(
     worksheet.set_column("F:F", 7)
     worksheet.set_column("G:G", 100)
 
+    (
+        title_format,
+        subtitle_format,
+        filters_format,
+        header_format,
+        filter_values_format,
+        inquiry_text_cell_segments,
+        inquiry_text_cell_numbers,
+        hit_text_cell_segments,
+        hit_text_cell_numbers,
+        inbetween_row_format,
+    ) = add_formatting_workbook(workbook)
+
+    full_root_filename = get_displayname(file_name, query.result[0]["src_lang"])
+    # Writing header
+    worksheet.insert_image("D4", "buddhanexus_smaller.jpg")
+    worksheet.merge_range(
+        0, 0, 0, 5, "Matches table download for " + full_root_filename[1], title_format
+    )
+    worksheet.merge_range(1, 0, 1, 5, full_root_filename[0], subtitle_format)
+
+    row = 3
+    for filter_type, filter_value in filters_fields:
+        worksheet.write(row, 1, str(filter_value), filter_values_format)
+        worksheet.write(row, 2, str(filter_type), filters_format)
+        row += 1
+
+    col = 0
+    for item in header_fields:
+        worksheet.write(12, col, item, header_format)
+        col += 1
+
+    row = 13
+    # Iterate over the data and write it out row by row.
+    for parallel in query.result:
+
+        (
+            root_segment_nr,
+            root_segment_text,
+            par_text_number,
+            par_text_name,
+            par_segment_nr,
+            par_segment_text,
+        ) = get_spreadsheet_values(parallel, query.result[0]["src_lang"])
+
+        worksheet.write(row, 0, "Inquiry", inquiry_text_cell_segments)
+        worksheet.write(row, 1, full_root_filename[1], inquiry_text_cell_segments)
+        worksheet.write(row, 2, full_root_filename[0], inquiry_text_cell_segments)
+        worksheet.write(row, 3, root_segment_nr, inquiry_text_cell_segments)
+        worksheet.write(row, 4, parallel["root_length"], inquiry_text_cell_numbers)
+        worksheet.write(row, 5, parallel["score"], inquiry_text_cell_numbers)
+        worksheet.write(row, 6, root_segment_text, inquiry_text_cell_segments)
+
+        worksheet.write(row + 1, 0, "Hit", hit_text_cell_segments)
+        worksheet.write(row + 1, 1, par_text_number, hit_text_cell_segments)
+        worksheet.write(row + 1, 2, par_text_name, hit_text_cell_segments)
+        worksheet.write(row + 1, 3, par_segment_nr, hit_text_cell_segments)
+        worksheet.write(row + 1, 4, parallel["par_length"], hit_text_cell_numbers)
+        worksheet.write(row + 1, 5, parallel["score"], hit_text_cell_numbers)
+        worksheet.write(row + 1, 6, par_segment_text, hit_text_cell_segments)
+
+        worksheet.set_row(row + 2, 1, inbetween_row_format)
+        row += 3
+
+    workbook.close()
+    return "download/" + file_name + "_download.xlsx"
+
+
+def add_formatting_workbook(workbook):
+    """
+    creates formats to the workbook
+    """
     title_format = workbook.add_format(
         {
             "bold": True,
@@ -127,59 +187,33 @@ def run_table_download(
 
     inbetween_row_format = workbook.add_format({"bg_color": "white"})
 
-    full_root_filename = get_displayname(file_name, lang)
-    # Writing header
-    worksheet.insert_image("D4", "buddhanexus_smaller.jpg")
-    worksheet.merge_range(
-        0, 0, 0, 5, "Matches table download for " + full_root_filename[1], title_format
+    return (
+        title_format,
+        subtitle_format,
+        filters_format,
+        header_format,
+        filter_values_format,
+        inquiry_text_cell_segments,
+        inquiry_text_cell_numbers,
+        hit_text_cell_segments,
+        hit_text_cell_numbers,
+        inbetween_row_format,
     )
-    worksheet.merge_range(1, 0, 1, 5, full_root_filename[0], subtitle_format)
 
-    row = 3
-    for filter_type, filter_value in filters_fields:
-        worksheet.write(row, 1, str(filter_value), filter_values_format)
-        worksheet.write(row, 2, str(filter_type), filters_format)
-        row += 1
 
-    col = 0
-    for item in header_fields:
-        worksheet.write(12, col, item, header_format)
-        col += 1
+def get_segment_field(lang):
+    """
+    The segment field is named differently for different languages
+    """
+    segment_field = "segments"
+    if lang == "tib":
+        segment_field = "Folio"
+    if lang == "pli":
+        segment_field = "PTS nr"
+    if lang == "chn":
+        segment_field = "facsimile"
 
-    row = 13
-    # Iterate over the data and write it out row by row.
-    for parallel in query.result:
-
-        (
-            root_segment_nr,
-            root_segment_text,
-            par_text_number,
-            par_text_name,
-            par_segment_nr,
-            par_segment_text,
-        ) = get_spreadsheet_values(parallel, lang)
-
-        worksheet.write(row, 0, "Inquiry", inquiry_text_cell_segments)
-        worksheet.write(row, 1, full_root_filename[1], inquiry_text_cell_segments)
-        worksheet.write(row, 2, full_root_filename[0], inquiry_text_cell_segments)
-        worksheet.write(row, 3, root_segment_nr, inquiry_text_cell_segments)
-        worksheet.write(row, 4, parallel["root_length"], inquiry_text_cell_numbers)
-        worksheet.write(row, 5, parallel["score"], inquiry_text_cell_numbers)
-        worksheet.write(row, 6, root_segment_text, inquiry_text_cell_segments)
-
-        worksheet.write(row + 1, 0, "Hit", hit_text_cell_segments)
-        worksheet.write(row + 1, 1, par_text_number, hit_text_cell_segments)
-        worksheet.write(row + 1, 2, par_text_name, hit_text_cell_segments)
-        worksheet.write(row + 1, 3, par_segment_nr, hit_text_cell_segments)
-        worksheet.write(row + 1, 4, parallel["par_length"], hit_text_cell_numbers)
-        worksheet.write(row + 1, 5, parallel["score"], hit_text_cell_numbers)
-        worksheet.write(row + 1, 6, par_segment_text, hit_text_cell_segments)
-
-        worksheet.set_row(row + 2, 1, inbetween_row_format)
-        row += 3
-
-    workbook.close()
-    return file_location
+    return segment_field
 
 
 def get_spreadsheet_values(parallel, lang):
