@@ -270,13 +270,15 @@ async def get_table_download(
         )
         return run_table_download(
             query,
-            file_name,
-            score,
-            par_length,
-            co_occ,
-            sort_method,
-            limit_collection,
-            folio,
+            [
+                file_name,
+                score,
+                par_length,
+                co_occ,
+                sort_method,
+                limit_collection,
+                folio,
+            ],
         )
 
     except KeyError as error:

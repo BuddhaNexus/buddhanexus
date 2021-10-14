@@ -10,22 +10,13 @@ from .queries import main_queries
 from .db_connection import get_db
 
 
-def run_table_download(
-    query,
-    file_name,
-    score,
-    par_length,
-    co_occ,
-    sort_method,
-    limit_collection,
-    folio,
-):
+def run_table_download(query, file_values):
     """
     Creates an Excel workbook with data given
     """
     # Create a workbook and add a worksheet.
     workbook = xlsxwriter.Workbook(
-        "download/" + file_name + "_download.xlsx",
+        "download/" + file_values[0] + "_download.xlsx",
         {"constant_memory": True, "use_zip64": True},
     )
     worksheet = workbook.add_worksheet()
@@ -34,24 +25,8 @@ def run_table_download(
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
     worksheet.hide_gridlines(2)
 
-    header_fields = [
-        "Role",
-        "Text number",
-        "Full text name",
-        get_segment_field(query.result[0]["src_lang"]),
-        "Length",
-        "Score",
-        "Match text",
-    ]
-
-    filters_fields = (
-        [get_segment_field(query.result[0]["src_lang"]), folio],
-        ["Similarity Score", score],
-        ["Min. Match Length", par_length],
-        ["Nr. Co-occurances", co_occ],
-        ["Sorting Method", sort_method],
-        ["Filters", " ".join(map(str, limit_collection))],
-        ["Max. number of results", "10,000"],
+    spreadsheet_fields = get_spreadsheet_fields(
+        query.result[0]["src_lang"], file_values
     )
 
     # Defining formats
@@ -68,7 +43,7 @@ def run_table_download(
 
     workbook_formats = add_formatting_workbook(workbook)
 
-    full_root_filename = get_displayname(file_name, query.result[0]["src_lang"])
+    full_root_filename = get_displayname(file_values[0], query.result[0]["src_lang"])
     # Writing header
     worksheet.insert_image("D4", "buddhanexus_smaller.jpg")
     worksheet.merge_range(
@@ -82,13 +57,13 @@ def run_table_download(
     worksheet.merge_range(1, 0, 1, 5, full_root_filename[0], workbook_formats[1])
 
     row = 3
-    for filter_type, filter_value in filters_fields:
-        worksheet.write(row, 1, str(filter_value), workbook_formats[4])
-        worksheet.write(row, 2, str(filter_type), workbook_formats[2])
+    for item in spreadsheet_fields[1]:
+        worksheet.write(row, 1, str(item[1]), workbook_formats[4])
+        worksheet.write(row, 2, str(item[0]), workbook_formats[2])
         row += 1
 
     col = 0
-    for item in header_fields:
+    for item in spreadsheet_fields[0]:
         worksheet.write(12, col, item, workbook_formats[3])
         col += 1
 
@@ -120,7 +95,37 @@ def run_table_download(
         row += 3
 
     workbook.close()
-    return "download/" + file_name + "_download.xlsx"
+    return "download/" + file_values[0] + "_download.xlsx"
+
+
+def get_spreadsheet_fields(lang, file_values):
+    """
+    create header and filter fields for spreadsheet
+    """
+
+    segment_field = get_segment_field(lang)
+
+    header_fields = [
+        "Role",
+        "Text number",
+        "Full text name",
+        segment_field,
+        "Length",
+        "Score",
+        "Match text",
+    ]
+
+    filters_fields = (
+        [segment_field, file_values[6]],
+        ["Similarity Score", file_values[1]],
+        ["Min. Match Length", file_values[2]],
+        ["Nr. Co-occurances", file_values[3]],
+        ["Sorting Method", file_values[4]],
+        ["Filters", " ".join(map(str, file_values[5]))],
+        ["Max. number of results", "10,000"],
+    )
+
+    return (header_fields, filters_fields)
 
 
 def add_formatting_workbook(workbook):
