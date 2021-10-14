@@ -118,25 +118,24 @@ def collect_segment_results(segments) -> List:
     return segments_result, collection_keys
 
 
-
-def create_numbers_view_data(table_results,folio_regex):
+def create_numbers_view_data(table_results, folio_regex):
     """
     This function converts the table-view output into a format that is usable for the numbers-view.
     """
     result_dic = {}
     for table_result in table_results:
-        for segment_nr in table_result['root_segnr']:
-            if re.search(folio_regex,segment_nr):
+        for segment_nr in table_result["root_segnr"]:
+            if re.search(folio_regex, segment_nr):
                 if segment_nr in result_dic:
-                    result_dic[segment_nr].append(table_result['par_segnr'])
+                    result_dic[segment_nr].append(table_result["par_segnr"])
                 else:
-                    result_dic[segment_nr] = [table_result['par_segnr']]
+                    result_dic[segment_nr] = [table_result["par_segnr"]]
     result = []
-    for segment_nr in result_dic:
-        entry = { "segmentnr": segment_nr,
-                  "parallels": result_dic[segment_nr]}
+    for segment_nr, value in result_dic.items():
+        entry = {"segmentnr": segment_nr, "parallels": value}
         result.append(entry)
     return result
+
 
 def get_folio_regex(language, file_name, folio) -> str:
     """
@@ -145,12 +144,12 @@ def get_folio_regex(language, file_name, folio) -> str:
     """
     start_folio = ""
     if folio:
-        if language == 'pli':
+        if language == "pli":
             if re.search(r"^(anya|tika|atk)", file_name):
                 start_folio = file_name + ":" + folio[:-1] + "[0-9][._]"
             else:
                 start_folio = file_name + ":" + folio + "[._]"
-        elif language == 'skt':
+        elif language == "skt":
             if re.search(r"^(XXdhppat)", file_name):
                 start_folio = file_name + ":pdhp_" + folio + "_"
             elif re.search(r"^(S10udanav)", file_name):
@@ -159,14 +158,15 @@ def get_folio_regex(language, file_name, folio) -> str:
                 start_folio = file_name + ":" + folio + "_"
             else:
                 start_folio = file_name + ":" + folio[:-1] + "[0-9](_[0-9]+)*$"
-        elif language == 'tib':
+        elif language == "tib":
             start_folio = file_name + ":" + folio + "-"
-        elif language == 'chn':
+        elif language == "chn":
             start_folio = file_name + "_" + folio + ":"
 
     return start_folio
 
-def add_source_information(filename,query_result):
+
+def add_source_information(filename, query_result):
     """
     Checks if a special source string is stored in the database.
     If not, it will return a generic message based on a regex pattern.
@@ -177,13 +177,11 @@ def add_source_information(filename,query_result):
     if lang == "skt":
         query_source_information = get_db().AQLQuery(
             query=main_queries.QUERY_SOURCE,
-            bindVars={
-                "filename": filename
-            },
-            rawResults=True
+            bindVars={"filename": filename},
+            rawResults=True,
         )
-        source_id =  query_source_information.result[0]['source_id']
-        source_string =  query_source_information.result[0]['source_string']
+        source_id = query_source_information.result[0]["source_id"]
+        source_string = query_source_information.result[0]["source_string"]
         if source_id == "GRETIL":
             source_string = """The source of this text is GRETIL
                                (Göttingen Register of Electronic Texts in Indian Languages).
@@ -195,14 +193,14 @@ def add_source_information(filename,query_result):
                                Click on the link above to access the
                                original etext with full header Information."""
         source_segment = {
-            "segnr":"source:0",
+            "segnr": "source:0",
             "segtext": source_string,
             "position": -1,
             "lang": "eng",
-            "parallel_ids": []
-            }
-        query_result['textleft'].insert(0,source_segment)
-        query_result['textleft'] = query_result['textleft'][:800]
+            "parallel_ids": [],
+        }
+        query_result["textleft"].insert(0, source_segment)
+        query_result["textleft"] = query_result["textleft"][:800]
     return query_result
 
 
@@ -222,7 +220,9 @@ def get_start_integer(active_segment):
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="Active Segment Item not found") from error
+        raise HTTPException(
+            status_code=404, detail="Active Segment Item not found"
+        ) from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error
@@ -246,13 +246,15 @@ def get_file_text(file_name):
         )
 
         if text_segments_query_result.result:
-            return text_segments_query_result.result[0]['filetext']
+            return text_segments_query_result.result[0]["filetext"]
 
         return []
 
     except DocumentNotFoundError as error:
         print(error)
-        raise HTTPException(status_code=404, detail="QUERY_FILE_TEXT Item not found") from error
+        raise HTTPException(
+            status_code=404, detail="QUERY_FILE_TEXT Item not found"
+        ) from error
     except AQLQueryError as error:
         print("AQLQueryError: ", error)
         raise HTTPException(status_code=400, detail=error.errors) from error

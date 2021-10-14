@@ -543,7 +543,7 @@ async def get_graph_for_file(
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
         target_filename = re.sub("_[0-9][0-9][0-9]", "", parallel["textname"])
-        if target_filename in total_histogram_dict.keys():
+        if target_filename in total_histogram_dict:
             total_histogram_dict[target_filename] += count_this_parallel
         else:
             total_histogram_dict[target_filename] = count_this_parallel
@@ -575,9 +575,9 @@ async def get_graph_for_file(
         collections_with_full_name.update(collection_result)
 
     parallel_graph_name_list = {}
-    for key in total_collection_dict:
+    for key, value in total_collection_dict.items():
         parallel_graph_name_list.update(
-            {key + " " + collections_with_full_name[key]: total_collection_dict[key]}
+            {key + " " + collections_with_full_name[key]: value}
         )
 
     unsorted_graphdata_list = list(map(list, parallel_graph_name_list.items()))
