@@ -35,7 +35,7 @@ RETURN FLATTEN(
 QUERY_TABLE_VIEW = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
-    FOR current_parallel in f.@sortkey 
+    FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
             LET folio_regex_test = (
@@ -92,13 +92,17 @@ FOR f IN parallels_sorted_file
                 score: p.score
             }
 """
-
 QUERY_TABLE_DOWNLOAD = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
-    FOR current_parallel in f.@sortkey 
+    FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
+            LET folio_regex_test = (
+                FOR current_segnr IN p.root_segnr
+                RETURN REGEX_TEST(current_segnr, @start_folio)
+            )
+            FILTER POSITION(folio_regex_test, true)
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
@@ -130,14 +134,20 @@ FOR f IN parallels_sorted_file
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
+            LIMIT 10000
             RETURN {
                 par_segnr: p.par_segnr,
                 par_segment: par_segment,
                 root_segnr: p.root_segnr,
                 root_seg_text: root_seg_text,
+                root_offset_beg: p.root_offset_beg,
+                root_offset_end: p.root_offset_end,
+                par_offset_beg: p.par_offset_beg,
+                par_offset_end: p.par_offset_end,
                 par_length: p.par_length,
                 root_length: p.root_length,
-                score: p.score
+                score: p.score,
+                src_lang: p.src_lang
             }
 """
 
@@ -194,7 +204,7 @@ FOR file IN files
                 }
         )
 
-RETURN { 
+RETURN {
     filetext: segments
 }
 """
@@ -262,7 +272,7 @@ LET parallels_multi =  (
             }
     )
 
-RETURN { 
+RETURN {
     textleft: segments,
     parallel_ids: parallel_ids,
     parallels: APPEND(parallels, parallels_multi)
@@ -332,7 +342,7 @@ LET parallels_multi = (
                     FOR segment IN segments
                         FILTER segment._key == segnr
                         RETURN segment.segtext
-            )         
+            )
             RETURN {
                 par_segnr: p.par_segnr,
                 par_offset_beg: p.par_offset_beg,
@@ -372,7 +382,7 @@ FOR f in parallels_sorted_file
     for current_parallel in slice(f.parallels_randomized,0,2500)
         for p in parallels
             filter p._key == current_parallel
-            return p 
+            return p
     )
 
 FOR p IN current_parallels
