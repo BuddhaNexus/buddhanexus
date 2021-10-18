@@ -18,7 +18,6 @@ def run_table_download(query, file_values):
     """
     # Create a workbook and add a worksheet.
     file_location = "download/" + file_values[0] + "_download.xlsx"
-    lang = file_values[7]
     workbook = xlsxwriter.Workbook(
         file_location,
         {"constant_memory": True, "use_zip64": True},
@@ -29,7 +28,7 @@ def run_table_download(query, file_values):
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
     worksheet.hide_gridlines(2)
 
-    spreadsheet_fields = get_spreadsheet_fields(lang, file_values)
+    spreadsheet_fields = get_spreadsheet_fields(file_values[7], file_values)
 
     # Defining formats
     worksheet.set_row(0, 30)
@@ -45,7 +44,7 @@ def run_table_download(query, file_values):
 
     workbook_formats = add_formatting_workbook(workbook)
 
-    full_root_filename = get_displayname(file_values[0], lang)
+    full_root_filename = get_displayname(file_values[0], file_values[7])
     # Writing header
     worksheet.insert_image("D4", "buddhanexus_smaller.jpg")
     worksheet.merge_range(
@@ -73,7 +72,7 @@ def run_table_download(query, file_values):
     # Iterate over the data and write it out row by row.
     for parallel in query.result:
 
-        spreadsheet_values = get_spreadsheet_values(parallel, lang)
+        spreadsheet_values = get_spreadsheet_values(parallel, file_values[7])
 
         worksheet.write(row, 0, "Inquiry", workbook_formats[5])
         worksheet.write(row, 1, full_root_filename[1], workbook_formats[5])
@@ -193,6 +192,11 @@ def add_formatting_workbook(workbook):
 
     inbetween_row_format = workbook.add_format({"bg_color": "white"})
 
+    inquiry_text_number = workbook.add_format({"text_wrap": True, "font_size": 10})
+    hit_text_number = workbook.add_format(
+        {"align": "center", "font_size": 9, "text_wrap": True}
+    )
+
     return (
         title_format,
         subtitle_format,
@@ -205,6 +209,8 @@ def add_formatting_workbook(workbook):
         hit_text_cell_numbers,
         inbetween_row_format,
         small_header_format,
+        inquiry_text_number,
+        hit_text_number,
     )
 
 
@@ -234,12 +240,15 @@ def get_spreadsheet_values(parallel, lang):
         root_segment_nr += (
             "–" + parallel["root_segnr"][len(parallel["root_segnr"]) - 1].split(":")[1]
         )
-    root_segment_text = " ".join(parallel["root_seg_text"])
+    root_segment_text_joined = " ".join(parallel["root_seg_text"])
     root_offset_beg = parallel["root_offset_beg"]
-    root_offset_end = len(root_segment_text) - (
-        len(parallel["root_seg_text"][-1]) - parallel["root_offset_end"]
-    )
-    root_segment_text = root_segment_text[root_offset_beg:root_offset_end]
+    try:
+        root_offset_end = len(root_segment_text_joined) - (
+            len(parallel["root_seg_text"][-1]) - parallel["root_offset_end"]
+        )
+        root_segment_text = root_segment_text_joined[root_offset_beg:root_offset_end]
+    except IndexError:
+        root_segment_text = root_segment_text_joined
 
     par_segment_nr = parallel["par_segnr"][0].split(":")[1]
     if lang == "tib":
@@ -301,7 +310,6 @@ def run_numbers_download(collections, segments, file_values):
     """
     # Create a workbook and add a worksheet.
     file_location = "download/" + file_values[0] + "_download.xlsx"
-    lang = file_values[7]
     workbook = xlsxwriter.Workbook(
         file_location,
         {"constant_memory": True, "use_zip64": True},
@@ -311,7 +319,7 @@ def run_numbers_download(collections, segments, file_values):
     worksheet.center_horizontally()
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
 
-    spreadsheet_fields = get_spreadsheet_fields(lang, file_values)
+    spreadsheet_fields = get_spreadsheet_fields(file_values[7], file_values)
 
     # Defining formats
     worksheet.set_row(0, 30)
@@ -322,7 +330,7 @@ def run_numbers_download(collections, segments, file_values):
 
     workbook_formats = add_formatting_workbook(workbook)
 
-    full_root_filename = get_displayname(file_values[0], lang)
+    full_root_filename = get_displayname(file_values[0], file_values[7])
     # Writing header
     worksheet.insert_image("A4", "buddhanexus_smaller.jpg")
     worksheet.merge_range(
@@ -341,39 +349,38 @@ def run_numbers_download(collections, segments, file_values):
         worksheet.write(row, 3, str(item[0]), workbook_formats[2])
         row += 1
 
-    worksheet.write(12, 0, get_segment_field(lang), workbook_formats[3])
+    worksheet.write(12, 0, get_segment_field(file_values[7]), workbook_formats[3])
 
     collections_list = []
     col = 1
-    for collection in collections:
-        for key in collection.keys():
+    for item in collections:
+        for key in item.keys():
             worksheet.write(12, col, key, workbook_formats[3])
             collections_list.append(key)
             col += 1
 
     worksheet.write(13, 0, "", workbook_formats[10])
     col = 1
-    for collection in collections:
-        for value in collection.values():
+    for item in collections:
+        for value in item.values():
             worksheet.write(13, col, value, workbook_formats[10])
             col += 1
-
-    inquiry_text_number = workbook.add_format({"text_wrap": True, "font_size": 10})
-    hit_text_numbers = workbook.add_format(
-        {"align": "center", "font_size": 9, "text_wrap": True}
-    )
 
     row = 14
     # Iterate over the data and write it out row by row.
     for segment in segments:
-        worksheet.write(row, 0, segment["segmentnr"], inquiry_text_number)
+        worksheet.write(row, 0, segment["segmentnr"], workbook_formats[11])
 
         collection_dict = {}
         for parallel in segment["parallels"]:
-            collection_key = re.search(COLLECTION_PATTERN, parallel[0])
-            collection_index = collections_list.index(collection_key.group()) + 1
+            collection_index = (
+                collections_list.index(
+                    re.search(COLLECTION_PATTERN, parallel[0]).group()
+                )
+                + 1
+            )
 
-            if not collection_index in collection_dict.keys():
+            if not collection_index in collection_dict:
                 collection_dict[collection_index] = []
 
             if len(parallel) > 1:
@@ -384,7 +391,7 @@ def run_numbers_download(collections, segments, file_values):
                 collection_dict[collection_index].append(parallel[0])
 
         for key, value in collection_dict.items():
-            worksheet.write(row, key, "\n".join(sorted(value)), hit_text_numbers)
+            worksheet.write(row, key, "\n".join(sorted(value)), workbook_formats[12])
 
         row += 1
 
