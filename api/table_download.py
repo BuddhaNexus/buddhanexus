@@ -326,7 +326,8 @@ def run_numbers_download(collections, segments, file_values):
     worksheet.set_row(1, 25)
     worksheet.set_row(12, 25)
     worksheet.set_row(13, 25)
-    worksheet.set_column("A:FZ", 20)
+    worksheet.set_column("A:FZ", 25)
+    worksheet.freeze_panes(0, 1)
 
     workbook_formats = add_formatting_workbook(workbook)
 
@@ -371,24 +372,7 @@ def run_numbers_download(collections, segments, file_values):
     for segment in segments:
         worksheet.write(row, 0, segment["segmentnr"], workbook_formats[11])
 
-        collection_dict = {}
-        for parallel in segment["parallels"]:
-            collection_index = (
-                collections_list.index(
-                    re.search(COLLECTION_PATTERN, parallel[0]).group()
-                )
-                + 1
-            )
-
-            if not collection_index in collection_dict:
-                collection_dict[collection_index] = []
-
-            if len(parallel) > 1:
-                collection_dict[collection_index].append(
-                    parallel[0] + "–" + parallel[len(parallel) - 1]
-                )
-            else:
-                collection_dict[collection_index].append(parallel[0])
+        collection_dict = get_collection_dict(segment["parallels"], collections_list)
 
         for key, value in collection_dict.items():
             worksheet.write(row, key, "\n".join(sorted(value)), workbook_formats[12])
@@ -397,3 +381,27 @@ def run_numbers_download(collections, segments, file_values):
 
     workbook.close()
     return file_location
+
+
+def get_collection_dict(segment_parallels, collections_list):
+    """
+    Calculates which items go in which column of the spreadsheet
+    """
+    collection_dict = {}
+    for parallel in segment_parallels:
+        collection_index = (
+            collections_list.index(re.search(COLLECTION_PATTERN, parallel[0]).group())
+            + 1
+        )
+
+        if not collection_index in collection_dict:
+            collection_dict[collection_index] = []
+
+        if len(parallel) > 1:
+            collection_dict[collection_index].append(
+                parallel[0] + "–" + parallel[len(parallel) - 1]
+            )
+        else:
+            collection_dict[collection_index].append(parallel[0])
+
+    return collection_dict

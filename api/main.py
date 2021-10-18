@@ -27,6 +27,7 @@ from .utils import (
     add_source_information,
     get_start_integer,
     get_file_text,
+    get_sort_key,
 )
 from .db_connection import get_collection, get_db
 from .table_download import run_table_download, run_numbers_download
@@ -191,17 +192,7 @@ async def get_table_view(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-    sort_key = ""
-    if sort_method == "position":
-        sort_key = "parallels_sorted_by_src_pos"
-    if sort_method == "quoted-text":
-        sort_key = "parallels_sorted_by_tgt_pos"
-    if sort_method == "length":
-        sort_key = "parallels_sorted_by_length_src"
-    if sort_method == "length2":
-        sort_key = "parallels_sorted_by_length_tgt"
 
-    start_folio = get_folio_regex(language, file_name, folio)
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,
@@ -210,11 +201,11 @@ async def get_table_view(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "sortkey": sort_key,
+                "sortkey": get_sort_key(sort_method),
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
-                "start_folio": start_folio,
+                "start_folio": get_folio_regex(language, file_name, folio),
             },
         )
         return query.result
@@ -244,16 +235,6 @@ async def get_table_download(
         limit_collection, language
     )
 
-    start_folio = get_folio_regex(language, file_name, folio)
-    sort_key = "parallels_sorted_by_src_pos"
-    if download_data == "table":
-        if sort_method == "quoted-text":
-            sort_key = "parallels_sorted_by_tgt_pos"
-        if sort_method == "length":
-            sort_key = "parallels_sorted_by_length_src"
-        if sort_method == "length2":
-            sort_key = "parallels_sorted_by_length_tgt"
-
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_DOWNLOAD,
@@ -263,10 +244,10 @@ async def get_table_download(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "sortkey": sort_key,
+                "sortkey": get_sort_key(sort_method),
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
-                "start_folio": start_folio,
+                "start_folio": get_folio_regex(language, file_name, folio),
             },
         )
 
@@ -289,7 +270,7 @@ async def get_table_download(
             ],
         )
 
-    segments_result, collection_keys = collect_segment_results(
+    segment_collection_results = collect_segment_results(
         create_numbers_view_data(
             query.result, get_folio_regex(language, file_name, folio)
         )
@@ -300,7 +281,7 @@ async def get_table_download(
         .AQLQuery(
             query=menu_queries.QUERY_COLLECTION_NAMES,
             bindVars={
-                "collections": collection_keys,
+                "collections": segment_collection_results[1],
                 "language": language,
             },
         )
@@ -309,7 +290,7 @@ async def get_table_download(
 
     return run_numbers_download(
         collections_result,
-        segments_result,
+        segment_collection_results[0],
         [
             file_name,
             score,
