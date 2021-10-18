@@ -29,7 +29,7 @@ from .utils import (
     get_file_text,
 )
 from .db_connection import get_collection, get_db
-from .table_download import run_table_download
+from .table_download import run_table_download, run_numbers_download
 
 API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 
@@ -233,6 +233,7 @@ async def get_table_download(
     limit_collection: List[str] = Query([]),
     sort_method: str = "position",
     folio: str = "",
+    downloadData: str = "table",
 ):
     """
     Endpoint for the download table. Accepts filters.
@@ -242,17 +243,17 @@ async def get_table_download(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-    sort_key = ""
-    if sort_method == "position":
-        sort_key = "parallels_sorted_by_src_pos"
-    if sort_method == "quoted-text":
-        sort_key = "parallels_sorted_by_tgt_pos"
-    if sort_method == "length":
-        sort_key = "parallels_sorted_by_length_src"
-    if sort_method == "length2":
-        sort_key = "parallels_sorted_by_length_tgt"
 
     start_folio = get_folio_regex(language, file_name, folio)
+    sort_key = "parallels_sorted_by_src_pos"
+    if downloadData == "table":
+        if sort_method == "quoted-text":
+            sort_key = "parallels_sorted_by_tgt_pos"
+        if sort_method == "length":
+            sort_key = "parallels_sorted_by_length_src"
+        if sort_method == "length2":
+            sort_key = "parallels_sorted_by_length_tgt"
+
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_DOWNLOAD,
@@ -268,6 +269,12 @@ async def get_table_download(
                 "start_folio": start_folio,
             },
         )
+
+    except KeyError as error:
+        print("KeyError: ", error)
+        raise HTTPException(status_code=400) from error
+
+    if downloadData == "table":
         return run_table_download(
             query,
             [
@@ -278,12 +285,43 @@ async def get_table_download(
                 sort_method,
                 limit_collection,
                 folio,
+                language,
             ],
         )
 
-    except KeyError as error:
-        print("KeyError: ", error)
-        raise HTTPException(status_code=400) from error
+    else:
+        segments_result, collection_keys = collect_segment_results(
+            create_numbers_view_data(
+                query.result, get_folio_regex(language, file_name, folio)
+            )
+        )
+
+        collections_result = (
+            get_db()
+            .AQLQuery(
+                query=menu_queries.QUERY_COLLECTION_NAMES,
+                bindVars={
+                    "collections": collection_keys,
+                    "language": language,
+                },
+            )
+            .result[0]
+        )
+
+        return run_numbers_download(
+            collections_result,
+            segments_result,
+            [
+                file_name,
+                score,
+                par_length,
+                co_occ,
+                sort_method,
+                limit_collection,
+                folio,
+                language,
+            ],
+        )
 
 
 @APP.get("/files/{file_name}/multilang")

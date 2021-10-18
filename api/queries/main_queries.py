@@ -92,6 +92,7 @@ FOR f IN parallels_sorted_file
                 score: p.score
             }
 """
+
 QUERY_TABLE_DOWNLOAD = """
 FOR f IN parallels_sorted_file
     FILTER f._key == @filename
@@ -454,7 +455,6 @@ FOR file IN files
         source_string: file.source_string
    }
 """
-
 
 QUERY_MULTILINGUAL_LANGS = """
 FOR file IN files
