@@ -309,9 +309,8 @@ def run_numbers_download(collections, segments, file_values):
     Creates an Excel workbook with data given for the numbers view
     """
     # Create a workbook and add a worksheet.
-    file_location = "download/" + file_values[0] + "_download.xlsx"
     workbook = xlsxwriter.Workbook(
-        file_location,
+        "download/" + file_values[0] + "_download.xlsx",
         {"constant_memory": True, "use_zip64": True},
     )
     worksheet = workbook.add_worksheet()
@@ -369,10 +368,10 @@ def run_numbers_download(collections, segments, file_values):
 
     row = 14
     # Iterate over the data and write it out row by row.
-    for segment in segments:
-        worksheet.write(row, 0, segment["segmentnr"], workbook_formats[11])
+    for item in segments:
+        worksheet.write(row, 0, item["segmentnr"], workbook_formats[11])
 
-        collection_dict = get_collection_dict(segment["parallels"], collections_list)
+        collection_dict = get_collection_dict(item["parallels"], collections_list)
 
         for key, value in collection_dict.items():
             worksheet.write(row, key, "\n".join(sorted(value)), workbook_formats[12])
@@ -380,7 +379,7 @@ def run_numbers_download(collections, segments, file_values):
         row += 1
 
     workbook.close()
-    return file_location
+    return "download/" + file_values[0] + "_download.xlsx"
 
 
 def get_collection_dict(segment_parallels, collections_list):
