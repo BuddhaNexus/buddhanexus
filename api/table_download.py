@@ -102,7 +102,7 @@ def get_spreadsheet_fields(lang, file_values):
     create header and filter fields for spreadsheet
     """
 
-    segment_field = get_segment_field(lang)
+    segment_field = get_segment_field(lang, file_values[0])
 
     header_fields = [
         "Role",
@@ -192,7 +192,9 @@ def add_formatting_workbook(workbook):
 
     inbetween_row_format = workbook.add_format({"bg_color": "white"})
 
-    inquiry_text_number = workbook.add_format({"text_wrap": True, "font_size": 10})
+    inquiry_text_number = workbook.add_format(
+        {"text_wrap": True, "font_size": 10, "bold": True}
+    )
     hit_text_number = workbook.add_format(
         {"align": "center", "font_size": 9, "text_wrap": True}
     )
@@ -214,14 +216,14 @@ def add_formatting_workbook(workbook):
     )
 
 
-def get_segment_field(lang):
+def get_segment_field(lang, file_name):
     """
     The segment field is named differently for different languages
     """
     segment_field = "Segments"
     if lang == "tib":
         segment_field = "Folio"
-    if lang == "pli":
+    if lang == "pli" and not re.search(r"^(anya|tika|atk)", file_name):
         segment_field = "PTS nr"
     if lang == "chn":
         segment_field = "Facsimile"
@@ -335,13 +337,13 @@ def run_numbers_download(collections, segments, file_values):
     worksheet.insert_image("A4", "buddhanexus_smaller.jpg")
     worksheet.merge_range(
         0,
+        1,
         0,
-        0,
-        5,
+        4,
         "Matches numbers download for " + full_root_filename[1],
         workbook_formats[0],
     )
-    worksheet.merge_range(1, 0, 1, 5, full_root_filename[0], workbook_formats[1])
+    worksheet.merge_range(1, 1, 1, 4, full_root_filename[0], workbook_formats[1])
 
     row = 3
     for item in spreadsheet_fields[1]:
@@ -349,7 +351,9 @@ def run_numbers_download(collections, segments, file_values):
         worksheet.write(row, 3, str(item[0]), workbook_formats[2])
         row += 1
 
-    worksheet.write(12, 0, get_segment_field(file_values[7]), workbook_formats[3])
+    worksheet.write(
+        12, 0, get_segment_field(file_values[7], file_values[0]), workbook_formats[3]
+    )
 
     collections_list = []
     col = 1
