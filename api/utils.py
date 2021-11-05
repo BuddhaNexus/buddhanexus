@@ -14,6 +14,22 @@ from .db_connection import get_db
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
+def get_sort_key(sort_method) -> str:
+    """
+    Returns the correct sort_key for table and numbers queries
+    """
+    sort_key = ""
+    if sort_method == "position":
+        sort_key = "parallels_sorted_by_src_pos"
+    if sort_method == "quoted-text":
+        sort_key = "parallels_sorted_by_tgt_pos"
+    if sort_method == "length":
+        sort_key = "parallels_sorted_by_length_src"
+    if sort_method == "length2":
+        sort_key = "parallels_sorted_by_length_tgt"
+    return sort_key
+
+
 def get_language_from_filename(filename) -> str:
     """
     Given the file ID, returns its language.

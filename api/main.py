@@ -27,9 +27,10 @@ from .utils import (
     add_source_information,
     get_start_integer,
     get_file_text,
+    get_sort_key,
 )
 from .db_connection import get_collection, get_db
-from .table_download import run_table_download
+from .table_download import run_table_download, run_numbers_download
 
 API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 
@@ -191,17 +192,7 @@ async def get_table_view(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-    sort_key = ""
-    if sort_method == "position":
-        sort_key = "parallels_sorted_by_src_pos"
-    if sort_method == "quoted-text":
-        sort_key = "parallels_sorted_by_tgt_pos"
-    if sort_method == "length":
-        sort_key = "parallels_sorted_by_length_src"
-    if sort_method == "length2":
-        sort_key = "parallels_sorted_by_length_tgt"
 
-    start_folio = get_folio_regex(language, file_name, folio)
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,
@@ -210,11 +201,11 @@ async def get_table_view(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "sortkey": sort_key,
+                "sortkey": get_sort_key(sort_method),
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
-                "start_folio": start_folio,
+                "start_folio": get_folio_regex(language, file_name, folio),
             },
         )
         return query.result
@@ -233,6 +224,7 @@ async def get_table_download(
     limit_collection: List[str] = Query([]),
     sort_method: str = "position",
     folio: str = "",
+    download_data: str = "table",
 ):
     """
     Endpoint for the download table. Accepts filters.
@@ -242,17 +234,7 @@ async def get_table_download(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-    sort_key = ""
-    if sort_method == "position":
-        sort_key = "parallels_sorted_by_src_pos"
-    if sort_method == "quoted-text":
-        sort_key = "parallels_sorted_by_tgt_pos"
-    if sort_method == "length":
-        sort_key = "parallels_sorted_by_length_src"
-    if sort_method == "length2":
-        sort_key = "parallels_sorted_by_length_tgt"
 
-    start_folio = get_folio_regex(language, file_name, folio)
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_DOWNLOAD,
@@ -262,12 +244,18 @@ async def get_table_download(
                 "score": score,
                 "parlength": par_length,
                 "coocc": co_occ,
-                "sortkey": sort_key,
+                "sortkey": get_sort_key(sort_method),
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
-                "start_folio": start_folio,
+                "start_folio": get_folio_regex(language, file_name, folio),
             },
         )
+
+    except KeyError as error:
+        print("KeyError: ", error)
+        raise HTTPException(status_code=400) from error
+
+    if download_data == "table":
         return run_table_download(
             query,
             [
@@ -278,12 +266,42 @@ async def get_table_download(
                 sort_method,
                 limit_collection,
                 folio,
+                language,
             ],
         )
 
-    except KeyError as error:
-        print("KeyError: ", error)
-        raise HTTPException(status_code=400) from error
+    segment_collection_results = collect_segment_results(
+        create_numbers_view_data(
+            query.result, get_folio_regex(language, file_name, folio)
+        )
+    )
+
+    collections_result = (
+        get_db()
+        .AQLQuery(
+            query=menu_queries.QUERY_COLLECTION_NAMES,
+            bindVars={
+                "collections": segment_collection_results[1],
+                "language": language,
+            },
+        )
+        .result[0]
+    )
+
+    return run_numbers_download(
+        collections_result,
+        segment_collection_results[0],
+        [
+            file_name,
+            score,
+            par_length,
+            co_occ,
+            sort_method,
+            limit_collection,
+            folio,
+            language,
+        ],
+    )
 
 
 @APP.get("/files/{file_name}/multilang")
