@@ -1,23 +1,34 @@
 import re
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
 from fuzzysearch import levenshtein_ngram
+import pyewts
+from aksharamukha import transliterate
 
 bn_analyzer = bn_translate.analyzer()
+tib_converter = pyewts.pyewts()
 
 def preprocess_search_string(search_string):
     tib = ""
     chn = ""
     skt = ""
     pli = ""
-    search_string = search_string.lower()
-    skt_fuzzy = bn_analyzer.stem_sanskrit(search_string)
+    # test if string contains Tibetan characters
+    if  re.search("[\u0F00-\u0FDA]",search_string):
+        tib = tib_converter.toWylie(search_string)
+        skt = tib
+    else: 
+        skt = transliterate.process('autodetect', 'IAST', search_string)
+        skt = skt.lower()
+    # skt_fuzzy also tests if a string contains tib/chn letters; if so, it returns an empty string 
+    skt_fuzzy = bn_analyzer.stem_sanskrit(skt)
     pli = bn_analyzer.stem_pali(search_string)
-    tib_preprocessed = search_string.replace("’", "'")
-    if skt_fuzzy == "":
+    # if skt_fuzzy detected the string to be Tibetan/Chinese or the unicode2wylie transliteration was successful, do this: 
+    if skt_fuzzy == "" or tib != "":
+        if tib == "":
+            tib = search_string
+        tib_preprocessed = tib.replace("’", "'")
         tib = bn_analyzer.stem_tibetan(tib_preprocessed)#.replace("ba\n","ba")
         chn = search_string
-    else:
-        skt = search_string
     return {"skt": skt,
             "skt_fuzzy":skt_fuzzy,
             "tib": tib,
@@ -77,7 +88,8 @@ def process_result(result_pair,search_string):
     except (RuntimeError, TypeError, NameError):
         pass
 
-def postprocess_results(search_string, results):
+def postprocess_results(search_strings, results):
+    search_string = search_strings['skt']
     new_results = []
     for result in results:
         new_results.append(process_result(result,search_string))
@@ -93,7 +105,7 @@ def postprocess_results(search_string, results):
     results = results[::-1]
     return results[:200] # make sure we return a fixed number of results
 
-def process_multilang_result(result_list,search_string):
+def process_multilang_result(result_list,search_strings):
     if search_string == '':
         return result_list
     

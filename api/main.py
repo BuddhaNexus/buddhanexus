@@ -736,7 +736,6 @@ async def get_search_results(search_string: str):
     """
     database = get_db()
     result = []
-    search_string = search_string.lower()
     search_strings = search_utils.preprocess_search_string(search_string[:150])
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH,
@@ -751,7 +750,7 @@ async def get_search_results(search_string: str):
         rawResults=True,
     )
     query_result = query_search.result[0]
-    result = search_utils.postprocess_results(search_string, query_result)
+    result = search_utils.postprocess_results(search_strings, query_result)
     return {"searchResults": result}
 
 
@@ -761,6 +760,7 @@ async def tag_sanskrit(sanskrit_string: str):
     Stemming + Tagging for Sanskrit
     :return: String with tagged Sanskrit
     """
+    sanskrit_string = transliterate.process('autodetect', 'IAST', sanskrit_string)
     result = search_utils.tag_sanskrit(sanskrit_string).replace("\n", " # ")
     return {"tagged": result}
 
