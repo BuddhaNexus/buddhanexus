@@ -8,6 +8,7 @@ bn_analyzer = bn_translate.analyzer()
 tib_converter = pyewts.pyewts()
 
 def preprocess_search_string(search_string):
+    search_string = search_string.strip()
     tib = ""
     chn = ""
     skt = ""
