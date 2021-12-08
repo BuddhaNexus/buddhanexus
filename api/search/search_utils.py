@@ -14,11 +14,15 @@ def preprocess_search_string(search_string):
     pli = ""
     # test if string contains Tibetan characters
     if  re.search("[\u0F00-\u0FDA]",search_string):
-        tib = tib_converter.toWylie(search_string)
+        tib = tib_converter.toWylie(search_string).strip()
         skt = tib
-    else: 
-        skt = transliterate.process('autodetect', 'IAST', search_string)
+    else:
+        if bn_translate.check_if_sanskrit(search_string):
+            skt = transliterate.process('autodetect', 'IAST', search_string)
+        else:
+            skt = search_string
         skt = skt.lower()
+        
     # skt_fuzzy also tests if a string contains tib/chn letters; if so, it returns an empty string 
     skt_fuzzy = bn_analyzer.stem_sanskrit(skt)
     pli = bn_analyzer.stem_pali(search_string)
@@ -90,6 +94,7 @@ def process_result(result_pair,search_string):
 
 def postprocess_results(search_strings, results):
     search_string = search_strings['skt']
+    print("SEARCH STRING",search_string)
     new_results = []
     for result in results:
         new_results.append(process_result(result,search_string))
