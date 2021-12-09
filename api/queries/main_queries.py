@@ -135,7 +135,7 @@ FOR f IN parallels_sorted_file
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
-            LIMIT 10000
+            LIMIT 2000
             RETURN {
                 par_segnr: p.par_segnr,
                 par_segment: par_segment,
