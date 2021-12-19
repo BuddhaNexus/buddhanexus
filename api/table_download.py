@@ -122,7 +122,7 @@ def get_spreadsheet_fields(lang, file_values):
         ["Nr. Co-occurances", file_values[3]],
         ["Sorting Method", file_values[4]],
         ["Filters", " ".join(map(str, file_values[5]))],
-        ["Max. number of results", "10,000"],
+        ["Max. number of results", "20,000"],
     )
 
     return (header_fields, filters_fields)
