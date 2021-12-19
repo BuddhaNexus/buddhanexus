@@ -83,7 +83,7 @@ def get_collection_files_regex(limit_collection, language) -> List:
 
     teststring_positive = []
     teststring_negative = []
-    if language in ("tib", "chn", "skt"):
+    if language in ("tib", "chn", "skt",'pli'):
         for file in new_limit_collection:
             if "!" not in file:
                 teststring_positive.append("^" + file)
@@ -101,7 +101,6 @@ def get_collection_files_regex(limit_collection, language) -> List:
                     teststring_negative.append("^" + file.replace("!", "") + ":")
                 else:
                     teststring_negative.append("^" + file.replace("!", "") + r"[0-9\-]")
-
     return [teststring_positive, teststring_negative]
 
 
@@ -158,6 +157,7 @@ def get_folio_regex(language, file_name, folio) -> str:
     Creates a regular expression for use in the AD Queries based on the language and
     file so as to match the segment numbers therein.
     """
+    print("FOLIO",folio)
     start_folio = ""
     if folio:
         if language == "pli":
@@ -178,7 +178,7 @@ def get_folio_regex(language, file_name, folio) -> str:
             start_folio = file_name + ":" + folio + "-"
         elif language == "chn":
             start_folio = file_name + "_" + folio + ":"
-
+    print("START FOLIO",start_folio)
     return start_folio
 
 

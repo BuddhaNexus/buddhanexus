@@ -38,30 +38,23 @@ FOR f IN parallels_sorted_file
     FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
-            LET folio_regex_test = (
-                FOR current_segnr IN p.root_segnr
-                RETURN REGEX_TEST(current_segnr, @start_folio)
-            )
-            FILTER POSITION(folio_regex_test, true)
+            FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
-            LET collection_filter_test = (
+            LET filtertest = (
                 FOR item IN @limitcollection_positive
-                RETURN REGEX_TEST(p.par_segnr[0], item)
-            )
-            LET fits_collection = (@limitcollection_positive != [])
-                ? POSITION(collection_filter_test, true)
-                : true
-            FILTER fits_collection == true
-            LET collection_filter_test2 = (
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+            LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
+            FILTER filternr == true
+            LET filtertest2 = (
                 FOR item IN @limitcollection_negative
-                RETURN REGEX_TEST(p.par_segnr[0], item)
-            )
-            LET fits_collection2 = (@limitcollection_negative != [])
-                ? POSITION(collection_filter_test2, true)
-                : false
-            FILTER fits_collection2 == false
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+            FILTER filternr2 == false
+
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
@@ -99,30 +92,23 @@ FOR f IN parallels_sorted_file
     FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
-            LET folio_regex_test = (
-                FOR current_segnr IN p.root_segnr
-                RETURN REGEX_TEST(current_segnr, @start_folio)
-            )
-            FILTER POSITION(folio_regex_test, true)
+            FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
-            LET collection_filter_test = (
+            LET filtertest = (
                 FOR item IN @limitcollection_positive
-                RETURN REGEX_TEST(p.par_segnr[0], item)
-            )
-            LET fits_collection = (@limitcollection_positive != [])
-                ? POSITION(collection_filter_test, true)
-                : true
-            FILTER fits_collection == true
-            LET collection_filter_test2 = (
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+            LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
+            FILTER filternr == true
+            LET filtertest2 = (
                 FOR item IN @limitcollection_negative
-                RETURN REGEX_TEST(p.par_segnr[0], item)
-            )
-            LET fits_collection2 = (@limitcollection_negative != [])
-                ? POSITION(collection_filter_test2, true)
-                : false
-            FILTER fits_collection2 == false
+                    RETURN REGEX_TEST(p.par_segnr[0], item)
+                )
+            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
+            FILTER filternr2 == false
+
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
@@ -135,10 +121,18 @@ FOR f IN parallels_sorted_file
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
-            LIMIT 2000
+            LET filename1 = REGEX_REPLACE(p.par_segnr[0],":.*","")
+            LET filename = REGEX_REPLACE(filename1,"_[0-9]+","")
+            let displayname = (
+                FOR file IN files
+                    FILTER file._key == filename
+                    return file.displayName
+            )
+            LIMIT 50000
             RETURN {
                 par_segnr: p.par_segnr,
                 par_segment: par_segment,
+                par_displayname: displayname,
                 root_segnr: p.root_segnr,
                 root_seg_text: root_seg_text,
                 root_offset_beg: p.root_offset_beg,
