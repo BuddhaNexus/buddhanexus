@@ -5,7 +5,6 @@ worksheets for download
 
 import re
 import xlsxwriter
-from pyexcelerate import Workbook
 from time import time as time
 from .queries import main_queries
 from .db_connection import get_db
