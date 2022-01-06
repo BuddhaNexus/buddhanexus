@@ -5,7 +5,6 @@ worksheets for download
 
 import re
 import xlsxwriter
-
 from .queries import main_queries
 from .db_connection import get_db
 
@@ -13,6 +12,7 @@ COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 def run_table_download(query, file_values):
+
     """
     Creates an Excel workbook with data given
     """
@@ -121,7 +121,7 @@ def get_spreadsheet_fields(lang, file_values):
         ["Nr. Co-occurances", file_values[3]],
         ["Sorting Method", file_values[4]],
         ["Filters", " ".join(map(str, file_values[5]))],
-        ["Max. number of results", "10,000"],
+        ["Max. number of results", "20,000"],
     )
 
     return (header_fields, filters_fields)
@@ -269,14 +269,13 @@ def get_spreadsheet_values(parallel, lang):
         par_segment_text = par_segment_text_joined[par_offset_beg:par_offset_end]
     except IndexError:
         par_segment_text = par_segment_text_joined
-
-    par_text_name = ""
-    par_text_number = ""
-    par_text_list = get_displayname(parallel["par_segnr"][0], lang)
-    if par_text_list:
-        par_text_name = par_text_list[0]
-        par_text_number = par_text_list[1]
-
+    
+    par_text_name = parallel["par_displayname"]
+    par_text_number = parallel["par_segnr"][0].split(":")[0]
+    if len(par_text_name) >0:
+        par_text_name = par_text_name[0]
+    else:
+        par_text_name = "NA"
     return (
         root_segment_nr,
         root_segment_text,

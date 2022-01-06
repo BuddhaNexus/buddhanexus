@@ -83,25 +83,24 @@ def get_collection_files_regex(limit_collection, language) -> List:
 
     teststring_positive = []
     teststring_negative = []
-    if language in ("tib", "chn", "skt"):
+    if language in ("tib", "chn", "skt",'pli'):
         for file in new_limit_collection:
             if "!" not in file:
-                teststring_positive.append("^" + file)
+                teststring_positive.append(file)
             else:
-                teststring_negative.append("^" + file.replace("!", ""))
+                teststring_negative.append(file.replace("!", ""))
     elif language == "pli":
         for file in new_limit_collection:
             if "!" not in file:
                 if number_exists(file) or ("pm" in file) or ("dhp" in file):
-                    teststring_positive.append("^" + file + ":")
+                    teststring_positive.append(file + ":")
                 else:
-                    teststring_positive.append("^" + file + r"[0-9\-]")
+                    teststring_positive.append(file + r"[0-9\-]")
             else:
                 if number_exists(file) or ("pm" in file):
-                    teststring_negative.append("^" + file.replace("!", "") + ":")
+                    teststring_negative.append(file.replace("!", "") + ":")
                 else:
-                    teststring_negative.append("^" + file.replace("!", "") + r"[0-9\-]")
-
+                    teststring_negative.append(file.replace("!", "") + r"[0-9\-]")
     return [teststring_positive, teststring_negative]
 
 
@@ -178,7 +177,6 @@ def get_folio_regex(language, file_name, folio) -> str:
             start_folio = file_name + ":" + folio + "-"
         elif language == "chn":
             start_folio = file_name + "_" + folio + ":"
-
     return start_folio
 
 

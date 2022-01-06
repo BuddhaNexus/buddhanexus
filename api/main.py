@@ -140,7 +140,7 @@ async def get_segments_for_file(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
-                "start_folio": get_folio_regex(language, file_name, folio),
+                "folio": folio,
             },
         )
         segments_result, collection_keys = collect_segment_results(
@@ -192,7 +192,6 @@ async def get_table_view(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,
@@ -205,7 +204,7 @@ async def get_table_view(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
-                "start_folio": get_folio_regex(language, file_name, folio),
+                "folio": folio,
             },
         )
         return query.result
@@ -234,7 +233,6 @@ async def get_table_download(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_DOWNLOAD,
@@ -247,16 +245,16 @@ async def get_table_download(
                 "sortkey": get_sort_key(sort_method),
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
-                "start_folio": get_folio_regex(language, file_name, folio),
+                "folio": folio
             },
         )
 
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
-
     if download_data == "table":
-        return run_table_download(
+
+        result = run_table_download(
             query,
             [
                 file_name,
@@ -270,6 +268,8 @@ async def get_table_download(
             ],
         )
 
+        return result 
+    
     segment_collection_results = collect_segment_results(
         create_numbers_view_data(
             query.result, get_folio_regex(language, file_name, folio)
@@ -319,7 +319,6 @@ async def get_multilang(
     """
 
     language = get_language_from_filename(file_name)
-    start_folio = get_folio_regex(language, file_name, folio)
     language = get_language_from_filename(file_name)
     try:
         query = get_db().AQLQuery(
@@ -330,7 +329,7 @@ async def get_multilang(
                 "multi_lingual": multi_lingual,
                 "page": page,
                 "score": score,
-                "start_folio": start_folio,
+                "folio": folio,
                 "search_string": "%" + search_string + "%",
             },
         )
@@ -756,6 +755,7 @@ async def get_search_results(search_string: str):
     """
     database = get_db()
     result = []
+    search_string = search_string.lower()
     search_strings = search_utils.preprocess_search_string(search_string[:150])
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH,
@@ -770,7 +770,7 @@ async def get_search_results(search_string: str):
         rawResults=True,
     )
     query_result = query_search.result[0]
-    result = search_utils.postprocess_results(search_strings, query_result)
+    result = search_utils.postprocess_results(search_string, query_result)
     return {"searchResults": result}
 
 
@@ -780,7 +780,6 @@ async def tag_sanskrit(sanskrit_string: str):
     Stemming + Tagging for Sanskrit
     :return: String with tagged Sanskrit
     """
-    sanskrit_string = transliterate.process('autodetect', 'IAST', sanskrit_string)
     result = search_utils.tag_sanskrit(sanskrit_string).replace("\n", " # ")
     return {"tagged": result}
 
