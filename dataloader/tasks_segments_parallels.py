@@ -33,6 +33,7 @@ from dataloader_utils import (
     get_database,
     should_download_file,
     execute_in_parallel,
+    get_cat_from_segmentnr,
     get_segments_and_parallels_from_gzipped_remote_file,
     get_collection_list_for_language,
     get_categories_for_language_collection,
@@ -297,17 +298,32 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
     :param db: ArangoDB connection object
     """
     db_collection = db.collection(COLLECTION_PARALLELS)
-    db_collection_sorted = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
     parallels_to_be_inserted = []
     root_file_parallel_edges_to_be_inserted = []
 
+    collection_query_cursor = db.aql.execute(
+        menu_queries.QUERY_CATEGORIES_PER_COLLECTION
+    )
+    collections = [doc for doc in collection_query_cursor]
+
+    
     for parallel in json_parallels:
         if isinstance(parallel, dict):
+            category_root = get_cat_from_segmentnr(parallel['root_segnr'][0])
+            category_parallel = get_cat_from_segmentnr(parallel['par_segnr'][0])
+            folios_list = get_folios_from_segment_keys(parallel['root_segnr'],parallel['src_lang'])
+            folios = []
+            for folio in folios_list:
+                folios.append(folio['num'])
+                
             root_filename = parallel["root_segnr"][0].split(":")[0]
             root_filename = re.sub("_[0-9][0-9][0-9]","",root_filename)
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
+            parallel['folios'] = folios
+            parallel['root_category'] = category_root
+            parallel['par_category'] = category_parallel
             # here we delete some things that we don't need in the DB:
             del parallel["par_pos_end"]
             del parallel["root_pos_end"]
@@ -379,6 +395,10 @@ def create_indices(db: StandardDatabase):
     db_collection = db.collection(COLLECTION_PARALLELS)
     db_collection.add_hash_index(["root_filename"], unique=False)
     db_collection.add_hash_index(["src_lang"], unique=False)
+    db_collection.add_hash_index(["par_category"], unique=False)
+    db_collection.add_hash_index(["root_category"], unique=False)
+
+    ###    db_collection.en
     db_collection = db.collection(COLLECTION_FILES)
     db_collection.add_hash_index(["language"], unique=False)
     db_collection.add_hash_index(["category"], unique=False)

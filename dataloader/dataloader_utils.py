@@ -91,7 +91,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
         return True
     if file_lang == LANG_SANSKRIT:
         return True
-    if file_lang == LANG_TIBETAN:
+    if file_lang == LANG_TIBETAN and "T06" in file_name:
         return True
     if file_lang == LANG_ENGLISH:
         return True
@@ -172,3 +172,14 @@ def natural_keys(text):
         (See Toothy's implementation in the comments)
         '''
     return [ atoi(c) for c in re.split(r'(\d+)', text) ]
+
+def get_cat_from_segmentnr(segmentnr):
+    # when the segmentnr is not Pali:
+    cat = ""
+    search = re.search("^[A-Z]+[0-9]+",segmentnr)
+    if search:
+        cat = search[0]
+    else:
+        cat = re.search("^[a-z-]+",segmentnr)[0]
+    return cat
+    
