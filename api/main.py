@@ -8,6 +8,7 @@ Todo:
 
 import re
 import os
+import time
 from typing import Dict, List
 from aksharamukha import transliterate
 
@@ -205,7 +206,7 @@ async def get_table_view(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
-                "start_folio": get_folio_regex(language, file_name, folio),
+                "folio": folio,
             },
         )
         return query.result
@@ -234,7 +235,6 @@ async def get_table_download(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_DOWNLOAD,
@@ -247,16 +247,16 @@ async def get_table_download(
                 "sortkey": get_sort_key(sort_method),
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
-                "start_folio": get_folio_regex(language, file_name, folio),
+                "folio": folio
             },
         )
 
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
-
     if download_data == "table":
-        return run_table_download(
+
+        result = run_table_download(
             query,
             [
                 file_name,
@@ -270,6 +270,8 @@ async def get_table_download(
             ],
         )
 
+        return result 
+    
     segment_collection_results = collect_segment_results(
         create_numbers_view_data(
             query.result, get_folio_regex(language, file_name, folio)
