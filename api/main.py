@@ -141,7 +141,7 @@ async def get_segments_for_file(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
-                "start_folio": get_folio_regex(language, file_name, folio),
+                "folio": folio,
             },
         )
         segments_result, collection_keys = collect_segment_results(
@@ -193,7 +193,6 @@ async def get_table_view(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-    print("LC POS",limitcollection_positive,"LC NEG",limitcollection_negative)
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,
@@ -321,7 +320,6 @@ async def get_multilang(
     """
 
     language = get_language_from_filename(file_name)
-    start_folio = get_folio_regex(language, file_name, folio)
     language = get_language_from_filename(file_name)
     try:
         query = get_db().AQLQuery(
@@ -332,7 +330,7 @@ async def get_multilang(
                 "multi_lingual": multi_lingual,
                 "page": page,
                 "score": score,
-                "start_folio": start_folio,
+                "folio": folio,
                 "search_string": "%" + search_string + "%",
             },
         )
