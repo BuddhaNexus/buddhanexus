@@ -318,12 +318,16 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
                 
             root_filename = parallel["root_segnr"][0].split(":")[0]
             root_filename = re.sub("_[0-9][0-9][0-9]","",root_filename)
+            par_filename = parallel["par_segnr"][0].split(":")[0]
+            par_filename = re.sub("_[0-9][0-9][0-9]","",par_filename)
+
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
             parallel['folios'] = folios
             parallel['root_category'] = category_root
             parallel['par_category'] = category_parallel
+            parallel['par_filename'] = par_filename
             # here we delete some things that we don't need in the DB:
             del parallel["par_pos_end"]
             del parallel["root_pos_end"]

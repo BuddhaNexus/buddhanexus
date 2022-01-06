@@ -193,7 +193,7 @@ async def get_table_view(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection, language
     )
-
+    print("LC POS",limitcollection_positive,"LC NEG",limitcollection_negative)
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,

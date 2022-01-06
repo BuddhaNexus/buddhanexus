@@ -41,20 +41,9 @@ FOR f IN parallels_sorted_file
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER p["co-occ"] <= @coocc
-            LET filtertest = (
-                FOR item IN @limitcollection_positive
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-            LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
-            FILTER filternr == true
-            LET filtertest2 = (
-                FOR item IN @limitcollection_negative
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-            FILTER filternr2 == false
-
+            FILTER p["co-occ"] <= @coocc            
+            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
@@ -96,18 +85,9 @@ FOR f IN parallels_sorted_file
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
-            LET filtertest = (
-                FOR item IN @limitcollection_positive
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-            LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
-            FILTER filternr == true
-            LET filtertest2 = (
-                FOR item IN @limitcollection_negative
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-            FILTER filternr2 == false
+            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
+
 
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
@@ -231,18 +211,9 @@ LET parallels =  (
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
-            LET filtertest = (
-                FOR item IN @limitcollection_positive
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-            LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
-            FILTER filternr == true
-            LET filtertest2 = (
-                FOR item IN @limitcollection_negative
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-            FILTER filternr2 == false
+            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
+
             FILTER POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
             RETURN {
@@ -288,18 +259,9 @@ LET parallels = (
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
-            LET filtertest = (
-                FOR item IN @limitcollection_positive
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-            LET filternr = (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
-            FILTER filternr == true
-            LET filtertest2 = (
-                FOR item IN @limitcollection_negative
-                    RETURN REGEX_TEST(p.par_segnr[0], item)
-                )
-            LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-            FILTER filternr2 == false
+            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
+
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
@@ -398,17 +360,10 @@ FOR p IN current_parallels
 QUERY_TOTAL_NUMBERS = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
-    LET filtertest = (
-        FOR item IN @limitcollection_positive
-            RETURN REGEX_TEST(p.par_segnr[0], item)
-    )
-    FILTER (@limitcollection_positive != []) ? POSITION(filtertest, true) : true
-    LET filtertest2 = (
-        FOR item IN @limitcollection_negative
-            RETURN REGEX_TEST(p.par_segnr[0], item)
-    )
-    LET filternr2 = (@limitcollection_negative != []) ? POSITION(filtertest2, true) : false
-    FILTER filternr2 == false
+            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
+
+e
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
     FILTER p["co-occ"] <= @coocc
