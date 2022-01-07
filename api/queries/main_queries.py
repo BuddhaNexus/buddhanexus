@@ -43,7 +43,7 @@ FOR f IN parallels_sorted_file
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc            
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
@@ -86,7 +86,7 @@ FOR f IN parallels_sorted_file
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
 
 
             LET root_seg_text = (
@@ -212,7 +212,7 @@ LET parallels =  (
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
 
             FILTER POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
@@ -260,7 +260,7 @@ LET parallels = (
             FILTER p.par_length >= @parlength
             FILTER p["co-occ"] <= @coocc
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
 
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
@@ -361,9 +361,7 @@ QUERY_TOTAL_NUMBERS = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative OR p.par_filename NOT IN @limitcollection_negative)
-
-e
+            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
     FILTER p["co-occ"] <= @coocc
