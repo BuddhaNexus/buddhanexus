@@ -230,9 +230,8 @@ async def get_table_download(
     :return: List of segments and parallels for the downloaded table view.
     """
     language = get_language_from_filename(file_name)
-    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, language
-    )
+    limit_collection_regex = get_collection_files_regex(limit_collection, language)
+
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_DOWNLOAD,
@@ -243,17 +242,17 @@ async def get_table_download(
                 "parlength": par_length,
                 "coocc": co_occ,
                 "sortkey": get_sort_key(sort_method),
-                "limitcollection_positive": limitcollection_positive,
-                "limitcollection_negative": limitcollection_negative,
-                "folio": folio
+                "limitcollection_positive": limit_collection_regex[0],
+                "limitcollection_negative": limit_collection_regex[1],
+                "folio": folio,
             },
         )
 
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
-    if download_data == "table":
 
+    if download_data == "table":
         result = run_table_download(
             query,
             [
@@ -268,8 +267,8 @@ async def get_table_download(
             ],
         )
 
-        return result 
-    
+        return result
+
     segment_collection_results = collect_segment_results(
         create_numbers_view_data(
             query.result, get_folio_regex(language, file_name, folio)
@@ -318,8 +317,6 @@ async def get_multilang(
     :return: List of segments and parallels for the table view.
     """
 
-    language = get_language_from_filename(file_name)
-    language = get_language_from_filename(file_name)
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_MULTILINGUAL,
@@ -573,7 +570,7 @@ async def get_graph_for_file(
             continue
 
         collection = collection_key.group()
-        if collection not in total_collection_dict.keys():
+        if collection not in total_collection_dict:
             total_collection_dict[collection] = count_this_parallel
         else:
             total_collection_dict[collection] += count_this_parallel

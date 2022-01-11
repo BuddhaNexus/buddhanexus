@@ -269,10 +269,10 @@ def get_spreadsheet_values(parallel, lang):
         par_segment_text = par_segment_text_joined[par_offset_beg:par_offset_end]
     except IndexError:
         par_segment_text = par_segment_text_joined
-    
+
     par_text_name = parallel["par_displayname"]
     par_text_number = parallel["par_segnr"][0].split(":")[0]
-    if len(par_text_name) >0:
+    if len(par_text_name) > 0:
         par_text_name = par_text_name[0]
     else:
         par_text_name = "NA"
