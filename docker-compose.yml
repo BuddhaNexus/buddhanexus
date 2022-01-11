@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   arangodb:
-    image: arangodb:3.6.1
+    image: arangodb:3.8.4
     expose:
       - "8529"
     container_name: "arangodb"
@@ -11,7 +11,7 @@ services:
     env_file:
       - .env
     entrypoint: /entrypoint.sh
-    command: --query.optimizer-rules "-splice-subqueries"
+    command: --query.optimizer-rules "-splice-subqueries" 
     volumes:
       - dbdata:/var/lib/arangodb3
     restart: always
