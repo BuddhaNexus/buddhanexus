@@ -139,12 +139,8 @@ LET parallel_ids = (
 FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
     FOR p IN parallels_multi
         FILTER p._key == parallel_id
-        LET folio_regex_test = (
-            FOR current_segnr IN p.root_segnr
-            RETURN REGEX_TEST(current_segnr, @start_folio)
-        )
+        FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
         FILTER LIKE(p.root_string, @search_string, true) || LIKE(p.par_string, @search_string, true)
-        FILTER POSITION(folio_regex_test, true)
         FILTER POSITION(@multi_lingual, p.tgt_lang)
         FILTER p.score >= @score
         LIMIT 100 * @page,100
