@@ -39,7 +39,7 @@ def get_language_from_filename(filename) -> str:
     lang = "pli"
     if re.search(r"[DH][0-9][0-9][0-9]|NK|NG", filename):
         lang = "tib"
-    elif re.search(r"(u$|u:|^Y|^XX)", filename):
+    elif re.search(r"(u$|u:|^Y|^XX|sc$|sc:)", filename):
         lang = "skt"
     elif re.search(r"[TX][0-9][0-9]n[0-9]", filename):
         lang = "chn"
@@ -83,7 +83,7 @@ def get_collection_files_regex(limit_collection, language) -> List:
 
     teststring_positive = []
     teststring_negative = []
-    if language in ("tib", "chn", "skt",'pli'):
+    if language in ("tib", "chn", "skt", "pli"):
         for file in new_limit_collection:
             if "!" not in file:
                 teststring_positive.append(file)
