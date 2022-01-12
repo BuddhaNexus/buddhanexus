@@ -165,12 +165,12 @@ def get_folio_regex(language, file_name, folio) -> str:
             else:
                 start_folio = file_name + ":" + folio + "[._]"
         elif language == "skt":
-            if re.search(r"^(XXdhppat)", file_name):
+            if re.search(r"^(K14dhppat)", file_name):
                 start_folio = file_name + ":pdhp_" + folio + "_"
-            elif re.search(r"^(S10udanav)", file_name):
+            elif re.search(r"^(K10udanav)", file_name):
                 start_folio = file_name + ":uv_" + folio + "_"
-            elif re.search(r"^(OT)", file_name):
-                start_folio = file_name + ":" + folio + "_"
+            elif re.search(r"^(K10uvs)", file_name):
+                start_folio = file_name + ":uvs_" + folio + "_"
             else:
                 start_folio = file_name + ":" + folio[:-1] + "[0-9](_[0-9]+)*$"
         elif language == "tib":
