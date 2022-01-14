@@ -71,7 +71,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
     return new_limit_collection
 
 
-def get_collection_files_regex(limit_collection, language) -> List:
+def get_collection_files_regex(limit_collection) -> List:
     """
     Returns a regular expression list for use in arangodb queries
     :param limit_collection: The list of collections to limit to

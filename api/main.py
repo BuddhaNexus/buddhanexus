@@ -88,9 +88,8 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
     """
     :return: List of parallels for text view (middle)
     """
-    language = get_language_from_filename(parallels.file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        parallels.limit_collection, language
+        parallels.limit_collection
     )
     query_result = get_db().AQLQuery(
         query=main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
@@ -124,7 +123,7 @@ async def get_segments_for_file(
     """
     language = get_language_from_filename(file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, language
+        limit_collection
     )
     try:
         database = get_db()
@@ -154,7 +153,7 @@ async def get_segments_for_file(
                 query=menu_queries.QUERY_COLLECTION_NAMES,
                 bindVars={
                     "collections": collection_keys,
-                    "language": get_language_from_filename(file_name),
+                    "language": language,
                 },
             ).result,
             "segments": segments_result,
@@ -188,9 +187,8 @@ async def get_table_view(
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
-    language = get_language_from_filename(file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, language
+        limit_collection
     )
     try:
         query = get_db().AQLQuery(
@@ -230,7 +228,7 @@ async def get_table_download(
     :return: List of segments and parallels for the downloaded table view.
     """
     language = get_language_from_filename(file_name)
-    limit_collection_regex = get_collection_files_regex(limit_collection, language)
+    limit_collection_regex = get_collection_files_regex(limit_collection)
 
     try:
         query = get_db().AQLQuery(
@@ -441,7 +439,7 @@ async def get_file_text_segments_and_parallels(
         start_int = get_start_integer(active_segment)
 
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)
+        limit_collection
     )
     current_bind_vars = {
         "parallel_ids_type": parallel_ids_type,
@@ -691,7 +689,7 @@ async def get_counts_for_file(
     Returns number of filtered parallels
     """
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)
+        limit_collection
     )
     query_graph_result = get_db().AQLQuery(
         query=main_queries.QUERY_TOTAL_NUMBERS,
