@@ -39,7 +39,7 @@ def get_language_from_filename(filename) -> str:
     lang = "pli"
     if re.search(r"[DH][0-9][0-9][0-9]|NK|NG", filename):
         lang = "tib"
-    elif re.search(r"(u$|u:|^Y|^XX)", filename):
+    elif re.search(r"(u$|u:|^Y|^XX|sc$|sc:)", filename):
         lang = "skt"
     elif re.search(r"[TX][0-9][0-9]n[0-9]", filename):
         lang = "chn"
@@ -71,7 +71,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
     return new_limit_collection
 
 
-def get_collection_files_regex(limit_collection, language) -> List:
+def get_collection_files_regex(limit_collection) -> List:
     """
     Returns a regular expression list for use in arangodb queries
     :param limit_collection: The list of collections to limit to
@@ -83,25 +83,11 @@ def get_collection_files_regex(limit_collection, language) -> List:
 
     teststring_positive = []
     teststring_negative = []
-    if language in ("tib", "chn", "skt"):
-        for file in new_limit_collection:
-            if "!" not in file:
-                teststring_positive.append("^" + file)
-            else:
-                teststring_negative.append("^" + file.replace("!", ""))
-    elif language == "pli":
-        for file in new_limit_collection:
-            if "!" not in file:
-                if number_exists(file) or ("pm" in file) or ("dhp" in file):
-                    teststring_positive.append("^" + file + ":")
-                else:
-                    teststring_positive.append("^" + file + r"[0-9\-]")
-            else:
-                if number_exists(file) or ("pm" in file):
-                    teststring_negative.append("^" + file.replace("!", "") + ":")
-                else:
-                    teststring_negative.append("^" + file.replace("!", "") + r"[0-9\-]")
-
+    for file in new_limit_collection:
+        if "!" not in file:
+            teststring_positive.append(file)
+        else:
+            teststring_negative.append(file.replace("!", ""))
     return [teststring_positive, teststring_negative]
 
 
@@ -166,19 +152,18 @@ def get_folio_regex(language, file_name, folio) -> str:
             else:
                 start_folio = file_name + ":" + folio + "[._]"
         elif language == "skt":
-            if re.search(r"^(XXdhppat)", file_name):
+            if re.search(r"^(K14dhppat)", file_name):
                 start_folio = file_name + ":pdhp_" + folio + "_"
-            elif re.search(r"^(S10udanav)", file_name):
+            elif re.search(r"^(K10udanav)", file_name):
                 start_folio = file_name + ":uv_" + folio + "_"
-            elif re.search(r"^(OT)", file_name):
-                start_folio = file_name + ":" + folio + "_"
+            elif re.search(r"^(K10uvs)", file_name):
+                start_folio = file_name + ":uvs_" + folio + "_"
             else:
                 start_folio = file_name + ":" + folio[:-1] + "[0-9](_[0-9]+)*$"
         elif language == "tib":
             start_folio = file_name + ":" + folio + "-"
         elif language == "chn":
             start_folio = file_name + "_" + folio + ":"
-
     return start_folio
 
 
