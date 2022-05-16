@@ -28,7 +28,7 @@ rebuild:
 
 # Destroy containers and images, including database data
 clean-all:
-	$(COMPOSE) down --rmi local --volumess
+	$(COMPOSE) down --rmi local --volumes
 
 # Initialize database and create empty collections
 create-db:
