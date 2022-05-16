@@ -28,7 +28,7 @@ rebuild:
 
 # Destroy containers and images, including database data
 clean-all:
-	$(COMPOSE) down --rmi local --volumes
+	$(COMPOSE) down --rmi local --volumess
 
 # Initialize database and create empty collections
 create-db:
@@ -102,6 +102,10 @@ load-chinese-data:
 	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
+load-chn-sentence-data:
+	@docker exec -ti dataloader bash -c "invoke load-sentence-files --threaded --lang=chn"
+	@docker exec -ti dataloader bash -c "invoke add-indices"
+
 load-pali-data:
 	@docker exec -ti dataloader bash -c "invoke load-menu-files"
 	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=pli"
@@ -113,7 +117,7 @@ load-multi-data:
 	@docker exec -ti dataloader bash -c "invoke load-multi-files"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
-load-english-data:
+load-sc-english-data:
 	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=en"
 	@docker exec -ti dataloader bash -c "invoke add-indices"
 
@@ -124,11 +128,14 @@ load-ai-data:
 clean-multi-data:
 	@docker exec -t dataloader bash -c "invoke clean-multi-data"
 
-clean-english-data:
-	@docker exec -t dataloader bash -c "invoke clean-english"
+clean-sc-english-data:
+	@docker exec -t dataloader bash -c "invoke clean-sc-english"
 
 clean-ai-data:
 	@docker exec -t dataloader bash -c "invoke clean-ai"
+
+clean-chn-sentence-data:
+	@docker exec -t dataloader bash -c "invoke clean-chn-sentences"
 
 # the following four commands are for partial unloading of individual datasets
 clean-tibetan-data:

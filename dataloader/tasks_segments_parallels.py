@@ -21,10 +21,11 @@ from dataloader_constants import (
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_SEGMENTS,
+    COLLECTION_SENTENCES,
     COLLECTION_FILES,
     COLLECTION_FILES_PARALLEL_COUNT,
     COLLECTION_REGEX,
-    COLLECTION_CATEGORIES_PARALLEL_COUNT
+    COLLECTION_CATEGORIES_PARALLEL_COUNT,
 )
 
 
@@ -37,7 +38,7 @@ from dataloader_utils import (
     get_segments_and_parallels_from_gzipped_remote_file,
     get_collection_list_for_language,
     get_categories_for_language_collection,
-    natural_keys
+    natural_keys,
 )
 
 # allow importing from api directory
@@ -51,8 +52,9 @@ from api.queries import menu_queries, main_queries
 from api.utils import get_language_from_filename
 
 
-
-def load_segment_data_from_menu_files(root_url: str, threads: int, langs: list):
+def load_segment_data_from_menu_files(
+    root_url: str, threads: int, langs: list, sentences: str
+):
     for language in langs:
         with open(f"../data/{language}-files.json") as f:
             print(f"\nLoading segment data from menu files in {language}:...")
@@ -69,36 +71,35 @@ def load_segment_data_from_menu_files(root_url: str, threads: int, langs: list):
 
             execute_in_parallel(
                 lambda item: load_segments_and_parallels_data_from_menu_file(
-                    item, lang=language, root_url=root_url
+                    item, lang=language, root_url=root_url, sentences=sentences
                 ),
                 filtered_file_data,
                 threads,
             )
 
 
-
 def get_folios_from_segment_keys(segment_keys, lang):
     folios = []
     if lang == LANG_CHINESE:
-        last_num = ''
+        last_num = ""
         for segment_key in segment_keys:
             num = segment_key.split("_")[1].split(":")[0]
             if num != last_num:
                 folios.append({"num": num, "segment_nr": segment_key})
                 last_num = num
     elif lang == LANG_TIBETAN:
-        last_num = ''
+        last_num = ""
         for segment_key in segment_keys:
             num = segment_key.split(":")[1].split("-")[0]
             if num != last_num:
                 folios.append({"num": num, "segment_nr": segment_key})
                 last_num = num
     elif lang == LANG_PALI:
-        last_num = ''
+        last_num = ""
         for segment_key in segment_keys:
             num = segment_key.split(":")[1].split(".")[0].split("_")[0]
             if re.search(r"^(anya|tika|atk)", segment_key):
-                if num.endswith('0') and num != last_num:
+                if num.endswith("0") and num != last_num:
                     folios.append({"num": num, "segment_nr": segment_key})
                     last_num = num
             else:
@@ -106,7 +107,7 @@ def get_folios_from_segment_keys(segment_keys, lang):
                     folios.append({"num": num, "segment_nr": segment_key})
                     last_num = num
     elif lang == LANG_SANSKRIT:
-        last_num = ''
+        last_num = ""
         for segment_key in segment_keys:
             if re.search(r"^(K14dhppat|K10udanav|K10uvs)", segment_key):
                 num = segment_key.split(":")[1].split("_")[1]
@@ -115,17 +116,17 @@ def get_folios_from_segment_keys(segment_keys, lang):
                     last_num = num
             else:
                 num = segment_key.split(":")[1].split(".")[0].split("_")[0]
-                if num.endswith('0') and num != last_num:
+                if num.endswith("0") and num != last_num:
                     folios.append({"num": num, "segment_nr": segment_key})
                     last_num = num
 
     return folios
-    
+
 
 def load_segments_and_parallels_data_from_menu_file(
-    menu_file_json, lang: str, root_url: str
+    menu_file_json, lang: str, root_url: str, sentences: str
 ) -> None:
-    file_url = f"{root_url}{lang}/{menu_file_json['filename']}.json.gz"
+    file_url = f"{root_url}{lang}{sentences}/{menu_file_json['filename']}.json.gz"
     db = get_database()
 
     if not file_url.endswith("gz"):
@@ -138,20 +139,24 @@ def load_segments_and_parallels_data_from_menu_file(
 
     if segments:
         segment_keys, totallengthcount, totalfilelengthcount = load_segments(
-            segments, parallels, db
+            segments, parallels, sentences, db
         )
-        load_files_collection(menu_file_json, segment_keys, lang, db)
-        load_file_parallel_counts(
-            menu_file_json, totallengthcount, totalfilelengthcount, db
-        )
+
+        if not sentences:
+            load_files_collection(menu_file_json, segment_keys, lang, db)
+            load_file_parallel_counts(
+                menu_file_json, totallengthcount, totalfilelengthcount, db
+            )
 
     if parallels:
         load_parallels(parallels, db)
-        load_parallels_sorted(parallels, db,menu_file_json['filename'])
+        load_parallels_sorted(parallels, db, menu_file_json["filename"])
 
 
-def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> list:
-    """ Returns list of segment numbers. """
+def load_segments(
+    segments: list, all_parallels: list, sentences: str, db: StandardDatabase
+) -> list:
+    """Returns list of segment numbers."""
     segment_keys = []
     segmentnr_parallel_ids_dic = {}
     segmentnr_parallel_ids_dic_limited = {}
@@ -168,12 +173,16 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
                         segmentnr_parallel_ids_dic[segment_key] = [parallel["id"]]
                     else:
                         segmentnr_parallel_ids_dic[segment_key].append(parallel["id"])
-                    # the limited-dic collects only the first 10 parallels, because we don't need more for the text-view. 
-                    if parallel['co-occ'] <= 20:
+                    # the limited-dic collects only the first 10 parallels, because we don't need more for the text-view.
+                    if parallel["co-occ"] <= 20:
                         if segment_key not in segmentnr_parallel_ids_dic_limited.keys():
-                            segmentnr_parallel_ids_dic_limited[segment_key] = [parallel["id"]]
+                            segmentnr_parallel_ids_dic_limited[segment_key] = [
+                                parallel["id"]
+                            ]
                         else:
-                            segmentnr_parallel_ids_dic_limited[segment_key].append(parallel["id"])
+                            segmentnr_parallel_ids_dic_limited[segment_key].append(
+                                parallel["id"]
+                            )
 
             if parallel["par_segnr"]:
                 collection_key = re.search(COLLECTION_REGEX, parallel["par_segnr"][0])
@@ -195,11 +204,20 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
             if segment["segnr"] in segmentnr_parallel_ids_dic.keys():
                 parallel_ids = segmentnr_parallel_ids_dic[segment["segnr"]]
             if segment["segnr"] in segmentnr_parallel_ids_dic_limited.keys():
-                parallel_ids_limited = segmentnr_parallel_ids_dic_limited[segment["segnr"]]
+                parallel_ids_limited = segmentnr_parallel_ids_dic_limited[
+                    segment["segnr"]
+                ]
 
             # Loads segment into database
             # todo: remove parallel_ids table
-            segment_key = load_segment(segment, segment_count, parallel_ids,parallel_ids_limited, db)
+            segment_key = load_segment(
+                segment,
+                segment_count,
+                parallel_ids,
+                parallel_ids_limited,
+                sentences,
+                db,
+            )
 
             segment_keys.append(segment_key)
             segment_count += 1
@@ -215,7 +233,12 @@ def load_segments(segments: list, all_parallels: list, db: StandardDatabase) -> 
 
 
 def load_segment(
-        json_segment: Segment, count: int, parallel_ids: list, parallel_ids_limited: list, db: StandardDatabase
+    json_segment: Segment,
+    count: int,
+    parallel_ids: list,
+    parallel_ids_limited: list,
+    sentences: str,
+    db: StandardDatabase,
 ) -> str:
     """
     Given a single segment object, load it into the `segments` collection.
@@ -226,7 +249,10 @@ def load_segment(
     :param db: ArangoDB database object
     :return: Segment nr
     """
-    collection = db.collection(COLLECTION_SEGMENTS)
+    if sentences:
+        collection = db.collection(COLLECTION_SENTENCES)
+    else:
+        collection = db.collection(COLLECTION_SEGMENTS)
     try:
         doc = {
             "_key": json_segment["segnr"],
@@ -237,7 +263,7 @@ def load_segment(
             "position": json_segment["position"],
             "count": count,
             "parallel_ids": parallel_ids,
-            "parallel_ids_limited": parallel_ids_limited
+            "parallel_ids_limited": parallel_ids_limited,
         }
         collection.insert(doc)
     except (KeyError, AttributeError) as e:
@@ -270,19 +296,34 @@ def load_file_parallel_counts(
     }
     try:
         db_collection.add_hash_index(["category"], unique=False)
-        if db_collection.get(file['filename']):
-            db_collection.delete(file['filename'])
+        if db_collection.get(file["filename"]):
+            db_collection.delete(file["filename"])
         db_collection.insert(doc)
     except (DocumentInsertError, IndexCreateError) as e:
         print("Could not load file. Error: ", e)
 
 
-def load_files_collection(file: MenuItem, segment_keys: list,lang: str, db: StandardDatabase):
+def load_files_collection(
+    file: MenuItem, segment_keys: list, lang: str, db: StandardDatabase
+):
     files_db_collection = db.collection(COLLECTION_FILES)
     file_key = file["filename"]
-    folios = get_folios_from_segment_keys(segment_keys,lang)
-    search_field = file['textname'] + " " + file['displayName'] + " (" + unidecode.unidecode(file['displayName']) + ")"
-    doc = {"_key": file_key, "segment_keys": segment_keys, "folios" : folios, "language":lang, "search_field" : search_field}
+    folios = get_folios_from_segment_keys(segment_keys, lang)
+    search_field = (
+        file["textname"]
+        + " "
+        + file["displayName"]
+        + " ("
+        + unidecode.unidecode(file["displayName"])
+        + ")"
+    )
+    doc = {
+        "_key": file_key,
+        "segment_keys": segment_keys,
+        "folios": folios,
+        "language": lang,
+        "search_field": search_field,
+    }
     doc.update(file)
     try:
         files_db_collection.insert(doc)
@@ -306,28 +347,29 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
     )
     collections = [doc for doc in collection_query_cursor]
 
-    
     for parallel in json_parallels:
         if isinstance(parallel, dict):
-            category_root = get_cat_from_segmentnr(parallel['root_segnr'][0])
-            category_parallel = get_cat_from_segmentnr(parallel['par_segnr'][0])
-            folios_list = get_folios_from_segment_keys(parallel['root_segnr'],parallel['src_lang'])
+            category_root = get_cat_from_segmentnr(parallel["root_segnr"][0])
+            category_parallel = get_cat_from_segmentnr(parallel["par_segnr"][0])
+            folios_list = get_folios_from_segment_keys(
+                parallel["root_segnr"], parallel["src_lang"]
+            )
             folios = []
             for folio in folios_list:
-                folios.append(folio['num'])
-                
+                folios.append(folio["num"])
+
             root_filename = parallel["root_segnr"][0].split(":")[0]
-            root_filename = re.sub("_[0-9][0-9][0-9]","",root_filename)
+            root_filename = re.sub("_[0-9][0-9][0-9]", "", root_filename)
             par_filename = parallel["par_segnr"][0].split(":")[0]
-            par_filename = re.sub("_[0-9][0-9][0-9]","",par_filename)
+            par_filename = re.sub("_[0-9][0-9][0-9]", "", par_filename)
 
             parallel_id = f"parallels/{parallel['id']}"
             parallel["_key"] = parallel["id"]
             parallel["_id"] = parallel_id
-            parallel['folios'] = folios
-            parallel['root_category'] = category_root
-            parallel['par_category'] = category_parallel
-            parallel['par_filename'] = par_filename
+            parallel["folios"] = folios
+            parallel["root_category"] = category_root
+            parallel["par_category"] = category_parallel
+            parallel["par_filename"] = par_filename
             # here we delete some things that we don't need in the DB:
             del parallel["par_pos_end"]
             del parallel["root_pos_end"]
@@ -339,7 +381,6 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             parallel["root_filename"] = root_filename
             parallels_to_be_inserted.append(parallel)
 
-
     chunksize = 10000
 
     for i in range(0, len(parallels_to_be_inserted), chunksize):
@@ -349,8 +390,9 @@ def load_parallels(json_parallels: [Parallel], db: StandardDatabase) -> None:
             print(f"Could not save parallel {parallel}. Error: ", e)
 
 
-
-def load_parallels_sorted(json_parallels: [Parallel], db: StandardDatabase,filename: str) -> None:
+def load_parallels_sorted(
+    json_parallels: [Parallel], db: StandardDatabase, filename: str
+) -> None:
     """
     Given an array of parallel objects, load them all into the `sorted parallels` collection presorted.
 
@@ -360,41 +402,59 @@ def load_parallels_sorted(json_parallels: [Parallel], db: StandardDatabase,filen
     """
 
     db_collection_sorted = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
-    # I wonder if this can be done more efficiently, a lot of spaghetti code...    
-    parallels_sorted_by_src_position = sorted(json_parallels, key=lambda k: k['root_pos_beg'])
-    ids_sorted_by_src_position = list(map(lambda parallel: parallel['id'], parallels_sorted_by_src_position))
-        
-    parallels_sorted_by_tgt_position = sorted(json_parallels, key=lambda k: natural_keys(k['par_segnr'][0]))
-    ids_sorted_by_tgt_position = list(map(lambda parallel: parallel['id'], parallels_sorted_by_tgt_position))
+    # I wonder if this can be done more efficiently, a lot of spaghetti code...
+    parallels_sorted_by_src_position = sorted(
+        json_parallels, key=lambda k: k["root_pos_beg"]
+    )
+    ids_sorted_by_src_position = list(
+        map(lambda parallel: parallel["id"], parallels_sorted_by_src_position)
+    )
 
-    parallels_sorted_by_length_par = sorted(json_parallels, key=lambda k: k['par_length'])                                          
-    ids_sorted_by_length_par = list(map(lambda parallel: parallel['id'], parallels_sorted_by_length_par))
+    parallels_sorted_by_tgt_position = sorted(
+        json_parallels, key=lambda k: natural_keys(k["par_segnr"][0])
+    )
+    ids_sorted_by_tgt_position = list(
+        map(lambda parallel: parallel["id"], parallels_sorted_by_tgt_position)
+    )
 
-    parallels_sorted_by_length_root = sorted(json_parallels, key=lambda k: k['root_length'])
-    ids_sorted_by_length_root = list(map(lambda parallel: parallel['id'], parallels_sorted_by_length_root))
+    parallels_sorted_by_length_par = sorted(
+        json_parallels, key=lambda k: k["par_length"]
+    )
+    ids_sorted_by_length_par = list(
+        map(lambda parallel: parallel["id"], parallels_sorted_by_length_par)
+    )
+
+    parallels_sorted_by_length_root = sorted(
+        json_parallels, key=lambda k: k["root_length"]
+    )
+    ids_sorted_by_length_root = list(
+        map(lambda parallel: parallel["id"], parallels_sorted_by_length_root)
+    )
 
     ids_sorted_by_length_par.reverse()
     ids_sorted_by_length_root.reverse()
 
     ids_sorted_random = ids_sorted_by_length_root
     random.shuffle(ids_sorted_random)
-    
-    src_lang = json_parallels[0]['src_lang']
+
+    src_lang = json_parallels[0]["src_lang"]
     try:
-        db_collection_sorted.insert({'_key':filename,
-                                     'filename':filename,
-                                     'lang':src_lang,
-                                     'parallels_sorted_by_src_pos': ids_sorted_by_src_position,
-                                     'parallels_sorted_by_tgt_pos': ids_sorted_by_tgt_position,
-                                     'parallels_sorted_by_length_src': ids_sorted_by_length_root,
-                                     'parallels_randomized': ids_sorted_random,
-                                     'parallels_sorted_by_length_tgt': ids_sorted_by_length_par})
+        db_collection_sorted.insert(
+            {
+                "_key": filename,
+                "filename": filename,
+                "lang": src_lang,
+                "parallels_sorted_by_src_pos": ids_sorted_by_src_position,
+                "parallels_sorted_by_tgt_pos": ids_sorted_by_tgt_position,
+                "parallels_sorted_by_length_src": ids_sorted_by_length_root,
+                "parallels_randomized": ids_sorted_random,
+                "parallels_sorted_by_length_tgt": ids_sorted_by_length_par,
+            }
+        )
     except (DocumentInsertError, IndexCreateError) as e:
         print(f"Could not save sorted parallel for {filename}. Error: ", e)
 
 
-
-        
 def create_indices(db: StandardDatabase):
     db_collection = db.collection(COLLECTION_PARALLELS)
     db_collection.add_hash_index(["root_filename"], unique=False)
@@ -407,19 +467,20 @@ def create_indices(db: StandardDatabase):
     db_collection.add_hash_index(["language"], unique=False)
     db_collection.add_hash_index(["category"], unique=False)
 
-def load_sources(db: StandardDatabase,root_url):
+
+def load_sources(db: StandardDatabase, root_url):
     source_json_path = root_url + "sources.json"
     db_file_collection = db.collection(COLLECTION_FILES)
-    with open(source_json_path,"rb") as f:
+    with open(source_json_path, "rb") as f:
         source_list = json.load(f)
     for entry in source_list:
-        filename = entry['filename']
+        filename = entry["filename"]
         current_file = db_file_collection.get(filename)
         if current_file:
-            current_file['source_string'] = entry['source']
+            current_file["source_string"] = entry["source"]
             print(current_file)
             db_file_collection.update(current_file)
-    
+
 
 # TODO: Refactor this function. Split into smaller chunks.
 def calculate_parallel_totals():
@@ -508,8 +569,8 @@ def add_category_totals_to_db(
                 weight_value = parallel_count[categoryname]
 
             displayFileName = filename["filename"]
-            if language == 'skt' or language == 'pli':
-                displayFileName = filename["displayName"] + ' ('+displayFileName+')'
+            if language == "skt" or language == "pli":
+                displayFileName = filename["displayName"] + " (" + displayFileName + ")"
 
             new_paralllel_entry = [
                 displayFileName,

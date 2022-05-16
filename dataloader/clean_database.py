@@ -15,6 +15,7 @@ from dataloader_constants import (
     INDEX_VIEW_NAMES,
     DEFAULT_SOURCE_URL,
     COLLECTION_SEGMENTS,
+    COLLECTION_SENTENCES,
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_FILES,
@@ -28,10 +29,10 @@ from dataloader_constants import (
     COLLECTION_LANGUAGES,
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
-
 )
 
 from dataloader_utils import get_database, get_system_database
+
 
 def clean_search_index_db():
     """
@@ -48,6 +49,7 @@ def clean_search_index_db():
         print("Error deleting collection %s: " % name, e)
     clean_analyzers(db)
     print("search index cleaned.")
+
 
 def clean_all_collections_db():
     """
@@ -69,7 +71,7 @@ def clean_all_collections_db():
         print("couldn't remove graph. It probably doesn't exist.", e)
 
     print("all collections cleaned.")
-    
+
 
 def clean_totals_collection_db():
     """
@@ -80,7 +82,7 @@ def clean_totals_collection_db():
     db.create_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
     print("totals collection cleaned.")
 
-    
+
 def empty_collection(collection_name: str, db: StandardDatabase, edge: bool = False):
     try:
         db.delete_collection(collection_name)
@@ -92,7 +94,7 @@ def empty_collection(collection_name: str, db: StandardDatabase, edge: bool = Fa
     except CollectionCreateError:
         print(f"couldn't create collection: {collection_name}")
 
-        
+
 def clean_segment_collections_db():
     """
     Clear the segment database collections completely.
@@ -104,6 +106,7 @@ def clean_segment_collections_db():
         db.delete_graph(GRAPH_FILES_PARALLELS)
         for name in (
             COLLECTION_SEGMENTS,
+            COLLECTION_SENTENCES,
             COLLECTION_PARALLELS,
             COLLECTION_FILES,
             COLLECTION_FILES_PARALLEL_COUNT,
@@ -115,7 +118,7 @@ def clean_segment_collections_db():
         )
     print("segment collections cleaned.")
 
-    
+
 def clean_menu_collections_db():
     """
     Clear the menu database collections completely.
@@ -143,27 +146,40 @@ def clean_menu_collections_db():
 
 
 def clean_all_lang_db(current_lang):
-    print("Cleaning data for language",current_lang)
+    print("Cleaning data for language", current_lang)
     db = get_database()
 
     segments_collection = db.collection(COLLECTION_SEGMENTS)
-    segments_collection.delete_match({"lang":current_lang})
+    segments_collection.delete_match({"lang": current_lang})
+
+    sentences_collection = db.collection(COLLECTION_SENTENCES)
+    sentences_collection.delete_match({"lang": current_lang})
 
     parallels_collection = db.collection(COLLECTION_PARALLELS)
-    parallels_collection.delete_match({"src_lang":current_lang})
+    parallels_collection.delete_match({"src_lang": current_lang})
 
     parallels_sorted_collection = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
-    parallels_sorted_collection.delete_match({"lang":current_lang})
+    parallels_sorted_collection.delete_match({"lang": current_lang})
 
     menu_categories_collection = db.collection(COLLECTION_MENU_CATEGORIES)
-    menu_categories_collection.delete_match({"language":current_lang})
+    menu_categories_collection.delete_match({"language": current_lang})
 
     menu_collections_collection = db.collection(COLLECTION_MENU_COLLECTIONS)
-    menu_collections_collection.delete_match({"language":current_lang})
+    menu_collections_collection.delete_match({"language": current_lang})
 
     parallels_count_collection = db.collection(COLLECTION_FILES_PARALLEL_COUNT)
-    parallels_count_collection.delete_match({"language":current_lang})
+    parallels_count_collection.delete_match({"language": current_lang})
 
     files_collection = db.collection(COLLECTION_FILES)
-    files_collection.delete_match({"language":current_lang})
+    files_collection.delete_match({"language": current_lang})
     print("Cleaning data done.")
+
+
+def clean_sentence_collection(current_lang):
+    print("Cleaning sentence collection data for language", current_lang)
+    db = get_database()
+
+    segments_collection = db.collection(COLLECTION_SENTENCES)
+    segments_collection.delete_match({"lang": current_lang})
+
+    print("Cleaning sentence data done.")
