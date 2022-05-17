@@ -1,9 +1,8 @@
 import re
-
-# import buddhanexus_lang_analyzer.translate_for_website as bn_translate
+import buddhanexus_lang_analyzer.translate_for_website as bn_translate
 from fuzzysearch import levenshtein_ngram
 
-# bn_analyzer = bn_translate.analyzer()
+bn_analyzer = bn_translate.analyzer()
 
 
 def preprocess_search_string(search_string):
@@ -11,21 +10,20 @@ def preprocess_search_string(search_string):
     chn = ""
     skt = ""
     pli = ""
-    # search_string = search_string.lower()
-    # skt_fuzzy = bn_analyzer.stem_sanskrit(search_string)
-    # pli = bn_analyzer.stem_pali(search_string)
-    # tib_preprocessed = search_string.replace("’", "'")
-    # if skt_fuzzy == "":
-    #     tib = bn_analyzer.stem_tibetan(tib_preprocessed)#.replace("ba\n","ba")
-    #     chn = search_string
-    # else:
-    #     skt = search_string
+    search_string = search_string.lower()
+    skt_fuzzy = bn_analyzer.stem_sanskrit(search_string)
+    pli = bn_analyzer.stem_pali(search_string)
+    tib_preprocessed = search_string.replace("’", "'")
+    if skt_fuzzy == "":
+        tib = bn_analyzer.stem_tibetan(tib_preprocessed)  # .replace("ba\n","ba")
+        chn = search_string
+    else:
+        skt = search_string
     return {"skt": skt, "skt_fuzzy": skt_fuzzy, "tib": tib, "pli": pli, "chn": chn}
 
 
 def tag_sanskrit(sanskrit_string):
-    # return bn_analyzer.tag_sanskrit(sanskrit_string[:150].lower())
-    return "skt"
+    return bn_analyzer.tag_sanskrit(sanskrit_string[:150].lower())
 
 
 def get_offsets(search_string, segment_text):
