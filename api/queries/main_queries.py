@@ -41,7 +41,7 @@ FOR f IN parallels_sorted_file
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER p["co-occ"] <= @coocc            
+            FILTER p["co-occ"] <= @coocc
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
             FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
             LET root_seg_text = (
@@ -177,6 +177,27 @@ FOR file IN files
 
 RETURN {
     filetext: segments
+}
+"""
+
+QUERY_FILE_TEXT_SENTENCES = """
+LET segments = (
+    FOR sentence in sentences
+        FILTER STARTS_WITH(sentence._key, @filename)
+        RETURN sentence
+    )
+
+LET sortedsegments = (
+    FOR sentence in segments
+        SORT sentence.position
+        RETURN {
+            segnr: sentence.segnr,
+            segtext: sentence.segtext
+            }
+    )
+
+RETURN {
+    filetext: sortedsegments
 }
 """
 

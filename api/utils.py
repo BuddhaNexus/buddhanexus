@@ -240,11 +240,22 @@ def get_file_text(file_name):
     """
     Gets file segments and numbers only from start_int onwards with max 800 segments.
     """
+    language = get_language_from_filename(file_name)
+
+    print("FILENAME = ", file_name, language)
     try:
-        text_segments_query_result = get_db().AQLQuery(
-            query=main_queries.QUERY_FILE_TEXT,
-            bindVars={"filename": file_name},
-        )
+        if language == "chn" and (
+            file_name.startswith("T") or file_name.startswith("X")
+        ):
+            text_segments_query_result = get_db().AQLQuery(
+                query=main_queries.QUERY_FILE_TEXT_SENTENCES,
+                bindVars={"filename": file_name},
+            )
+        else:
+            text_segments_query_result = get_db().AQLQuery(
+                query=main_queries.QUERY_FILE_TEXT,
+                bindVars={"filename": file_name},
+            )
 
         if text_segments_query_result.result:
             return text_segments_query_result.result[0]["filetext"]
