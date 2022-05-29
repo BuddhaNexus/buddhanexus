@@ -96,7 +96,7 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
         return True
     if file_lang == LANG_ENGLISH:
         return True
-    if file_lang == LANG_AI:
+    if file_lang == LANG_AI and file_name.startswith("ai-X"):
         return True
     else:
         return False
