@@ -249,6 +249,8 @@ def load_segment(
     :param db: ArangoDB database object
     :return: Segment nr
     """
+    textname = json_segment["segnr"].split(":")[0]
+    textname = re.sub("_[0-9]+","",textname)
     if sentences:
         collection = db.collection(COLLECTION_SENTENCES)
     else:
@@ -259,6 +261,7 @@ def load_segment(
             "_id": f'segments/{json_segment["segnr"]}',
             "segnr": json_segment["segnr"],
             "segtext": json_segment["segtext"],
+            "textname": textname,
             "lang": json_segment["lang"],
             "position": json_segment["position"],
             "count": count,
@@ -467,6 +470,10 @@ def create_indices(db: StandardDatabase):
     db_collection.add_hash_index(["language"], unique=False)
     db_collection.add_hash_index(["category"], unique=False)
 
+    db_collection = db.collection(COLLECTION_SENTENCES)
+    db_collection.add_hash_index(["textname"], unique=False)
+
+    
 
 def load_sources(db: StandardDatabase, root_url):
     source_json_path = root_url + "sources.json"

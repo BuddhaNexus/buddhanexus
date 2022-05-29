@@ -183,7 +183,7 @@ RETURN {
 QUERY_FILE_TEXT_SENTENCES = """
 LET segments = (
     FOR sentence in sentences
-        FILTER STARTS_WITH(sentence._key, @filename)
+        FILTER sentence.textname ==  @filename
         RETURN sentence
     )
 
