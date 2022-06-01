@@ -741,9 +741,15 @@ async def get_data_for_sidebar_menu(language: str):
 
     return {"navigationmenudata": query_sidebar_menu.result}
 
+###
+@APP.get("/search/{search_string}/s")
+async def get_search_results(search_string: str,
+                             limit_collection: List[str] = Query([])
+                             ):
+    limitcollection_positive, limitcollection_negative = get_collection_files_regex(limit_collection)
+    print("LIMIT COLLECTION POSITIVE", limitcollection_positive)
 
-@APP.get("/search/{search_string}")
-async def get_search_results(search_string: str):
+
     """
     Returns search results for given search string.
     :return: List of search results
@@ -765,7 +771,7 @@ async def get_search_results(search_string: str):
         rawResults=True,
     )
     query_result = query_search.result[0]
-    result = search_utils.postprocess_results(search_string, query_result)
+    result = search_utils.postprocess_results(search_string, query_result, limitcollection_positive)
     return {"searchResults": result}
 
 
