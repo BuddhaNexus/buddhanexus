@@ -747,8 +747,6 @@ async def get_search_results(search_string: str,
                              limit_collection: List[str] = Query([])
                              ):
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(limit_collection)
-    print("LIMIT COLLECTION POSITIVE", limitcollection_positive)
-
 
     """
     Returns search results for given search string.
