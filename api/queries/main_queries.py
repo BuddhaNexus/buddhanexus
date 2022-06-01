@@ -169,6 +169,7 @@ FOR file IN files
         FOR segmentnr IN file.segment_keys
             FOR segment in segments
                 FILTER segment._key == segmentnr
+                FILTER segment.folio == @folionr
                 RETURN {
                     segnr: segment.segnr,
                     segtext: segment.segtext
@@ -184,6 +185,7 @@ QUERY_FILE_TEXT_SENTENCES = """
 LET segments = (
     FOR sentence in sentences
         FILTER sentence.textname ==  @filename
+        FILTER sentence.folio == @folionr
         RETURN sentence
     )
 

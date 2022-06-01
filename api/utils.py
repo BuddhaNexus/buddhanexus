@@ -236,25 +236,29 @@ def get_start_integer(active_segment):
     return start_int
 
 
-def get_file_text(file_name):
+def get_file_text(file_name, folionr):
     """
     Gets file segments and numbers only from start_int onwards with max 800 segments.
     """
     language = get_language_from_filename(file_name)
 
-    print("FILENAME = ", file_name, language)
+    print("FILENAME = ", file_name, language, folionr)
+
+    if folionr == "" and language == "chn":
+        folionr = "001"
+
     try:
         if language == "chn" and (
             file_name.startswith("T") or file_name.startswith("X")
         ):
             text_segments_query_result = get_db().AQLQuery(
                 query=main_queries.QUERY_FILE_TEXT_SENTENCES,
-                bindVars={"filename": file_name},
+                bindVars={"filename": file_name, "folionr": folionr},
             )
         else:
             text_segments_query_result = get_db().AQLQuery(
                 query=main_queries.QUERY_FILE_TEXT,
-                bindVars={"filename": file_name},
+                bindVars={"filename": file_name, "folionr": folionr},
             )
 
         if text_segments_query_result.result:

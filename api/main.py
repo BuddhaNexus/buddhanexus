@@ -477,13 +477,14 @@ async def get_file_text_segments_and_parallels(
 async def get_file_text_segments(
     file_name: str,
     transmode: str = "wylie",
+    folionr: str = "",
 ):
     """
     Endpoint for english view
     """
-    text_left = get_file_text(file_name)
-    text_middle = get_file_text("ai-" + file_name)
-    text_right = get_file_text("en-" + file_name)
+    text_left = get_file_text(file_name, folionr)
+    text_middle = get_file_text("ai-" + file_name, folionr)
+    text_right = get_file_text("en-" + file_name, folionr)
 
     if transmode == "uni":
         for segment in text_left:

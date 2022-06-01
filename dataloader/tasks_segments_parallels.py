@@ -249,12 +249,21 @@ def load_segment(
     :param db: ArangoDB database object
     :return: Segment nr
     """
+
     textname = json_segment["segnr"].split(":")[0]
-    textname = re.sub("_[0-9]+","",textname)
+    textname = re.sub("_[0-9]+", "", textname)
+
+    # The folio is currently only calculated for Chinese files but can be done in the future for all
+    # That will make it easier to just load one folio if needed.
+    folio = ""
+    if json_segment["lang"] == "chn":
+        folio = json_segment["segnr"].split("_")[1].split(":")[0]
+
     if sentences:
         collection = db.collection(COLLECTION_SENTENCES)
     else:
         collection = db.collection(COLLECTION_SEGMENTS)
+
     try:
         doc = {
             "_key": json_segment["segnr"],
@@ -262,6 +271,7 @@ def load_segment(
             "segnr": json_segment["segnr"],
             "segtext": json_segment["segtext"],
             "textname": textname,
+            "folio": folio,
             "lang": json_segment["lang"],
             "position": json_segment["position"],
             "count": count,
@@ -473,7 +483,6 @@ def create_indices(db: StandardDatabase):
     db_collection = db.collection(COLLECTION_SENTENCES)
     db_collection.add_hash_index(["textname"], unique=False)
 
-    
 
 def load_sources(db: StandardDatabase, root_url):
     source_json_path = root_url + "sources.json"
