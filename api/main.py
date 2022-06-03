@@ -427,7 +427,6 @@ async def get_file_text_segments_and_parallels(
     """
     Endpoint for text view
     """
-    # parallel_ids_type = "parallel_ids_limited"
     parallel_ids_type = "parallel_ids"
     # when the limit_collection filter is active,
     # we have to fetch all possible parallels.
@@ -742,12 +741,17 @@ async def get_data_for_sidebar_menu(language: str):
     return {"navigationmenudata": query_sidebar_menu.result}
 
 
-@APP.get("/search/{search_string}")
-async def get_search_results(search_string: str):
+###
+@APP.get("/search/{search_string}/s")
+async def get_search_results(
+    search_string: str, limit_collection: List[str] = Query([])
+):
     """
     Returns search results for given search string.
     :return: List of search results
     """
+    limitcollection_positive = get_collection_files_regex(limit_collection)[0]
+
     database = get_db()
     result = []
     search_string = search_string.lower()
@@ -765,7 +769,9 @@ async def get_search_results(search_string: str):
         rawResults=True,
     )
     query_result = query_search.result[0]
-    result = search_utils.postprocess_results(search_string, query_result)
+    result = search_utils.postprocess_results(
+        search_string, query_result, limitcollection_positive
+    )
     return {"searchResults": result}
 
 

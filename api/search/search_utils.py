@@ -77,13 +77,33 @@ def process_result(result_pair,search_string):
     except (RuntimeError, TypeError, NameError):
         pass
 
-def postprocess_results(search_string, results):
-    new_results = []
+def filter_results_by_collection(results, limitcollection_positive):
+    filtered_results = []
+    filtered_collections = []
+    # Currently, the list of collections contains chn_all, pli_all etc. which need to be filtered out in advance. 
+    for collection in limitcollection_positive:
+        if not "all" in collection:
+            filtered_collections.append(collection)
+    if len(filtered_collections) == 0:
+        return results
+
     for result in results:
+        for collection in filtered_collections:
+            if result['segment_nr'][0].startswith(collection):
+                filtered_results.append(result)
+    return filtered_results
+    
+def postprocess_results(search_string, results, limitcollection_positive):
+    new_results = []
+    
+    for result in results:
+        print(result)
         new_results.append(process_result(result,search_string))
-        
+    
     results = [x for x in new_results if x is not None]    
     results = [x for x in results if 'centeredness' in x]
+    results = remove_duplicate_results(results)
+    results = filter_results_by_collection(results, limitcollection_positive)
     results = remove_duplicate_results(results)
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
     # First sort according to string similarity, next sort if multilang is present; the idea is that first the multilang results are shown, then the other with increasing distance
