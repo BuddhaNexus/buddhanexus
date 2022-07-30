@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"],
+      "@components/*": ["components/*"],
+      "@public/*": ["public/*"]
+    },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
