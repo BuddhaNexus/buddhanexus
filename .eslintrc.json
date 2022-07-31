@@ -58,8 +58,8 @@
     "@typescript-eslint/no-unsafe-argument": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/sort-type-union-intersection-members": "off",
-    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/quotes": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-type-alias": "off",
     "@typescript-eslint/naming-convention": "off",
@@ -71,6 +71,8 @@
     "@typescript-eslint/parameter-properties": "off",
     "@typescript-eslint/member-ordering": "off",
     "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/indent": "off",
     "@typescript-eslint/no-empty-interface": [
       "error",
       { "allowSingleExtends": true }
@@ -85,6 +87,10 @@
     "@typescript-eslint/no-shadow": "off",
     "@typescript-eslint/method-signature-style": "off",
     "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/object-curly-spacing": "off",
+    "@typescript-eslint/space-before-function-paren": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "@typescript-eslint/no-extra-parens": "off",
 
     // unicorn
     "unicorn/catch-error-name": [
@@ -110,6 +116,7 @@
     "unicorn/text-encoding-identifier-case": "off",
 
     // react
+    "react/react-in-jsx-scope": "off",
     "react/boolean-prop-naming": "error",
     "react/button-has-type": "error",
     "react/destructuring-assignment": "error",
@@ -160,6 +167,7 @@
     "@typescript-eslint/no-confusing-void-expression": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "no-underscore-dangle": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "func-style": "off"
   }
 }

@@ -1,5 +1,5 @@
 import createCache from "@emotion/cache";
-import { EmotionCache } from "@emotion/react";
+import type { EmotionCache } from "@emotion/react";
 
 const isBrowser = typeof document !== "undefined";
 

@@ -1,14 +1,9 @@
 import React from "react";
-import Document, {
-  DocumentContext,
-  Html,
-  Main,
-  Head,
-  NextScript,
-} from "next/document";
+import type { DocumentContext } from "next/document";
+import Document, { Head, Html, Main, NextScript } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
-
 import createEmotionCache from "utils/createEmotionCache";
+
 import { theme } from "./theme";
 
 export default class MyDocument extends Document {
@@ -33,8 +28,8 @@ export default class MyDocument extends Document {
     const emotionStyles = extractCriticalToChunks(initialProps.html);
     const emotionStyleTags = emotionStyles.styles.map((style) => (
       <style
-        data-emotion={`${style.key} ${style.ids.join(" ")}`}
         key={style.key}
+        data-emotion={`${style.key} ${style.ids.join(" ")}`}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: style.css }}
       />
@@ -52,6 +47,7 @@ export default class MyDocument extends Document {
         <Head nonce={process.env.nonce}>
           <script
             nonce={process.env.nonce}
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: `window.__webpack_nonce__ = '${process.env.nonce}'`,
             }}

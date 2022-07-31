@@ -1,4 +1,4 @@
-import { Container, Main, Title, Description } from "@components/sharedStyles";
+import { Container, Description, Main, Title } from "@components/sharedStyles";
 
 export default function Home() {
   return (
