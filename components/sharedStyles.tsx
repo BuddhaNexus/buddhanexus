@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "@emotion/styled";
 
 const Container = styled.div`
   display: flex;
@@ -7,7 +7,7 @@ const Container = styled.div`
   align-items: center;
   height: 100vh;
   min-height: 100vh;
-  background-color: ${({ theme }) => theme.palette.error};
+  background-color: ${(props) => props.theme.palette.secondary.main};
 `;
 
 const Main = styled.main`
@@ -26,7 +26,7 @@ const Title = styled.h1`
   text-decoration: none;
 
   a {
-    color: ${({ theme }) => theme.palette.secondary};
+    color: ${({ theme }) => theme.palette.secondary.main};
     text-decoration: none;
     &:hover,
     :focus,
@@ -42,4 +42,4 @@ const Description = styled.p`
   font-size: 1.5rem;
 `;
 
-export { Container, Main, Title, Description };
+export { Container, Description, Main, Title };
