@@ -1,13 +1,13 @@
 import React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { AppTopBar } from "@components/AppTopBar";
+import { theme } from "@components/theme";
 import type { EmotionCache } from "@emotion/react";
 import { CacheProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import createEmotionCache from "utils/createEmotionCache";
-
-import { theme } from "../utils/theme";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -23,8 +23,12 @@ function MyApp({ Component, pageProps, emotionCache }: MyAppProps) {
         <title>BN Next</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
+
       <ThemeProvider theme={theme}>
         <CssBaseline />
+
+        <AppTopBar />
+
         <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>
