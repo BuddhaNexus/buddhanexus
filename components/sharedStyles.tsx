@@ -7,7 +7,7 @@ const Container = styled.div`
   align-items: center;
   height: 100vh;
   min-height: 100vh;
-  background-color: ${(props) => props.theme.palette.secondary.main};
+  background-color: ${(props) => props.theme.palette.primary.dark};
 `;
 
 const Main = styled.main`
@@ -26,7 +26,7 @@ const Title = styled.h1`
   text-decoration: none;
 
   a {
-    color: ${({ theme }) => theme.palette.secondary.main};
+    color: ${({ theme }) => theme.palette.primary.light};
     text-decoration: none;
     &:hover,
     :focus,

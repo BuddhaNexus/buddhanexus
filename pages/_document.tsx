@@ -4,7 +4,7 @@ import Document, { Head, Html, Main, NextScript } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
 import createEmotionCache from "utils/createEmotionCache";
 
-import { theme } from "./theme";
+import { theme } from "../utils/theme";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
