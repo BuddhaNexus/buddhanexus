@@ -14,6 +14,8 @@ def preprocess_search_string(search_string):
     skt = ""
     pli = ""
     # test if string contains Tibetan characters
+    search_string = re.sub("@[0-9a-b+]+","", search_string) # remove possible tib folio numbers
+    search_string = re.sub(" +"," ", search_string) # search is very sensitive to whitespace
     if  re.search("[\u0F00-\u0FDA]",search_string):
         tib = tib_converter.toWylie(search_string).strip()
         skt = tib
@@ -32,7 +34,7 @@ def preprocess_search_string(search_string):
         if tib == "":
             tib = search_string
         tib_preprocessed = tib.replace("’", "'")
-        tib = bn_analyzer.stem_tibetan(tib_preprocessed)#.replace("ba\n","ba")
+        tib = bn_analyzer.stem_tibetan(tib_preprocessed)
         chn = search_string
     return {"skt": skt,
             "skt_fuzzy":skt_fuzzy,
@@ -96,7 +98,6 @@ def process_result(result_pair,search_string):
 
 def postprocess_results(search_strings, results):
     search_string = search_strings['skt']
-    print("SEARCH STRING",search_string)
     new_results = []
     for result in results:
         new_results.append(process_result(result,search_string))
