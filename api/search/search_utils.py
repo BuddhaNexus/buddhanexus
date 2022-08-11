@@ -44,6 +44,7 @@ def tag_sanskrit(sanskrit_string):
     return bn_analyzer.tag_sanskrit(sanskrit_string[:150].lower())
 
 def get_offsets(search_string, segment_text):
+    segment_text = re.sub("@[0-9a-b+]+","", segment_text) # we need to do this in order to make sure that the search function is matching strings that contain folio numbers as well
     allowed_distance = 0
     max_distance = len(search_string) / 5
     match = []
