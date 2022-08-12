@@ -88,9 +88,8 @@ async def get_parallels_for_middle(parallels: ParallelsCollection):
     """
     :return: List of parallels for text view (middle)
     """
-    language = get_language_from_filename(parallels.file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        parallels.limit_collection, language
+        parallels.limit_collection
     )
     query_result = get_db().AQLQuery(
         query=main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
@@ -124,7 +123,7 @@ async def get_segments_for_file(
     """
     language = get_language_from_filename(file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, language
+        limit_collection
     )
     try:
         database = get_db()
@@ -140,7 +139,7 @@ async def get_segments_for_file(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
-                "start_folio": get_folio_regex(language, file_name, folio),
+                "folio": folio,
             },
         )
         segments_result, collection_keys = collect_segment_results(
@@ -154,7 +153,7 @@ async def get_segments_for_file(
                 query=menu_queries.QUERY_COLLECTION_NAMES,
                 bindVars={
                     "collections": collection_keys,
-                    "language": get_language_from_filename(file_name),
+                    "language": language,
                 },
             ).result,
             "segments": segments_result,
@@ -188,11 +187,9 @@ async def get_table_view(
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
-    language = get_language_from_filename(file_name)
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, language
+        limit_collection
     )
-
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,
@@ -205,7 +202,7 @@ async def get_table_view(
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
                 "page": page,
-                "start_folio": get_folio_regex(language, file_name, folio),
+                "folio": folio,
             },
         )
         return query.result
@@ -231,9 +228,7 @@ async def get_table_download(
     :return: List of segments and parallels for the downloaded table view.
     """
     language = get_language_from_filename(file_name)
-    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, language
-    )
+    limit_collection_regex = get_collection_files_regex(limit_collection)
 
     try:
         query = get_db().AQLQuery(
@@ -245,9 +240,9 @@ async def get_table_download(
                 "parlength": par_length,
                 "coocc": co_occ,
                 "sortkey": get_sort_key(sort_method),
-                "limitcollection_positive": limitcollection_positive,
-                "limitcollection_negative": limitcollection_negative,
-                "start_folio": get_folio_regex(language, file_name, folio),
+                "limitcollection_positive": limit_collection_regex[0],
+                "limitcollection_negative": limit_collection_regex[1],
+                "folio": folio,
             },
         )
 
@@ -256,7 +251,7 @@ async def get_table_download(
         raise HTTPException(status_code=400) from error
 
     if download_data == "table":
-        return run_table_download(
+        result = run_table_download(
             query,
             [
                 file_name,
@@ -269,6 +264,8 @@ async def get_table_download(
                 language,
             ],
         )
+
+        return result
 
     segment_collection_results = collect_segment_results(
         create_numbers_view_data(
@@ -318,9 +315,6 @@ async def get_multilang(
     :return: List of segments and parallels for the table view.
     """
 
-    language = get_language_from_filename(file_name)
-    start_folio = get_folio_regex(language, file_name, folio)
-    language = get_language_from_filename(file_name)
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_MULTILINGUAL,
@@ -330,7 +324,7 @@ async def get_multilang(
                 "multi_lingual": multi_lingual,
                 "page": page,
                 "score": score,
-                "start_folio": start_folio,
+                "folio": folio,
                 "search_string": "%" + search_string + "%",
             },
         )
@@ -433,7 +427,6 @@ async def get_file_text_segments_and_parallels(
     """
     Endpoint for text view
     """
-    # parallel_ids_type = "parallel_ids_limited"
     parallel_ids_type = "parallel_ids"
     # when the limit_collection filter is active,
     # we have to fetch all possible parallels.
@@ -445,7 +438,7 @@ async def get_file_text_segments_and_parallels(
         start_int = get_start_integer(active_segment)
 
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)
+        limit_collection
     )
     current_bind_vars = {
         "parallel_ids_type": parallel_ids_type,
@@ -574,7 +567,7 @@ async def get_graph_for_file(
             continue
 
         collection = collection_key.group()
-        if collection not in total_collection_dict.keys():
+        if collection not in total_collection_dict:
             total_collection_dict[collection] = count_this_parallel
         else:
             total_collection_dict[collection] += count_this_parallel
@@ -695,7 +688,7 @@ async def get_counts_for_file(
     Returns number of filtered parallels
     """
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection, get_language_from_filename(file_name)
+        limit_collection
     )
     query_graph_result = get_db().AQLQuery(
         query=main_queries.QUERY_TOTAL_NUMBERS,
@@ -748,14 +741,20 @@ async def get_data_for_sidebar_menu(language: str):
     return {"navigationmenudata": query_sidebar_menu.result}
 
 
-@APP.get("/search/{search_string}")
-async def get_search_results(search_string: str):
+###
+@APP.get("/search/{search_string}/s")
+async def get_search_results(
+    search_string: str, limit_collection: List[str] = Query([])
+):
     """
     Returns search results for given search string.
     :return: List of search results
     """
+    limitcollection_positive = get_collection_files_regex(limit_collection)[0]
+
     database = get_db()
     result = []
+    search_string = search_string.lower()
     search_strings = search_utils.preprocess_search_string(search_string[:150])
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH,
@@ -770,7 +769,9 @@ async def get_search_results(search_string: str):
         rawResults=True,
     )
     query_result = query_search.result[0]
-    result = search_utils.postprocess_results(search_strings, query_result)
+    result = search_utils.postprocess_results(
+        search_string, query_result, limitcollection_positive
+    )
     return {"searchResults": result}
 
 
@@ -780,7 +781,6 @@ async def tag_sanskrit(sanskrit_string: str):
     Stemming + Tagging for Sanskrit
     :return: String with tagged Sanskrit
     """
-    sanskrit_string = transliterate.process('autodetect', 'IAST', sanskrit_string)
     result = search_utils.tag_sanskrit(sanskrit_string).replace("\n", " # ")
     return {"tagged": result}
 
