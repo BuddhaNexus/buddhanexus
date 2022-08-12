@@ -1,8 +1,10 @@
 import re
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
 from fuzzysearch import levenshtein_ngram
+import pyewts
 
 bn_analyzer = bn_translate.analyzer()
+tib_converter = pyewts.pyewts()
 
 def preprocess_search_string(search_string):
     tib = ""
@@ -11,13 +13,12 @@ def preprocess_search_string(search_string):
     pli = ""
 
     # test if string contains Tibetan characters
+    search_string = search_string.strip()
     search_string = re.sub("@[0-9a-b+]+","", search_string) # remove possible tib folio numbers
     search_string = re.sub("/+","", search_string) # just in case we have some sort of danda in the search query
     search_string = re.sub(" +"," ", search_string) # search is very sensitive to whitespace
     if  re.search("[\u0F00-\u0FDA]",search_string):
-        print("SEARCH STRING BEFORE", search_string)
         tib = tib_converter.toWylie(search_string).strip()
-        print("SEARCH STRING AFTER", tib)
         skt = tib
     else:
         if bn_translate.check_if_sanskrit(search_string):
