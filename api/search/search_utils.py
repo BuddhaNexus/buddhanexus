@@ -1,18 +1,15 @@
 import re
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
 from fuzzysearch import levenshtein_ngram
-import pyewts
-from aksharamukha import transliterate
 
 bn_analyzer = bn_translate.analyzer()
-tib_converter = pyewts.pyewts()
 
 def preprocess_search_string(search_string):
-    search_string = search_string.strip()
     tib = ""
     chn = ""
     skt = ""
     pli = ""
+
     # test if string contains Tibetan characters
     search_string = re.sub("@[0-9a-b+]+","", search_string) # remove possible tib folio numbers
     search_string = re.sub("/+","", search_string) # just in case we have some sort of danda in the search query
@@ -39,6 +36,8 @@ def preprocess_search_string(search_string):
         tib_preprocessed = tib.replace("’", "'")
         tib = bn_analyzer.stem_tibetan(tib_preprocessed)
         chn = search_string
+    else:
+        skt = search_string
     return {"skt": skt,
             "skt_fuzzy":skt_fuzzy,
             "tib": tib,
@@ -103,11 +102,15 @@ def process_result(result_pair,search_string):
 def postprocess_results(search_strings, results):
     search_string = search_strings['skt']
     new_results = []
+    
     for result in results:
+        print(result)
         new_results.append(process_result(result,search_string))
-        
+    
     results = [x for x in new_results if x is not None]    
     results = [x for x in results if 'centeredness' in x]
+    results = remove_duplicate_results(results)
+    results = filter_results_by_collection(results, limitcollection_positive)
     results = remove_duplicate_results(results)
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
     # First sort according to string similarity, next sort if multilang is present; the idea is that first the multilang results are shown, then the other with increasing distance
@@ -117,7 +120,7 @@ def postprocess_results(search_strings, results):
     results = results[::-1]
     return results[:200] # make sure we return a fixed number of results
 
-def process_multilang_result(result_list,search_strings):
+def process_multilang_result(result_list,search_string):
     if search_string == '':
         return result_list
     

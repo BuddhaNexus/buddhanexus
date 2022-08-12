@@ -172,3 +172,18 @@ def natural_keys(text):
         (See Toothy's implementation in the comments)
         '''
     return [ atoi(c) for c in re.split(r'(\d+)', text) ]
+
+def get_cat_from_segmentnr(segmentnr):
+    # when the segmentnr is not Pali:
+    cat = ""
+    search = re.search("^[A-Z]+[0-9]+",segmentnr)
+    if search:
+        cat = search[0]    
+    else:
+        search = re.search("^[a-z-]+",segmentnr)
+        if search:
+            cat = search[0]
+        else:
+            cat = segmentnr[0:2]
+    return cat
+    
