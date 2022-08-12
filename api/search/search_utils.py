@@ -15,9 +15,12 @@ def preprocess_search_string(search_string):
     pli = ""
     # test if string contains Tibetan characters
     search_string = re.sub("@[0-9a-b+]+","", search_string) # remove possible tib folio numbers
+    search_string = re.sub("/+","", search_string) # just in case we have some sort of danda in the search query
     search_string = re.sub(" +"," ", search_string) # search is very sensitive to whitespace
     if  re.search("[\u0F00-\u0FDA]",search_string):
+        print("SEARCH STRING BEFORE", search_string)
         tib = tib_converter.toWylie(search_string).strip()
+        print("SEARCH STRING AFTER", tib)
         skt = tib
     else:
         if bn_translate.check_if_sanskrit(search_string):
@@ -47,6 +50,7 @@ def tag_sanskrit(sanskrit_string):
 
 def get_offsets(search_string, segment_text):
     segment_text = re.sub("@[0-9a-b+]+","", segment_text) # we need to do this in order to make sure that the search function is matching strings that contain folio numbers as well
+    segment_text = re.sub("/+","", segment_text) # remove possible dandas
     allowed_distance = 0
     max_distance = len(search_string) / 5
     match = []
