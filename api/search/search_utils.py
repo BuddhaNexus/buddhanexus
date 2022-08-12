@@ -5,13 +5,14 @@ import pyewts
 
 bn_analyzer = bn_translate.analyzer()
 tib_converter = pyewts.pyewts()
+from aksharamukha import transliterate
 
 def preprocess_search_string(search_string):
     tib = ""
     chn = ""
     skt = ""
     pli = ""
-
+    
     # test if string contains Tibetan characters
     search_string = search_string.strip()
     search_string = re.sub("@[0-9a-b+]+","", search_string) # remove possible tib folio numbers
@@ -100,18 +101,16 @@ def process_result(result_pair,search_string):
     except (RuntimeError, TypeError, NameError):
         pass
 
-def postprocess_results(search_strings, results):
-    search_string = search_strings['skt']
+def postprocess_results(search_strings, results, limitcollection_positive):
     new_results = []
+    search_string = search_strings['skt']
     
     for result in results:
-        print(result)
         new_results.append(process_result(result,search_string))
-    
-    results = [x for x in new_results if x is not None]    
+    results = [x for x in new_results if x is not None]
     results = [x for x in results if 'centeredness' in x]
     results = remove_duplicate_results(results)
-    results = filter_results_by_collection(results, limitcollection_positive)
+    #results = filter_results_by_collection(results, limitcollection_positive)
     results = remove_duplicate_results(results)
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
     # First sort according to string similarity, next sort if multilang is present; the idea is that first the multilang results are shown, then the other with increasing distance

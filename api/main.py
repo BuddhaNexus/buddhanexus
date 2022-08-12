@@ -742,7 +742,7 @@ async def get_data_for_sidebar_menu(language: str):
 
 
 ###
-@APP.get("/search/{search_string}/s")
+@APP.get("/search/{search_string}")
 async def get_search_results(
     search_string: str, limit_collection: List[str] = Query([])
 ):
@@ -770,7 +770,7 @@ async def get_search_results(
     )
     query_result = query_search.result[0]
     result = search_utils.postprocess_results(
-        search_string, query_result, limitcollection_positive
+        search_strings, query_result, limitcollection_positive
     )
     return {"searchResults": result}
 
