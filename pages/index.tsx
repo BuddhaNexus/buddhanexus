@@ -1,10 +1,13 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Footer } from "@components/Footer";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
 export default function Home() {
+  const { t } = useTranslation();
+
   return (
     <Container component="main" maxWidth="md" sx={{ pt: 8, pb: 6, flex: 1 }}>
       <Typography
@@ -14,7 +17,7 @@ export default function Home() {
         color="text.primary"
         gutterBottom
       >
-        Pricing
+        {t("global.siteTitle")}
       </Typography>
       <Typography
         variant="h5"
@@ -22,9 +25,7 @@ export default function Home() {
         color="text.secondary"
         component="p"
       >
-        Quickly build an effective pricing table for your potential customers
-        with this layout. It&apos;s built with default MUI components with
-        little customization.
+        Site description
       </Typography>
 
       <Footer />
@@ -32,7 +33,7 @@ export default function Home() {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticProps({ locale }: { locale: any }) {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common"])),
