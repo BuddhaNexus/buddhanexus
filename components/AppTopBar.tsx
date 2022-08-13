@@ -4,10 +4,22 @@ import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
+const AppBarLink = ({ title }: { title: string }) => (
+  <Link
+    variant="button"
+    color="primary.contrastText"
+    href="#"
+    underline="hover"
+    sx={{ my: 1, mx: 1.5 }}
+  >
+    {title}
+  </Link>
+);
+
 export const AppTopBar = () => (
   <AppBar
     position="static"
-    color="default"
+    color="primary"
     elevation={0}
     sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}` })}
   >
@@ -16,30 +28,9 @@ export const AppTopBar = () => (
         BuddhaNexus
       </Typography>
       <nav>
-        <Link
-          variant="button"
-          color="text.primary"
-          href="#"
-          sx={{ my: 1, mx: 1.5 }}
-        >
-          Features
-        </Link>
-        <Link
-          variant="button"
-          color="text.primary"
-          href="#"
-          sx={{ my: 1, mx: 1.5 }}
-        >
-          Enterprise
-        </Link>
-        <Link
-          variant="button"
-          color="text.primary"
-          href="#"
-          sx={{ my: 1, mx: 1.5 }}
-        >
-          Support
-        </Link>
+        <AppBarLink title="Features" />
+        <AppBarLink title="Support" />
+        <AppBarLink title="Database" />
       </nav>
     </Toolbar>
   </AppBar>

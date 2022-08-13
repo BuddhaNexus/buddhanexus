@@ -1,4 +1,3 @@
-import { red } from "@mui/material/colors";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 export const theme = responsiveFontSizes(
@@ -7,15 +6,29 @@ export const theme = responsiveFontSizes(
       h1: {},
     },
     palette: {
-      text: {
-        primary: "#361F0D",
-      },
       primary: {
-        main: "#4caf50",
+        main: "#361F0D",
       },
       secondary: {
-        main: red.A200,
+        main: "#C23211",
       },
+      background: {
+        default: "#efe0c2",
+        paper: "#ffffff",
+      },
+      error: {
+        main: "#CC0202",
+      },
+      warning: {
+        main: "#FE8027",
+      },
+      info: {
+        main: "#0DC0E8",
+      },
+      success: {
+        main: "#02CC3B",
+      },
+      divider: "rgba(54,31,13,0.12)",
     },
   })
 );
