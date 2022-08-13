@@ -1,15 +1,23 @@
 import { red } from "@mui/material/colors";
-import { createTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-export const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#4caf50",
+export const theme = responsiveFontSizes(
+  createTheme({
+    typography: {
+      h1: {},
     },
-    secondary: {
-      main: red.A200,
+    palette: {
+      text: {
+        primary: "#361F0D",
+      },
+      primary: {
+        main: "#4caf50",
+      },
+      secondary: {
+        main: red.A200,
+      },
     },
-  },
-});
+  })
+);
 
 export type ThemeType = typeof theme;
