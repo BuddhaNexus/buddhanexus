@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 import AppBar from "@mui/material/AppBar";
 import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,22 +17,26 @@ const AppBarLink = ({ title }: { title: string }) => (
   </Link>
 );
 
-export const AppTopBar = () => (
-  <AppBar
-    position="static"
-    color="primary"
-    elevation={0}
-    sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}` })}
-  >
-    <Toolbar sx={{ flexWrap: "wrap" }}>
-      <Typography variant="h6" color="inherit" sx={{ flexGrow: 1 }} noWrap>
-        BuddhaNexus
-      </Typography>
-      <nav>
-        <AppBarLink title="Features" />
-        <AppBarLink title="Support" />
-        <AppBarLink title="Database" />
-      </nav>
-    </Toolbar>
-  </AppBar>
-);
+export const AppTopBar = () => {
+  const { t } = useTranslation();
+
+  return (
+    <AppBar
+      position="static"
+      color="primary"
+      elevation={0}
+      sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}` })}
+    >
+      <Toolbar sx={{ flexWrap: "wrap" }}>
+        <Typography variant="h6" color="inherit" sx={{ flexGrow: 1 }} noWrap>
+          {t("global.siteTitle")}
+        </Typography>
+        <nav>
+          <AppBarLink title="Features" />
+          <AppBarLink title="Support" />
+          <AppBarLink title="Database" />
+        </nav>
+      </Toolbar>
+    </AppBar>
+  );
+};

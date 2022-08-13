@@ -11,7 +11,8 @@ export function Copyright(props: any) {
     >
       <Link color="inherit" href="https://www.aai.uni-hamburg.de/en.html">
         Universität Hamburg
-      </Link>{", "}
+      </Link>
+      {", "}
       {new Date().getFullYear()}
     </Typography>
   );

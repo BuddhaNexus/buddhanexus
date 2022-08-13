@@ -1,6 +1,7 @@
 import React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { appWithTranslation } from "next-i18next";
 import { AppTopBar } from "@components/AppTopBar";
 import { theme } from "@components/theme";
 import type { EmotionCache } from "@emotion/react";
@@ -35,4 +36,4 @@ function MyApp({ Component, pageProps, emotionCache }: MyAppProps) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);
