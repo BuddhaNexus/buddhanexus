@@ -6,6 +6,7 @@ import { AppTopBar } from "@components/AppTopBar";
 import { theme } from "@components/theme";
 import type { EmotionCache } from "@emotion/react";
 import { CacheProvider } from "@emotion/react";
+import { MDXProvider } from "@mdx-js/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import createEmotionCache from "utils/createEmotionCache";
@@ -20,18 +21,20 @@ interface MyAppProps extends AppProps {
 function MyApp({ Component, pageProps, emotionCache }: MyAppProps) {
   return (
     <CacheProvider value={emotionCache ?? clientSideEmotionCache}>
-      <Head>
-        <title>BN Next</title>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
+      <MDXProvider>
+        <Head>
+          <title>BN Next</title>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
 
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
 
-        <AppTopBar />
+          <AppTopBar />
 
-        <Component {...pageProps} />
-      </ThemeProvider>
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </MDXProvider>
     </CacheProvider>
   );
 }

@@ -1,9 +1,9 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Footer } from "@components/Footer";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import { getI18NextStaticProps } from "utils/common";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -34,10 +34,5 @@ export default function Home() {
 }
 
 export async function getStaticProps({ locale }: { locale: any }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common"])),
-      // Will be passed to the page component as props
-    },
-  };
+  return getI18NextStaticProps({ locale });
 }
