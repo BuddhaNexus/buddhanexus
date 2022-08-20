@@ -33,6 +33,7 @@ const footerData: FooterSection[] = [
   {
     title: "Activities",
     links: [
+      { title: "Publications", url: "/publications" },
       { title: "Events", url: "/events" },
       { title: "Projects", url: "/projects" },
       { title: "Presentations", url: "/presentations" },
