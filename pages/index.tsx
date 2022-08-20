@@ -9,7 +9,11 @@ export default function Home() {
   const { t } = useTranslation();
 
   return (
-    <Container component="main" maxWidth="md" sx={{ pt: 8, pb: 6, flex: 1 }}>
+    <Container
+      component="main"
+      maxWidth="md"
+      sx={{ py: 8, flex: 1, display: "flex", flexDirection: "column" }}
+    >
       <Typography
         component="h1"
         variant="h2"

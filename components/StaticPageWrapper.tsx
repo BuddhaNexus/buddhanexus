@@ -6,8 +6,8 @@ export const StaticPageWrapper: React.FC = ({
   children,
 }: React.PropsWithChildren) => (
   <>
-    <Container fixed>
-      <Paper sx={{ my: 4, px: 4, py: 2 }}>{children}</Paper>
+    <Container component="main" maxWidth="md">
+      <Paper sx={{ py: 3, px: 4, mt: 8, mb: 4 }}>{children}</Paper>
     </Container>
     <Footer />
   </>

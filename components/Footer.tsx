@@ -46,12 +46,21 @@ export const Footer = () => (
     maxWidth="md"
     component="footer"
     sx={{
-      borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-      mt: 8,
-      py: [3, 6],
+      py: [4, 6],
+      justifyContent: "flex-end",
+      flexDirection: "column",
+      display: "flex",
+      flex: 1,
     }}
   >
-    <Grid spacing={4} justifyContent="space-evenly" container>
+    <Grid
+      spacing={4}
+      justifyContent="space-evenly"
+      sx={{
+        borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+      }}
+      container
+    >
       {footerData.map((footer) => (
         <Grid key={footer.title} xs={6} sm={3} item>
           <Typography variant="h6" color="text.primary" gutterBottom>

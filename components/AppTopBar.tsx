@@ -43,8 +43,8 @@ export const AppTopBar = () => {
           {t("global.siteTitle")}
         </Link>
         <nav>
-          <AppBarLink title="Support" />
-          <AppBarLink title="Database" />
+          <AppBarLink title="Support" href="/support" />
+          <AppBarLink title="Database" href="/database" />
         </nav>
       </Toolbar>
     </AppBar>
