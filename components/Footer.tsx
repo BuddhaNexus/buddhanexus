@@ -5,33 +5,38 @@ import Typography from "@mui/material/Typography";
 
 import { Copyright } from "./Copyright";
 
-const footers = [
+type FooterSection = {
+  title: string;
+  links: {
+    title: string;
+    url: string;
+  }[];
+};
+
+const footerData: FooterSection[] = [
   {
-    title: "Company",
-    description: ["Team", "History", "Contact us", "Locations"],
-  },
-  {
-    title: "Features",
-    description: [
-      "Cool stuff",
-      "Random feature",
-      "Team feature",
-      "Developer stuff",
-      "Another one",
+    title: "About",
+    links: [
+      { title: "Introduction", url: "/introduction" },
+      { title: "History", url: "/history" },
+      { title: "Guidelines", url: "/guidelines" },
     ],
   },
   {
-    title: "Resources",
-    description: [
-      "Resource",
-      "Resource name",
-      "Another resource",
-      "Final resource",
+    title: "Community",
+    links: [
+      { title: "Institutions", url: "/institutions" },
+      { title: "People", url: "/people" },
+      { title: "News", url: "/news" },
     ],
   },
   {
-    title: "Legal",
-    description: ["Privacy policy", "Terms of use"],
+    title: "Activities",
+    links: [
+      { title: "Events", url: "/events" },
+      { title: "Projects", url: "/projects" },
+      { title: "Presentations", url: "/presentations" },
+    ],
   },
 ];
 
@@ -46,16 +51,20 @@ export const Footer = () => (
     }}
   >
     <Grid spacing={4} justifyContent="space-evenly" container>
-      {footers.map((footer) => (
+      {footerData.map((footer) => (
         <Grid key={footer.title} xs={6} sm={3} item>
           <Typography variant="h6" color="text.primary" gutterBottom>
             {footer.title}
           </Typography>
           <ul>
-            {footer.description.map((item) => (
-              <li key={item}>
-                <Link href="#" variant="subtitle1" color="text.secondary">
-                  {item}
+            {footer.links.map((item) => (
+              <li key={item.title}>
+                <Link
+                  href={item.url}
+                  variant="subtitle1"
+                  color="text.secondary"
+                >
+                  {item.title}
                 </Link>
               </li>
             ))}

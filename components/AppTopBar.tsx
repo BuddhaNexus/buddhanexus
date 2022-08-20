@@ -3,13 +3,17 @@ import { useTranslation } from "next-i18next";
 import AppBar from "@mui/material/AppBar";
 import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 
-const AppBarLink = ({ title }: { title: string }) => (
+interface AppBarLinkProps {
+  title: string;
+  href?: string;
+}
+
+const AppBarLink = ({ title, href }: AppBarLinkProps) => (
   <Link
     variant="button"
     color="primary.contrastText"
-    href="#"
+    href={href}
     underline="hover"
     sx={{ my: 1, mx: 1.5 }}
   >
@@ -28,11 +32,17 @@ export const AppTopBar = () => {
       sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}` })}
     >
       <Toolbar sx={{ flexWrap: "wrap" }}>
-        <Typography variant="h6" color="inherit" sx={{ flexGrow: 1 }} noWrap>
+        <Link
+          variant="h6"
+          color="inherit"
+          sx={{ flexGrow: 1 }}
+          href="/"
+          underline="none"
+          noWrap
+        >
           {t("global.siteTitle")}
-        </Typography>
+        </Link>
         <nav>
-          <AppBarLink title="Features" />
           <AppBarLink title="Support" />
           <AppBarLink title="Database" />
         </nav>
