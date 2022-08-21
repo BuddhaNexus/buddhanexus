@@ -44,6 +44,13 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head nonce={process.env.nonce}>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="true"
+          />
+
           <script
             nonce={process.env.nonce}
             // eslint-disable-next-line react/no-danger
@@ -53,6 +60,11 @@ export default class MyDocument extends Document {
           />
           <meta property="csp-nonce" content={process.env.nonce} />
           <link rel="shortcut icon" href="/public/favicon.ico" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro&?family=Source+Sans+Pro&display=optional"
+            rel="stylesheet"
+          />
+
           <meta name="theme-color" content={theme.palette.primary.main} />
           <meta name="emotion-insertion-point" content="" />
           {(this.props as any).emotionStyleTags}
