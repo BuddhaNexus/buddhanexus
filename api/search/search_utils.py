@@ -1,20 +1,42 @@
 import re
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
 from fuzzysearch import levenshtein_ngram
+import pyewts
 
 bn_analyzer = bn_translate.analyzer()
+tib_converter = pyewts.pyewts()
+from aksharamukha import transliterate
 
 def preprocess_search_string(search_string):
     tib = ""
     chn = ""
     skt = ""
     pli = ""
-    search_string = search_string.lower()
-    skt_fuzzy = bn_analyzer.stem_sanskrit(search_string)
+    
+    # test if string contains Tibetan characters
+    search_string = search_string.strip()
+    search_string = re.sub("@[0-9a-b+]+","", search_string) # remove possible tib folio numbers
+    search_string = re.sub("/+","", search_string) # just in case we have some sort of danda in the search query
+    search_string = re.sub(" +"," ", search_string) # search is very sensitive to whitespace
+    if  re.search("[\u0F00-\u0FDA]",search_string):
+        tib = tib_converter.toWylie(search_string).strip()
+        skt = tib
+    else:
+        if bn_translate.check_if_sanskrit(search_string):
+            skt = transliterate.process('autodetect', 'IAST', search_string)
+        else:
+            skt = search_string
+        skt = skt.lower()
+        
+    # skt_fuzzy also tests if a string contains tib/chn letters; if so, it returns an empty string 
+    skt_fuzzy = bn_analyzer.stem_sanskrit(skt)
     pli = bn_analyzer.stem_pali(search_string)
-    tib_preprocessed = search_string.replace("’", "'")
-    if skt_fuzzy == "":
-        tib = bn_analyzer.stem_tibetan(tib_preprocessed)#.replace("ba\n","ba")
+    # if skt_fuzzy detected the string to be Tibetan/Chinese or the unicode2wylie transliteration was successful, do this: 
+    if skt_fuzzy == "" or tib != "":
+        if tib == "":
+            tib = search_string
+        tib_preprocessed = tib.replace("’", "'")
+        tib = bn_analyzer.stem_tibetan(tib_preprocessed)
         chn = search_string
     else:
         skt = search_string
@@ -28,6 +50,8 @@ def tag_sanskrit(sanskrit_string):
     return bn_analyzer.tag_sanskrit(sanskrit_string[:150].lower())
 
 def get_offsets(search_string, segment_text):
+    segment_text = re.sub("@[0-9a-b+]+","", segment_text) # we need to do this in order to make sure that the search function is matching strings that contain folio numbers as well
+    segment_text = re.sub("/+","", segment_text) # remove possible dandas
     allowed_distance = 0
     max_distance = len(search_string) / 5
     match = []
@@ -77,33 +101,16 @@ def process_result(result_pair,search_string):
     except (RuntimeError, TypeError, NameError):
         pass
 
-def filter_results_by_collection(results, limitcollection_positive):
-    filtered_results = []
-    filtered_collections = []
-    # Currently, the list of collections contains chn_all, pli_all etc. which need to be filtered out in advance. 
-    for collection in limitcollection_positive:
-        if not "all" in collection:
-            filtered_collections.append(collection)
-    if len(filtered_collections) == 0:
-        return results
-
-    for result in results:
-        for collection in filtered_collections:
-            if result['segment_nr'][0].startswith(collection):
-                filtered_results.append(result)
-    return filtered_results
-    
-def postprocess_results(search_string, results, limitcollection_positive):
+def postprocess_results(search_strings, results, limitcollection_positive):
     new_results = []
+    search_string = search_strings['skt']
     
     for result in results:
-        print(result)
         new_results.append(process_result(result,search_string))
-    
-    results = [x for x in new_results if x is not None]    
+    results = [x for x in new_results if x is not None]
     results = [x for x in results if 'centeredness' in x]
     results = remove_duplicate_results(results)
-    results = filter_results_by_collection(results, limitcollection_positive)
+    #results = filter_results_by_collection(results, limitcollection_positive)
     results = remove_duplicate_results(results)
     results = [i for n, i in enumerate(results) if i not in results[n + 1:]]
     # First sort according to string similarity, next sort if multilang is present; the idea is that first the multilang results are shown, then the other with increasing distance
