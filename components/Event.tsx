@@ -1,4 +1,4 @@
-import { Box } from "@mui/system";
+import { Box, styled } from "@mui/system";
 
 interface Props {
   year: string;
@@ -8,6 +8,8 @@ interface Props {
 
 export const projectWidth = "100";
 
+const StyledBox = styled(Box)({ "& p": { marginTop: 0 } });
+
 function Event({
   year,
   children,
@@ -16,7 +18,7 @@ function Event({
   return (
     <Box sx={{ display: "flex", flexDirection: "row" }}>
       <Box sx={{ minWidth: `${yearWidth}px` }}>{year}</Box>
-      <Box>{children}</Box>
+      <StyledBox>{children}</StyledBox>
     </Box>
   );
 }
