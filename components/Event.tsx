@@ -6,7 +6,7 @@ interface Props {
   yearWidth: string;
 }
 
-export const projectWidth = "100";
+export const projectYearWidth = "100";
 
 const StyledBox = styled(Box)({ "& p": { marginTop: 0 } });
 
