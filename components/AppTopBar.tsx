@@ -23,7 +23,7 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 
 export const AppTopBar = () => (
   <AppBar
-    position="static"
+    position="sticky"
     color="primary"
     elevation={0}
     sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}` })}
