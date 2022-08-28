@@ -52,7 +52,7 @@ function MyApp({ Component, pageProps, emotionCache }: MyAppProps) {
     <CacheProvider value={emotionCache ?? clientSideEmotionCache}>
       <MDXProvider components={components}>
         <Head>
-          <title>BN Next</title>
+          <title>BuddhaNexus</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
 
