@@ -54,21 +54,28 @@ export const Footer = () => (
     }}
   >
     <Grid
-      spacing={4}
       justifyContent="space-evenly"
+      rowSpacing={4}
       sx={{
         borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+        textAlign: {
+          xs: "center",
+          sm: "unset",
+        },
       }}
       container
     >
       {footerData.map((footer) => (
-        <Grid key={footer.title} xs={6} sm={3} item>
+        <Grid key={footer.title} xs={6} sm="auto" item>
           <Typography variant="h6" color="text.primary" gutterBottom>
             {footer.title}
           </Typography>
-          <ul>
+          <Container
+            component="ul"
+            sx={{ listStyleType: "none", paddingLeft: { sm: 0 } }}
+          >
             {footer.links.map((item) => (
-              <li key={item.title}>
+              <Container key={item.title} component="li" sx={{ mt: { xs: 1 } }}>
                 <Link
                   href={item.url}
                   variant="subtitle1"
@@ -76,9 +83,9 @@ export const Footer = () => (
                 >
                   {item.title}
                 </Link>
-              </li>
+              </Container>
             ))}
-          </ul>
+          </Container>
         </Grid>
       ))}
     </Grid>
