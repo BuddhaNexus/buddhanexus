@@ -1,6 +1,10 @@
 export { getI18NextStaticProps as getStaticProps } from "utils/common";
 import { StaticPageWrapper } from "components/StaticPageWrapper";
 
+import LaunchIcon from "@mui/icons-material/Launch";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import MenuIcon from "@mui/icons-material/Menu";
+
 # Guidelines
 
 ---
@@ -15,7 +19,7 @@ In order to enter the database, select the language of your choice by either cli
 
 ### Submit an Inquiry
 
-In order to submit an inquiry select a text from the dropdown list by using their respective catalogue numbers (for details, see the guidelines to the individual languages). Once the matches have been generated (Text View), you can view them by either scrolling down and up or by selecting the passage you are interested in by selecting the respective folio number from the dropdown list. You may alternatively select a text from the sidebar (opens upon clicking on the triple bar symbol situated on the left side of the menu bar), which offers an overview of the available texts according to thematic sections of various kinds.
+In order to submit an inquiry select a text from the dropdown list by using their respective catalogue numbers (for details, see the guidelines to the individual languages). Once the matches have been generated (Text View), you can view them by either scrolling down and up or by selecting the passage you are interested in by selecting the respective folio number from the dropdown list. You may alternatively select a text from the sidebar (opens upon clicking on the triple bar symbol <MenuIcon fontSize="small" /> situated on the left side of the menu bar), which offers an overview of the available texts according to thematic sections of various kinds.
 
 ### Global Text Search
 
@@ -33,7 +37,7 @@ The Global Text Search offers a search by a text passage. Upon typing in a text 
 
 ### View options
 
-- **Text View**: Upon selecting a file, the entire Inquiry Text with the passages for which matches are found is shown. The presence of matches in the Inquiry Text is indicated by colours. To view the matches use the scrollbar, to go back to the beginning of the Inquiry Text click the symbol, to display the Inquiry Text in a new tab, click the symbol. Upon selecting (by clicking) any of the coloured positions, the matches found in various Hit Texts for that position will be displayed in a new column. Whenever multilingual alignment (Sanskrit—Tibetan) is available for the Inquiry Text, the multilingual match would be displayed first, followed by the various monolingual matches found in other texts. (An option for disabling the multilingual match display is available in the filter.) By clicking on any of these matches the respective Hit Text will be displayed in yet another column, with the match in question highlighted. All matches with the Inquiry Text found in the displayed Hit Text are coloured. To display the Hit Text in a new tab, click the symbol.
+- **Text View**: Upon selecting a file, the entire Inquiry Text with the passages for which matches are found is shown. The presence of matches in the Inquiry Text is indicated by colours. To view the matches use the scrollbar, to go back to the beginning of the Inquiry Text click the <KeyboardDoubleArrowUpIcon fontSize="small" /> symbol, to display the Inquiry Text in a new tab, click the <LaunchIcon fontSize="small" /> symbol. Upon selecting (by clicking) any of the coloured positions, the matches found in various Hit Texts for that position will be displayed in a new column. Whenever multilingual alignment (Sanskrit—Tibetan) is available for the Inquiry Text, the multilingual match would be displayed first, followed by the various monolingual matches found in other texts. (An option for disabling the multilingual match display is available in the filter.) By clicking on any of these matches the respective Hit Text will be displayed in yet another column, with the match in question highlighted. All matches with the Inquiry Text found in the displayed Hit Text are coloured. To display the Hit Text in a new tab, click the <LaunchIcon fontSize="small" /> symbol .
 - **Table View**: Displays a table of the matches found for the current Inquiry Text. The results can be sorted in three different ways: (1) by their position in the Inquiry Text, (2) by their position in the Hit Text(s), and (3) by the length of the match in the Hit Text.
 - **Numbers View**: Displays a table with the segment numbers of the matches found for the current Inquiry Text. This view mode is only available for Pāli and Chinese texts, where the segment numbers represent the PTS and Taisho numbers, respectively.
 - **Multilingual View**: Displays automatically generated sentence alignment between a given Sanskrit text and its Tibetan translation in a table form. This view mode is available only under the category “Multilingual”.
