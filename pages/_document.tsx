@@ -1,7 +1,6 @@
 import React from "react";
 import type { DocumentContext } from "next/document";
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import { theme } from "@components/theme";
 import createEmotionServer from "@emotion/server/create-instance";
 import createEmotionCache from "utils/createEmotionCache";
 
@@ -87,12 +86,14 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta name="theme-color" content="#361F0D" />
           <meta name="emotion-insertion-point" content="" />
           {(this.props as any).emotionStyleTags}
         </Head>
 
         <body>
+          <script src="noflash.js" async />
+
           <Main />
           <NextScript nonce={process.env.nonce} />
         </body>
