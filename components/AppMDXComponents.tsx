@@ -7,7 +7,7 @@ const ResponsiveImage = ({ alt, ...props }: any) => (
   <Image alt={alt} layout="responsive" width="100%" {...props} />
 );
 
-export const MUIComponents: MDXComponents = {
+export const AppMDXComponents: MDXComponents = {
   img: ResponsiveImage,
   h1: ({ children }) => (
     <Typography variant="h2" component="h1">

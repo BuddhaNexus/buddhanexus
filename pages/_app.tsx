@@ -5,8 +5,8 @@ import { Cookies, CookiesProvider, useCookies } from "react-cookie";
 import type { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 import { appWithTranslation, i18n } from "next-i18next";
+import { AppMDXComponents } from "@components/AppMDXComponents";
 import { AppTopBar } from "@components/AppTopBar";
-import { MUIComponents } from "@components/MUIComponents";
 import { getDesignTokens } from "@components/theme";
 import type { EmotionCache } from "@emotion/react";
 import { CacheProvider } from "@emotion/react";
@@ -88,7 +88,7 @@ function MyApp({
 
   return (
     <CacheProvider value={emotionCache ?? clientSideEmotionCache}>
-      <MDXProvider components={MUIComponents}>
+      <MDXProvider components={AppMDXComponents}>
         <Head>
           <title>BuddhaNexus</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />

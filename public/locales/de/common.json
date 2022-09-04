@@ -1,6 +1,7 @@
 {
   "global": {
-    "siteTitle": "BuddhaNexus Next"
+    "siteTitle": "BuddhaNexus Next",
+    "language": "Sprache"
   },
   "header": {
     "support": "Unterstützung",
