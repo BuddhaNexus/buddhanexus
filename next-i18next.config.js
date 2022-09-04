@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires */
 const HttpBackend = require("i18next-http-backend/cjs");
 
 module.exports = {

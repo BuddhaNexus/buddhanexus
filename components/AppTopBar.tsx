@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { IconButton, useTheme } from "@mui/material";
@@ -27,6 +28,7 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 
 export const AppTopBar = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const colorMode = React.useContext(ColorModeContext);
 
@@ -59,8 +61,8 @@ export const AppTopBar = () => {
           />
         </Link>
         <nav>
-          <AppBarLink title="Support" href="/support" />
-          <AppBarLink title="Database" href="/database" />
+          <AppBarLink title={t("header.support")} href="/support" />
+          <AppBarLink title={t("header.database")} href="/database" />
           <IconButton
             sx={{ ml: 1 }}
             color="inherit"
