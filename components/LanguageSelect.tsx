@@ -1,12 +1,11 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { Button, Menu } from "@mui/material";
-import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 
 const languageLabels = {
-  EN: "🇬🇧 English",
-  DE: "🇩🇪 Deutsch",
+  EN: "🇬🇧  English",
+  DE: "🇩🇪  Deutsch",
 };
 
 export default function LanguageSelect() {
@@ -28,20 +27,22 @@ export default function LanguageSelect() {
   };
 
   return (
-    <Box sx={{ mx: 1 }}>
+    <div>
       <Button
         id="basic-button"
         aria-controls={isOpen ? "language-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={isOpen ? "true" : undefined}
+        sx={{ fontSize: "1.5rem" }}
         onClick={handleClick}
       >
-        {locale === "en" ? languageLabels.EN : languageLabels.DE}
+        {locale === "en" ? "🇬🇧" : "🇩🇪"}
       </Button>
       <Menu
         id="language-menu"
         anchorEl={anchorEl}
         open={isOpen}
+        variant="menu"
         MenuListProps={{
           "aria-labelledby": "language-button",
         }}
@@ -54,6 +55,6 @@ export default function LanguageSelect() {
           {languageLabels.DE}
         </MenuItem>
       </Menu>
-    </Box>
+    </div>
   );
 }

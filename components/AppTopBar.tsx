@@ -51,31 +51,44 @@ export const AppTopBar = () => {
           <Box
             component="img"
             src="/assets/icons/bn_tree.svg"
-            sx={{ maxHeight: 48, pr: 2 }}
+            sx={{
+              maxHeight: 48,
+              pr: 2,
+              [theme.breakpoints.down("sm")]: {
+                maxHeight: 36,
+              },
+            }}
             alt="logo"
           />
           <Box
             component="img"
             src="/assets/icons/bn_name.svg"
-            sx={{ maxHeight: 24 }}
+            sx={{
+              maxHeight: 24,
+              [theme.breakpoints.down("sm")]: {
+                display: "none",
+              },
+            }}
             alt="BuddhaNexus"
           />
         </Link>
+
         <nav>
           <AppBarLink title={t("header.support")} href="/support" />
           <AppBarLink title={t("header.database")} href="/database" />
-          <IconButton
-            sx={{ ml: 1 }}
-            color="inherit"
-            onClick={colorMode.toggleColorMode}
-          >
-            {theme.palette.mode === "dark" ? (
-              <Brightness7Icon />
-            ) : (
-              <Brightness4Icon />
-            )}
-          </IconButton>
         </nav>
+
+        <IconButton
+          sx={{ ml: 1 }}
+          color="inherit"
+          onClick={colorMode.toggleColorMode}
+        >
+          {theme.palette.mode === "dark" ? (
+            <Brightness7Icon />
+          ) : (
+            <Brightness4Icon />
+          )}
+        </IconButton>
         <LanguageSelect />
       </Toolbar>
     </AppBar>

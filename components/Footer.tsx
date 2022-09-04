@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+import NextLink from "next/link";
+import { useRouter } from "next/router";
 import type { TFunction } from "next-i18next";
 import { useTranslation } from "next-i18next";
 import Container from "@mui/material/Container";
@@ -46,6 +48,7 @@ const getFooterData: (t: TFunction) => FooterSection[] = (t) => [
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const footerData = useMemo(() => getFooterData(t), [t]);
 
@@ -88,13 +91,9 @@ export const Footer = () => {
                   component="li"
                   sx={{ mt: { xs: 1 } }}
                 >
-                  <Link
-                    href={item.url}
-                    variant="subtitle1"
-                    color="text.secondary"
-                  >
-                    {item.title}
-                  </Link>
+                  <NextLink href={item.url} locale={router.locale} passHref>
+                    <Link href={item.url}>{item.title}</Link>
+                  </NextLink>
                 </Container>
               ))}
             </Container>
