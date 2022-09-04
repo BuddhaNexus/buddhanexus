@@ -87,6 +87,16 @@ export default class MyDocument extends Document {
           />
 
           <meta name="theme-color" content="#361F0D" />
+          <meta
+            name="theme-color"
+            media="(prefers-color-scheme: light)"
+            content="#FFBC73"
+          />
+          <meta
+            name="theme-color"
+            media="(prefers-color-scheme: dark)"
+            content="#361F0D"
+          />
           <meta name="emotion-insertion-point" content="" />
           {(this.props as any).emotionStyleTags}
         </Head>

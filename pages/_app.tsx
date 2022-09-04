@@ -1,11 +1,11 @@
 import "../globalStyles.css";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import Image from "next/image";
 import { appWithTranslation } from "next-i18next";
 import { AppTopBar } from "@components/AppTopBar";
+import { MUIComponents } from "@components/MUIComponents";
 import { getDesignTokens } from "@components/theme";
 import type { EmotionCache } from "@emotion/react";
 import { CacheProvider } from "@emotion/react";
@@ -17,8 +17,6 @@ import {
   responsiveFontSizes,
   ThemeProvider,
 } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import type { MDXComponents } from "mdx/types";
 import createPersistedState from "use-persisted-state";
 import { ColorModeContext } from "utils/colorModeContext";
 import createEmotionCache from "utils/createEmotionCache";
@@ -26,31 +24,9 @@ import createEmotionCache from "utils/createEmotionCache";
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-const useSelectedColorModeState = createPersistedState("selectedColorMode");
-
-const ResponsiveImage = ({ alt, ...props }: any) => (
-  <Image alt={alt} layout="responsive" width="100%" {...props} />
+const useSelectedColorModeState = createPersistedState<"dark" | "light">(
+  "selectedColorMode"
 );
-
-const components: MDXComponents = {
-  img: ResponsiveImage,
-  h1: ({ children }) => (
-    <Typography variant="h2" component="h1">
-      {children}
-    </Typography>
-  ),
-  h2: ({ children }) => <Typography variant="h2">{children}</Typography>,
-  h3: ({ children }) => <Typography variant="h3">{children}</Typography>,
-  h4: ({ children }) => <Typography variant="h4">{children}</Typography>,
-  h5: ({ children }) => <Typography variant="h5">{children}</Typography>,
-  h6: ({ children }) => <Typography variant="h6">{children}</Typography>,
-  body: ({ children }) => <Typography variant="body1">{children}</Typography>,
-  p: ({ children }) => (
-    <Typography variant="body1" sx={{ my: 2 }}>
-      {children}
-    </Typography>
-  ),
-};
 
 interface MyAppProps extends AppProps {
   emotionCache: EmotionCache;
@@ -64,12 +40,6 @@ function MyApp({ Component, pageProps, emotionCache }: MyAppProps) {
   const [mode, setMode] = React.useState<"light" | "dark">(
     manuallySelectedColorMode
   );
-
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(function onMount() {
-    setIsMounted(true);
-  }, []);
 
   const colorMode = React.useMemo(() => {
     return {
@@ -89,22 +59,20 @@ function MyApp({ Component, pageProps, emotionCache }: MyAppProps) {
 
   return (
     <CacheProvider value={emotionCache ?? clientSideEmotionCache}>
-      <MDXProvider components={components}>
+      <MDXProvider components={MUIComponents}>
         <Head>
           <title>BuddhaNexus</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
 
         <ColorModeContext.Provider value={colorMode}>
-          {isMounted && (
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <>
-                <AppTopBar />
-                <Component {...pageProps} />
-              </>
-            </ThemeProvider>
-          )}
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <>
+              <AppTopBar />
+              <Component {...pageProps} />
+            </>
+          </ThemeProvider>
         </ColorModeContext.Provider>
       </MDXProvider>
     </CacheProvider>
