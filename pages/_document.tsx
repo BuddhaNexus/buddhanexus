@@ -4,6 +4,8 @@ import Document, { Head, Html, Main, NextScript } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
 import createEmotionCache from "utils/createEmotionCache";
 
+import i18nextConfig from "../next-i18next.config";
+
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const originalRenderPage = ctx.renderPage;
@@ -40,8 +42,11 @@ export default class MyDocument extends Document {
   }
 
   render(): JSX.Element {
+    const currentLocale =
+      this.props.__NEXT_DATA__.locale ?? i18nextConfig.i18n.defaultLocale;
+
     return (
-      <Html lang="en">
+      <Html lang={currentLocale}>
         <Head nonce={process.env.nonce}>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
@@ -102,8 +107,6 @@ export default class MyDocument extends Document {
         </Head>
 
         <body>
-          <script src="noflash.js" async />
-
           <Main />
           <NextScript nonce={process.env.nonce} />
         </body>
