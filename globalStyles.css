@@ -8,5 +8,5 @@ body > div {
 }
 
 * {
-  transition: background-color 200ms, opacity 200ms, color 200ms;
+  transition: background-color 400ms, opacity 200ms, color 300ms;
 }

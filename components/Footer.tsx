@@ -1,3 +1,8 @@
+import { useMemo } from "react";
+import NextLink from "next/link";
+import { useRouter } from "next/router";
+import type { TFunction } from "next-i18next";
+import { useTranslation } from "next-i18next";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
@@ -13,82 +18,89 @@ type FooterSection = {
   }[];
 };
 
-const footerData: FooterSection[] = [
+const getFooterData: (t: TFunction) => FooterSection[] = (t) => [
   {
-    title: "About",
+    title: t("footer.about"),
     links: [
-      { title: "Introduction", url: "/introduction" },
-      { title: "History", url: "/history" },
-      { title: "Guidelines", url: "/guidelines" },
+      { title: t("footer.introduction"), url: "/introduction" },
+      { title: t("footer.history"), url: "/history" },
+      { title: t("footer.guidelines"), url: "/guidelines" },
     ],
   },
   {
-    title: "Community",
+    title: t("footer.community"),
     links: [
-      { title: "Institutions", url: "/institutions" },
-      { title: "People", url: "/people" },
-      { title: "News", url: "/news" },
+      { title: t("footer.institutions"), url: "/institutions" },
+      { title: t("footer.people"), url: "/people" },
+      { title: t("footer.news"), url: "/news" },
     ],
   },
   {
-    title: "Activities",
+    title: t("footer.activities"),
     links: [
-      { title: "Publications", url: "/publications" },
-      { title: "Events", url: "/events" },
-      { title: "Projects", url: "/projects" },
-      { title: "Presentations", url: "/presentations" },
+      { title: t("footer.publications"), url: "/publications" },
+      { title: t("footer.events"), url: "/events" },
+      { title: t("footer.projects"), url: "/projects" },
+      { title: t("footer.presentations"), url: "/presentations" },
     ],
   },
 ];
 
-export const Footer = () => (
-  <Container
-    maxWidth="md"
-    component="footer"
-    sx={{
-      py: [4, 6],
-      justifyContent: "flex-end",
-      flexDirection: "column",
-      display: "flex",
-      flex: 1,
-    }}
-  >
-    <Grid
-      justifyContent="space-evenly"
-      rowSpacing={4}
+export const Footer = () => {
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const footerData = useMemo(() => getFooterData(t), [t]);
+
+  return (
+    <Container
+      maxWidth="md"
+      component="footer"
       sx={{
-        borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-        textAlign: {
-          xs: "center",
-          sm: "unset",
-        },
+        py: [4, 6],
+        justifyContent: "flex-end",
+        flexDirection: "column",
+        display: "flex",
+        flex: 1,
       }}
-      container
     >
-      {footerData.map((footer) => (
-        <Grid key={footer.title} xs={6} sm="auto" item>
-          <Typography variant="h6" color="text.primary" gutterBottom>
-            {footer.title}
-          </Typography>
-          <Container
-            component="ul"
-            sx={{ listStyleType: "none", paddingLeft: { sm: 0 } }}
-          >
-            {footer.links.map((item) => (
-              <Container key={item.title} component="li" sx={{ mt: { xs: 1 } }}>
-                <Link
-                  href={item.url}
-                  variant="subtitle1"
-                  color="text.secondary"
+      <Grid
+        justifyContent="space-evenly"
+        rowSpacing={4}
+        sx={{
+          borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+          textAlign: {
+            xs: "center",
+            sm: "unset",
+          },
+        }}
+        container
+      >
+        {footerData.map((footer) => (
+          <Grid key={footer.title} xs={6} sm="auto" item>
+            <Typography variant="h6" color="text.primary" gutterBottom>
+              {footer.title}
+            </Typography>
+            <Container
+              component="ul"
+              sx={{ listStyleType: "none", paddingLeft: { sm: 0 } }}
+            >
+              {footer.links.map((item) => (
+                <Container
+                  key={item.title}
+                  component="li"
+                  sx={{ mt: { xs: 1 } }}
                 >
-                  {item.title}
-                </Link>
-              </Container>
-            ))}
-          </Container>
-        </Grid>
-      ))}
-    </Grid>
-    <Copyright sx={{ mt: 5 }} />
-  </Container>
-);
+                  <NextLink href={item.url} locale={router.locale} passHref>
+                    <Link href={item.url}>{item.title}</Link>
+                  </NextLink>
+                </Container>
+              ))}
+            </Container>
+          </Grid>
+        ))}
+      </Grid>
+      <Copyright sx={{ mt: 5 }} />
+    </Container>
+  );
+};

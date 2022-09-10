@@ -1,4 +1,6 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
+import LanguageSelect from "@components/LanguageSelect";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { IconButton, useTheme } from "@mui/material";
@@ -27,6 +29,7 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 
 export const AppTopBar = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const colorMode = React.useContext(ColorModeContext);
 
@@ -48,31 +51,45 @@ export const AppTopBar = () => {
           <Box
             component="img"
             src="/assets/icons/bn_tree.svg"
-            sx={{ maxHeight: 48, pr: 2 }}
+            sx={{
+              maxHeight: 48,
+              pr: 2,
+              [theme.breakpoints.down("sm")]: {
+                maxHeight: 36,
+              },
+            }}
             alt="logo"
           />
           <Box
             component="img"
             src="/assets/icons/bn_name.svg"
-            sx={{ maxHeight: 24 }}
+            sx={{
+              maxHeight: 24,
+              [theme.breakpoints.down("sm")]: {
+                display: "none",
+              },
+            }}
             alt="BuddhaNexus"
           />
         </Link>
+
         <nav>
-          <AppBarLink title="Support" href="/support" />
-          <AppBarLink title="Database" href="/database" />
-          <IconButton
-            sx={{ ml: 1 }}
-            color="inherit"
-            onClick={colorMode.toggleColorMode}
-          >
-            {theme.palette.mode === "dark" ? (
-              <Brightness7Icon />
-            ) : (
-              <Brightness4Icon />
-            )}
-          </IconButton>
+          <AppBarLink title={t("header.support")} href="/support" />
+          <AppBarLink title={t("header.database")} href="/database" />
         </nav>
+
+        <IconButton
+          sx={{ ml: 1 }}
+          color="inherit"
+          onClick={colorMode.toggleColorMode}
+        >
+          {theme.palette.mode === "dark" ? (
+            <Brightness7Icon />
+          ) : (
+            <Brightness4Icon />
+          )}
+        </IconButton>
+        <LanguageSelect />
       </Toolbar>
     </AppBar>
   );

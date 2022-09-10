@@ -1,13 +1,13 @@
 import type { PaletteMode, ThemeOptions } from "@mui/material";
 
-const serifFontFamily = [
+export const serifFontFamily = [
   "Source Serif Pro",
   "PT Serif",
   "serif",
   "ui-serif",
 ].join(",");
 
-const sansFontFamily = [
+export const sansFontFamily = [
   "Source Sans Pro",
   "-apple-system",
   "BlinkMacSystemFont",
@@ -29,9 +29,8 @@ export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
     h4: { fontFamily: serifFontFamily },
     h5: { fontFamily: serifFontFamily },
     h6: { fontFamily: sansFontFamily },
-    body1: { fontFamily: serifFontFamily },
-    body2: { fontFamily: serifFontFamily },
-    caption: { fontFamily: serifFontFamily },
+    body1: { fontFamily: sansFontFamily },
+    body2: { fontFamily: sansFontFamily },
     subtitle1: { fontFamily: serifFontFamily },
     subtitle2: { fontFamily: serifFontFamily },
   },
@@ -67,7 +66,8 @@ export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
       : {
           // palette values for dark mode
           primary: {
-            main: "#361F0D",
+            main: "#FFBC73",
+            contrastText: "#ffffff",
           },
           secondary: {
             main: "#C23211",
@@ -83,6 +83,9 @@ export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
           },
           success: {
             main: "#02CC3B",
+          },
+          background: {
+            paper: "#28170a",
           },
         }),
   },

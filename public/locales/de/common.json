@@ -1,5 +1,25 @@
 {
   "global": {
-    "siteTitle": "BuddhaNexus Next"
+    "siteTitle": "BuddhaNexus Next",
+    "language": "Sprache"
+  },
+  "header": {
+    "support": "Unterstützung",
+    "database": "Datenbank"
+  },
+  "footer": {
+    "about": "Über",
+    "introduction": "Einführung",
+    "history": "Geschichte",
+    "guidelines": "Richtlinien",
+    "community": "Gemeinschaft",
+    "institutions": "Institutionen",
+    "people": "Personen",
+    "news": "Nachrichten",
+    "activities": "Aktivitäten",
+    "publications": "Veröffentlichungen",
+    "events": "Veranstaltungen",
+    "projects": "Projekte",
+    "presentations": "Präsentationen"
   }
 }
