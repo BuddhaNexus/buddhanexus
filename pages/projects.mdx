@@ -1,0 +1,34 @@
+export { getI18NextStaticProps as getStaticProps } from "utils/common";
+import { StaticPageWrapper } from "components/StaticPageWrapper";
+import Event from "components/Event";
+import { projectYearWidth } from "components/Event";
+
+# Activities
+
+Since the establishment of the Khyentse Center (KC) various activities,
+including conferences, workshops, projects, and lectures have been conducted by its members and collaborating colleagues,
+focusing on various issues concerning the evolution of Buddhist scriptures and the formation of the Buddhist canons.
+The following is a selection of such activities that in one way or another are connected to the initiation of BuddhaNexus
+and to its development ever since.
+
+## Projects
+
+<Event yearWidth={projectYearWidth} year="2016–2019">
+  “[A Canon in the Making: The History of the Formation, Production, and
+  Transmission of the bsTan ’gyur, the Corpus of Treatises in Tibetan
+  Translation.]( https://www.kc-tbts.uni-hamburg.de/research/projects.html)” Jun
+  2016–Jul 2017, Jul 2018–Jun 2019. Lead by Orna Almogi, funded by the Deutsche
+  Forschungsgemeinschaft (DFG).
+</Event>
+
+<Event yearWidth={projectYearWidth} year="2015–2017">
+  “[Scholars and Scribes: Leveraging Computerized Tools for Navigating an
+  Uncharted Tibetan Buddhist Philosophical Corpus.](
+  https://www.kc-tbts.uni-hamburg.de/research/projects.html)” A collaborative
+  project of the Khyentse Center, Universität Hamburg and the The Blavatnik
+  School of Computer Science of the Tel Aviv University. Led by Orna Almogi,
+  Dorji Wangchuk, Nachum Dershowitz, Lior Wolf, funded by the German-Israeli
+  Foundation (GIF).
+</Event>
+
+export default StaticPageWrapper;
