@@ -6,3 +6,7 @@ body > div {
   flex-direction: column;
   justify-content: space-between;
 }
+
+* {
+  transition: background-color 200ms, opacity 200ms, color 200ms;
+}
