@@ -87,7 +87,7 @@ export default class MyDocument extends Document {
           <meta name="theme-color" content="#361f0d" />
 
           <link
-            href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro&?family=Source+Sans+Pro&display=optional"
+            href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=optional&?family=Source+Sans+Pro&display=optional"
             rel="stylesheet"
           />
 

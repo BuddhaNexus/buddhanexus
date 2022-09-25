@@ -1,4 +1,5 @@
 import React from "react";
+import { useDarkMode } from "next-dark-mode";
 import { useTranslation } from "next-i18next";
 import LanguageSelect from "@components/LanguageSelect";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -8,7 +9,6 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
-import { ColorModeContext } from "utils/colorModeContext";
 
 interface AppBarLinkProps {
   title: string;
@@ -31,7 +31,7 @@ export const AppTopBar = () => {
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const colorMode = React.useContext(ColorModeContext);
+  const { darkModeActive, switchToDarkMode, switchToLightMode } = useDarkMode();
 
   return (
     <AppBar
@@ -81,13 +81,9 @@ export const AppTopBar = () => {
         <IconButton
           sx={{ ml: 1 }}
           color="inherit"
-          onClick={colorMode.toggleColorMode}
+          onClick={darkModeActive ? switchToLightMode : switchToDarkMode}
         >
-          {theme.palette.mode === "dark" ? (
-            <Brightness7Icon />
-          ) : (
-            <Brightness4Icon />
-          )}
+          {darkModeActive ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>
         <LanguageSelect />
       </Toolbar>
