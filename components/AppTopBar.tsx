@@ -1,10 +1,10 @@
-import React from "react";
-import { useDarkMode } from "next-dark-mode";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
+import { useTheme } from "next-themes";
 import LanguageSelect from "@components/LanguageSelect";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { IconButton, useTheme } from "@mui/material";
+import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
@@ -28,10 +28,15 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 );
 
 export const AppTopBar = () => {
-  const theme = useTheme();
+  const materialTheme = useMaterialTheme();
+  const { theme, setTheme } = useTheme();
+  const [isMounted, setIsMounted] = useState(false);
+
   const { t } = useTranslation();
 
-  const { darkModeActive, switchToDarkMode, switchToLightMode } = useDarkMode();
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <AppBar
@@ -54,7 +59,7 @@ export const AppTopBar = () => {
             sx={{
               maxHeight: 48,
               pr: 2,
-              [theme.breakpoints.down("sm")]: {
+              [materialTheme.breakpoints.down("sm")]: {
                 maxHeight: 36,
               },
             }}
@@ -65,7 +70,7 @@ export const AppTopBar = () => {
             src="/assets/icons/bn_name.svg"
             sx={{
               maxHeight: 24,
-              [theme.breakpoints.down("sm")]: {
+              [materialTheme.breakpoints.down("sm")]: {
                 display: "none",
               },
             }}
@@ -78,13 +83,16 @@ export const AppTopBar = () => {
           <AppBarLink title={t("header.database")} href="/database" />
         </nav>
 
-        <IconButton
-          sx={{ ml: 1 }}
-          color="inherit"
-          onClick={darkModeActive ? switchToLightMode : switchToDarkMode}
-        >
-          {darkModeActive ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
+        {isMounted && (
+          <IconButton
+            sx={{ ml: 1 }}
+            color="inherit"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            {theme === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+        )}
+
         <LanguageSelect />
       </Toolbar>
     </AppBar>
