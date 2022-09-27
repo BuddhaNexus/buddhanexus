@@ -56,6 +56,7 @@ export const AppTopBar = () => {
           <Box
             component="img"
             src="/assets/icons/bn_tree.svg"
+            width={64}
             sx={{
               maxHeight: 48,
               pr: 2,
@@ -68,6 +69,7 @@ export const AppTopBar = () => {
           <Box
             component="img"
             src="/assets/icons/bn_name.svg"
+            width={144}
             sx={{
               maxHeight: 24,
               [materialTheme.breakpoints.down("sm")]: {
@@ -83,7 +85,7 @@ export const AppTopBar = () => {
           <AppBarLink title={t("header.database")} href="/database" />
         </nav>
 
-        {isMounted && (
+        {isMounted ? (
           <IconButton
             sx={{ ml: 1 }}
             color="inherit"
@@ -91,6 +93,9 @@ export const AppTopBar = () => {
           >
             {theme === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
+        ) : (
+          // prevent layout jump
+          <Box sx={{ width: 48 }} />
         )}
 
         <LanguageSelect />
