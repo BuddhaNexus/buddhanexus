@@ -36,6 +36,12 @@ export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   },
   palette: {
     mode,
+    common: {
+      pali: "#7C3A00",
+      sanskrit: "#2C284C",
+      tibetan: "#66160E",
+      chinese: "#4F2B56",
+    },
     ...(mode === "light"
       ? {
           // palette values for light mode

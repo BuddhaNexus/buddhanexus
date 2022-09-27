@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 import LanguageSelect from "@components/LanguageSelect";
@@ -32,7 +33,11 @@ export const AppTopBar = () => {
   const { theme, setTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
 
+  const { route } = useRouter();
+
   const { t } = useTranslation();
+
+  const isHomeRoute = route === "/";
 
   useEffect(() => {
     setIsMounted(true);
@@ -43,7 +48,9 @@ export const AppTopBar = () => {
       position="sticky"
       color="primary"
       elevation={0}
-      sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}` })}
+      sx={(theme) => ({
+        borderBottom: `1px solid ${theme.palette.common.pali}`,
+      })}
     >
       <Toolbar sx={{ flexWrap: "wrap" }}>
         <Link
@@ -66,18 +73,20 @@ export const AppTopBar = () => {
             }}
             alt="logo"
           />
-          <Box
-            component="img"
-            src="/assets/icons/bn_name.svg"
-            width={144}
-            sx={{
-              maxHeight: 24,
-              [materialTheme.breakpoints.down("sm")]: {
-                display: "none",
-              },
-            }}
-            alt="BuddhaNexus"
-          />
+          {!isHomeRoute && (
+            <Box
+              component="img"
+              src="/assets/icons/bn_name.svg"
+              width={144}
+              sx={{
+                maxHeight: 24,
+                [materialTheme.breakpoints.down("sm")]: {
+                  display: "none",
+                },
+              }}
+              alt="BuddhaNexus"
+            />
+          )}
         </Link>
 
         <nav>
