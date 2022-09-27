@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { TFunction } from "next-i18next";
 import { useTranslation } from "next-i18next";
-import { Link } from "@components/Link";
+import { Link } from "@components/common/Link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";

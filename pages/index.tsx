@@ -1,7 +1,8 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
-import { Footer } from "@components/Footer";
-import { Paper } from "@mui/material";
+import { ContentLanguageSelector } from "@components/layout/ContentLanguageSelector";
+import { Footer } from "@components/layout/Footer";
+import { Paper, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -9,6 +10,8 @@ import { getI18NextStaticProps } from "utils/common";
 
 export default function Home() {
   const { t } = useTranslation();
+
+  const theme = useTheme();
 
   return (
     <Container
@@ -42,6 +45,12 @@ export default function Home() {
           evolution of scriptures, formation of canons, and intellectual
           networks.
         </Typography>
+
+        <ContentLanguageSelector
+          title="Pali"
+          href="/pali"
+          color={theme.palette.common.pali}
+        />
       </Paper>
       <Footer />
     </Container>

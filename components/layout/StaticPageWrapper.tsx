@@ -1,6 +1,6 @@
 import React from "react";
+import { Footer } from "@components/layout/Footer";
 import { Container, Paper } from "@mui/material";
-import { Footer } from "components/Footer";
 
 export const StaticPageWrapper: React.FC = ({
   children,
