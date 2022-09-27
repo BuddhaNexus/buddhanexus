@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import React from "react";
+import { Link } from "@components/common/Link";
 import { Box, Typography } from "@mui/material";
 import { useTheme as useMaterialTheme } from "@mui/material/styles";
 
@@ -9,24 +10,42 @@ interface Props {
   color: string;
 }
 
-export const ContentLanguageSelector: FC<Props> = ({ title, color }) => {
+export const ContentLanguageSelector: FC<Props> = ({ title, href, color }) => {
   const materialTheme = useMaterialTheme();
 
   return (
-    <Box sx={{}}>
+    <Link
+      href={href}
+      sx={{
+        display: "flex",
+        my: 2,
+        mx: 2,
+        flexDirection: "column",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        [materialTheme.breakpoints.down("sm")]: {
+          justifyContent: "flex-start",
+          flexDirection: "row",
+        },
+        "&:hover": { opacity: 0.8 },
+        "&:active": { opacity: 1 },
+      }}
+    >
       <Box
         component="img"
         src="/assets/icons/bn_tree.svg"
         sx={{
-          flex: 1,
+          maxHeight: 120,
+          p: 2,
+          borderRadius: 2,
           background: color,
-          [materialTheme.breakpoints.down("sm")]: {},
         }}
-        alt="logo"
+        alt={`select language: ${title}`}
       />
-      <Box>
-        <Typography>{title}</Typography>
-      </Box>
-    </Box>
+      <Typography variant="h6" sx={{ mx: 2, mt: 1 }}>
+        {title}
+      </Typography>
+    </Link>
   );
 };
