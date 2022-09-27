@@ -29,7 +29,7 @@ export default function Home() {
         height="30vh"
         alt="buddhanexus logo"
         sx={{
-          filter: "drop-shadow(2px 2px 1px rgba(54,31,13,0.25))",
+          filter: "drop-shadow(2px 2px 1px rgba(0,0,0,0.25))",
         }}
       />
       <Paper

@@ -40,6 +40,7 @@ export const ContentLanguageSelector: FC<Props> = ({ title, href, color }) => {
           p: 2,
           borderRadius: 2,
           background: color,
+          filter: "drop-shadow(0px 2px 1px rgba(0,0,0,0.25))",
         }}
         alt={`select language: ${title}`}
       />
