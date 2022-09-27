@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 import LanguageSelect from "@components/LanguageSelect";
+import { Link } from "@components/Link";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 
 interface AppBarLinkProps {
