@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
-import LanguageSelect from "@components/LanguageSelect";
+import { Link } from "@components/common/Link";
+import LanguageSelect from "@components/layout/LanguageSelect";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 
 interface AppBarLinkProps {
@@ -32,7 +33,11 @@ export const AppTopBar = () => {
   const { theme, setTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
 
+  const { route } = useRouter();
+
   const { t } = useTranslation();
+
+  const isHomeRoute = route === "/";
 
   useEffect(() => {
     setIsMounted(true);
@@ -43,7 +48,9 @@ export const AppTopBar = () => {
       position="sticky"
       color="primary"
       elevation={0}
-      sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}` })}
+      sx={(theme) => ({
+        borderBottom: `1px solid ${theme.palette.common.pali}`,
+      })}
     >
       <Toolbar sx={{ flexWrap: "wrap" }}>
         <Link
@@ -56,6 +63,7 @@ export const AppTopBar = () => {
           <Box
             component="img"
             src="/assets/icons/bn_tree.svg"
+            width={64}
             sx={{
               maxHeight: 48,
               pr: 2,
@@ -65,17 +73,20 @@ export const AppTopBar = () => {
             }}
             alt="logo"
           />
-          <Box
-            component="img"
-            src="/assets/icons/bn_name.svg"
-            sx={{
-              maxHeight: 24,
-              [materialTheme.breakpoints.down("sm")]: {
-                display: "none",
-              },
-            }}
-            alt="BuddhaNexus"
-          />
+          {!isHomeRoute && (
+            <Box
+              component="img"
+              src="/assets/icons/bn_name.svg"
+              width={144}
+              sx={{
+                maxHeight: 24,
+                [materialTheme.breakpoints.down("sm")]: {
+                  display: "none",
+                },
+              }}
+              alt="BuddhaNexus"
+            />
+          )}
         </Link>
 
         <nav>
@@ -83,7 +94,7 @@ export const AppTopBar = () => {
           <AppBarLink title={t("header.database")} href="/database" />
         </nav>
 
-        {isMounted && (
+        {isMounted ? (
           <IconButton
             sx={{ ml: 1 }}
             color="inherit"
@@ -91,6 +102,9 @@ export const AppTopBar = () => {
           >
             {theme === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
+        ) : (
+          // prevent layout jump
+          <Box sx={{ width: 48 }} />
         )}
 
         <LanguageSelect />
