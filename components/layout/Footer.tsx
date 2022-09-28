@@ -74,7 +74,7 @@ export const Footer = () => {
         container
       >
         {footerData.map((footer) => (
-          <Grid key={footer.title} xs={6} sm="auto" item>
+          <Grid key={footer.title} xs={12} sm="auto" item>
             <Typography variant="h6" color="text.primary" gutterBottom>
               {footer.title}
             </Typography>

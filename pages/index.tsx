@@ -18,6 +18,9 @@ export default function Home() {
 
   return (
     <>
+      {/* Bodhi Leaf Background */}
+      {/* TODO: make visible in static pages */}
+      {/* TODO: handle in dark mode */}
       <Box
         sx={{
           background: "url('assets/icons/bodhi-leaf.svg')",
@@ -47,8 +50,7 @@ export default function Home() {
           alt="buddhanexus logo"
           sx={{
             p: 4,
-            m: 4,
-            mb: 0,
+            mx: 4,
             [materialTheme.breakpoints.down("sm")]: {
               p: 3,
               m: 2,
