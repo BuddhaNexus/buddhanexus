@@ -17,86 +17,114 @@ export default function Home() {
   const materialTheme = useMaterialTheme();
 
   return (
-    <Container
-      component="main"
-      maxWidth="md"
-      sx={{ pt: 8, flex: 1, display: "flex", flexDirection: "column" }}
-    >
+    <>
       <Box
-        component="img"
-        src="/assets/icons/full-logo.svg"
-        width="100%"
-        height="30vh"
-        alt="buddhanexus logo"
         sx={{
-          filter: "drop-shadow(2px 2px 1px rgba(0,0,0,0.25))",
+          background: "url('assets/icons/bodhi-leaf.svg')",
+          height: "80%",
+          position: "fixed",
+          width: "80%",
+          opacity: 0.1,
+          zIndex: -1,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundOrigin: "center",
+          margin: "10%",
+          marginTop: "5%",
+          filter: "blur(6px)",
         }}
       />
-      <Paper
-        elevation={1}
-        sx={{
-          p: 4,
-          m: 4,
-          [materialTheme.breakpoints.down("sm")]: {
-            p: 3,
-            m: 2,
-          },
-        }}
-      >
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="text.primary"
-          gutterBottom
-        >
-          {t("global.siteTitle")}
-        </Typography>
-        <Typography
-          align="center"
-          variant="body1"
-          sx={{ fontFamily: serifFontFamily }}
-        >
-          A database devoted to the study of Buddhist texts and literary corpora
-          in Pāli, Sanskrit, Tibetan, and Chinese, with particular emphasis on
-          evolution of scriptures, formation of canons, and intellectual
-          networks.
-        </Typography>
 
+      <Container
+        component="main"
+        maxWidth="md"
+        sx={{ pt: 8, flex: 1, display: "flex", flexDirection: "column" }}
+      >
         <Box
+          component="img"
+          src="/assets/icons/full-logo.svg"
+          height="30vh"
+          alt="buddhanexus logo"
           sx={{
-            display: "flex",
-            my: 2,
-            flexWrap: "wrap",
+            p: 4,
+            m: 4,
+            mb: 0,
             [materialTheme.breakpoints.down("sm")]: {
-              flexDirection: "column",
+              p: 3,
+              m: 2,
+            },
+            backgroundColor: "#361F0D",
+            filter: "drop-shadow(2px 2px 1px rgba(0,0,0,0.25))",
+            borderRadius: 1,
+          }}
+        />
+        <Paper
+          elevation={1}
+          sx={{
+            p: 4,
+            m: 4,
+            mt: 2,
+            [materialTheme.breakpoints.down("sm")]: {
+              p: 3,
+              m: 2,
             },
           }}
         >
-          <ContentLanguageSelector
-            title="Pali"
-            href="/pali"
-            color={theme.palette.common.pali}
-          />
-          <ContentLanguageSelector
-            title="Sanskrit"
-            href="/sanskrit"
-            color={theme.palette.common.sanskrit}
-          />
-          <ContentLanguageSelector
-            title="Tibetan"
-            href="/tibetan"
-            color={theme.palette.common.tibetan}
-          />
-          <ContentLanguageSelector
-            title="Chinese"
-            href="/chinese"
-            color={theme.palette.common.chinese}
-          />
-        </Box>
-      </Paper>
-      <Footer />
-    </Container>
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            {t("global.siteTitle")}
+          </Typography>
+          <Typography
+            align="center"
+            variant="body1"
+            sx={{ fontFamily: serifFontFamily }}
+          >
+            A database devoted to the study of Buddhist texts and literary
+            corpora in Pāli, Sanskrit, Tibetan, and Chinese, with particular
+            emphasis on evolution of scriptures, formation of canons, and
+            intellectual networks.
+          </Typography>
+
+          <Box
+            sx={{
+              display: "flex",
+              my: 2,
+              flexWrap: "wrap",
+              [materialTheme.breakpoints.down("sm")]: {
+                flexDirection: "column",
+              },
+            }}
+          >
+            <ContentLanguageSelector
+              title="Pali"
+              href="/pali"
+              color={theme.palette.common.pali}
+            />
+            <ContentLanguageSelector
+              title="Sanskrit"
+              href="/sanskrit"
+              color={theme.palette.common.sanskrit}
+            />
+            <ContentLanguageSelector
+              title="Tibetan"
+              href="/tibetan"
+              color={theme.palette.common.tibetan}
+            />
+            <ContentLanguageSelector
+              title="Chinese"
+              href="/chinese"
+              color={theme.palette.common.chinese}
+            />
+          </Box>
+        </Paper>
+        <Footer />
+      </Container>
+    </>
   );
 }
 
