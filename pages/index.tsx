@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "next-i18next";
 import { ContentLanguageSelector } from "@components/layout/ContentLanguageSelector";
 import { Footer } from "@components/layout/Footer";
+import { StaticPageBackground } from "@components/layout/StaticPageBackground";
 import { serifFontFamily } from "@components/theme";
 import { Paper, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -18,30 +19,17 @@ export default function Home() {
 
   return (
     <>
-      {/* Bodhi Leaf Background */}
-      {/* TODO: make visible in static pages */}
-      {/* TODO: handle in dark mode */}
-      <Box
-        sx={{
-          background: "url('assets/icons/bodhi-leaf.svg')",
-          height: "80%",
-          position: "fixed",
-          width: "80%",
-          opacity: 0.1,
-          zIndex: -1,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundOrigin: "center",
-          margin: "10%",
-          marginTop: "5%",
-          filter: "blur(6px)",
-        }}
-      />
+      <StaticPageBackground />
 
       <Container
         component="main"
         maxWidth="md"
-        sx={{ pt: 8, flex: 1, display: "flex", flexDirection: "column" }}
+        sx={{
+          pt: 8,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
         <Box
           component="img"
