@@ -36,7 +36,8 @@ export const ContentLanguageSelector: FC<Props> = ({ title, href, color }) => {
         component="img"
         src="/assets/icons/bn_tree.svg"
         sx={{
-          maxHeight: 120,
+          height: 120,
+          width: 120,
           p: 2,
           borderRadius: 2,
           background: color,
