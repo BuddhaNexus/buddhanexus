@@ -12,4 +12,4 @@ jobs:
       - name: Run TypeScript compiler
         run: tsc
       - name: Run ESLint
-        run: eslint . --ext .js,.jsx,.ts,.tsx
+        run: yarn eslint .
