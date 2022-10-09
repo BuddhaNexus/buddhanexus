@@ -34,10 +34,10 @@ export const AppTopBar = () => {
   const [isMounted, setIsMounted] = useState(false);
 
   const { route } = useRouter();
-
   const { t } = useTranslation();
 
   const isHomeRoute = route === "/";
+  const isATIIRoute = route.startsWith("/atii");
 
   useEffect(() => {
     setIsMounted(true);
@@ -46,7 +46,6 @@ export const AppTopBar = () => {
   return (
     <AppBar
       position="sticky"
-      color="primary"
       elevation={0}
       sx={(theme) => ({
         borderBottom: `1px solid ${theme.palette.common.pali}`,
@@ -56,42 +55,55 @@ export const AppTopBar = () => {
         <Link
           color="inherit"
           sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}
-          href="/"
+          href={isATIIRoute ? "/atii" : "/"}
           underline="none"
           noWrap
         >
-          <Box
-            component="img"
-            src="/assets/icons/bn_tree.svg"
-            width={64}
-            sx={{
-              maxHeight: 48,
-              pr: 2,
-              [materialTheme.breakpoints.down("sm")]: {
-                maxHeight: 36,
-              },
-            }}
-            alt="logo"
-          />
-          {!isHomeRoute && (
+          <>
             <Box
               component="img"
-              src="/assets/icons/bn_name.svg"
-              width={144}
+              src={
+                isATIIRoute
+                  ? "/assets/images/atii_logo.png"
+                  : "/assets/icons/bn_tree.svg"
+              }
+              width={isATIIRoute ? undefined : 64}
               sx={{
-                maxHeight: 24,
+                maxHeight: 48,
+                pr: 2,
                 [materialTheme.breakpoints.down("sm")]: {
-                  display: "none",
+                  maxHeight: 36,
                 },
               }}
-              alt="BuddhaNexus"
+              alt="logo"
             />
-          )}
+            {!isHomeRoute && !isATIIRoute && (
+              <Box
+                component="img"
+                src="/assets/icons/bn_name.svg"
+                width={144}
+                sx={{
+                  maxHeight: 24,
+                  [materialTheme.breakpoints.down("sm")]: {
+                    display: "none",
+                  },
+                }}
+                alt="BuddhaNexus"
+              />
+            )}
+          </>
         </Link>
 
         <nav>
-          <AppBarLink title={t("header.support")} href="/support" />
-          <AppBarLink title={t("header.database")} href="/database" />
+          {isATIIRoute ? (
+            <AppBarLink title="BuddhaNexus" href="/" />
+          ) : (
+            <>
+              <AppBarLink title={t("header.support")} href="/support" />
+              <AppBarLink title={t("header.database")} href="/database" />
+              <AppBarLink title="ATII" href="/atii" />
+            </>
+          )}
         </nav>
 
         {isMounted ? (
