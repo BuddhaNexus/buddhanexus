@@ -1,3 +1,7 @@
+import { PageContainer } from "@components/layout/PageContainer";
+
+export { getI18NextStaticProps as getStaticProps } from "utils/common";
+
 import React from "react";
 import { useTranslation } from "next-i18next";
 import { ContentLanguageSelector } from "@components/layout/ContentLanguageSelector";
@@ -6,10 +10,8 @@ import { StaticPageBackground } from "@components/layout/StaticPageBackground";
 import { serifFontFamily } from "@components/theme";
 import { Paper, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import { useTheme as useMaterialTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { getI18NextStaticProps } from "utils/common";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -21,16 +23,7 @@ export default function Home() {
     <>
       <StaticPageBackground />
 
-      <Container
-        component="main"
-        maxWidth="md"
-        sx={{
-          pt: 8,
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <PageContainer>
         <Box
           component="img"
           src="/assets/icons/full-logo.svg"
@@ -113,11 +106,7 @@ export default function Home() {
           </Box>
         </Paper>
         <Footer />
-      </Container>
+      </PageContainer>
     </>
   );
-}
-
-export async function getStaticProps({ locale }: { locale: any }) {
-  return getI18NextStaticProps({ locale });
 }
