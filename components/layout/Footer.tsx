@@ -23,6 +23,7 @@ const getFooterData: (t: TFunction) => FooterSection[] = (t) => [
       { title: t("footer.introduction"), url: "/introduction" },
       { title: t("footer.history"), url: "/history" },
       { title: t("footer.guidelines"), url: "/guidelines" },
+      { title: t("footer.contact"), url: "/contact" },
     ],
   },
   {

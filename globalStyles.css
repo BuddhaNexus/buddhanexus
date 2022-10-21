@@ -10,3 +10,7 @@ body > div {
 * {
   transition: opacity 200ms;
 }
+
+address {
+  font-style: normal;
+}
