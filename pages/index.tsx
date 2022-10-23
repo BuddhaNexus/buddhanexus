@@ -13,6 +13,8 @@ import Box from "@mui/material/Box";
 import { useTheme as useMaterialTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
+import { SourceLanguage } from "../utils/constants";
+
 export default function Home() {
   const { t } = useTranslation();
 
@@ -85,22 +87,22 @@ export default function Home() {
           >
             <ContentLanguageSelector
               title="Pali"
-              href="/pali"
+              href={`/db/${SourceLanguage.PALI}`}
               color={theme.palette.common.pali}
             />
             <ContentLanguageSelector
               title="Sanskrit"
-              href="/sanskrit"
+              href={`/db/${SourceLanguage.SANSKRIT}`}
               color={theme.palette.common.sanskrit}
             />
             <ContentLanguageSelector
               title="Tibetan"
-              href="/tibetan"
+              href={`/db/${SourceLanguage.TIBETAN}`}
               color={theme.palette.common.tibetan}
             />
             <ContentLanguageSelector
               title="Chinese"
-              href="/chinese"
+              href={`/db/${SourceLanguage.CHINESE}`}
               color={theme.palette.common.chinese}
             />
           </Box>
