@@ -7,6 +7,12 @@
     "support": "Unterstützung",
     "database": "Datenbank"
   },
+  "language": {
+    "pli": "Pāli",
+    "chn": "Chinese",
+    "skt": "Sanskrit",
+    "tib": "Tibetan"
+  },
   "footer": {
     "about": "Über",
     "introduction": "Einführung",

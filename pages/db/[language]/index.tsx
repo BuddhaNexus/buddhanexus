@@ -1,6 +1,9 @@
+import React from "react";
+import { useTranslation } from "next-i18next";
 import { useSourceLanguage } from "@components/hooks/useSourceLanguage";
+import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
-import { Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 
 export {
   getSourceLanguageStaticPaths as getStaticPaths,
@@ -9,10 +12,15 @@ export {
 
 export default function SamplePage() {
   const language = useSourceLanguage();
+  const { t } = useTranslation();
 
   return (
     <PageContainer>
-      <Typography variant="h1">Index view for {language}</Typography>
+      <Paper elevation={1} sx={{ py: 3, px: 4 }}>
+        {/* @ts-expect-error i18n types are not that smart!*/}
+        <Typography variant="h1">{t(`language.${language}`)}</Typography>
+      </Paper>
+      <Footer />
     </PageContainer>
   );
 }

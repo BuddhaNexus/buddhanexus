@@ -33,7 +33,6 @@ export default function Home() {
           alt="buddhanexus logo"
           sx={{
             p: 4,
-            mx: 4,
             [materialTheme.breakpoints.down("sm")]: {
               p: 3,
               m: 2,
@@ -47,8 +46,8 @@ export default function Home() {
           elevation={1}
           sx={{
             p: 4,
-            m: 4,
             mt: 2,
+            mb: 4,
             [materialTheme.breakpoints.down("sm")]: {
               p: 3,
               m: 2,
