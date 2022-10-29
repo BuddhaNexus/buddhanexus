@@ -85,7 +85,7 @@ export default function Home() {
             }}
           >
             <ContentLanguageSelector
-              title="Pali"
+              title="Pāli"
               href={`/db/${SourceLanguage.PALI}`}
               color={theme.palette.common.pali}
             />

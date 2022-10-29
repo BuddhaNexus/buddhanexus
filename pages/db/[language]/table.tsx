@@ -8,11 +8,11 @@ export {
 } from "utils/common";
 
 export default function SamplePage() {
-  const language = useSourceLanguage();
+  const { languageName } = useSourceLanguage();
 
   return (
     <PageContainer>
-      <Typography variant="h1">Table view for {language}</Typography>
+      <Typography variant="h1">Table view for {languageName}</Typography>
     </PageContainer>
   );
 }

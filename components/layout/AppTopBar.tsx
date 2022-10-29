@@ -4,6 +4,7 @@ import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 import { Link } from "@components/common/Link";
 import LanguageSelect from "@components/layout/LanguageSelect";
+import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
@@ -94,13 +95,14 @@ export const AppTopBar = () => {
           </>
         </Link>
 
-        <nav>
+        <nav style={{ display: "flex" }}>
           {isATIIRoute ? (
             <AppBarLink title="BuddhaNexus" href="/" />
           ) : (
             <>
+              <DatabaseMenu />
               <AppBarLink title={t("header.support")} href="/support" />
-              <AppBarLink title={t("header.database")} href="/db" />
+              {/* <AppBarLink title={t("header.database")} href="/db" />*/}
               <AppBarLink title="ATII" href="/atii" />
             </>
           )}

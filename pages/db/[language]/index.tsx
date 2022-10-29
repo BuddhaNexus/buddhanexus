@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "next-i18next";
 import { useSourceLanguage } from "@components/hooks/useSourceLanguage";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -11,14 +10,12 @@ export {
 } from "utils/common";
 
 export default function SamplePage() {
-  const language = useSourceLanguage();
-  const { t } = useTranslation();
+  const { languageName } = useSourceLanguage();
 
   return (
     <PageContainer>
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
-        {/* @ts-expect-error i18n types are not that smart!*/}
-        <Typography variant="h1">{t(`language.${language}`)}</Typography>
+        <Typography variant="h1">{languageName}</Typography>
       </Paper>
       <Footer />
     </PageContainer>
