@@ -1,14 +1,14 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 
+import type { SourceLanguage } from "../../utils/constants";
+
 export const useSourceLanguage = () => {
-  const {
-    query: { language },
-  } = useRouter();
-
+  const { query } = useRouter();
   const { t } = useTranslation();
-  // @ts-expect-error i18n types are not that smart!
-  const languageName = t(`language.${language}`) as string;
 
-  return { language, languageName };
+  const sourceLanguage = query.language as SourceLanguage;
+  const sourceLanguageName = t(`language.${sourceLanguage}`);
+
+  return { sourceLanguage, sourceLanguageName };
 };
