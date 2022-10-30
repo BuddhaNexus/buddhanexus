@@ -1,10 +1,10 @@
 import type { FC, PropsWithChildren } from "react";
 import { Container } from "@mui/material";
-import bgChn from "@public/assets/images/bg_chn_upscaled.jpeg";
-import bgPli from "@public/assets/images/bg_pli_upscaled.jpeg";
-import bgSkt from "@public/assets/images/bg_skt_upscaled.jpeg";
-import bgTib from "@public/assets/images/bg_tib_upscaled.jpeg";
-import bgWelcome from "@public/assets/images/bg_welcome_upscaled.jpeg";
+import bgChn from "@public/assets/images/bg_chn_upscaled_bw.jpg";
+import bgPli from "@public/assets/images/bg_pli_upscaled_bw.jpg";
+import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
+import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
+import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
 import { SourceLanguage } from "utils/constants";
 
@@ -14,14 +14,6 @@ const BgImageSrcs: Record<BackgroundName, string> = {
   [SourceLanguage.SANSKRIT]: bgSkt.src,
   [SourceLanguage.PALI]: bgPli.src,
   welcome: bgWelcome.src,
-};
-
-const BgImageOpacities: Record<BackgroundName, number> = {
-  [SourceLanguage.TIBETAN]: 0.1,
-  [SourceLanguage.CHINESE]: 0.35,
-  [SourceLanguage.SANSKRIT]: 0.2,
-  [SourceLanguage.PALI]: 0.2,
-  welcome: 0.2,
 };
 
 const BgImageBgSize: Record<BackgroundName, Property.BackgroundSize> = {
@@ -47,7 +39,7 @@ export const PageContainer: FC<Props> = ({ children, backgroundName }) => {
           sx={{
             background: `url(${BgImageSrcs[backgroundName]})`,
             backgroundSize: BgImageBgSize[backgroundName],
-            opacity: BgImageOpacities[backgroundName],
+            opacity: 0.07,
             height: "100%",
             width: "100%",
             position: "fixed",
