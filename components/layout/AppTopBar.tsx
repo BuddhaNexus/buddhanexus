@@ -102,7 +102,6 @@ export const AppTopBar = () => {
             <>
               <DatabaseMenu />
               <AppBarLink title={t("header.support")} href="/support" />
-              {/* <AppBarLink title={t("header.database")} href="/db" />*/}
               <AppBarLink title="ATII" href="/atii" />
             </>
           )}
