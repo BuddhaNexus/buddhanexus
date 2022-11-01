@@ -1,0 +1,7 @@
+{
+  "p01": "Der in BuddhaNexus verwendete Pāli-Textkorpus stammt aus der Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman Script. Herausgegeben und veröffentlicht von The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Basierend auf der digitalen Ausgabe des Chaṭṭha Saṅgāyana, veröffentlicht vom Vipassana Research Institute (VRI), mit Korrekturen und Korrekturlesen durch die Dhamma Society.",
+  "p02": "Die Sutta-, Vinaya- und Abhidhamma-Texte stammen aus den JSON-basierten segmentierten Texten (Bilara) von SuttaCentral, die ausgiebig getestet wurden, um Integrität und Korrektheit sicherzustellen. Diese Texte haben die gleichen Segmentnummern wie in SuttaCentral und sind mit den entsprechenden Segmenten auf dieser Website verlinkt.",
+  "p03": "Die übrigen Kommentartexte der Aṭṭhakathā, Tikā und Anya wurden dem Chaṭṭha Saṅgāyana entnommen, das vom Vipassana Research Institute veröffentlicht wurde.",
+  "p04": "Für die Berechnung der Pāli-Übereinstimmungen wurden die Silbentrennungs- und Stemming-Algorithmen von SuttaCentral verwendet. Die für die Berechnungen verwendete Mindestübereinstimmungslänge beträgt 30 Zeichen. Wir glauben, dass kürzere Übereinstimmungen für die Suche nach Parallelen nicht nützlich sind.",
+  "p05": "Hintergrundbild: Mit freundlicher Genehmigung der Fragile Palm Leaves Collection, Bangkok."
+}

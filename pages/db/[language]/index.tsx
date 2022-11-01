@@ -1,14 +1,20 @@
 import React from "react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { LanguageDescription } from "@components/db/LanguageDescription";
 import { useSourceLanguage } from "@components/hooks/useSourceLanguage";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
 
-export {
-  getSourceLanguageStaticPaths as getStaticPaths,
-  getI18NextStaticProps as getStaticProps,
-} from "utils/common";
+export { getSourceLanguageStaticPaths as getStaticPaths } from "utils/common";
+
+export async function getStaticProps({ locale }: { locale: any }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "dbPli"])),
+    },
+  };
+}
 
 export default function SamplePage() {
   const { sourceLanguageName, sourceLanguage } = useSourceLanguage();
