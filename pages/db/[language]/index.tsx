@@ -11,7 +11,13 @@ export { getSourceLanguageStaticPaths as getStaticPaths } from "utils/common";
 export async function getStaticProps({ locale }: { locale: any }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "dbPli"])),
+      ...(await serverSideTranslations(locale, [
+        "common",
+        "dbChn",
+        "dbPli",
+        "dbSkt",
+        "dbTib",
+      ])),
     },
   };
 }
