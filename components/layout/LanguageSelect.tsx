@@ -12,7 +12,7 @@ export default function LanguageSelect() {
   const router = useRouter();
   const { pathname, asPath, query, locale } = router;
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -21,7 +21,7 @@ export default function LanguageSelect() {
     setAnchorEl(null);
   };
 
-  const handleLanguageSwitched = async (language: "en" | "de") => {
+  const handleLanguageSwitched = async (language: "de" | "en") => {
     handleClose();
     await router.push({ pathname, query }, asPath, { locale: language });
   };

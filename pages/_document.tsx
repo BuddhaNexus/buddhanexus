@@ -28,10 +28,10 @@ export default class MyDocument extends Document {
     const emotionStyles = extractCriticalToChunks(initialProps.html);
     const emotionStyleTags = emotionStyles.styles.map((style) => (
       <style
-        key={style.key}
-        data-emotion={`${style.key} ${style.ids.join(" ")}`}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: style.css }}
+        key={style.key}
+        data-emotion={`${style.key} ${style.ids.join(" ")}`}
       />
     ));
 
@@ -56,11 +56,11 @@ export default class MyDocument extends Document {
           />
 
           <script
-            nonce={process.env.nonce}
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: `window.__webpack_nonce__ = '${process.env.nonce}'`,
             }}
+            nonce={process.env.nonce}
           />
           <meta property="csp-nonce" content={process.env.nonce} />
           <link rel="shortcut icon" href="/favicon.ico" />
