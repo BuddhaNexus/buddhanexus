@@ -6,7 +6,7 @@ import React from "react";
 import { useTranslation } from "next-i18next";
 import { ContentLanguageSelector } from "@components/layout/ContentLanguageSelector";
 import { Footer } from "@components/layout/Footer";
-import { serifFontFamily } from "@components/theme";
+import { sourceSerif } from "@components/theme";
 import { Paper, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useTheme as useMaterialTheme } from "@mui/material/styles";
@@ -62,7 +62,7 @@ export default function Home() {
         <Typography
           align="center"
           variant="body1"
-          sx={{ fontFamily: serifFontFamily }}
+          sx={{ fontFamily: sourceSerif.style.fontFamily }}
         >
           A database devoted to the study of Buddhist texts and literary corpora
           in Pāli, Sanskrit, Tibetan, and Chinese, with particular emphasis on

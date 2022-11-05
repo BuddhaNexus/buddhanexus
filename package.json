@@ -20,6 +20,7 @@
     "@mui/material": "^5.10.12",
     "@mui/styled-engine": "^5.10.8",
     "@mui/styles": "^5.10.10",
+    "@next/font": "^13.0.2",
     "@next/mdx": "^13.0.2",
     "i18next-http-backend": "^2.0.1",
     "material-ui-popup-state": "^4.1.0",
