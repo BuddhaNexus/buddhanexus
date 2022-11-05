@@ -21,7 +21,7 @@ function PartnerInstitution({ name, href, alt, src }: Props) {
       </Typography>
       <Paper elevation={3}>
         <Link href={href} target="_blank" rel="noopener noreferrer">
-          <Image src={src} alt={alt} layout="responsive" />
+          <Image src={src} alt={alt} layout="responsive" placeholder="blur" />
         </Link>
       </Paper>
       <br />

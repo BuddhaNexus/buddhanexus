@@ -6,7 +6,13 @@ import Typography from "@mui/material/Typography";
 import type { MDXComponents } from "mdx/types";
 
 const ResponsiveImage = ({ alt, ...props }: any) => (
-  <Image alt={alt} layout="responsive" width="100%" {...props} />
+  <Image
+    alt={alt}
+    layout="responsive"
+    width="100%"
+    {...props}
+    placeholder="blur"
+  />
 );
 
 export const AppMDXComponents: MDXComponents = {
