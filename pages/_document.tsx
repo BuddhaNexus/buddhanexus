@@ -48,13 +48,6 @@ export default class MyDocument extends Document {
     return (
       <Html lang={currentLocale}>
         <Head nonce={process.env.nonce}>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin="true"
-          />
-
           <script
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
@@ -85,11 +78,6 @@ export default class MyDocument extends Document {
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#361f0d" />
           <meta name="msapplication-TileColor" content="#361f0d" />
           <meta name="theme-color" content="#361f0d" />
-
-          <link
-            href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=optional&?family=Source+Sans+Pro&display=optional"
-            rel="stylesheet"
-          />
 
           <meta name="theme-color" content="#361F0D" />
           <meta
