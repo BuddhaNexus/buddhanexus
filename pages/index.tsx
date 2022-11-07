@@ -11,8 +11,7 @@ import { Paper, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useTheme as useMaterialTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-
-import { SourceLanguage } from "../utils/constants";
+import { SourceLanguage } from "utils/constants";
 
 export default function Home() {
   const { t } = useTranslation();

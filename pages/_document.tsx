@@ -1,10 +1,9 @@
 import React from "react";
 import type { DocumentContext } from "next/document";
 import Document, { Head, Html, Main, NextScript } from "next/document";
+import i18nextConfig from "next-i18next.config";
 import createEmotionServer from "@emotion/server/create-instance";
 import createEmotionCache from "utils/createEmotionCache";
-
-import i18nextConfig from "../next-i18next.config";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {

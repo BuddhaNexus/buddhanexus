@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-
-import type { SourceLanguage } from "../../utils/constants";
+import type { SourceLanguage } from "utils/constants";
 
 export const useSourceLanguage = () => {
   const { query } = useRouter();
