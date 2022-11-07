@@ -8,7 +8,7 @@ export const getLanguageMenuDataQueryKey = (language: SourceLanguage) => [
 
 export async function getLanguageMenuData(language: SourceLanguage) {
   const res = await fetch(
-    `https://buddhanexus2.kc-tbts.uni-hamburg.de/api/menus/${language}`
+    `${process.env.NEXT_PUBLIC_API_URL}/menus/${language}`
   );
   const response = await res.json();
 
