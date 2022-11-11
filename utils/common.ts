@@ -13,10 +13,14 @@ export async function getI18NextStaticProps({ locale }: { locale: any }) {
 export function getSourceLanguageStaticPaths() {
   return {
     paths: [
-      { params: { language: SourceLanguage.PALI } },
-      { params: { language: SourceLanguage.SANSKRIT } },
-      { params: { language: SourceLanguage.CHINESE } },
-      { params: { language: SourceLanguage.TIBETAN } },
+      { params: { language: SourceLanguage.PALI }, locale: "en" },
+      { params: { language: SourceLanguage.PALI }, locale: "de" },
+      { params: { language: SourceLanguage.SANSKRIT }, locale: "en" },
+      { params: { language: SourceLanguage.SANSKRIT }, locale: "de" },
+      { params: { language: SourceLanguage.CHINESE }, locale: "en" },
+      { params: { language: SourceLanguage.CHINESE }, locale: "de" },
+      { params: { language: SourceLanguage.TIBETAN }, locale: "en" },
+      { params: { language: SourceLanguage.TIBETAN }, locale: "de" },
     ],
     fallback: false,
   };
