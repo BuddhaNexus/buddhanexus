@@ -1,7 +1,7 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { SourceLanguage } from "./constants";
+import { ALL_LOCALES, SOURCE_LANGUAGES } from "./constants";
 
 export const getI18NextStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
@@ -9,12 +9,11 @@ export const getI18NextStaticProps: GetStaticProps = async ({ locale }) => ({
   },
 });
 
+const sourceLanguagePaths = SOURCE_LANGUAGES.flatMap((language) =>
+  ALL_LOCALES.map((locale) => ({ params: { language }, locale }))
+);
+
 export const getSourceLanguageStaticPaths: GetStaticPaths = () => ({
-  paths: [
-    { params: { language: SourceLanguage.PALI } },
-    { params: { language: SourceLanguage.SANSKRIT } },
-    { params: { language: SourceLanguage.CHINESE } },
-    { params: { language: SourceLanguage.TIBETAN } },
-  ],
+  paths: sourceLanguagePaths,
   fallback: false,
 });

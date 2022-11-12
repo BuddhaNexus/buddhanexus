@@ -53,6 +53,7 @@ const Row = (props: ListChildComponentProps) => {
   const inlineStyle = {
     ...style,
     top: (style.top as number) + LISTBOX_PADDING,
+    fontWeight: 700,
   };
 
   // eslint-disable-next-line no-prototype-builtins
@@ -74,6 +75,8 @@ const Row = (props: ListChildComponentProps) => {
         display: "flex",
         justifyContent: "space-between",
         flex: 1,
+        "&:nth-child(even)": { bgcolor: "background.accent" },
+        "&:hover": { textDecoration: "underline" },
       }}
       component="li"
     >
@@ -126,7 +129,7 @@ const ListboxComponent = React.forwardRef<
       return 48;
     }
 
-    const charsInLine = smUp ? 50 : 30;
+    const charsInLine = smUp ? 80 : 40;
     // @ts-expect-error type issue
     const lineCount = Math.ceil(child[1].name.length / charsInLine);
     return itemSize * lineCount;

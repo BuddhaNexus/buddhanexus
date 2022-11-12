@@ -1,4 +1,5 @@
 import type { PaletteMode, ThemeOptions } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { Source_Sans_3, Source_Serif_4 } from "@next/font/google";
 
 export const sourceSerif = Source_Serif_4();
@@ -38,6 +39,8 @@ export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
           background: {
             default: "#efe0c2",
             paper: "#ffffff",
+            // @ts-expect-error: TODO: fix type issue with adding custom colors to palette
+            accent: grey[50],
           },
           error: {
             main: "#CC0202",
@@ -76,6 +79,7 @@ export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
           },
           background: {
             paper: "#28170a",
+            accent: grey[900],
           },
         }),
   },
