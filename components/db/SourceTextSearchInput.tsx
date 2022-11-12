@@ -75,7 +75,7 @@ const Row = (props: ListChildComponentProps) => {
         display: "flex",
         justifyContent: "space-between",
         flex: 1,
-        "&:nth-child(even)": { bgcolor: "background.accent" },
+        "&:nth-of-type(even)": { bgcolor: "background.accent" },
         "&:hover": { textDecoration: "underline" },
       }}
       component="li"
