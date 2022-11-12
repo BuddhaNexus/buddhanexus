@@ -28,10 +28,10 @@ export default class MyDocument extends Document {
     const emotionStyles = extractCriticalToChunks(initialProps.html);
     const emotionStyleTags = emotionStyles.styles.map((style) => (
       <style
-        key={style.key}
-        data-emotion={`${style.key} ${style.ids.join(" ")}`}
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: style.css }}
+        key={style.key}
+        data-emotion={`${style.key} ${style.ids.join(" ")}`}
       />
     ));
 
@@ -48,19 +48,12 @@ export default class MyDocument extends Document {
     return (
       <Html lang={currentLocale}>
         <Head nonce={process.env.nonce}>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin="true"
-          />
-
           <script
-            nonce={process.env.nonce}
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: `window.__webpack_nonce__ = '${process.env.nonce}'`,
             }}
+            nonce={process.env.nonce}
           />
           <meta property="csp-nonce" content={process.env.nonce} />
           <link rel="shortcut icon" href="/favicon.ico" />
@@ -85,11 +78,6 @@ export default class MyDocument extends Document {
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#361f0d" />
           <meta name="msapplication-TileColor" content="#361f0d" />
           <meta name="theme-color" content="#361f0d" />
-
-          <link
-            href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=optional&?family=Source+Sans+Pro&display=optional"
-            rel="stylesheet"
-          />
 
           <meta name="theme-color" content="#361F0D" />
           <meta

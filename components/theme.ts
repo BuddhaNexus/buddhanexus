@@ -1,38 +1,22 @@
 import type { PaletteMode, ThemeOptions } from "@mui/material";
+import { Source_Sans_3, Source_Serif_4 } from "@next/font/google";
 
-export const serifFontFamily = [
-  "Source Serif Pro",
-  "PT Serif",
-  "serif",
-  "ui-serif",
-].join(",");
-
-export const sansFontFamily = [
-  "Source Sans Pro",
-  "-apple-system",
-  "BlinkMacSystemFont",
-  '"Segoe UI"',
-  '"Helvetica Neue"',
-  "Arial",
-  "sans-serif",
-  '"Apple Color Emoji"',
-  '"Segoe UI Emoji"',
-  '"Segoe UI Symbol"',
-].join(",");
+export const sourceSerif = Source_Serif_4();
+export const sourceSans = Source_Sans_3();
 
 export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   typography: {
-    button: { fontFamily: sansFontFamily },
-    h1: { fontFamily: serifFontFamily },
-    h2: { fontFamily: serifFontFamily },
-    h3: { fontFamily: serifFontFamily },
-    h4: { fontFamily: serifFontFamily },
-    h5: { fontFamily: serifFontFamily },
-    h6: { fontFamily: sansFontFamily },
-    body1: { fontFamily: sansFontFamily },
-    body2: { fontFamily: sansFontFamily },
-    subtitle1: { fontFamily: serifFontFamily },
-    subtitle2: { fontFamily: serifFontFamily },
+    button: { fontFamily: sourceSans.style.fontFamily },
+    h1: { fontFamily: sourceSerif.style.fontFamily },
+    h2: { fontFamily: sourceSerif.style.fontFamily, fontWeight: 400 },
+    h3: { fontFamily: sourceSerif.style.fontFamily },
+    h4: { fontFamily: sourceSerif.style.fontFamily },
+    h5: { fontFamily: sourceSerif.style.fontFamily },
+    h6: { fontFamily: sourceSans.style.fontFamily },
+    body1: { fontFamily: sourceSans.style.fontFamily },
+    body2: { fontFamily: sourceSans.style.fontFamily },
+    subtitle1: { fontFamily: sourceSerif.style.fontFamily },
+    subtitle2: { fontFamily: sourceSerif.style.fontFamily },
   },
   palette: {
     mode,

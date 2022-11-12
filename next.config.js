@@ -6,6 +6,14 @@ const path = require("path");
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    fontLoaders: [
+      {
+        loader: "@next/font/google",
+        options: { subsets: ["latin", "latin-ext"] },
+      },
+    ],
+  },
   i18n,
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
   webpack(config, { isServer }) {
