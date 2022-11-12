@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line no-restricted-imports,@typescript-eslint/no-unused-vars
 import { CommonColors } from "@mui/material/styles/createPalette";
 
 declare module "@mui/material/styles/createPalette" {

@@ -1,27 +1,19 @@
+import type { GetStaticPaths, GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { SourceLanguage } from "./constants";
+import { ALL_LOCALES, SOURCE_LANGUAGES } from "./constants";
 
-export async function getI18NextStaticProps({ locale }: { locale: any }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common"])),
-    },
-  };
-}
+export const getI18NextStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "en", ["common"])),
+  },
+});
 
-export function getSourceLanguageStaticPaths() {
-  return {
-    paths: [
-      { params: { language: SourceLanguage.PALI }, locale: "en" },
-      { params: { language: SourceLanguage.PALI }, locale: "de" },
-      { params: { language: SourceLanguage.SANSKRIT }, locale: "en" },
-      { params: { language: SourceLanguage.SANSKRIT }, locale: "de" },
-      { params: { language: SourceLanguage.CHINESE }, locale: "en" },
-      { params: { language: SourceLanguage.CHINESE }, locale: "de" },
-      { params: { language: SourceLanguage.TIBETAN }, locale: "en" },
-      { params: { language: SourceLanguage.TIBETAN }, locale: "de" },
-    ],
-    fallback: false,
-  };
-}
+const sourceLanguagePaths = SOURCE_LANGUAGES.flatMap((language) =>
+  ALL_LOCALES.map((locale) => ({ params: { language }, locale }))
+);
+
+export const getSourceLanguageStaticPaths: GetStaticPaths = () => ({
+  paths: sourceLanguagePaths,
+  fallback: false,
+});

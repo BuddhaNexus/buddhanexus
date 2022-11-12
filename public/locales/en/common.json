@@ -28,5 +28,8 @@
     "projects": "Projects",
     "presentations": "Presentations",
     "contact": "Contact"
+  },
+  "db": {
+    "searchInputPlaceholder": "Choose source text"
   }
 }

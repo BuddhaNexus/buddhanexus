@@ -11,6 +11,19 @@ const eslintExtends = [
 ];
 
 const rules = {
+  // https://mui.com/material-ui/guides/minimizing-bundle-size/
+  "no-restricted-imports": [
+    "error",
+    {
+      patterns: ["@mui/*/*/*", "!@mui/material/test-utils/*"],
+    },
+  ],
+
+  "no-relative-import-paths/no-relative-import-paths": [
+    "error",
+    { allowSameFolder: true },
+  ],
+
   // eslint:all
   "one-var": ["error", "never"],
   "sort-keys": "off",
@@ -171,7 +184,11 @@ module.exports = {
     {
       files: ["*.ts", "*.tsx"], // Your TypeScript files extension
       extends: eslintExtends,
-      plugins: ["simple-import-sort", "@typescript-eslint"],
+      plugins: [
+        "simple-import-sort",
+        "@typescript-eslint",
+        "no-relative-import-paths",
+      ],
       rules,
 
       parserOptions: {

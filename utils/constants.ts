@@ -11,3 +11,6 @@ export const SOURCE_LANGUAGES = [
   SourceLanguage.PALI,
   SourceLanguage.CHINESE,
 ];
+
+// i18n
+export const ALL_LOCALES = ["en", "de"];
