@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
+import { useSourceLanguage } from "@components/hooks/useSourceLanguage";
 import { getDesignTokens } from "@components/theme";
 import {
   createTheme,
@@ -12,6 +13,8 @@ export const MUIThemeProvider = ({ children }: PropsWithChildren) => {
   const { theme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
 
+  const { sourceLanguage } = useSourceLanguage();
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -20,12 +23,13 @@ export const MUIThemeProvider = ({ children }: PropsWithChildren) => {
     () =>
       responsiveFontSizes(
         createTheme(
-          getDesignTokens(
-            isMounted ? (theme === "light" ? "light" : "dark") : "light"
-          )
+          getDesignTokens({
+            mode: isMounted ? (theme === "light" ? "light" : "dark") : "light",
+            sourceLanguage,
+          })
         )
       ),
-    [isMounted, theme]
+    [isMounted, sourceLanguage, theme]
   );
 
   return (

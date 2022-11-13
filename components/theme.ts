@@ -1,11 +1,28 @@
 import type { PaletteMode, ThemeOptions } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Source_Sans_3, Source_Serif_4 } from "@next/font/google";
+import { SourceLanguage } from "utils/constants";
 
 export const sourceSerif = Source_Serif_4();
 export const sourceSans = Source_Sans_3();
 
-export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
+interface DesignTokenParams {
+  mode: PaletteMode;
+  // some of the theme elements depend on the source language selected
+  sourceLanguage: SourceLanguage;
+}
+
+const SOURCE_LANGUAGE_COLORS = {
+  [SourceLanguage.CHINESE]: "#4F2B56",
+  [SourceLanguage.PALI]: "#7C3A00",
+  [SourceLanguage.SANSKRIT]: "#2C284C",
+  [SourceLanguage.TIBETAN]: "#66160E",
+};
+
+export const getDesignTokens = ({
+  mode,
+  sourceLanguage,
+}: DesignTokenParams): ThemeOptions => ({
   typography: {
     button: { fontFamily: sourceSans.style.fontFamily },
     h1: { fontFamily: sourceSerif.style.fontFamily },
@@ -22,16 +39,18 @@ export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
   palette: {
     mode,
     common: {
-      pali: "#7C3A00",
-      sanskrit: "#2C284C",
-      tibetan: "#66160E",
-      chinese: "#4F2B56",
+      pali: SOURCE_LANGUAGE_COLORS[SourceLanguage.PALI],
+      sanskrit: SOURCE_LANGUAGE_COLORS[SourceLanguage.SANSKRIT],
+      tibetan: SOURCE_LANGUAGE_COLORS[SourceLanguage.TIBETAN],
+      chinese: SOURCE_LANGUAGE_COLORS[SourceLanguage.CHINESE],
     },
     ...(mode === "light"
       ? {
           // palette values for light mode
           primary: {
-            main: "#361F0D",
+            main: sourceLanguage
+              ? SOURCE_LANGUAGE_COLORS[sourceLanguage]
+              : "#361F0D",
           },
           secondary: {
             main: "#C23211",
