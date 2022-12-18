@@ -1,4 +1,4 @@
 export default {
-  title: "BuddhaNexus TEST",
+  title: "BuddhaNexus",
   description: "BuddhaNexus description placeholder",
 };
