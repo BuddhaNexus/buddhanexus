@@ -30,6 +30,6 @@
     "contact": "Kontakt"
   },
   "db": {
-    "searchInputPlaceholder": "Choose source text"
+    "searchInputPlaceholder": "Quelltext auswählen"
   }
 }
