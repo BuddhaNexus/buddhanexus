@@ -4,6 +4,8 @@ import React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { appWithTranslation, i18n } from "next-i18next";
+import { DefaultSeo } from "next-seo";
+import SEO from "next-seo.config";
 import { ThemeProvider } from "next-themes";
 import { AppMDXComponents } from "@components/layout/AppMDXComponents";
 import { AppTopBar } from "@components/layout/AppTopBar";
@@ -48,8 +50,8 @@ function MyApp({
       <MDXProvider components={AppMDXComponents}>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
+            <DefaultSeo {...SEO} />
             <Head>
-              <title>BuddhaNexus</title>
               <meta
                 name="viewport"
                 content="initial-scale=1, width=device-width"
