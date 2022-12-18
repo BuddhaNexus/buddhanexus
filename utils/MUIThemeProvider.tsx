@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import { useSourceLanguage } from "@components/hooks/useSourceLanguage";
 import { getDesignTokens } from "@components/theme";
+import type {} from "@mui/lab/themeAugmentation";
 import {
   createTheme,
   responsiveFontSizes,

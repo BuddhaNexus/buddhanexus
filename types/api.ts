@@ -16,6 +16,8 @@ export interface ApiLanguageMenuData {
   available_lang: null;
 }
 
+// export interface SourceTextCollectionApiData {}
+
 export interface APIResponse<T> {
   result: T;
 }
