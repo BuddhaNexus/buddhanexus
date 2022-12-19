@@ -1,3 +1,4 @@
+import type { DatabaseText } from "@components/db/types";
 import type {
   ApiLanguageMenuData,
   // SourceTextCollectionApiData,
@@ -13,7 +14,9 @@ export const getLanguageMenuDataQueryKey = (language: SourceLanguage) => [
   language,
 ];
 
-export async function getLanguageMenuData(language: SourceLanguage) {
+export async function getLanguageMenuData(
+  language: SourceLanguage
+): Promise<DatabaseText[]> {
   const res = await fetch(`${API_ROOT_URL}/menus/${language}`);
   const response = await res.json();
 
@@ -22,6 +25,7 @@ export async function getLanguageMenuData(language: SourceLanguage) {
     label: menuItem.search_field,
     id: menuItem.search_field,
     name: menuItem.displayName,
+    fileName: menuItem.filename,
     textName: menuItem.textname,
     category: menuItem.category,
   }));

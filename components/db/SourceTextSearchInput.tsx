@@ -6,7 +6,9 @@
 import React from "react";
 import type { ListChildComponentProps } from "react-window";
 import { VariableSizeList } from "react-window";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import type { DatabaseText } from "@components/db/types";
 import { useSourceLanguage } from "@components/hooks/useSourceLanguage";
 import {
   Autocomplete,
@@ -22,7 +24,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
-import type { ApiLanguageMenuData } from "types/api";
 import { getLanguageMenuData, getLanguageMenuDataQueryKey } from "utils/api/db";
 
 const OuterElementContext = React.createContext({});
@@ -178,16 +179,18 @@ const StyledPopper = styled(Popper)({
 export const SourceTextSearchInput = () => {
   const { sourceLanguage } = useSourceLanguage();
 
+  const router = useRouter();
+
   const { t } = useTranslation();
 
-  const { data, isLoading } = useQuery<ApiLanguageMenuData[]>({
+  const { data, isLoading } = useQuery<DatabaseText[]>({
     queryKey: getLanguageMenuDataQueryKey(sourceLanguage),
     queryFn: () => getLanguageMenuData(sourceLanguage),
   });
 
   // TODO: Add pagination and fuzzy search on BE
   return (
-    <Autocomplete
+    <Autocomplete<DatabaseText>
       sx={{ my: 1 }}
       PopperComponent={StyledPopper}
       ListboxComponent={ListboxComponent}
@@ -215,6 +218,9 @@ export const SourceTextSearchInput = () => {
       loading={isLoading}
       disableListWrap
       disablePortal
+      onChange={(target, value) =>
+        router.push(`/db/${sourceLanguage}/${value?.fileName}/table`)
+      }
     />
   );
 };

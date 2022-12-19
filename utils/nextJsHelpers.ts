@@ -15,12 +15,14 @@ interface I18nProps {
   };
 }
 
+type Locale = { locale: string | undefined };
+
 export const getI18NextStaticProps: (
-  { locale }: { locale: string | undefined },
+  { locale }: Locale,
   extraNamespaces: string[]
 ) => Promise<I18nProps> = async (
-  { locale }: { locale: string | undefined },
-  extraNamespaces: string[]
+  { locale }: Locale,
+  extraNamespaces: string[] = []
 ) => {
   return {
     props: {
@@ -42,7 +44,7 @@ export const getSourceLanguageStaticPaths: GetStaticPaths = () => ({
 });
 
 const sourceTextPaths = SOURCE_LANGUAGES.flatMap((language) =>
-  ALL_LOCALES.map((locale) => ({ params: { language, file: "" }, locale }))
+  ALL_LOCALES.map((locale) => ({ params: { language, file: "file" }, locale }))
 );
 
 // todo:
