@@ -4,7 +4,7 @@ import type { GetStaticProps } from "next";
 import { LanguageDescription } from "@components/db/LanguageDescription";
 // import { SourceTextBrowserTree } from "@components/db/SourceTextBrowserTree";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
-import { useSourceLanguage } from "@components/hooks/useSourceLanguage";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
@@ -17,7 +17,7 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export { getSourceLanguageStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 export default function DbIndexPage() {
-  const { sourceLanguageName, sourceLanguage } = useSourceLanguage();
+  const { sourceLanguageName, sourceLanguage } = useDbQueryParams();
 
   return (
     <PageContainer backgroundName={sourceLanguage}>

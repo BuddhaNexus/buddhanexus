@@ -9,7 +9,7 @@ import { VariableSizeList } from "react-window";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import type { DatabaseText } from "@components/db/types";
-import { useSourceLanguage } from "@components/hooks/useSourceLanguage";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   Autocomplete,
   autocompleteClasses,
@@ -177,7 +177,7 @@ const StyledPopper = styled(Popper)({
 });
 
 export const SourceTextSearchInput = () => {
-  const { sourceLanguage } = useSourceLanguage();
+  const { sourceLanguage } = useDbQueryParams();
 
   const router = useRouter();
 

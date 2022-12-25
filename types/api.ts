@@ -7,6 +7,8 @@
 //   available_lang: null
 // }
 
+// export interface SourceTextCollectionApiData {}
+
 export interface ApiLanguageMenuData {
   displayName: string;
   search_field: string;
@@ -16,7 +18,10 @@ export interface ApiLanguageMenuData {
   available_lang: null;
 }
 
-// export interface SourceTextCollectionApiData {}
+export interface ApiGraphPageData {
+  histogramgraphdata: [name: string, count: number][];
+  piegraphdata: [name: string, count: number][];
+}
 
 export interface APIResponse<T> {
   result: T;
