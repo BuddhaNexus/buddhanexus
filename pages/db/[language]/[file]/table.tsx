@@ -1,3 +1,4 @@
+import { DbViewSelector } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -24,8 +25,10 @@ export default function TablePage() {
 
   return (
     <PageContainer backgroundName={sourceLanguage}>
-      <Typography variant="h1">Table view for {sourceLanguageName}.</Typography>
-      <Typography variant="h2">File: {sourceFile}</Typography>
+      <DbViewSelector currentView="table" />
+      <Typography variant="h2">
+        File: {sourceFile} in {sourceLanguageName}
+      </Typography>
     </PageContainer>
   );
 }

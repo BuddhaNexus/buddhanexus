@@ -1,4 +1,5 @@
 import type { GetStaticProps } from "next";
+import { DbViewSelector } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -32,8 +33,10 @@ export default function GraphPage() {
 
   return (
     <PageContainer backgroundName={sourceLanguage}>
-      <Typography variant="h1">Graph view for {sourceLanguageName}.</Typography>
-      <Typography variant="h2">File: {sourceFile}</Typography>
+      <DbViewSelector currentView="graph" />
+      <Typography variant="h2">
+        File: {sourceFile} in {sourceLanguageName}
+      </Typography>
 
       {isLoading ? (
         <CircularProgress color="inherit" />
