@@ -8,9 +8,7 @@ export {
   getI18NextStaticProps as getStaticProps,
 } from "utils/nextJsHelpers";
 
-// https://buddhanexus.kc-tbts.uni-hamburg.de/api/files/dn3/table?co_occ=2000&sort_method=position&folio=
-
-export default function TablePage() {
+export default function GraphPage() {
   const { sourceLanguageName, sourceLanguage } = useSourceLanguage();
   const { sourceFile, isFallback } = useSourceFile();
 
@@ -24,7 +22,7 @@ export default function TablePage() {
 
   return (
     <PageContainer backgroundName={sourceLanguage}>
-      <Typography variant="h1">Table view for {sourceLanguageName}.</Typography>
+      <Typography variant="h1">Graph view for {sourceLanguageName}.</Typography>
       <Typography variant="h2">File: {sourceFile}</Typography>
     </PageContainer>
   );

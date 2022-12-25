@@ -1,20 +1,11 @@
 import type { DatabaseText } from "@components/db/types";
-import type {
-  ApiLanguageMenuData,
-  // SourceTextCollectionApiData,
-} from "types/api";
+import type { ApiLanguageMenuData } from "types/api";
 import type { SourceLanguage } from "utils/constants";
 
 const API_ROOT_URL = process.env.NEXT_PUBLIC_API_URL;
 
-// source language menu (all the texts)
-
-export const getLanguageMenuDataQueryKey = (language: SourceLanguage) => [
-  "languageMenuData",
-  language,
-];
-
-export async function getLanguageMenuData(
+// source language menu on main db page (Autocomplete component)
+async function getLanguageMenuData(
   language: SourceLanguage
 ): Promise<DatabaseText[]> {
   const res = await fetch(`${API_ROOT_URL}/menus/${language}`);
@@ -32,30 +23,15 @@ export async function getLanguageMenuData(
 }
 
 // graph view
-
-export const getGraphDataQueryKey = (fileName: string) => [
-  "graphData",
-  fileName,
-];
-
-export async function getGraphData(fileName: string) {
+async function getGraphData(fileName: string) {
   const res = await fetch(
     `${API_ROOT_URL}/files/${fileName}/graph?co_occ=2000`
   );
-  const response = await res.json();
-
-  // console.log(response);
-  return response;
+  return await res.json();
 }
 
 // source text collections
-
-export const getSourceTextCollectionsQueryKey = (language: SourceLanguage) => [
-  "textCollections",
-  language,
-];
-
-// TODO: use for the text brower tree view
+// TODO: use for the text browser tree view
 // export async function getSourceTextCollections(language: SourceLanguage) {
 //   const res = await fetch(
 //     `${process.env.NEXT_PUBLIC_API_URL}/menus/sidebar/${language}`
@@ -70,3 +46,17 @@ export const getSourceTextCollectionsQueryKey = (language: SourceLanguage) => [
 //     // category: menuItem.category,
 //   }));
 // }
+
+export const DbApi = {
+  LanguageMenu: {
+    makeQueryKey: (language: SourceLanguage) => ["languageMenuData", language],
+    call: getLanguageMenuData,
+  },
+  GraphPage: {
+    makeQueryKey: (fileName: string) => ["graphData", fileName],
+    call: getGraphData,
+  },
+  SidebarSourceTexts: {
+    makeQueryKey: (language: SourceLanguage) => ["textCollections", language],
+  },
+};

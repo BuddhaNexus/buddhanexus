@@ -10,7 +10,7 @@ import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
 import merge from "lodash/merge";
-import { getSourceTextCollectionsQueryKey } from "utils/api/db";
+// import { getSourceTextCollectionsQueryKey } from "utils/api/db";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
@@ -36,7 +36,6 @@ export default function DbIndexPage() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const sourceLanguage = params?.language as SourceLanguage;
   const i18nProps = await getI18NextStaticProps(
     {
       locale,
@@ -46,10 +45,13 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(
-    getSourceTextCollectionsQueryKey(sourceLanguage),
-    () => getSourceTextCollectionsQueryKey(sourceLanguage)
-  );
+  // TODO: use for SourceTextBrowserTree
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const sourceLanguage = params?.language as SourceLanguage;
+  // await queryClient.prefetchQuery(
+  //   getSourceTextCollectionsQueryKey(sourceLanguage),
+  //   () => getSourceTextCollections(sourceLanguage)
+  // );
 
   return merge(
     { props: { dehydratedState: dehydrate(queryClient) } },

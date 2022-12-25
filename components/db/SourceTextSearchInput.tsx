@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
-import { getLanguageMenuData, getLanguageMenuDataQueryKey } from "utils/api/db";
+import { DbApi } from "utils/api/db";
 
 const OuterElementContext = React.createContext({});
 
@@ -184,8 +184,8 @@ export const SourceTextSearchInput = () => {
   const { t } = useTranslation();
 
   const { data, isLoading } = useQuery<DatabaseText[]>({
-    queryKey: getLanguageMenuDataQueryKey(sourceLanguage),
-    queryFn: () => getLanguageMenuData(sourceLanguage),
+    queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),
+    queryFn: () => DbApi.LanguageMenu.call(sourceLanguage),
   });
 
   // TODO: Add pagination and fuzzy search on BE
