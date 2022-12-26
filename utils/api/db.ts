@@ -1,5 +1,9 @@
 import type { DatabaseText } from "@components/db/types";
-import type { ApiLanguageMenuData } from "types/api";
+import type {
+  ApiGraphPageData,
+  ApiLanguageMenuData,
+  ApiSegmentsData,
+} from "types/api";
 import type { SourceLanguage } from "utils/constants";
 
 const API_ROOT_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -23,9 +27,18 @@ async function getLanguageMenuData(
 }
 
 // graph view
-async function getGraphData(fileName: string) {
+async function getGraphData(fileName: string): Promise<ApiGraphPageData> {
   const res = await fetch(
     `${API_ROOT_URL}/files/${fileName}/graph?co_occ=2000`
+  );
+  return await res.json();
+}
+
+// used in numbers view.
+// TODO: transform this data to have a better structure
+async function getSegmentsData(fileName: string): Promise<ApiSegmentsData> {
+  const res = await fetch(
+    `${API_ROOT_URL}/files/${fileName}/segments?page=0&co_occ=2000&folio=`
   );
   return await res.json();
 }
@@ -52,11 +65,16 @@ export const DbApi = {
     makeQueryKey: (language: SourceLanguage) => ["languageMenuData", language],
     call: getLanguageMenuData,
   },
-  GraphPage: {
+  SidebarSourceTexts: {
+    makeQueryKey: (language: SourceLanguage) => ["textCollections", language],
+    call: () => null,
+  },
+  GraphView: {
     makeQueryKey: (fileName: string) => ["graphData", fileName],
     call: getGraphData,
   },
-  SidebarSourceTexts: {
-    makeQueryKey: (language: SourceLanguage) => ["textCollections", language],
+  SegmentsData: {
+    makeQueryKey: (fileName: string) => ["segmentsData", fileName],
+    call: getSegmentsData,
   },
 };

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 interface Props {
-  currentView: "graph" | "table";
+  currentView: "graph" | "numbers" | "table" | "text";
 }
 
 export const DbViewSelector = ({ currentView }: Props) => {
@@ -19,6 +19,7 @@ export const DbViewSelector = ({ currentView }: Props) => {
       >
         <MenuItem value="table">Table</MenuItem>
         <MenuItem value="graph">Graph</MenuItem>
+        <MenuItem value="numbers">Numbers</MenuItem>
       </Select>
     </FormControl>
   );
