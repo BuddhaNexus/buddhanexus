@@ -1,6 +1,6 @@
 import { PageContainer } from "@components/layout/PageContainer";
 
-export { getI18NextStaticProps as getStaticProps } from "utils/common";
+export { getI18NextStaticProps as getStaticProps } from "utils/nextJsHelpers";
 
 import React from "react";
 import { useTranslation } from "next-i18next";

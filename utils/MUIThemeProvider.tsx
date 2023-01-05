@@ -1,8 +1,9 @@
 import type { PropsWithChildren } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
-import { useSourceLanguage } from "@components/hooks/useSourceLanguage";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { getDesignTokens } from "@components/theme";
+import type {} from "@mui/lab/themeAugmentation";
 import {
   createTheme,
   responsiveFontSizes,
@@ -13,7 +14,7 @@ export const MUIThemeProvider = ({ children }: PropsWithChildren) => {
   const { theme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
 
-  const { sourceLanguage } = useSourceLanguage();
+  const { sourceLanguage } = useDbQueryParams();
 
   useEffect(() => {
     setIsMounted(true);

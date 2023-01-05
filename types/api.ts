@@ -7,6 +7,8 @@
 //   available_lang: null
 // }
 
+// export interface SourceTextCollectionApiData {}
+
 export interface ApiLanguageMenuData {
   displayName: string;
   search_field: string;
@@ -14,6 +16,16 @@ export interface ApiLanguageMenuData {
   filename: string;
   category: string;
   available_lang: null;
+}
+
+export interface ApiGraphPageData {
+  histogramgraphdata: [name: string, count: number][];
+  piegraphdata: [name: string, count: number][];
+}
+
+export interface ApiSegmentsData {
+  collections: Record<string, string>[][];
+  segments: { parallels: string[][]; segmentnr: string }[];
 }
 
 export interface APIResponse<T> {
