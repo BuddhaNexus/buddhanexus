@@ -22,7 +22,7 @@ export interface ApiGraphPageData {
   piegraphdata: [name: string, count: number][];
 }
 
-export type ApiTablePageData = {
+export type TablePageParallelData = {
   "co-occ": number;
   file_name: string;
   par_length: number;
@@ -37,7 +37,9 @@ export type ApiTablePageData = {
   root_seg_text: [start: string, end: string];
   root_segnr: [start: string, end: string];
   score: number;
-}[];
+};
+
+export type ApiTablePageData = TablePageParallelData[];
 
 export interface ApiSegmentsData {
   collections: Record<string, string>[][];

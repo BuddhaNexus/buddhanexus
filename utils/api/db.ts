@@ -10,7 +10,7 @@ import type { SourceLanguage } from "utils/constants";
 const API_ROOT_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // source language menu on main db page (Autocomplete component)
-async function getLanguageMenuData(
+export async function getLanguageMenuData(
   language: SourceLanguage
 ): Promise<DatabaseText[]> {
   const res = await fetch(`${API_ROOT_URL}/menus/${language}`);
