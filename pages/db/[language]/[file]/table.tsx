@@ -24,14 +24,14 @@ export default function TablePage() {
 
   if (isFallback) {
     return (
-      <PageContainer backgroundName={sourceLanguage}>
+      <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
         <CircularProgress color="inherit" />
       </PageContainer>
     );
   }
 
   return (
-    <PageContainer backgroundName={sourceLanguage}>
+    <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
       <DbViewSelector currentView="table" />
 
       <Typography variant="h2">

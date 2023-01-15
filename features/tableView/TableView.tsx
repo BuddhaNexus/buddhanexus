@@ -1,5 +1,5 @@
 import { Virtuoso } from "react-virtuoso";
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import type { TablePageData, TablePageParallel } from "types/api/table";
 
 interface Props {
@@ -7,9 +7,12 @@ interface Props {
 }
 
 const TableViewRow = ({ parallel }: { parallel: TablePageParallel }) => (
-  <Box sx={{ py: 2 }}>
-    <Typography sx={{}}>{JSON.stringify(parallel)}</Typography>
-  </Box>
+  <Stack direction="row" spacing={2} sx={{ py: 2 }}>
+    <Typography sx={{ wordBreak: "break-all" }}>
+      {JSON.stringify(parallel)}
+    </Typography>
+    <Box sx={{ width: 100, height: 100, background: "red" }}>Hello world!</Box>
+  </Stack>
 );
 
 export default function TableView({ data }: Props) {
