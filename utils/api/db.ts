@@ -3,8 +3,8 @@ import type {
   ApiGraphPageData,
   ApiLanguageMenuData,
   ApiSegmentsData,
-  ApiTablePageData,
-} from "types/api";
+} from "types/api/common";
+import type { ApiTablePageData, TablePageData } from "types/api/table";
 import type { SourceLanguage } from "utils/constants";
 
 const API_ROOT_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -35,11 +35,31 @@ async function getGraphData(fileName: string): Promise<ApiGraphPageData> {
   return await res.json();
 }
 
-async function getTableData(fileName: string): Promise<ApiTablePageData> {
+function parseAPITableData(apiData: ApiTablePageData): TablePageData {
+  return apiData.map((p) => ({
+    rootOffsetFromStart: p.root_offset_beg,
+    coOccurrences: p["co-occ"],
+    fileName: p.file_name,
+    paragraphLength: p.par_length,
+    paragraphOffsetFromEnd: p.par_offset_end,
+    paragraphOffsetFromStart: p.par_offset_beg,
+    paragraphPositionFromStart: p.par_pos_beg,
+    paragraphSegmentNumbers: p.par_segnr,
+    paragraphSegmentText: p.par_segment,
+    rootLength: p.root_length,
+    rootOffsetFromEnd: p.root_offset_end,
+    rootSegmentNumber: p.root_segnr,
+    rootSegmentText: p.root_seg_text,
+    score: p.score,
+  }));
+}
+
+async function getTableData(fileName: string): Promise<TablePageData> {
   const res = await fetch(
     `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position`
   );
-  return await res.json();
+  const responseJSON = await res.json();
+  return parseAPITableData(responseJSON);
 }
 
 // used in numbers view.

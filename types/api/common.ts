@@ -22,25 +22,6 @@ export interface ApiGraphPageData {
   piegraphdata: [name: string, count: number][];
 }
 
-export type TablePageParallelData = {
-  "co-occ": number;
-  file_name: string;
-  par_length: number;
-  par_offset_beg: 0;
-  par_offset_end: 0;
-  par_pos_beg: number;
-  par_segnr: [start: string, end: string];
-  par_segment: [start: string, end: string];
-  root_length: number;
-  root_offset_beg: number;
-  root_offset_end: number;
-  root_seg_text: [start: string, end: string];
-  root_segnr: [start: string, end: string];
-  score: number;
-};
-
-export type ApiTablePageData = TablePageParallelData[];
-
 export interface ApiSegmentsData {
   collections: Record<string, string>[][];
   segments: { parallels: string[][]; segmentnr: string }[];

@@ -6,7 +6,7 @@ import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import TableView from "features/tableView/TableView";
-import type { ApiTablePageData } from "types/api";
+import type { TablePageData } from "types/api/table";
 import { DbApi, getLanguageMenuData } from "utils/api/db";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 
@@ -17,7 +17,7 @@ export default function TablePage() {
   const { sourceFile, isFallback } = useSourceFile();
 
   // TODO: add error handling
-  const { data, isLoading } = useQuery<ApiTablePageData>({
+  const { data, isLoading } = useQuery<TablePageData>({
     queryKey: DbApi.TableView.makeQueryKey(fileName),
     queryFn: () => DbApi.TableView.call(fileName),
   });
