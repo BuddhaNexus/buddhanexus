@@ -1,16 +1,16 @@
+import type { GetStaticPaths } from "next";
 import { DbViewSelector } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import TableView from "features/tableView/TableView";
 import type { ApiTablePageData } from "types/api";
-import { DbApi } from "utils/api/db";
+import { DbApi, getLanguageMenuData } from "utils/api/db";
+import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 
-export {
-  getSourceTextStaticPaths as getStaticPaths,
-  getI18NextStaticProps as getStaticProps,
-} from "utils/nextJsHelpers";
+export { getI18NextStaticProps as getStaticProps } from "utils/nextJsHelpers";
 
 export default function TablePage() {
   const { sourceLanguageName, sourceLanguage, fileName } = useDbQueryParams();
@@ -33,17 +33,41 @@ export default function TablePage() {
   return (
     <PageContainer backgroundName={sourceLanguage}>
       <DbViewSelector currentView="table" />
+
       <Typography variant="h2">
         File: {sourceFile} in {sourceLanguageName}
       </Typography>
 
-      {isLoading ? (
+      {isLoading || !data ? (
         <CircularProgress color="inherit" />
       ) : (
-        data?.map((item) => (
-          <Typography key={item.file_name}>{JSON.stringify(item)}</Typography>
-        ))
+        <TableView data={data} />
       )}
     </PageContainer>
   );
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const languageMenuData = await getLanguageMenuData(SourceLanguage.PALI);
+  const pliFilenames = languageMenuData.map((menuData) => menuData.fileName);
+  // todo: also do this for other languages
+
+  /**
+   * Returns object like:
+   * [
+   *   { params: { language: 'pli', file: 'dn1' }, locale: 'en' },
+   *   { params: { language: 'pli', file: 'dn1' }, locale: 'de' },
+   *   { params: { language: 'pli', file: 'dn2' }, locale: 'en' },
+   *   ...
+   * ]
+   */
+  return {
+    paths: pliFilenames.flatMap((file) =>
+      ALL_LOCALES.map((locale) => ({
+        params: { language: SourceLanguage.PALI, file },
+        locale,
+      }))
+    ),
+    fallback: true,
+  };
+};
