@@ -3,6 +3,7 @@ import type {
   ApiGraphPageData,
   ApiLanguageMenuData,
   ApiSegmentsData,
+  ApiTablePageData,
 } from "types/api";
 import type { SourceLanguage } from "utils/constants";
 
@@ -30,6 +31,13 @@ async function getLanguageMenuData(
 async function getGraphData(fileName: string): Promise<ApiGraphPageData> {
   const res = await fetch(
     `${API_ROOT_URL}/files/${fileName}/graph?co_occ=2000`
+  );
+  return await res.json();
+}
+
+async function getTableData(fileName: string): Promise<ApiTablePageData> {
+  const res = await fetch(
+    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position`
   );
   return await res.json();
 }
@@ -70,8 +78,12 @@ export const DbApi = {
     call: () => null,
   },
   GraphView: {
-    makeQueryKey: (fileName: string) => ["graphData", fileName],
+    makeQueryKey: (fileName: string) => ["graphView", fileName],
     call: getGraphData,
+  },
+  TableView: {
+    makeQueryKey: (fileName: string) => ["tableView", fileName],
+    call: getTableData,
   },
   SegmentsData: {
     makeQueryKey: (fileName: string) => ["segmentsData", fileName],
