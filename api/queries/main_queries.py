@@ -56,6 +56,22 @@ FOR f IN parallels_sorted_file
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
+            LET par_full_names = (
+                FOR file in files
+                    FILTER file._key == p.par_filename
+                    RETURN {"display_name": file.displayName, 
+                    "text_name": file.textname, 
+                    "link1": file.link, 
+                    "link2": file.link2}
+                )
+            LET root_full_names = (
+                FOR file in files
+                    FILTER file._key == p.root_filename
+                    RETURN {"display_name": file.displayName, 
+                    "text_name": file.textname, 
+                    "link1": file.link, 
+                    "link2": file.link2}
+                )
             LIMIT 100 * @page,100
             RETURN {
                 par_segnr: p.par_segnr,
@@ -64,6 +80,8 @@ FOR f IN parallels_sorted_file
                 root_offset_beg: p.root_offset_beg,
                 root_offset_end: p.root_offset_end-1,
                 par_segment: par_segment,
+                par_full_names: par_full_names[0],
+                root_full_names: root_full_names[0],
                 file_name: p.id,
                 root_segnr: p.root_segnr,
                 root_seg_text: root_seg_text,
