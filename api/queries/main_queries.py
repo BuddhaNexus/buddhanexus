@@ -78,7 +78,7 @@ FOR f IN parallels_sorted_file
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
                 root_offset_beg: p.root_offset_beg,
-                root_offset_end: p.root_offset_end-1,
+                root_offset_end: p.root_offset_end,
                 par_segment: par_segment,
                 par_full_names: par_full_names[0],
                 root_full_names: root_full_names[0],
@@ -89,7 +89,9 @@ FOR f IN parallels_sorted_file
                 root_length: p.root_length,
                 par_pos_beg: p.par_pos_beg,
                 "co-occ": p["co-occ"],
-                score: p.score
+                score: p.score,
+                src_lang: p.src_lang,
+                tgt_lang: p.tgt_lang
             }
 """
 

@@ -14,6 +14,7 @@ from aksharamukha import transliterate
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
+from .colormaps import calculate_color_maps_text_view, calculate_color_maps_table_view
 
 from .search import search_utils
 from .models_api import ParallelsCollection
@@ -205,8 +206,10 @@ async def get_table_view(
                 "folio": folio,
             },
         )
-        return query.result
+        data = calculate_color_maps_table_view(query.result)
+        return data
 
+        
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
@@ -459,7 +462,8 @@ async def get_file_text_segments_and_parallels(
         )
         if start_int == 0:
             add_source_information(file_name, text_segments_query_result.result[0])
-        return text_segments_query_result.result[0]
+        data_with_colormaps = calculate_color_maps_text_view(text_segments_query_result.result[0])
+        return data_with_colormaps
 
     except DocumentNotFoundError as error:
         print(error)
