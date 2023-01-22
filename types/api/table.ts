@@ -1,5 +1,7 @@
 import type { SourceLanguage } from "utils/constants";
 
+export type ParallelHighlightMapSign = 0 | 1;
+
 type ApiFullNames = {
   display_name: string;
   text_name: string;
@@ -15,7 +17,7 @@ export type ApiTablePageParallel = {
   score: number;
 
   // Parallel text
-  par_color_map: number[];
+  par_color_map: ParallelHighlightMapSign[];
   par_full_names: ApiFullNames;
   par_fulltext: string;
   par_length: number;
@@ -23,7 +25,7 @@ export type ApiTablePageParallel = {
   par_segnr: [start: string, end: string];
 
   // Root text
-  root_color_map: number[];
+  root_color_map: ParallelHighlightMapSign[];
   root_full_names: ApiFullNames;
   root_fulltext: string;
   root_length: number;
@@ -47,7 +49,7 @@ export type TablePageParallel = {
   score: number;
 
   // Parallel text
-  parallelColorMap: number[];
+  parallelColorMap: ParallelHighlightMapSign[];
   parallelFullNames: FullNames;
   parallelFullText: string;
   parallelPositionFromStart: number;
@@ -55,7 +57,7 @@ export type TablePageParallel = {
   parallelSegmentNumbers: [start: string, end: string];
 
   // Root text
-  rootColorMap: number[];
+  rootColorMap: ParallelHighlightMapSign[];
   rootFullNames: FullNames;
   rootFullText: string;
   rootLength: number;

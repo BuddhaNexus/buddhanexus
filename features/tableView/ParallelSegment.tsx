@@ -9,14 +9,17 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import type { ParallelHighlightMapSign } from "types/api/table";
 import type { SourceLanguage } from "utils/constants";
+
+import { ParallelSegmentText } from "./ParallelSegmentText";
 
 interface ParallelSegmentProps {
   language: SourceLanguage;
   fileName: string;
   length: number;
 
-  textColorMap: number[];
+  textColorMap: ParallelHighlightMapSign[];
   text: string;
   textSegmentNumbers: [start: string, end: string];
 
@@ -82,8 +85,7 @@ export const ParallelSegment = ({
       <Divider />
 
       <CardContent>
-        <Typography>{text}</Typography>
-        <Typography>{textColorMap}</Typography>
+        <ParallelSegmentText text={text} highlightMap={textColorMap} />
       </CardContent>
     </Card>
   );
