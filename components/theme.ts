@@ -97,7 +97,7 @@ export const getDesignTokens = ({
             main: "#02CC3B",
           },
           background: {
-            paper: "#28170a",
+            paper: "#030201",
             accent: grey[900],
           },
         }),
