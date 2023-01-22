@@ -37,20 +37,34 @@ async function getGraphData(fileName: string): Promise<ApiGraphPageData> {
 
 function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   return apiData.map((p) => ({
-    rootOffsetFromStart: p.root_offset_beg,
     coOccurrences: p["co-occ"],
+    sourceLanguage: p.src_lang,
+    targetLanguage: p.tgt_lang,
     fileName: p.file_name,
-    paragraphLength: p.par_length,
-    paragraphOffsetFromEnd: p.par_offset_end,
-    paragraphOffsetFromStart: p.par_offset_beg,
-    paragraphPositionFromStart: p.par_pos_beg,
-    paragraphSegmentNumbers: p.par_segnr,
-    paragraphSegmentText: p.par_segment,
-    rootLength: p.root_length,
-    rootOffsetFromEnd: p.root_offset_end,
-    rootSegmentNumber: p.root_segnr,
-    rootSegmentText: p.root_seg_text,
     score: p.score,
+
+    parallelColorMap: p.par_color_map,
+    parallelFullNames: {
+      displayName: p.par_full_names.display_name,
+      textName: p.par_full_names.text_name,
+      link1: p.par_full_names.link1,
+      link2: p.par_full_names.link2,
+    },
+    parallelFullText: p.par_fulltext,
+    parallelLength: p.par_length,
+    parallelPositionFromStart: p.par_pos_beg,
+    parallelSegmentNumbers: p.par_segnr,
+
+    rootColorMap: p.root_color_map,
+    rootLength: p.root_length,
+    rootSegmentNumbers: p.root_segnr,
+    rootFullNames: {
+      displayName: p.root_full_names.display_name,
+      textName: p.root_full_names.text_name,
+      link1: p.root_full_names.link1,
+      link2: p.root_full_names.link2,
+    },
+    rootFullText: p.root_fulltext,
   }));
 }
 
