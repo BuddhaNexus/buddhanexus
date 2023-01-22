@@ -1,5 +1,5 @@
 import type { PaletteMode, ThemeOptions } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { common, grey } from "@mui/material/colors";
 import { Source_Sans_3, Source_Serif_4 } from "@next/font/google";
 import { SourceLanguage } from "utils/constants";
 
@@ -8,7 +8,7 @@ export const sourceSans = Source_Sans_3();
 
 interface DesignTokenParams {
   mode: PaletteMode;
-  // some of the theme elements depend on the source language selected
+  // some theme elements depend on the source language selected
   sourceLanguage: SourceLanguage;
 }
 
@@ -60,6 +60,7 @@ export const getDesignTokens = ({
             paper: "#ffffff",
             // @ts-expect-error: TODO: fix type issue with adding custom colors to palette
             accent: grey[50],
+            header: grey[100],
           },
           error: {
             main: "#CC0202",
@@ -97,8 +98,9 @@ export const getDesignTokens = ({
             main: "#02CC3B",
           },
           background: {
-            paper: "#030201",
+            paper: common.black,
             accent: grey[900],
+            header: common.black,
           },
         }),
   },

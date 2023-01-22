@@ -38,9 +38,19 @@ export const ParallelSegment = ({
 
   return (
     <Card sx={{ width: "50%", wordBreak: "break-all" }}>
-      <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
+      <CardContent
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          bgcolor: "background.header",
+        }}
+      >
         <Box sx={{ alignItems: "center" }}>
-          <Chip size="small" label={sourceLanguageName} sx={{ mr: 0.5 }} />
+          <Chip
+            size="small"
+            label={sourceLanguageName}
+            sx={{ mr: 0.5, p: 0.5 }}
+          />
           <Tooltip title={fileName}>
             <Typography sx={{ display: "inline", mx: 0.5 }}>
               {textSegmentNumbers}
@@ -57,11 +67,15 @@ export const ParallelSegment = ({
                 variant="outlined"
                 icon={<PercentIcon />}
                 label={score}
-                sx={{ mx: 0.5 }}
+                sx={{ mx: 0.5, p: 0.5 }}
               />
             </Tooltip>
           )}
-          <Chip size="small" label={`Length: ${length}`} sx={{ mx: 0.5 }} />
+          <Chip
+            size="small"
+            label={`Length: ${length}`}
+            sx={{ mx: 0.5, p: 0.5 }}
+          />
         </Box>
       </CardContent>
 
