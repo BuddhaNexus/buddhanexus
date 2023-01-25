@@ -1,17 +1,18 @@
-import { PageContainer } from "@components/layout/PageContainer";
-
-export { getI18NextStaticProps as getStaticProps } from "utils/nextJsHelpers";
-
 import React from "react";
+import type { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
 import { ContentLanguageSelector } from "@components/layout/ContentLanguageSelector";
 import { Footer } from "@components/layout/Footer";
+import { PageContainer } from "@components/layout/PageContainer";
 import { sourceSerif } from "@components/theme";
 import { Paper, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useTheme as useMaterialTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { dehydrate, QueryClient } from "@tanstack/react-query";
+import merge from "lodash/merge";
 import { SourceLanguage } from "utils/constants";
+import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -63,10 +64,7 @@ export default function Home() {
           variant="body1"
           sx={{ fontFamily: sourceSerif.style.fontFamily }}
         >
-          A database devoted to the study of Buddhist texts and literary corpora
-          in Pāli, Sanskrit, Tibetan, and Chinese, with particular emphasis on
-          evolution of scriptures, formation of canons, and intellectual
-          networks.
+          {t("home:intro")}
         </Typography>
 
         <Box
@@ -105,3 +103,19 @@ export default function Home() {
     </PageContainer>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const i18nProps = await getI18NextStaticProps(
+    {
+      locale,
+    },
+    ["common", "home"]
+  );
+
+  const queryClient = new QueryClient();
+
+  return merge(
+    { props: { dehydratedState: dehydrate(queryClient) } },
+    i18nProps
+  );
+};
