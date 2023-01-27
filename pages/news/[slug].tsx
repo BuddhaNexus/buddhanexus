@@ -6,22 +6,23 @@ import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
 import fs from "fs";
-import matter from "gray-matter";
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";
 import path from "path";
+import type { PostData } from "utils/postHelpers";
+import { getPostBySlug, POST_DATE_OPTS } from "utils/postHelpers";
 
-export default function PostPage({ locale, post }) {
-  // const router = useRouter();
-
+export default function PostPage({
+  locale,
+  post,
+}: {
+  locale: string;
+  post: PostData;
+}) {
   const { title, date: d } = post.meta;
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
+
   const date = new Date(d);
-  const pubDate = date.toLocaleDateString(locale, options);
+  const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
   const PostContent = useMemo(
     () => getMDXComponent(post.content),
     [post.content]
@@ -45,18 +46,9 @@ export default function PostPage({ locale, post }) {
   );
 }
 
-function getPostBySlug(slug: string, locale = "en") {
-  const itemPath = path.join(`content/news/${slug}/${locale}.mdx`);
-  const fileContents = fs.readFileSync(itemPath, "utf8");
-  const { content, data } = matter(fileContents);
-
-  return { slug, meta: data, content };
-}
-
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   if (params) {
     const slug = params.slug as string;
-
     const post = getPostBySlug(slug, locale);
 
     const result = await bundleMDX({ source: post.content });

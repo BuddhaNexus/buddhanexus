@@ -3,24 +3,23 @@ import Link from "next/link";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
-import fs from "fs";
-import matter from "gray-matter";
-import path from "path";
+import type { PostData } from "utils/postHelpers";
+import { getAllPosts, POST_DATE_OPTS } from "utils/postHelpers";
 
-const PostArchive = ({ locale, posts }) => {
-  const options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-
+const PostArchive = ({
+  locale,
+  posts,
+}: {
+  locale: string;
+  posts: PostData[];
+}) => {
   return (
     <ul>
       {posts.map((post) => {
         const { slug, title, date: d, description } = post.meta;
 
         const date = new Date(d);
-        const pubDate = date.toLocaleDateString(locale, options);
+        const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
 
         return (
           <li key={slug}>
@@ -46,7 +45,13 @@ const PostArchive = ({ locale, posts }) => {
   );
 };
 
-export default function NewsPage({ allPosts, locale }) {
+export default function NewsPage({
+  locale,
+  allPosts,
+}: {
+  locale: string;
+  allPosts: any;
+}) {
   return (
     <PageContainer>
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
@@ -58,23 +63,6 @@ export default function NewsPage({ allPosts, locale }) {
       <Footer />
     </PageContainer>
   );
-}
-
-function getPostBySlug(slug: string, locale = "en") {
-  const itemPath = path.join(`content/news/${slug}/${locale}.mdx`);
-  const fileContents = fs.readFileSync(itemPath, "utf8");
-  const { content, data } = matter(fileContents);
-
-  return { slug, meta: data, content };
-}
-
-function getAllPosts(lang: string) {
-  const slugs = fs.readdirSync(path.join("content", "news"));
-
-  const posts = slugs
-    .map((slug) => getPostBySlug(slug, lang))
-    .sort((post1, post2) => (post1.meta.date > post2.meta.date ? -1 : 1));
-  return posts;
 }
 
 export const getStaticProps: GetStaticProps = ({ locale }) => {
