@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (pathname in rewrites) {
-    const { rewriteUrl, locale } = rewrites[pathname as keyof typeof rewrites];
+    const { rewriteUrl, locale } = rewrites[pathname];
 
     // Choose which page template to use
     return NextResponse.rewrite(

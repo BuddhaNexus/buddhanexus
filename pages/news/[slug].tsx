@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { GetStaticPaths, GetStaticProps } from "next";
-import Link from "next/link";
+import { Link } from "@components/common/Link";
 import { AppMDXComponents } from "@components/layout/AppMDXComponents";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -9,7 +9,6 @@ import fs from "fs";
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";
 import path from "path";
-import routes from "routes-i18n";
 import type { SupportedLocale } from "types/next-i18next";
 import type { PostData } from "utils/postHelpers";
 import { getPostBySlug, POST_DATE_OPTS } from "utils/postHelpers";
@@ -33,7 +32,8 @@ export default function PostPage({
   return (
     <PageContainer>
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
-        <Link href={routes.news[locale]}>{"< Back to News"}</Link>
+        {/* TODO: localize */}
+        <Link route="/news">{"< Back to News"}</Link>
 
         <Typography variant="h2" component="h1">
           {title}

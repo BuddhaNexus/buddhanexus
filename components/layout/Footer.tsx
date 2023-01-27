@@ -6,7 +6,6 @@ import { Link } from "@components/common/Link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import routes from "routes-i18n";
 import type { SupportedLocale } from "types/next-i18next";
 
 import { Copyright } from "./Copyright";
@@ -15,38 +14,38 @@ type FooterSection = {
   title: string;
   links: {
     title: string;
-    url: string;
+    route: string;
   }[];
 };
 
 const getFooterData: (
   t: TFunction,
   locale: SupportedLocale
-) => FooterSection[] = (t, locale) => [
+) => FooterSection[] = (t) => [
   {
     title: t("footer.about"),
     links: [
-      { title: t("footer.introduction"), url: routes.introduction[locale] },
-      { title: t("footer.history"), url: "/history" },
-      { title: t("footer.guidelines"), url: "/guidelines" },
-      { title: t("footer.contact"), url: "/contact" },
+      { title: t("footer.introduction"), route: "/introduction" },
+      { title: t("footer.history"), route: "/history" },
+      { title: t("footer.guidelines"), route: "/guidelines" },
+      { title: t("footer.contact"), route: "/contact" },
     ],
   },
   {
     title: t("footer.community"),
     links: [
-      { title: t("footer.institutions"), url: "/institutions" },
-      { title: t("footer.people"), url: "/people" },
-      { title: t("footer.news"), url: routes.news[locale] },
+      { title: t("footer.institutions"), route: "/institutions" },
+      { title: t("footer.people"), route: "/people" },
+      { title: t("footer.news"), route: "/news" },
     ],
   },
   {
     title: t("footer.activities"),
     links: [
-      { title: t("footer.publications"), url: "/publications" },
-      { title: t("footer.events"), url: "/events" },
-      { title: t("footer.projects"), url: "/projects" },
-      { title: t("footer.presentations"), url: "/presentations" },
+      { title: t("footer.publications"), route: "/publications" },
+      { title: t("footer.events"), route: "/events" },
+      { title: t("footer.projects"), route: "/projects" },
+      { title: t("footer.presentations"), route: "/presentations" },
     ],
   },
 ];
@@ -97,7 +96,7 @@ export const Footer = () => {
                   component="li"
                   sx={{ mt: { xs: 1 } }}
                 >
-                  <Link href={item.url}>{item.title}</Link>
+                  <Link route={item.route}>{item.title}</Link>
                 </Container>
               ))}
             </Container>

@@ -1,9 +1,8 @@
 import type { GetStaticProps } from "next";
-import Link from "next/link";
+import { Link } from "@components/common/Link";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
-import { routes } from "routes-i18n";
 import type { SupportedLocale } from "types/next-i18next";
 import type { PostData } from "utils/postHelpers";
 import { getAllPosts, POST_DATE_OPTS } from "utils/postHelpers";
@@ -18,23 +17,23 @@ const PostArchive = ({
   return (
     <ul>
       {posts.map((post) => {
-        const { slug, title, date: d, description } = post.meta;
+        const { title, date: d, description } = post.meta;
 
         const date = new Date(d);
         const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
 
         return (
-          <li key={slug}>
+          <li key={post.slug}>
             <article>
               <Typography variant="h3" component="h2">
-                {/* <Link href={`${routes.news[locale]}/${slug}`}>{title}</Link> */}
-                <Link href={`${routes.news[locale]}/${slug}`}>{title}</Link>
+                {/* TODO */}
+                <Link route={`/${post.slug}`}>{title}</Link>
               </Typography>
               <Typography variant="subtitle1">{pubDate}</Typography>
               <Typography variant="body1">{description}</Typography>
               <div>
-                <Link as={`/news/${slug}`} href="/news/[slug]">
-                  {/* {t("posts-read-more")} <Icon name="arrowright" /> */}
+                <Link route={`/${post.slug}`}>
+                  {/* TODO: {t("posts-read-more")} <Icon name="arrowright" /> */}
                   Read more
                 </Link>
               </div>
