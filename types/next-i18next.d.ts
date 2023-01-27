@@ -23,3 +23,5 @@ declare module "react-i18next" {
     };
   }
 }
+
+export type SupportedLocale = "de" | "en";

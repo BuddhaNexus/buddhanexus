@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
+import routes from "routes";
+import type { SupportedLocale } from "types/next-i18next";
 import type { PostData } from "utils/postHelpers";
 import { getAllPosts, POST_DATE_OPTS } from "utils/postHelpers";
 
@@ -10,7 +12,7 @@ const PostArchive = ({
   locale,
   posts,
 }: {
-  locale: string;
+  locale: SupportedLocale;
   posts: PostData[];
 }) => {
   return (
@@ -25,9 +27,7 @@ const PostArchive = ({
           <li key={slug}>
             <article>
               <Typography variant="h3" component="h2">
-                <Link as={`/news/${slug}`} href="/news/[slug]">
-                  {title}
-                </Link>
+                <Link href={`${routes.news[locale]}/${slug}`}>{title}</Link>
               </Typography>
               <Typography variant="subtitle1">{pubDate}</Typography>
               <Typography variant="body1">{description}</Typography>
@@ -49,7 +49,7 @@ export default function NewsPage({
   locale,
   allPosts,
 }: {
-  locale: string;
+  locale: SupportedLocale;
   allPosts: any;
 }) {
   return (

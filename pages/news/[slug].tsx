@@ -9,6 +9,8 @@ import fs from "fs";
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";
 import path from "path";
+import routes from "routes";
+import type { SupportedLocale } from "types/next-i18next";
 import type { PostData } from "utils/postHelpers";
 import { getPostBySlug, POST_DATE_OPTS } from "utils/postHelpers";
 
@@ -16,7 +18,7 @@ export default function PostPage({
   locale,
   post,
 }: {
-  locale: string;
+  locale: SupportedLocale;
   post: PostData;
 }) {
   const { title, date: d } = post.meta;
@@ -31,9 +33,7 @@ export default function PostPage({
   return (
     <PageContainer>
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
-        <Link as="/news/" href="/news/">
-          {"< Back to News"}
-        </Link>
+        <Link href={routes.news[locale]}>{"< Back to News"}</Link>
 
         <Typography variant="h2" component="h1">
           {title}

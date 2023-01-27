@@ -1,10 +1,13 @@
 import { useMemo } from "react";
+import { useRouter } from "next/router";
 import type { TFunction } from "next-i18next";
 import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import routes from "routes";
+import type { SupportedLocale } from "types/next-i18next";
 
 import { Copyright } from "./Copyright";
 
@@ -16,11 +19,14 @@ type FooterSection = {
   }[];
 };
 
-const getFooterData: (t: TFunction) => FooterSection[] = (t) => [
+const getFooterData: (
+  t: TFunction,
+  locale: SupportedLocale
+) => FooterSection[] = (t, locale) => [
   {
     title: t("footer.about"),
     links: [
-      { title: t("footer.introduction"), url: "/introduction" },
+      { title: t("footer.introduction"), url: routes.introduction[locale] },
       { title: t("footer.history"), url: "/history" },
       { title: t("footer.guidelines"), url: "/guidelines" },
       { title: t("footer.contact"), url: "/contact" },
@@ -47,8 +53,10 @@ const getFooterData: (t: TFunction) => FooterSection[] = (t) => [
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const router = useRouter();
+  const locale = router.locale as SupportedLocale;
 
-  const footerData = useMemo(() => getFooterData(t), [t]);
+  const footerData = useMemo(() => getFooterData(t, locale), [t, locale]);
 
   return (
     <Container
