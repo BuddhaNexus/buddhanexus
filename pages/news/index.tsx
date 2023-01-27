@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
-import routes from "routes";
+import { routes } from "routes-i18n";
 import type { SupportedLocale } from "types/next-i18next";
 import type { PostData } from "utils/postHelpers";
 import { getAllPosts, POST_DATE_OPTS } from "utils/postHelpers";
@@ -27,6 +27,7 @@ const PostArchive = ({
           <li key={slug}>
             <article>
               <Typography variant="h3" component="h2">
+                {/* <Link href={`${routes.news[locale]}/${slug}`}>{title}</Link> */}
                 <Link href={`${routes.news[locale]}/${slug}`}>{title}</Link>
               </Typography>
               <Typography variant="subtitle1">{pubDate}</Typography>

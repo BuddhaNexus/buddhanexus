@@ -1,5 +1,4 @@
 const { i18n } = require("./next-i18next.config");
-const { routes } = require("./route-rewrites.js");
 const nextMDX = require("@next/mdx");
 const path = require("path");
 
@@ -16,11 +15,6 @@ const nextConfig = {
     ],
   },
   i18n,
-  async rewrites() {
-    return {
-      beforeFiles: routes,
-    };
-  },
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
   webpack(config, { isServer }) {
     config.experiments = { ...config.experiments, ...{ topLevelAwait: true } };

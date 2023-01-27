@@ -6,7 +6,7 @@ import { Link } from "@components/common/Link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import routes from "routes";
+import routes from "routes-i18n";
 import type { SupportedLocale } from "types/next-i18next";
 
 import { Copyright } from "./Copyright";
@@ -37,7 +37,7 @@ const getFooterData: (
     links: [
       { title: t("footer.institutions"), url: "/institutions" },
       { title: t("footer.people"), url: "/people" },
-      { title: t("footer.news"), url: "/news" },
+      { title: t("footer.news"), url: routes.news[locale] },
     ],
   },
   {

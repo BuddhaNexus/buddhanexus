@@ -9,7 +9,7 @@ import fs from "fs";
 import { bundleMDX } from "mdx-bundler";
 import { getMDXComponent } from "mdx-bundler/client";
 import path from "path";
-import routes from "routes";
+import routes from "routes-i18n";
 import type { SupportedLocale } from "types/next-i18next";
 import type { PostData } from "utils/postHelpers";
 import { getPostBySlug, POST_DATE_OPTS } from "utils/postHelpers";
