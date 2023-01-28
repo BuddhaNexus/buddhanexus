@@ -1,32 +1,18 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemote } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
-import { Link } from "@components/common/Link";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
-import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
-import LaunchIcon from "@mui/icons-material/Launch";
-import MenuIcon from "@mui/icons-material/Menu";
 import { Paper, Typography } from "@mui/material";
-import Event from "components/static/Event";
-import PartnerInstitution from "components/static/PartnerInstitution";
 import fs from "fs";
 import path from "path";
 import type { SupportedLocale } from "types/next-i18next";
 import type { CompiledMDXData } from "utils/mdxPageHelpers";
-import { getMDXContentBySlug } from "utils/mdxPageHelpers";
+import {
+  getMDXContentBySlug,
+  getMDXPageComponents,
+} from "utils/mdxPageHelpers";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
-
-type ComponentStore = Record<string, any>;
-
-const mdxFileComponents: ComponentStore = {
-  KeyboardDoubleArrowUpIcon,
-  LaunchIcon,
-  MenuIcon,
-  Event,
-  PartnerInstitution,
-  Link,
-};
 
 export default function Page({
   page,
@@ -36,12 +22,11 @@ export default function Page({
 }) {
   const { meta, content } = page;
 
-  const components: ComponentStore = {};
-  if (meta.components) {
-    for (const component of meta.components) {
-      components[component] = mdxFileComponents[component];
-    }
-  }
+  const { components, props } = getMDXPageComponents(
+    meta.components ?? [],
+    meta.props ?? [],
+    meta.imports ?? []
+  );
 
   return (
     <PageContainer>
@@ -51,8 +36,9 @@ export default function Page({
         </Typography>
 
         <MDXRemote
-          components={components}
           compiledSource={content.compiledSource}
+          components={components}
+          scope={props}
         />
       </Paper>
       <Footer />
