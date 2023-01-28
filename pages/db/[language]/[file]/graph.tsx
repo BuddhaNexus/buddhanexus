@@ -5,7 +5,7 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress, Typography } from "@mui/material";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
-import type { ApiGraphPageData } from "types/api";
+import type { ApiGraphPageData } from "types/api/common";
 import { DbApi } from "utils/api/db";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 

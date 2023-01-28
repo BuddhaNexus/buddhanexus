@@ -1,3 +1,4 @@
+// Example response:
 // {
 //   displayName: 'Cūḷadhammasamādāna Sutta',
 //   search_field: 'Mn 45 Cūḷadhammasamādāna Sutta (Culadhammasamadana Sutta)',
@@ -6,8 +7,6 @@
 //   category: 'mn',
 //   available_lang: null
 // }
-
-// export interface SourceTextCollectionApiData {}
 
 export interface ApiLanguageMenuData {
   displayName: string;

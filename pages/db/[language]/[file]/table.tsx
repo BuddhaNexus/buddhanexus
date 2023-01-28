@@ -1,34 +1,69 @@
+import type { GetStaticPaths } from "next";
 import { DbViewSelector } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import TableView from "features/tableView/TableView";
+import type { TablePageData } from "types/api/table";
+import { DbApi, getLanguageMenuData } from "utils/api/db";
+import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 
-export {
-  getSourceTextStaticPaths as getStaticPaths,
-  getI18NextStaticProps as getStaticProps,
-} from "utils/nextJsHelpers";
-
-// https://buddhanexus.kc-tbts.uni-hamburg.de/api/files/dn3/table?co_occ=2000&sort_method=position&folio=
+export { getI18NextStaticProps as getStaticProps } from "utils/nextJsHelpers";
 
 export default function TablePage() {
-  const { sourceLanguageName, sourceLanguage } = useDbQueryParams();
-  const { sourceFile, isFallback } = useSourceFile();
+  const { sourceLanguage, fileName } = useDbQueryParams();
+  const { isFallback } = useSourceFile();
+
+  // TODO: add error handling
+  const { data, isLoading } = useQuery<TablePageData>({
+    queryKey: DbApi.TableView.makeQueryKey(fileName),
+    queryFn: () => DbApi.TableView.call(fileName),
+  });
 
   if (isFallback) {
     return (
-      <PageContainer backgroundName={sourceLanguage}>
+      <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
         <CircularProgress color="inherit" />
       </PageContainer>
     );
   }
 
   return (
-    <PageContainer backgroundName={sourceLanguage}>
+    <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
       <DbViewSelector currentView="table" />
-      <Typography variant="h2">
-        File: {sourceFile} in {sourceLanguageName}
-      </Typography>
+
+      {isLoading || !data ? (
+        <CircularProgress color="inherit" />
+      ) : (
+        <TableView data={data} />
+      )}
     </PageContainer>
   );
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const languageMenuData = await getLanguageMenuData(SourceLanguage.PALI);
+  const pliFilenames = languageMenuData.map((menuData) => menuData.fileName);
+  // todo: also do this for other languages
+
+  /**
+   * Returns object like:
+   * [
+   *   { params: { language: 'pli', file: 'dn1' }, locale: 'en' },
+   *   { params: { language: 'pli', file: 'dn1' }, locale: 'de' },
+   *   { params: { language: 'pli', file: 'dn2' }, locale: 'en' },
+   *   ...
+   * ]
+   */
+  return {
+    paths: pliFilenames.flatMap((file) =>
+      ALL_LOCALES.map((locale) => ({
+        params: { language: SourceLanguage.PALI, file },
+        locale,
+      }))
+    ),
+    fallback: true,
+  };
+};
