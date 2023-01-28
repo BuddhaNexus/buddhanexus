@@ -4,40 +4,55 @@ import { serialize } from "next-mdx-remote/serialize";
 import { Link } from "@components/common/Link";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import LaunchIcon from "@mui/icons-material/Launch";
+import MenuIcon from "@mui/icons-material/Menu";
 import { Paper, Typography } from "@mui/material";
+import Event from "components/static/Event";
+import PartnerInstitution from "components/static/PartnerInstitution";
 import fs from "fs";
 import path from "path";
 import type { SupportedLocale } from "types/next-i18next";
 import type { CompiledMDXData } from "utils/mdxPageHelpers";
-import { getMDXContentBySlug, POST_DATE_OPTS } from "utils/mdxPageHelpers";
+import { getMDXContentBySlug } from "utils/mdxPageHelpers";
 
-export default function PostPage({
-  locale,
-  post,
+type ComponentStore = Record<string, any>;
+
+const mdxFileComponents: ComponentStore = {
+  KeyboardDoubleArrowUpIcon,
+  LaunchIcon,
+  MenuIcon,
+  Event,
+  PartnerInstitution,
+  Link,
+};
+
+export default function Page({
+  page,
 }: {
   locale: SupportedLocale;
-  post: CompiledMDXData;
+  page: CompiledMDXData;
 }) {
-  const {
-    meta: { title, date: d },
-    content,
-  } = post;
+  const { meta, content } = page;
 
-  const date = new Date(d);
-  const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
+  const components: ComponentStore = {};
+  if (meta.components) {
+    for (const component of meta.components) {
+      components[component] = mdxFileComponents[component];
+    }
+  }
 
   return (
     <PageContainer>
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
-        {/* TODO: localize */}
-        <Link route="/news">{"< Back to News"}</Link>
-
         <Typography variant="h2" component="h1">
-          {title}
+          {meta.title}
         </Typography>
-        <Typography variant="subtitle1">{pubDate}</Typography>
 
-        <MDXRemote compiledSource={content.compiledSource} />
+        <MDXRemote
+          components={components}
+          compiledSource={content.compiledSource}
+        />
       </Paper>
       <Footer />
     </PageContainer>
@@ -47,15 +62,15 @@ export default function PostPage({
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   if (params) {
     const slug = params.slug as string;
-    const post = getMDXContentBySlug("content/news", slug, locale);
+    const page = getMDXContentBySlug("content/pages", slug, locale);
 
-    const content = await serialize(post.content);
+    const content = await serialize(page.content);
 
     return {
       props: {
         locale,
-        post: {
-          ...post,
+        page: {
+          ...page,
           content,
         },
       },
@@ -68,7 +83,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = ({ locales }) => {
-  const dirnames = fs.readdirSync(path.join("content", "news"));
+  const dirnames = fs.readdirSync(path.join("content", "pages"));
 
   type Path = { params: { slug: string }; locale: string };
   const paths: Path[] = [];

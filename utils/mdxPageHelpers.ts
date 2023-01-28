@@ -8,12 +8,18 @@ export interface PostFrontmatter {
   keywords: string;
   description: string;
   slug: string;
+  components?: string[];
 }
 
-export interface PostData {
+export interface MDXData {
   slug: string;
   meta: PostFrontmatter;
   content: string;
+}
+export interface CompiledMDXData {
+  slug: string;
+  meta: PostFrontmatter;
+  content: { compiledSource: string };
 }
 
 export const POST_DATE_OPTS: Intl.DateTimeFormatOptions = {
@@ -22,8 +28,12 @@ export const POST_DATE_OPTS: Intl.DateTimeFormatOptions = {
   day: "numeric",
 };
 
-export function getPostBySlug(slug: string, locale = "en"): PostData {
-  const itemPath = path.join(`content/news/${slug}/${locale}.mdx`);
+export function getMDXContentBySlug(
+  pathBase: string,
+  slug: string,
+  locale = "en"
+): MDXData {
+  const itemPath = path.join(`${pathBase}/${slug}/${locale}.mdx`);
   const fileContents = fs.readFileSync(itemPath, "utf8");
   const { content, data } = matter(fileContents);
   const meta = data as PostFrontmatter;
@@ -31,11 +41,11 @@ export function getPostBySlug(slug: string, locale = "en"): PostData {
   return { slug, meta, content };
 }
 
-export function getAllPosts(lang: string) {
-  const slugs = fs.readdirSync(path.join("content", "news"));
+export function getAllPosts(pathBaseItems: string[], lang: string) {
+  const slugs = fs.readdirSync(path.join(...pathBaseItems));
 
   const posts = slugs
-    .map((slug) => getPostBySlug(slug, lang))
+    .map((slug) => getMDXContentBySlug(pathBaseItems.join("/"), slug, lang))
     .sort((post1, post2) => (post1.meta.date > post2.meta.date ? -1 : 1));
 
   return posts;

@@ -115,7 +115,7 @@ export const rewrites: LocaleRewrites = {
   "/introduction": {
     locale: "en",
     // the route that is rendered
-    rewriteUrl: "/einfuhrung",
+    rewriteUrl: "/introduction",
   },
   "/history": {
     locale: "en",
@@ -157,6 +157,7 @@ export const rewrites: LocaleRewrites = {
     locale: "en",
     rewriteUrl: "/presentations",
   },
+  // DE
   "/einfuhrung": {
     locale: "de",
     rewriteUrl: "/introduction",

@@ -4,15 +4,15 @@ import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
 import type { SupportedLocale } from "types/next-i18next";
-import type { PostData } from "utils/postHelpers";
-import { getAllPosts, POST_DATE_OPTS } from "utils/postHelpers";
+import type { MDXData } from "utils/mdxPageHelpers";
+import { getAllPosts, POST_DATE_OPTS } from "utils/mdxPageHelpers";
 
 const PostArchive = ({
   locale,
   posts,
 }: {
   locale: SupportedLocale;
-  posts: PostData[];
+  posts: MDXData[];
 }) => {
   return (
     <ul>
@@ -66,7 +66,7 @@ export default function NewsPage({
 }
 
 export const getStaticProps: GetStaticProps = ({ locale }) => {
-  const allPosts = getAllPosts(locale!);
+  const allPosts = getAllPosts(["content", "news"], locale!);
 
   return {
     props: { allPosts, locale },
