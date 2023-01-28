@@ -91,6 +91,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const allPosts = getAllPosts(["content", "news"], locale!);
 
   return {
-    props: { allPosts, ...i18nProps.props },
+    props: { allPosts, locale, ...i18nProps.props },
   };
 };

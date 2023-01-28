@@ -40,13 +40,14 @@ export default function PostPage({
             {t("common:news.backToNews")}
           </Typography>
         </Link>
+        <article style={{ width: "100%" }}>
+          <Typography variant="h2" component="h1" mt={4}>
+            {title}
+          </Typography>
+          <Typography variant="subtitle1">{pubDate}</Typography>
 
-        <Typography variant="h2" component="h1" mt={4}>
-          {title}
-        </Typography>
-        <Typography variant="subtitle1">{pubDate}</Typography>
-
-        <MDXRemote compiledSource={content.compiledSource} />
+          <MDXRemote compiledSource={content.compiledSource} />
+        </article>
       </Paper>
       <Footer />
     </PageContainer>
@@ -76,12 +77,9 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
         ...post,
         content,
       },
+      locale,
       ...i18nProps.props,
     },
-  };
-
-  return {
-    props: { error: true },
   };
 };
 
