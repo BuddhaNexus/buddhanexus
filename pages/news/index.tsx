@@ -1,11 +1,16 @@
 import type { GetStaticProps } from "next";
+import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import type { SupportedLocale } from "types/next-i18next";
 import type { MDXData } from "utils/mdxPageHelpers";
 import { getAllPosts, POST_DATE_OPTS } from "utils/mdxPageHelpers";
+import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 const PostArchive = ({
   locale,
@@ -14,34 +19,43 @@ const PostArchive = ({
   locale: SupportedLocale;
   posts: MDXData[];
 }) => {
+  const { t } = useTranslation();
+
   return (
-    <ul>
-      {posts.map((post) => {
-        const { title, date: d, description } = post.meta;
+    <Box width="100%">
+      <List>
+        {posts.map((post) => {
+          const { title, date: d, description } = post.meta;
 
-        const date = new Date(d);
-        const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
+          const date = new Date(d);
+          const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
 
-        return (
-          <li key={post.slug}>
-            <article>
-              <Typography variant="h3" component="h2">
-                {/* TODO */}
-                <Link route={`/${post.slug}`}>{title}</Link>
-              </Typography>
-              <Typography variant="subtitle1">{pubDate}</Typography>
-              <Typography variant="body1">{description}</Typography>
-              <div>
+          return (
+            <ListItem key={post.slug} sx={{ mb: 5 }} disablePadding>
+              <article style={{ width: "100%" }}>
+                <Typography variant="h4" component="h2">
+                  <Link route={`/${post.slug}`}>{title}</Link>
+                </Typography>
+                <Typography variant="subtitle1" component="p">
+                  {pubDate}
+                </Typography>
+                <Typography variant="body1">{description}</Typography>
+
                 <Link route={`/${post.slug}`}>
-                  {/* TODO: {t("posts-read-more")} <Icon name="arrowright" /> */}
-                  Read more
+                  <Typography
+                    variant="body1"
+                    display="flex"
+                    alignItems="center"
+                  >
+                    {t("common:news.readMore")}
+                  </Typography>
                 </Link>
-              </div>
-            </article>
-          </li>
-        );
-      })}
-    </ul>
+              </article>
+            </ListItem>
+          );
+        })}
+      </List>
+    </Box>
   );
 };
 
@@ -52,11 +66,12 @@ export default function NewsPage({
   locale: SupportedLocale;
   allPosts: any;
 }) {
+  const { t } = useTranslation();
   return (
     <PageContainer>
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
-        <Typography variant="h1" component="h1">
-          News
+        <Typography variant="h1" component="h1" mb={3}>
+          {t("common:news.title")}
         </Typography>
         <PostArchive posts={allPosts} locale={locale} />
       </Paper>
@@ -65,10 +80,17 @@ export default function NewsPage({
   );
 }
 
-export const getStaticProps: GetStaticProps = ({ locale }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const i18nProps = await getI18NextStaticProps(
+    {
+      locale,
+    },
+    ["common"]
+  );
+
   const allPosts = getAllPosts(["content", "news"], locale!);
 
   return {
-    props: { allPosts, locale },
+    props: { allPosts, ...i18nProps.props },
   };
 };

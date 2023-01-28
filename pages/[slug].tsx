@@ -15,6 +15,7 @@ import path from "path";
 import type { SupportedLocale } from "types/next-i18next";
 import type { CompiledMDXData } from "utils/mdxPageHelpers";
 import { getMDXContentBySlug } from "utils/mdxPageHelpers";
+import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 type ComponentStore = Record<string, any>;
 
@@ -60,25 +61,30 @@ export default function Page({
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  if (params) {
-    const slug = params.slug as string;
-    const page = getMDXContentBySlug("content/pages", slug, locale);
-
-    const content = await serialize(page.content);
-
-    return {
-      props: {
-        locale,
-        page: {
-          ...page,
-          content,
-        },
-      },
-    };
+  if (!params) {
+    throw new Error("🙀 No params!");
   }
 
+  const i18nProps = await getI18NextStaticProps(
+    {
+      locale,
+    },
+    ["common"]
+  );
+
+  const slug = params.slug as string;
+  const page = getMDXContentBySlug("content/pages", slug, locale);
+
+  const content = await serialize(page.content);
+
   return {
-    props: { error: true },
+    props: {
+      page: {
+        ...page,
+        content,
+      },
+      ...i18nProps.props,
+    },
   };
 };
 

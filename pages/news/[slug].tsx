@@ -1,15 +1,18 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
+import { useTranslation } from "next-i18next";
 import { MDXRemote } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import { Link } from "@components/common/Link";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Paper, Typography } from "@mui/material";
 import fs from "fs";
 import path from "path";
 import type { SupportedLocale } from "types/next-i18next";
 import type { CompiledMDXData } from "utils/mdxPageHelpers";
 import { getMDXContentBySlug, POST_DATE_OPTS } from "utils/mdxPageHelpers";
+import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function PostPage({
   locale,
@@ -18,6 +21,8 @@ export default function PostPage({
   locale: SupportedLocale;
   post: CompiledMDXData;
 }) {
+  const { t } = useTranslation();
+
   const {
     meta: { title, date: d },
     content,
@@ -29,10 +34,14 @@ export default function PostPage({
   return (
     <PageContainer>
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
-        {/* TODO: localize */}
-        <Link route="/news">{"< Back to News"}</Link>
+        <Link route="/news">
+          <Typography variant="body1" display="flex" alignItems="center">
+            <ArrowBackIosIcon fontSize="small" />
+            {t("common:news.backToNews")}
+          </Typography>
+        </Link>
 
-        <Typography variant="h2" component="h1">
+        <Typography variant="h2" component="h1" mt={4}>
           {title}
         </Typography>
         <Typography variant="subtitle1">{pubDate}</Typography>
@@ -45,22 +54,31 @@ export default function PostPage({
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  if (params) {
-    const slug = params.slug as string;
-    const post = getMDXContentBySlug("content/news", slug, locale);
-
-    const content = await serialize(post.content);
-
-    return {
-      props: {
-        locale,
-        post: {
-          ...post,
-          content,
-        },
-      },
-    };
+  if (!params) {
+    throw new Error("🙀 No params!");
   }
+
+  const i18nProps = await getI18NextStaticProps(
+    {
+      locale,
+    },
+    ["common"]
+  );
+
+  const slug = params.slug as string;
+  const post = getMDXContentBySlug("content/news", slug, locale);
+
+  const content = await serialize(post.content);
+
+  return {
+    props: {
+      post: {
+        ...post,
+        content,
+      },
+      ...i18nProps.props,
+    },
+  };
 
   return {
     props: { error: true },
