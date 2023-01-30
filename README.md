@@ -16,7 +16,80 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+## MDX page i18n (Draft)
+
+Static pages built from mdx files are held in `/content/`. Each page has a dedicated directory containing localized mdx files for supported locals:
+
+```
+├── content
+    ├── news
+    │   ├── author-and-translators-identification-inittiative
+    │   │   ├── de.mdx
+    │   │   └── en.mdx
+    …
+    └── pages
+        ├── contact
+        │   ├── de.mdx
+        │   └── en.mdx
+        ├── events
+        │   ├── de.mdx
+        │   └── en.mdx
+        …
+```
+
+Content files must contain frontmatter following the schema defined in the `MDXFrontmatter` interface.
+
+### Localized URLs
+
+Static page routes are defined in `/routes-i18n.ts` which handles URL localization.
+
+When adding a new page / news post, entries for the page need to be added to both of the following objects:
+
+- `rewrites` (used to render pages with localized URLs), and
+- `routes` (used to creates localized hrefs for the Link component).
+
+If a path contains characters not allowed in the [RFC3986](https://www.rfc-editor.org/rfc/rfc3986#section-2) spec (in short a character that isn't an [ASCII alphanumeric](https://oeis.org/wiki/ASCII#ASCII_alphanumeric_characters), `/`, `-`, `.`, `_`, or `~`) it must be percent-encoded which enables fully localized page paths:
+
+```js
+`/${encodeURIComponent("ཨོཾ་མུ་ནེ་མུ་ནེ་མ་ཧཱ་མུ་ན་ཡེ་སྭཱ་ཧཱ།")}`;
+```
+
+Within mdx files, external links can used the regular markdown link syntax. However internal links should use the `Link` component with the page directory name as a `route` prop value to enable i18n route handling. Eg:
+
+```jsx
+<Link route="/news">Nachrichten</Link>
+```
+
+For bonus points see:
+
+- [What are valid URLs?](https://stackoverflow.com/a/36667242/7794529)
+- [What is URL encoding or Percent Encoding?](https://www.urlencoder.io/)
+- [WHATWG URL spec](https://url.spec.whatwg.org/)
+
+### JSX components & imports
+
+These can be used in mdx files, by declaring them through the optional `components`, `imports` & `props` frontmatter properties and importing them in `utils/mdxPageImports.ts`. These will then be passed to `MDXRemote` in the page template file, which renders compiled source from next-mdx-remote's serializer:
+
+```js
+const { components, props } = getMDXPageComponents(
+  meta.components ?? [],
+  meta.props ?? [],
+  meta.imports ?? []
+);
+
+return (
+  <PageContainer>
+    …
+    <MDXRemote
+      compiledSource={content.compiledSource}
+      components={components}
+      scope={props}
+    />…
+  </PageContainer>
+);
+```
+
+## Learn More Next.js
 
 To learn more about Next.js, take a look at the following resources:
 

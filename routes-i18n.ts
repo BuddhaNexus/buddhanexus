@@ -7,10 +7,14 @@ type Route<Type extends string> = {
 type LocalizedRoutes = Record<string, Route<SupportedLocale>>;
 type LocaleRewrites = Record<string, { locale: string; rewriteUrl: string }>;
 
+// TODO: ideally, the routes and rewrites objects should be dynamically generated.
+
 const postRoutes: LocalizedRoutes = {
   "/author-and-translators-identification-inittiative": {
     en: "/news/author-and-translators-identification-inittiative",
-    de: "/nachrichten/autor-und-ubersetzer-identifikationsinitiative",
+    de: `/nachrichten/${encodeURIComponent(
+      "autoren-und-übersetzer-identifikationsinitiative"
+    )}`,
   },
   "/buddhanexus-in-the-digital-orientalist": {
     en: "/news/buddhanexus-in-the-digital-orientalist",
@@ -18,7 +22,7 @@ const postRoutes: LocalizedRoutes = {
   },
   "/buddhanexus-published": {
     en: "/news/buddhanexus-published",
-    de: "/nachrichten/buddhanexus-veroffentlicht",
+    de: `/nachrichten/${encodeURIComponent("buddhanexus-veröffentlicht")}`,
   },
   "/buddhanexus-updates-2021": {
     en: "/news/buddhanexus-updates-2021",
@@ -31,7 +35,9 @@ const postRewrites: LocaleRewrites = {
     locale: "en",
     rewriteUrl: "/news/author-and-translators-identification-inittiative",
   },
-  "/nachrichten/autor-und-ubersetzer-identifikationsinitiative": {
+  [`/nachrichten/${encodeURIComponent(
+    "autoren-und-übersetzer-identifikationsinitiative"
+  )}`]: {
     locale: "de",
     rewriteUrl: "/news/author-and-translators-identification-inittiative",
   },
@@ -47,7 +53,7 @@ const postRewrites: LocaleRewrites = {
     locale: "en",
     rewriteUrl: "/news/buddhanexus-published",
   },
-  "/nachrichten/buddhanexus-veroffentlicht": {
+  [`/nachrichten/${encodeURIComponent("buddhanexus-veröffentlicht")}`]: {
     locale: "de",
     rewriteUrl: "/news/buddhanexus-published",
   },
@@ -65,7 +71,7 @@ const postRewrites: LocaleRewrites = {
 export const routes: LocalizedRoutes = {
   "/introduction": {
     en: "/introduction",
-    de: "/einfuhrung",
+    de: `/${encodeURIComponent("einführung")}`,
   },
   "/history": {
     en: "/history",
@@ -93,7 +99,7 @@ export const routes: LocalizedRoutes = {
   },
   "/publications": {
     en: "/publications",
-    de: "/veroffentlichungen",
+    de: `/${encodeURIComponent("veröffentlichungen")}`,
   },
   "/events": {
     en: "/events",
@@ -105,7 +111,7 @@ export const routes: LocalizedRoutes = {
   },
   "/presentations": {
     en: "/presentations",
-    de: "/prasentationen",
+    de: `/${encodeURIComponent("präsentationen")}`,
   },
   ...postRoutes,
 };
@@ -157,8 +163,10 @@ export const rewrites: LocaleRewrites = {
     locale: "en",
     rewriteUrl: "/presentations",
   },
+  // ----------------------------
   // DE
-  "/einfuhrung": {
+  // ----------------------------
+  [`/${encodeURIComponent("einführung")}`]: {
     locale: "de",
     rewriteUrl: "/introduction",
   },
@@ -186,7 +194,7 @@ export const rewrites: LocaleRewrites = {
     locale: "de",
     rewriteUrl: "/news",
   },
-  "/veroffentlichungen": {
+  [`/${encodeURIComponent("veröffentlichungen")}`]: {
     locale: "de",
     rewriteUrl: "/publications",
   },
@@ -198,7 +206,7 @@ export const rewrites: LocaleRewrites = {
     locale: "de",
     rewriteUrl: "/projects",
   },
-  "/prasentationen": {
+  [`/${encodeURIComponent("präsentationen")}`]: {
     locale: "de",
     rewriteUrl: "/presentations",
   },

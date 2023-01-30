@@ -11,7 +11,11 @@ import fs from "fs";
 import path from "path";
 import type { SupportedLocale } from "types/next-i18next";
 import type { CompiledMDXData } from "utils/mdxPageHelpers";
-import { getMDXContentBySlug, POST_DATE_OPTS } from "utils/mdxPageHelpers";
+import {
+  getMDXContentBySlug,
+  getMDXPageComponents,
+  POST_DATE_OPTS,
+} from "utils/mdxPageHelpers";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function PostPage({
@@ -23,13 +27,16 @@ export default function PostPage({
 }) {
   const { t } = useTranslation();
 
-  const {
-    meta: { title, date: d },
-    content,
-  } = post;
+  const { meta, content } = post;
 
-  const date = new Date(d);
+  const date = new Date(meta.date);
   const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
+
+  const { components, props } = getMDXPageComponents(
+    meta.components ?? [],
+    meta.props ?? [],
+    meta.imports ?? []
+  );
 
   return (
     <PageContainer>
@@ -42,11 +49,15 @@ export default function PostPage({
         </Link>
         <article style={{ width: "100%" }}>
           <Typography variant="h2" component="h1" mt={4}>
-            {title}
+            {meta.title}
           </Typography>
           <Typography variant="subtitle1">{pubDate}</Typography>
 
-          <MDXRemote compiledSource={content.compiledSource} />
+          <MDXRemote
+            compiledSource={content.compiledSource}
+            components={components}
+            scope={props}
+          />
         </article>
       </Paper>
       <Footer />
@@ -66,8 +77,8 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     ["common"]
   );
 
-  const slug = params.slug as string;
-  const post = getMDXContentBySlug("content/news", slug, locale);
+  const dirSlug = params.slug as string;
+  const post = getMDXContentBySlug("content/news", dirSlug, locale);
 
   const content = await serialize(post.content);
 

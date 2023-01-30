@@ -27,21 +27,23 @@ const PostArchive = ({
         {posts.map((post) => {
           const { title, date: d, description } = post.meta;
 
+          const dirSlug: string = post.slug;
+
           const date = new Date(d);
           const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
 
           return (
-            <ListItem key={post.slug} sx={{ mb: 5 }} disablePadding>
+            <ListItem key={dirSlug} sx={{ mb: 5 }} disablePadding>
               <article style={{ width: "100%" }}>
                 <Typography variant="h4" component="h2">
-                  <Link route={`/${post.slug}`}>{title}</Link>
+                  <Link route={`/${dirSlug}`}>{title}</Link>
                 </Typography>
                 <Typography variant="subtitle1" component="p">
                   {pubDate}
                 </Typography>
                 <Typography variant="body1">{description}</Typography>
 
-                <Link route={`/${post.slug}`}>
+                <Link route={`/${dirSlug}`}>
                   <Typography
                     variant="body1"
                     display="flex"

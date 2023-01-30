@@ -58,8 +58,8 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     ["common"]
   );
 
-  const slug = params.slug as string;
-  const page = getMDXContentBySlug("content/pages", slug, locale);
+  const dirSlug = params.slug as string;
+  const page = getMDXContentBySlug("content/pages", dirSlug, locale);
 
   const content = await serialize(page.content);
 

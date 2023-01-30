@@ -9,12 +9,11 @@ import {
   MDX_PROPS,
 } from "./mdxPageImports";
 
-export interface PostFrontmatter {
+export interface MDXFrontmatter {
   title: string;
   date: string;
   keywords: string;
   description: string;
-  slug: string;
   components?: string[];
   props?: string[];
   imports?: string[];
@@ -22,12 +21,12 @@ export interface PostFrontmatter {
 
 export interface MDXData {
   slug: string;
-  meta: PostFrontmatter;
+  meta: MDXFrontmatter;
   content: string;
 }
 export interface CompiledMDXData {
   slug: string;
-  meta: PostFrontmatter;
+  meta: MDXFrontmatter;
   content: { compiledSource: string };
 }
 
@@ -45,7 +44,7 @@ export function getMDXContentBySlug(
   const itemPath = path.join(`${pathBase}/${slug}/${locale}.mdx`);
   const fileContents = fs.readFileSync(itemPath, "utf8");
   const { content, data } = matter(fileContents);
-  const meta = data as PostFrontmatter;
+  const meta = data as MDXFrontmatter;
 
   return { slug, meta, content };
 }
