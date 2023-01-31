@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import type { LinkProps } from "@mui/material/Link";
 import MUILink from "@mui/material/Link";
 import { routes } from "routes-i18n";
-import type { SupportedLocale } from "types/next-i18next";
+import type { SupportedLocale } from "types/i18next";
 
 type ConditionalProps =
   | {

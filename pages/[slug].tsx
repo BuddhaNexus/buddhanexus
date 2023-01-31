@@ -6,7 +6,7 @@ import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
 import fs from "fs";
 import path from "path";
-import type { SupportedLocale } from "types/next-i18next";
+import type { SupportedLocale } from "types/i18next";
 import type { CompiledMDXData } from "utils/mdxPageHelpers";
 import {
   getMDXContentBySlug,

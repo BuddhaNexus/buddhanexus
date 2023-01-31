@@ -1,4 +1,4 @@
-import type { SupportedLocale } from "types/next-i18next";
+import type { SupportedLocale } from "types/i18next";
 
 type Route<Type extends string> = {
   [Item in Type]: string;

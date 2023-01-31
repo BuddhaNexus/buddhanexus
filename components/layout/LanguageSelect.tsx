@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Button, Menu } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { routes } from "routes-i18n";
-import type { SupportedLocale } from "types/next-i18next";
+import type { SupportedLocale } from "types/i18next";
 
 type LocaleLabels = {
   [key in SupportedLocale]: { flag: string; full: string };

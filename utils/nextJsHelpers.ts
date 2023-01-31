@@ -6,7 +6,7 @@ import { ALL_LOCALES, SOURCE_LANGUAGES } from "./constants";
 
 interface I18nProps {
   props: {
-    _nextI18Next: {
+    _nextI18Next?: {
       initialI18nStore: any;
       initialLocale: string;
       ns: string[];
@@ -19,7 +19,7 @@ type Locale = { locale: string | undefined };
 
 export const getI18NextStaticProps: (
   { locale }: Locale,
-  extraNamespaces: string[]
+  extraNamespaces?: string[]
 ) => Promise<I18nProps> = async (
   { locale }: Locale,
   extraNamespaces: string[] = []

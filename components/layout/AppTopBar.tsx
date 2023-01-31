@@ -56,7 +56,11 @@ export const AppTopBar = () => {
       <Toolbar sx={{ flexWrap: "wrap" }}>
         <Link
           color="inherit"
-          sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}
+          sx={{
+            marginRight: "auto",
+            display: "inline-flex",
+            alignItems: "center",
+          }}
           href={isATIIRoute ? "/atii" : "/"}
           underline="none"
           noWrap
@@ -96,7 +100,7 @@ export const AppTopBar = () => {
           </>
         </Link>
 
-        <nav style={{ display: "flex" }}>
+        <Box component="nav" sx={{ display: "flex" }}>
           {isATIIRoute ? (
             <AppBarLink title="BuddhaNexus" href="/" />
           ) : (
@@ -106,7 +110,7 @@ export const AppTopBar = () => {
               <AppBarLink title="ATII" href="/atii" />
             </>
           )}
-        </nav>
+        </Box>
 
         {isMounted ? (
           <IconButton

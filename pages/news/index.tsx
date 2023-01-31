@@ -7,7 +7,7 @@ import { Paper, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import type { SupportedLocale } from "types/next-i18next";
+import type { SupportedLocale } from "types/i18next";
 import type { MDXData } from "utils/mdxPageHelpers";
 import { getAllPosts, POST_DATE_OPTS } from "utils/mdxPageHelpers";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";

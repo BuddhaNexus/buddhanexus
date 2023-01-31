@@ -3,13 +3,14 @@ import type {
   ApiGraphPageData,
   ApiLanguageMenuData,
   ApiSegmentsData,
-} from "types/api";
+} from "types/api/common";
+import type { ApiTablePageData, TablePageData } from "types/api/table";
 import type { SourceLanguage } from "utils/constants";
 
 const API_ROOT_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // source language menu on main db page (Autocomplete component)
-async function getLanguageMenuData(
+export async function getLanguageMenuData(
   language: SourceLanguage
 ): Promise<DatabaseText[]> {
   const res = await fetch(`${API_ROOT_URL}/menus/${language}`);
@@ -32,6 +33,47 @@ async function getGraphData(fileName: string): Promise<ApiGraphPageData> {
     `${API_ROOT_URL}/files/${fileName}/graph?co_occ=2000`
   );
   return await res.json();
+}
+
+function parseAPITableData(apiData: ApiTablePageData): TablePageData {
+  return apiData.map((p) => ({
+    coOccurrences: p["co-occ"],
+    sourceLanguage: p.src_lang,
+    targetLanguage: p.tgt_lang,
+    fileName: p.file_name,
+    score: p.score,
+
+    parallelColorMap: p.par_color_map,
+    parallelFullNames: {
+      displayName: p.par_full_names.display_name,
+      textName: p.par_full_names.text_name,
+      link1: p.par_full_names.link1,
+      link2: p.par_full_names.link2,
+    },
+    parallelFullText: p.par_fulltext,
+    parallelLength: p.par_length,
+    parallelPositionFromStart: p.par_pos_beg,
+    parallelSegmentNumbers: p.par_segnr,
+
+    rootColorMap: p.root_color_map,
+    rootLength: p.root_length,
+    rootSegmentNumbers: p.root_segnr,
+    rootFullNames: {
+      displayName: p.root_full_names.display_name,
+      textName: p.root_full_names.text_name,
+      link1: p.root_full_names.link1,
+      link2: p.root_full_names.link2,
+    },
+    rootFullText: p.root_fulltext,
+  }));
+}
+
+async function getTableData(fileName: string): Promise<TablePageData> {
+  const res = await fetch(
+    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position`
+  );
+  const responseJSON = await res.json();
+  return parseAPITableData(responseJSON);
 }
 
 // used in numbers view.
@@ -70,8 +112,12 @@ export const DbApi = {
     call: () => null,
   },
   GraphView: {
-    makeQueryKey: (fileName: string) => ["graphData", fileName],
+    makeQueryKey: (fileName: string) => ["graphView", fileName],
     call: getGraphData,
+  },
+  TableView: {
+    makeQueryKey: (fileName: string) => ["tableView", fileName],
+    call: getTableData,
   },
   SegmentsData: {
     makeQueryKey: (fileName: string) => ["segmentsData", fileName],
