@@ -1,5 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
+import { AppTopBar } from "@components/layout/AppTopBar";
 import { Container } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
 import type { Breakpoint } from "@mui/system";
 import bgChn from "@public/assets/images/bg_chn_upscaled_bw.jpg";
 import bgPli from "@public/assets/images/bg_pli_upscaled_bw.jpg";
@@ -39,6 +41,8 @@ export const PageContainer: FC<Props> = ({
 }) => {
   return (
     <>
+      <CssBaseline />
+      <AppTopBar />
       {backgroundName && (
         <Container
           maxWidth={false}

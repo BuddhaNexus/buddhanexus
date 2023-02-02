@@ -19,6 +19,10 @@ function extractParts(
   text: string,
   highlightMap: ParallelHighlightMapSign[]
 ): HighlightPart[] {
+  if (!highlightMap) {
+    return [];
+  }
+
   const partsResult: HighlightPart[] = [];
 
   for (let i = 0; i < highlightMap.length; i++) {

@@ -8,11 +8,9 @@ import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
 import { ThemeProvider } from "next-themes";
 import { AppMDXComponents } from "@components/layout/AppMDXComponents";
-import { AppTopBar } from "@components/layout/AppTopBar";
 import type { EmotionCache } from "@emotion/react";
 import { CacheProvider } from "@emotion/react";
 import { MDXProvider } from "@mdx-js/react";
-import CssBaseline from "@mui/material/CssBaseline";
 import {
   Hydrate,
   QueryClient,
@@ -60,8 +58,6 @@ function MyApp({
 
             <ThemeProvider>
               <MUIThemeProvider>
-                <CssBaseline />
-                <AppTopBar />
                 <Component {...pageProps} />
               </MUIThemeProvider>
             </ThemeProvider>
