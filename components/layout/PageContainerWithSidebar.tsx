@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren } from "react";
-import { TextOptionsSidebar } from "@components/db/Sidebar/TextOptionsSidebar";
+import { OptionsSidebar } from "@components/db/sidebar/OptionsSidebar";
 import { AppTopBar } from "@components/layout/AppTopBar";
 import { Box, Container } from "@mui/material";
 import type { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -127,7 +127,7 @@ export const PageContainerWithSidebar: FC<Props> = ({
           {children}
         </Container>
       </Main>
-      <TextOptionsSidebar state={[open, setOpen]} drawerWidth={drawerWidth} />
+      <OptionsSidebar state={[open, setOpen]} drawerWidth={drawerWidth} />
     </Box>
   );
 };

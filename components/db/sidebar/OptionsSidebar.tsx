@@ -1,3 +1,8 @@
+import { VIEW_FILTERS } from "@components/db/sidebar/filterContexts";
+import {
+  MinMatchLengthFilter as MinMatchLength,
+  SectionSelectFilter as SectionSelect,
+} from "@components/db/sidebar/filters";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import InboxIcon from "@mui/icons-material/Inbox";
@@ -22,6 +27,11 @@ interface Props {
   state: [boolean, (value: boolean | ((prevVar: boolean) => boolean)) => void];
 }
 
+const FilterComponents: Record<string, React.ElementType> = {
+  MinMatchLength,
+  SectionSelect,
+};
+
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -31,7 +41,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
-export function TextOptionsSidebar({ state, drawerWidth }: Props) {
+export function OptionsSidebar({ state, drawerWidth }: Props) {
   const theme = useTheme();
   const [open, setOpen] = state;
 
@@ -72,16 +82,17 @@ export function TextOptionsSidebar({ state, drawerWidth }: Props) {
           FILTERS
         </Typography>
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          {VIEW_FILTERS["proto-filters"].pli.map((filterName) => {
+            if (!FilterComponents[filterName]) {
+              throw new Error(`Can't find filter ${filterName}`);
+            }
+            const FilterComponent = FilterComponents[filterName];
+            return (
+              <ListItem key={filterName}>
+                <FilterComponent sourceLang="pli" currentView="proto-filters" />
+              </ListItem>
+            );
+          })}
         </List>
         <Divider />
         <Typography
