@@ -3,6 +3,7 @@ import type {
   ApiGraphPageData,
   ApiLanguageMenuData,
   ApiSegmentsData,
+  PagedResponse,
 } from "types/api/common";
 import type { ApiTablePageData, TablePageData } from "types/api/table";
 import type { SourceLanguage } from "utils/constants";
@@ -66,12 +67,15 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   }));
 }
 
-async function getTableData(fileName: string): Promise<TablePageData> {
+async function getTableData(
+  fileName: string,
+  pageNumber: number
+): Promise<PagedResponse<TablePageData>> {
   const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position`
+    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position&page=${pageNumber}`
   );
   const responseJSON = await res.json();
-  return parseAPITableData(responseJSON);
+  return { data: parseAPITableData(responseJSON), pageNumber };
 }
 
 // used in numbers view.

@@ -30,3 +30,5 @@ export interface ApiSegmentsData {
 export interface APIResponse<T> {
   result: T;
 }
+
+export type PagedResponse<T> = { pageNumber: number; data: T };
