@@ -1,3 +1,4 @@
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Divider, Stack } from "@mui/material";
 import type { TablePageParallel } from "types/api/table";
 
@@ -24,7 +25,11 @@ export const TableViewRow = ({
   parallel: TablePageParallel;
 }) => (
   <>
-    <Stack direction="row" spacing={2} sx={{ my: 2, py: 1 }}>
+    <Stack
+      direction={{ xs: "column", sm: "row" }}
+      spacing={2}
+      sx={{ my: 2, py: 1, justifyContent: "center", alignItems: "center" }}
+    >
       {/* ROOT SEGMENT */}
       <ParallelSegment
         fileName={rootFullNames.textName}
@@ -33,6 +38,8 @@ export const TableViewRow = ({
         text={rootFullText}
         textSegmentNumbers={rootSegmentNumbers}
       />
+
+      <ArrowDownwardIcon sx={{ transform: { sm: "rotate(-90deg)" } }} />
 
       {/* PARALLEL SEGMENT*/}
       <ParallelSegment

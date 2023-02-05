@@ -86,7 +86,6 @@ const Row = (props: ListChildComponentProps) => {
         sx={{
           flex: 1,
           whiteSpace: "normal",
-          wordBreak: "break-all",
         }}
       >
         {name}

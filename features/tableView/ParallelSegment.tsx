@@ -38,28 +38,41 @@ export const ParallelSegment = ({
   const sourceLanguageName = t(`language.${language}`);
 
   return (
-    <Card sx={{ width: "50%", wordBreak: "break-all" }}>
+    <Card sx={{ flex: 1, wordBreak: "break-all" }}>
       <CardContent
         sx={{
           display: "flex",
           justifyContent: "space-between",
           bgcolor: "background.header",
+          flexDirection: { xs: "column", sm: "row" },
         }}
       >
-        <Box sx={{ alignItems: "center" }}>
+        <Box sx={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}>
+          {/* Language name */}
           <Chip
             size="small"
             label={sourceLanguageName}
-            sx={{ mr: 0.5, p: 0.5 }}
+            sx={{ m: 0.5, p: 0.5 }}
           />
+
+          {/* File Name */}
           <Tooltip title={fileName}>
-            <Typography sx={{ display: "inline", mx: 0.5 }}>
+            <Typography
+              sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
+            >
               {textSegmentNumbers}
             </Typography>
           </Tooltip>
         </Box>
 
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: { xs: "start", sm: "end" },
+            alignItems: "center",
+          }}
+        >
           {score && (
             <Tooltip title="Score">
               <Chip
@@ -68,14 +81,14 @@ export const ParallelSegment = ({
                 variant="outlined"
                 icon={<PercentIcon />}
                 label={score}
-                sx={{ mx: 0.5, p: 0.5 }}
+                sx={{ mr: 0.5, my: 0.5, p: 0.5 }}
               />
             </Tooltip>
           )}
           <Chip
             size="small"
             label={`Length: ${length}`}
-            sx={{ mx: 0.5, p: 0.5 }}
+            sx={{ m: 0.5, p: 0.5 }}
           />
         </Box>
       </CardContent>
