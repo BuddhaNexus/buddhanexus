@@ -43,7 +43,6 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
     fileName: p.file_name,
     score: p.score,
 
-    parallelColorMap: p.par_color_map,
     parallelFullNames: {
       displayName: p.par_full_names.display_name,
       textName: p.par_full_names.text_name,
@@ -55,7 +54,6 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
     parallelPositionFromStart: p.par_pos_beg,
     parallelSegmentNumbers: p.par_segnr,
 
-    rootColorMap: p.root_color_map,
     rootLength: p.root_length,
     rootSegmentNumbers: p.root_segnr,
     rootFullNames: {

@@ -5,7 +5,6 @@ import { ParallelSegment } from "./ParallelSegment";
 
 export const TableViewRow = ({
   parallel: {
-    parallelColorMap,
     parallelLength,
     parallelFullNames,
     // fileName,
@@ -15,7 +14,6 @@ export const TableViewRow = ({
     rootSegmentNumbers,
     rootFullNames,
     rootFullText,
-    rootColorMap,
     rootLength,
     sourceLanguage,
     targetLanguage,
@@ -33,7 +31,6 @@ export const TableViewRow = ({
         language={targetLanguage}
         length={rootLength}
         text={rootFullText}
-        textColorMap={rootColorMap}
         textSegmentNumbers={rootSegmentNumbers}
       />
 
@@ -44,7 +41,6 @@ export const TableViewRow = ({
         length={parallelLength}
         text={parallelFullText}
         score={score}
-        textColorMap={parallelColorMap}
         textSegmentNumbers={parallelSegmentNumbers}
       />
     </Stack>

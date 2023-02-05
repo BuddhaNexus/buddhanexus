@@ -1,6 +1,6 @@
 import type { SourceLanguage } from "utils/constants";
 
-export type ParallelHighlightMapSign = 0 | 1;
+type ParallelHighlightColorId = 0 | 1;
 
 type ApiFullNames = {
   display_name: string;
@@ -9,6 +9,12 @@ type ApiFullNames = {
   link2?: string;
 };
 
+export type ApiTextSegment = {
+  highlightColor: ParallelHighlightColorId;
+  text: string;
+};
+
+// Raw type from BE
 export type ApiTablePageParallel = {
   "co-occ": number;
   file_name: string;
@@ -17,17 +23,15 @@ export type ApiTablePageParallel = {
   score: number;
 
   // Parallel text
-  par_color_map: ParallelHighlightMapSign[];
   par_full_names: ApiFullNames;
-  par_fulltext: string;
+  par_fulltext: ApiTextSegment[];
   par_length: number;
   par_pos_beg: number;
   par_segnr: [start: string, end: string];
 
   // Root text
-  root_color_map: ParallelHighlightMapSign[];
   root_full_names: ApiFullNames;
-  root_fulltext: string;
+  root_fulltext: ApiTextSegment[];
   root_length: number;
   root_segnr: [start: string, end: string];
 };
@@ -41,6 +45,7 @@ type FullNames = {
   link2?: string;
 };
 
+// Type of the parsed object that's used on the FE
 export type TablePageParallel = {
   coOccurrences: number;
   sourceLanguage: SourceLanguage;
@@ -49,17 +54,15 @@ export type TablePageParallel = {
   score: number;
 
   // Parallel text
-  parallelColorMap: ParallelHighlightMapSign[];
   parallelFullNames: FullNames;
-  parallelFullText: string;
+  parallelFullText: ApiTextSegment[];
   parallelPositionFromStart: number;
   parallelLength: number;
   parallelSegmentNumbers: [start: string, end: string];
 
   // Root text
-  rootColorMap: ParallelHighlightMapSign[];
   rootFullNames: FullNames;
-  rootFullText: string;
+  rootFullText: ApiTextSegment[];
   rootLength: number;
   rootSegmentNumbers: [start: string, end: string];
 };
