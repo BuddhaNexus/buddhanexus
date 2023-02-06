@@ -1,6 +1,7 @@
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
+import type { SupportedLocale } from "types/i18next";
 
 import {
   type MDXPageDataStore,
@@ -14,9 +15,9 @@ export interface MDXFrontmatter {
   date: string;
   keywords: string;
   description: string;
-  components?: string[];
-  props?: string[];
-  imports?: string[];
+  componentList?: string[];
+  propsList?: string[];
+  importsList?: string[];
 }
 
 export interface MDXData {
@@ -29,6 +30,8 @@ export interface CompiledMDXData {
   meta: MDXFrontmatter;
   content: { compiledSource: string };
 }
+
+type MDXPagePath = { params: { slug: string }; locale: string };
 
 export const POST_DATE_OPTS: Intl.DateTimeFormatOptions = {
   year: "numeric",
@@ -59,11 +62,15 @@ export function getAllPosts(pathBaseItems: string[], lang: string) {
   return posts;
 }
 
-export function getMDXPageComponents(
-  componentList: string[],
-  propList: string[],
-  importList: string[]
-) {
+export function getMDXPageComponents({
+  componentList,
+  propsList,
+  importsList,
+}: {
+  componentList: string[];
+  propsList: string[];
+  importsList: string[];
+}) {
   const components: MDXPageDataStore = {};
   if (componentList) {
     for (const component of componentList) {
@@ -71,16 +78,31 @@ export function getMDXPageComponents(
     }
   }
   const props: MDXPageDataStore = {};
-  if (propList) {
-    for (const prop of propList) {
+  if (propsList) {
+    for (const prop of propsList) {
       props[prop] = MDX_PROPS[prop];
     }
   }
   const imports: MDXPageDataStore = {};
-  if (importList) {
-    for (const item of importList) {
+  if (importsList) {
+    for (const item of importsList) {
       imports[item] = MDX_IMPORTS[item];
     }
   }
   return { components, props: { ...props, ...imports } };
+}
+
+export function getMDXPagePaths(
+  dirnames: string[],
+  locales: SupportedLocale[]
+) {
+  const paths: MDXPagePath[] = [];
+
+  for (const dir of dirnames) {
+    for (const locale of locales) {
+      paths.push({ params: { slug: dir }, locale });
+    }
+  }
+
+  return paths;
 }

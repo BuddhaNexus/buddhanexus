@@ -7,7 +7,7 @@ import { Paper, Typography } from "@mui/material";
 import fs from "fs";
 import path from "path";
 import type { SupportedLocale } from "types/i18next";
-import type { CompiledMDXData } from "utils/mdxPageHelpers";
+import { type CompiledMDXData, getMDXPagePaths } from "utils/mdxPageHelpers";
 import {
   getMDXContentBySlug,
   getMDXPageComponents,
@@ -20,19 +20,22 @@ export default function Page({
   locale: SupportedLocale;
   page: CompiledMDXData;
 }) {
-  const { meta, content } = page;
+  const {
+    meta: { title, componentList = [], propsList = [], importsList = [] },
+    content,
+  } = page;
 
-  const { components, props } = getMDXPageComponents(
-    meta.components ?? [],
-    meta.props ?? [],
-    meta.imports ?? []
-  );
+  const { components, props } = getMDXPageComponents({
+    componentList,
+    propsList,
+    importsList,
+  });
 
   return (
     <PageContainer>
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
         <Typography variant="h2" component="h1">
-          {meta.title}
+          {title}
         </Typography>
 
         <MDXRemote
@@ -77,14 +80,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 export const getStaticPaths: GetStaticPaths = ({ locales }) => {
   const dirnames = fs.readdirSync(path.join("content", "pages"));
 
-  type Path = { params: { slug: string }; locale: string };
-  const paths: Path[] = [];
-
-  for (const dir of dirnames) {
-    for (const locale of locales!) {
-      paths.push({ params: { slug: dir }, locale });
-    }
-  }
+  const paths = getMDXPagePaths(dirnames, locales as SupportedLocale[]);
 
   return {
     paths,

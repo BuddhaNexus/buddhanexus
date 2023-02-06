@@ -12,7 +12,6 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 
-// TODO: review localization
 interface AppBarLinkProps {
   title: string;
   href: string;

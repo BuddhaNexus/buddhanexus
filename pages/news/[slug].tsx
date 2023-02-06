@@ -10,7 +10,7 @@ import { Paper, Typography } from "@mui/material";
 import fs from "fs";
 import path from "path";
 import type { SupportedLocale } from "types/i18next";
-import type { CompiledMDXData } from "utils/mdxPageHelpers";
+import { type CompiledMDXData, getMDXPagePaths } from "utils/mdxPageHelpers";
 import {
   getMDXContentBySlug,
   getMDXPageComponents,
@@ -27,16 +27,19 @@ export default function PostPage({
 }) {
   const { t } = useTranslation();
 
-  const { meta, content } = post;
+  const {
+    meta: { title, date, componentList = [], propsList = [], importsList = [] },
+    content,
+  } = post;
 
-  const date = new Date(meta.date);
-  const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
+  const pubDate = new Date(date);
+  const formatedDate = pubDate.toLocaleDateString(locale, POST_DATE_OPTS);
 
-  const { components, props } = getMDXPageComponents(
-    meta.components ?? [],
-    meta.props ?? [],
-    meta.imports ?? []
-  );
+  const { components, props } = getMDXPageComponents({
+    componentList,
+    propsList,
+    importsList,
+  });
 
   return (
     <PageContainer>
@@ -49,9 +52,9 @@ export default function PostPage({
         </Link>
         <article style={{ width: "100%" }}>
           <Typography variant="h2" component="h1" mt={4}>
-            {meta.title}
+            {title}
           </Typography>
-          <Typography variant="subtitle1">{pubDate}</Typography>
+          <Typography variant="subtitle1">{formatedDate}</Typography>
 
           <MDXRemote
             compiledSource={content.compiledSource}
@@ -97,14 +100,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 export const getStaticPaths: GetStaticPaths = ({ locales }) => {
   const dirnames = fs.readdirSync(path.join("content", "news"));
 
-  type Path = { params: { slug: string }; locale: string };
-  const paths: Path[] = [];
-
-  for (const dir of dirnames) {
-    for (const locale of locales!) {
-      paths.push({ params: { slug: dir }, locale });
-    }
-  }
+  const paths = getMDXPagePaths(dirnames, locales as SupportedLocale[]);
 
   return {
     paths,
