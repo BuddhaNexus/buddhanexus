@@ -10,9 +10,9 @@ type LocaleRewrites = Record<string, { locale: string; rewriteUrl: string }>;
 // TODO: ideally, the routes and rewrites objects should be dynamically generated.
 
 const postRoutes: LocalizedRoutes = {
-  "author-and-translators-identification-inittiative": {
-    en: "news/author-and-translators-identification-inittiative",
-    de: "nachrichten/autoren-und-übersetzer-identifikationsinitiative",
+  "author-and-translators-identification-initiative": {
+    en: "news/author-and-translators-identification-initiative",
+    de: "nachrichten/author-and-translators-identification-initiative",
   },
   "buddhanexus-in-the-digital-orientalist": {
     en: "news/buddhanexus-in-the-digital-orientalist",
@@ -29,13 +29,13 @@ const postRoutes: LocalizedRoutes = {
 };
 
 const postRewrites: LocaleRewrites = {
-  "/news/author-and-translators-identification-inittiative": {
+  "/news/author-and-translators-identification-initiative": {
     locale: "en",
-    rewriteUrl: "/news/author-and-translators-identification-inittiative",
+    rewriteUrl: "/news/author-and-translators-identification-initiative",
   },
-  "/nachrichten/autoren-und-übersetzer-identifikationsinitiative": {
+  "/nachrichten/author-and-translators-identification-initiative": {
     locale: "de",
-    rewriteUrl: "/news/author-and-translators-identification-inittiative",
+    rewriteUrl: "/news/author-and-translators-identification-initiative",
   },
   "/news/buddhanexus-in-the-digital-orientalist": {
     locale: "en",
