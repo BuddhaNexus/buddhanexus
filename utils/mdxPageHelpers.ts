@@ -57,7 +57,7 @@ export function getAllPosts(pathBaseItems: string[], lang: string) {
 
   const posts = slugs
     .map((slug) => getMDXContentBySlug(pathBaseItems.join("/"), slug, lang))
-    .sort((post1, post2) => (post1.meta.date - post2.meta.date));
+    .sort((post1, post2) => (post1.meta.date > post2.meta.date ? -1 : 1));
 
   return posts;
 }
