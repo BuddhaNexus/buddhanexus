@@ -34,7 +34,7 @@ export default function LanguageSelect() {
     const slug = query.slug as string;
 
     if (slug) {
-      path = slug && routes[`/${slug}`][locale];
+      path = slug && `/${encodeURIComponent(routes[slug][locale])}`;
     }
 
     await (path

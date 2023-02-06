@@ -14,13 +14,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname in rewrites) {
-    const { rewriteUrl, locale } = rewrites[pathname];
+  const decodedPathname = decodeURIComponent(pathname);
+
+  if (decodedPathname in rewrites) {
+    const { rewriteUrl, locale } = rewrites[decodedPathname];
 
     // Choose which page template to use
-    return NextResponse.rewrite(
-      new URL(`/${locale}${rewriteUrl}`, request.url)
-    );
+    const url = `/${locale}${rewriteUrl}`;
+    return NextResponse.rewrite(new URL(url, request.url));
   }
 }
 

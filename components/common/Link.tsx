@@ -21,18 +21,22 @@ interface BaseProps extends LinkProps {}
 type Props = BaseProps & ConditionalProps;
 
 export const Link: FC<PropsWithChildren<Props>> = ({
-  href: h,
+  href,
   route,
   children,
   ...rest
 }) => {
   const { locale } = useRouter();
 
-  const href = route ? routes[route][locale as SupportedLocale] : h;
+  const routeKey = route?.replace(/^\//, "");
+
+  const resolvedHref = routeKey
+    ? routes[routeKey][locale as SupportedLocale]
+    : href;
 
   return (
-    <NextLink href={href ?? ""} locale={locale} passHref legacyBehavior>
-      <MUILink href={href} {...rest}>
+    <NextLink href={resolvedHref ?? ""} locale={locale} passHref legacyBehavior>
+      <MUILink href={resolvedHref} {...rest}>
         {children}
       </MUILink>
     </NextLink>
