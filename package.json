@@ -39,6 +39,7 @@
     "react-window": "^1.8.8"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^4.24.4",
     "@types/lodash": "^4.14.191",
     "@types/mdx": "^2.0.3",
     "@types/node": "18.11.18",

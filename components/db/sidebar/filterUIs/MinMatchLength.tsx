@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParallels } from "@components/db/sidebar/filters";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import MuiInput from "@mui/material/Input";
@@ -17,7 +18,11 @@ export default function MinMatchLengthFilter({
   sourceLang: string;
   currentView: string;
 }) {
-  const [value, setValue] = useState<(number | string)[] | number | string>(30);
+  const { queryParams } = useParallels();
+
+  const [value, setValue] = useState<(number | string)[] | number | string>(
+    Number(queryParams.par_length)
+  );
 
   const handleSliderChange = (event: Event, newValue: number[] | number) => {
     setValue(newValue);

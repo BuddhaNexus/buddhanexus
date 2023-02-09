@@ -1,4 +1,5 @@
 import type { FC, PropsWithChildren } from "react";
+import { FilterProvider } from "@components/db/sidebar/filters";
 import { OptionsSidebar } from "@components/db/sidebar/OptionsSidebar";
 import { AppTopBar } from "@components/layout/AppTopBar";
 import { Box, Container } from "@mui/material";
@@ -36,14 +37,14 @@ type BackgroundName = SourceLanguage | "welcome";
 interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;
   maxWidth?: Breakpoint;
-  state: [boolean, (value: boolean | ((prevVar: boolean) => boolean)) => void];
+  isOpen: [boolean, (value: boolean | ((prevVar: boolean) => boolean)) => void];
 }
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-const drawerWidth = 360;
+const drawerWidth = 320;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -95,39 +96,41 @@ export const PageContainerWithSidebar: FC<Props> = ({
   children,
   backgroundName,
   maxWidth = "md",
-  state,
+  isOpen,
 }) => {
-  const [open, setOpen] = state;
+  const [open] = isOpen;
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <AppTopBar />
-      </AppBar>
-      {backgroundName && (
-        <Container
-          maxWidth={false}
-          sx={{
-            background: `url(${BgImageSrcs[backgroundName]})`,
-            backgroundSize: BgImageBgSize[backgroundName],
-            opacity: 0.07,
-            height: "100%",
-            width: "100%",
-            position: "fixed",
-            zIndex: -1,
-          }}
-        />
-      )}
-      <Main open={open}>
-        <DrawerHeader />
-        <Container
-          maxWidth={maxWidth}
-          sx={{ pt: 8, flex: 1, display: "flex", flexDirection: "column" }}
-        >
-          {children}
-        </Container>
-      </Main>
-      <OptionsSidebar state={[open, setOpen]} drawerWidth={drawerWidth} />
-    </Box>
+    <FilterProvider>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <AppTopBar />
+        </AppBar>
+        {backgroundName && (
+          <Container
+            maxWidth={false}
+            sx={{
+              background: `url(${BgImageSrcs[backgroundName]})`,
+              backgroundSize: BgImageBgSize[backgroundName],
+              opacity: 0.07,
+              height: "100%",
+              width: "100%",
+              position: "fixed",
+              zIndex: -1,
+            }}
+          />
+        )}
+        <Main open={open}>
+          <DrawerHeader />
+          <Container
+            maxWidth={maxWidth}
+            sx={{ pt: 8, flex: 1, display: "flex", flexDirection: "column" }}
+          >
+            {children}
+          </Container>
+        </Main>
+        <OptionsSidebar isOpen={isOpen} drawerWidth={drawerWidth} />
+      </Box>
+    </FilterProvider>
   );
 };

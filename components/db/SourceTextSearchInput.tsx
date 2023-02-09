@@ -219,7 +219,7 @@ export const SourceTextSearchInput = () => {
       disableListWrap
       disablePortal
       onChange={(target, value) =>
-        router.push(`/db/${sourceLanguage}/${value?.fileName}/table`)
+        router.push(`/db/${sourceLanguage}/${value?.fileName}/proto-filters`)
       }
     />
   );

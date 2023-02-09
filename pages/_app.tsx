@@ -16,6 +16,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import createEmotionCache from "utils/createEmotionCache";
 import { MUIThemeProvider } from "utils/MUIThemeProvider";
 
@@ -62,6 +63,7 @@ function MyApp({
               </MUIThemeProvider>
             </ThemeProvider>
           </Hydrate>
+          <ReactQueryDevtools />
         </QueryClientProvider>
       </MDXProvider>
     </CacheProvider>

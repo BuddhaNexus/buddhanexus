@@ -68,10 +68,18 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   }));
 }
 
-async function getTableData(fileName: string): Promise<TablePageData> {
-  const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position`
-  );
+async function getTableData({
+  fileName,
+  queryParams,
+}: {
+  fileName: string;
+  queryParams: Record<string, string>;
+}): Promise<TablePageData> {
+  const params = new URLSearchParams(queryParams).toString();
+
+  const url = `${API_ROOT_URL}/files/${fileName}/table?${params}`;
+
+  const res = await fetch(url);
   const responseJSON = await res.json();
   return parseAPITableData(responseJSON);
 }

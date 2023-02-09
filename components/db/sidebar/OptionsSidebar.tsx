@@ -1,8 +1,5 @@
-import { VIEW_FILTERS } from "@components/db/sidebar/filterContexts";
-import {
-  MinMatchLengthFilter as MinMatchLength,
-  SectionSelectFilter as SectionSelect,
-} from "@components/db/sidebar/filters";
+import { VIEW_FILTERS } from "@components/db/sidebar/filters";
+import { MinMatchLengthFilter as MinMatchLength } from "@components/db/sidebar/filterUIs";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import InboxIcon from "@mui/icons-material/Inbox";
@@ -24,12 +21,21 @@ import { styled, useTheme } from "@mui/material/styles";
 
 interface Props {
   drawerWidth: number;
-  state: [boolean, (value: boolean | ((prevVar: boolean) => boolean)) => void];
+  isOpen: [boolean, (value: boolean | ((prevVar: boolean) => boolean)) => void];
 }
 
+const StandinFilter = () => (
+  <div>
+    <small>Filter coming to a sidebar near your soon!</small>
+  </div>
+);
+
 const FilterComponents: Record<string, React.ElementType> = {
-  MinMatchLength,
-  SectionSelect,
+  par_length: MinMatchLength,
+  limit_collection: StandinFilter,
+  active_segment: StandinFilter,
+  sort_method: StandinFilter,
+  target_collection: StandinFilter,
 };
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -41,9 +47,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
-export function OptionsSidebar({ state, drawerWidth }: Props) {
+export function OptionsSidebar({ isOpen, drawerWidth }: Props) {
   const theme = useTheme();
-  const [open, setOpen] = state;
+  const [open, setOpen] = isOpen;
 
   const handleDrawerClose = () => {
     setOpen(false);
@@ -84,8 +90,9 @@ export function OptionsSidebar({ state, drawerWidth }: Props) {
         <List>
           {VIEW_FILTERS["proto-filters"].pli.map((filterName) => {
             if (!FilterComponents[filterName]) {
-              throw new Error(`Can't find filter ${filterName}`);
+              return null;
             }
+
             const FilterComponent = FilterComponents[filterName];
             return (
               <ListItem key={filterName}>

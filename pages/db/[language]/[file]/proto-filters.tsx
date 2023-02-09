@@ -5,26 +5,17 @@ import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainerWithSidebar } from "@components/layout/PageContainerWithSidebar";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Badge, Box, CircularProgress, IconButton, Stack } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import TableView from "features/tableView/TableView";
-import type { TablePageData } from "types/api/table";
-import { DbApi, getLanguageMenuData } from "utils/api/db";
+import { getLanguageMenuData } from "utils/api/db";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 
 export { getI18NextStaticProps as getStaticProps } from "utils/nextJsHelpers";
 
 export default function PageWithFilters() {
-  const { sourceLanguage, fileName } = useDbQueryParams();
+  const { sourceLanguage } = useDbQueryParams();
   const { isFallback } = useSourceFile();
-
-  // TODO: add error handling
-  const { data, isLoading } = useQuery<TablePageData>({
-    queryKey: DbApi.TableView.makeQueryKey(fileName),
-    queryFn: () => DbApi.TableView.call(fileName),
-  });
 
   const [open, setOpen] = React.useState(true);
 
@@ -44,7 +35,7 @@ export default function PageWithFilters() {
     <PageContainerWithSidebar
       maxWidth="xl"
       backgroundName={sourceLanguage}
-      state={[open, setOpen]}
+      isOpen={[open, setOpen]}
     >
       <SourceTextSearchInput />
       <Stack
@@ -61,32 +52,17 @@ export default function PageWithFilters() {
             color="inherit"
             aria-label="open drawer"
             edge="end"
+            sx={{ mr: 1 }}
             onClick={handleFilterClick}
           >
             <Badge badgeContent={1} color="primary">
-              <FilterListIcon color="action" />
+              <SettingsIcon color="action" />
             </Badge>
-          </IconButton>
-
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            sx={{ ml: 2 }}
-            onClick={handleFilterClick}
-          >
-            <SettingsIcon color="action" />
           </IconButton>
         </Box>
       </Stack>
 
-      {isLoading || !data ? (
-        <CircularProgress color="inherit" />
-      ) : (
-        <div style={{ height: "70vh" }}>
-          <TableView data={data} />
-        </div>
-      )}
+      <TableView />
     </PageContainerWithSidebar>
   );
 }
