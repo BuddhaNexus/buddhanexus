@@ -1,16 +1,25 @@
 import {
   createContext,
-  // useCallback,
+  useCallback,
   useContext,
   useMemo,
-  // useReducer,
+  useReducer,
 } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useQuery } from "@tanstack/react-query";
 import type { TablePageData } from "types/api/table";
 import { DbApi } from "utils/api/db";
 
-export type FilterGroup = string[];
+export type Filter =
+  | "active_segment"
+  | "co_occ"
+  | "limit_collection"
+  | "par_length"
+  | "score"
+  | "sort_method"
+  | "target_collection";
+
+export type FilterGroup = Filter[];
 export type View = "graph" | "numbers" | "proto-filters" | "table" | "text";
 export type Lang = "chn" | "pli" | "skt" | "tib";
 
@@ -66,64 +75,68 @@ export const VIEW_FILTERS: Filters = {
   },
 };
 
-const initQueryParams = {
-  co_occ: "30",
-  score: "30",
-  par_length: "200",
+type QueryParams = Partial<Record<Filter, string>>;
+
+type ParallelsState = {
+  queryParams: QueryParams;
+  textSettings?: any;
 };
 
-function useParallelSource(): {
+type ParallelsAction =
+  | { type: "setQueryParams"; payload: QueryParams }
+  | { type: "setTextSettings"; payload: any };
+
+export const initQueryParams = {
+  co_occ: "30",
+  score: "30",
+  par_length: "500",
+};
+
+function useParallelsSource(): {
   isLoading: boolean;
+  isFetching: boolean;
   parallels: TablePageData;
   queryParams: Record<string, string>;
-  // search: string;
-  // setSearch: (search: string) => void;
+  setQueryParams: (params: QueryParams) => void;
 } {
   const { fileName } = useDbQueryParams();
 
-  const { data: parallels, isLoading } = useQuery<TablePageData>({
-    queryKey: DbApi.TableView.makeQueryKey(fileName),
+  const [{ queryParams }, dispatch] = useReducer(
+    (state: ParallelsState, action: ParallelsAction) => {
+      const actions = {
+        setQueryParams: { ...state, queryParams: action.payload },
+        setTextSettings: { ...state, textSettings: action.payload },
+      };
+
+      return actions[action.type];
+    },
+    {
+      queryParams: initQueryParams,
+      textSettings: {},
+    }
+  );
+
+  const {
+    data: parallels,
+    isLoading,
+    isFetching,
+  } = useQuery<TablePageData>({
+    queryKey: [DbApi.TableView.makeQueryKey(fileName), { queryParams }],
     queryFn: () =>
       DbApi.TableView.call({
         fileName,
-        queryParams: initQueryParams,
+        queryParams,
       }),
     initialData: [],
+    refetchOnWindowFocus: false,
   });
 
-  // type FilterState = {
-  //   search: string;
-  // };
-
-  // type FilterAction = { type: "setSearch"; payload: string };
-
-  // const [{ search }, dispatch] = useReducer(
-  //   (state: FilterState, action: FilterAction) => {
-  //     const actions = {
-  //       setSearch: { ...state, search: action.payload },
-  //     };
-
-  //     return actions[action.type];
-  //   },
-  //   {
-  //     search: "",
-  //   }
-  // );
-
-  // const setSearch = useCallback((search: string) => {
-  //   dispatch({
-  //     type: "setSearch",
-  //     payload: search,
-  //   });
-  // }, []);
-
-  // const filteredParallels = useMemo(
-  //   () =>
-  //     parallels
-  //       .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
-  //       .slice(0, 20),
-  //   [parallels, search]
-  // );
+  const setQueryParams = useCallback((params: QueryParams) => {
+    dispatch({
+      type: "setQueryParams",
+      payload: params,
+    });
+  }, []);
 
   const sortedParallels = useMemo(
     () => [...parallels].sort((a, b) => b.score - a.score),
@@ -132,23 +145,25 @@ function useParallelSource(): {
 
   return {
     isLoading,
+    isFetching,
     parallels: sortedParallels,
-    queryParams: initQueryParams,
+    queryParams,
+    setQueryParams,
   };
 }
 
-const FilterContext = createContext<ReturnType<typeof useParallelSource>>(
-  {} as unknown as ReturnType<typeof useParallelSource>
+const ParallelsContext = createContext<ReturnType<typeof useParallelsSource>>(
+  {} as unknown as ReturnType<typeof useParallelsSource>
 );
 
 export function useParallels() {
-  return useContext(FilterContext);
+  return useContext(ParallelsContext);
 }
 
-export function FilterProvider({ children }: { children: React.ReactNode }) {
+export function ParallelsProvider({ children }: { children: React.ReactNode }) {
   return (
-    <FilterContext.Provider value={useParallelSource()}>
+    <ParallelsContext.Provider value={useParallelsSource()}>
       {children}
-    </FilterContext.Provider>
+    </ParallelsContext.Provider>
   );
 }

@@ -1,4 +1,5 @@
 import { VIEW_FILTERS } from "@components/db/sidebar/filters";
+import { initQueryParams, useParallels } from "@components/db/sidebar/filters";
 import { MinMatchLengthFilter as MinMatchLength } from "@components/db/sidebar/filterUIs";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -15,6 +16,8 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
@@ -49,10 +52,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export function OptionsSidebar({ isOpen, drawerWidth }: Props) {
   const theme = useTheme();
+  const { setQueryParams } = useParallels();
   const [open, setOpen] = isOpen;
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleQueryReset = () => {
+    setQueryParams(initQueryParams);
   };
 
   return (
@@ -79,14 +87,26 @@ export function OptionsSidebar({ isOpen, drawerWidth }: Props) {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <Typography
-          sx={{ pt: 1, pl: 2 }}
-          color="#888"
-          variant="h6"
-          component="h2"
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+          sx={{ py: 1, px: 2 }}
         >
-          FILTERS
-        </Typography>
+          <Typography
+            // sx={{ pl: 2 }}
+            color="#888"
+            variant="h6"
+            component="h2"
+          >
+            FILTERS
+          </Typography>
+
+          <Button size="small" onClick={handleQueryReset}>
+            Reset
+          </Button>
+        </Stack>
         <List>
           {VIEW_FILTERS["proto-filters"].pli.map((filterName) => {
             if (!FilterComponents[filterName]) {

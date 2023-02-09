@@ -10,11 +10,11 @@ import { TableViewRow } from "./TableViewRow";
 // }
 
 export default function TableView() {
-  const { parallels, isLoading } = useParallels();
+  const { parallels, isLoading, isFetching } = useParallels();
 
   return (
     <>
-      {isLoading || !parallels ? (
+      {isLoading || isFetching || !parallels ? (
         <CircularProgress color="inherit" />
       ) : (
         <div style={{ height: "70vh" }}>

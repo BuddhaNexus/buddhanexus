@@ -1,12 +1,13 @@
 import React from "react";
 import type { GetStaticPaths } from "next";
 import { DbViewSelector } from "@components/db/DbViewSelector";
+import CurrentResultChips from "@components/db/sidebar/CurrentResultChips";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainerWithSidebar } from "@components/layout/PageContainerWithSidebar";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Badge, Box, CircularProgress, IconButton, Stack } from "@mui/material";
+import { Box, CircularProgress, IconButton, Stack } from "@mui/material";
 import TableView from "features/tableView/TableView";
 import { getLanguageMenuData } from "utils/api/db";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
@@ -45,19 +46,20 @@ export default function PageWithFilters() {
         spacing={2}
         sx={{ py: 1 }}
       >
-        <DbViewSelector currentView="numbers" />
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <DbViewSelector currentView="numbers" />
+        </Box>
 
         <Box sx={{ display: "flex", alignItems: "center" }}>
+          <CurrentResultChips />
+
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="end"
-            sx={{ mr: 1 }}
             onClick={handleFilterClick}
           >
-            <Badge badgeContent={1} color="primary">
-              <SettingsIcon color="action" />
-            </Badge>
+            <SettingsIcon color="action" />
           </IconButton>
         </Box>
       </Stack>

@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren } from "react";
-import { FilterProvider } from "@components/db/sidebar/filters";
+import { ParallelsProvider } from "@components/db/sidebar/filters";
 import { OptionsSidebar } from "@components/db/sidebar/OptionsSidebar";
 import { AppTopBar } from "@components/layout/AppTopBar";
 import { Box, Container } from "@mui/material";
@@ -100,7 +100,7 @@ export const PageContainerWithSidebar: FC<Props> = ({
 }) => {
   const [open] = isOpen;
   return (
-    <FilterProvider>
+    <ParallelsProvider>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
@@ -131,6 +131,6 @@ export const PageContainerWithSidebar: FC<Props> = ({
         </Main>
         <OptionsSidebar isOpen={isOpen} drawerWidth={drawerWidth} />
       </Box>
-    </FilterProvider>
+    </ParallelsProvider>
   );
 };
