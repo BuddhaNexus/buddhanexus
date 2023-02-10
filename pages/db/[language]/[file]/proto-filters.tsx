@@ -1,14 +1,14 @@
 import React from "react";
 import type { GetStaticPaths } from "next";
 import { DbViewSelector } from "@components/db/DbViewSelector";
-import CurrentResultChips from "@components/db/sidebar/CurrentResultChips";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainerWithSidebar } from "@components/layout/PageContainerWithSidebar";
+import CurrentResultChips from "@components/sidebar/CurrentResultChips";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Box, CircularProgress, IconButton, Stack } from "@mui/material";
-import TableView from "features/tableView/TableView";
+import ProtoFilteredTableView from "features/tableView/ProtoFilteredTableView";
 import { getLanguageMenuData } from "utils/api/db";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 
@@ -64,7 +64,7 @@ export default function PageWithFilters() {
         </Box>
       </Stack>
 
-      <TableView />
+      <ProtoFilteredTableView />
     </PageContainerWithSidebar>
   );
 }

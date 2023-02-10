@@ -68,7 +68,15 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   }));
 }
 
-async function getTableData({
+async function getTableData(fileName: string): Promise<TablePageData> {
+  const res = await fetch(
+    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position`
+  );
+  const responseJSON = await res.json();
+  return parseAPITableData(responseJSON);
+}
+
+async function getFilteredTableData({
   fileName,
   queryParams,
 }: {
@@ -126,6 +134,7 @@ export const DbApi = {
   TableView: {
     makeQueryKey: (fileName: string) => ["tableView", fileName],
     call: getTableData,
+    filter: getFilteredTableData,
   },
   SegmentsData: {
     makeQueryKey: (fileName: string) => ["segmentsData", fileName],

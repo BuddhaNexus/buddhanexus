@@ -16,10 +16,10 @@ export default function TablePage() {
   const { sourceLanguage, fileName } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
-  // TODO: add error handling TOUNDO: comment to enable prototyping commit
+  // TODO: add error handling
   const { data, isLoading } = useQuery<TablePageData>({
     queryKey: DbApi.TableView.makeQueryKey(fileName),
-    // queryFn: () => DbApi.TableView.call(fileName),
+    queryFn: () => DbApi.TableView.call(fileName),
   });
 
   if (isFallback) {
@@ -37,8 +37,7 @@ export default function TablePage() {
       {isLoading || !data ? (
         <CircularProgress color="inherit" />
       ) : (
-        // TOUNDO: <TableView data={data} />
-        <TableView />
+        <TableView data={data} />
       )}
     </PageContainer>
   );

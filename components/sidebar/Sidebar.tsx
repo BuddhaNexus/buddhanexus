@@ -1,6 +1,6 @@
-import { VIEW_FILTERS } from "@components/db/sidebar/filters";
-import { initQueryParams, useParallels } from "@components/db/sidebar/filters";
-import { MinMatchLengthFilter as MinMatchLength } from "@components/db/sidebar/filterUIs";
+import { VIEW_FILTERS } from "@components/sidebar/context";
+import { initQueryParams, useParallels } from "@components/sidebar/context";
+import { MinMatchLengthFilter as MinMatchLength } from "@components/sidebar/filters";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import InboxIcon from "@mui/icons-material/Inbox";
@@ -50,7 +50,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
-export function OptionsSidebar({ isOpen, drawerWidth }: Props) {
+export function Sidebar({ isOpen, drawerWidth }: Props) {
   const theme = useTheme();
   const { setQueryParams } = useParallels();
   const [open, setOpen] = isOpen;
@@ -94,12 +94,7 @@ export function OptionsSidebar({ isOpen, drawerWidth }: Props) {
           spacing={2}
           sx={{ py: 1, px: 2 }}
         >
-          <Typography
-            // sx={{ pl: 2 }}
-            color="#888"
-            variant="h6"
-            component="h2"
-          >
+          <Typography color="#888" variant="h6" component="h2">
             FILTERS
           </Typography>
 

@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
-import { ParallelsProvider } from "@components/db/sidebar/filters";
-import { OptionsSidebar } from "@components/db/sidebar/OptionsSidebar";
 import { AppTopBar } from "@components/layout/AppTopBar";
+import { ParallelsProvider } from "@components/sidebar/context";
+import { Sidebar } from "@components/sidebar/Sidebar";
 import { Box, Container } from "@mui/material";
 import type { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import MuiAppBar from "@mui/material/AppBar";
@@ -129,7 +129,7 @@ export const PageContainerWithSidebar: FC<Props> = ({
             {children}
           </Container>
         </Main>
-        <OptionsSidebar isOpen={isOpen} drawerWidth={drawerWidth} />
+        <Sidebar isOpen={isOpen} drawerWidth={drawerWidth} />
       </Box>
     </ParallelsProvider>
   );

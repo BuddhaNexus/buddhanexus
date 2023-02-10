@@ -1,4 +1,4 @@
-import { useParallels } from "@components/db/sidebar/filters";
+import { useParallels } from "@components/sidebar/context";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 

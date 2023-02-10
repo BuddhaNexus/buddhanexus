@@ -123,7 +123,7 @@ function useParallelsSource(): {
   } = useQuery<TablePageData>({
     queryKey: [DbApi.TableView.makeQueryKey(fileName), { queryParams }],
     queryFn: () =>
-      DbApi.TableView.call({
+      DbApi.TableView.filter({
         fileName,
         queryParams,
       }),
