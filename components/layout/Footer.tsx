@@ -14,7 +14,7 @@ type FooterSection = {
   title: string;
   links: {
     title: string;
-    route: string;
+    slug: string;
   }[];
 };
 
@@ -25,27 +25,27 @@ const getFooterData: (
   {
     title: t("footer.about"),
     links: [
-      { title: t("footer.introduction"), route: "/introduction" },
-      { title: t("footer.history"), route: "/history" },
-      { title: t("footer.guidelines"), route: "/guidelines" },
-      { title: t("footer.contact"), route: "/contact" },
+      { title: t("footer.introduction"), slug: "/introduction" },
+      { title: t("footer.history"), slug: "/history" },
+      { title: t("footer.guidelines"), slug: "/guidelines" },
+      { title: t("footer.contact"), slug: "/contact" },
     ],
   },
   {
     title: t("footer.community"),
     links: [
-      { title: t("footer.institutions"), route: "/institutions" },
-      { title: t("footer.people"), route: "/people" },
-      { title: t("footer.news"), route: "/news" },
+      { title: t("footer.institutions"), slug: "/institutions" },
+      { title: t("footer.people"), slug: "/people" },
+      { title: t("footer.news"), slug: "/news" },
     ],
   },
   {
     title: t("footer.activities"),
     links: [
-      { title: t("footer.publications"), route: "/publications" },
-      { title: t("footer.events"), route: "/events" },
-      { title: t("footer.projects"), route: "/projects" },
-      { title: t("footer.presentations"), route: "/presentations" },
+      { title: t("footer.publications"), slug: "/publications" },
+      { title: t("footer.events"), slug: "/events" },
+      { title: t("footer.projects"), slug: "/projects" },
+      { title: t("footer.presentations"), slug: "/presentations" },
     ],
   },
 ];
@@ -96,7 +96,7 @@ export const Footer = () => {
                   component="li"
                   sx={{ mt: { xs: 1 } }}
                 >
-                  <Link route={item.route}>{item.title}</Link>
+                  <Link href={item.slug}>{item.title}</Link>
                 </Container>
               ))}
             </Container>

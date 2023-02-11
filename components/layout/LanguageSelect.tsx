@@ -2,7 +2,6 @@ import React from "react";
 import { useRouter } from "next/router";
 import { Button, Menu } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
-import { routes } from "routes-i18n";
 import type { SupportedLocale } from "types/i18next";
 
 type LocaleLabels = {
@@ -30,16 +29,7 @@ export default function LanguageSelect() {
 
   const handleLanguageSwitched = async (locale: SupportedLocale) => {
     handleClose();
-    let path = routes[pathname]?.[locale];
-    const slug = query.slug as string;
-
-    if (slug) {
-      path = slug && `/${encodeURIComponent(routes[slug][locale])}`;
-    }
-
-    await (path
-      ? router.push({ pathname: path, query }, path, { locale })
-      : router.push({ pathname, query }, asPath, { locale }));
+    await router.push({ pathname, query }, asPath, { locale });
   };
 
   return (

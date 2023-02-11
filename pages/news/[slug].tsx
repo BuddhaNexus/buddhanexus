@@ -44,7 +44,7 @@ export default function PostPage({
   return (
     <PageContainer>
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
-        <Link route="/news">
+        <Link href="/news">
           <Typography variant="body1" display="flex" alignItems="center">
             <ArrowBackIosIcon fontSize="small" />
             {t("common:news.backToNews")}

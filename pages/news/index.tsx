@@ -25,25 +25,25 @@ const PostArchive = ({
     <Box width="100%">
       <List>
         {posts.map((post) => {
-          const { title, date: d, description } = post.meta;
+          const { title, date, description } = post.meta;
 
-          const dirSlug: string = post.slug;
+          const path = `/news/${post.slug}`;
 
-          const date = new Date(d);
-          const pubDate = date.toLocaleDateString(locale, POST_DATE_OPTS);
+          const jsData = new Date(date);
+          const pubDate = jsData.toLocaleDateString(locale, POST_DATE_OPTS);
 
           return (
-            <ListItem key={dirSlug} sx={{ mb: 5 }} disablePadding>
+            <ListItem key={post.slug} sx={{ mb: 5 }} disablePadding>
               <article style={{ width: "100%" }}>
                 <Typography variant="h4" component="h2">
-                  <Link route={`/${dirSlug}`}>{title}</Link>
+                  <Link href={path}>{title}</Link>
                 </Typography>
                 <Typography variant="subtitle1" component="p">
                   {pubDate}
                 </Typography>
                 <Typography variant="body1">{description}</Typography>
 
-                <Link route={`/${dirSlug}`}>
+                <Link href={path}>
                   <Typography
                     variant="body1"
                     display="flex"

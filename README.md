@@ -41,6 +41,13 @@ Content files must contain frontmatter following the schema defined in the `MDXF
 
 ### Localized URLs
 
+<details>
+<summary>
+It's possible, but… 
+</summary>
+
+…the initial implementation had more of a maintanence burden than ideal so was shelved at bbec5441a
+
 Static page routes are defined in `/routes-i18n.ts` which handles URL localization.
 
 When adding a new page / news post, entries for the page need to be added to both of the following objects:
@@ -66,28 +73,15 @@ For bonus points see:
 - [What is URL encoding or Percent Encoding?](https://www.urlencoder.io/)
 - [WHATWG URL spec](https://url.spec.whatwg.org/)
 
+</details>
+
+<br>
+
 ### JSX components & imports
 
-These can be used in mdx files, by declaring them through the optional `components`, `imports` & `props` frontmatter properties and importing them in `utils/mdxPageImports.ts`. These will then be passed to `MDXRemote` in the page template file, which renders compiled source from next-mdx-remote's serializer:
+These can be used in mdx files, by declaring them through the optional `components`, `imports` & `props` frontmatter properties and importing them in `utils/mdxPageImports.ts`. These will then be passed to `MDXRemote` in the page template file, which renders compiled source from next-mdx-remote's serializer (see [pages/[slug].tsx](pages/[slug].tsx)).
 
-```js
-const { components, props } = getMDXPageComponents(
-  meta.components ?? [],
-  meta.props ?? [],
-  meta.imports ?? []
-);
-
-return (
-  <PageContainer>
-    …
-    <MDXRemote
-      compiledSource={content.compiledSource}
-      components={components}
-      scope={props}
-    />…
-  </PageContainer>
-);
-```
+It might be worth sanity checking this implementation. Heed the wisdom of the [readme](https://github.com/hashicorp/next-mdx-remote)!
 
 ## Learn More Next.js
 
