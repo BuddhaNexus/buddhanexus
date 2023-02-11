@@ -1,3 +1,4 @@
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Divider, Stack } from "@mui/material";
 import type { TablePageParallel } from "types/api/table";
 
@@ -5,7 +6,6 @@ import { ParallelSegment } from "./ParallelSegment";
 
 export const TableViewRow = ({
   parallel: {
-    parallelColorMap,
     parallelLength,
     parallelFullNames,
     // fileName,
@@ -15,7 +15,6 @@ export const TableViewRow = ({
     rootSegmentNumbers,
     rootFullNames,
     rootFullText,
-    rootColorMap,
     rootLength,
     sourceLanguage,
     targetLanguage,
@@ -26,25 +25,29 @@ export const TableViewRow = ({
   parallel: TablePageParallel;
 }) => (
   <>
-    <Stack direction="row" spacing={2} sx={{ my: 2, py: 1 }}>
+    <Stack
+      direction={{ xs: "column", sm: "row" }}
+      spacing={2}
+      sx={{ my: 2, py: 1, justifyContent: "center", alignItems: "center" }}
+    >
       {/* ROOT SEGMENT */}
       <ParallelSegment
-        fileName={rootFullNames.textName}
+        displayName={rootFullNames.displayName}
         language={targetLanguage}
         length={rootLength}
         text={rootFullText}
-        textColorMap={rootColorMap}
         textSegmentNumbers={rootSegmentNumbers}
       />
 
+      <ArrowDownwardIcon sx={{ transform: { sm: "rotate(-90deg)" } }} />
+
       {/* PARALLEL SEGMENT*/}
       <ParallelSegment
-        fileName={parallelFullNames.textName}
+        displayName={parallelFullNames.displayName}
         language={sourceLanguage}
         length={parallelLength}
         text={parallelFullText}
         score={score}
-        textColorMap={parallelColorMap}
         textSegmentNumbers={parallelSegmentNumbers}
       />
     </Stack>

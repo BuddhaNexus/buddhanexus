@@ -4,8 +4,9 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import TableView from "features/tableView/TableView";
+import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
 import { DbApi, getLanguageMenuData } from "utils/api/db";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
@@ -17,15 +18,21 @@ export default function TablePage() {
   const { isFallback } = useSourceFile();
 
   // TODO: add error handling
-  const { data, isLoading } = useQuery<TablePageData>({
-    queryKey: DbApi.TableView.makeQueryKey(fileName),
-    queryFn: () => DbApi.TableView.call(fileName),
-  });
+  const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
+    useInfiniteQuery<PagedResponse<TablePageData>>({
+      queryKey: DbApi.TableView.makeQueryKey(fileName),
+      queryFn: ({ pageParam = 0 }) => DbApi.TableView.call(fileName, pageParam),
+      getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
+      getPreviousPageParam: (lastPage) =>
+        lastPage.pageNumber === 0
+          ? lastPage.pageNumber
+          : lastPage.pageNumber - 1,
+    });
 
   if (isFallback) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
-        <CircularProgress color="inherit" />
+        <CircularProgress color="inherit" sx={{ flex: 1 }} />
       </PageContainer>
     );
   }
@@ -34,10 +41,14 @@ export default function TablePage() {
     <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
       <DbViewSelector currentView="table" />
 
-      {isLoading || !data ? (
-        <CircularProgress color="inherit" />
+      {isInitialLoading || !data ? (
+        <CircularProgress color="inherit" sx={{ flex: 1 }} />
       ) : (
-        <TableView data={data} />
+        <TableView
+          data={data.pages.flatMap((page) => page.data)}
+          onEndReached={fetchNextPage}
+          onStartReached={fetchPreviousPage}
+        />
       )}
     </PageContainer>
   );

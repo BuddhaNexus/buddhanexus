@@ -3,6 +3,7 @@ import type {
   ApiGraphPageData,
   ApiLanguageMenuData,
   ApiSegmentsData,
+  PagedResponse,
 } from "types/api/common";
 import type { ApiTablePageData, TablePageData } from "types/api/table";
 import type { SourceLanguage } from "utils/constants";
@@ -43,7 +44,6 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
     fileName: p.file_name,
     score: p.score,
 
-    parallelColorMap: p.par_color_map,
     parallelFullNames: {
       displayName: p.par_full_names.display_name,
       textName: p.par_full_names.text_name,
@@ -55,7 +55,6 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
     parallelPositionFromStart: p.par_pos_beg,
     parallelSegmentNumbers: p.par_segnr,
 
-    rootColorMap: p.root_color_map,
     rootLength: p.root_length,
     rootSegmentNumbers: p.root_segnr,
     rootFullNames: {
@@ -68,12 +67,15 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   }));
 }
 
-async function getTableData(fileName: string): Promise<TablePageData> {
+async function getTableData(
+  fileName: string,
+  pageNumber: number
+): Promise<PagedResponse<TablePageData>> {
   const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position`
+    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position&page=${pageNumber}`
   );
   const responseJSON = await res.json();
-  return parseAPITableData(responseJSON);
+  return { data: parseAPITableData(responseJSON), pageNumber };
 }
 
 // used in numbers view.

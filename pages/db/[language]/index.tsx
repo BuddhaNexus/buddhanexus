@@ -43,7 +43,18 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     ["dbChn", "dbPli", "dbSkt", "dbTib"]
   );
 
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    // https://www.codemzy.com/blog/react-query-cachetime-staletime
+    defaultOptions: {
+      queries: {
+        // 1 hour
+        staleTime: 60 * 60 * 1000,
+
+        // 2 days
+        cacheTime: 2 * 24 * 60 * 60 * 1000,
+      },
+    },
+  });
 
   // TODO: use for SourceTextBrowserTree
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
