@@ -1,10 +1,12 @@
 import { VIEW_FILTERS } from "@components/sidebar/context";
 import { initQueryParams, useParallels } from "@components/sidebar/context";
-import { MinMatchLengthFilter as MinMatchLength } from "@components/sidebar/filters";
+import {
+  InclusionTextsFilters,
+  MinMatchLengthFilter,
+} from "@components/sidebar/filters";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import InboxIcon from "@mui/icons-material/Inbox";
-import MailIcon from "@mui/icons-material/Mail";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import {
   Divider,
   Drawer,
@@ -34,8 +36,8 @@ const StandinFilter = () => (
 );
 
 const FilterComponents: Record<string, React.ElementType> = {
-  par_length: MinMatchLength,
-  limit_collection: StandinFilter,
+  par_length: MinMatchLengthFilter,
+  limit_collection: InclusionTextsFilters,
   active_segment: StandinFilter,
   sort_method: StandinFilter,
   target_collection: StandinFilter,
@@ -126,11 +128,11 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
           SETTINGS
         </Typography>
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
+          {["Sīla", "Samādhi", "Paññā"].map((text) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  <ToggleOnIcon />
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>

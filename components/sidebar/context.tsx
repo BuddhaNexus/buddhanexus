@@ -75,7 +75,9 @@ export const VIEW_FILTERS: Filters = {
   },
 };
 
-type QueryParams = Partial<Record<Filter, string>>;
+// DatabaseText["fileName"]
+
+type QueryParams = Partial<Record<Filter, string[] | string>>;
 
 type ParallelsState = {
   queryParams: QueryParams;
@@ -96,7 +98,7 @@ function useParallelsSource(): {
   isLoading: boolean;
   isFetching: boolean;
   parallels: TablePageData;
-  queryParams: Record<string, string>;
+  queryParams: QueryParams;
   setQueryParams: (params: QueryParams) => void;
 } {
   const { fileName } = useDbQueryParams();

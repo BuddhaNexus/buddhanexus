@@ -81,9 +81,21 @@ async function getFilteredTableData({
   queryParams,
 }: {
   fileName: string;
-  queryParams: Record<string, string>;
+  queryParams: Record<string, string[] | string>;
 }): Promise<TablePageData> {
-  const params = new URLSearchParams(queryParams).toString();
+  const query = { ...queryParams };
+  const inclusions = query.limit_collection as string[];
+  delete query.limit_collection;
+
+  const paramasTuple = Object.entries(query as Record<string, string>);
+  const inclusionParams = inclusions
+    ? inclusions.map((value) => ["limit_collection", value])
+    : [];
+
+  const params = new URLSearchParams([
+    ...paramasTuple,
+    ...inclusionParams,
+  ]).toString();
 
   const url = `${API_ROOT_URL}/files/${fileName}/table?${params}`;
 

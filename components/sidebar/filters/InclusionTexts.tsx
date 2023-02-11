@@ -3,20 +3,21 @@
  * https://codesandbox.io/s/2326jk?file=/demo.tsx
  */
 
-import React from "react";
+import React, { useState } from "react";
 import type { ListChildComponentProps } from "react-window";
 import { VariableSizeList } from "react-window";
-import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
+// import { useTranslation } from "next-i18next";
 import type { DatabaseText } from "@components/db/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   Autocomplete,
   autocompleteClasses,
   Box,
+  // Chip,
   CircularProgress,
   ListSubheader,
   Popper,
+  // Stack,
   TextField,
   Typography,
   useMediaQuery,
@@ -24,6 +25,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
+import { useParallels } from "components/sidebar/context";
 import { DbApi } from "utils/api/db";
 
 const OuterElementContext = React.createContext({});
@@ -176,12 +178,31 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-const SectionSelect = () => {
+const InclusionTextsFilters = () => {
   const { sourceLanguage } = useDbQueryParams();
+  // const { t } = useTranslation();
+  const { queryParams, setQueryParams } = useParallels();
 
-  const router = useRouter();
+  const [inclusionValues, setInclusionValues] = useState<
+    DatabaseText["fileName"][]
+  >([]);
+  const [exclusionValues, setExclusionValues] = useState<
+    DatabaseText["fileName"][]
+  >([]);
 
-  const { t } = useTranslation();
+  const handleOnlyIncludeInputChange = (texts: DatabaseText[]) => {
+    setInclusionValues(texts.map((text) => text.fileName));
+  };
+  const handleExcludeInputChange = (texts: DatabaseText[]) => {
+    setExclusionValues(texts.map((text) => `!${text.fileName}`));
+  };
+
+  const handleBlur = () => {
+    setQueryParams({
+      ...queryParams,
+      limit_collection: [...inclusionValues, ...exclusionValues],
+    });
+  };
 
   const { data, isLoading } = useQuery<DatabaseText[]>({
     queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),
@@ -190,39 +211,80 @@ const SectionSelect = () => {
 
   // TODO: Add pagination and fuzzy search on BE
   return (
-    <Autocomplete<DatabaseText>
-      sx={{ my: 1, width: 272 }}
-      PopperComponent={StyledPopper}
-      ListboxComponent={ListboxComponent}
-      options={data ?? []}
-      groupBy={(option) => option.category.toUpperCase()}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label={t("db.searchInputPlaceholder")}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <React.Fragment>
-                {isLoading ? (
-                  <CircularProgress color="inherit" size={20} />
-                ) : null}
-                {params.InputProps.endAdornment}
-              </React.Fragment>
-            ),
-          }}
-        />
-      )}
-      renderOption={(props, option) => [props, option] as React.ReactNode}
-      renderGroup={(params) => params as unknown as React.ReactNode}
-      loading={isLoading}
-      disableListWrap
-      disablePortal
-      onChange={(target, value) =>
-        router.push(`/db/${sourceLanguage}/${value?.fileName}/table`)
-      }
-    />
+    <Box sx={{ my: 1, width: 272 }}>
+      <Typography sx={{ mb: 2 }}>Include and exclude texts</Typography>
+      <Autocomplete
+        id="exclude-collections"
+        sx={{ mb: 2 }}
+        multiple={true}
+        PopperComponent={StyledPopper}
+        ListboxComponent={ListboxComponent}
+        options={data ?? []}
+        getOptionLabel={(option) => option.fileName.toUpperCase()}
+        groupBy={(option) => option.category.toUpperCase()}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Exclude files or collections"
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <React.Fragment>
+                  {isLoading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+        renderOption={(props, option) => [props, option] as React.ReactNode}
+        renderGroup={(params) => params as unknown as React.ReactNode}
+        loading={isLoading}
+        filterSelectedOptions
+        disableListWrap
+        disablePortal
+        onChange={(event, value) => handleExcludeInputChange(value)}
+        onBlur={handleBlur}
+      />
+
+      <Autocomplete
+        id="exclude-collections"
+        multiple={true}
+        PopperComponent={StyledPopper}
+        ListboxComponent={ListboxComponent}
+        options={data ?? []}
+        getOptionLabel={(option) => option.fileName.toUpperCase()}
+        groupBy={(option) => option.category.toUpperCase()}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Only include files or collections"
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <React.Fragment>
+                  {isLoading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+        renderOption={(props, option) => [props, option] as React.ReactNode}
+        renderGroup={(params) => params as unknown as React.ReactNode}
+        loading={isLoading}
+        filterSelectedOptions
+        disableListWrap
+        disablePortal
+        onChange={(event, value) => handleOnlyIncludeInputChange(value)}
+        onBlur={handleBlur}
+      />
+    </Box>
   );
 };
 
-export default SectionSelect;
+export default InclusionTextsFilters;

@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParallels } from "@components/sidebar/context";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import MuiInput from "@mui/material/Input";
-// import Slider from "@mui/material/Slider";
-import { styled } from "@mui/material/styles";
+import Slider from "@mui/material/Slider";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
-const Input = styled(MuiInput)`
-  width: 60px;
-`;
+function valuetext(value: number) {
+  return `${value}`;
+}
 
 export default function MinMatchLengthFilter({
   sourceLang,
@@ -20,62 +18,85 @@ export default function MinMatchLengthFilter({
 }) {
   const { queryParams, setQueryParams } = useParallels();
 
-  const [value, setValue] = useState<(number | string)[] | number | string>(
-    Number(queryParams.par_length)
-  );
+  const [queryValue, setQueryValue] = useState<
+    (number | string)[] | number | string
+  >(Number(queryParams.par_length));
 
   useEffect(() => {
-    setValue(queryParams.par_length);
+    setQueryValue(queryParams.par_length!);
   }, [queryParams]);
 
-  // const handleSliderChange = (event: Event, newValue: number[] | number) => {
-  //   setValue(newValue);
-  //   setQueryParams({ ...queryParams, par_length: newValue.toString() });
-  // };
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value === "" ? "" : Number(event.target.value));
+    setQueryValue(event.target.value === "" ? "" : Number(event.target.value));
+  };
+
+  const handleSliderChange = (value: number[] | number) => {
+    setQueryValue(value);
+
+    setQueryParams({ ...queryParams, par_length: queryValue.toString() });
+  };
+
+  const handleInputEnter = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      setQueryParams({ ...queryParams, par_length: queryValue.toString() });
+    }
   };
 
   const handleBlur = () => {
-    if (value < 0) {
-      setValue(0);
-    } else if (value > 4000) {
-      setValue(4000);
+    if (queryValue < 0) {
+      setQueryValue(0);
+    } else if (queryValue > 4000) {
+      setQueryValue(4000);
     }
 
-    setQueryParams({ ...queryParams, par_length: value.toString() });
+    setQueryParams({ ...queryParams, par_length: queryValue.toString() });
   };
+
+  const marks = [
+    {
+      value: 30,
+      label: "30",
+    },
+    {
+      value: 4000,
+      label: "4000",
+    },
+  ];
 
   return (
     <Box sx={{ width: 272 }}>
       <Typography id="input-slider" gutterBottom>
         Min. Match Length for {sourceLang} in {currentView}:
       </Typography>
-      <Grid spacing={2} alignItems="center" container>
-        {/* <Grid item xs>
-          <Slider
-            value={typeof value === "number" ? value : 0}
-            aria-labelledby="input-slider"
-            onChange={handleSliderChange}
-          />
-        </Grid> */}
-        <Grid item>
-          <Input
-            value={value}
-            size="medium"
-            inputProps={{
-              step: 50,
-              min: 0,
-              max: 4000,
-              type: "number",
-              "aria-labelledby": "input-slider",
-            }}
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-          />
-        </Grid>
-      </Grid>
+      <TextField
+        sx={{ width: "100%", mb: 1 }}
+        value={queryValue}
+        type="number"
+        inputProps={{
+          step: 50,
+          min: 0,
+          max: 4000,
+          type: "number",
+          "aria-labelledby": "input-slider",
+        }}
+        onKeyUp={handleInputEnter}
+        onChange={handleInputChange}
+        onBlur={handleBlur}
+      />
+      <Box sx={{ ml: 1 }}>
+        <Slider
+          value={
+            typeof Number(queryValue) === "number" ? Number(queryValue) : 30
+          }
+          aria-labelledby="input-slider"
+          getAriaValueText={valuetext}
+          min={30}
+          max={4000}
+          marks={marks}
+          onChange={(event, value) => setQueryValue(value)}
+          onChangeCommitted={(event, value) => handleSliderChange(value)}
+        />
+      </Box>
     </Box>
   );
 }
