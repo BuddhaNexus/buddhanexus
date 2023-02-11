@@ -1,4 +1,5 @@
 import { Virtuoso } from "react-virtuoso";
+import { Typography } from "@mui/material";
 import type { TablePageData } from "types/api/table";
 
 import { TableViewRow } from "./TableViewRow";
@@ -18,7 +19,7 @@ const Footer = () => {
         justifyContent: "center",
       }}
     >
-      Loading...
+      <Typography>Loading...</Typography>
     </div>
   );
 };

@@ -32,7 +32,7 @@ export const TableViewRow = ({
     >
       {/* ROOT SEGMENT */}
       <ParallelSegment
-        fileName={rootFullNames.textName}
+        displayName={rootFullNames.displayName}
         language={targetLanguage}
         length={rootLength}
         text={rootFullText}
@@ -43,7 +43,7 @@ export const TableViewRow = ({
 
       {/* PARALLEL SEGMENT*/}
       <ParallelSegment
-        fileName={parallelFullNames.textName}
+        displayName={parallelFullNames.displayName}
         language={sourceLanguage}
         length={parallelLength}
         text={parallelFullText}

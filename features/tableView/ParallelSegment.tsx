@@ -1,3 +1,4 @@
+import React from "react";
 import { useTranslation } from "next-i18next";
 import PercentIcon from "@mui/icons-material/Percent";
 import {
@@ -16,7 +17,7 @@ import { ParallelSegmentText } from "./ParallelSegmentText";
 
 interface ParallelSegmentProps {
   language: SourceLanguage;
-  fileName: string;
+  displayName: string;
   length: number;
 
   text: ApiTextSegment[];
@@ -30,7 +31,7 @@ export const ParallelSegment = ({
   text,
   score,
   length,
-  fileName,
+  displayName,
   language,
 }: ParallelSegmentProps) => {
   const { t } = useTranslation();
@@ -56,7 +57,7 @@ export const ParallelSegment = ({
           />
 
           {/* File Name */}
-          <Tooltip title={fileName}>
+          <Tooltip title={displayName}>
             <Typography
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
             >
