@@ -14,7 +14,7 @@ import Toolbar from "@mui/material/Toolbar";
 
 interface AppBarLinkProps {
   title: string;
-  href?: string;
+  href: string;
 }
 
 const AppBarLink = ({ title, href }: AppBarLinkProps) => (

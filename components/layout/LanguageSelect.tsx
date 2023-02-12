@@ -2,15 +2,21 @@ import React from "react";
 import { useRouter } from "next/router";
 import { Button, Menu } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
+import type { SupportedLocale } from "types/i18next";
 
-const languageLabels = {
-  EN: "🇬🇧  English",
-  DE: "🇩🇪  Deutsch",
+type LocaleLabels = {
+  [key in SupportedLocale]: { flag: string; full: string };
+};
+
+const localeLabels: LocaleLabels = {
+  en: { flag: "🇬🇧", full: "🇬🇧  English" },
+  de: { flag: "🇩🇪", full: "🇩🇪  Deutsch" },
 };
 
 export default function LanguageSelect() {
   const router = useRouter();
-  const { pathname, asPath, query, locale } = router;
+  const { pathname, query, asPath } = router;
+  const locale = router.locale as SupportedLocale;
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const isOpen = Boolean(anchorEl);
@@ -21,9 +27,9 @@ export default function LanguageSelect() {
     setAnchorEl(null);
   };
 
-  const handleLanguageSwitched = async (language: "de" | "en") => {
+  const handleLanguageSwitched = async (locale: SupportedLocale) => {
     handleClose();
-    await router.push({ pathname, query }, asPath, { locale: language });
+    await router.push({ pathname, query }, asPath, { locale });
   };
 
   return (
@@ -36,7 +42,7 @@ export default function LanguageSelect() {
         sx={{ fontSize: "1.5rem" }}
         onClick={handleClick}
       >
-        {locale === "en" ? "🇬🇧" : "🇩🇪"}
+        {localeLabels[locale].flag}
       </Button>
       <Menu
         id="language-menu"
@@ -48,12 +54,18 @@ export default function LanguageSelect() {
         }}
         onClose={handleClose}
       >
-        <MenuItem value="en" onClick={() => handleLanguageSwitched("en")}>
-          {languageLabels.EN}
-        </MenuItem>
-        <MenuItem value="de" onClick={() => handleLanguageSwitched("de")}>
-          {languageLabels.DE}
-        </MenuItem>
+        {Object.keys(localeLabels).map((key) => {
+          const locale = key as SupportedLocale;
+          return (
+            <MenuItem
+              key={locale}
+              value={locale}
+              onClick={() => handleLanguageSwitched(locale)}
+            >
+              {localeLabels[locale].full}
+            </MenuItem>
+          );
+        })}
       </Menu>
     </div>
   );

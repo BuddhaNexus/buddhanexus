@@ -31,5 +31,10 @@
   },
   "db": {
     "searchInputPlaceholder": "Quelltext auswählen"
+  },
+  "news": {
+    "title": "Nachrichten",
+    "readMore": "Weiterlesen",
+    "backToNews": "Zurück zu Neuigkeiten"
   }
 }
