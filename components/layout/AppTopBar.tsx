@@ -52,7 +52,7 @@ export const AppTopBar = () => {
         borderBottom: `1px solid ${theme.palette.common.pali}`,
       })}
     >
-      <Toolbar sx={{ flexWrap: "wrap" }}>
+      <Toolbar>
         <Link
           color="inherit"
           sx={{
@@ -75,6 +75,7 @@ export const AppTopBar = () => {
               width={isATIIRoute ? undefined : 64}
               sx={{
                 maxHeight: 48,
+                minWidth: 48,
                 pr: 2,
                 [materialTheme.breakpoints.down("sm")]: {
                   maxHeight: 36,
@@ -99,7 +100,7 @@ export const AppTopBar = () => {
           </>
         </Link>
 
-        <Box component="nav" sx={{ display: "flex" }}>
+        <Box component="nav" sx={{ display: "flex", overflow: "auto" }}>
           {isATIIRoute ? (
             <AppBarLink title="BuddhaNexus" href="/" />
           ) : (
@@ -117,7 +118,11 @@ export const AppTopBar = () => {
             color="inherit"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >
-            {theme === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+            {theme === "dark" ? (
+              <Brightness7Icon fontSize="inherit" />
+            ) : (
+              <Brightness4Icon fontSize="inherit" />
+            )}
           </IconButton>
         ) : (
           // prevent layout jump
