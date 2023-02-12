@@ -48,10 +48,12 @@ export const PageContainer: FC<Props> = ({
           maxWidth={false}
           sx={{
             background: `url(${BgImageSrcs[backgroundName]})`,
+            backgroundPosition: "center",
+
             backgroundSize: BgImageBgSize[backgroundName],
             opacity: 0.07,
             height: "100%",
-            width: "100%",
+            minWidth: "100vw",
             position: "fixed",
             zIndex: -1,
           }}
