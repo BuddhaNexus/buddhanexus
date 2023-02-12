@@ -5,35 +5,35 @@ import { Typography } from "@mui/material";
 import type { SourceLanguage } from "utils/constants";
 
 const ChineseDescription = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("db");
 
   return (
     <>
       <Typography variant="body1" sx={{ my: 2 }}>
         <Trans
-          i18nKey="dbChn:p01"
+          i18nKey="chn.p01"
           t={t}
           components={[<Link key="0" href="https://www.cbeta.org/" />]}
         />
       </Typography>
 
-      <Typography>{t("dbChn:p02")}</Typography>
+      <Typography>{t("chn.p02")}</Typography>
 
       <Typography variant="body2" sx={{ my: 2 }}>
-        {t("dbChn:p03")}
+        {t("chn.p03")}
       </Typography>
     </>
   );
 };
 
 const PaliDescription = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("db");
 
   return (
     <>
       <Typography variant="body1" sx={{ my: 2 }}>
         <Trans
-          i18nKey="dbPli:p01"
+          i18nKey="pli.p01"
           t={t}
           components={[<Link key="0" href="https://tipitaka.org/" />]}
         />
@@ -41,7 +41,7 @@ const PaliDescription = () => {
 
       <Typography>
         <Trans
-          i18nKey="dbPli:p02"
+          i18nKey="pli.p02"
           t={t}
           components={[
             <Link key="0" href="https://github.com/suttacentral/bilara-data" />,
@@ -51,26 +51,26 @@ const PaliDescription = () => {
       </Typography>
 
       <Typography variant="body1" sx={{ my: 2 }}>
-        {t("dbPli:p03")}
+        {t("pli.p03")}
       </Typography>
 
-      <Typography>{t("dbPli:p04")}</Typography>
+      <Typography>{t("pli.p04")}</Typography>
 
       <Typography variant="body2" sx={{ my: 2 }}>
-        {t("dbPli:p05")}
+        {t("pli.p05")}
       </Typography>
     </>
   );
 };
 
 const SanskritDescription = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("db");
 
   return (
     <>
       <Typography variant="body1" sx={{ my: 2 }}>
         <Trans
-          i18nKey="dbSkt:p01"
+          i18nKey="skt.p01"
           t={t}
           components={[
             <Link
@@ -83,15 +83,15 @@ const SanskritDescription = () => {
         />
       </Typography>
 
-      <Typography>{t("dbSkt:p02")}</Typography>
+      <Typography>{t("skt.p02")}</Typography>
 
       <Typography variant="body1" sx={{ my: 2 }}>
-        {t("dbSkt:p03")}
+        {t("skt.p03")}
       </Typography>
 
       <Typography>
         <Trans
-          i18nKey="dbSkt:p04"
+          i18nKey="skt.p04"
           t={t}
           components={[
             <Link key="0" href="https://buddhanexus.net/sanskrit-tools" />,
@@ -100,24 +100,24 @@ const SanskritDescription = () => {
       </Typography>
 
       <Typography variant="body1" sx={{ my: 2 }}>
-        {t("dbSkt:p05")}
+        {t("skt.p05")}
       </Typography>
 
       <Typography variant="body2" sx={{ my: 2 }}>
-        {t("dbSkt:p06")}
+        {t("skt.p06")}
       </Typography>
     </>
   );
 };
 
 const TibetanDescription = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("db");
 
   return (
     <>
       <Typography variant="body1" sx={{ my: 2 }}>
         <Trans
-          i18nKey="dbTib:p01"
+          i18nKey="tib.p01"
           t={t}
           components={[
             <Link key="0" href="https://asianclassics.org/" />,
@@ -126,14 +126,14 @@ const TibetanDescription = () => {
         />
       </Typography>
 
-      <Typography>{t("dbTib:p02")}</Typography>
+      <Typography>{t("tib.p02")}</Typography>
 
       <Typography variant="body1" sx={{ my: 2 }}>
-        {t("dbTib:p03")}
+        {t("tib.p03")}
       </Typography>
 
       <Typography variant="body2" sx={{ my: 2 }}>
-        {t("dbTib:p04")}
+        {t("tib.p04")}
       </Typography>
     </>
   );

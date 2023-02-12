@@ -50,12 +50,9 @@ export default function GraphPage() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const i18nProps = await getI18NextStaticProps(
-    {
-      locale,
-    },
-    ["dbChn", "dbPli", "dbSkt", "dbTib"]
-  );
+  const i18nProps = await getI18NextStaticProps({
+    locale,
+  });
 
   const queryClient = new QueryClient();
 

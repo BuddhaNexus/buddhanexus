@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     {
       locale,
     },
-    ["dbChn", "dbPli", "dbSkt", "dbTib"]
+    ["db"]
   );
 
   const queryClient = new QueryClient({
