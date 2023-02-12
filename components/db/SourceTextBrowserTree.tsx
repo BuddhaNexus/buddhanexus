@@ -1,3 +1,4 @@
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -12,33 +13,48 @@ import { DbApi } from "utils/api/dbApi";
 
 export function SourceTextBrowserTree() {
   const { sourceLanguage } = useDbQueryParams();
+  const { t } = useTranslation();
 
   // TODO: add error handling
-  const { isLoading } = useQuery<SourceTextBrowserData>({
+  const { data, isLoading } = useQuery<SourceTextBrowserData>({
     queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
     queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
   });
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <CircularProgress />;
   }
 
   return (
     <TreeView
-      aria-label="file system navigator"
+      aria-label={t("textBrowser.label")}
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
       sx={{ height: 240, flexGrow: 1, overflowY: "auto" }}
     >
-      <TreeItem nodeId="1" label="Applications">
-        <TreeItem nodeId="2" label="Calendar" />
-      </TreeItem>
-      <TreeItem nodeId="5" label="Documents">
-        <TreeItem nodeId="10" label="OSS" />
-        <TreeItem nodeId="6" label="MUI">
-          <TreeItem nodeId="8" label="index.js" />
+      {data.map((collection) => (
+        <TreeItem
+          key={collection.collection}
+          nodeId={collection.collection}
+          label={collection.collection}
+        >
+          {collection.categories.map((category) => (
+            <TreeItem
+              key={category.name}
+              nodeId={category.name}
+              label={category.displayName}
+            >
+              {category.files.map((file) => (
+                <TreeItem
+                  key={file.fileName}
+                  nodeId={file.fileName}
+                  label={file.displayName}
+                />
+              ))}
+            </TreeItem>
+          ))}
         </TreeItem>
-      </TreeItem>
+      ))}
     </TreeView>
   );
 }

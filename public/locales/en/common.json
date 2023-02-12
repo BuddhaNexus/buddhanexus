@@ -36,5 +36,8 @@
     "title": "News",
     "readMore": "Read more",
     "backToNews": "Back to News"
+  },
+  "textBrowser": {
+    "label": "Source text browser"
   }
 }
