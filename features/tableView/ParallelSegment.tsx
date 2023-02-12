@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import PercentIcon from "@mui/icons-material/Percent";
+import type { Theme } from "@mui/material";
 import {
   Box,
   Card,
@@ -11,9 +12,10 @@ import {
   IconButton,
   Link,
   Tooltip,
+  useTheme,
 } from "@mui/material";
 import type { ApiTextSegment } from "types/api/table";
-import type { SourceLanguage } from "utils/constants";
+import { SourceLanguage } from "utils/constants";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
 
@@ -28,6 +30,26 @@ interface ParallelSegmentProps {
   score?: number;
 }
 
+const getLanguageColor = (language: SourceLanguage, theme: Theme): string => {
+  switch (language) {
+    case SourceLanguage.PALI: {
+      return theme.palette.common.pali;
+    }
+    case SourceLanguage.TIBETAN: {
+      return theme.palette.common.tibetan;
+    }
+    case SourceLanguage.CHINESE: {
+      return theme.palette.common.chinese;
+    }
+    case SourceLanguage.SANSKRIT: {
+      return theme.palette.common.sanskrit;
+    }
+    default: {
+      return theme.palette.common.black;
+    }
+  }
+};
+
 export const ParallelSegment = ({
   textSegmentNumbers,
   text,
@@ -37,6 +59,7 @@ export const ParallelSegment = ({
   language,
 }: ParallelSegmentProps) => {
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const sourceLanguageName = t(`language.${language}`);
 
@@ -49,12 +72,18 @@ export const ParallelSegment = ({
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
 
+  const languageBadgeColor = useCallback(
+    () => getLanguageColor(language, theme),
+    [language, theme]
+  );
+
   return (
     <Card sx={{ flex: 1, wordBreak: "break-all" }}>
       <CardContent
         sx={{
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "flex-start",
           bgcolor: "background.header",
           flexDirection: { xs: "column", sm: "row" },
         }}
@@ -64,7 +93,13 @@ export const ParallelSegment = ({
           <Chip
             size="small"
             label={sourceLanguageName}
-            sx={{ m: 0.5, p: 0.5 }}
+            sx={{
+              m: 0.5,
+              p: 0.5,
+              color: "white",
+              fontWeight: 700,
+              backgroundColor: languageBadgeColor,
+            }}
           />
 
           {/* File Name */}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { Button, Menu } from "@mui/material";
+import { IconButton, Menu } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 
 const languageLabels = {
@@ -28,7 +28,7 @@ export default function LanguageSelect() {
 
   return (
     <div>
-      <Button
+      <IconButton
         id="basic-button"
         aria-controls={isOpen ? "language-menu" : undefined}
         aria-haspopup="true"
@@ -37,7 +37,7 @@ export default function LanguageSelect() {
         onClick={handleClick}
       >
         {locale === "en" ? "🇬🇧" : "🇩🇪"}
-      </Button>
+      </IconButton>
       <Menu
         id="language-menu"
         anchorEl={anchorEl}
