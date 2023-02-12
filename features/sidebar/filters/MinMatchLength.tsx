@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParallels } from "@components/sidebar/context";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { useParallels } from "features/sidebar/context";
 
 function valuetext(value: number) {
   return `${value}`;
@@ -66,7 +66,7 @@ export default function MinMatchLengthFilter({
   return (
     <Box sx={{ width: 272 }}>
       <Typography id="input-slider" gutterBottom>
-        Min. Match Length for {sourceLang} in {currentView}:
+        Min. character match length for {sourceLang} in {currentView}:
       </Typography>
       <TextField
         sx={{ width: "100%", mb: 1 }}

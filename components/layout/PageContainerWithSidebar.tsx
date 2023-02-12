@@ -1,7 +1,5 @@
 import type { FC, PropsWithChildren } from "react";
 import { AppTopBar } from "@components/layout/AppTopBar";
-import { ParallelsProvider } from "@components/sidebar/context";
-import { Sidebar } from "@components/sidebar/Sidebar";
 import { Box, Container } from "@mui/material";
 import type { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import MuiAppBar from "@mui/material/AppBar";
@@ -14,6 +12,8 @@ import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
 import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
 import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
+import { ParallelsProvider } from "features/sidebar/context";
+import { Sidebar } from "features/sidebar/Sidebar";
 import { SourceLanguage } from "utils/constants";
 
 const BgImageSrcs: Record<BackgroundName, string> = {

@@ -5,9 +5,9 @@ import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainerWithSidebar } from "@components/layout/PageContainerWithSidebar";
-import CurrentResultChips from "@components/sidebar/CurrentResultChips";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Box, CircularProgress, IconButton, Stack } from "@mui/material";
+import CurrentResultChips from "features/sidebar/CurrentResultChips";
 import ProtoFilteredTableView from "features/tableView/ProtoFilteredTableView";
 import { getLanguageMenuData } from "utils/api/db";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
@@ -64,7 +64,14 @@ export default function PageWithFilters() {
         </Box>
       </Stack>
 
-      <ProtoFilteredTableView />
+      <ProtoFilteredTableView
+        onEndReached={(): void => {
+          throw new Error("Function not implemented.");
+        }}
+        onStartReached={(): void => {
+          throw new Error("Function not implemented.");
+        }}
+      />
     </PageContainerWithSidebar>
   );
 }

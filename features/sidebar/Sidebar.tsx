@@ -1,9 +1,3 @@
-import { VIEW_FILTERS } from "@components/sidebar/context";
-import { initQueryParams, useParallels } from "@components/sidebar/context";
-import {
-  InclusionTextsFilters,
-  MinMatchLengthFilter,
-} from "@components/sidebar/filters";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
@@ -21,6 +15,12 @@ import {
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
+import { VIEW_FILTERS } from "features/sidebar/context";
+import { initQueryParams, useParallels } from "features/sidebar/context";
+import {
+  InclusionTextsFilters,
+  MinMatchLengthFilter,
+} from "features/sidebar/filters";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 

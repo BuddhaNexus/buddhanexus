@@ -1,6 +1,6 @@
-import { useParallels } from "@components/sidebar/context";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
+import { useParallels } from "features/sidebar/context";
 
 export default function CurrentResultChips() {
   const { parallels } = useParallels();
