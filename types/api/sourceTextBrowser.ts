@@ -14,18 +14,22 @@ export interface ApiSourceTextBrowserData {
   }[];
 }
 
-type NavigationMenuData = {
+export type NavigationMenuFileData = {
+  availableLanguages: string | null;
+  displayName: string;
+  fileName: string;
+  textName: string;
+};
+
+export type NavigationMenuCategoryData = {
+  name: string;
+  displayName: string;
+  files: NavigationMenuFileData[];
+};
+
+export type NavigationMenuData = {
   collection: string;
-  categories: {
-    name: string;
-    displayName: string;
-    files: {
-      availableLanguages: string | null;
-      displayName: string;
-      fileName: string;
-      textName: string;
-    }[];
-  }[];
+  categories: NavigationMenuCategoryData[];
 };
 
 export type SourceTextBrowserData = NavigationMenuData[];

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -11,27 +12,13 @@ import { DbApi } from "utils/api/dbApi";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
-export function SourceTextBrowserTree() {
-  const { sourceLanguage } = useDbQueryParams();
-  const { t } = useTranslation();
-
-  // TODO: add error handling
-  const { data, isLoading } = useQuery<SourceTextBrowserData>({
-    queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
-  });
-
-  if (isLoading || !data) {
-    return <CircularProgress />;
-  }
-
+const TreeViewContent = memo(function TreeViewContent({
+  data,
+}: {
+  data: SourceTextBrowserData;
+}) {
   return (
-    <TreeView
-      aria-label={t("textBrowser.label")}
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpandIcon={<ChevronRightIcon />}
-      sx={{ height: 240, flexGrow: 1, overflowY: "auto" }}
-    >
+    <>
       {data.map((collection) => (
         <TreeItem
           key={collection.collection}
@@ -55,6 +42,32 @@ export function SourceTextBrowserTree() {
           ))}
         </TreeItem>
       ))}
+    </>
+  );
+});
+
+export const SourceTextBrowserTree = memo(function SourceTextBrowserTree() {
+  const { sourceLanguage } = useDbQueryParams();
+  const { t } = useTranslation();
+
+  // TODO: add error handling
+  const { data, isLoading } = useQuery<SourceTextBrowserData>({
+    queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
+    queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+  });
+
+  return (
+    <TreeView
+      aria-label={t("textBrowser.label")}
+      defaultCollapseIcon={<ExpandMoreIcon />}
+      defaultExpandIcon={<ChevronRightIcon />}
+      sx={{ minWidth: 350, flexGrow: 1, overflowY: "auto" }}
+    >
+      {isLoading || !data ? (
+        <CircularProgress />
+      ) : (
+        <TreeViewContent data={data} />
+      )}
     </TreeView>
   );
-}
+});

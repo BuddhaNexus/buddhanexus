@@ -1,13 +1,13 @@
 import React from "react";
 import type { GetStaticProps } from "next";
 import { LanguageDescription } from "@components/db/LanguageDescription";
-import { SourceTextBrowserTree } from "@components/db/SourceTextBrowserTree";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
+import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
@@ -20,12 +20,12 @@ export default function DbIndexPage() {
 
   return (
     <PageContainer backgroundName={sourceLanguage}>
+      <SourceTextBrowserDrawer />
+
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
         <Typography variant="h1">{sourceLanguageName}</Typography>
 
         <SourceTextSearchInput />
-
-        <SourceTextBrowserTree />
 
         <LanguageDescription lang={sourceLanguage} />
       </Paper>
