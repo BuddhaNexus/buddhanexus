@@ -57,7 +57,7 @@ export const ParallelSegment = ({
           />
 
           {/* File Name */}
-          <Tooltip title={displayName}>
+          <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
             <Typography
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
             >
@@ -75,7 +75,7 @@ export const ParallelSegment = ({
           }}
         >
           {score && (
-            <Tooltip title="Score">
+            <Tooltip title="Score" PopperProps={{ disablePortal: true }}>
               <Chip
                 size="small"
                 color="primary"
