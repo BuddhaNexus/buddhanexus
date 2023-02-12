@@ -31,5 +31,10 @@
   },
   "db": {
     "searchInputPlaceholder": "Choose source text"
+  },
+  "news": {
+    "title": "News",
+    "readMore": "Read more",
+    "backToNews": "Back to News"
   }
 }

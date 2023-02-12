@@ -1,25 +1,30 @@
-export { getI18NextStaticProps as getStaticProps } from "utils/nextJsHelpers";
-import { StaticPageWrapper } from "components/layout/StaticPageWrapper";
-import PartnerInstitution from "components/static/PartnerInstitution";
+---
+title: "Institutions"
+date: ""
+keywords: []
+description: ""
+componentList: [PartnerInstitution]
+importsList:
+  [
+    ACIPImage,
+    CbetaImage,
+    BDRCImage,
+    CbcImage,
+    DHIIImage,
+    DSBCImage,
+    KhyentseCenterImage,
+    KanjurImage,
+    SubImage,
+    SuttaCentralImage,
+    GoettingenImage,
+    UHHImage,
+    UwestImage,
+    ViennaImage,
+    VRIImage,
+  ]
+---
 
-import KhyentseCenterImage from "public/assets/images/partner_khyentse_center.jpg";
-import UHHImage from "public/assets/images/partner_uni_hamburg.jpg";
-import SuttaCentralImage from "public/assets/images/partner_sutta_central.jpg";
-import DHIIImage from "public/assets/images/partner_digital_humanities.jpg";
-import BDRCImage from "public/assets/images/partner_buddhist_digital_resource_center.jpg";
-import KanjurImage from "public/assets/images/partner_rkts.jpg";
-import ViennaImage from "public/assets/images/partner_vienna.jpg";
-
-import VRIImage from "public/assets/images/partner_vipassana_research_institute.jpg";
-import ACIPImage from "public/assets/images/partner_acip.jpg";
-import GoettingenImage from "public/assets/images/partner_uni_goettingen.jpg";
-import SubImage from "public/assets/images/partner_sub.jpg";
-import DSBCImage from "public/assets/images/partner_dsbc.jpg";
-import UwestImage from "public/assets/images/partner_uwest.jpg";
-import CbetaImage from "public/assets/images/partner_beta.jpg";
-import CbcImage from "public/assets/images/partner_cbc.png";
-
-## Collaborating institutions
+## Kooperierende Institutionen
 
 ---
 
@@ -72,7 +77,7 @@ import CbcImage from "public/assets/images/partner_cbc.png";
   alt="UNI Vienna"
 />
 
-## Resources partners
+## Ressourcenpartner
 
 ---
 
@@ -137,7 +142,7 @@ import CbcImage from "public/assets/images/partner_cbc.png";
   alt="CBC@"
 />
 
-## Funding institutions
+## Förderinstitutionen
 
 ---
 
@@ -156,5 +161,3 @@ import CbcImage from "public/assets/images/partner_cbc.png";
   src={UHHImage}
   alt="Universität Hamburg"
 />
-
-export default StaticPageWrapper;

@@ -1,10 +1,12 @@
 import { useMemo } from "react";
+import { useRouter } from "next/router";
 import type { TFunction } from "next-i18next";
 import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import type { SupportedLocale } from "types/i18next";
 
 import { Copyright } from "./Copyright";
 
@@ -12,43 +14,48 @@ type FooterSection = {
   title: string;
   links: {
     title: string;
-    url: string;
+    slug: string;
   }[];
 };
 
-const getFooterData: (t: TFunction) => FooterSection[] = (t) => [
+const getFooterData: (
+  t: TFunction,
+  locale: SupportedLocale
+) => FooterSection[] = (t) => [
   {
     title: t("footer.about"),
     links: [
-      { title: t("footer.introduction"), url: "/introduction" },
-      { title: t("footer.history"), url: "/history" },
-      { title: t("footer.guidelines"), url: "/guidelines" },
-      { title: t("footer.contact"), url: "/contact" },
+      { title: t("footer.introduction"), slug: "/introduction" },
+      { title: t("footer.history"), slug: "/history" },
+      { title: t("footer.guidelines"), slug: "/guidelines" },
+      { title: t("footer.contact"), slug: "/contact" },
     ],
   },
   {
     title: t("footer.community"),
     links: [
-      { title: t("footer.institutions"), url: "/institutions" },
-      { title: t("footer.people"), url: "/people" },
-      { title: t("footer.news"), url: "/news" },
+      { title: t("footer.institutions"), slug: "/institutions" },
+      { title: t("footer.people"), slug: "/people" },
+      { title: t("footer.news"), slug: "/news" },
     ],
   },
   {
     title: t("footer.activities"),
     links: [
-      { title: t("footer.publications"), url: "/publications" },
-      { title: t("footer.events"), url: "/events" },
-      { title: t("footer.projects"), url: "/projects" },
-      { title: t("footer.presentations"), url: "/presentations" },
+      { title: t("footer.publications"), slug: "/publications" },
+      { title: t("footer.events"), slug: "/events" },
+      { title: t("footer.projects"), slug: "/projects" },
+      { title: t("footer.presentations"), slug: "/presentations" },
     ],
   },
 ];
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const router = useRouter();
+  const locale = router.locale as SupportedLocale;
 
-  const footerData = useMemo(() => getFooterData(t), [t]);
+  const footerData = useMemo(() => getFooterData(t, locale), [t, locale]);
 
   return (
     <Container
@@ -89,7 +96,7 @@ export const Footer = () => {
                   component="li"
                   sx={{ mt: { xs: 1 } }}
                 >
-                  <Link href={item.url}>{item.title}</Link>
+                  <Link href={item.slug}>{item.title}</Link>
                 </Container>
               ))}
             </Container>
