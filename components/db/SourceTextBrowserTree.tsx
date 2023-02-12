@@ -3,8 +3,9 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { TreeItem } from "@mui/lab";
 import TreeView from "@mui/lab/TreeView";
+import { CircularProgress } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import type { ApiSourceTextBrowserData } from "types/api/common";
+import type { SourceTextBrowserData } from "types/api/sourceTextBrowser";
 import { DbApi } from "utils/api/dbApi";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
@@ -13,12 +14,14 @@ export function SourceTextBrowserTree() {
   const { sourceLanguage } = useDbQueryParams();
 
   // TODO: add error handling
-  const { data, isLoading } = useQuery<ApiSourceTextBrowserData>({
+  const { isLoading } = useQuery<SourceTextBrowserData>({
     queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
     queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
   });
 
-  console.log({ data });
+  if (isLoading) {
+    return <CircularProgress />;
+  }
 
   return (
     <TreeView
