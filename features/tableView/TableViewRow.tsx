@@ -8,9 +8,7 @@ export const TableViewRow = ({
   parallel: {
     parallelLength,
     parallelFullNames,
-    // fileName,
     parallelFullText,
-    // parallelPositionFromStart,
     parallelSegmentNumbers,
     rootSegmentNumbers,
     rootFullNames,
@@ -19,7 +17,6 @@ export const TableViewRow = ({
     sourceLanguage,
     targetLanguage,
     score,
-    // coOccurrences,
   },
 }: {
   parallel: TablePageParallel;

@@ -1,15 +1,8 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
+import { Link } from "@components/common/Link";
 import PercentIcon from "@mui/icons-material/Percent";
-import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Card, CardContent, Chip, Divider, Tooltip } from "@mui/material";
 import type { ApiTextSegment } from "types/api/table";
 import type { SourceLanguage } from "utils/constants";
 
@@ -38,6 +31,9 @@ export const ParallelSegment = ({
 
   const sourceLanguageName = t(`language.${language}`);
 
+  // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
+  const [textName, segmentName] = textSegmentNumbers[0].split(":");
+
   return (
     <Card sx={{ flex: 1, wordBreak: "break-all" }}>
       <CardContent
@@ -58,11 +54,12 @@ export const ParallelSegment = ({
 
           {/* File Name */}
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
-            <Typography
+            <Link
+              href={`/db/text/${language}/${textName}?segment=${segmentName}`}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
             >
               {textSegmentNumbers}
-            </Typography>
+            </Link>
           </Tooltip>
         </Box>
 
@@ -86,6 +83,7 @@ export const ParallelSegment = ({
               />
             </Tooltip>
           )}
+
           <Chip
             size="small"
             label={`Length: ${length}`}
