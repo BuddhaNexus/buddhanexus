@@ -1,17 +1,20 @@
-import type { GetStaticPaths } from "next";
+import type { GetStaticPaths, GetStaticProps } from "next";
 import { DbViewSelector } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress } from "@mui/material";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  dehydrate,
+  QueryClient,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 import TableView from "features/tableView/TableView";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
 import { DbApi, getLanguageMenuData } from "utils/api/db";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
-
-export { getI18NextStaticProps as getStaticProps } from "utils/nextJsHelpers";
+import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function TablePage() {
   const { sourceLanguage, fileName } = useDbQueryParams();
@@ -53,6 +56,31 @@ export default function TablePage() {
     </PageContainer>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+  const i18nProps = await getI18NextStaticProps(
+    {
+      locale,
+    },
+    ["dbChn", "dbPli", "dbSkt", "dbTib"]
+  );
+
+  const queryClient = new QueryClient();
+
+  const fileName = params?.file as string;
+  const tableDataQueryKey = DbApi.TableView.makeQueryKey(fileName);
+  await queryClient.prefetchInfiniteQuery(tableDataQueryKey, () =>
+    // fetch the first page
+    DbApi.TableView.call(fileName, 0)
+  );
+
+  return {
+    props: {
+      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
+      ...i18nProps.props,
+    },
+  };
+};
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const pliMenuData = await getLanguageMenuData(SourceLanguage.PALI);

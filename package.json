@@ -36,7 +36,8 @@
     "react-dom": "18.2.0",
     "react-i18next": "^12.1.4",
     "react-virtuoso": "^4.0.3",
-    "react-window": "^1.8.8"
+    "react-window": "^1.8.8",
+    "sharp": "^0.31.3"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
