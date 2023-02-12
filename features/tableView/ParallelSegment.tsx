@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
-import { Link } from "@components/common/Link";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import PercentIcon from "@mui/icons-material/Percent";
 import {
@@ -10,6 +9,7 @@ import {
   Chip,
   Divider,
   IconButton,
+  Link,
   Tooltip,
 } from "@mui/material";
 import type { ApiTextSegment } from "types/api/table";
@@ -42,13 +42,12 @@ export const ParallelSegment = ({
 
   // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
   const [textName, segmentName] = textSegmentNumbers[0].split(":");
+  const infoToCopy = `${textSegmentNumbers.join("-")}: ${displayName}`;
 
   // Example of copied data: dn1:1.1.1_0–1.1.2_0: Brahmajāla Sutta
   const copyTextInfoToClipboard = useCallback(async () => {
-    await navigator.clipboard.writeText(
-      `${textSegmentNumbers.join("-")}: ${displayName}`
-    );
-  }, [displayName, textSegmentNumbers]);
+    await navigator.clipboard.writeText(infoToCopy);
+  }, [infoToCopy]);
 
   return (
     <Card sx={{ flex: 1, wordBreak: "break-all" }}>

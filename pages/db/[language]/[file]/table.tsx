@@ -55,9 +55,23 @@ export default function TablePage() {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const languageMenuData = await getLanguageMenuData(SourceLanguage.PALI);
-  const pliFilenames = languageMenuData.map((menuData) => menuData.fileName);
-  // todo: also do this for other languages
+  const pliMenuData = await getLanguageMenuData(SourceLanguage.PALI);
+  const paliFilenames = pliMenuData.map((menuData) => menuData.fileName);
+  const chineseMenuData = await getLanguageMenuData(SourceLanguage.CHINESE);
+  const chineseFilenames = chineseMenuData.map((menuData) => menuData.fileName);
+  const sanskritMenuData = await getLanguageMenuData(SourceLanguage.SANSKRIT);
+  const sanskritFilenames = sanskritMenuData.map(
+    (menuData) => menuData.fileName
+  );
+  const tibetanMenuData = await getLanguageMenuData(SourceLanguage.TIBETAN);
+  const tibetanFilenames = tibetanMenuData.map((menuData) => menuData.fileName);
+
+  const allFilenames = [
+    { language: SourceLanguage.TIBETAN, filenames: tibetanFilenames },
+    { language: SourceLanguage.CHINESE, filenames: chineseFilenames },
+    { language: SourceLanguage.SANSKRIT, filenames: sanskritFilenames },
+    { language: SourceLanguage.PALI, filenames: paliFilenames },
+  ];
 
   /**
    * Returns object like:
@@ -69,11 +83,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
    * ]
    */
   return {
-    paths: pliFilenames.flatMap((file) =>
-      ALL_LOCALES.map((locale) => ({
-        params: { language: SourceLanguage.PALI, file },
-        locale,
-      }))
+    paths: allFilenames.flatMap(({ language, filenames }) =>
+      filenames.flatMap((file) =>
+        ALL_LOCALES.map((locale) => ({ params: { language, file }, locale }))
+      )
     ),
     fallback: true,
   };
