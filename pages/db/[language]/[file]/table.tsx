@@ -8,7 +8,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import TableView from "features/tableView/TableView";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
-import { DbApi, getLanguageMenuData } from "utils/api/db";
+import { DbApi } from "utils/api/dbApi";
+import { getLanguageMenuData } from "utils/api/languageMenu";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 

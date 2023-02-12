@@ -6,7 +6,7 @@ import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress, Typography } from "@mui/material";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
 import type { ApiGraphPageData } from "types/api/common";
-import { DbApi } from "utils/api/db";
+import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export { getSourceTextStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
