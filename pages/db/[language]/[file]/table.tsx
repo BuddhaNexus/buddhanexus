@@ -4,11 +4,7 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress } from "@mui/material";
-import {
-  dehydrate,
-  QueryClient,
-  useInfiniteQuery,
-} from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import TableView from "features/tableView/TableView";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
@@ -57,7 +53,7 @@ export default function TablePage() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const i18nProps = await getI18NextStaticProps(
     {
       locale,
@@ -65,18 +61,8 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     ["dbChn", "dbPli", "dbSkt", "dbTib"]
   );
 
-  const queryClient = new QueryClient();
-
-  const fileName = params?.file as string;
-  const tableDataQueryKey = DbApi.TableView.makeQueryKey(fileName);
-  await queryClient.prefetchInfiniteQuery(tableDataQueryKey, () =>
-    // fetch the first page
-    DbApi.TableView.call(fileName, 0)
-  );
-
   return {
     props: {
-      dehydratedState: JSON.parse(JSON.stringify(dehydrate(queryClient))),
       ...i18nProps.props,
     },
   };

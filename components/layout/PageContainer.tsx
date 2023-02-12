@@ -58,7 +58,13 @@ export const PageContainer: FC<Props> = ({
       <Container
         component="main"
         maxWidth={maxWidth}
-        sx={{ pt: 8, flex: 1, display: "flex", flexDirection: "column" }}
+        sx={{
+          pt: { xs: 0, sm: 8 },
+          px: 0,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
         {children}
       </Container>
