@@ -32,6 +32,7 @@
     "next": "13.1.4",
     "next-i18next": "^13.0.3",
     "next-mdx-remote": "^4.3.0",
+    "next-query-params": "^4.1.0",
     "next-seo": "^5.15.0",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
@@ -39,7 +40,8 @@
     "react-i18next": "^12.1.4",
     "react-virtuoso": "^4.0.3",
     "react-window": "^1.8.8",
-    "sharp": "^0.31.3"
+    "sharp": "^0.31.3",
+    "use-query-params": "^2.2.0"
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^4.24.4",

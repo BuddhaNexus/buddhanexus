@@ -1,57 +1,59 @@
 import { useEffect, useState } from "react";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useParallels } from "features/sidebar/context";
 
-function valuetext(value: number) {
+function valueToString(value: number) {
   return `${value}`;
 }
 
-export default function MinMatchLengthFilter({
-  sourceLang,
-  currentView,
-}: {
-  sourceLang: string;
-  currentView: string;
-}) {
-  const { queryParams, setQueryParams } = useParallels();
+function normalizeValue(value: number | null | undefined) {
+  // TODO set dynamic min/max
+  if (!value || value < 0) {
+    return 30;
+  }
 
-  const [queryValue, setQueryValue] = useState<
-    (number | string)[] | number | string
-  >(Number(queryParams.par_length));
+  if (value > 4000) {
+    return 4000;
+  }
+
+  return value;
+}
+
+export default function MinMatchLengthFilter() {
+  const { queryParams, setQueryParams } = useDbQueryParams();
+
+  const [queryValue, setQueryValue] = useState<number>(
+    normalizeValue(queryParams.par_length)
+  );
 
   useEffect(() => {
-    setQueryValue(queryParams.par_length!);
+    setQueryValue(Number(queryParams.par_length));
   }, [queryParams]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQueryValue(event.target.value === "" ? "" : Number(event.target.value));
+    setQueryValue(normalizeValue(Number(event.target.value)));
   };
 
-  const handleSliderChange = (value: number[] | number) => {
+  const handleSliderChange = (value: number) => {
     setQueryValue(value);
 
-    setQueryParams({ ...queryParams, par_length: queryValue.toString() });
+    setQueryParams({ par_length: normalizeValue(queryValue) });
   };
 
   const handleInputEnter = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
-      setQueryParams({ ...queryParams, par_length: queryValue.toString() });
+      setQueryParams({ par_length: normalizeValue(queryValue) });
     }
   };
 
   const handleBlur = () => {
-    if (queryValue < 0) {
-      setQueryValue(0);
-    } else if (queryValue > 4000) {
-      setQueryValue(4000);
-    }
-
-    setQueryParams({ ...queryParams, par_length: queryValue.toString() });
+    setQueryParams({ par_length: normalizeValue(queryValue) });
   };
 
+  // TODO: get dynamic mark values
   const marks = [
     {
       value: 30,
@@ -66,7 +68,7 @@ export default function MinMatchLengthFilter({
   return (
     <Box sx={{ width: 272 }}>
       <Typography id="input-slider" gutterBottom>
-        Min. character match length for {sourceLang} in {currentView}:
+        Min. character match length:
       </Typography>
       <TextField
         sx={{ width: "100%", mb: 1 }}
@@ -85,16 +87,14 @@ export default function MinMatchLengthFilter({
       />
       <Box sx={{ ml: 1 }}>
         <Slider
-          value={
-            typeof Number(queryValue) === "number" ? Number(queryValue) : 30
-          }
+          value={typeof queryValue === "number" ? queryValue : 30}
           aria-labelledby="input-slider"
-          getAriaValueText={valuetext}
+          getAriaValueText={valueToString}
           min={30}
           max={4000}
           marks={marks}
-          onChange={(event, value) => setQueryValue(value)}
-          onChangeCommitted={(event, value) => handleSliderChange(value)}
+          onChange={(_, value) => setQueryValue(value as number)}
+          onChangeCommitted={(_, value) => handleSliderChange(value as number)}
         />
       </Box>
     </Box>

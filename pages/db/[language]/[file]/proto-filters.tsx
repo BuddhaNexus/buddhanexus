@@ -1,34 +1,52 @@
-import React from "react";
-import type { GetStaticPaths } from "next";
+import { useState } from "react";
+import type { GetStaticPaths, GetStaticProps } from "next";
 import { DbViewSelector } from "@components/db/DbViewSelector";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
-import { PageContainerWithSidebar } from "@components/layout/PageContainerWithSidebar";
+import { PageContainer } from "@components/layout/PageContainer";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Box, CircularProgress, IconButton, Stack } from "@mui/material";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import CurrentResultChips from "features/sidebar/CurrentResultChips";
-import ProtoFilteredTableView from "features/tableView/ProtoFilteredTableView";
-import { getLanguageMenuData } from "utils/api/db";
+import { PageContainerWithSidebar } from "features/sidebar/PageContainerWithSidebar";
+// import ProtoFilteredTableView from "features/tableView/ProtoFilteredTableView";
+import TableView from "features/tableView/TableView";
+import type { PagedResponse } from "types/api/common";
+import type { TablePageData } from "types/api/table";
+import { DbApi, getLanguageMenuData } from "utils/api/db";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
-
-export { getI18NextStaticProps as getStaticProps } from "utils/nextJsHelpers";
+import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function PageWithFilters() {
-  const { sourceLanguage } = useDbQueryParams();
+  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
-  const [open, setOpen] = React.useState(true);
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
 
   const handleFilterClick = () => {
-    setOpen(!open);
+    setSidebarIsOpen(!sidebarIsOpen);
   };
+
+  // TODO: add error handling
+  const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
+    useInfiniteQuery<PagedResponse<TablePageData>>({
+      queryKey: [DbApi.TableView.makeQueryKey(fileName), queryParams],
+      queryFn: ({ pageParam = 0 }) =>
+        DbApi.TableView.call({ fileName, pageNumber: pageParam, queryParams }),
+      getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
+      getPreviousPageParam: (lastPage) =>
+        lastPage.pageNumber === 0
+          ? lastPage.pageNumber
+          : lastPage.pageNumber - 1,
+      refetchOnWindowFocus: false,
+    });
 
   if (isFallback) {
     return (
-      <Box sx={{ display: "flex" }}>
-        <CircularProgress color="inherit" />
-      </Box>
+      <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
+        <CircularProgress color="inherit" sx={{ flex: 1 }} />
+      </PageContainer>
     );
   }
 
@@ -36,7 +54,7 @@ export default function PageWithFilters() {
     <PageContainerWithSidebar
       maxWidth="xl"
       backgroundName={sourceLanguage}
-      isOpen={[open, setOpen]}
+      isOpen={[sidebarIsOpen, setSidebarIsOpen]}
     >
       <SourceTextSearchInput />
       <Stack
@@ -64,22 +82,51 @@ export default function PageWithFilters() {
         </Box>
       </Stack>
 
-      <ProtoFilteredTableView
-        onEndReached={(): void => {
-          throw new Error("Function not implemented.");
-        }}
-        onStartReached={(): void => {
-          throw new Error("Function not implemented.");
-        }}
-      />
+      {isInitialLoading || !data ? (
+        <CircularProgress color="inherit" sx={{ flex: 1 }} />
+      ) : (
+        <div style={{ height: "100vh" }}>
+          <TableView
+            data={data.pages.flatMap((page) => page.data)}
+            onEndReached={fetchNextPage}
+            onStartReached={fetchPreviousPage}
+          />
+        </div>
+      )}
     </PageContainerWithSidebar>
   );
 }
 
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const i18nProps = await getI18NextStaticProps({
+    locale,
+  });
+
+  return {
+    props: {
+      ...i18nProps.props,
+    },
+  };
+};
+
 export const getStaticPaths: GetStaticPaths = async () => {
-  const languageMenuData = await getLanguageMenuData(SourceLanguage.PALI);
-  const pliFilenames = languageMenuData.map((menuData) => menuData.fileName);
-  // todo: also do this for other languages
+  const pliMenuData = await getLanguageMenuData(SourceLanguage.PALI);
+  const paliFilenames = pliMenuData.map((menuData) => menuData.fileName);
+  const chineseMenuData = await getLanguageMenuData(SourceLanguage.CHINESE);
+  const chineseFilenames = chineseMenuData.map((menuData) => menuData.fileName);
+  const sanskritMenuData = await getLanguageMenuData(SourceLanguage.SANSKRIT);
+  const sanskritFilenames = sanskritMenuData.map(
+    (menuData) => menuData.fileName
+  );
+  const tibetanMenuData = await getLanguageMenuData(SourceLanguage.TIBETAN);
+  const tibetanFilenames = tibetanMenuData.map((menuData) => menuData.fileName);
+
+  const allFilenames = [
+    { language: SourceLanguage.TIBETAN, filenames: tibetanFilenames },
+    { language: SourceLanguage.CHINESE, filenames: chineseFilenames },
+    { language: SourceLanguage.SANSKRIT, filenames: sanskritFilenames },
+    { language: SourceLanguage.PALI, filenames: paliFilenames },
+  ];
 
   /**
    * Returns object like:
@@ -91,11 +138,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
    * ]
    */
   return {
-    paths: pliFilenames.flatMap((file) =>
-      ALL_LOCALES.map((locale) => ({
-        params: { language: SourceLanguage.PALI, file },
-        locale,
-      }))
+    paths: allFilenames.flatMap(({ language, filenames }) =>
+      filenames.flatMap((file) =>
+        ALL_LOCALES.map((locale) => ({ params: { language, file }, locale }))
+      )
     ),
     fallback: true,
   };

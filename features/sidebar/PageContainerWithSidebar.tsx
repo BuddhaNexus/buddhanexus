@@ -12,7 +12,7 @@ import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
 import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
 import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
-import { ParallelsProvider } from "features/sidebar/context";
+// import { ParallelsProvider } from "features/sidebar/context";
 import { Sidebar } from "features/sidebar/Sidebar";
 import { SourceLanguage } from "utils/constants";
 
@@ -98,39 +98,38 @@ export const PageContainerWithSidebar: FC<Props> = ({
   maxWidth = "md",
   isOpen,
 }) => {
-  const [open] = isOpen;
+  const [sidebarIsOpen] = isOpen;
+
   return (
-    <ParallelsProvider>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="fixed" open={open}>
-          <AppTopBar />
-        </AppBar>
-        {backgroundName && (
-          <Container
-            maxWidth={false}
-            sx={{
-              background: `url(${BgImageSrcs[backgroundName]})`,
-              backgroundSize: BgImageBgSize[backgroundName],
-              opacity: 0.07,
-              height: "100%",
-              width: "100%",
-              position: "fixed",
-              zIndex: -1,
-            }}
-          />
-        )}
-        <Main open={open}>
-          <DrawerHeader />
-          <Container
-            maxWidth={maxWidth}
-            sx={{ pt: 8, flex: 1, display: "flex", flexDirection: "column" }}
-          >
-            {children}
-          </Container>
-        </Main>
-        <Sidebar isOpen={isOpen} drawerWidth={drawerWidth} />
-      </Box>
-    </ParallelsProvider>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar position="fixed" open={sidebarIsOpen}>
+        <AppTopBar />
+      </AppBar>
+      {backgroundName && (
+        <Container
+          maxWidth={false}
+          sx={{
+            background: `url(${BgImageSrcs[backgroundName]})`,
+            backgroundSize: BgImageBgSize[backgroundName],
+            opacity: 0.07,
+            height: "100%",
+            width: "100%",
+            position: "fixed",
+            zIndex: -1,
+          }}
+        />
+      )}
+      <Main open={sidebarIsOpen}>
+        <DrawerHeader />
+        <Container
+          maxWidth={maxWidth}
+          sx={{ pt: 8, flex: 1, display: "flex", flexDirection: "column" }}
+        >
+          {children}
+        </Container>
+      </Main>
+      <Sidebar isOpen={isOpen} drawerWidth={drawerWidth} />
+    </Box>
   );
 };

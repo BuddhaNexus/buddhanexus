@@ -25,7 +25,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
-import { useParallels } from "features/sidebar/context";
 import { DbApi } from "utils/api/db";
 
 const OuterElementContext = React.createContext({});
@@ -179,9 +178,8 @@ const StyledPopper = styled(Popper)({
 });
 
 const InclusionTextsFilters = () => {
-  const { sourceLanguage } = useDbQueryParams();
+  const { sourceLanguage, queryParams, setQueryParams } = useDbQueryParams();
   // const { t } = useTranslation();
-  const { queryParams, setQueryParams } = useParallels();
 
   const [inclusionValues, setInclusionValues] = useState<
     DatabaseText["fileName"][]

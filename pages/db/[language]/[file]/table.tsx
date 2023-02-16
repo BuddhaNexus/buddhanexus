@@ -20,7 +20,12 @@ export default function TablePage() {
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
     useInfiniteQuery<PagedResponse<TablePageData>>({
       queryKey: DbApi.TableView.makeQueryKey(fileName),
-      queryFn: ({ pageParam = 0 }) => DbApi.TableView.call(fileName, pageParam),
+      queryFn: ({ pageParam = 0 }) =>
+        DbApi.TableView.call({
+          fileName,
+          pageNumber: pageParam,
+          queryParams: "TODO",
+        }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
         lastPage.pageNumber === 0
@@ -54,12 +59,9 @@ export default function TablePage() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const i18nProps = await getI18NextStaticProps(
-    {
-      locale,
-    },
-    ["dbChn", "dbPli", "dbSkt", "dbTib"]
-  );
+  const i18nProps = await getI18NextStaticProps({
+    locale,
+  });
 
   return {
     props: {

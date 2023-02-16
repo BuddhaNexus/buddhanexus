@@ -1,3 +1,4 @@
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
@@ -15,8 +16,7 @@ import {
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
-import { VIEW_FILTERS } from "features/sidebar/context";
-import { initQueryParams, useParallels } from "features/sidebar/context";
+import { filterDefaults, filters } from "features/sidebar/filterParams";
 import {
   InclusionTextsFilters,
   MinMatchLengthFilter,
@@ -29,18 +29,18 @@ interface Props {
   isOpen: [boolean, (value: boolean | ((prevVar: boolean) => boolean)) => void];
 }
 
-const StandinFilter = () => (
+const StandinFilter = (filter: string) => (
   <div>
-    <small>Filter coming to a sidebar near your soon!</small>
+    <small>{filter} filter coming to a sidebar near your soon!</small>
   </div>
 );
 
 const FilterComponents: Record<string, React.ElementType> = {
   par_length: MinMatchLengthFilter,
   limit_collection: InclusionTextsFilters,
-  active_segment: StandinFilter,
-  sort_method: StandinFilter,
-  target_collection: StandinFilter,
+  active_segment: () => StandinFilter("active_segment"),
+  sort_method: () => StandinFilter("sort_method"),
+  target_collection: () => StandinFilter("target_collection"),
 };
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -54,15 +54,17 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export function Sidebar({ isOpen, drawerWidth }: Props) {
   const theme = useTheme();
-  const { setQueryParams } = useParallels();
-  const [open, setOpen] = isOpen;
+  const { setQueryParams } = useDbQueryParams();
+
+  const [sidebarIsOpen, setSidebarIsOpen] = isOpen;
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    setSidebarIsOpen(false);
   };
 
   const handleQueryReset = () => {
-    setQueryParams(initQueryParams);
+    setQueryParams(filterDefaults);
+    return null;
   };
 
   return (
@@ -76,7 +78,7 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
       }}
       variant="persistent"
       anchor="right"
-      open={open}
+      open={sidebarIsOpen}
     >
       <aside>
         <DrawerHeader>
@@ -105,7 +107,7 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
           </Button>
         </Stack>
         <List>
-          {VIEW_FILTERS["proto-filters"].pli.map((filterName) => {
+          {filters["proto-filters"].map((filterName) => {
             if (!FilterComponents[filterName]) {
               return null;
             }

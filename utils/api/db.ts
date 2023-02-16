@@ -1,4 +1,5 @@
 import type { DatabaseText } from "@components/db/types";
+import { pickBy } from "lodash";
 import type {
   ApiGraphPageData,
   ApiLanguageMenuData,
@@ -67,43 +68,25 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   }));
 }
 
-async function getTableData(
-  fileName: string,
-  pageNumber: number
-): Promise<PagedResponse<TablePageData>> {
-  const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position&page=${pageNumber}`
-  );
-  const responseJSON = await res.json();
-  return { data: parseAPITableData(responseJSON), pageNumber };
-}
-
-async function getFilteredTableData({
+async function getTableData({
   fileName,
+  pageNumber,
   queryParams,
 }: {
   fileName: string;
-  queryParams: Record<string, string[] | string>;
-}): Promise<TablePageData> {
-  const query = { ...queryParams };
-  const inclusions = query.limit_collection as string[];
-  delete query.limit_collection;
+  pageNumber: number;
+  queryParams: any;
+}): Promise<PagedResponse<TablePageData>> {
+  const definedParams = pickBy(queryParams, (v) => v !== undefined);
 
-  const paramasTuple = Object.entries(query as Record<string, string>);
-  const inclusionParams = inclusions
-    ? inclusions.map((value) => ["limit_collection", value])
-    : [];
+  const params = new URLSearchParams({
+    page: String(pageNumber),
+    ...definedParams,
+  }).toString();
 
-  const params = new URLSearchParams([
-    ...paramasTuple,
-    ...inclusionParams,
-  ]).toString();
-
-  const url = `${API_ROOT_URL}/files/${fileName}/table?${params}`;
-
-  const res = await fetch(url);
+  const res = await fetch(`${API_ROOT_URL}/files/${fileName}/table?${params}`);
   const responseJSON = await res.json();
-  return parseAPITableData(responseJSON);
+  return { data: parseAPITableData(responseJSON), pageNumber };
 }
 
 // used in numbers view.
@@ -132,6 +115,23 @@ async function getSegmentsData(fileName: string): Promise<ApiSegmentsData> {
 //   }));
 // }
 
+async function getParallelCount({
+  fileName,
+  queryParams,
+}: {
+  fileName: string;
+  queryParams: any;
+}): Promise<any> {
+  const definedParams = pickBy(queryParams, (v) => v !== undefined);
+
+  const params = new URLSearchParams(definedParams).toString();
+  const res = await fetch(
+    `${API_ROOT_URL}/parallels/${fileName}/count?${params}`
+  );
+
+  return await res.json();
+}
+
 export const DbApi = {
   LanguageMenu: {
     makeQueryKey: (language: SourceLanguage) => ["languageMenuData", language],
@@ -148,10 +148,13 @@ export const DbApi = {
   TableView: {
     makeQueryKey: (fileName: string) => ["tableView", fileName],
     call: getTableData,
-    filter: getFilteredTableData,
   },
   SegmentsData: {
     makeQueryKey: (fileName: string) => ["segmentsData", fileName],
     call: getSegmentsData,
+  },
+  ParallelCount: {
+    makeQueryKey: (fileName: string) => ["parallelCount", fileName],
+    call: getParallelCount,
   },
 };
