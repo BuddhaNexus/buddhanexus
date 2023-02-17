@@ -18,7 +18,7 @@ import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
 import { filterDefaults, filters } from "features/sidebar/filterParams";
 import {
-  InclusionTextsFilters,
+  InclusionExclusionFilters,
   MinMatchLengthFilter,
 } from "features/sidebar/filters";
 
@@ -37,7 +37,7 @@ const StandinFilter = (filter: string) => (
 
 const FilterComponents: Record<string, React.ElementType> = {
   par_length: MinMatchLengthFilter,
-  limit_collection: InclusionTextsFilters,
+  limit_collection: InclusionExclusionFilters,
   active_segment: () => StandinFilter("active_segment"),
   sort_method: () => StandinFilter("sort_method"),
   target_collection: () => StandinFilter("target_collection"),

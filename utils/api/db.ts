@@ -1,6 +1,6 @@
-import type { DatabaseText } from "@components/db/types";
-import { pickBy } from "lodash";
+import type { DatabaseCategory, DatabaseText } from "@components/db/types";
 import type {
+  ApiCategoryMenuData,
   ApiGraphPageData,
   ApiLanguageMenuData,
   ApiSegmentsData,
@@ -71,19 +71,12 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
 async function getTableData({
   fileName,
   pageNumber,
-  queryParams,
+  params,
 }: {
   fileName: string;
   pageNumber: number;
-  queryParams: any;
+  params: string;
 }): Promise<PagedResponse<TablePageData>> {
-  const definedParams = pickBy(queryParams, (v) => v !== undefined);
-
-  const params = new URLSearchParams({
-    page: String(pageNumber),
-    ...definedParams,
-  }).toString();
-
   const res = await fetch(`${API_ROOT_URL}/files/${fileName}/table?${params}`);
   const responseJSON = await res.json();
   return { data: parseAPITableData(responseJSON), pageNumber };
@@ -117,14 +110,11 @@ async function getSegmentsData(fileName: string): Promise<ApiSegmentsData> {
 
 async function getParallelCount({
   fileName,
-  queryParams,
+  params,
 }: {
   fileName: string;
-  queryParams: any;
-}): Promise<any> {
-  const definedParams = pickBy(queryParams, (v) => v !== undefined);
-
-  const params = new URLSearchParams(definedParams).toString();
+  params: string;
+}): Promise<Record<string, number>> {
   const res = await fetch(
     `${API_ROOT_URL}/parallels/${fileName}/count?${params}`
   );
@@ -132,10 +122,27 @@ async function getParallelCount({
   return await res.json();
 }
 
+export async function getCategoryMenuData(
+  language: SourceLanguage
+): Promise<DatabaseCategory[]> {
+  const res = await fetch(`${API_ROOT_URL}/menus/category/${language}`);
+  const response = await res.json();
+
+  return response.categoryitems.flat().map((item: ApiCategoryMenuData) => ({
+    id: item.category,
+    categoryName: item.category,
+    name: item.categoryname,
+  }));
+}
+
 export const DbApi = {
   LanguageMenu: {
     makeQueryKey: (language: SourceLanguage) => ["languageMenuData", language],
     call: getLanguageMenuData,
+  },
+  CategoryMenu: {
+    makeQueryKey: (language: SourceLanguage) => ["categoryMenuData", language],
+    call: getCategoryMenuData,
   },
   SidebarSourceTexts: {
     makeQueryKey: (language: SourceLanguage) => ["textCollections", language],

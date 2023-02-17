@@ -8,8 +8,8 @@ import {
 } from "use-query-params";
 
 type Filter =
-  | "active_segment"
   | "co_occ" // TODO: remove on API update
+  | "folio"
   | "limit_collection"
   | "par_length"
   | "score" // TODO: confirm if to be removed
@@ -28,19 +28,20 @@ const standardFilters: FilterGroup = [...basicFilters, "limit_collection"];
 
 export const filters: Record<View, FilterGroup> = {
   graph: [...basicFilters, "target_collection"],
-  numbers: [...standardFilters, "active_segment"],
-  "proto-filters": [...standardFilters, "active_segment", "sort_method"],
-  table: [...standardFilters, "active_segment", "sort_method"],
+  numbers: [...standardFilters, "folio"],
+  "proto-filters": [...standardFilters, "folio", "sort_method"],
+  table: [...standardFilters, "folio", "sort_method"],
   text: standardFilters,
 };
 
+// TODO: confirm default values
 export const filterConfig = {
   co_occ: withDefault(NumberParam, 30),
   score: withDefault(NumberParam, 30),
   par_length: withDefault(NumberParam, 30),
   limit_collection: withDefault(ArrayParam, undefined),
   target_collection: withDefault(StringParam, undefined),
-  active_segment: withDefault(StringParam, undefined),
+  folio: withDefault(StringParam, undefined),
   sort_method: withDefault(StringParam, undefined),
 };
 
@@ -50,6 +51,6 @@ export const filterDefaults = {
   par_length: 30,
   limit_collection: undefined,
   target_collection: undefined,
-  active_segment: undefined,
+  folio: undefined,
   sort_method: undefined,
 };

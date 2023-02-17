@@ -10,7 +10,7 @@ function valueToString(value: number) {
 }
 
 function normalizeValue(value: number | null | undefined) {
-  // TODO set dynamic min/max
+  // TODO set dynamic max
   if (!value || value < 0) {
     return 30;
   }
@@ -20,6 +20,9 @@ function normalizeValue(value: number | null | undefined) {
   }
 
   return value;
+}
+function getQueryParam(value: number | null | undefined) {
+  return { par_length: normalizeValue(value) };
 }
 
 export default function MinMatchLengthFilter() {
@@ -40,17 +43,17 @@ export default function MinMatchLengthFilter() {
   const handleSliderChange = (value: number) => {
     setQueryValue(value);
 
-    setQueryParams({ par_length: normalizeValue(queryValue) });
+    setQueryParams(getQueryParam(queryValue));
   };
 
   const handleInputEnter = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
-      setQueryParams({ par_length: normalizeValue(queryValue) });
+      setQueryParams(getQueryParam(queryValue));
     }
   };
 
   const handleBlur = () => {
-    setQueryParams({ par_length: normalizeValue(queryValue) });
+    setQueryParams(getQueryParam(queryValue));
   };
 
   // TODO: get dynamic mark values

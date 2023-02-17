@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * https://mui.com/material-ui/react-autocomplete/
  * https://codesandbox.io/s/2326jk?file=/demo.tsx
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { ListChildComponentProps } from "react-window";
 import { VariableSizeList } from "react-window";
 // import { useTranslation } from "next-i18next";
-import type { DatabaseText } from "@components/db/types";
+import type { DatabaseCategory, DatabaseText } from "@components/db/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   Autocomplete,
@@ -177,37 +178,88 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-const InclusionTextsFilters = () => {
-  const { sourceLanguage, queryParams, setQueryParams } = useDbQueryParams();
+const InclusionExclusionFilters = () => {
+  const { sourceLanguage, queryParams, setQueryParams, serializedParams } =
+    useDbQueryParams();
   // const { t } = useTranslation();
 
-  const [inclusionValues, setInclusionValues] = useState<
-    DatabaseText["fileName"][]
-  >([]);
-  const [exclusionValues, setExclusionValues] = useState<
-    DatabaseText["fileName"][]
-  >([]);
+  interface Inclusions {
+    excludedCategories: DatabaseCategory["categoryName"][];
+    excludedFiles: DatabaseText["fileName"][];
+    includedCategories: DatabaseCategory["categoryName"][];
+    includedFiles: DatabaseText["fileName"][];
+  }
 
-  const handleOnlyIncludeInputChange = (texts: DatabaseText[]) => {
-    setInclusionValues(texts.map((text) => text.fileName));
-  };
-  const handleExcludeInputChange = (texts: DatabaseText[]) => {
-    setExclusionValues(texts.map((text) => `!${text.fileName}`));
+  const [queryValues, setQueryValues] = useState<Inclusions>({
+    excludedCategories: [],
+    excludedFiles: [],
+    includedCategories: [],
+    includedFiles: [],
+  });
+
+  const handleInputChange = (
+    values: (DatabaseCategory | DatabaseText)[],
+    type: keyof Inclusions
+  ) => {
+    if (type.includes("Categories")) {
+      setQueryValues({
+        ...queryValues,
+        [type]: values.map(
+          (value) => "categoryName" in value && value.categoryName
+        ) as DatabaseCategory["categoryName"][],
+      });
+    }
+    if (type.includes("Files")) {
+      setQueryValues({
+        ...queryValues,
+        [type]: values.map(
+          (value) => "fileName" in value && value.fileName
+        ) as DatabaseText["fileName"][],
+      });
+    }
   };
 
   const handleBlur = () => {
+    const params = Object.entries(queryValues).flatMap(([key, value]) =>
+      key.includes("excluded") ? value.map((item: string) => `!${item}`) : value
+    );
+
     setQueryParams({
-      ...queryParams,
-      limit_collection: [...inclusionValues, ...exclusionValues],
+      limit_collection: params.length > 0 ? params : undefined,
     });
   };
 
-  const { data, isLoading } = useQuery<DatabaseText[]>({
+  // useEffect(() => {
+  //   if (!queryParams.limit_collection && !inclusions && !exclusions) {
+  //     setInclusions(undefined);
+  //     setExclusions(undefined);
+  //     return;
+  //   }
+
+  //   const inclusionList = queryParams.limit_collection?.filter(
+  //     (item) => !item?.includes("!")
+  //   ) as DatabaseText["fileName"][];
+
+  //   const exclusionList = queryParams.limit_collection?.filter((item) =>
+  //     item?.includes("!")
+  //   ) as DatabaseText["fileName"][];
+
+  //   setInclusions(inclusionList);
+  //   setExclusions(exclusionList);
+  // }, [queryParams]);
+
+  const { data: files, isLoading } = useQuery<DatabaseText[]>({
     queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),
     queryFn: () => DbApi.LanguageMenu.call(sourceLanguage),
   });
 
-  // TODO: Add pagination and fuzzy search on BE
+  const { data: categories, isLoading: isLoadingCats } = useQuery<
+    DatabaseCategory[]
+  >({
+    queryKey: DbApi.CategoryMenu.makeQueryKey(sourceLanguage),
+    queryFn: () => DbApi.CategoryMenu.call(sourceLanguage),
+  });
+
   return (
     <Box sx={{ my: 1, width: 272 }}>
       <Typography sx={{ mb: 2 }}>Include and exclude texts</Typography>
@@ -217,13 +269,50 @@ const InclusionTextsFilters = () => {
         multiple={true}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
-        options={data ?? []}
-        getOptionLabel={(option) => option.fileName.toUpperCase()}
+        options={categories ?? []}
+        getOptionLabel={(option) => option.name.toUpperCase()}
+        // groupBy={(option) => option.category.toUpperCase()}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Exclude collections"
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <React.Fragment>
+                  {isLoadingCats ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+        renderOption={(props, option) => [props, option] as React.ReactNode}
+        renderGroup={(params) => params as unknown as React.ReactNode}
+        loading={isLoadingCats}
+        filterSelectedOptions
+        disableListWrap
+        disablePortal
+        onChange={(event, value) =>
+          handleInputChange(value, "excludedCategories")
+        }
+        onBlur={handleBlur}
+      />
+      <Autocomplete
+        id="exclude-files"
+        sx={{ mb: 2 }}
+        multiple={true}
+        PopperComponent={StyledPopper}
+        ListboxComponent={ListboxComponent}
+        options={files ?? []}
+        getOptionLabel={(option) => option.name.toUpperCase()}
         groupBy={(option) => option.category.toUpperCase()}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Exclude files or collections"
+            label="Exclude files"
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -243,22 +332,59 @@ const InclusionTextsFilters = () => {
         filterSelectedOptions
         disableListWrap
         disablePortal
-        onChange={(event, value) => handleExcludeInputChange(value)}
+        onChange={(event, value) => handleInputChange(value, "excludedFiles")}
         onBlur={handleBlur}
       />
 
       <Autocomplete
-        id="exclude-collections"
+        id="include-collections"
+        sx={{ mb: 2 }}
         multiple={true}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
-        options={data ?? []}
-        getOptionLabel={(option) => option.fileName.toUpperCase()}
+        options={categories ?? []}
+        getOptionLabel={(option) => option.name.toUpperCase()}
+        // groupBy={(option) => option.category.toUpperCase()}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Only include selected collections"
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <React.Fragment>
+                  {isLoadingCats ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+        renderOption={(props, option) => [props, option] as React.ReactNode}
+        renderGroup={(params) => params as unknown as React.ReactNode}
+        loading={isLoadingCats}
+        filterSelectedOptions
+        disableListWrap
+        disablePortal
+        onChange={(event, value) =>
+          handleInputChange(value, "includedCategories")
+        }
+        onBlur={handleBlur}
+      />
+      <Autocomplete
+        id="include-files"
+        multiple={true}
+        PopperComponent={StyledPopper}
+        ListboxComponent={ListboxComponent}
+        options={files ?? []}
+        getOptionLabel={(option) => option.name.toUpperCase()}
         groupBy={(option) => option.category.toUpperCase()}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Only include files or collections"
+            label="Only include selected files"
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -278,11 +404,11 @@ const InclusionTextsFilters = () => {
         filterSelectedOptions
         disableListWrap
         disablePortal
-        onChange={(event, value) => handleOnlyIncludeInputChange(value)}
+        onChange={(event, value) => handleInputChange(value, "includedFiles")}
         onBlur={handleBlur}
       />
     </Box>
   );
 };
 
-export default InclusionTextsFilters;
+export default InclusionExclusionFilters;

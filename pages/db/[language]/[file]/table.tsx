@@ -24,7 +24,7 @@ export default function TablePage() {
         DbApi.TableView.call({
           fileName,
           pageNumber: pageParam,
-          queryParams: "TODO",
+          params: "TODO",
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>

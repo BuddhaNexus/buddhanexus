@@ -6,7 +6,11 @@ import { pickBy } from "lodash";
 import { DbApi } from "utils/api/db";
 
 export default function CurrentResultChips() {
-  const { fileName, queryParams } = useDbQueryParams();
+  const {
+    fileName,
+    queryParams,
+    serializedParams: params,
+  } = useDbQueryParams();
   const definedParams = Object.keys(
     pickBy(queryParams, (v) => v !== undefined)
   );
@@ -22,7 +26,7 @@ export default function CurrentResultChips() {
     queryFn: () =>
       DbApi.ParallelCount.call({
         fileName,
-        queryParams,
+        params,
       }),
     refetchOnWindowFocus: false,
   });
@@ -35,7 +39,7 @@ export default function CurrentResultChips() {
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box>Parallels: </Box>
             <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
-              {isLoading ? " " : data.parallel_count}
+              {isLoading ? " " : data?.parallel_count}
             </Box>
           </Box>
         }

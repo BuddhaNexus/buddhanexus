@@ -10,7 +10,6 @@ import { Box, CircularProgress, IconButton, Stack } from "@mui/material";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import CurrentResultChips from "features/sidebar/CurrentResultChips";
 import { PageContainerWithSidebar } from "features/sidebar/PageContainerWithSidebar";
-// import ProtoFilteredTableView from "features/tableView/ProtoFilteredTableView";
 import TableView from "features/tableView/TableView";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
@@ -19,7 +18,11 @@ import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function PageWithFilters() {
-  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
+  const {
+    sourceLanguage,
+    fileName,
+    serializedParams: params,
+  } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
@@ -31,9 +34,9 @@ export default function PageWithFilters() {
   // TODO: add error handling
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
     useInfiniteQuery<PagedResponse<TablePageData>>({
-      queryKey: [DbApi.TableView.makeQueryKey(fileName), queryParams],
+      queryKey: [DbApi.TableView.makeQueryKey(fileName), params],
       queryFn: ({ pageParam = 0 }) =>
-        DbApi.TableView.call({ fileName, pageNumber: pageParam, queryParams }),
+        DbApi.TableView.call({ fileName, pageNumber: pageParam, params }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
         lastPage.pageNumber === 0

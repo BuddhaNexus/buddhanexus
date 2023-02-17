@@ -6,3 +6,9 @@ export interface DatabaseText {
   textName: string;
   category: string;
 }
+
+export interface DatabaseCategory {
+  id: string;
+  categoryName: string;
+  name: string;
+}

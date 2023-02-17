@@ -17,6 +17,11 @@ export interface ApiLanguageMenuData {
   available_lang: null;
 }
 
+export interface ApiCategoryMenuData {
+  category: string;
+  categoryname: string;
+}
+
 export interface ApiGraphPageData {
   histogramgraphdata: [name: string, count: number][];
   piegraphdata: [name: string, count: number][];
