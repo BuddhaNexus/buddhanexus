@@ -21,6 +21,7 @@ function normalizeValue(value: number | null | undefined) {
 
   return value;
 }
+
 function getQueryParam(value: number | null | undefined) {
   return { par_length: normalizeValue(value) };
 }

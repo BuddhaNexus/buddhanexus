@@ -22,6 +22,11 @@ export interface ApiCategoryMenuData {
   categoryname: string;
 }
 
+export interface ApiFolioData {
+  segment_nr: string;
+  num: string;
+}
+
 export interface ApiGraphPageData {
   histogramgraphdata: [name: string, count: number][];
   piegraphdata: [name: string, count: number][];

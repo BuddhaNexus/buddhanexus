@@ -16,11 +16,12 @@ import {
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
-import { filterDefaults, filters } from "features/sidebar/filterParams";
 import {
+  FolioFilter,
   InclusionExclusionFilters,
   MinMatchLengthFilter,
 } from "features/sidebar/filters";
+import { filterDefaults, filters } from "features/sidebar/queryParams";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
@@ -36,9 +37,9 @@ const StandinFilter = (filter: string) => (
 );
 
 const FilterComponents: Record<string, React.ElementType> = {
-  par_length: MinMatchLengthFilter,
+  folio: FolioFilter,
   limit_collection: InclusionExclusionFilters,
-  active_segment: () => StandinFilter("active_segment"),
+  par_length: MinMatchLengthFilter,
   sort_method: () => StandinFilter("sort_method"),
   target_collection: () => StandinFilter("target_collection"),
 };

@@ -12,3 +12,7 @@ export interface DatabaseCategory {
   categoryName: string;
   name: string;
 }
+export interface DatabaseFolio {
+  id: string;
+  segmentNr: string;
+}

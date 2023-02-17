@@ -248,6 +248,8 @@ const InclusionExclusionFilters = () => {
   //   setExclusions(exclusionList);
   // }, [queryParams]);
 
+  useEffect(() => {}, [queryParams]);
+
   const { data: files, isLoading } = useQuery<DatabaseText[]>({
     queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),
     queryFn: () => DbApi.LanguageMenu.call(sourceLanguage),
@@ -312,7 +314,7 @@ const InclusionExclusionFilters = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Exclude files"
+            label="Exclude texts"
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -348,7 +350,7 @@ const InclusionExclusionFilters = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Only include selected collections"
+            label="Only include collections"
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -384,7 +386,7 @@ const InclusionExclusionFilters = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Only include selected files"
+            label="Only include texts"
             InputProps={{
               ...params.InputProps,
               endAdornment: (

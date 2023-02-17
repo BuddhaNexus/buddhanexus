@@ -1,6 +1,11 @@
-import type { DatabaseCategory, DatabaseText } from "@components/db/types";
+import type {
+  DatabaseCategory,
+  DatabaseFolio,
+  DatabaseText,
+} from "@components/db/types";
 import type {
   ApiCategoryMenuData,
+  ApiFolioData,
   ApiGraphPageData,
   ApiLanguageMenuData,
   ApiSegmentsData,
@@ -135,6 +140,17 @@ export async function getCategoryMenuData(
   }));
 }
 
+async function getFolios(fileName: string): Promise<DatabaseFolio[]> {
+  const res = await fetch(`${API_ROOT_URL}/files/${fileName}/folios`);
+
+  const response = await res.json();
+
+  return response.folios.map((folio: ApiFolioData) => ({
+    id: folio.num,
+    segmentNr: folio.segment_nr,
+  }));
+}
+
 export const DbApi = {
   LanguageMenu: {
     makeQueryKey: (language: SourceLanguage) => ["languageMenuData", language],
@@ -163,5 +179,9 @@ export const DbApi = {
   ParallelCount: {
     makeQueryKey: (fileName: string) => ["parallelCount", fileName],
     call: getParallelCount,
+  },
+  FolioData: {
+    makeQueryKey: (fileName: string) => ["foliosData", fileName],
+    call: getFolios,
   },
 };
