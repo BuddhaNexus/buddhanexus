@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import type { DbView } from "types/api/common";
 
 interface Props {
-  currentView: "graph" | "numbers" | "table" | "text";
+  currentView: DbView;
 }
 
 export const DbViewSelector = ({ currentView }: Props) => {

@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { filterConfig } from "features/sidebar/queryParams";
 import queryString from "query-string";
 import { useQueryParams } from "use-query-params";
+import { queryConfig } from "utils/api/queries";
 import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {
@@ -14,7 +14,7 @@ export const useDbQueryParams = () => {
 
   const fileName = query.file as string;
 
-  const [queryParams, setQueryParams] = useQueryParams(filterConfig);
+  const [queryParams, setQueryParams] = useQueryParams(queryConfig);
 
   const serializedParams = queryString.stringify(queryParams);
 

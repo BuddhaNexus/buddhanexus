@@ -42,3 +42,6 @@ export interface APIResponse<T> {
 }
 
 export type PagedResponse<T> = { pageNumber: number; data: T };
+
+// TODO: remove "proto-filters"
+export type DbView = "graph" | "numbers" | "proto-filters" | "table" | "text";
