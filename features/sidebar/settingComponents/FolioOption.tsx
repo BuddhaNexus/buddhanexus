@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "utils/api/db";
 
-export default function FolioFilter() {
+export default function FolioOption() {
   const { fileName, queryParams, setQueryParams } = useDbQueryParams();
 
   useEffect(() => {}, [queryParams]);

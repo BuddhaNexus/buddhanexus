@@ -13,9 +13,10 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { styled, useTheme } from "@mui/material/styles";
 import {
-  FolioFilter,
+  FolioOption,
   InclusionExclusionFilters,
   MinMatchLengthFilter,
+  SortOption,
 } from "features/sidebar/settingComponents";
 import type { DisplayQuery, FilterQuery } from "utils/api/queries";
 import { displayOptions, filters, queryDefaults } from "utils/api/queries";
@@ -40,8 +41,8 @@ const FilterComponents: Partial<Record<FilterQuery, React.ElementType>> = {
 };
 
 const OptionComponents: Record<DisplayQuery, React.ElementType> = {
-  folio: FolioFilter,
-  sort_method: () => StandinFilter("sort_method"),
+  folio: FolioOption,
+  sort_method: SortOption,
 };
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -133,7 +134,7 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
               variant="h6"
               component="h2"
             >
-              DISPLAY OPTIONS
+              OPTIONS
             </Typography>
             <List>
               <List>
