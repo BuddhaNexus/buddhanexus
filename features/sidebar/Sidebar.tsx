@@ -1,16 +1,8 @@
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import {
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  Typography,
-} from "@mui/material";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
+import { TabContext, TabList, TabPanel } from "@mui/lab/";
+import { Box, Drawer, IconButton, List, ListItem, Tab } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import {
   FolioOption,
@@ -19,7 +11,7 @@ import {
   SortOption,
 } from "features/sidebar/settingComponents";
 import type { DisplayQuery, FilterQuery } from "utils/api/queries";
-import { displayOptions, filters, queryDefaults } from "utils/api/queries";
+import { displayOptions, filters } from "utils/api/queries";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
@@ -56,17 +48,16 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export function Sidebar({ isOpen, drawerWidth }: Props) {
   const theme = useTheme();
-  const { setQueryParams } = useDbQueryParams();
 
   const [sidebarIsOpen, setSidebarIsOpen] = isOpen;
+  const [tabPosition, setTabPosition] = useState("1");
 
   const handleDrawerClose = () => {
     setSidebarIsOpen(false);
   };
 
-  const handleQueryReset = () => {
-    setQueryParams(queryDefaults);
-    return null;
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    setTabPosition(newValue);
   };
 
   return (
@@ -83,7 +74,11 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
       open={sidebarIsOpen}
     >
       <aside>
-        <DrawerHeader>
+        <DrawerHeader
+          sx={{
+            bgcolor: "background.header",
+          }}
+        >
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronLeftIcon />
@@ -92,51 +87,39 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
             )}
           </IconButton>
         </DrawerHeader>
-        <Divider />
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          spacing={2}
-          sx={{ py: 1, px: 2 }}
-        >
-          <Typography color="#888" variant="h6" component="h2">
-            FILTERS
-          </Typography>
+        <Box sx={{ width: "100%", typography: "body1" }}>
+          <TabContext value={tabPosition}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                aria-label="Filters, desplay options and other settings"
+                onChange={handleTabChange}
+              >
+                <Tab label="Filters" value="1" />
+                <Tab label="Options" value="2" />
+              </TabList>
+            </Box>
 
-          <Button size="small" onClick={handleQueryReset}>
-            Reset
-          </Button>
-        </Stack>
-        <List>
-          {filters["proto-filters"].map((filterName) => {
-            if (!FilterComponents[filterName]) {
-              return null;
-            }
+            <TabPanel value="1" sx={{ px: 0 }}>
+              <List>
+                {filters["proto-filters"].map((filterName) => {
+                  if (!FilterComponents[filterName]) {
+                    return null;
+                  }
 
-            const FilterComponent = FilterComponents[
-              filterName
-            ] as React.ElementType;
+                  const FilterComponent = FilterComponents[
+                    filterName
+                  ] as React.ElementType;
 
-            return (
-              <ListItem key={filterName}>
-                <FilterComponent currentView="proto-filters" />
-              </ListItem>
-            );
-          })}
-        </List>
-        {displayOptions["proto-filters"].length > 0 ? (
-          <>
-            <Divider />
-            <Typography
-              sx={{ pt: 2, pl: 2 }}
-              color="#888"
-              variant="h6"
-              component="h2"
-            >
-              OPTIONS
-            </Typography>
-            <List>
+                  return (
+                    <ListItem key={filterName}>
+                      <FilterComponent currentView="proto-filters" />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </TabPanel>
+
+            <TabPanel value="2" sx={{ px: 0 }}>
               <List>
                 {displayOptions["proto-filters"].map((optionName) => {
                   if (!OptionComponents[optionName]) {
@@ -151,9 +134,9 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
                   );
                 })}
               </List>
-            </List>
-          </>
-        ) : null}
+            </TabPanel>
+          </TabContext>
+        </Box>
       </aside>
     </Drawer>
   );

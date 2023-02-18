@@ -14,3 +14,12 @@ export const SOURCE_LANGUAGES = [
 
 // i18n
 export const ALL_LOCALES = ["en", "de"];
+
+// TODO: remove "proto-filters"
+export const VIEWS = [
+  "graph",
+  "numbers",
+  "proto-filters",
+  "table",
+  "text",
+] as const;

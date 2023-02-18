@@ -44,7 +44,7 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-const drawerWidth = 320;
+const drawerWidth = 360;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -124,7 +124,7 @@ export const PageContainerWithSidebar: FC<Props> = ({
         <DrawerHeader />
         <Container
           maxWidth={maxWidth}
-          sx={{ pt: 8, flex: 1, display: "flex", flexDirection: "column" }}
+          sx={{ pt: 2, flex: 1, display: "flex", flexDirection: "column" }}
         >
           {children}
         </Container>

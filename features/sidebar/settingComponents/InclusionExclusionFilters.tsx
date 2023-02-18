@@ -263,7 +263,7 @@ const InclusionExclusionFilters = () => {
   });
 
   return (
-    <Box sx={{ my: 1, width: 272 }}>
+    <Box sx={{ my: 1, width: "100%" }}>
       <Typography sx={{ mb: 2 }}>Include and exclude texts</Typography>
       <Autocomplete
         id="exclude-collections"

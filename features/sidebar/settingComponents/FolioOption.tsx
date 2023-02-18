@@ -33,7 +33,7 @@ export default function FolioOption() {
           <Typography id="input-slider" gutterBottom>
             Select text sub-section… am I a setting or a filter 🤔?
           </Typography>
-          <FormControl sx={{ width: 272 }}>
+          <FormControl sx={{ width: "100%" }}>
             <Select
               labelId="db-view-selector-label"
               id="db-view-selector"

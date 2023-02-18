@@ -6,7 +6,13 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Box, CircularProgress, IconButton, Stack } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import CurrentResultChips from "features/sidebar/CurrentResultChips";
 import { PageContainerWithSidebar } from "features/sidebar/PageContainerWithSidebar";
@@ -59,6 +65,9 @@ export default function PageWithFilters() {
       backgroundName={sourceLanguage}
       isOpen={[sidebarIsOpen, setSidebarIsOpen]}
     >
+      <Typography variant="h2" component="h1">
+        {fileName.toUpperCase()}
+      </Typography>
       <SourceTextSearchInput />
       <Stack
         direction="row"

@@ -70,7 +70,7 @@ export default function MinMatchLengthFilter() {
   ];
 
   return (
-    <Box sx={{ width: 272 }}>
+    <Box sx={{ width: "100%" }}>
       <Typography id="input-slider" gutterBottom>
         Min. character match length:
       </Typography>
@@ -89,7 +89,7 @@ export default function MinMatchLengthFilter() {
         onChange={handleInputChange}
         onBlur={handleBlur}
       />
-      <Box sx={{ ml: 1 }}>
+      <Box sx={{ ml: 1, width: "96%" }}>
         <Slider
           value={typeof queryValue === "number" ? queryValue : 30}
           aria-labelledby="input-slider"

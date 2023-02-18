@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 const SORT_OPTIONS = [
-  { value: "position", label: "By match position in source text" },
+  { value: "position", label: "Match position in source text" },
   { value: "quoted-text", label: "Match position in parallel texts" },
   {
     value: "length2",
@@ -23,11 +23,11 @@ export default function SortOption() {
   };
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       <Typography id="input-slider" gutterBottom>
         Sort method
       </Typography>
-      <FormControl sx={{ width: 272 }}>
+      <FormControl sx={{ width: "100%" }}>
         <Select
           labelId="db-view-selector-label"
           id="db-view-selector"
