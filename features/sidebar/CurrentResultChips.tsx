@@ -27,20 +27,16 @@ function getActiveFilterCount(queries: any) {
 }
 
 export default function CurrentResultChips() {
-  const {
-    fileName,
-    queryParams,
-    serializedParams: params,
-  } = useDbQueryParams();
+  const { fileName, queryParams, serializedParams } = useDbQueryParams();
 
   const filterCount = getActiveFilterCount(queryParams);
 
   const { data, isLoading } = useQuery({
-    queryKey: [DbApi.ParallelCount.makeQueryKey(fileName), { queryParams }],
+    queryKey: [DbApi.ParallelCount.makeQueryKey(fileName), serializedParams],
     queryFn: () =>
       DbApi.ParallelCount.call({
         fileName,
-        params,
+        serializedParams,
       }),
     refetchOnWindowFocus: false,
   });

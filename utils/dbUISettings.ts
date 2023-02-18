@@ -15,7 +15,20 @@ export type FilterQuery =
   | "score" // TODO: confirm if to be removed
   | "target_collection";
 
-export type DisplayQuery = "folio" | "sort_method";
+export type QueriedDisplayOption = "folio" | "multi_lingual" | "sort_method";
+
+export type LocalDisplayOption = "script" | "showAndPositionSegmentNrs";
+
+export type LocalUtilityOption =
+  | "copyQueryLink" // PROPOSED
+  | "copyQueryTitle"
+  | "download"
+  | "emailQueryLink" // PROPOSED
+  | "resourceLinks";
+
+export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
+
+export type DisplayOptions = Record<DbView, DisplayOption[]>;
 
 const legacyFilters: FilterQuery[] = ["co_occ", "score"];
 const basicFilters: FilterQuery[] = [...legacyFilters, "par_length"];
@@ -30,12 +43,12 @@ export const filters: Record<DbView, FilterQuery[]> = {
 };
 
 // "folio" is used as "jump to" in text view and "only show" in other applicable views
-export const displayOptions: Record<DbView, DisplayQuery[]> = {
+export const viewDisplayOptions: DisplayOptions = {
   graph: [],
   numbers: ["folio"],
   "proto-filters": ["folio", "sort_method"],
   table: ["folio", "sort_method"],
-  text: ["folio"],
+  text: ["folio", "showAndPositionSegmentNrs"],
 };
 
 // TODO: confirm default values

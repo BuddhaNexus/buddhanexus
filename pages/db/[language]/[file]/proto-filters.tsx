@@ -24,11 +24,7 @@ import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function PageWithFilters() {
-  const {
-    sourceLanguage,
-    fileName,
-    serializedParams: params,
-  } = useDbQueryParams();
+  const { sourceLanguage, fileName, serializedParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
@@ -40,9 +36,13 @@ export default function PageWithFilters() {
   // TODO: add error handling
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
     useInfiniteQuery<PagedResponse<TablePageData>>({
-      queryKey: [DbApi.TableView.makeQueryKey(fileName), params],
+      queryKey: [DbApi.TableView.makeQueryKey(fileName), serializedParams],
       queryFn: ({ pageParam = 0 }) =>
-        DbApi.TableView.call({ fileName, pageNumber: pageParam, params }),
+        DbApi.TableView.call({
+          fileName,
+          pageNumber: pageParam,
+          serializedParams,
+        }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
         lastPage.pageNumber === 0

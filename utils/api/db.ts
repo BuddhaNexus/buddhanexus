@@ -76,13 +76,15 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
 async function getTableData({
   fileName,
   pageNumber,
-  params,
+  serializedParams,
 }: {
   fileName: string;
   pageNumber: number;
-  params: string;
+  serializedParams: string;
 }): Promise<PagedResponse<TablePageData>> {
-  const res = await fetch(`${API_ROOT_URL}/files/${fileName}/table?${params}`);
+  const res = await fetch(
+    `${API_ROOT_URL}/files/${fileName}/table?${serializedParams}`
+  );
   const responseJSON = await res.json();
   return { data: parseAPITableData(responseJSON), pageNumber };
 }
@@ -115,13 +117,13 @@ async function getSegmentsData(fileName: string): Promise<ApiSegmentsData> {
 
 async function getParallelCount({
   fileName,
-  params,
+  serializedParams,
 }: {
   fileName: string;
-  params: string;
+  serializedParams: string;
 }): Promise<Record<string, number>> {
   const res = await fetch(
-    `${API_ROOT_URL}/parallels/${fileName}/count?${params}`
+    `${API_ROOT_URL}/parallels/${fileName}/count?${serializedParams}`
   );
 
   return await res.json();

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -25,9 +26,14 @@ import {
   InclusionExclusionFilters,
   MinMatchLengthFilter,
   SortOption,
+  TextScriptOption,
 } from "features/sidebar/settingComponents";
-import type { DisplayQuery, FilterQuery } from "utils/api/queries";
-import { displayOptions, filters } from "utils/api/queries";
+import type {
+  DisplayOption,
+  DisplayOptions,
+  FilterQuery,
+} from "utils/dbUISettings";
+import { filters, viewDisplayOptions } from "utils/dbUISettings";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
@@ -42,14 +48,25 @@ const StandinFilter = (filter: string) => (
   </div>
 );
 
+const getTibetanDisplayOptions = (): Partial<DisplayOptions> => {
+  return Object.fromEntries(
+    Object.entries(viewDisplayOptions).map(([view, options]) => {
+      return view === "graph"
+        ? [view, options]
+        : [view, ["script", ...options]];
+    })
+  );
+};
+
 const FilterComponents: Partial<Record<FilterQuery, React.ElementType>> = {
   limit_collection: InclusionExclusionFilters,
   par_length: MinMatchLengthFilter,
   target_collection: () => StandinFilter("target_collection"),
 };
 
-const OptionComponents: Record<DisplayQuery, React.ElementType> = {
+const OptionComponents: Partial<Record<DisplayOption, React.ElementType>> = {
   folio: FolioOption,
+  script: TextScriptOption,
   sort_method: SortOption,
 };
 
@@ -64,9 +81,13 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export function Sidebar({ isOpen, drawerWidth }: Props) {
   const theme = useTheme();
+  const { sourceLanguage } = useDbQueryParams();
 
   const [sidebarIsOpen, setSidebarIsOpen] = isOpen;
   const [tabPosition, setTabPosition] = useState("1");
+
+  const displayOptions =
+    sourceLanguage === "tib" ? getTibetanDisplayOptions() : viewDisplayOptions;
 
   const handleDrawerClose = () => {
     setSidebarIsOpen(false);
@@ -124,6 +145,7 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
               >
                 <Tab label="Options" value="1" />
                 <Tab label="Filters" value="2" />
+                <Tab label="Info" value="3" />
               </TabList>
             </Box>
 
@@ -132,12 +154,15 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
                 Display
               </Typography>
               <List>
-                {displayOptions["proto-filters"].map((optionName) => {
+                {displayOptions["proto-filters"]!.map((optionName) => {
                   if (!OptionComponents[optionName]) {
                     return null;
                   }
 
-                  const OptionComponent = OptionComponents[optionName];
+                  const OptionComponent = OptionComponents[
+                    optionName
+                  ] as React.ElementType;
+
                   return (
                     <ListItem key={optionName}>
                       <OptionComponent currentView="proto-filters" />
@@ -206,6 +231,20 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
                   );
                 })}
               </List>
+            </TabPanel>
+
+            <TabPanel value="3">
+              <Typography>
+                Some specific information about the results in this view /
+                language.
+              </Typography>
+              <Typography variant="h6" mt={2}>
+                Tip example
+              </Typography>
+              <Typography>
+                You can use the <kbd>Home</kbd> and <kbd>End</kbd> keys to jump
+                to the beginning and end of loaded portions of a text.
+              </Typography>
             </TabPanel>
           </TabContext>
         </Box>
