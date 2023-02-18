@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
 import { Box, Drawer, IconButton, List, ListItem, Tab } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
@@ -79,13 +80,25 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
             bgcolor: "background.header",
           }}
         >
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
+            </IconButton>
+
+            <IconButton href="/guide" target="_blank" rel="noopener noreferrer">
+              <HelpOutlineIcon />
+            </IconButton>
+          </Box>
         </DrawerHeader>
         <Box sx={{ width: "100%", typography: "body1" }}>
           <TabContext value={tabPosition}>
