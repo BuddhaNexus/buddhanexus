@@ -3,7 +3,16 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
-import { Box, Drawer, IconButton, List, ListItem, Tab } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  Tab,
+  Typography,
+} from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 import {
   FolioOption,
@@ -133,6 +142,9 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
             </TabPanel>
 
             <TabPanel value="2" sx={{ px: 0 }}>
+              <Typography variant="h6" mx={2}>
+                Display
+              </Typography>
               <List>
                 {displayOptions["proto-filters"].map((optionName) => {
                   if (!OptionComponents[optionName]) {
@@ -147,6 +159,14 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
                   );
                 })}
               </List>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="h6" mx={2}>
+                Tools
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="h6" mx={2}>
+                Links
+              </Typography>
             </TabPanel>
           </TabContext>
         </Box>
