@@ -2,8 +2,29 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
-import { pickBy } from "lodash";
 import { DbApi } from "utils/api/db";
+
+function getActiveFilterCount(queries: any) {
+  let count = 0;
+
+  Object.entries(queries).map(([key, value]) => {
+    if (value === undefined || key === "co_occ" || key === "score") {
+      return null;
+    }
+    if (key === "par_length" && value === 30) {
+      return null;
+    }
+    if (Array.isArray(value) && value.length > 0) {
+      count += value.length;
+      return null;
+    }
+
+    count += 1;
+    return null;
+  });
+
+  return count;
+}
 
 export default function CurrentResultChips() {
   const {
@@ -11,15 +32,8 @@ export default function CurrentResultChips() {
     queryParams,
     serializedParams: params,
   } = useDbQueryParams();
-  const definedParams = Object.keys(
-    pickBy(queryParams, (v) => v !== undefined)
-  );
 
-  // TODO: remove "-2" when legacy filters are removed
-  const customFilters =
-    queryParams.par_length === 30
-      ? definedParams.length - 3
-      : definedParams.length - 2;
+  const filterCount = getActiveFilterCount(queryParams);
 
   const { data, isLoading } = useQuery({
     queryKey: [DbApi.ParallelCount.makeQueryKey(fileName), { queryParams }],
@@ -46,13 +60,11 @@ export default function CurrentResultChips() {
         sx={{ mx: 0.5, p: 0.5 }}
       />
 
-      {customFilters ? (
-        <Chip
-          size="small"
-          label={`Custom filters: ${customFilters}`}
-          sx={{ mx: 0.5, p: 0.5 }}
-        />
-      ) : null}
+      <Chip
+        size="small"
+        label={`Custom filters: ${filterCount}`}
+        sx={{ mx: 0.5, p: 0.5 }}
+      />
     </Box>
   );
 }
