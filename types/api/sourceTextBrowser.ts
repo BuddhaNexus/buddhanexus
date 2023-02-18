@@ -33,3 +33,6 @@ export type NavigationMenuData = {
 };
 
 export type SourceTextBrowserData = NavigationMenuData[];
+
+export type SourceTextBrowserDataTypes =
+  | NavigationMenuCategoryData & NavigationMenuData & NavigationMenuFileData;
