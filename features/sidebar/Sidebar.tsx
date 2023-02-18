@@ -1,6 +1,9 @@
 import { useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
 import {
@@ -10,6 +13,9 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Tab,
   Typography,
 } from "@mui/material";
@@ -116,32 +122,12 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
                 aria-label="Filters, desplay options and other settings"
                 onChange={handleTabChange}
               >
-                <Tab label="Filters" value="1" />
-                <Tab label="Options" value="2" />
+                <Tab label="Options" value="1" />
+                <Tab label="Filters" value="2" />
               </TabList>
             </Box>
 
             <TabPanel value="1" sx={{ px: 0 }}>
-              <List>
-                {filters["proto-filters"].map((filterName) => {
-                  if (!FilterComponents[filterName]) {
-                    return null;
-                  }
-
-                  const FilterComponent = FilterComponents[
-                    filterName
-                  ] as React.ElementType;
-
-                  return (
-                    <ListItem key={filterName}>
-                      <FilterComponent currentView="proto-filters" />
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </TabPanel>
-
-            <TabPanel value="2" sx={{ px: 0 }}>
               <Typography variant="h6" mx={2}>
                 Display
               </Typography>
@@ -159,14 +145,67 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
                   );
                 })}
               </List>
+
               <Divider sx={{ my: 2 }} />
               <Typography variant="h6" mx={2}>
                 Tools
               </Typography>
+              <List sx={{ px: 1 }}>
+                {[
+                  {
+                    id: 1,
+                    label: "Download results as xmlx file",
+                    Icon: FileDownloadIcon,
+                  },
+                  {
+                    id: 2,
+                    label: "Copy results page link",
+                    Icon: ContentCopyIcon,
+                  },
+                  {
+                    id: 3,
+                    label: "Email results page link",
+                    Icon: ForwardToInboxIcon,
+                  },
+                ].map((item) => {
+                  const { id, label, Icon } = item;
+                  return (
+                    <ListItem key={id} disablePadding>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <Icon />
+                        </ListItemIcon>
+                        <ListItemText primary={label} />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
+              </List>
+
               <Divider sx={{ my: 2 }} />
               <Typography variant="h6" mx={2}>
                 Links
               </Typography>
+            </TabPanel>
+
+            <TabPanel value="2" sx={{ px: 0 }}>
+              <List>
+                {filters["proto-filters"].map((filterName) => {
+                  if (!FilterComponents[filterName]) {
+                    return null;
+                  }
+
+                  const FilterComponent = FilterComponents[
+                    filterName
+                  ] as React.ElementType;
+
+                  return (
+                    <ListItem key={filterName}>
+                      <FilterComponent currentView="proto-filters" />
+                    </ListItem>
+                  );
+                })}
+              </List>
             </TabPanel>
           </TabContext>
         </Box>
