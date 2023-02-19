@@ -13,10 +13,16 @@ import { Box, Tooltip, Typography } from "@mui/material";
 
 function FolderArrow({ node }: { node: NodeApi<DrawerNavigationNodeData> }) {
   if (node.isInternal) {
-    return node.isOpen ? <ExpandMoreIcon /> : <ChevronRightIcon />;
+    return node.isOpen ? (
+      <ExpandMoreIcon sx={{ mr: 1 }} />
+    ) : (
+      <ChevronRightIcon sx={{ mr: 1 }} />
+    );
   }
   return null;
 }
+
+const MIN_CHAR_LENGTH_TO_SHOW_TOOLTIP = 42;
 
 export function Node({
   node,
@@ -30,10 +36,6 @@ export function Node({
     if (node.isInternal) {
       node.toggle();
     }
-    // const { dataType, fileName } = node.data;
-    // if (dataType === NodeDataChildType.Text) {
-    //   // rotue
-    // }
   };
 
   return (
@@ -44,10 +46,10 @@ export function Node({
         display: "flex",
         alignItems: "center",
         fontSize: 16,
-        // ":hover": {
-        //   backgroundColor:
-        //
-        // },
+        ":hover": {
+          backgroundColor: node.isLeaf ? "inherit" : "background.header",
+          fontWeight: 500,
+        },
       }}
       onClick={handleClick}
     >
@@ -64,11 +66,14 @@ export function Node({
       <Tooltip
         title={<Typography>{name}</Typography>}
         PopperProps={{ disablePortal: true }}
-        disableHoverListener={name.length < 35}
+        disableHoverListener={name.length < MIN_CHAR_LENGTH_TO_SHOW_TOOLTIP}
       >
         <Box>
           {dataType === NodeDataChildType.Text ? (
-            <Link href={getTableViewUrl({ sourceLanguage, fileName })}>
+            <Link
+              sx={{ px: 1 }}
+              href={getTableViewUrl({ sourceLanguage, fileName })}
+            >
               {name}
             </Link>
           ) : (
