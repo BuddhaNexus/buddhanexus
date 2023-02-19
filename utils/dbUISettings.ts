@@ -37,7 +37,6 @@ const standardFilters: FilterQuery[] = [...basicFilters, "limit_collection"];
 export const filters: Record<DbView, FilterQuery[]> = {
   graph: [...basicFilters, "target_collection"],
   numbers: standardFilters,
-  "proto-filters": standardFilters,
   table: standardFilters,
   text: standardFilters,
 };
@@ -46,7 +45,6 @@ export const filters: Record<DbView, FilterQuery[]> = {
 export const viewDisplayOptions: DisplayOptions = {
   graph: [],
   numbers: ["folio"],
-  "proto-filters": ["folio", "sort_method"],
   table: ["folio", "sort_method"],
   text: ["folio", "showAndPositionSegmentNrs"],
 };

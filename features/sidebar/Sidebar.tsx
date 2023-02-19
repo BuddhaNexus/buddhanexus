@@ -155,7 +155,8 @@ export function Sidebar() {
                 Display
               </Typography>
               <List>
-                {displayOptions["proto-filters"]!.map((optionName) => {
+                {/* TODO: ADD DYNAMIC VIEW */}
+                {displayOptions.table!.map((optionName) => {
                   if (!OptionComponents[optionName]) {
                     return null;
                   }
@@ -166,7 +167,8 @@ export function Sidebar() {
 
                   return (
                     <ListItem key={optionName}>
-                      <OptionComponent currentView="proto-filters" />
+                      {/* TODO: ADD DYNAMIC VIEW */}
+                      <OptionComponent currentView="table" />
                     </ListItem>
                   );
                 })}
@@ -216,7 +218,8 @@ export function Sidebar() {
 
             <TabPanel value="2" sx={{ px: 0 }}>
               <List>
-                {filters["proto-filters"].map((filterName) => {
+                {/* TODO: ADD DYNAMIC VIEW */}
+                {filters.table.map((filterName) => {
                   if (!FilterComponents[filterName]) {
                     return null;
                   }
@@ -227,7 +230,8 @@ export function Sidebar() {
 
                   return (
                     <ListItem key={filterName}>
-                      <FilterComponent currentView="proto-filters" />
+                      {/* TODO: ADD DYNAMIC VIEW */}
+                      <FilterComponent currentView="table" />
                     </ListItem>
                   );
                 })}

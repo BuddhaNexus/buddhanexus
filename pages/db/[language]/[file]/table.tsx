@@ -1,5 +1,5 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
-import { DbViewSelector } from "@components/db/DbViewSelector";
+import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -20,7 +20,7 @@ export default function TablePage() {
   // TODO: add error handling
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
     useInfiniteQuery<PagedResponse<TablePageData>>({
-      queryKey: DbApi.TableView.makeQueryKey(fileName),
+      queryKey: [DbApi.TableView.makeQueryKey(fileName), serializedParams],
       queryFn: ({ pageParam = 0 }) =>
         DbApi.TableView.call({
           fileName,
@@ -43,17 +43,24 @@ export default function TablePage() {
   }
 
   return (
-    <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
-      <DbViewSelector currentView="table" />
+    <PageContainer
+      maxWidth="xl"
+      backgroundName={sourceLanguage}
+      hasSidebar={true}
+    >
+      <DbResultsPageHead />
 
       {isInitialLoading || !data ? (
         <CircularProgress color="inherit" sx={{ flex: 1 }} />
       ) : (
-        <TableView
-          data={data.pages.flatMap((page) => page.data)}
-          onEndReached={fetchNextPage}
-          onStartReached={fetchPreviousPage}
-        />
+        // TODO: clarify why this extra div is needed for display
+        <div style={{ height: "100vh" }}>
+          <TableView
+            data={data.pages.flatMap((page) => page.data)}
+            onEndReached={fetchNextPage}
+            onStartReached={fetchPreviousPage}
+          />
+        </div>
       )}
     </PageContainer>
   );
