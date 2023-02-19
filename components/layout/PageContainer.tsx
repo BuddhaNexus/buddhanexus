@@ -1,7 +1,5 @@
 import type { FC, PropsWithChildren } from "react";
-import { AppTopBar } from "@components/layout/AppTopBar";
 import { Container } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
 import type { Breakpoint } from "@mui/system";
 import bgChn from "@public/assets/images/bg_chn_upscaled_bw.jpg";
 import bgPli from "@public/assets/images/bg_pli_upscaled_bw.jpg";
@@ -9,6 +7,12 @@ import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
 import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
 import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
+import {
+  DrawerHeader,
+  Main,
+} from "features/sidebar/MuiStyledSidebarComponents";
+import { Sidebar, sidebarIsOpenAtom } from "features/sidebar/Sidebar";
+import { useAtomValue } from "jotai";
 import { SourceLanguage } from "utils/constants";
 
 const BgImageSrcs: Record<BackgroundName, string> = {
@@ -32,17 +36,19 @@ type BackgroundName = SourceLanguage | "welcome";
 interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;
   maxWidth?: Breakpoint;
+  hasSidebar?: boolean;
 }
 
 export const PageContainer: FC<Props> = ({
   children,
   backgroundName,
   maxWidth = "md",
+  hasSidebar = false,
 }) => {
+  const sidebarIsOpen = useAtomValue(sidebarIsOpenAtom);
+
   return (
     <>
-      <CssBaseline />
-      <AppTopBar />
       {backgroundName && (
         <Container
           maxWidth={false}
@@ -59,19 +65,34 @@ export const PageContainer: FC<Props> = ({
           }}
         />
       )}
-      <Container
-        component="main"
-        maxWidth={maxWidth}
-        sx={{
-          pt: { xs: 0, sm: 4 },
-          px: { xs: 0, sm: 2, lg: 4 },
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {children}
-      </Container>
+      {hasSidebar ? (
+        <>
+          <Main open={sidebarIsOpen}>
+            <DrawerHeader />
+            <Container
+              maxWidth={maxWidth}
+              sx={{ pt: 2, flex: 1, display: "flex", flexDirection: "column" }}
+            >
+              {children}
+            </Container>
+          </Main>
+          <Sidebar />
+        </>
+      ) : (
+        <Container
+          component="main"
+          maxWidth={maxWidth}
+          sx={{
+            pt: { xs: 0, sm: 4 },
+            px: { xs: 0, sm: 2, lg: 4 },
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {children}
+        </Container>
+      )}
     </>
   );
 };

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -6,7 +5,6 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress } from "@mui/material";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { PageContainerWithSidebar } from "features/sidebar/PageContainerWithSidebar";
 import TableView from "features/tableView/TableView";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
@@ -18,8 +16,6 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export default function PageWithFilters() {
   const { sourceLanguage, fileName, serializedParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
-
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
 
   // TODO: add error handling
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
@@ -48,10 +44,10 @@ export default function PageWithFilters() {
   }
 
   return (
-    <PageContainerWithSidebar
+    <PageContainer
       maxWidth="xl"
       backgroundName={sourceLanguage}
-      isOpen={[sidebarIsOpen, setSidebarIsOpen]}
+      hasSidebar={true}
     >
       <DbResultsPageHead />
 
@@ -66,7 +62,7 @@ export default function PageWithFilters() {
           />
         </div>
       )}
-    </PageContainerWithSidebar>
+    </PageContainer>
   );
 }
 

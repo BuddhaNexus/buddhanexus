@@ -28,7 +28,7 @@ import {
   SortOption,
   TextScriptOption,
 } from "features/sidebar/settingComponents";
-import { atom } from "jotai";
+import { atom, useAtom } from "jotai";
 import {
   type DisplayOption,
   type DisplayOptions,
@@ -37,12 +37,9 @@ import {
   viewDisplayOptions,
 } from "utils/dbUISettings";
 
-// https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
+import { SETTINGS_DRAWER_WIDTH } from "./MuiStyledSidebarComponents";
 
-interface Props {
-  drawerWidth: number;
-  isOpen: [boolean, (value: boolean | ((prevVar: boolean) => boolean)) => void];
-}
+// https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
 export const sidebarIsOpenAtom = atom(true);
 
@@ -83,11 +80,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
-export function Sidebar({ isOpen, drawerWidth }: Props) {
+export function Sidebar() {
   const theme = useTheme();
   const { sourceLanguage } = useDbQueryParams();
 
-  const [sidebarIsOpen, setSidebarIsOpen] = isOpen;
+  const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
   const [tabPosition, setTabPosition] = useState("1");
 
   const displayOptions =
@@ -104,10 +101,10 @@ export function Sidebar({ isOpen, drawerWidth }: Props) {
   return (
     <Drawer
       sx={{
-        width: drawerWidth,
+        width: SETTINGS_DRAWER_WIDTH,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: drawerWidth,
+          width: SETTINGS_DRAWER_WIDTH,
         },
       }}
       variant="persistent"

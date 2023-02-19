@@ -23,3 +23,6 @@ export const VIEWS = [
   "table",
   "text",
 ] as const;
+
+export const SETTING_SIDEBAR_PATHS_REGEX =
+  /\/db\/.*?\/(table|numbers|proto-filters|graph|text)/;
