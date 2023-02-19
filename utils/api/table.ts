@@ -34,30 +34,18 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   }));
 }
 
-export async function getTableData(
-  fileName: string,
-  pageNumber: number
-): Promise<PagedResponse<TablePageData>> {
+export async function getTableData({
+  fileName,
+  pageNumber,
+  serializedParams,
+}: {
+  fileName: string;
+  pageNumber: number;
+  serializedParams: string;
+}): Promise<PagedResponse<TablePageData>> {
   const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/table?co_occ=2000&sort_method=position&page=${pageNumber}`
+    `${API_ROOT_URL}/files/${fileName}/table?${serializedParams}`
   );
   const responseJSON = await res.json();
   return { data: parseAPITableData(responseJSON), pageNumber };
 }
-
-//  FOR: update on merge reconsiliation
-// async function getTableData({
-//   fileName,
-//   pageNumber,
-//   serializedParams,
-// }: {
-//   fileName: string;
-//   pageNumber: number;
-//   serializedParams: string;
-// }): Promise<PagedResponse<TablePageData>> {
-//   const res = await fetch(
-//     `${API_ROOT_URL}/files/${fileName}/table?${serializedParams}`
-//   );
-//   const responseJSON = await res.json();
-//   return { data: parseAPITableData(responseJSON), pageNumber };
-// }
