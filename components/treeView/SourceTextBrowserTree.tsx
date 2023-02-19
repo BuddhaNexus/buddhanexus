@@ -49,66 +49,70 @@ const TreeViewContent = memo(function TreeViewContent({
   );
 });
 
-export const SourceTextBrowserTree = memo(function SourceTextBrowserTree({
-  parentHeight,
-}: {
+interface Props {
   parentHeight: number;
-}) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const { sourceLanguage } = useDbQueryParams();
-  const { observe, height: inputHeight } = useDimensions();
-  const { observe: observeContainer, width: containerWidth } = useDimensions();
+  parentWidth: number;
+}
 
-  // TODO: add error handling
-  const { data, isLoading } = useQuery<SourceTextBrowserData>({
-    queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
-  });
+export const SourceTextBrowserTree = memo<Props>(
+  function SourceTextBrowserTree({ parentHeight, parentWidth }) {
+    const [searchTerm, setSearchTerm] = useState("");
+    const { sourceLanguage } = useDbQueryParams();
+    const { observe, height: inputHeight } = useDimensions();
 
-  const hasData = !(isLoading || !data);
+    // TODO: add error handling
+    const { data, isLoading } = useQuery<SourceTextBrowserData>({
+      queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
+      queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+    });
 
-  return (
-    <Box
-      ref={observeContainer}
-      sx={{
-        width: { xs: "80vw", sm: "65vw", md: "50vw", lg: "35vw", xl: "30vw" },
-        height: "100vh",
-        justifyContent: hasData ? "initial" : "center",
-        alignItems: hasData ? "initial" : "center",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {hasData ? (
-        <>
-          {/* Search input */}
-          <FormControl ref={observe} variant="outlined" sx={{ p: 2 }} fullWidth>
-            <TextField
-              label="Search"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(event) => setSearchTerm(event.target.value)}
-            />
-          </FormControl>
+    const hasData = !(isLoading || !data);
 
-          {/* Tree view - text browser */}
-          <Box sx={{ pl: 2 }}>
-            <TreeViewContent
-              data={data}
-              height={parentHeight - inputHeight}
-              width={containerWidth}
-              searchTerm={searchTerm}
-            />
-          </Box>
-        </>
-      ) : (
-        <CircularProgress />
-      )}
-    </Box>
-  );
-});
+    return (
+      <Box
+        sx={{
+          justifyContent: hasData ? "initial" : "center",
+          alignItems: hasData ? "initial" : "center",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {hasData ? (
+          <>
+            {/* Search input */}
+            <FormControl
+              ref={observe}
+              variant="outlined"
+              sx={{ p: 2 }}
+              fullWidth
+            >
+              <TextField
+                label="Search"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(event) => setSearchTerm(event.target.value)}
+              />
+            </FormControl>
+
+            {/* Tree view - text browser */}
+            <Box sx={{ pl: 2 }}>
+              <TreeViewContent
+                data={data}
+                height={parentHeight - inputHeight}
+                width={parentWidth}
+                searchTerm={searchTerm}
+              />
+            </Box>
+          </>
+        ) : (
+          <CircularProgress />
+        )}
+      </Box>
+    );
+  }
+);
