@@ -8,6 +8,7 @@ import type { ListChildComponentProps } from "react-window";
 import { VariableSizeList } from "react-window";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { getTableViewUrl } from "@components/common/utils";
 import type { DatabaseText } from "@components/db/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
@@ -218,7 +219,9 @@ export const SourceTextSearchInput = () => {
       disableListWrap
       disablePortal
       onChange={(target, value) =>
-        router.push(`/db/${sourceLanguage}/${value?.fileName}/table`)
+        router.push(
+          getTableViewUrl({ sourceLanguage, fileName: value?.fileName })
+        )
       }
     />
   );

@@ -1,6 +1,9 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import type { NodeApi, NodeRendererProps } from "react-arborist";
 import { Tree } from "react-arborist";
+import useDimensions from "react-cool-dimensions";
+import { Link } from "@components/common/Link";
+import { getTableViewUrl } from "@components/common/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { NodeDataChildType } from "@components/treeView/types";
 import { transformDataForTreeView } from "@components/treeView/utils";
@@ -8,7 +11,14 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import { Box, CircularProgress, Tooltip, Typography } from "@mui/material";
+import ShortTextIcon from "@mui/icons-material/ShortText";
+import {
+  Box,
+  CircularProgress,
+  Input,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import type { SourceTextBrowserData } from "types/api/sourceTextBrowser";
 import { DbApi } from "utils/api/dbApi";
@@ -29,13 +39,33 @@ function FolderArrow({ node }: { node: NodeApi<NodeData> }) {
 }
 
 function Node({ node, style, dragHandle }: NodeRendererProps<NodeData>) {
-  const { dataType, name } = node.data;
+  const { dataType, name, fileName } = node.data;
+  const { sourceLanguage } = useDbQueryParams();
+
+  const handleClick = () => {
+    if (node.isInternal) {
+      node.toggle();
+    }
+    // const { dataType, fileName } = node.data;
+    // if (dataType === NodeDataChildType.Text) {
+    //   // rotue
+    // }
+  };
+
   return (
     <Box
       ref={dragHandle}
       style={style}
-      sx={{ display: "flex", alignItems: "center", fontSize: 18 }}
-      onClick={() => node.isInternal && node.toggle()}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        fontSize: 16,
+        // ":hover": {
+        //   backgroundColor:
+        //
+        // },
+      }}
+      onClick={handleClick}
     >
       <FolderArrow node={node} />
       {dataType === NodeDataChildType.Collection && (
@@ -44,20 +74,28 @@ function Node({ node, style, dragHandle }: NodeRendererProps<NodeData>) {
       {dataType === NodeDataChildType.Category && (
         <MenuBookIcon fontSize="inherit" />
       )}
+      {dataType === NodeDataChildType.Text && (
+        <ShortTextIcon fontSize="inherit" />
+      )}
       <Tooltip
         title={<Typography>{name}</Typography>}
         PopperProps={{ disablePortal: true }}
-        disableHoverListener={name.length < 30}
+        disableHoverListener={name.length < 35}
       >
-        <Typography
-          textOverflow="ellipsis"
-          fontSize="inherit"
-          whiteSpace="nowrap"
-          sx={{ px: 1 }}
-          fontWeight={dataType === NodeDataChildType.Collection ? 600 : 400}
-        >
-          {name}
-        </Typography>
+        {dataType === NodeDataChildType.Text ? (
+          <Link href={getTableViewUrl({ sourceLanguage, fileName })}>
+            {name}
+          </Link>
+        ) : (
+          <Typography
+            textOverflow="ellipsis"
+            fontSize="inherit"
+            whiteSpace="nowrap"
+            sx={{ px: 1 }}
+          >
+            {name}
+          </Typography>
+        )}
       </Tooltip>
     </Box>
   );
@@ -67,15 +105,18 @@ function Node({ node, style, dragHandle }: NodeRendererProps<NodeData>) {
 const TreeViewContent = memo(function TreeViewContent({
   data,
   height,
+  searchTerm,
 }: {
   data: SourceTextBrowserData;
   height: number;
+  searchTerm?: string;
 }) {
   // expensive operation - memoise the result for better performance on subsequent renders
   const treeData = useMemo(() => transformDataForTreeView(data), [data]);
 
   return (
     <Tree
+      searchTerm={searchTerm}
       initialData={treeData}
       openByDefault={false}
       disableDrag={true}
@@ -92,11 +133,13 @@ const TreeViewContent = memo(function TreeViewContent({
 });
 
 export const SourceTextBrowserTree = memo(function SourceTextBrowserTree({
-  height,
+  parentHeight,
 }: {
-  height: number;
+  parentHeight: number;
 }) {
+  const [searchTerm, setSearchTerm] = useState("");
   const { sourceLanguage } = useDbQueryParams();
+  const { observe, height: inputHeight } = useDimensions();
 
   // TODO: add error handling
   const { data, isLoading } = useQuery<SourceTextBrowserData>({
@@ -107,6 +150,18 @@ export const SourceTextBrowserTree = memo(function SourceTextBrowserTree({
   return isLoading || !data ? (
     <CircularProgress />
   ) : (
-    <TreeViewContent data={data} height={height} />
+    <Box sx={{ py: 2, px: 1 }}>
+      <>
+        <Input
+          ref={observe}
+          onChange={(event) => setSearchTerm(event.target.value)}
+        />
+        <TreeViewContent
+          data={data}
+          height={parentHeight - inputHeight}
+          searchTerm={searchTerm}
+        />
+      </>
+    </Box>
   );
 });

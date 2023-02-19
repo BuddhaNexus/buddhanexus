@@ -16,6 +16,7 @@ export function transformDataForTreeView(data: SourceTextBrowserData) {
           name: displayName,
           fileName,
           availableLanguages,
+          dataType: NodeDataChildType.Text,
         })
       ),
     })),
