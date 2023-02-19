@@ -40,7 +40,6 @@ const TreeViewContent = memo(function TreeViewContent({
       disableEdit={true}
       padding={12}
       height={height}
-      width={400}
     >
       {Node}
     </Tree>
