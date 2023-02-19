@@ -1,105 +1,20 @@
 import { memo, useMemo, useState } from "react";
-import type { NodeApi, NodeRendererProps } from "react-arborist";
 import { Tree } from "react-arborist";
 import useDimensions from "react-cool-dimensions";
-import { Link } from "@components/common/Link";
-import { getTableViewUrl } from "@components/common/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { NodeDataChildType } from "@components/treeView/types";
+import { Node } from "@components/treeView/DrawerNavigationComponents";
 import { transformDataForTreeView } from "@components/treeView/utils";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import ShortTextIcon from "@mui/icons-material/ShortText";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   CircularProgress,
-  Input,
-  Tooltip,
-  Typography,
+  FormControl,
+  InputAdornment,
+  TextField,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import type { SourceTextBrowserData } from "types/api/sourceTextBrowser";
 import { DbApi } from "utils/api/dbApi";
-
-type NodeData = {
-  id: string;
-  name: string;
-  fileName?: string;
-  availableLanguages?: string | null;
-  dataType?: NodeDataChildType;
-};
-
-function FolderArrow({ node }: { node: NodeApi<NodeData> }) {
-  if (node.isInternal) {
-    return node.isOpen ? <ExpandMoreIcon /> : <ChevronRightIcon />;
-  }
-  return null;
-}
-
-function Node({ node, style, dragHandle }: NodeRendererProps<NodeData>) {
-  const { dataType, name, fileName } = node.data;
-  const { sourceLanguage } = useDbQueryParams();
-
-  const handleClick = () => {
-    if (node.isInternal) {
-      node.toggle();
-    }
-    // const { dataType, fileName } = node.data;
-    // if (dataType === NodeDataChildType.Text) {
-    //   // rotue
-    // }
-  };
-
-  return (
-    <Box
-      ref={dragHandle}
-      style={style}
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        fontSize: 16,
-        // ":hover": {
-        //   backgroundColor:
-        //
-        // },
-      }}
-      onClick={handleClick}
-    >
-      <FolderArrow node={node} />
-      {dataType === NodeDataChildType.Collection && (
-        <LibraryBooksIcon fontSize="inherit" />
-      )}
-      {dataType === NodeDataChildType.Category && (
-        <MenuBookIcon fontSize="inherit" />
-      )}
-      {dataType === NodeDataChildType.Text && (
-        <ShortTextIcon fontSize="inherit" />
-      )}
-      <Tooltip
-        title={<Typography>{name}</Typography>}
-        PopperProps={{ disablePortal: true }}
-        disableHoverListener={name.length < 35}
-      >
-        {dataType === NodeDataChildType.Text ? (
-          <Link href={getTableViewUrl({ sourceLanguage, fileName })}>
-            {name}
-          </Link>
-        ) : (
-          <Typography
-            textOverflow="ellipsis"
-            fontSize="inherit"
-            whiteSpace="nowrap"
-            sx={{ px: 1 }}
-          >
-            {name}
-          </Typography>
-        )}
-      </Tooltip>
-    </Box>
-  );
-}
 
 // https://github.com/brimdata/react-arborist
 const TreeViewContent = memo(function TreeViewContent({
@@ -150,17 +65,31 @@ export const SourceTextBrowserTree = memo(function SourceTextBrowserTree({
   return isLoading || !data ? (
     <CircularProgress />
   ) : (
-    <Box sx={{ py: 2, px: 1 }}>
+    <Box>
       <>
-        <Input
-          ref={observe}
-          onChange={(event) => setSearchTerm(event.target.value)}
-        />
-        <TreeViewContent
-          data={data}
-          height={parentHeight - inputHeight}
-          searchTerm={searchTerm}
-        />
+        {/* Search input */}
+        <FormControl ref={observe} variant="outlined" sx={{ p: 2 }} fullWidth>
+          <TextField
+            label="Search"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            onChange={(event) => setSearchTerm(event.target.value)}
+          />
+        </FormControl>
+
+        {/* Tree view - text browser */}
+        <Box sx={{ pl: 2 }}>
+          <TreeViewContent
+            data={data}
+            height={parentHeight - inputHeight}
+            searchTerm={searchTerm}
+          />
+        </Box>
       </>
     </Box>
   );
