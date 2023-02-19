@@ -5,9 +5,7 @@ import Drawer from "@mui/material/Drawer";
 import { isNavigationDrawerOpen } from "features/atoms/layout";
 import { useAtom } from "jotai";
 
-// preselect text in the sidebar
-// add multilingual icon
-// add some missing info that's in the old website
+// TODO: preselect currently viewed text in the sidebar
 export const SourceTextBrowserDrawer = memo(function SourceTextBrowserDrawer() {
   const { observe, height, width } = useDimensions();
 

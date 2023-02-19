@@ -1,3 +1,5 @@
+import type { SourceLanguage } from "utils/constants";
+
 export enum NodeDataChildType {
   Category = "category",
   Collection = "collection",
@@ -8,6 +10,6 @@ export type DrawerNavigationNodeData = {
   id: string;
   name: string;
   fileName?: string;
-  availableLanguages?: string | null;
+  availableLanguages?: SourceLanguage[];
   dataType?: NodeDataChildType;
 };

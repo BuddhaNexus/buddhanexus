@@ -1,3 +1,4 @@
+import React from "react";
 import type { GetStaticProps } from "next";
 import { DbViewSelector } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -5,6 +6,7 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress, Typography } from "@mui/material";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
+import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import type { ApiSegmentsData } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -51,6 +53,7 @@ export default function NumbersPage() {
           );
         })
       )}
+      <SourceTextBrowserDrawer />
     </PageContainer>
   );
 }
