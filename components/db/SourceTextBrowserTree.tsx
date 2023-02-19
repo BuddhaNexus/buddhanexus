@@ -1,11 +1,27 @@
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { TreeItem } from "@mui/lab";
 import TreeView from "@mui/lab/TreeView";
+import { useQuery } from "@tanstack/react-query";
+import type { ApiSourceTextBrowserData } from "types/api/common";
+import { DbApi } from "utils/api/dbApi";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
 export function SourceTextBrowserTree() {
+  const { sourceLanguage } = useDbQueryParams();
+
+  // TODO: add error handling
+  /*  const { data, isLoading } = useQuery<ApiSourceTextBrowserData>({
+    queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
+    queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+  });
+
+  console.log({ data }); */
+
   return (
     <TreeView
       aria-label="file system navigator"

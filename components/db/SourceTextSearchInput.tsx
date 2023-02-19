@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
-import { DbApi } from "utils/api/db";
+import { DbApi } from "utils/api/dbApi";
 
 const OuterElementContext = React.createContext({});
 

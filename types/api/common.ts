@@ -38,6 +38,22 @@ export interface ApiSegmentsData {
   segments: { parallels: string[][]; segmentnr: string }[];
 }
 
+export interface ApiSourceTextBrowserData {
+  navigationMenuData: {
+    collection: string;
+    categories: {
+      categoryname: string;
+      categorydisplayname: string;
+      files: {
+        available_lang: string | null;
+        displayname: string;
+        filename: string;
+        textname: string;
+      }[];
+    }[];
+  }[];
+}
+
 export interface APIResponse<T> {
   result: T;
 }
