@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 import { Link } from "@components/common/Link";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import LanguageSelect from "@components/layout/LanguageSelect";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -36,6 +37,7 @@ export const AppTopBar = () => {
   const materialTheme = useMaterialTheme();
   const { theme, setTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
+  const { sourceLanguage } = useDbQueryParams();
 
   const { route } = useRouter();
   const { t } = useTranslation();
@@ -111,13 +113,15 @@ export const AppTopBar = () => {
             </>
           </Link>
 
-          <IconButton
-            sx={{ ml: { xs: 0, sm: 2 } }}
-            color="inherit"
-            onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
-          >
-            <MenuIcon fontSize="inherit" />
-          </IconButton>
+          {sourceLanguage && (
+            <IconButton
+              sx={{ ml: { xs: 0, sm: 2 } }}
+              color="inherit"
+              onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
+            >
+              <MenuIcon fontSize="inherit" />
+            </IconButton>
+          )}
         </Box>
 
         <Box component="nav" sx={{ display: "flex", overflow: "auto" }}>

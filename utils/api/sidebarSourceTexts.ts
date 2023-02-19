@@ -1,4 +1,5 @@
 // source text collections
+import { transformDataForTreeView } from "@components/treeView/utils";
 import type {
   ApiSourceTextBrowserData,
   SourceTextBrowserData,
@@ -33,5 +34,6 @@ export async function getSourceTextCollections(language: SourceLanguage) {
   const res = await fetch(`${API_ROOT_URL}/menus/sidebar/${language}`);
   const response = await res.json();
 
-  return parseSourceTextCollectionData(response);
+  const parsedApiData = parseSourceTextCollectionData(response);
+  return transformDataForTreeView(parsedApiData);
 }

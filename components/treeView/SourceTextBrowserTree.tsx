@@ -1,9 +1,9 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useState } from "react";
 import { Tree } from "react-arborist";
 import useDimensions from "react-cool-dimensions";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Node } from "@components/treeView/DrawerNavigationComponents";
-import { transformDataForTreeView } from "@components/treeView/utils";
+import type { DrawerNavigationNodeData } from "@components/treeView/types";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   Backdrop,
@@ -14,7 +14,6 @@ import {
   TextField,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import type { SourceTextBrowserData } from "types/api/sourceTextBrowser";
 import { DbApi } from "utils/api/dbApi";
 
 // https://github.com/brimdata/react-arborist
@@ -24,21 +23,18 @@ const TreeViewContent = memo(function TreeViewContent({
   width,
   searchTerm,
 }: {
-  data: SourceTextBrowserData;
+  data: DrawerNavigationNodeData[];
   height: number;
   width: number;
   searchTerm?: string;
 }) {
-  // expensive operation - memoise the result for better performance on subsequent renders
-  const treeData = useMemo(() => transformDataForTreeView(data), [data]);
-
   return (
     <Tree
       searchTerm={searchTerm}
-      initialData={treeData}
+      initialData={data}
       openByDefault={false}
       disableDrag={true}
-      rowHeight={32}
+      rowHeight={36}
       disableDrop={true}
       disableEdit={true}
       padding={12}
@@ -62,7 +58,7 @@ export const SourceTextBrowserTree = memo<Props>(
     const { observe, height: inputHeight } = useDimensions();
 
     // TODO: add error handling
-    const { data, isLoading } = useQuery<SourceTextBrowserData>({
+    const { data, isLoading } = useQuery<DrawerNavigationNodeData[]>({
       queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
       queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
     });
@@ -71,50 +67,41 @@ export const SourceTextBrowserTree = memo<Props>(
 
     return (
       <>
-        <Box
-          sx={{
-            justifyContent: hasData ? "initial" : "center",
-            alignItems: hasData ? "initial" : "center",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {hasData && (
-            <>
-              {/* Search input */}
-              <FormControl
-                ref={observe}
-                variant="outlined"
-                sx={{ p: 2 }}
-                fullWidth
-              >
-                <TextField
-                  label="Search"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <SearchIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={(event) => setSearchTerm(event.target.value)}
-                />
-              </FormControl>
+        {hasData && (
+          <>
+            {/* Search input */}
+            <FormControl
+              ref={observe}
+              variant="outlined"
+              sx={{ p: 2, pb: 0 }}
+              fullWidth
+            >
+              <TextField
+                label="Search"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(event) => setSearchTerm(event.target.value)}
+              />
+            </FormControl>
 
-              {/* Tree view - text browser */}
-              <Box sx={{ pl: 2 }}>
-                <TreeViewContent
-                  data={data}
-                  height={parentHeight - inputHeight}
-                  width={parentWidth}
-                  searchTerm={searchTerm}
-                />
-              </Box>
-            </>
-          )}
-        </Box>
+            {/* Tree view - text browser */}
+            <Box sx={{ pl: 2 }}>
+              <TreeViewContent
+                data={data}
+                height={parentHeight - inputHeight}
+                width={parentWidth}
+                searchTerm={searchTerm}
+              />
+            </Box>
+          </>
+        )}
 
-        <Backdrop open={isLoading}>
+        <Backdrop open={!hasData}>
           <CircularProgress />
         </Backdrop>
       </>

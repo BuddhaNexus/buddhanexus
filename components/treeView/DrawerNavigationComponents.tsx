@@ -43,6 +43,8 @@ export function Node({
       ref={dragHandle}
       style={style}
       sx={{
+        flex: 1,
+        height: "100%",
         display: "flex",
         alignItems: "center",
         fontSize: 16,
