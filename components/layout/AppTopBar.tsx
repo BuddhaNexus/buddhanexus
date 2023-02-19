@@ -112,7 +112,7 @@ export const AppTopBar = () => {
           </Link>
 
           <IconButton
-            sx={{ ml: 2 }}
+            sx={{ ml: { xs: 0, sm: 2 } }}
             color="inherit"
             onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
           >

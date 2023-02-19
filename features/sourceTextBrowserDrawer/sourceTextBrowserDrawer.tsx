@@ -8,8 +8,6 @@ import { useAtom } from "jotai";
 
 // preselect text in the sidebar
 // add multilingual icon
-// add top bar button and sync the state in jotai
-// style this
 // add some missing info that's in the old website
 export const SourceTextBrowserDrawer = memo(function SourceTextBrowserDrawer() {
   const { observe, height } = useDimensions();

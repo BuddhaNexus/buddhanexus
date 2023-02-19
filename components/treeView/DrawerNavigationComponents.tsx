@@ -71,7 +71,12 @@ export function Node({
         <Box>
           {dataType === NodeDataChildType.Text ? (
             <Link
-              sx={{ px: 1 }}
+              sx={{
+                px: 1,
+                textOverflow: "ellipsis",
+                fontSize: "inherit",
+                whiteSpace: "nowrap",
+              }}
               href={getTableViewUrl({ sourceLanguage, fileName })}
             >
               {name}
