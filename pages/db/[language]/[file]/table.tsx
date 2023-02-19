@@ -21,12 +21,7 @@ export default function TablePage() {
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
     useInfiniteQuery<PagedResponse<TablePageData>>({
       queryKey: DbApi.TableView.makeQueryKey(fileName),
-      queryFn: ({ pageParam = 0 }) =>
-        DbApi.TableView.call({
-          fileName,
-          pageNumber: pageParam,
-          serializedParams: "TODO",
-        }),
+      queryFn: ({ pageParam = 0 }) => DbApi.TableView.call(fileName, pageParam),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
         lastPage.pageNumber === 0
