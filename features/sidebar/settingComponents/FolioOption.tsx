@@ -5,7 +5,7 @@ import { FormControl, MenuItem, Select } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
-import { DbApi } from "utils/api/db";
+import { DbApi } from "utils/api/dbApi";
 
 export default function FolioOption() {
   const { fileName, queryParams, setQueryParams } = useDbQueryParams();

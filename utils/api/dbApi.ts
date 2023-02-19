@@ -1,6 +1,11 @@
 import type { SourceLanguage } from "utils/constants";
 
-import { getSegmentsData } from "./common";
+import {
+  getCategoryMenuData,
+  getFolios,
+  getParallelCount,
+  getSegmentsData,
+} from "./common";
 import { getGraphData } from "./graph";
 import { getLanguageMenuData } from "./languageMenu";
 import { getSourceTextCollections } from "./sidebarSourceTexts";
@@ -26,5 +31,17 @@ export const DbApi = {
   SegmentsData: {
     makeQueryKey: (fileName: string) => ["segmentsData", fileName],
     call: getSegmentsData,
+  },
+  CategoryMenu: {
+    makeQueryKey: (language: SourceLanguage) => ["categoryMenuData", language],
+    call: getCategoryMenuData,
+  },
+  ParallelCount: {
+    makeQueryKey: (fileName: string) => ["parallelCount", fileName],
+    call: getParallelCount,
+  },
+  FolioData: {
+    makeQueryKey: (fileName: string) => ["foliosData", fileName],
+    call: getFolios,
   },
 };

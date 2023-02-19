@@ -5,8 +5,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import type { ListChildComponentProps } from "react-window";
-import { VariableSizeList } from "react-window";
+import { type ListChildComponentProps, VariableSizeList } from "react-window";
 // import { useTranslation } from "next-i18next";
 import type { DatabaseCategory, DatabaseText } from "@components/db/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -26,7 +25,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
-import { DbApi } from "utils/api/db";
+import { DbApi } from "utils/api/dbApi";
 
 const OuterElementContext = React.createContext({});
 

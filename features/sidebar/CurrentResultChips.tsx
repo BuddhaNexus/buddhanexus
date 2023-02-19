@@ -2,7 +2,7 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
-import { DbApi } from "utils/api/db";
+import { DbApi } from "utils/api/dbApi";
 
 function getActiveFilterCount(queries: any) {
   let count = 0;

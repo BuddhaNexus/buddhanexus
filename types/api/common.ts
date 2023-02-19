@@ -1,5 +1,6 @@
 import type { VIEWS } from "utils/constants";
-// Example response:
+
+// Example ApiLanguageMenuData response:
 // {
 //   displayName: 'Cūḷadhammasamādāna Sutta',
 //   search_field: 'Mn 45 Cūḷadhammasamādāna Sutta (Culadhammasamadana Sutta)',
@@ -16,16 +17,6 @@ export interface ApiLanguageMenuData {
   filename: string;
   category: string;
   available_lang: null;
-}
-
-export interface ApiCategoryMenuData {
-  category: string;
-  categoryname: string;
-}
-
-export interface ApiFolioData {
-  segment_nr: string;
-  num: string;
 }
 
 export interface ApiGraphPageData {
