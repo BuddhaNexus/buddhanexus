@@ -149,6 +149,8 @@ const rules = {
   "react/prop-types": "off",
   "react/self-closing-comp": "error",
   "simple-import-sort/exports": "error",
+  "no-duplicate-imports": "off",
+  "import/no-duplicates": "error",
   "simple-import-sort/imports": [
     "error",
     {
