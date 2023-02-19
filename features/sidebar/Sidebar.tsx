@@ -28,12 +28,14 @@ import {
   SortOption,
   TextScriptOption,
 } from "features/sidebar/settingComponents";
-import type {
-  DisplayOption,
-  DisplayOptions,
-  FilterQuery,
+import { atom } from "jotai";
+import {
+  type DisplayOption,
+  type DisplayOptions,
+  type FilterQuery,
+  filters,
+  viewDisplayOptions,
 } from "utils/dbUISettings";
-import { filters, viewDisplayOptions } from "utils/dbUISettings";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
@@ -41,6 +43,8 @@ interface Props {
   drawerWidth: number;
   isOpen: [boolean, (value: boolean | ((prevVar: boolean) => boolean)) => void];
 }
+
+export const sidebarIsOpenAtom = atom(true);
 
 const StandinFilter = (filter: string) => (
   <div>

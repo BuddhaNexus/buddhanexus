@@ -1,20 +1,11 @@
 import { useState } from "react";
 import type { GetStaticPaths, GetStaticProps } from "next";
-import { DbViewSelector } from "@components/db/DbViewSelector";
-import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
+import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
-import SettingsIcon from "@mui/icons-material/Settings";
-import {
-  Box,
-  CircularProgress,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import CurrentResultChips from "features/sidebar/CurrentResultChips";
 import { PageContainerWithSidebar } from "features/sidebar/PageContainerWithSidebar";
 import TableView from "features/tableView/TableView";
 import type { PagedResponse } from "types/api/common";
@@ -29,10 +20,6 @@ export default function PageWithFilters() {
   const { isFallback } = useSourceFile();
 
   const [sidebarIsOpen, setSidebarIsOpen] = useState(true);
-
-  const handleFilterClick = () => {
-    setSidebarIsOpen(!sidebarIsOpen);
-  };
 
   // TODO: add error handling
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
@@ -66,34 +53,7 @@ export default function PageWithFilters() {
       backgroundName={sourceLanguage}
       isOpen={[sidebarIsOpen, setSidebarIsOpen]}
     >
-      <Typography variant="h2" component="h1">
-        {fileName.toUpperCase()}
-      </Typography>
-      <SourceTextSearchInput />
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={2}
-        sx={{ py: 1 }}
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <DbViewSelector currentView="numbers" />
-        </Box>
-
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <CurrentResultChips />
-
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleFilterClick}
-          >
-            <SettingsIcon color="action" />
-          </IconButton>
-        </Box>
-      </Stack>
+      <DbResultsPageHead />
 
       {isInitialLoading || !data ? (
         <CircularProgress color="inherit" sx={{ flex: 1 }} />

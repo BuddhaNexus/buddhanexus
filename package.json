@@ -27,6 +27,7 @@
     "gray-matter": "^4.0.3",
     "i18next": "^22.4.9",
     "i18next-http-backend": "^2.1.1",
+    "jotai": "^2.0.2",
     "lodash": "^4.17.21",
     "material-ui-popup-state": "^5.0.4",
     "next": "13.1.6",
