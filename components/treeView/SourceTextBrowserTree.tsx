@@ -6,6 +6,7 @@ import { Node } from "@components/treeView/DrawerNavigationComponents";
 import { transformDataForTreeView } from "@components/treeView/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import {
+  Backdrop,
   Box,
   CircularProgress,
   FormControl,
@@ -69,50 +70,54 @@ export const SourceTextBrowserTree = memo<Props>(
     const hasData = !(isLoading || !data);
 
     return (
-      <Box
-        sx={{
-          justifyContent: hasData ? "initial" : "center",
-          alignItems: hasData ? "initial" : "center",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {hasData ? (
-          <>
-            {/* Search input */}
-            <FormControl
-              ref={observe}
-              variant="outlined"
-              sx={{ p: 2 }}
-              fullWidth
-            >
-              <TextField
-                label="Search"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={(event) => setSearchTerm(event.target.value)}
-              />
-            </FormControl>
+      <>
+        <Box
+          sx={{
+            justifyContent: hasData ? "initial" : "center",
+            alignItems: hasData ? "initial" : "center",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {hasData && (
+            <>
+              {/* Search input */}
+              <FormControl
+                ref={observe}
+                variant="outlined"
+                sx={{ p: 2 }}
+                fullWidth
+              >
+                <TextField
+                  label="Search"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                />
+              </FormControl>
 
-            {/* Tree view - text browser */}
-            <Box sx={{ pl: 2 }}>
-              <TreeViewContent
-                data={data}
-                height={parentHeight - inputHeight}
-                width={parentWidth}
-                searchTerm={searchTerm}
-              />
-            </Box>
-          </>
-        ) : (
+              {/* Tree view - text browser */}
+              <Box sx={{ pl: 2 }}>
+                <TreeViewContent
+                  data={data}
+                  height={parentHeight - inputHeight}
+                  width={parentWidth}
+                  searchTerm={searchTerm}
+                />
+              </Box>
+            </>
+          )}
+        </Box>
+
+        <Backdrop open={isLoading}>
           <CircularProgress />
-        )}
-      </Box>
+        </Backdrop>
+      </>
     );
   }
 );
