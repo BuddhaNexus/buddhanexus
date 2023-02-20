@@ -15,8 +15,6 @@ export const SOURCE_LANGUAGES = [
 // i18n
 export const ALL_LOCALES = ["en", "de"];
 
-export const VIEWS = ["graph", "numbers", "table", "text"] as const;
-
 // TODO: FIND MORE ROBUST SOLUTION
 export const SETTING_SIDEBAR_PATHS_REGEX =
   /\/db\/.*?\/(table|numbers|graph|text)/;

@@ -32,6 +32,7 @@ export default function TablePage() {
         lastPage.pageNumber === 0
           ? lastPage.pageNumber
           : lastPage.pageNumber - 1,
+      refetchOnWindowFocus: false,
     });
 
   if (isFallback) {

@@ -1,5 +1,3 @@
-import type { VIEWS } from "utils/constants";
-
 // Example ApiLanguageMenuData response:
 // {
 //   displayName: 'Cūḷadhammasamādāna Sutta',
@@ -34,5 +32,3 @@ export interface APIResponse<T> {
 }
 
 export type PagedResponse<T> = { pageNumber: number; data: T };
-
-export type DbView = (typeof VIEWS)[number];

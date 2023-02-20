@@ -31,7 +31,7 @@ export default function NumbersPage() {
 
   return (
     <PageContainer backgroundName={sourceLanguage}>
-      <DbViewSelector currentView="numbers" />
+      <DbViewSelector />
       <Typography variant="h2">
         File: {sourceFile} in {sourceLanguageName}
       </Typography>

@@ -29,7 +29,7 @@ export const DbResultsPageHead = () => {
         sx={{ py: 1 }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <DbViewSelector currentView="numbers" />
+          <DbViewSelector />
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center" }}>

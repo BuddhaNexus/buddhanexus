@@ -31,7 +31,7 @@ export default function GraphPage() {
 
   return (
     <PageContainer backgroundName={sourceLanguage}>
-      <DbViewSelector currentView="graph" />
+      <DbViewSelector />
       <Typography variant="h2">
         File: {sourceFile} in {sourceLanguageName}
       </Typography>

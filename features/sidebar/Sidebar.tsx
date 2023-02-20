@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { currentDbViewAtom } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -20,7 +21,7 @@ import {
   Tab,
   Typography,
 } from "@mui/material";
-import { styled, useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import {
   FolioOption,
   InclusionExclusionFilters,
@@ -28,68 +29,58 @@ import {
   SortOption,
   TextScriptOption,
 } from "features/sidebar/settingComponents";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
 import {
+  DISPLAY_OPTIONS,
   type DisplayOption,
-  type DisplayOptions,
-  type FilterQuery,
-  viewDisplayOptions,
-  viewFilters,
+  type Filter,
+  FILTERS,
+  // UTILITY_OPTIONS,
 } from "utils/dbUISettings";
 
-import { SETTINGS_DRAWER_WIDTH } from "./MuiStyledSidebarComponents";
+import {
+  DrawerHeader,
+  SETTINGS_DRAWER_WIDTH,
+} from "./MuiStyledSidebarComponents";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
 export const sidebarIsOpenAtom = atom(true);
 
-const StandinFilter = (filter: string) => (
+const StandinFilter = (setting: string) => (
   <div>
-    <small>{filter} setting coming to a sidebar near your soon!</small>
+    <small>{setting} setting coming to a sidebar near your soon!</small>
   </div>
 );
 
-// TODO: refactor to account for skt scripts & robustness
-const getTibetanDisplayOptions = (): Partial<DisplayOptions> => {
-  return Object.fromEntries(
-    Object.entries(viewDisplayOptions).map(([view, options]) => {
-      return view === "graph"
-        ? [view, options]
-        : [view, ["script", ...options]];
-    })
-  );
-};
+const displayOptionComponents: [DisplayOption, React.ElementType][] = [
+  ["folio", FolioOption],
+  ["multi_lingual", () => StandinFilter("showAndPositionSegmentNrs")],
+  ["script", TextScriptOption],
+  [
+    "showAndPositionSegmentNrs",
+    () => StandinFilter("showAndPositionSegmentNrs"),
+  ],
+  ["sort_method", SortOption],
+];
 
-const FilterComponents: Partial<Record<FilterQuery, React.ElementType>> = {
-  limit_collection: InclusionExclusionFilters,
-  par_length: MinMatchLengthFilter,
-  target_collection: () => StandinFilter("target_collection"),
-};
-
-const OptionComponents: Partial<Record<DisplayOption, React.ElementType>> = {
-  folio: FolioOption,
-  script: TextScriptOption,
-  sort_method: SortOption,
-};
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: "flex-start",
-}));
+const filterComponents: [Filter, React.ElementType][] = [
+  ["co_occ", () => <span />],
+  ["par_length", MinMatchLengthFilter],
+  ["limit_collection", InclusionExclusionFilters],
+  ["score", () => <span />],
+  ["target_collection", () => StandinFilter("target_collection")],
+];
 
 export function Sidebar() {
   const theme = useTheme();
+
   const { sourceLanguage } = useDbQueryParams();
 
+  const currentDbView = useAtomValue(currentDbViewAtom);
   const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
-  const [tabPosition, setTabPosition] = useState("1");
 
-  const displayOptions =
-    sourceLanguage === "tib" ? getTibetanDisplayOptions() : viewDisplayOptions;
+  const [tabPosition, setTabPosition] = useState("1");
 
   const handleDrawerClose = () => {
     setSidebarIsOpen(false);
@@ -156,20 +147,18 @@ export function Sidebar() {
                 Display
               </Typography>
               <List>
-                {/* TODO: ADD DYNAMIC VIEW */}
-                {displayOptions.table!.map((optionName) => {
-                  if (!OptionComponents[optionName]) {
+                {displayOptionComponents.map((option) => {
+                  const [name, DisplayOptionComponent] = option;
+                  if (!DISPLAY_OPTIONS[name].views.includes(currentDbView)) {
+                    return null;
+                  }
+                  if (!DISPLAY_OPTIONS[name].langs.includes(sourceLanguage)) {
                     return null;
                   }
 
-                  const OptionComponent = OptionComponents[
-                    optionName
-                  ] as React.ElementType;
-
                   return (
-                    <ListItem key={optionName}>
-                      {/* TODO: ADD DYNAMIC VIEW */}
-                      <OptionComponent currentView="table" />
+                    <ListItem key={name}>
+                      <DisplayOptionComponent />
                     </ListItem>
                   );
                 })}
@@ -219,20 +208,22 @@ export function Sidebar() {
 
             <TabPanel value="2" sx={{ px: 0 }}>
               <List>
-                {/* TODO: ADD DYNAMIC VIEW */}
-                {viewFilters.table.map((filterName) => {
-                  if (!FilterComponents[filterName]) {
+                {filterComponents.map((filter) => {
+                  const [name, FilterComponent] = filter;
+                  if (!FILTERS[name].views.includes(currentDbView)) {
+                    return null;
+                  }
+                  if (!FILTERS[name].langs.includes(sourceLanguage)) {
+                    return null;
+                  }
+                  // TODO: REMOVE LEGACY FILTERS ON CONFIRMATION
+                  if (name === "co_occ" || name === "score") {
                     return null;
                   }
 
-                  const FilterComponent = FilterComponents[
-                    filterName
-                  ] as React.ElementType;
-
                   return (
-                    <ListItem key={filterName}>
-                      {/* TODO: ADD DYNAMIC VIEW */}
-                      <FilterComponent currentView="table" />
+                    <ListItem key={name}>
+                      <FilterComponent />
                     </ListItem>
                   );
                 })}

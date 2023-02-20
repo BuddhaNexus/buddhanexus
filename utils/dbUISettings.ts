@@ -1,6 +1,4 @@
-/* eslint-disable no-inline-comments */
-/* eslint-disable line-comment-position */
-import type { DbView } from "types/api/common";
+import type { DbView } from "@components/db/DbViewSelector";
 import {
   ArrayParam,
   NumberParam,
@@ -8,45 +6,124 @@ import {
   withDefault,
 } from "use-query-params";
 
-export type FilterQuery =
-  | "co_occ" // TODO: remove on API update
-  | "limit_collection"
-  | "par_length"
-  | "score" // TODO: confirm if to be removed
-  | "target_collection";
+const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 
-export type QueriedDisplayOption = "folio" | "multi_lingual" | "sort_method";
+const filterList = [
+  "co_occ",
+  "limit_collection",
+  "par_length",
+  "score",
+  "target_collection",
+] as const;
 
-export type LocalDisplayOption = "script" | "showAndPositionSegmentNrs";
+const queriedDisplayOptionList = [
+  "folio",
+  "multi_lingual",
+  "sort_method",
+] as const;
 
-export type LocalUtilityOption =
-  | "copyQueryLink" // PROPOSED
-  | "copyQueryTitle"
-  | "download"
-  | "emailQueryLink" // PROPOSED
-  | "resourceLinks";
+const localDisplayOptionList = ["script", "showAndPositionSegmentNrs"] as const;
 
+const utilityOptionList = [
+  "download",
+  "copyQueryTitle",
+  "copyQueryLink",
+  "emailQueryLink",
+  "resourceLinks",
+] as const;
+
+export type Filter = (typeof filterList)[number];
+export type QueriedDisplayOption = (typeof queriedDisplayOptionList)[number];
+export type LocalDisplayOption = (typeof localDisplayOptionList)[number];
 export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
+export type LocalUtilityOption = (typeof utilityOptionList)[number];
 
-export type DisplayOptions = Record<DbView, DisplayOption[]>;
+interface SettingContext {
+  langs: (typeof dbLangs)[number][];
+  views: DbView[];
+}
 
-const legacyFilters: FilterQuery[] = ["co_occ", "score"];
-const basicFilters: FilterQuery[] = [...legacyFilters, "par_length"];
-const standardFilters: FilterQuery[] = [...basicFilters, "limit_collection"];
-
-export const viewFilters: Record<DbView, FilterQuery[]> = {
-  graph: [...basicFilters, "target_collection"],
-  numbers: standardFilters,
-  table: standardFilters,
-  text: standardFilters,
+export const FILTERS: Record<Filter, SettingContext> = {
+  co_occ: {
+    // TODO: remove on API update,
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["graph", "numbers", "table", "text"],
+  },
+  limit_collection: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["numbers", "table", "text"],
+  },
+  par_length: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["graph", "numbers", "table", "text"],
+  },
+  score: {
+    // TODO: confirm if to be removed,
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["graph", "numbers", "table", "text"],
+  },
+  target_collection: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["graph"],
+  },
 };
 
-// "folio" is used as "jump to" in text view and "only show" in other applicable views
-export const viewDisplayOptions: DisplayOptions = {
-  graph: [],
-  numbers: ["folio"],
-  table: ["folio", "sort_method"],
-  text: ["folio", "showAndPositionSegmentNrs"],
+const QUERIED_DISPLAY_OPTIONS: Record<QueriedDisplayOption, SettingContext> = {
+  folio: {
+    // "folio" is used as "jump to" in text view and "only show" in other applicable views
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["numbers", "table", "text"],
+  },
+  multi_lingual: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["text"],
+  },
+  sort_method: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["table"],
+  },
+};
+
+const LOCAL_DISPLAY_OPTIONS: Record<LocalDisplayOption, SettingContext> = {
+  script: {
+    langs: ["tib"],
+    views: ["table", "text"],
+  },
+  showAndPositionSegmentNrs: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["text"],
+  },
+};
+
+export const DISPLAY_OPTIONS: Record<
+  LocalDisplayOption | QueriedDisplayOption,
+  SettingContext
+> = {
+  ...QUERIED_DISPLAY_OPTIONS,
+  ...LOCAL_DISPLAY_OPTIONS,
+};
+
+export const UTILITY_OPTIONS: Record<LocalUtilityOption, SettingContext> = {
+  download: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["numbers", "table"],
+  },
+  copyQueryTitle: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["graph", "numbers", "table", "text"],
+  },
+  copyQueryLink: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["graph", "numbers", "table", "text"],
+  },
+  emailQueryLink: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["graph", "numbers", "table", "text"],
+  },
+  resourceLinks: {
+    langs: ["pli", "chn", "tib", "skt"],
+    views: ["graph", "numbers", "table", "text"],
+  },
 };
 
 // TODO: confirm default values

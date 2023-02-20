@@ -1,13 +1,24 @@
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import type { DbView } from "types/api/common";
+import { atom, useAtom } from "jotai";
 
-interface Props {
-  currentView: DbView;
-}
+export const VIEWS = ["graph", "numbers", "table", "text"] as const;
+export type DbView = (typeof VIEWS)[number];
 
-export const DbViewSelector = ({ currentView }: Props) => {
+export const currentDbViewAtom = atom<DbView>("table");
+
+export const DbViewSelector = () => {
+  const { t } = useTranslation();
+
   const { asPath, push } = useRouter();
+  const [currentDbView, setCurrentDbView] = useAtom(currentDbViewAtom);
+
+  const handleChange = (event: React.ChangeEvent<{ value: DbView }>) => {
+    setCurrentDbView(event.target.value);
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    push(asPath.replace(currentDbView, event.target.value));
+  };
 
   return (
     <FormControl variant="filled">
@@ -15,12 +26,16 @@ export const DbViewSelector = ({ currentView }: Props) => {
       <Select
         labelId="db-view-selector-label"
         id="db-view-selector"
-        value={currentView}
-        onChange={(e) => push(asPath.replace(currentView, e.target.value))}
+        value={currentDbView}
+        onChange={(e) =>
+          handleChange(e as React.ChangeEvent<{ value: DbView }>)
+        }
       >
-        <MenuItem value="table">Table</MenuItem>
-        <MenuItem value="graph">Graph</MenuItem>
-        <MenuItem value="numbers">Numbers</MenuItem>
+        {VIEWS.map((view) => (
+          <MenuItem key={view} value={view}>
+            {t(`common:dbViewSelector.${view}`)}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
