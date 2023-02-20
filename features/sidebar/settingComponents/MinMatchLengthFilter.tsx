@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import Box from "@mui/material/Box";
-import Slider from "@mui/material/Slider";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
+import { Box, FormLabel, Slider, TextField } from "@mui/material";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -71,11 +68,11 @@ export default function MinMatchLengthFilter() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Typography id="input-slider" gutterBottom>
-        Min. character match length:
-      </Typography>
+      <FormLabel id="min-match-input-label">
+        Min. character/syllable match length:
+      </FormLabel>
       <TextField
-        sx={{ width: "100%", mb: 1 }}
+        sx={{ width: "100%", my: 1 }}
         value={queryValue}
         type="number"
         inputProps={{
@@ -83,7 +80,7 @@ export default function MinMatchLengthFilter() {
           min: 0,
           max: 4000,
           type: "number",
-          "aria-labelledby": "input-slider",
+          "aria-labelledby": "min-match-input-label",
         }}
         onKeyUp={handleInputEnter}
         onChange={handleInputChange}
@@ -92,7 +89,7 @@ export default function MinMatchLengthFilter() {
       <Box sx={{ ml: 1, width: "96%" }}>
         <Slider
           value={typeof queryValue === "number" ? queryValue : 30}
-          aria-labelledby="input-slider"
+          aria-labelledby="min-match-input-label"
           getAriaValueText={valueToString}
           min={30}
           max={4000}

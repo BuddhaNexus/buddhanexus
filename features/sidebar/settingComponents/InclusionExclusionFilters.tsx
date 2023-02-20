@@ -13,11 +13,10 @@ import {
   Autocomplete,
   autocompleteClasses,
   Box,
-  // Chip,
   CircularProgress,
+  FormLabel,
   ListSubheader,
   Popper,
-  // Stack,
   TextField,
   Typography,
   useMediaQuery,
@@ -178,8 +177,7 @@ const StyledPopper = styled(Popper)({
 });
 
 const InclusionExclusionFilters = () => {
-  const { sourceLanguage, queryParams, setQueryParams, serializedParams } =
-    useDbQueryParams();
+  const { sourceLanguage, queryParams, setQueryParams } = useDbQueryParams();
   // const { t } = useTranslation();
 
   interface Inclusions {
@@ -228,25 +226,6 @@ const InclusionExclusionFilters = () => {
     });
   };
 
-  // useEffect(() => {
-  //   if (!queryParams.limit_collection && !inclusions && !exclusions) {
-  //     setInclusions(undefined);
-  //     setExclusions(undefined);
-  //     return;
-  //   }
-
-  //   const inclusionList = queryParams.limit_collection?.filter(
-  //     (item) => !item?.includes("!")
-  //   ) as DatabaseText["fileName"][];
-
-  //   const exclusionList = queryParams.limit_collection?.filter((item) =>
-  //     item?.includes("!")
-  //   ) as DatabaseText["fileName"][];
-
-  //   setInclusions(inclusionList);
-  //   setExclusions(exclusionList);
-  // }, [queryParams]);
-
   useEffect(() => {}, [queryParams]);
 
   const { data: files, isLoading } = useQuery<DatabaseText[]>({
@@ -263,10 +242,12 @@ const InclusionExclusionFilters = () => {
 
   return (
     <Box sx={{ my: 1, width: "100%" }}>
-      <Typography sx={{ mb: 2 }}>Include and exclude texts</Typography>
+      <FormLabel id="include-exclude-filters-label">
+        Include and Exclude texts
+      </FormLabel>
       <Autocomplete
         id="exclude-collections"
-        sx={{ mb: 2 }}
+        sx={{ mt: 1, mb: 2 }}
         multiple={true}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}

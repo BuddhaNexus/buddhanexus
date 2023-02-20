@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { FormControl, MenuItem, Select } from "@mui/material";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 
 const SORT_OPTIONS = [
   { value: "position", label: "Match position in source text" },
@@ -24,13 +22,11 @@ export default function SortOption() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Typography id="input-slider" gutterBottom>
-        Sort method
-      </Typography>
+      <FormLabel id="sort-option-selector-label">Sort Method</FormLabel>
       <FormControl sx={{ width: "100%" }}>
         <Select
-          labelId="db-view-selector-label"
-          id="db-view-selector"
+          id="sort-option-selector"
+          aria-labelledby="sort-option-selector-label"
           defaultValue="position"
           value={queryParams.sort_method ?? "position"}
           onChange={(e) => handleSelectChange(e.target.value)}

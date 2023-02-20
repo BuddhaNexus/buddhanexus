@@ -34,7 +34,7 @@ const legacyFilters: FilterQuery[] = ["co_occ", "score"];
 const basicFilters: FilterQuery[] = [...legacyFilters, "par_length"];
 const standardFilters: FilterQuery[] = [...basicFilters, "limit_collection"];
 
-export const filters: Record<DbView, FilterQuery[]> = {
+export const viewFilters: Record<DbView, FilterQuery[]> = {
   graph: [...basicFilters, "target_collection"],
   numbers: standardFilters,
   table: standardFilters,

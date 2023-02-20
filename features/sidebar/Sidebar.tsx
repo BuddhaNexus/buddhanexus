@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
 import {
   Box,
@@ -33,8 +33,8 @@ import {
   type DisplayOption,
   type DisplayOptions,
   type FilterQuery,
-  filters,
   viewDisplayOptions,
+  viewFilters,
 } from "utils/dbUISettings";
 
 import { SETTINGS_DRAWER_WIDTH } from "./MuiStyledSidebarComponents";
@@ -49,6 +49,7 @@ const StandinFilter = (filter: string) => (
   </div>
 );
 
+// TODO: refactor to account for skt scripts & robustness
 const getTibetanDisplayOptions = (): Partial<DisplayOptions> => {
   return Object.fromEntries(
     Object.entries(viewDisplayOptions).map(([view, options]) => {
@@ -188,7 +189,7 @@ export function Sidebar() {
                   {
                     id: 2,
                     label: "Copy results page link",
-                    Icon: ContentCopyIcon,
+                    Icon: ShareOutlinedIcon,
                   },
                   {
                     id: 3,
@@ -219,7 +220,7 @@ export function Sidebar() {
             <TabPanel value="2" sx={{ px: 0 }}>
               <List>
                 {/* TODO: ADD DYNAMIC VIEW */}
-                {filters.table.map((filterName) => {
+                {viewFilters.table.map((filterName) => {
                   if (!FilterComponents[filterName]) {
                     return null;
                   }
