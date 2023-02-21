@@ -1,0 +1,29 @@
+{
+  "tabs": {
+    "options": "Optionen",
+    "filters": "Filter",
+    "info": "Info"
+  },
+  "headings": {
+    "display": "Anzeigen",
+    "tools": "Werkzeuge",
+    "links": "Links"
+  },
+  "optionsLabels": {
+    "script": "Textskript auswählen",
+    "folio": "Gehe zum ausgewählten Textabschnitt",
+    "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
+    "sorting": "Sortiermethode",
+    "download": "Ergebnisse als xmlx-Datei herunterladen",
+    "copyPageLink": "Link der Ergebnisseite kopieren",
+    "emailPageLink": "Link zur Ergebnisseite per E-Mail versenden"
+  },
+  "filtersLabels": {
+    "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
+    "inclcudeExclude": "Elemente ein- und ausschließen",
+    "excludeCollections": "Sammlungen ausschließen",
+    "includeCollections": "Nur Sammlungen einschließen",
+    "excludeTexts": "Texte ausschließen",
+    "includeTexts": "Nur Texte einschließen"
+  }
+}

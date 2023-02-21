@@ -23,21 +23,17 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import {
-  FolioOption,
   InclusionExclusionFilters,
   MinMatchLengthFilter,
-  SortOption,
-  TextScriptOption,
 } from "features/sidebar/settingComponents";
 import { atom, useAtom, useAtomValue } from "jotai";
 import {
-  DISPLAY_OPTIONS,
-  type DisplayOption,
   type Filter,
   FILTERS,
   // UTILITY_OPTIONS,
 } from "utils/dbUISettings";
 
+import { DisplayOptionsSettings } from "./DisplayOptionsSettings";
 import {
   DrawerHeader,
   SETTINGS_DRAWER_WIDTH,
@@ -47,22 +43,11 @@ import {
 
 export const sidebarIsOpenAtom = atom(true);
 
-const StandinFilter = (setting: string) => (
+export const StandinFilter = (setting: string) => (
   <div>
     <small>{setting} setting coming to a sidebar near your soon!</small>
   </div>
 );
-
-const displayOptionComponents: [DisplayOption, React.ElementType][] = [
-  ["folio", FolioOption],
-  ["multi_lingual", () => StandinFilter("showAndPositionSegmentNrs")],
-  ["script", TextScriptOption],
-  [
-    "showAndPositionSegmentNrs",
-    () => StandinFilter("showAndPositionSegmentNrs"),
-  ],
-  ["sort_method", SortOption],
-];
 
 const filterComponents: [Filter, React.ElementType][] = [
   ["co_occ", () => <span />],
@@ -143,28 +128,8 @@ export function Sidebar() {
             </Box>
 
             <TabPanel value="1" sx={{ px: 0 }}>
-              <Typography variant="h6" mx={2}>
-                Display
-              </Typography>
-              <List>
-                {displayOptionComponents.map((option) => {
-                  const [name, DisplayOptionComponent] = option;
-                  if (!DISPLAY_OPTIONS[name].views.includes(currentDbView)) {
-                    return null;
-                  }
-                  if (!DISPLAY_OPTIONS[name].langs.includes(sourceLanguage)) {
-                    return null;
-                  }
+              <DisplayOptionsSettings />
 
-                  return (
-                    <ListItem key={name}>
-                      <DisplayOptionComponent />
-                    </ListItem>
-                  );
-                })}
-              </List>
-
-              <Divider sx={{ my: 2 }} />
               <Typography variant="h6" mx={2}>
                 Tools
               </Typography>

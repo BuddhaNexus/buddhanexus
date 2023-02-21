@@ -1,5 +1,5 @@
 import type { GetStaticProps } from "next";
-import { DbViewSelector } from "@components/db/DbViewSelector";
+import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -12,13 +12,14 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export { getSourceTextStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 export default function GraphPage() {
-  const { sourceLanguageName, sourceLanguage, fileName } = useDbQueryParams();
-  const { sourceFile, isFallback } = useSourceFile();
+  const { sourceLanguage, fileName, serializedParams } = useDbQueryParams();
+  const { isFallback } = useSourceFile();
 
   // TODO: add error handling
   const { data, isLoading } = useQuery<ApiGraphPageData>({
-    queryKey: DbApi.GraphView.makeQueryKey(fileName),
-    queryFn: () => DbApi.GraphView.call(fileName),
+    queryKey: [DbApi.GraphView.makeQueryKey(fileName), serializedParams],
+    queryFn: () => DbApi.GraphView.call(fileName, serializedParams),
+    refetchOnWindowFocus: false,
   });
 
   if (isFallback) {
@@ -30,11 +31,12 @@ export default function GraphPage() {
   }
 
   return (
-    <PageContainer backgroundName={sourceLanguage}>
-      <DbViewSelector />
-      <Typography variant="h2">
-        File: {sourceFile} in {sourceLanguageName}
-      </Typography>
+    <PageContainer
+      maxWidth="xl"
+      backgroundName={sourceLanguage}
+      hasSidebar={true}
+    >
+      <DbResultsPageHead />
 
       {isLoading ? (
         <CircularProgress color="inherit" />
@@ -58,7 +60,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 
   const fileName = params?.file as string;
   await queryClient.prefetchQuery(DbApi.GraphView.makeQueryKey(fileName), () =>
-    DbApi.GraphView.call(fileName)
+    DbApi.GraphView.call(fileName, `?co_occ=2000`)
   );
 
   return {
