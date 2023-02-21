@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { currentDbViewAtom } from "@components/db/DbViewSelector";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+// import { useTranslation } from "react-i18next";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -22,18 +21,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import {
-  InclusionExclusionFilters,
-  MinMatchLengthFilter,
-} from "features/sidebar/settingComponents";
-import { atom, useAtom, useAtomValue } from "jotai";
-import {
-  type Filter,
-  FILTERS,
-  // UTILITY_OPTIONS,
-} from "utils/dbUISettings";
+import { atom, useAtom } from "jotai";
 
+// import { UTILITY_OPTIONS } from "utils/dbUISettings";
 import { DisplayOptionsSettings } from "./DisplayOptionsSettings";
+import { FilterSettings } from "./FilterSettings";
 import {
   DrawerHeader,
   SETTINGS_DRAWER_WIDTH,
@@ -43,26 +35,20 @@ import {
 
 export const sidebarIsOpenAtom = atom(true);
 
+export function isNullOnly(children: (React.ReactNode | null)[]) {
+  return [...children].filter((item) => item !== null).length === 0;
+}
+
 export const StandinFilter = (setting: string) => (
   <div>
     <small>{setting} setting coming to a sidebar near your soon!</small>
   </div>
 );
 
-const filterComponents: [Filter, React.ElementType][] = [
-  ["co_occ", () => <span />],
-  ["par_length", MinMatchLengthFilter],
-  ["limit_collection", InclusionExclusionFilters],
-  ["score", () => <span />],
-  ["target_collection", () => StandinFilter("target_collection")],
-];
-
 export function Sidebar() {
   const theme = useTheme();
+  // const { t } = useTranslation();
 
-  const { sourceLanguage } = useDbQueryParams();
-
-  const currentDbView = useAtomValue(currentDbViewAtom);
   const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
 
   const [tabPosition, setTabPosition] = useState("1");
@@ -124,6 +110,9 @@ export function Sidebar() {
                 <Tab label="Options" value="1" />
                 <Tab label="Filters" value="2" />
                 <Tab label="Info" value="3" />
+                {/*  <Tab label={t("settings:tabs.options")} value="1" />
+                <Tab label={t("settings:tabs.filters")} value="2" />
+                <Tab label={t("settings:tabs.info")} value="3" /> */}
               </TabList>
             </Box>
 
@@ -172,27 +161,7 @@ export function Sidebar() {
             </TabPanel>
 
             <TabPanel value="2" sx={{ px: 0 }}>
-              <List>
-                {filterComponents.map((filter) => {
-                  const [name, FilterComponent] = filter;
-                  if (!FILTERS[name].views.includes(currentDbView)) {
-                    return null;
-                  }
-                  if (!FILTERS[name].langs.includes(sourceLanguage)) {
-                    return null;
-                  }
-                  // TODO: REMOVE LEGACY FILTERS ON CONFIRMATION
-                  if (name === "co_occ" || name === "score") {
-                    return null;
-                  }
-
-                  return (
-                    <ListItem key={name}>
-                      <FilterComponent />
-                    </ListItem>
-                  );
-                })}
-              </List>
+              <FilterSettings />
             </TabPanel>
 
             <TabPanel value="3">
