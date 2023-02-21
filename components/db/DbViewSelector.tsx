@@ -1,8 +1,12 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useSetAtom } from "jotai";
+import { atomWithLocation } from "jotai-location";
+import queryString from "query-string";
 
+const locationAtom = atomWithLocation();
 export const VIEWS = ["graph", "numbers", "table", "text"] as const;
 export type DbView = (typeof VIEWS)[number];
 
@@ -11,13 +15,22 @@ export const currentDbViewAtom = atom<DbView>("table");
 export const DbViewSelector = () => {
   const { t } = useTranslation();
 
-  const { asPath, push } = useRouter();
+  const setLoc = useSetAtom(locationAtom);
+  const { asPath } = useRouter();
+  const { queryParams } = useDbQueryParams();
   const [currentDbView, setCurrentDbView] = useAtom(currentDbViewAtom);
 
   const handleChange = (event: React.ChangeEvent<{ value: DbView }>) => {
     setCurrentDbView(event.target.value);
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    push(asPath.replace(currentDbView, event.target.value));
+
+    setLoc(
+      (prev) =>
+        ({
+          ...prev,
+          pathname: asPath.replace(currentDbView, event.target.value),
+          searchParams: queryString.stringify(queryParams),
+        } as unknown as Location)
+    );
   };
 
   return (
