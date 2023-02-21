@@ -33,7 +33,7 @@ type Props = {
 };
 
 const DisplayOptionsList: React.FC<Props> = ({ children }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("settings");
 
   if (isOnlyNull(children as (React.ReactNode | null)[])) {
     return null;
@@ -42,7 +42,7 @@ const DisplayOptionsList: React.FC<Props> = ({ children }) => {
   return (
     <>
       <Typography variant="h6" mx={2}>
-        {t("settings:headings.display")}
+        {t("headings.display")}
       </Typography>
       <List>{children}</List>
       <Divider sx={{ my: 2 }} />

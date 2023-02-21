@@ -1,4 +1,4 @@
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -43,7 +43,7 @@ export const StandinFilter = (setting: string) => (
 
 export function Sidebar() {
   const theme = useTheme();
-  // const { t } = useTranslation();
+  const { t } = useTranslation("settings");
 
   const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
 
@@ -103,12 +103,9 @@ export function Sidebar() {
                 aria-label="Filters, desplay options and other settings"
                 onChange={handleTabChange}
               >
-                <Tab label="Options" value="1" />
-                <Tab label="Filters" value="2" />
-                <Tab label="Info" value="3" />
-                {/*  <Tab label={t("settings:tabs.options")} value="1" />
-                <Tab label={t("settings:tabs.filters")} value="2" />
-                <Tab label={t("settings:tabs.info")} value="3" /> */}
+                <Tab label={t("tabs.options")} value="1" />
+                <Tab label={t("tabs.filters")} value="2" />
+                <Tab label={t("tabs.info")} value="3" />
               </TabList>
             </Box>
 

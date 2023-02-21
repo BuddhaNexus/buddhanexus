@@ -139,17 +139,7 @@ export function isOnlyNull(children: (React.ReactNode | null)[]) {
 }
 
 // TODO: confirm default values
-export const queryConfig = {
-  co_occ: withDefault(NumberParam, 30),
-  score: withDefault(NumberParam, 30),
-  par_length: withDefault(NumberParam, 30),
-  limit_collection: withDefault(ArrayParam, undefined),
-  target_collection: withDefault(StringParam, undefined),
-  folio: withDefault(StringParam, undefined),
-  sort_method: withDefault(StringParam, undefined),
-};
-
-export const queryDefaults = {
+export const QUERY_DEFAULTS = {
   co_occ: 30,
   score: 30,
   par_length: 30,
@@ -157,4 +147,14 @@ export const queryDefaults = {
   target_collection: undefined,
   folio: undefined,
   sort_method: undefined,
+};
+
+export const queryConfig = {
+  co_occ: withDefault(NumberParam, QUERY_DEFAULTS.co_occ),
+  score: withDefault(NumberParam, QUERY_DEFAULTS.score),
+  par_length: withDefault(NumberParam, QUERY_DEFAULTS.par_length),
+  limit_collection: withDefault(ArrayParam, QUERY_DEFAULTS.limit_collection),
+  target_collection: withDefault(StringParam, QUERY_DEFAULTS.target_collection),
+  folio: withDefault(StringParam, QUERY_DEFAULTS.folio),
+  sort_method: withDefault(StringParam, QUERY_DEFAULTS.sort_method),
 };

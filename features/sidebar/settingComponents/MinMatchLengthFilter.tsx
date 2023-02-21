@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
+import { atom, useAtom } from "jotai";
+import { QUERY_DEFAULTS } from "utils/dbUISettings";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -9,7 +10,7 @@ function valueToString(value: number) {
 function normalizeValue(value: number | null | undefined) {
   // TODO set dynamic max
   if (!value || value < 0) {
-    return 30;
+    return QUERY_DEFAULTS.par_length;
   }
 
   if (value > 4000) {
@@ -23,16 +24,12 @@ function getQueryParam(value: number | null | undefined) {
   return { par_length: normalizeValue(value) };
 }
 
+const queryValueAtom = atom<number>(normalizeValue(QUERY_DEFAULTS.par_length));
+
 export default function MinMatchLengthFilter() {
-  const { queryParams, setQueryParams } = useDbQueryParams();
+  const { setQueryParams } = useDbQueryParams();
 
-  const [queryValue, setQueryValue] = useState<number>(
-    normalizeValue(queryParams.par_length)
-  );
-
-  useEffect(() => {
-    setQueryValue(Number(queryParams.par_length));
-  }, [queryParams]);
+  const [queryValue, setQueryValue] = useAtom(queryValueAtom);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQueryValue(normalizeValue(Number(event.target.value)));
