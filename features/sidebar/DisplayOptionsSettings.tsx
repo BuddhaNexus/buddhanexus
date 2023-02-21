@@ -8,14 +8,19 @@ import {
   SortOption,
   TextScriptOption,
 } from "features/sidebar/settingComponents";
-import { isNullOnly, StandinFilter } from "features/sidebar/Sidebar";
+import { StandinFilter } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
-import { DISPLAY_OPTIONS, type DisplayOption } from "utils/dbUISettings";
+import {
+  DISPLAY_OPTIONS_CONTEXT_OMISSIONS as omissions,
+  type DisplayOption,
+  isOnlyNull,
+  isSettingOmitted,
+} from "utils/dbUISettings";
 
 const displayOptionComponents: [DisplayOption, React.ElementType][] = [
+  ["script", TextScriptOption],
   ["folio", FolioOption],
   ["multi_lingual", () => StandinFilter("showAndPositionSegmentNrs")],
-  ["script", TextScriptOption],
   [
     "showAndPositionSegmentNrs",
     () => StandinFilter("showAndPositionSegmentNrs"),
@@ -30,7 +35,7 @@ type Props = {
 const DisplayOptionsList: React.FC<Props> = ({ children }) => {
   const { t } = useTranslation();
 
-  if (isNullOnly(children as (React.ReactNode | null)[])) {
+  if (isOnlyNull(children as (React.ReactNode | null)[])) {
     return null;
   }
 
@@ -53,10 +58,15 @@ export const DisplayOptionsSettings = () => {
     <DisplayOptionsList>
       {displayOptionComponents.map((option) => {
         const [name, DisplayOptionComponent] = option;
-        if (!DISPLAY_OPTIONS[name].views.includes(currentDbView)) {
-          return null;
-        }
-        if (!DISPLAY_OPTIONS[name].langs.includes(sourceLanguage)) {
+
+        if (
+          isSettingOmitted({
+            omissions,
+            settingName: name,
+            dbLang: sourceLanguage,
+            view: currentDbView,
+          })
+        ) {
           return null;
         }
 

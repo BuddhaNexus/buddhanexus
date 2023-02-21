@@ -6,9 +6,14 @@ import {
   InclusionExclusionFilters,
   MinMatchLengthFilter,
 } from "features/sidebar/settingComponents";
-import { isNullOnly, StandinFilter } from "features/sidebar/Sidebar";
+import { StandinFilter } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
-import { type Filter, FILTERS } from "utils/dbUISettings";
+import {
+  type Filter,
+  FILTER_CONTEXT_OMISSIONS as omissions,
+  isOnlyNull,
+  isSettingOmitted,
+} from "utils/dbUISettings";
 
 const filterComponents: [Filter, React.ElementType][] = [
   ["co_occ", () => <span />],
@@ -23,7 +28,7 @@ type Props = {
 };
 
 const FilterList: React.FC<Props> = ({ children }) => {
-  if (isNullOnly(children as (React.ReactNode | null)[])) {
+  if (isOnlyNull(children as (React.ReactNode | null)[])) {
     return null;
   }
   return <List>{children}</List>;
@@ -38,10 +43,14 @@ export const FilterSettings = () => {
       {filterComponents.map((filter) => {
         const [name, FilterComponent] = filter;
 
-        if (!FILTERS[name].views.includes(currentDbView)) {
-          return null;
-        }
-        if (!FILTERS[name].langs.includes(sourceLanguage)) {
+        if (
+          isSettingOmitted({
+            omissions,
+            settingName: name,
+            dbLang: sourceLanguage,
+            view: currentDbView,
+          })
+        ) {
           return null;
         }
         // TODO: REMOVE LEGACY FILTERS ON CONFIRMATION

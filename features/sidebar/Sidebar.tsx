@@ -35,10 +35,6 @@ import {
 
 export const sidebarIsOpenAtom = atom(true);
 
-export function isNullOnly(children: (React.ReactNode | null)[]) {
-  return [...children].filter((item) => item !== null).length === 0;
-}
-
 export const StandinFilter = (setting: string) => (
   <div>
     <small>{setting} setting coming to a sidebar near your soon!</small>

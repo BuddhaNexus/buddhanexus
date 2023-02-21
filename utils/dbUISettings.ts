@@ -7,6 +7,7 @@ import {
 } from "use-query-params";
 
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
+type DbLang = (typeof dbLangs)[number];
 
 const filterList = [
   "co_occ",
@@ -38,93 +39,104 @@ export type LocalDisplayOption = (typeof localDisplayOptionList)[number];
 export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
 export type LocalUtilityOption = (typeof utilityOptionList)[number];
 
-interface SettingContext {
-  langs: (typeof dbLangs)[number][];
-  views: DbView[];
-}
+type ViewOmission = (DbLang | "allLangs")[];
+type SettingContext = Partial<Record<DbView, ViewOmission>>;
 
-export const FILTERS: Record<Filter, SettingContext> = {
-  co_occ: {
-    // TODO: remove on API update,
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["graph", "numbers", "table", "text"],
-  },
-  limit_collection: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["numbers", "table", "text"],
-  },
-  par_length: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["graph", "numbers", "table", "text"],
-  },
-  score: {
-    // TODO: confirm if to be removed,
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["graph", "numbers", "table", "text"],
-  },
+export type FilterOmissions = Partial<Record<Filter, SettingContext>>;
+export const FILTER_CONTEXT_OMISSIONS: FilterOmissions = {
+  limit_collection: { graph: ["allLangs"] },
   target_collection: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["graph"],
+    numbers: ["allLangs"],
+    table: ["allLangs"],
+    text: ["allLangs"],
   },
 };
 
-const QUERIED_DISPLAY_OPTIONS: Record<QueriedDisplayOption, SettingContext> = {
+const QUERIED_DISPLAY_OPTIONS_CONTEXT_OMISSIONS: Partial<
+  Record<QueriedDisplayOption, SettingContext>
+> = {
   folio: {
     // "folio" is used as "jump to" in text view and "only show" in other applicable views
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["numbers", "table", "text"],
+    graph: ["allLangs"],
   },
   multi_lingual: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["text"],
+    graph: ["allLangs"],
+    numbers: ["allLangs"],
+    table: ["allLangs"],
   },
   sort_method: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["table"],
+    graph: ["allLangs"],
+    numbers: ["allLangs"],
+    text: ["allLangs"],
   },
 };
 
-const LOCAL_DISPLAY_OPTIONS: Record<LocalDisplayOption, SettingContext> = {
+const LOCAL_DISPLAY_OPTIONS_CONTEXT_OMISSIONS: Partial<
+  Record<LocalDisplayOption, SettingContext>
+> = {
   script: {
-    langs: ["tib"],
-    views: ["table", "text"],
+    graph: ["allLangs"],
+    numbers: ["allLangs"],
+    table: ["pli", "chn", "skt"],
+    text: ["pli", "chn", "skt"],
   },
   showAndPositionSegmentNrs: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["text"],
+    graph: ["allLangs"],
+    numbers: ["allLangs"],
+    table: ["allLangs"],
   },
 };
 
-export const DISPLAY_OPTIONS: Record<
-  LocalDisplayOption | QueriedDisplayOption,
-  SettingContext
-> = {
-  ...QUERIED_DISPLAY_OPTIONS,
-  ...LOCAL_DISPLAY_OPTIONS,
+export type DisplayOmissions = Partial<
+  Record<LocalDisplayOption | QueriedDisplayOption, SettingContext>
+>;
+export const DISPLAY_OPTIONS_CONTEXT_OMISSIONS: DisplayOmissions = {
+  ...QUERIED_DISPLAY_OPTIONS_CONTEXT_OMISSIONS,
+  ...LOCAL_DISPLAY_OPTIONS_CONTEXT_OMISSIONS,
 };
 
-export const UTILITY_OPTIONS: Record<LocalUtilityOption, SettingContext> = {
+export type UtilityOmissions = Partial<
+  Record<LocalUtilityOption, SettingContext>
+>;
+export const UTILITY_OPTIONS_CONTEXT_OMISSIONS: UtilityOmissions = {
   download: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["numbers", "table"],
-  },
-  copyQueryTitle: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["graph", "numbers", "table", "text"],
-  },
-  copyQueryLink: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["graph", "numbers", "table", "text"],
-  },
-  emailQueryLink: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["graph", "numbers", "table", "text"],
-  },
-  resourceLinks: {
-    langs: ["pli", "chn", "tib", "skt"],
-    views: ["graph", "numbers", "table", "text"],
+    graph: ["allLangs"],
+    text: ["pli", "chn", "skt"],
   },
 };
+
+type Omission = Partial<
+  Record<
+    Filter | LocalDisplayOption | LocalUtilityOption | QueriedDisplayOption,
+    SettingContext
+  >
+>;
+
+export const isSettingOmitted = ({
+  omissions,
+  settingName,
+  dbLang,
+  view,
+}: {
+  omissions: Omission;
+  settingName: DisplayOption | Filter | LocalUtilityOption;
+  dbLang: DbLang;
+  view: DbView;
+}) => {
+  if (
+    omissions?.[settingName]?.[view]?.some((ommittedLang) =>
+      ["allLangs", dbLang].includes(ommittedLang)
+    )
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
+export function isOnlyNull(children: (React.ReactNode | null)[]) {
+  return [...children].filter((item) => item !== null).length === 0;
+}
 
 // TODO: confirm default values
 export const queryConfig = {
