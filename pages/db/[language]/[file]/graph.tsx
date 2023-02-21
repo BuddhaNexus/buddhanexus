@@ -36,7 +36,7 @@ export default function GraphPage() {
       backgroundName={sourceLanguage}
       hasSidebar={true}
     >
-      <DbResultsPageHead />
+      <DbResultsPageHead currentView="graph" />
 
       {isLoading ? (
         <CircularProgress color="inherit" />

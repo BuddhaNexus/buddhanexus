@@ -1,4 +1,5 @@
 import CurrentResultChips from "@components/db/CurrentResultChips";
+import type { DbView } from "@components/db/DbViewSelector";
 import { DbViewSelector } from "@components/db/DbViewSelector";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -7,7 +8,7 @@ import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { sidebarIsOpenAtom } from "features/sidebar/Sidebar";
 import { useAtom } from "jotai";
 
-export const DbResultsPageHead = () => {
+export const DbResultsPageHead = ({ currentView }: { currentView: DbView }) => {
   // TODO: get full text name
   const { fileName } = useDbQueryParams();
 
@@ -29,7 +30,7 @@ export const DbResultsPageHead = () => {
         sx={{ py: 1 }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <DbViewSelector />
+          <DbViewSelector currentView={currentView} />
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center" }}>

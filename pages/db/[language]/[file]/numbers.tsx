@@ -36,7 +36,7 @@ export default function NumbersPage() {
       backgroundName={sourceLanguage}
       hasSidebar={true}
     >
-      <DbResultsPageHead />
+      <DbResultsPageHead currentView="numbers" />
 
       {/* Just printing some example data: */}
       {/* The deta should probably be transformed according to our needs before using it here. */}

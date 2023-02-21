@@ -1,22 +1,17 @@
 import type { GetStaticProps } from "next";
 import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
-import { currentDbViewAtom } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress, Typography } from "@mui/material";
 import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
-import { useSetAtom } from "jotai";
 import type { ApiGraphPageData } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export { getSourceTextStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
-export default function GraphPage() {
-  const setCurrentDbView = useSetAtom(currentDbViewAtom);
-  setCurrentDbView("graph");
-
+export default function TextPage() {
   const { sourceLanguage, fileName, serializedParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
@@ -41,7 +36,7 @@ export default function GraphPage() {
       backgroundName={sourceLanguage}
       hasSidebar={true}
     >
-      <DbResultsPageHead />
+      <DbResultsPageHead currentView="text" />
 
       {isLoading ? (
         <CircularProgress color="inherit" />

@@ -33,6 +33,7 @@
     "searchInputPlaceholder": "Quelltext auswählen"
   },
   "dbViewSelector": {
+    "view": "Sicht",
     "graph": "Diagramm",
     "numbers": "Zahlen",
     "table": "Tabelle",

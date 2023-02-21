@@ -49,7 +49,7 @@ export default function TablePage() {
       backgroundName={sourceLanguage}
       hasSidebar={true}
     >
-      <DbResultsPageHead />
+      <DbResultsPageHead currentView="table" />
 
       {isInitialLoading || !data ? (
         <CircularProgress color="inherit" sx={{ flex: 1 }} />

@@ -1,4 +1,3 @@
-import { useState } from "react";
 // import { useTranslation } from "react-i18next";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -34,6 +33,7 @@ import {
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
 export const sidebarIsOpenAtom = atom(true);
+const activeTabAtom = atom("1");
 
 export const StandinFilter = (setting: string) => (
   <div>
@@ -47,14 +47,14 @@ export function Sidebar() {
 
   const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
 
-  const [tabPosition, setTabPosition] = useState("1");
+  const [activeTab, setActiveTab] = useAtom(activeTabAtom);
 
   const handleDrawerClose = () => {
     setSidebarIsOpen(false);
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
-    setTabPosition(newValue);
+    setActiveTab(newValue);
   };
 
   return (
@@ -97,7 +97,7 @@ export function Sidebar() {
           </Box>
         </DrawerHeader>
         <Box sx={{ width: "100%", typography: "body1" }}>
-          <TabContext value={tabPosition}>
+          <TabContext value={activeTab}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <TabList
                 aria-label="Filters, desplay options and other settings"
