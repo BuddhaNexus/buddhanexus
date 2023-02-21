@@ -1,5 +1,5 @@
 import type { GetStaticProps } from "next";
-import { DbViewSelector } from "@components/db/DbViewSelector";
+import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -12,13 +12,14 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export { getSourceTextStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 export default function NumbersPage() {
-  const { sourceLanguageName, sourceLanguage, fileName } = useDbQueryParams();
-  const { sourceFile, isFallback } = useSourceFile();
+  const { sourceLanguage, fileName, serializedParams } = useDbQueryParams();
+  const { isFallback } = useSourceFile();
 
   // TODO: add error handling
   const { data, isLoading } = useQuery<ApiSegmentsData>({
-    queryKey: DbApi.SegmentsData.makeQueryKey(fileName),
-    queryFn: () => DbApi.SegmentsData.call(fileName),
+    queryKey: [DbApi.SegmentsData.makeQueryKey(fileName), serializedParams],
+    queryFn: () => DbApi.SegmentsData.call(fileName, serializedParams),
+    refetchOnWindowFocus: false,
   });
 
   if (isFallback) {
@@ -30,11 +31,12 @@ export default function NumbersPage() {
   }
 
   return (
-    <PageContainer backgroundName={sourceLanguage}>
-      <DbViewSelector />
-      <Typography variant="h2">
-        File: {sourceFile} in {sourceLanguageName}
-      </Typography>
+    <PageContainer
+      maxWidth="xl"
+      backgroundName={sourceLanguage}
+      hasSidebar={true}
+    >
+      <DbResultsPageHead />
 
       {/* Just printing some example data: */}
       {/* The deta should probably be transformed according to our needs before using it here. */}
@@ -65,7 +67,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   const fileName = params?.file as string;
   await queryClient.prefetchQuery(
     DbApi.SegmentsData.makeQueryKey(fileName),
-    () => DbApi.SegmentsData.call(fileName)
+    () => DbApi.SegmentsData.call(fileName, "?page=0&co_occ=2000&folio=")
   );
 
   return {

@@ -7,10 +7,11 @@ import type { SourceLanguage } from "utils/constants";
 import { API_ROOT_URL } from "./constants";
 
 export async function getSegmentsData(
-  fileName: string
+  fileName: string,
+  serializedParams: string
 ): Promise<ApiSegmentsData> {
   const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/segments?page=0&co_occ=2000&folio=`
+    `${API_ROOT_URL}/files/${fileName}/segments?${serializedParams}&page=0`
   );
   return await res.json();
 }
