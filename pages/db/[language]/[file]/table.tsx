@@ -68,9 +68,12 @@ export default function TablePage() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const i18nProps = await getI18NextStaticProps({
-    locale,
-  });
+  const i18nProps = await getI18NextStaticProps(
+    {
+      locale,
+    },
+    ["settings"]
+  );
 
   return {
     props: {

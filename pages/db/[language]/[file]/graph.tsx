@@ -52,9 +52,12 @@ export default function GraphPage() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const i18nProps = await getI18NextStaticProps({
-    locale,
-  });
+  const i18nProps = await getI18NextStaticProps(
+    {
+      locale,
+    },
+    ["settings"]
+  );
 
   const queryClient = new QueryClient();
 

@@ -15,8 +15,9 @@
     "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
     "sorting": "Sortiermethode",
     "download": "Ergebnisse als xmlx-Datei herunterladen",
-    "copyPageLink": "Link der Ergebnisseite kopieren",
-    "emailPageLink": "Link zur Ergebnisseite per E-Mail versenden"
+    "copyQueryTitle": "Texttitel kopieren",
+    "copyQueryLink": "Link der Ergebnisseite kopieren",
+    "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden"
   },
   "filtersLabels": {
     "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
