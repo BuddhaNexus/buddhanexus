@@ -1,34 +1,19 @@
 import { useTranslation } from "react-i18next";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
-import {
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Tab,
-  Typography,
-} from "@mui/material";
+import { Box, Drawer, IconButton, Tab, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { atom, useAtom } from "jotai";
 
-// import { UTILITY_OPTIONS } from "utils/dbUISettings";
 import { DisplayOptionsSettings } from "./DisplayOptionsSettings";
 import { FilterSettings } from "./FilterSettings";
 import {
   DrawerHeader,
   SETTINGS_DRAWER_WIDTH,
 } from "./MuiStyledSidebarComponents";
+import { UtilityOptions } from "./UtilityOptions";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
@@ -112,42 +97,8 @@ export function Sidebar() {
             <TabPanel value="1" sx={{ px: 0 }}>
               <DisplayOptionsSettings />
 
-              <Typography variant="h6" mx={2}>
-                Tools
-              </Typography>
-              <List sx={{ px: 1 }}>
-                {[
-                  {
-                    id: 1,
-                    label: "Download results as xmlx file",
-                    Icon: FileDownloadIcon,
-                  },
-                  {
-                    id: 2,
-                    label: "Copy results page link",
-                    Icon: ShareOutlinedIcon,
-                  },
-                  {
-                    id: 3,
-                    label: "Email results page link",
-                    Icon: ForwardToInboxIcon,
-                  },
-                ].map((item) => {
-                  const { id, label, Icon } = item;
-                  return (
-                    <ListItem key={id} disablePadding>
-                      <ListItemButton>
-                        <ListItemIcon>
-                          <Icon />
-                        </ListItemIcon>
-                        <ListItemText primary={label} />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })}
-              </List>
+              <UtilityOptions />
 
-              <Divider sx={{ my: 2 }} />
               <Typography variant="h6" mx={2}>
                 Links
               </Typography>

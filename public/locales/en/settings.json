@@ -15,8 +15,9 @@
     "folioAsLimit": "Show matches from selected text section",
     "sorting": "Sorting Method",
     "download": "Download results as xmlx file",
-    "copyPageLink": "Copy results page link",
-    "emailPageLink": "Email results page link"
+    "copyQueryTitle": "Copy text title",
+    "copyQueryLink": "Copy results page link",
+    "emailQueryLink": "Email results page link"
   },
   "filtersLabels": {
     "minMatch": "Minimum character/syllable matches length",

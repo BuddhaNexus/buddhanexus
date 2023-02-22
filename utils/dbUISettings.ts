@@ -30,14 +30,15 @@ const utilityOptionList = [
   "copyQueryTitle",
   "copyQueryLink",
   "emailQueryLink",
-  "resourceLinks",
 ] as const;
+
+export const resourceLinksOptionKey = "resourceLinks";
 
 export type Filter = (typeof filterList)[number];
 export type QueriedDisplayOption = (typeof queriedDisplayOptionList)[number];
 export type LocalDisplayOption = (typeof localDisplayOptionList)[number];
 export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
-export type LocalUtilityOption = (typeof utilityOptionList)[number];
+export type UtilityOption = (typeof utilityOptionList)[number];
 
 type ViewOmission = (DbLang | "allLangs")[];
 type SettingContext = Partial<Record<DbView, ViewOmission>>;
@@ -95,19 +96,17 @@ export const DISPLAY_OPTIONS_CONTEXT_OMISSIONS: DisplayOmissions = {
   ...LOCAL_DISPLAY_OPTIONS_CONTEXT_OMISSIONS,
 };
 
-export type UtilityOmissions = Partial<
-  Record<LocalUtilityOption, SettingContext>
->;
+export type UtilityOmissions = Partial<Record<UtilityOption, SettingContext>>;
 export const UTILITY_OPTIONS_CONTEXT_OMISSIONS: UtilityOmissions = {
   download: {
     graph: ["allLangs"],
-    text: ["pli", "chn", "skt"],
+    text: ["allLangs"],
   },
 };
 
 type Omission = Partial<
   Record<
-    Filter | LocalDisplayOption | LocalUtilityOption | QueriedDisplayOption,
+    Filter | LocalDisplayOption | QueriedDisplayOption | UtilityOption,
     SettingContext
   >
 >;
@@ -119,7 +118,7 @@ export const isSettingOmitted = ({
   view,
 }: {
   omissions: Omission;
-  settingName: DisplayOption | Filter | LocalUtilityOption;
+  settingName: DisplayOption | Filter | UtilityOption;
   dbLang: DbLang;
   view: DbView;
 }) => {
