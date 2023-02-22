@@ -19,6 +19,12 @@
     "copyQueryLink": "Link der Ergebnisseite kopieren",
     "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden"
   },
+  "optionsSnackbarMsgs": {
+    "download": "Hoppla! Etwas ist schief gelaufen!",
+    "copyQueryTitle": "Kopiert",
+    "copyQueryLink": "Kopiert",
+    "emailQueryLink": "E-Mail geöffnet"
+  },
   "filtersLabels": {
     "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
     "inclcudeExclude": "Elemente ein- und ausschließen",

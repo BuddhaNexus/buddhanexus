@@ -19,6 +19,12 @@
     "copyQueryLink": "Copy results page link",
     "emailQueryLink": "Email results page link"
   },
+  "optionsSnackbarMsgs": {
+    "download": "Ooops! Something went wrong!",
+    "copyQueryTitle": "Copied",
+    "copyQueryLink": "Copied",
+    "emailQueryLink": "Email opened"
+  },
   "filtersLabels": {
     "minMatch": "Minimum character/syllable matches length",
     "inclcudeExclude": "Includes and Exclude items",
