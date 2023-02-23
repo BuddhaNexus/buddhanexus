@@ -32,7 +32,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const DisplayOptionsList: React.FC<Props> = ({ children }) => {
+const DisplayOptionsSection: React.FC<Props> = ({ children }) => {
   const { t } = useTranslation("settings");
 
   if (isOnlyNull(children as (React.ReactNode | null)[])) {
@@ -55,7 +55,7 @@ export const DisplayOptionsSettings = () => {
   const { sourceLanguage } = useDbQueryParams();
 
   return (
-    <DisplayOptionsList>
+    <DisplayOptionsSection>
       {displayOptionComponents.map((option) => {
         const [name, DisplayOptionComponent] = option;
 
@@ -76,6 +76,6 @@ export const DisplayOptionsSettings = () => {
           </ListItem>
         );
       })}
-    </DisplayOptionsList>
+    </DisplayOptionsSection>
   );
 };

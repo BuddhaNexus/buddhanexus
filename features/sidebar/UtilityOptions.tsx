@@ -8,18 +8,19 @@ import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import type { SvgIconTypeMap } from "@mui/material";
 import {
+  Box,
   Divider,
+  Fade,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Snackbar,
+  Popper,
   Typography,
 } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { useAtomValue } from "jotai";
-import { API_ROOT_URL } from "utils/api/constants";
 import {
   isOnlyNull,
   isSettingOmitted,
@@ -27,60 +28,89 @@ import {
   type UtilityOption,
 } from "utils/dbUISettings";
 
-type SnackbarState = Record<UtilityOption, boolean>;
-type SnackbarStateSetter = [
-  SnackbarState,
-  React.Dispatch<React.SetStateAction<SnackbarState>>
+type PopperUtilityStates<State> = [
+  Record<UtilityOption, State>,
+  React.Dispatch<React.SetStateAction<Record<UtilityOption, State>>>
 ];
+type PopperAnchorState = PopperUtilityStates<HTMLElement | null>;
 
-const onDownload = async (
-  fileName: string,
-  snackbarState: SnackbarStateSetter
-) => {
-  const [snackbarIsOpen, setSnackbarIsOpen] = snackbarState;
+interface UtilityClickHandlerProps {
+  event: React.MouseEvent<HTMLElement>;
+  fileName: string;
+  popperAnchorState: PopperAnchorState;
+}
 
-  // https://buddhanexus.net/chn/T01n0004_download.xlsx
-  // https://buddhanexus.net/download/dn6_download.xlsx
+const defaultAnchorEls = {
+  download: null,
+  copyQueryTitle: null,
+  copyQueryLink: null,
+  emailQueryLink: null,
+};
 
-  const url = `${API_ROOT_URL}/download/${fileName}_download.xlsx`;
+const onDownload = ({
+  // fileName,
+  event,
+  popperAnchorState,
+}: UtilityClickHandlerProps) => {
+  const [anchorEl, setAnchorEl] = popperAnchorState;
+
+  // TODO: test if the download URL leads to a 404 and handle if so - most files I've tested lead to 404s
+
+  /*  const DOWNLOAD_ROOT_URL = "https://buddhanexus.net/download";
+
+  const url = `${DOWNLOAD_ROOT_URL}/${fileName}_download.xlsx`; 
+
+  
   const testUrlValidity = await fetch(url);
 
-  if (testUrlValidity.status === 404) {
-    setSnackbarIsOpen({ ...snackbarIsOpen, download: true });
-  } else {
-    const link = document.createElement("a");
+  if (testUrlValidity.status === 404) { */
+  setAnchorEl({
+    ...defaultAnchorEls,
+    download: anchorEl.download ? null : event.currentTarget,
+  });
+  /*  } else {
+   const link = document.createElement("a");
     link.download = `${fileName}.xlsx`;
     link.href = url;
-    link.click();
-  }
+    link.click(); 
+   } */
 };
 
-const onCopyQueryTitle = (
-  fileName: string,
-  snackbarState: SnackbarStateSetter
-) => {
-  const [snackbarIsOpen, setSnackbarIsOpen] = snackbarState;
-  setSnackbarIsOpen({ ...snackbarIsOpen, copyQueryTitle: true });
+const onCopyQueryTitle = ({
+  event,
+  fileName,
+  popperAnchorState,
+}: UtilityClickHandlerProps) => {
+  const [anchorEl, setAnchorEl] = popperAnchorState;
+
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   navigator.clipboard.writeText(fileName);
+  setAnchorEl({
+    ...defaultAnchorEls,
+    copyQueryTitle: anchorEl.copyQueryTitle ? null : event.currentTarget,
+  });
 };
 
-const onCopyQueryLink = (
-  fileName: string,
-  snackbarState: SnackbarStateSetter
-) => {
-  const [snackbarIsOpen, setSnackbarIsOpen] = snackbarState;
-  setSnackbarIsOpen({ ...snackbarIsOpen, copyQueryLink: true });
+const onCopyQueryLink = ({
+  event,
+  popperAnchorState,
+}: UtilityClickHandlerProps) => {
+  const [anchorEl, setAnchorEl] = popperAnchorState;
+
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   navigator.clipboard.writeText(window.location.toString());
+  setAnchorEl({
+    ...defaultAnchorEls,
+    copyQueryLink: anchorEl.copyQueryLink ? null : event.currentTarget,
+  });
 };
 
-const onEmailQueryLink = (
-  fileName: string,
-  snackbarState: SnackbarStateSetter
-) => {
-  const [snackbarIsOpen, setSnackbarIsOpen] = snackbarState;
-  setSnackbarIsOpen({ ...snackbarIsOpen, emailQueryLink: true });
+const onEmailQueryLink = ({
+  event,
+  fileName,
+  popperAnchorState,
+}: UtilityClickHandlerProps) => {
+  const [anchorEl, setAnchorEl] = popperAnchorState;
 
   const subject = `BuddhaNexus serach results - ${fileName.toUpperCase()}`;
   const body = `Here is a link to search results for ${fileName.toUpperCase()}: ${window.location.toString()}`;
@@ -88,11 +118,15 @@ const onEmailQueryLink = (
   const link = document.createElement("a");
   link.href = `mailto:?subject=${subject}&body=${body}`;
   link.click();
+  setAnchorEl({
+    ...defaultAnchorEls,
+    emailQueryLink: anchorEl.emailQueryLink ? null : event.currentTarget,
+  });
 };
 
 const utilityOptionComponents: [
   UtilityOption,
-  (fileName: string, snackbarState: SnackbarStateSetter) => void,
+  (props: UtilityClickHandlerProps) => void,
   OverridableComponent<SvgIconTypeMap>
 ][] = [
   ["download", onDownload, FileDownloadIcon],
@@ -105,7 +139,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const UtilityOptionsList: React.FC<Props> = ({ children }) => {
+const UtilityOptionsSection: React.FC<Props> = ({ children }) => {
   const { t } = useTranslation("settings");
 
   if (isOnlyNull(children as (React.ReactNode | null)[])) {
@@ -127,15 +161,11 @@ export const UtilityOptions = () => {
   const currentDbView = useAtomValue(currentDbViewAtom);
   const { fileName, sourceLanguage } = useDbQueryParams();
   const { t } = useTranslation("settings");
-  const [snackbarIsOpen, setSnackbarIsOpen] = useState({
-    download: false,
-    copyQueryTitle: false,
-    copyQueryLink: false,
-    emailQueryLink: false,
-  });
+  const [popperAnchorEl, setPopperAnchorEl] =
+    useState<Record<UtilityOption, HTMLElement | null>>(defaultAnchorEls);
 
   return (
-    <UtilityOptionsList>
+    <UtilityOptionsSection>
       {utilityOptionComponents.map((option) => {
         const [name, handleClick, Icon] = option;
 
@@ -150,11 +180,24 @@ export const UtilityOptions = () => {
           return null;
         }
 
+        const isPopperOpen = Boolean(popperAnchorEl[name]);
+        const popperId = isPopperOpen ? `${name}-popper` : undefined;
+
         return (
-          <ListItem key={name} disablePadding>
+          <ListItem
+            key={name}
+            disablePadding
+            onMouseLeave={() => setPopperAnchorEl(defaultAnchorEls)}
+          >
             <ListItemButton
-              onClick={() =>
-                handleClick(fileName, [snackbarIsOpen, setSnackbarIsOpen])
+              id={name}
+              aria-describedby={popperId}
+              onClick={(event) =>
+                handleClick({
+                  event,
+                  fileName,
+                  popperAnchorState: [popperAnchorEl, setPopperAnchorEl],
+                })
               }
             >
               <ListItemIcon>
@@ -162,18 +205,33 @@ export const UtilityOptions = () => {
               </ListItemIcon>
               <ListItemText primary={t(`optionsLabels.${name}`)} />
             </ListItemButton>
-            <Snackbar
-              message={t(`optionsSnackbarMsgs.${name}`)}
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              autoHideDuration={3000}
-              open={snackbarIsOpen[name]}
-              onClose={() =>
-                setSnackbarIsOpen({ ...snackbarIsOpen, [name]: false })
-              }
-            />
+
+            <Popper
+              id={popperId}
+              open={isPopperOpen}
+              anchorEl={popperAnchorEl[name]}
+              placement="top"
+              sx={{ zIndex: 10000, height: "32px" }}
+              transition
+            >
+              {({ TransitionProps }) => (
+                <Fade {...TransitionProps} timeout={200}>
+                  <Box
+                    sx={{
+                      borderRadius: "8px",
+                      p: 1,
+                      bgcolor: "#333",
+                      color: "white",
+                    }}
+                  >
+                    {t(`optionsPopperMsgs.${name}`)}
+                  </Box>
+                </Fade>
+              )}
+            </Popper>
           </ListItem>
         );
       })}
-    </UtilityOptionsList>
+    </UtilityOptionsSection>
   );
 };

@@ -19,7 +19,7 @@
     "copyQueryLink": "Link der Ergebnisseite kopieren",
     "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden"
   },
-  "optionsSnackbarMsgs": {
+  "optionsPopperMsgs": {
     "download": "Hoppla! Etwas ist schief gelaufen!",
     "copyQueryTitle": "Kopiert",
     "copyQueryLink": "Kopiert",
