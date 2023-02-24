@@ -141,10 +141,6 @@ export const isSettingOmitted = ({
   return false;
 };
 
-export function isOnlyNull(children: (React.ReactNode | null)[]) {
-  return [...children].filter((item) => item !== null).length === 0;
-}
-
 // TODO: confirm default values
 export const QUERY_DEFAULTS = {
   co_occ: 30,

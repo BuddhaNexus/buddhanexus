@@ -13,14 +13,13 @@ import { useAtomValue } from "jotai";
 import {
   DISPLAY_OPTIONS_CONTEXT_OMISSIONS as omissions,
   type DisplayOption,
-  isOnlyNull,
   isSettingOmitted,
 } from "utils/dbUISettings";
 
 const displayOptionComponents: [DisplayOption, React.ElementType][] = [
   ["script", TextScriptOption],
   ["folio", FolioOption],
-  ["multi_lingual", () => StandinFilter("showAndPositionSegmentNrs")],
+  ["multi_lingual", () => StandinFilter("multi_lingual")],
   [
     "showAndPositionSegmentNrs",
     () => StandinFilter("showAndPositionSegmentNrs"),
@@ -28,54 +27,41 @@ const displayOptionComponents: [DisplayOption, React.ElementType][] = [
   ["sort_method", SortOption],
 ];
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const DisplayOptionsSection: React.FC<Props> = ({ children }) => {
+export const DisplayOptionsSection = () => {
+  const currentDbView = useAtomValue(currentDbViewAtom);
+  const { sourceLanguage } = useDbQueryParams();
   const { t } = useTranslation("settings");
 
-  if (isOnlyNull(children as (React.ReactNode | null)[])) {
-    return null;
-  }
+  const listItems = React.Children.toArray(
+    displayOptionComponents.map((option) => {
+      const [name, DisplayOptionComponent] = option;
 
-  return (
+      if (
+        isSettingOmitted({
+          omissions,
+          settingName: name,
+          dbLang: sourceLanguage,
+          view: currentDbView,
+        })
+      ) {
+        return null;
+      }
+
+      return (
+        <ListItem key={name}>
+          <DisplayOptionComponent />
+        </ListItem>
+      );
+    })
+  );
+
+  return listItems.length > 0 ? (
     <>
       <Typography variant="h6" mx={2}>
         {t("headings.display")}
       </Typography>
-      <List>{children}</List>
+      <List>{listItems}</List>
       <Divider sx={{ my: 2 }} />
     </>
-  );
-};
-
-export const DisplayOptionsSettings = () => {
-  const currentDbView = useAtomValue(currentDbViewAtom);
-  const { sourceLanguage } = useDbQueryParams();
-
-  return (
-    <DisplayOptionsSection>
-      {displayOptionComponents.map((option) => {
-        const [name, DisplayOptionComponent] = option;
-
-        if (
-          isSettingOmitted({
-            omissions,
-            settingName: name,
-            dbLang: sourceLanguage,
-            view: currentDbView,
-          })
-        ) {
-          return null;
-        }
-
-        return (
-          <ListItem key={name}>
-            <DisplayOptionComponent />
-          </ListItem>
-        );
-      })}
-    </DisplayOptionsSection>
-  );
+  ) : null;
 };

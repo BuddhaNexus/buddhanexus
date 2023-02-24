@@ -22,7 +22,6 @@ import {
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { useAtomValue } from "jotai";
 import {
-  isOnlyNull,
   isSettingOmitted,
   UTILITY_OPTIONS_CONTEXT_OMISSIONS as omissions,
   type UtilityOption,
@@ -135,103 +134,89 @@ const utilityOptionComponents: [
   ["emailQueryLink", onEmailQueryLink, ForwardToInboxIcon],
 ];
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const UtilityOptionsSection: React.FC<Props> = ({ children }) => {
-  const { t } = useTranslation("settings");
-
-  if (isOnlyNull(children as (React.ReactNode | null)[])) {
-    return null;
-  }
-
-  return (
-    <>
-      <Typography variant="h6" mx={2}>
-        {t("headings.tools")}
-      </Typography>
-      <List>{children}</List>
-      <Divider sx={{ my: 2 }} />
-    </>
-  );
-};
-
-export const UtilityOptions = () => {
+export const UtilityOptionsSection = () => {
   const currentDbView = useAtomValue(currentDbViewAtom);
   const { fileName, sourceLanguage } = useDbQueryParams();
   const { t } = useTranslation("settings");
   const [popperAnchorEl, setPopperAnchorEl] =
     useState<Record<UtilityOption, HTMLElement | null>>(defaultAnchorEls);
 
-  return (
-    <UtilityOptionsSection>
-      {utilityOptionComponents.map((option) => {
-        const [name, handleClick, Icon] = option;
+  const listItems = React.Children.toArray(
+    utilityOptionComponents.map((option) => {
+      const [name, handleClick, Icon] = option;
 
-        if (
-          isSettingOmitted({
-            omissions,
-            settingName: name,
-            dbLang: sourceLanguage,
-            view: currentDbView,
-          })
-        ) {
-          return null;
-        }
+      if (
+        isSettingOmitted({
+          omissions,
+          settingName: name,
+          dbLang: sourceLanguage,
+          view: currentDbView,
+        })
+      ) {
+        return null;
+      }
 
-        const isPopperOpen = Boolean(popperAnchorEl[name]);
-        const popperId = isPopperOpen ? `${name}-popper` : undefined;
+      const isPopperOpen = Boolean(popperAnchorEl[name]);
+      const popperId = isPopperOpen ? `${name}-popper` : undefined;
 
-        return (
-          <ListItem
-            key={name}
-            disablePadding
-            onMouseLeave={() => setPopperAnchorEl(defaultAnchorEls)}
+      return (
+        <ListItem
+          key={name}
+          disablePadding
+          onMouseLeave={() => setPopperAnchorEl(defaultAnchorEls)}
+        >
+          <ListItemButton
+            id={name}
+            aria-describedby={popperId}
+            onClick={(event) =>
+              handleClick({
+                event,
+                fileName,
+                popperAnchorState: [popperAnchorEl, setPopperAnchorEl],
+              })
+            }
           >
-            <ListItemButton
-              id={name}
-              aria-describedby={popperId}
-              onClick={(event) =>
-                handleClick({
-                  event,
-                  fileName,
-                  popperAnchorState: [popperAnchorEl, setPopperAnchorEl],
-                })
-              }
-            >
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-              <ListItemText primary={t(`optionsLabels.${name}`)} />
-            </ListItemButton>
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
+            <ListItemText primary={t(`optionsLabels.${name}`)} />
+          </ListItemButton>
 
-            <Popper
-              id={popperId}
-              open={isPopperOpen}
-              anchorEl={popperAnchorEl[name]}
-              placement="top"
-              sx={{ zIndex: 10000, height: "32px" }}
-              transition
-            >
-              {({ TransitionProps }) => (
-                <Fade {...TransitionProps} timeout={200}>
-                  <Box
-                    sx={{
-                      borderRadius: "8px",
-                      p: 1,
-                      bgcolor: "#333",
-                      color: "white",
-                    }}
-                  >
-                    {t(`optionsPopperMsgs.${name}`)}
-                  </Box>
-                </Fade>
-              )}
-            </Popper>
-          </ListItem>
-        );
-      })}
-    </UtilityOptionsSection>
+          <Popper
+            id={popperId}
+            open={isPopperOpen}
+            anchorEl={popperAnchorEl[name]}
+            placement="top"
+            sx={{ zIndex: 10000, height: "32px" }}
+            transition
+          >
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps} timeout={200}>
+                <Box
+                  sx={{
+                    borderRadius: "8px",
+                    p: 1,
+                    bgcolor: "#333",
+                    color: "white",
+                  }}
+                >
+                  {t(`optionsPopperMsgs.${name}`)}
+                </Box>
+              </Fade>
+            )}
+          </Popper>
+        </ListItem>
+      );
+    })
   );
+
+  return listItems.length > 0 ? (
+    <>
+      <Typography variant="h6" mx={2}>
+        {t("headings.tools")}
+      </Typography>
+      <List>{listItems}</List>
+      <Divider sx={{ my: 2 }} />
+    </>
+  ) : null;
 };

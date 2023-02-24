@@ -23,7 +23,7 @@ const linkSrcs: Record<string, StaticImageData> = {
   VRI: VRILogo,
 };
 
-export const ExternalTextLinks = () => {
+export const ExternalLinksSection = () => {
   const { sourceLanguage } = useDbQueryParams();
   const { t } = useTranslation("settings");
 

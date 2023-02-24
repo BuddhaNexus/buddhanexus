@@ -7,14 +7,14 @@ import { Box, Drawer, IconButton, Tab, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { atom, useAtom } from "jotai";
 
-import { DisplayOptionsSettings } from "./DisplayOptionsSettings";
-import { ExternalTextLinks } from "./ExternalTextLinks";
+import { DisplayOptionsSection } from "./DisplayOptionsSection";
+import { ExternalLinksSection } from "./ExternalLinksSection";
 import { FilterSettings } from "./FilterSettings";
 import {
   DrawerHeader,
   SETTINGS_DRAWER_WIDTH,
 } from "./MuiStyledSidebarComponents";
-import { UtilityOptions } from "./UtilityOptions";
+import { UtilityOptionsSection } from "./UtilityOptionsSection";
 
 // https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
 
@@ -96,11 +96,11 @@ export function Sidebar() {
             </Box>
 
             <TabPanel value="1" sx={{ px: 0 }}>
-              <DisplayOptionsSettings />
+              <DisplayOptionsSection />
 
-              <UtilityOptions />
+              <UtilityOptionsSection />
 
-              <ExternalTextLinks />
+              <ExternalLinksSection />
             </TabPanel>
 
             <TabPanel value="2" sx={{ px: 0 }}>

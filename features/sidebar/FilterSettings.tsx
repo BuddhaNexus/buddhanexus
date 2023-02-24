@@ -11,7 +11,6 @@ import { useAtomValue } from "jotai";
 import {
   type Filter,
   FILTER_CONTEXT_OMISSIONS as omissions,
-  isOnlyNull,
   isSettingOmitted,
 } from "utils/dbUISettings";
 
@@ -23,47 +22,40 @@ const filterComponents: [Filter, React.ElementType][] = [
   ["target_collection", () => StandinFilter("target_collection")],
 ];
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const FilterList: React.FC<Props> = ({ children }) => {
-  if (isOnlyNull(children as (React.ReactNode | null)[])) {
-    return null;
-  }
-  return <List>{children}</List>;
-};
-
 export const FilterSettings = () => {
   const currentDbView = useAtomValue(currentDbViewAtom);
   const { sourceLanguage } = useDbQueryParams();
 
-  return (
-    <FilterList>
-      {filterComponents.map((filter) => {
-        const [name, FilterComponent] = filter;
+  const listItems = React.Children.toArray(
+    filterComponents.map((filter) => {
+      const [name, FilterComponent] = filter;
 
-        if (
-          isSettingOmitted({
-            omissions,
-            settingName: name,
-            dbLang: sourceLanguage,
-            view: currentDbView,
-          })
-        ) {
-          return null;
-        }
-        // TODO: REMOVE LEGACY FILTERS ON CONFIRMATION
-        if (name === "co_occ" || name === "score") {
-          return null;
-        }
+      if (
+        isSettingOmitted({
+          omissions,
+          settingName: name,
+          dbLang: sourceLanguage,
+          view: currentDbView,
+        })
+      ) {
+        return null;
+      }
+      // TODO: REMOVE LEGACY FILTERS ON CONFIRMATION
+      if (name === "co_occ" || name === "score") {
+        return null;
+      }
 
-        return (
-          <ListItem key={name}>
-            <FilterComponent />
-          </ListItem>
-        );
-      })}
-    </FilterList>
+      return (
+        <ListItem>
+          <FilterComponent />
+        </ListItem>
+      );
+    })
   );
+
+  return listItems.length > 0 ? (
+    <List sx={{ display: "flex", justifyContent: "flex-start" }}>
+      {listItems}
+    </List>
+  ) : null;
 };
