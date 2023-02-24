@@ -8,6 +8,7 @@ import { useTheme } from "@mui/material/styles";
 import { atom, useAtom } from "jotai";
 
 import { DisplayOptionsSettings } from "./DisplayOptionsSettings";
+import { ExternalTextLinks } from "./ExternalTextLinks";
 import { FilterSettings } from "./FilterSettings";
 import {
   DrawerHeader,
@@ -99,9 +100,7 @@ export function Sidebar() {
 
               <UtilityOptions />
 
-              <Typography variant="h6" mx={2}>
-                Links
-              </Typography>
+              <ExternalTextLinks />
             </TabPanel>
 
             <TabPanel value="2" sx={{ px: 0 }}>
