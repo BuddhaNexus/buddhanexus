@@ -1,33 +1,50 @@
 import * as React from "react";
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
+import type { DbLang } from "utils/dbSidebar";
+
+type Script = "unicode" | "wylie";
+
+const SCRIPT_OPTIONS: Partial<Record<DbLang, Script[]>> = {
+  tib: ["wylie", "unicode"],
+};
 
 export default function TextScriptOption() {
   const [value, setValue] = React.useState("wylie");
+  const { sourceLanguage } = useDbQueryParams();
+  const { t } = useTranslation("settings");
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSelectChange = (value: string) => {
     //  TODO: handle script change
-    setValue((event.target as HTMLInputElement).value);
+    setValue(value);
   };
 
+  if (!SCRIPT_OPTIONS[sourceLanguage]) {
+    return null;
+  }
+
   return (
-    <FormControl>
-      <FormLabel id="tibetan-script-selection-label">Script</FormLabel>
-      <RadioGroup
-        row={true}
-        aria-labelledby="tibetan-script-selection-label"
-        name="tibetan-script-selection-group"
+    <FormControl sx={{ width: "100%" }}>
+      <FormLabel id="tibetan-script-selection-label">
+        {t("optionsLabels.script")}
+      </FormLabel>
+
+      <Select
+        id="sort-option-selector"
+        aria-labelledby="sort-option-selector-label"
+        defaultValue="position"
         value={value}
-        onChange={handleChange}
+        onChange={(e) => handleSelectChange(e.target.value)}
       >
-        <FormControlLabel value="wylie" control={<Radio />} label="Wylie" />
-        <FormControlLabel value="unicode" control={<Radio />} label="Unicode" />
-      </RadioGroup>
+        {SCRIPT_OPTIONS[sourceLanguage]?.map((script) => {
+          return (
+            <MenuItem key={script} value={script}>
+              {t(`optionsLabels.${script}`)}
+            </MenuItem>
+          );
+        })}
+      </Select>
     </FormControl>
   );
 }

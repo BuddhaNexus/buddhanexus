@@ -14,7 +14,12 @@
     "folio": "Go to selected text section",
     "folioAsLimit": "Show matches from selected text section",
     "sorting": "Sorting Method",
+    "sortSource": "Match position in source text",
+    "sortParallel": "Match position in parallel texts",
+    "sortLength": "Length of character match (>)",
     "download": "Download results as xmlx file",
+    "wylie": "Wylie",
+    "unicode": "Unicode",
     "copyQueryTitle": "Copy text title",
     "copyQueryLink": "Copy results page link",
     "emailQueryLink": "Email results page link"

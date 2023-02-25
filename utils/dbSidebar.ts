@@ -7,7 +7,7 @@ import {
 } from "use-query-params";
 
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
-type DbLang = (typeof dbLangs)[number];
+export type DbLang = (typeof dbLangs)[number];
 
 const filterList = [
   "co_occ",

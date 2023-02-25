@@ -1,18 +1,24 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 
-const SORT_OPTIONS = [
-  { value: "position", label: "Match position in source text" },
-  { value: "quoted-text", label: "Match position in parallel texts" },
+interface SortOptionDef {
+  value: string;
+  labelKey: "sortLength" | "sortParallel" | "sortSource";
+}
+
+const SORT_OPTIONS: SortOptionDef[] = [
+  { value: "quoted-text", labelKey: "sortParallel" },
   {
     value: "length2",
-    label: "Length of character match (>)",
+    labelKey: "sortLength",
   },
 ];
 
 export default function SortOption() {
   const { queryParams, setQueryParams } = useDbQueryParams();
+  const { t } = useTranslation("settings");
 
   useEffect(() => {}, [queryParams]);
 
@@ -22,7 +28,9 @@ export default function SortOption() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <FormLabel id="sort-option-selector-label">Sort Method</FormLabel>
+      <FormLabel id="sort-option-selector-label">
+        {t("optionsLabels.sorting")}
+      </FormLabel>
       <FormControl sx={{ width: "100%" }}>
         <Select
           id="sort-option-selector"
@@ -34,7 +42,7 @@ export default function SortOption() {
           {SORT_OPTIONS.map((method) => {
             return (
               <MenuItem key={method.value} value={method.value}>
-                {method.label}
+                {t(`optionsLabels.${method.labelKey}`)}
               </MenuItem>
             );
           })}
