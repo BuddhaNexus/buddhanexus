@@ -11,7 +11,7 @@ import GRETILLogo from "public/assets/icons/logo_gretil.png";
 import RKTSLogo from "public/assets/icons/logo_rkts.png";
 import SCLogo from "public/assets/icons/logo_sc.png";
 import VRILogo from "public/assets/icons/logo_vri.png";
-import { TEMP_EXTERNAL_TEXT_LINKS } from "utils/dbUISettings";
+import { TEMP_EXTERNAL_TEXT_LINKS } from "utils/dbSidebar";
 
 const linkSrcs: Record<string, StaticImageData> = {
   BDRC: BDRCLogo,

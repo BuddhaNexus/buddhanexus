@@ -1,7 +1,7 @@
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { atom, useAtom } from "jotai";
-import { QUERY_DEFAULTS } from "utils/dbUISettings";
+import { QUERY_DEFAULTS } from "utils/dbSidebar";
 
 function valueToString(value: number) {
   return `${value}`;

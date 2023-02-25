@@ -25,7 +25,7 @@ import {
   isSettingOmitted,
   UTILITY_OPTIONS_CONTEXT_OMISSIONS as omissions,
   type UtilityOption,
-} from "utils/dbUISettings";
+} from "utils/dbSidebar";
 
 type PopperUtilityStates<State> = [
   Record<UtilityOption, State>,

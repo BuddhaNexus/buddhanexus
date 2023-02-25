@@ -3,13 +3,14 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
-import { Box, Drawer, IconButton, Tab, Typography } from "@mui/material";
+import { Box, Drawer, IconButton, Tab } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { atom, useAtom } from "jotai";
 
 import { DisplayOptionsSection } from "./DisplayOptionsSection";
 import { ExternalLinksSection } from "./ExternalLinksSection";
 import { FilterSettings } from "./FilterSettings";
+import { Info } from "./Info";
 import {
   DrawerHeader,
   SETTINGS_DRAWER_WIDTH,
@@ -108,17 +109,7 @@ export function Sidebar() {
             </TabPanel>
 
             <TabPanel value="3">
-              <Typography>
-                Some specific information about the results in this view /
-                language.
-              </Typography>
-              <Typography variant="h6" mt={2}>
-                Tip example
-              </Typography>
-              <Typography>
-                You can use the <kbd>Home</kbd> and <kbd>End</kbd> keys to jump
-                to the beginning and end of loaded portions of a text.
-              </Typography>
+              <Info />
             </TabPanel>
           </TabContext>
         </Box>

@@ -12,7 +12,7 @@ import {
   type Filter,
   FILTER_CONTEXT_OMISSIONS as omissions,
   isSettingOmitted,
-} from "utils/dbUISettings";
+} from "utils/dbSidebar";
 
 const filterComponents: [Filter, React.ElementType][] = [
   ["co_occ", () => <span />],
@@ -53,9 +53,5 @@ export const FilterSettings = () => {
     })
   );
 
-  return listItems.length > 0 ? (
-    <List sx={{ display: "flex", justifyContent: "flex-start" }}>
-      {listItems}
-    </List>
-  ) : null;
+  return listItems.length > 0 ? <List>{listItems}</List> : null;
 };

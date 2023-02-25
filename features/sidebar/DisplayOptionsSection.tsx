@@ -14,7 +14,7 @@ import {
   DISPLAY_OPTIONS_CONTEXT_OMISSIONS as omissions,
   type DisplayOption,
   isSettingOmitted,
-} from "utils/dbUISettings";
+} from "utils/dbSidebar";
 
 const displayOptionComponents: [DisplayOption, React.ElementType][] = [
   ["script", TextScriptOption],
