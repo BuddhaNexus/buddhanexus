@@ -1,10 +1,4 @@
 import type { DbView } from "@components/db/DbViewSelector";
-import {
-  ArrayParam,
-  NumberParam,
-  StringParam,
-  withDefault,
-} from "use-query-params";
 
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
@@ -141,23 +135,12 @@ export const isSettingOmitted = ({
   return false;
 };
 
-// TODO: confirm default values
 export const QUERY_DEFAULTS = {
   co_occ: 30,
   score: 30,
-  par_length: 30,
+  par_length: { tib: 14, chn: 7, pli: 30, skt: 30 },
   limit_collection: undefined,
   target_collection: undefined,
   folio: undefined,
   sort_method: undefined,
-};
-
-export const queryConfig = {
-  co_occ: withDefault(NumberParam, QUERY_DEFAULTS.co_occ),
-  score: withDefault(NumberParam, QUERY_DEFAULTS.score),
-  par_length: withDefault(NumberParam, QUERY_DEFAULTS.par_length),
-  limit_collection: withDefault(ArrayParam, QUERY_DEFAULTS.limit_collection),
-  target_collection: withDefault(StringParam, QUERY_DEFAULTS.target_collection),
-  folio: withDefault(StringParam, QUERY_DEFAULTS.folio),
-  sort_method: withDefault(StringParam, QUERY_DEFAULTS.sort_method),
 };

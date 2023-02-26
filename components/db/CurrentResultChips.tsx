@@ -3,16 +3,18 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
+import type { DbLang } from "utils/dbSidebar";
+import { QUERY_DEFAULTS } from "utils/dbSidebar";
 
 // TODO: refactor for robustness
-function getActiveFilterCount(queries: any) {
+function getActiveFilterCount(queries: any, lang: DbLang) {
   let count = 0;
 
   Object.entries(queries).map(([key, value]) => {
     if (value === undefined || key === "co_occ" || key === "score") {
       return null;
     }
-    if (key === "par_length" && value === 30) {
+    if (key === "par_length" && value === QUERY_DEFAULTS.par_length[lang]) {
       return null;
     }
     if (Array.isArray(value) && value.length > 0) {
@@ -28,9 +30,10 @@ function getActiveFilterCount(queries: any) {
 }
 
 export default function CurrentResultChips() {
-  const { fileName, queryParams, serializedParams } = useDbQueryParams();
+  const { fileName, queryParams, serializedParams, sourceLanguage } =
+    useDbQueryParams();
 
-  const filterCount = getActiveFilterCount(queryParams);
+  const filterCount = getActiveFilterCount(queryParams, sourceLanguage);
 
   const { data, isLoading } = useQuery({
     queryKey: [DbApi.ParallelCount.makeQueryKey(fileName), serializedParams],

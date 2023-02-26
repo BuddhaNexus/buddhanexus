@@ -1,16 +1,20 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import { atom, useAtom } from "jotai";
+import type { DbLang } from "utils/dbSidebar";
 import { QUERY_DEFAULTS } from "utils/dbSidebar";
+
+const MIN_VALUES = { tib: 7, chn: 5, pli: 25, skt: 25 };
 
 function valueToString(value: number) {
   return `${value}`;
 }
 
-function normalizeValue(value: number | null | undefined) {
+function normalizeValue(value: number | null | undefined, lang: DbLang) {
   // TODO set dynamic max
   if (!value || value < 0) {
-    return QUERY_DEFAULTS.par_length;
+    return MIN_VALUES[lang];
   }
 
   if (value > 4000) {
@@ -20,43 +24,45 @@ function normalizeValue(value: number | null | undefined) {
   return value;
 }
 
-function getQueryParam(value: number | null | undefined) {
-  return { par_length: normalizeValue(value) };
+function getQueryParam(value: number | null | undefined, lang: DbLang) {
+  return { par_length: normalizeValue(value, lang) };
 }
 
-const queryValueAtom = atom<number>(normalizeValue(QUERY_DEFAULTS.par_length));
-
 export default function MinMatchLengthFilter() {
-  const { setQueryParams } = useDbQueryParams();
+  const { setQueryParams, sourceLanguage } = useDbQueryParams();
 
-  const [queryValue, setQueryValue] = useAtom(queryValueAtom);
+  const [queryValue, setQueryValue] = useState<number>(
+    QUERY_DEFAULTS.par_length[sourceLanguage]
+  );
+  const { t } = useTranslation("settings");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQueryValue(normalizeValue(Number(event.target.value)));
+    setQueryValue(normalizeValue(Number(event.target.value), sourceLanguage));
   };
 
   const handleSliderChange = (value: number) => {
     setQueryValue(value);
 
-    setQueryParams(getQueryParam(queryValue));
+    setQueryParams(getQueryParam(queryValue, sourceLanguage));
   };
 
   const handleInputEnter = (event: React.KeyboardEvent) => {
     if (event.key === "Enter") {
-      setQueryParams(getQueryParam(queryValue));
+      setQueryParams(getQueryParam(queryValue, sourceLanguage));
     }
   };
 
   const handleBlur = () => {
-    setQueryParams(getQueryParam(queryValue));
+    setQueryParams(getQueryParam(queryValue, sourceLanguage));
   };
 
   // TODO: get dynamic mark values
   const marks = [
     {
-      value: 30,
-      label: "30",
+      value: MIN_VALUES[sourceLanguage],
+      label: `${MIN_VALUES[sourceLanguage]}`,
     },
+    // TODO set dynamic max
     {
       value: 4000,
       label: "4000",
@@ -66,7 +72,7 @@ export default function MinMatchLengthFilter() {
   return (
     <Box sx={{ width: "100%" }}>
       <FormLabel id="min-match-input-label">
-        Min. character/syllable match length:
+        {t("filtersLabels.minMatch")}
       </FormLabel>
       <TextField
         sx={{ width: "100%", my: 1 }}
@@ -74,7 +80,7 @@ export default function MinMatchLengthFilter() {
         type="number"
         inputProps={{
           step: 50,
-          min: 0,
+          min: MIN_VALUES[sourceLanguage],
           max: 4000,
           type: "number",
           "aria-labelledby": "min-match-input-label",
@@ -85,14 +91,18 @@ export default function MinMatchLengthFilter() {
       />
       <Box sx={{ ml: 1, width: "96%" }}>
         <Slider
-          value={typeof queryValue === "number" ? queryValue : 30}
+          value={
+            typeof queryValue === "number"
+              ? queryValue
+              : QUERY_DEFAULTS.par_length[sourceLanguage]
+          }
           aria-labelledby="min-match-input-label"
           getAriaValueText={valueToString}
-          min={30}
+          min={MIN_VALUES[sourceLanguage]}
           max={4000}
           marks={marks}
-          onChange={(_, value) => setQueryValue(value as number)}
-          onChangeCommitted={(_, value) => handleSliderChange(value as number)}
+          onChange={(_, value) => setQueryValue(Number(value))}
+          onChangeCommitted={(_, value) => handleSliderChange(Number(value))}
         />
       </Box>
     </Box>
