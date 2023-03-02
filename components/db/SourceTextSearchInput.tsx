@@ -24,7 +24,10 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
+
+import { currentDbViewAtom } from "./DbViewSelector";
 
 const OuterElementContext = React.createContext({});
 
@@ -179,6 +182,8 @@ export const SourceTextSearchInput = () => {
   const { sourceLanguage } = useDbQueryParams();
 
   const router = useRouter();
+  const currentDbView = useAtomValue(currentDbViewAtom);
+  const { serializedParams } = useDbQueryParams();
 
   const { t } = useTranslation();
 
@@ -218,7 +223,9 @@ export const SourceTextSearchInput = () => {
       disableListWrap
       disablePortal
       onChange={(target, value) =>
-        router.push(`/db/${sourceLanguage}/${value?.fileName}/table`)
+        router.push(
+          `/db/${sourceLanguage}/${value?.fileName}/${currentDbView}?${serializedParams}`
+        )
       }
     />
   );

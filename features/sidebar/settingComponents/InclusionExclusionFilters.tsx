@@ -4,9 +4,9 @@
  * https://codesandbox.io/s/2326jk?file=/demo.tsx
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { type ListChildComponentProps, VariableSizeList } from "react-window";
-// import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-i18next";
 import type { DatabaseCategory, DatabaseText } from "@components/db/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
@@ -24,7 +24,9 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 import { DbApi } from "utils/api/dbApi";
+import { querySettingsValuesAtom } from "utils/dbSidebar";
 
 const OuterElementContext = React.createContext({});
 
@@ -178,55 +180,47 @@ const StyledPopper = styled(Popper)({
 
 const InclusionExclusionFilters = () => {
   const { sourceLanguage, queryParams, setQueryParams } = useDbQueryParams();
-  // const { t } = useTranslation();
+  const { t } = useTranslation("settings");
 
-  interface Inclusions {
-    excludedCategories: DatabaseCategory["categoryName"][];
-    excludedFiles: DatabaseText["fileName"][];
-    includedCategories: DatabaseCategory["categoryName"][];
-    includedFiles: DatabaseText["fileName"][];
-  }
+  // TODO: disable incl/excl options according to current selections
 
-  const [queryValues, setQueryValues] = useState<Inclusions>({
-    excludedCategories: [],
-    excludedFiles: [],
-    includedCategories: [],
-    includedFiles: [],
-  });
+  const [queryValues, setQueryValues] = useAtom(querySettingsValuesAtom);
 
   const handleInputChange = (
     values: (DatabaseCategory | DatabaseText)[],
-    type: keyof Inclusions
+    filterType: string
   ) => {
-    if (type.includes("Categories")) {
+    if (filterType) {
       setQueryValues({
         ...queryValues,
-        [type]: values.map(
-          (value) => "categoryName" in value && value.categoryName
-        ) as DatabaseCategory["categoryName"][],
-      });
-    }
-    if (type.includes("Files")) {
-      setQueryValues({
-        ...queryValues,
-        [type]: values.map(
-          (value) => "fileName" in value && value.fileName
-        ) as DatabaseText["fileName"][],
+        limit_collection: {
+          ...queryValues.limit_collection,
+          [filterType]: values.map((value) => value),
+        },
       });
     }
   };
 
-  const handleBlur = () => {
-    const params = Object.entries(queryValues).flatMap(([key, value]) =>
-      key.includes("excluded") ? value.map((item: string) => `!${item}`) : value
+  useEffect(() => {
+    const params = Object.entries(queryValues.limit_collection).flatMap(
+      ([key, value]) =>
+        key.includes("excluded")
+          ? value.map((item: any) =>
+              "categoryName" in item
+                ? `!${item.categoryName}`
+                : `!${item.fileName}`
+            )
+          : value.map((item: any) =>
+              "categoryName" in item ? item.categoryName : item.fileName
+            )
     );
 
     setQueryParams({
+      ...queryParams,
       limit_collection: params.length > 0 ? params : undefined,
     });
-  };
-
-  useEffect(() => {}, [queryParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryValues, setQueryParams]);
 
   const { data: files, isLoading } = useQuery<DatabaseText[]>({
     queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),
@@ -243,21 +237,21 @@ const InclusionExclusionFilters = () => {
   return (
     <Box sx={{ my: 1, width: "100%" }}>
       <FormLabel id="include-exclude-filters-label">
-        Include and Exclude texts
+        {t(`filtersLabels.minMatch`)}
       </FormLabel>
       <Autocomplete
         id="exclude-collections"
         sx={{ mt: 1, mb: 2 }}
         multiple={true}
+        value={queryValues.limit_collection.excludedCategories ?? []}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
         options={categories ?? []}
         getOptionLabel={(option) => option.name.toUpperCase()}
-        // groupBy={(option) => option.category.toUpperCase()}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Exclude collections"
+            label={t(`filtersLabels.excludeCollections`)}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -280,12 +274,12 @@ const InclusionExclusionFilters = () => {
         onChange={(event, value) =>
           handleInputChange(value, "excludedCategories")
         }
-        onBlur={handleBlur}
       />
       <Autocomplete
         id="exclude-files"
         sx={{ mb: 2 }}
         multiple={true}
+        value={queryValues.limit_collection.excludedFiles ?? []}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
         options={files ?? []}
@@ -294,7 +288,7 @@ const InclusionExclusionFilters = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Exclude texts"
+            label={t(`filtersLabels.excludeTexts`)}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -315,22 +309,21 @@ const InclusionExclusionFilters = () => {
         disableListWrap
         disablePortal
         onChange={(event, value) => handleInputChange(value, "excludedFiles")}
-        onBlur={handleBlur}
       />
 
       <Autocomplete
         id="include-collections"
         sx={{ mb: 2 }}
         multiple={true}
+        value={queryValues.limit_collection.includedCategories ?? []}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
         options={categories ?? []}
         getOptionLabel={(option) => option.name.toUpperCase()}
-        // groupBy={(option) => option.category.toUpperCase()}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Only include collections"
+            label={t(`filtersLabels.includeCollections`)}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -353,11 +346,11 @@ const InclusionExclusionFilters = () => {
         onChange={(event, value) =>
           handleInputChange(value, "includedCategories")
         }
-        onBlur={handleBlur}
       />
       <Autocomplete
         id="include-files"
         multiple={true}
+        value={queryValues.limit_collection.includedFiles ?? []}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
         options={files ?? []}
@@ -366,7 +359,7 @@ const InclusionExclusionFilters = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Only include texts"
+            label={t(`filtersLabels.includeTexts`)}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -387,7 +380,6 @@ const InclusionExclusionFilters = () => {
         disableListWrap
         disablePortal
         onChange={(event, value) => handleInputChange(value, "includedFiles")}
-        onBlur={handleBlur}
       />
     </Box>
   );

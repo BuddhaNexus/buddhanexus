@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -22,7 +22,7 @@ import { UtilityOptionsSection } from "./UtilityOptionsSection";
 export const sidebarIsOpenAtom = atom(true);
 const activeTabAtom = atom("1");
 
-export const StandinFilter = (setting: string) => (
+export const StandinSetting = (setting: string) => (
   <div>
     <small>{setting} setting coming to a sidebar near your soon!</small>
   </div>
@@ -30,7 +30,8 @@ export const StandinFilter = (setting: string) => (
 
 export function Sidebar() {
   const theme = useTheme();
-  const { t } = useTranslation("settings");
+  // TODO: resolve Hydratrion error connected with SSR / mismatching locales files
+  // const { t } = useTranslation("settings");
 
   const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
 
@@ -90,9 +91,12 @@ export function Sidebar() {
                 aria-label="Filters, desplay options and other settings"
                 onChange={handleTabChange}
               >
-                <Tab label={t("tabs.options")} value="1" />
+                {/*  <Tab label={t("tabs.options")} value="1" />
                 <Tab label={t("tabs.filters")} value="2" />
-                <Tab label={t("tabs.info")} value="3" />
+                <Tab label={t("tabs.info")} value="3" /> */}
+                <Tab label="Options" value="1" />
+                <Tab label="Filters" value="2" />
+                <Tab label="Info" value="3" />
               </TabList>
             </Box>
 

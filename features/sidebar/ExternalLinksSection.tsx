@@ -33,12 +33,7 @@ export const ExternalLinksSection = () => {
       return (
         <ListItem sx={{ width: "inherit", pr: 0 }}>
           <Link href="/" target="_blank" rel="noopener noreferrer">
-            <Image
-              src={linkSrcs[src]}
-              alt={`${src} logo`}
-              height={32}
-              placeholder="blur"
-            />
+            <Image src={linkSrcs[src]} alt={`${src} logo`} height={32} />
           </Link>
         </ListItem>
       );

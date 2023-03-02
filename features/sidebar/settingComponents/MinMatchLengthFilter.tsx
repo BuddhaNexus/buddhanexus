@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
+import { useAtom } from "jotai";
+import _debounce from "lodash/debounce";
 import type { DbLang } from "utils/dbSidebar";
-import { QUERY_DEFAULTS } from "utils/dbSidebar";
-
-const MIN_VALUES = { tib: 7, chn: 5, pli: 25, skt: 25 };
+import {
+  MIN_PAR_LENGTH_VALUES as MIN_VALUES,
+  querySettingsValuesAtom,
+} from "utils/dbSidebar";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -24,43 +27,67 @@ function normalizeValue(value: number | null | undefined, lang: DbLang) {
   return value;
 }
 
-function getQueryParam(value: number | null | undefined, lang: DbLang) {
-  return { par_length: normalizeValue(value, lang) };
-}
-
 export default function MinMatchLengthFilter() {
-  const { setQueryParams, sourceLanguage } = useDbQueryParams();
+  const {
+    queryParams,
+    setQueryParams,
+    sourceLanguage: lang,
+  } = useDbQueryParams();
 
-  const [queryValue, setQueryValue] = useState<number>(
-    QUERY_DEFAULTS.par_length[sourceLanguage]
-  );
+  const [queryValues, setQueryValues] = useAtom(querySettingsValuesAtom);
+
   const { t } = useTranslation("settings");
 
+  const debouncedQuery = useMemo(
+    () =>
+      _debounce((value: number) => {
+        setQueryParams({
+          ...queryParams,
+          par_length: normalizeValue(value, lang),
+        });
+      }, 600),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setQueryParams, lang]
+  );
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQueryValue(normalizeValue(Number(event.target.value), sourceLanguage));
+    setQueryValues({
+      ...queryValues,
+      par_length: {
+        ...queryValues.par_length,
+        [lang]: normalizeValue(Number(event.target.value), lang),
+      },
+    });
+    debouncedQuery(Number(event.target.value));
   };
 
   const handleSliderChange = (value: number) => {
-    setQueryValue(value);
-
-    setQueryParams(getQueryParam(queryValue, sourceLanguage));
+    setQueryValues({
+      ...queryValues,
+      par_length: {
+        ...queryValues.par_length,
+        [lang]: normalizeValue(value, lang),
+      },
+    });
+    debouncedQuery(Number(value));
   };
 
-  const handleInputEnter = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter") {
-      setQueryParams(getQueryParam(queryValue, sourceLanguage));
-    }
-  };
+  useEffect(() => {
+    setQueryParams({
+      ...queryParams,
+      par_length: queryValues.par_length[lang],
+    });
 
-  const handleBlur = () => {
-    setQueryParams(getQueryParam(queryValue, sourceLanguage));
-  };
+    return () => {
+      debouncedQuery.cancel();
+    };
+  }, [debouncedQuery, queryParams]);
 
   // TODO: get dynamic mark values
   const marks = [
     {
-      value: MIN_VALUES[sourceLanguage],
-      label: `${MIN_VALUES[sourceLanguage]}`,
+      value: MIN_VALUES[lang],
+      label: `${MIN_VALUES[lang]}`,
     },
     // TODO set dynamic max
     {
@@ -76,33 +103,26 @@ export default function MinMatchLengthFilter() {
       </FormLabel>
       <TextField
         sx={{ width: "100%", my: 1 }}
-        value={queryValue}
+        value={queryValues.par_length[lang]}
         type="number"
         inputProps={{
           step: 50,
-          min: MIN_VALUES[sourceLanguage],
+          min: MIN_VALUES[lang],
           max: 4000,
           type: "number",
           "aria-labelledby": "min-match-input-label",
         }}
-        onKeyUp={handleInputEnter}
         onChange={handleInputChange}
-        onBlur={handleBlur}
       />
       <Box sx={{ ml: 1, width: "96%" }}>
         <Slider
-          value={
-            typeof queryValue === "number"
-              ? queryValue
-              : QUERY_DEFAULTS.par_length[sourceLanguage]
-          }
+          value={queryValues.par_length[lang]}
           aria-labelledby="min-match-input-label"
           getAriaValueText={valueToString}
-          min={MIN_VALUES[sourceLanguage]}
+          min={MIN_VALUES[lang]}
           max={4000}
           marks={marks}
-          onChange={(_, value) => setQueryValue(Number(value))}
-          onChangeCommitted={(_, value) => handleSliderChange(Number(value))}
+          onChange={(_, value) => handleSliderChange(Number(value))}
         />
       </Box>
     </Box>

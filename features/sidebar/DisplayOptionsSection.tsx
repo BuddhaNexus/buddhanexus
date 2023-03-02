@@ -8,7 +8,7 @@ import {
   SortOption,
   TextScriptOption,
 } from "features/sidebar/settingComponents";
-import { StandinFilter } from "features/sidebar/Sidebar";
+import { StandinSetting } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
 import {
   DISPLAY_OPTIONS_CONTEXT_OMISSIONS as omissions,
@@ -19,10 +19,10 @@ import {
 const displayOptionComponents: [DisplayOption, React.ElementType][] = [
   ["script", TextScriptOption],
   ["folio", FolioOption],
-  ["multi_lingual", () => StandinFilter("multi_lingual")],
+  ["multi_lingual", () => StandinSetting("multi_lingual")],
   [
     "showAndPositionSegmentNrs",
-    () => StandinFilter("showAndPositionSegmentNrs"),
+    () => StandinSetting("showAndPositionSegmentNrs"),
   ],
   ["sort_method", SortOption],
 ];

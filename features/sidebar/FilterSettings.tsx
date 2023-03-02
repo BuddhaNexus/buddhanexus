@@ -6,7 +6,7 @@ import {
   InclusionExclusionFilters,
   MinMatchLengthFilter,
 } from "features/sidebar/settingComponents";
-import { StandinFilter } from "features/sidebar/Sidebar";
+import { StandinSetting } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
 import {
   type Filter,
@@ -19,7 +19,7 @@ const filterComponents: [Filter, React.ElementType][] = [
   ["par_length", MinMatchLengthFilter],
   ["limit_collection", InclusionExclusionFilters],
   ["score", () => <span />],
-  ["target_collection", () => StandinFilter("target_collection")],
+  ["target_collection", () => StandinSetting("target_collection")],
 ];
 
 export const FilterSettings = () => {

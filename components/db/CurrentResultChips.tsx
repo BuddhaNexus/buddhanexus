@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -11,14 +12,21 @@ function getActiveFilterCount(queries: any, lang: DbLang) {
   let count = 0;
 
   Object.entries(queries).map(([key, value]) => {
-    if (value === undefined || key === "co_occ" || key === "score") {
+    const queryKey = key as keyof typeof QUERY_DEFAULTS;
+
+    if (
+      queryKey === "par_length" &&
+      QUERY_DEFAULTS.par_length[lang] === value
+    ) {
       return null;
     }
-    if (key === "par_length" && value === QUERY_DEFAULTS.par_length[lang]) {
-      return null;
-    }
+
     if (Array.isArray(value) && value.length > 0) {
       count += value.length;
+      return null;
+    }
+
+    if (QUERY_DEFAULTS[queryKey] === value) {
       return null;
     }
 
@@ -32,6 +40,7 @@ function getActiveFilterCount(queries: any, lang: DbLang) {
 export default function CurrentResultChips() {
   const { fileName, queryParams, serializedParams, sourceLanguage } =
     useDbQueryParams();
+  const { t } = useTranslation("settings");
 
   const filterCount = getActiveFilterCount(queryParams, sourceLanguage);
 
@@ -51,6 +60,7 @@ export default function CurrentResultChips() {
         size="small"
         label={
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            {/* <Box>{t("resultsHead.parallels")}</Box> */}
             <Box>Parallels: </Box>
             <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
               {isLoading ? " " : data?.parallel_count}
@@ -62,7 +72,7 @@ export default function CurrentResultChips() {
 
       <Chip
         size="small"
-        label={`Custom filters: ${filterCount}`}
+        label={t(`resultsHead.filters`, { value: filterCount })}
         sx={{ mx: 0.5, p: 0.5 }}
       />
     </Box>

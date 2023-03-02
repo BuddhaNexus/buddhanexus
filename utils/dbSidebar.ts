@@ -1,4 +1,5 @@
 import type { DbView } from "@components/db/DbViewSelector";
+import { atom } from "jotai";
 
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
@@ -143,4 +144,18 @@ export const QUERY_DEFAULTS = {
   target_collection: undefined,
   folio: undefined,
   sort_method: undefined,
+} as const;
+
+export const MIN_PAR_LENGTH_VALUES = { tib: 7, chn: 5, pli: 25, skt: 25 };
+
+export const DEFAULT_QUERY_SETTING_VALUES = {
+  ...QUERY_DEFAULTS,
+  limit_collection: {
+    excludedCategories: [],
+    excludedFiles: [],
+    includedCategories: [],
+    includedFiles: [],
+  },
 };
+
+export const querySettingsValuesAtom = atom(DEFAULT_QUERY_SETTING_VALUES);

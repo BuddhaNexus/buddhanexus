@@ -1,4 +1,9 @@
 {
+  "resultsHead": {
+    "parallels": "Parallels: ",
+    "filters": "Custom filters: {{value}}",
+    "reset": "Reset"
+  },
   "tabs": {
     "options": "Optionen",
     "filters": "Filter",
