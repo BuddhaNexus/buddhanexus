@@ -6,18 +6,18 @@ import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
 import type { DbLang } from "utils/dbSidebar";
-import { QUERY_DEFAULTS } from "utils/dbSidebar";
+import { DEFAULT_QUERY_PARAMS } from "utils/dbSidebar";
 
 // TODO: refactor for robustness
 function getActiveFilterCount(queries: any, lang: DbLang) {
   let count = 0;
 
   Object.entries(queries).map(([key, value]) => {
-    const queryKey = key as keyof typeof QUERY_DEFAULTS;
+    const queryKey = key as keyof typeof DEFAULT_QUERY_PARAMS;
 
     if (
       queryKey === "par_length" &&
-      QUERY_DEFAULTS.par_length[lang] === value
+      DEFAULT_QUERY_PARAMS.par_length[lang] === value
     ) {
       return null;
     }
@@ -27,7 +27,7 @@ function getActiveFilterCount(queries: any, lang: DbLang) {
       return null;
     }
 
-    if (QUERY_DEFAULTS[queryKey] === value) {
+    if (DEFAULT_QUERY_PARAMS[queryKey] === value) {
       return null;
     }
 

@@ -136,7 +136,7 @@ export const isSettingOmitted = ({
   return false;
 };
 
-export const QUERY_DEFAULTS = {
+export const DEFAULT_QUERY_PARAMS = {
   co_occ: 30,
   score: 30,
   par_length: { tib: 14, chn: 7, pli: 30, skt: 30 },
@@ -149,7 +149,7 @@ export const QUERY_DEFAULTS = {
 export const MIN_PAR_LENGTH_VALUES = { tib: 7, chn: 5, pli: 25, skt: 25 };
 
 export const DEFAULT_QUERY_SETTING_VALUES = {
-  ...QUERY_DEFAULTS,
+  ...DEFAULT_QUERY_PARAMS,
   limit_collection: {
     excludedCategories: [],
     excludedFiles: [],

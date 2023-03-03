@@ -9,7 +9,7 @@ import {
   withDefault,
 } from "use-query-params";
 import type { SourceLanguage } from "utils/constants";
-import { QUERY_DEFAULTS } from "utils/dbSidebar";
+import { DEFAULT_QUERY_PARAMS } from "utils/dbSidebar";
 
 export const useDbQueryParams = () => {
   const { query } = useRouter();
@@ -21,19 +21,22 @@ export const useDbQueryParams = () => {
   const fileName = query.file as string;
 
   const queryConfig = {
-    co_occ: withDefault(NumberParam, QUERY_DEFAULTS.co_occ),
-    score: withDefault(NumberParam, QUERY_DEFAULTS.score),
+    co_occ: withDefault(NumberParam, DEFAULT_QUERY_PARAMS.co_occ),
+    score: withDefault(NumberParam, DEFAULT_QUERY_PARAMS.score),
     par_length: withDefault(
       NumberParam,
-      QUERY_DEFAULTS.par_length[sourceLanguage]
+      DEFAULT_QUERY_PARAMS.par_length[sourceLanguage]
     ),
-    limit_collection: withDefault(ArrayParam, QUERY_DEFAULTS.limit_collection),
+    limit_collection: withDefault(
+      ArrayParam,
+      DEFAULT_QUERY_PARAMS.limit_collection
+    ),
     target_collection: withDefault(
       StringParam,
-      QUERY_DEFAULTS.target_collection
+      DEFAULT_QUERY_PARAMS.target_collection
     ),
-    folio: withDefault(StringParam, QUERY_DEFAULTS.folio),
-    sort_method: withDefault(StringParam, QUERY_DEFAULTS.sort_method),
+    folio: withDefault(StringParam, DEFAULT_QUERY_PARAMS.folio),
+    sort_method: withDefault(StringParam, DEFAULT_QUERY_PARAMS.sort_method),
   };
 
   const [queryParams, setQueryParams] = useQueryParams(queryConfig);

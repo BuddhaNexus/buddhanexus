@@ -9,8 +9,8 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { sidebarIsOpenAtom } from "features/sidebar/Sidebar";
 import { useAtom, useSetAtom } from "jotai";
 import {
+  DEFAULT_QUERY_PARAMS,
   DEFAULT_QUERY_SETTING_VALUES,
-  QUERY_DEFAULTS,
   querySettingsValuesAtom,
 } from "utils/dbSidebar";
 
@@ -19,8 +19,8 @@ export const DbResultsPageHead = ({ currentView }: { currentView: DbView }) => {
   const { fileName, setQueryParams, sourceLanguage } = useDbQueryParams();
 
   const QUERY_PARAM_DEFAULTS = {
-    ...QUERY_DEFAULTS,
-    par_length: QUERY_DEFAULTS.par_length[sourceLanguage],
+    ...DEFAULT_QUERY_PARAMS,
+    par_length: DEFAULT_QUERY_PARAMS.par_length[sourceLanguage],
   };
 
   // const { t } = useTranslation("settings");
