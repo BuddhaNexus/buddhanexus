@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
@@ -41,8 +42,9 @@ export default function CurrentResultChips() {
   const { fileName, queryParams, serializedParams, sourceLanguage } =
     useDbQueryParams();
   const { t } = useTranslation("settings");
+  const [mounted, setMounted] = useState(false);
 
-  const filterCount = getActiveFilterCount(queryParams, sourceLanguage);
+  const filtersCount = getActiveFilterCount(queryParams, sourceLanguage);
 
   const { data, isLoading } = useQuery({
     queryKey: [DbApi.ParallelCount.makeQueryKey(fileName), serializedParams],
@@ -54,14 +56,16 @@ export default function CurrentResultChips() {
     refetchOnWindowFocus: false,
   });
 
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+
   return (
     <Box>
       <Chip
         size="small"
         label={
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            {/* <Box>{t("resultsHead.parallels")}</Box> */}
-            <Box>Parallels: </Box>
+            <Box>{t("resultsHead.parallels")}</Box>
             <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
               {isLoading ? " " : data?.parallel_count}
             </Box>
@@ -72,7 +76,7 @@ export default function CurrentResultChips() {
 
       <Chip
         size="small"
-        label={t(`resultsHead.filters`, { value: filterCount })}
+        label={t("resultsHead.filters", { value: filtersCount })}
         sx={{ mx: 0.5, p: 0.5 }}
       />
     </Box>
