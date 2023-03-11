@@ -30,6 +30,8 @@ from .utils import (
     get_file_text,
     get_sort_key,
 )
+from .links import get_links
+
 from .db_connection import get_collection, get_db
 from .table_download import run_table_download, run_numbers_download
 
@@ -822,11 +824,25 @@ async def get_external_link(segmentnr: str):
     query_result = {"link": ""}
     filename = segmentnr.split(":")[0]
     database = get_db()
-    query_displayname = database.AQLQuery(
+    query_links = database.AQLQuery(
         query=main_queries.QUERY_LINK, bindVars={"filename": filename}, rawResults=True
     )
-    query_result = {"link": query_displayname.result[0]}
+    query_result = {"link": query_links.result[0]}
     return query_result
+
+@APP.get("/externallinks/{filename}")
+async def get_external_links(filename: str):
+    """
+    Returns the external links for a given filename.
+    """
+    database = get_db()
+    query_links = database.AQLQuery(
+        query=main_queries.QUERY_LINK, bindVars={"filename": filename}, rawResults=True
+    )
+    print("query_links.result", query_links.result)
+    query_result = get_links(filename, query_links.result[0])
+    return query_result
+
 
 
 # returns a list of the available languages of matches for the given file.
