@@ -4,10 +4,14 @@ def create_segmented_text(text, colormap, matchmap):
     result_segments = []
     current_segment = ""
     last_matches = matchmap[0]
+    last_matches = [x for x in last_matches if x is not None]
+    last_matches.sort()
     last_color = colormap[0]
     for i in range(len(text)):
         current_color = colormap[i]
         current_matches = matchmap[i]
+        current_matches = [x for x in current_matches if x is not None]
+        current_matches.sort()
         if current_matches != last_matches:
             result_segments.append({"text": current_segment,
                                     "highlightColor": last_color,
@@ -15,6 +19,7 @@ def create_segmented_text(text, colormap, matchmap):
             current_segment = ""
         current_segment += text[i]
         last_matches = current_matches
+        last_matches.sort()
         last_color = current_color
     result_segments.append({"text": current_segment,
                             "highlightColor": last_color,
