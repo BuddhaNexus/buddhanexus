@@ -1,19 +1,24 @@
 import time 
 
-def create_segmented_text(text, colormap):
+def create_segmented_text(text, colormap, matchmap):
     result_segments = []
     current_segment = ""
+    last_matches = matchmap[0]
     last_color = colormap[0]
     for i in range(len(text)):
         current_color = colormap[i]
-        if current_color != last_color:
+        current_matches = matchmap[i]
+        if current_matches != last_matches:
             result_segments.append({"text": current_segment,
-                                   "highlightColor": last_color})
+                                    "highlightColor": last_color,
+                                    "matches": last_matches})
             current_segment = ""
         current_segment += text[i]
+        last_matches = current_matches
         last_color = current_color
     result_segments.append({"text": current_segment,
-                            "highlightColor": last_color})
+                            "highlightColor": last_color,
+                            "matches": last_matches})
     return result_segments
 
 def calculate_color_maps_text_view(data):
@@ -29,8 +34,8 @@ def calculate_color_maps_text_view(data):
     for entry in textleft:
         # initialize with zeros 
         current_colormap = [0] * len(entry['segtext'])
-        
-        # now add the color layer 
+        current_matchmap = [[None]] * len(entry['segtext'])
+        # now add the color layer
         for id in entry['parallel_ids']:
             if id in parallels_dict:
                 current_parallel = parallels_dict[id]
@@ -41,9 +46,16 @@ def calculate_color_maps_text_view(data):
                 if current_parallel['root_segnr'][-1] == entry['segnr']:
                     end = current_parallel['root_offset_end']
                 current_colormap[start:end] = [v+1 for v in current_colormap[start:end]]
+                for i in range(start, end):
+                    # it is _very_ suspicious that we need to check this; ideally, it shouldn't be necessary
+                    if i >= len(current_matchmap):
+                        print("Warning: index out of bounds", i, "in current_matchmap")
+                    else:
+                        if not id in current_matchmap[i]:
+                            current_matchmap[i].append(id)
             else:
                 print("Warning: parallel id", id, "not found in parallels_dict")
-        entry['segtext'] = create_segmented_text(entry['segtext'], current_colormap)
+        entry['segtext'] = create_segmented_text(entry['segtext'], current_colormap, current_matchmap)
         print("entry", entry)
         del(entry['parallel_ids'])
     time_after = time.time()

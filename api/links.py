@@ -3,14 +3,14 @@ from .utils import get_language_from_filename
 def get_links(filename, links_query_result):
     link1 = links_query_result[0]
     link2 = links_query_result[1]
-    bdrc = ""
-    rkts = ""
-    gretil = ""
-    dsbc = ""
-    cbeta = ""
-    sc = ""
-    cbc = ""
-    vri = ""
+    bdrc = False
+    rkts = False
+    gretil = False
+    dsbc = False
+    cbeta = False
+    sc = False
+    cbc = False
+    vri = False
     lang = get_language_from_filename(filename)
 
     # for Tibetan, we serve links to BDRC and RKTS
