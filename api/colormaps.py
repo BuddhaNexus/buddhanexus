@@ -100,7 +100,7 @@ def calculate_color_maps_table_view(data):
             root_end = len(root_fulltext)
         root_start = entry['root_offset_beg']
         root_colormap[root_start:root_end] = [1] * (root_end - root_start)
-        root_fulltext = create_segmented_text(root_fulltext, root_colormap)
+        root_fulltext = create_segmented_text_color_only(root_fulltext, root_colormap)
         entry['root_fulltext'] = root_fulltext
 
         par_fulltext = join_element_par.join(entry['par_segment'])
