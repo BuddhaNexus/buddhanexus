@@ -26,6 +26,22 @@ def create_segmented_text(text, colormap, matchmap):
                             "matches": last_matches})
     return result_segments
 
+def create_segmented_text_color_only(text, colormap):
+    result_segments = []
+    current_segment = ""
+    last_color = colormap[0]
+    for i in range(len(text)):
+        current_color = colormap[i]
+        if current_color != last_color:
+            result_segments.append({"text": current_segment,
+                                    "highlightColor": last_color})
+            current_segment = ""
+        current_segment += text[i]
+        last_color = current_color
+    result_segments.append({"text": current_segment,
+                            "highlightColor": last_color})
+    return result_segments
+
 def calculate_color_maps_text_view(data):
     time_before = time.time()
     textleft = data['textleft']
@@ -78,6 +94,7 @@ def calculate_color_maps_table_view(data):
 
         root_fulltext = join_element_root.join(entry['root_seg_text'])
         root_colormap = [0] * len(root_fulltext)
+
         root_end = len(root_fulltext) - (len(entry['root_seg_text'][-1]) - entry['root_offset_end']) 
         if root_end > len(root_fulltext):
             root_end = len(root_fulltext)
@@ -93,7 +110,7 @@ def calculate_color_maps_table_view(data):
             par_end = len(par_fulltext)
         par_start = entry['par_offset_beg']
         par_colormap[par_start:par_end] = [1] * (par_end - par_start)
-        par_fulltext = create_segmented_text(par_fulltext, par_colormap)
+        par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
         entry['par_fulltext'] = par_fulltext
 
         del(entry['par_segment'])
