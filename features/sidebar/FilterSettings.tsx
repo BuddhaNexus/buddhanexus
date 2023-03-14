@@ -1,57 +1,44 @@
-import React from "react";
 import { currentDbViewAtom } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { List, ListItem } from "@mui/material";
+import { Box } from "@mui/material";
 import {
   InclusionExclusionFilters,
-  MinMatchLengthFilter,
+  ParLengthFilter,
+  ScoreFilter,
 } from "features/sidebar/settingComponents";
 import { StandinSetting } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
 import {
   type Filter,
   FILTER_CONTEXT_OMISSIONS as omissions,
+  filterList,
   isSettingOmitted,
 } from "utils/dbSidebar";
 
-const filterComponents: [Filter, React.ElementType][] = [
-  ["co_occ", () => <span />],
-  ["par_length", MinMatchLengthFilter],
-  ["limit_collection", InclusionExclusionFilters],
-  ["score", () => <span />],
-  ["target_collection", () => StandinSetting("target_collection")],
-];
-
 export const FilterSettings = () => {
   const currentDbView = useAtomValue(currentDbViewAtom);
+
   const { sourceLanguage } = useDbQueryParams();
 
-  const listItems = React.Children.toArray(
-    filterComponents.map((filter) => {
-      const [name, FilterComponent] = filter;
-
-      if (
-        isSettingOmitted({
-          omissions,
-          settingName: name,
-          dbLang: sourceLanguage,
-          view: currentDbView,
-        })
-      ) {
-        return null;
-      }
-      // TODO: REMOVE LEGACY FILTERS ON CONFIRMATION
-      if (name === "co_occ" || name === "score") {
-        return null;
-      }
-
-      return (
-        <ListItem>
-          <FilterComponent />
-        </ListItem>
-      );
-    })
+  const currentFilters = filterList.filter(
+    (filter: Filter) =>
+      !isSettingOmitted({
+        omissions,
+        settingName: filter,
+        dbLang: sourceLanguage,
+        view: currentDbView,
+      })
   );
 
-  return listItems.length > 0 ? <List>{listItems}</List> : null;
+  return currentFilters.length > 0 ? (
+    <Box sx={{ mx: 2 }}>
+      {currentFilters.includes("score") && <ScoreFilter />}
+      {currentFilters.includes("par_length") && <ParLengthFilter />}
+      {currentFilters.includes("limit_collection") && (
+        <InclusionExclusionFilters />
+      )}
+      {currentFilters.includes("target_collection") &&
+        StandinSetting("target_collection")}
+    </Box>
+  ) : null;
 };

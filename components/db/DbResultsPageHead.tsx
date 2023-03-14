@@ -1,39 +1,37 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// TODO: ENABLE TS AFTER REFACTOR
+
+import { useEffect } from "react";
 // import { useTranslation } from "react-i18next";
 import CurrentResultChips from "@components/db/CurrentResultChips";
-import type { DbView } from "@components/db/DbViewSelector";
-import { DbViewSelector } from "@components/db/DbViewSelector";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useSetQueryValues } from "@components/hooks/useSetQueryValues";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { sidebarIsOpenAtom } from "features/sidebar/Sidebar";
-import { useAtom, useSetAtom } from "jotai";
-import {
-  DEFAULT_QUERY_PARAMS,
-  DEFAULT_QUERY_SETTING_VALUES,
-  querySettingsValuesAtom,
-} from "utils/dbSidebar";
+import { useAtom } from "jotai";
 
-export const DbResultsPageHead = ({ currentView }: { currentView: DbView }) => {
+export const DbResultsPageHead = () => {
   // TODO: get full text name
-  const { fileName, setQueryParams, sourceLanguage } = useDbQueryParams();
+  const { fileName, queryParams, setQueryParams, defaultQueryParams } =
+    useDbQueryParams();
 
-  const QUERY_PARAM_DEFAULTS = {
-    ...DEFAULT_QUERY_PARAMS,
-    par_length: DEFAULT_QUERY_PARAMS.par_length[sourceLanguage],
-  };
+  const { setAllQueryValues } = useSetQueryValues();
 
   // const { t } = useTranslation("settings");
 
   const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
-  const setQueryValues = useSetAtom(querySettingsValuesAtom);
 
   const handleSettingsClick = () => setSidebarIsOpen(!sidebarIsOpen);
 
   const handleReset = () => {
-    setQueryValues(DEFAULT_QUERY_SETTING_VALUES);
-    setQueryParams(QUERY_PARAM_DEFAULTS);
+    setAllQueryValues("reset");
+    setQueryParams(defaultQueryParams);
   };
+
+  useEffect(() => {}, [queryParams]);
 
   return (
     <>
@@ -50,8 +48,11 @@ export const DbResultsPageHead = ({ currentView }: { currentView: DbView }) => {
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <CurrentResultChips />
+        </Box>
+
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <Button
-            sx={{ ml: 1, alignSelf: "flex-end" }}
+            sx={{ p: 1, alignSelf: "flex-end" }}
             variant="text"
             size="small"
             onClick={handleReset}
@@ -59,10 +60,6 @@ export const DbResultsPageHead = ({ currentView }: { currentView: DbView }) => {
             {/* {t(`resultsHead.reset`)} */}
             Reset
           </Button>
-        </Box>
-
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <DbViewSelector currentView={currentView} />
           <IconButton
             color="inherit"
             aria-label="open drawer"

@@ -1,11 +1,13 @@
+/* eslint-disable no-inline-comments */
+/* eslint-disable line-comment-position */
 import type { DbView } from "@components/db/DbViewSelector";
 import { atom } from "jotai";
+import type { CategoryMenuItem, TextMenuItem } from "utils/api/textLists";
 
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
 
-const filterList = [
-  "co_occ",
+export const filterList = [
   "limit_collection",
   "par_length",
   "score",
@@ -136,26 +138,73 @@ export const isSettingOmitted = ({
   return false;
 };
 
-export const DEFAULT_QUERY_PARAMS = {
-  co_occ: 30,
+export interface CoercedCollectionValues {
+  excludedCategories: Map<string, CategoryMenuItem>;
+  excludedTexts: Map<string, TextMenuItem>;
+  includedCategories: Map<string, CategoryMenuItem>;
+  includedTexts: Map<string, TextMenuItem>;
+}
+
+export interface QueryValues {
+  score: number;
+  par_length: number | undefined;
+  folio: string | undefined;
+  sort_method: "length2" | "position" | "quoted-text" | undefined;
+  limit_collection: CoercedCollectionValues;
+  target_collection: Map<string, CategoryMenuItem>;
+}
+
+// Stores query values of filter & option componenets, immediately reflecting value changes made by the user
+export const DEFAULT_QUERY_VALUES: QueryValues = {
   score: 30,
-  par_length: { tib: 14, chn: 7, pli: 30, skt: 30 },
-  limit_collection: undefined,
-  target_collection: undefined,
+  par_length: undefined, // Set when src lang value is available in query hook
   folio: undefined,
   sort_method: undefined,
-} as const;
-
-export const MIN_PAR_LENGTH_VALUES = { tib: 7, chn: 5, pli: 25, skt: 25 };
-
-export const DEFAULT_QUERY_SETTING_VALUES = {
-  ...DEFAULT_QUERY_PARAMS,
   limit_collection: {
-    excludedCategories: [],
-    excludedFiles: [],
-    includedCategories: [],
-    includedFiles: [],
+    excludedCategories: new Map<string, CategoryMenuItem>(),
+    excludedTexts: new Map<string, TextMenuItem>(),
+    includedCategories: new Map<string, CategoryMenuItem>(),
+    includedTexts: new Map<string, TextMenuItem>(),
   },
+  // TODO: add default values for target_collection
+  target_collection: new Map<string, CategoryMenuItem>(),
 };
 
-export const querySettingsValuesAtom = atom(DEFAULT_QUERY_SETTING_VALUES);
+export const MIN_PAR_LENGTH_VALUES: Record<DbLang, number> = {
+  chn: 5,
+  pli: 25,
+  skt: 25,
+  tib: 7,
+};
+export const DEFAULT_PAR_LENGTH_VALUES: Record<DbLang, number> = {
+  chn: 7,
+  pli: 30,
+  skt: 30,
+  tib: 14,
+};
+
+export interface QueryParams {
+  score: number;
+  par_length: number | undefined;
+  folio?: string;
+  sort_method?: "length2" | "position" | "quoted-text";
+  limit_collection?: string[];
+  target_collection?: string[];
+}
+
+export const DEFAULT_QUERY_PARAMS: QueryParams = {
+  ...DEFAULT_QUERY_VALUES,
+  limit_collection: undefined,
+  target_collection: undefined,
+};
+
+export const scoreFilterValueAtom = atom(DEFAULT_QUERY_VALUES.score);
+export const parLengthFilterValueAtom = atom(DEFAULT_QUERY_VALUES.par_length);
+export const folioOptionValueAtom = atom(DEFAULT_QUERY_VALUES.folio);
+export const sortMethodOptionValueAtom = atom(DEFAULT_QUERY_VALUES.sort_method);
+export const limitCollectionFilterValueAtom = atom(
+  DEFAULT_QUERY_VALUES.limit_collection
+);
+export const targetCollectionFilterValueAtom = atom(
+  DEFAULT_QUERY_VALUES.target_collection
+);

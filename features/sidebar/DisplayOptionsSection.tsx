@@ -1,8 +1,11 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
-import { currentDbViewAtom } from "@components/db/DbViewSelector";
+import {
+  currentDbViewAtom,
+  DbViewSelector,
+} from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { Divider, List, ListItem, Typography } from "@mui/material";
+import { Box, Divider, List, ListItem, Typography } from "@mui/material";
 import {
   FolioOption,
   SortOption,
@@ -28,7 +31,7 @@ const displayOptionComponents: [DisplayOption, React.ElementType][] = [
 ];
 
 export const DisplayOptionsSection = () => {
-  const currentDbView = useAtomValue(currentDbViewAtom);
+  const currentView = useAtomValue(currentDbViewAtom);
   const { sourceLanguage } = useDbQueryParams();
   const { t } = useTranslation("settings");
 
@@ -41,14 +44,14 @@ export const DisplayOptionsSection = () => {
           omissions,
           settingName: name,
           dbLang: sourceLanguage,
-          view: currentDbView,
+          view: currentView,
         })
       ) {
         return null;
       }
 
       return (
-        <ListItem key={name}>
+        <ListItem key={name} sx={{ px: 0 }}>
           <DisplayOptionComponent />
         </ListItem>
       );
@@ -56,12 +59,13 @@ export const DisplayOptionsSection = () => {
   );
 
   return listItems.length > 0 ? (
-    <>
-      <Typography variant="h6" mx={2}>
+    <Box sx={{ mx: 2 }}>
+      <Typography sx={{ mb: 2 }} variant="h6">
         {t("headings.display")}
       </Typography>
+      <DbViewSelector currentView={currentView} />
       <List>{listItems}</List>
       <Divider sx={{ my: 2 }} />
-    </>
+    </Box>
   ) : null;
 };

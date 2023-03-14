@@ -1,9 +1,11 @@
+import { useRouter } from "next/router";
+import { useCoercedQueryValues } from "@components/hooks/useCoercedQueryValues";
 // import { useTranslation } from "react-i18next";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
-import { Box, Drawer, IconButton, Tab } from "@mui/material";
+import { Box, CircularProgress, Drawer, IconButton, Tab } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { atom, useAtom } from "jotai";
 
@@ -17,8 +19,6 @@ import {
 } from "./MuiStyledSidebarComponents";
 import { UtilityOptionsSection } from "./UtilityOptionsSection";
 
-// https://buddhanexus.kc-tbts.uni-hamburg.de/api/menus/sidebar/pli
-
 export const sidebarIsOpenAtom = atom(true);
 const activeTabAtom = atom("1");
 
@@ -30,12 +30,16 @@ export const StandinSetting = (setting: string) => (
 
 export function Sidebar() {
   const theme = useTheme();
+
+  useCoercedQueryValues();
+  const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
+  const [activeTab, setActiveTab] = useAtom(activeTabAtom);
+
+  const router = useRouter();
+  const { query, asPath } = router;
+
   // TODO: resolve Hydratrion error connected with SSR / mismatching locales files
   // const { t } = useTranslation("settings");
-
-  const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
-
-  const [activeTab, setActiveTab] = useAtom(activeTabAtom);
 
   const handleDrawerClose = () => {
     setSidebarIsOpen(false);
@@ -100,21 +104,27 @@ export function Sidebar() {
               </TabList>
             </Box>
 
-            <TabPanel value="1" sx={{ px: 0 }}>
-              <DisplayOptionsSection />
+            {!asPath.includes("?") || query.score ? (
+              <>
+                <TabPanel value="1" sx={{ px: 0 }}>
+                  <DisplayOptionsSection />
 
-              <UtilityOptionsSection />
+                  <UtilityOptionsSection />
 
-              <ExternalLinksSection />
-            </TabPanel>
+                  <ExternalLinksSection />
+                </TabPanel>
 
-            <TabPanel value="2" sx={{ px: 0 }}>
-              <FilterSettings />
-            </TabPanel>
+                <TabPanel value="2" sx={{ px: 0 }}>
+                  <FilterSettings />
+                </TabPanel>
 
-            <TabPanel value="3">
-              <Info />
-            </TabPanel>
+                <TabPanel value="3">
+                  <Info />
+                </TabPanel>
+              </>
+            ) : (
+              <CircularProgress color="inherit" sx={{ m: 2, flex: 1 }} />
+            )}
           </TabContext>
         </Box>
       </aside>

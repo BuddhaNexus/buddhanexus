@@ -36,7 +36,7 @@ export default function NumbersPage() {
       backgroundName={sourceLanguage}
       hasSidebar={true}
     >
-      <DbResultsPageHead currentView="numbers" />
+      <DbResultsPageHead />
 
       {/* Just printing some example data: */}
       {/* The deta should probably be transformed according to our needs before using it here. */}
@@ -70,7 +70,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   const fileName = params?.file as string;
   await queryClient.prefetchQuery(
     DbApi.SegmentsData.makeQueryKey(fileName),
-    () => DbApi.SegmentsData.call(fileName, "?page=0&co_occ=2000&folio=")
+    () => DbApi.SegmentsData.call(fileName, "?page=0")
   );
 
   return {

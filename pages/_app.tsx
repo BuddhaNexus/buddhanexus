@@ -24,6 +24,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AppBar } from "features/sidebar/MuiStyledSidebarComponents";
 import { sidebarIsOpenAtom } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
+import queryString from "query-string";
 import { QueryParamProvider } from "use-query-params";
 import { SETTING_SIDEBAR_PATHS_REGEX } from "utils/constants";
 import createEmotionCache from "utils/createEmotionCache";
@@ -58,7 +59,13 @@ function MyApp({
   return (
     <CacheProvider value={emotionCache}>
       <MDXProvider components={AppMDXComponents}>
-        <QueryParamProvider adapter={NextAdapter}>
+        <QueryParamProvider
+          adapter={NextAdapter}
+          options={{
+            searchStringToObject: queryString.parse,
+            objectToSearchString: queryString.stringify,
+          }}
+        >
           <QueryClientProvider client={queryClient}>
             <Hydrate state={pageProps.dehydratedState}>
               <DefaultSeo {...SEO} />

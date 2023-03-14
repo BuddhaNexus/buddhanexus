@@ -1,14 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// TODO: ENABLE TS AFTER REFACTOR
+
 /**
  * https://mui.com/material-ui/react-autocomplete/
  * https://codesandbox.io/s/2326jk?file=/demo.tsx
  */
 
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { type ListChildComponentProps, VariableSizeList } from "react-window";
 import { useTranslation } from "next-i18next";
-import type { DatabaseCategory, DatabaseText } from "@components/db/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useTextLists } from "@components/hooks/useTextLists";
 import {
   Autocomplete,
   autocompleteClasses,
@@ -23,10 +26,13 @@ import {
   useTheme,
 } from "@mui/material";
 import { styled } from "@mui/styles";
-import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { DbApi } from "utils/api/dbApi";
-import { querySettingsValuesAtom } from "utils/dbSidebar";
+import type { CategoryMenuItem, TextMenuItem } from "utils/api/textLists";
+import type { QueryValues } from "utils/dbSidebar";
+import {
+  type CoercedCollectionValues,
+  limitCollectionFilterValueAtom,
+} from "utils/dbSidebar";
 
 const OuterElementContext = React.createContext({});
 
@@ -179,60 +185,70 @@ const StyledPopper = styled(Popper)({
 });
 
 const InclusionExclusionFilters = () => {
-  const { sourceLanguage, queryParams, setQueryParams } = useDbQueryParams();
   const { t } = useTranslation("settings");
+  const { setQueryParams } = useDbQueryParams();
+  const { texts, categories, isLoadingCats, isLoadingTexts } = useTextLists();
 
-  // TODO: disable incl/excl options according to current selections
+  const [limitCollectionValues, setLimitCollectionValues] = useAtom(
+    limitCollectionFilterValueAtom
+  );
 
-  const [queryValues, setQueryValues] = useAtom(querySettingsValuesAtom);
+  const [disabledSelectors, setDisabledSelectors] = useState({
+    excludedCategories: false,
+    excludedTexts: false,
+    includedCategories: false,
+    includedTexts: false,
+  });
+
+  function setIsSelectorDisabled(key, value) {
+    setDisabledSelectors((prevState) => {
+      const updates = {
+        excludedCategories: {},
+        excludedTexts: {},
+        includedCategories: {
+          excludedCategories: !value,
+          excludedTexts: !value,
+        },
+        includedTexts: {
+          excludedCategories: !value,
+          excludedTexts: !value,
+          includedCategories: value,
+        },
+      };
+      return { ...prevState, ...updates[key] };
+    });
+  }
 
   const handleInputChange = (
-    values: (DatabaseCategory | DatabaseText)[],
-    filterType: string
+    newValues: (CategoryMenuItem | TextMenuItem)[],
+    filterType: keyof QueryValues["limit_collection"]
   ) => {
-    if (filterType) {
-      setQueryValues({
-        ...queryValues,
-        limit_collection: {
-          ...queryValues.limit_collection,
-          [filterType]: values.map((value) => value),
-        },
-      });
-    }
-  };
+    const updatedSelectorValues = new Map();
 
-  useEffect(() => {
-    const params = Object.entries(queryValues.limit_collection).flatMap(
-      ([key, value]) =>
-        key.includes("excluded")
-          ? value.map((item: any) =>
-              "categoryName" in item
-                ? `!${item.categoryName}`
-                : `!${item.fileName}`
-            )
-          : value.map((item: any) =>
-              "categoryName" in item ? item.categoryName : item.fileName
-            )
-    );
+    for (const value of newValues) {
+      updatedSelectorValues.set(value.id, value);
+    }
+
+    const updatedFilterValues = {
+      ...limitCollectionValues,
+      [filterType]: updatedSelectorValues,
+    };
+
+    setLimitCollectionValues(updatedFilterValues);
+
+    const updatedParams = Object.keys(updatedFilterValues).flatMap((key) => {
+      return [...updatedFilterValues[key as keyof CoercedCollectionValues]].map(
+        ([, value]) => (key.includes("excluded") ? `!${value.id}` : value.id)
+      );
+    });
 
     setQueryParams({
-      ...queryParams,
-      limit_collection: params.length > 0 ? params : undefined,
+      limit_collection: updatedParams.length > 0 ? updatedParams : undefined,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryValues, setQueryParams]);
 
-  const { data: files, isLoading } = useQuery<DatabaseText[]>({
-    queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.LanguageMenu.call(sourceLanguage),
-  });
-
-  const { data: categories, isLoading: isLoadingCats } = useQuery<
-    DatabaseCategory[]
-  >({
-    queryKey: DbApi.CategoryMenu.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.CategoryMenu.call(sourceLanguage),
-  });
+    // eslint-disable-next-line unicorn/explicit-length-check, no-extra-boolean-cast
+    setIsSelectorDisabled(filterType, !Boolean(newValues.length > 0));
+  };
 
   return (
     <Box sx={{ my: 1, width: "100%" }}>
@@ -240,13 +256,13 @@ const InclusionExclusionFilters = () => {
         {t(`filtersLabels.minMatch`)}
       </FormLabel>
       <Autocomplete
-        id="exclude-collections"
+        id="excluded-collections"
         sx={{ mt: 1, mb: 2 }}
         multiple={true}
-        value={queryValues.limit_collection.excludedCategories ?? []}
+        value={[...limitCollectionValues.excludedCategories.values()]}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
-        options={categories ?? []}
+        options={[...categories.values()]}
         getOptionLabel={(option) => option.name.toUpperCase()}
         renderInput={(params) => (
           <TextField
@@ -268,6 +284,7 @@ const InclusionExclusionFilters = () => {
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
         loading={isLoadingCats}
+        disabled={disabledSelectors.excludedCategories}
         filterSelectedOptions
         disableListWrap
         disablePortal
@@ -276,13 +293,13 @@ const InclusionExclusionFilters = () => {
         }
       />
       <Autocomplete
-        id="exclude-files"
+        id="excluded-texts"
         sx={{ mb: 2 }}
         multiple={true}
-        value={queryValues.limit_collection.excludedFiles ?? []}
+        value={[...limitCollectionValues.excludedTexts.values()]}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
-        options={files ?? []}
+        options={[...texts.values()]}
         getOptionLabel={(option) => option.name.toUpperCase()}
         groupBy={(option) => option.category.toUpperCase()}
         renderInput={(params) => (
@@ -293,7 +310,7 @@ const InclusionExclusionFilters = () => {
               ...params.InputProps,
               endAdornment: (
                 <React.Fragment>
-                  {isLoading ? (
+                  {isLoadingTexts ? (
                     <CircularProgress color="inherit" size={20} />
                   ) : null}
                   {params.InputProps.endAdornment}
@@ -304,21 +321,22 @@ const InclusionExclusionFilters = () => {
         )}
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
-        loading={isLoading}
+        loading={isLoadingTexts}
+        disabled={disabledSelectors.excludedTexts}
         filterSelectedOptions
-        disableListWrap
+        // disableListWrap
         disablePortal
-        onChange={(event, value) => handleInputChange(value, "excludedFiles")}
+        onChange={(event, value) => handleInputChange(value, "excludedTexts")}
       />
 
       <Autocomplete
-        id="include-collections"
+        id="included-collections"
         sx={{ mb: 2 }}
         multiple={true}
-        value={queryValues.limit_collection.includedCategories ?? []}
+        value={[...limitCollectionValues.includedCategories.values()]}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
-        options={categories ?? []}
+        options={[...categories.values()]}
         getOptionLabel={(option) => option.name.toUpperCase()}
         renderInput={(params) => (
           <TextField
@@ -340,20 +358,22 @@ const InclusionExclusionFilters = () => {
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
         loading={isLoadingCats}
+        // disableListWrap
+        isOptionEqualToValue={(option, value) => categories.has(value.id)}
+        disabled={disabledSelectors.includedCategories}
         filterSelectedOptions
-        disableListWrap
         disablePortal
         onChange={(event, value) =>
           handleInputChange(value, "includedCategories")
         }
       />
       <Autocomplete
-        id="include-files"
+        id="included-texts"
         multiple={true}
-        value={queryValues.limit_collection.includedFiles ?? []}
+        value={[...limitCollectionValues.includedTexts.values()]}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
-        options={files ?? []}
+        options={[...texts.values()]}
         getOptionLabel={(option) => option.name.toUpperCase()}
         groupBy={(option) => option.category.toUpperCase()}
         renderInput={(params) => (
@@ -364,7 +384,7 @@ const InclusionExclusionFilters = () => {
               ...params.InputProps,
               endAdornment: (
                 <React.Fragment>
-                  {isLoading ? (
+                  {isLoadingTexts ? (
                     <CircularProgress color="inherit" size={20} />
                   ) : null}
                   {params.InputProps.endAdornment}
@@ -375,11 +395,12 @@ const InclusionExclusionFilters = () => {
         )}
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
-        loading={isLoading}
+        loading={isLoadingTexts}
+        disabled={disabledSelectors.includedTexts}
         filterSelectedOptions
         disableListWrap
         disablePortal
-        onChange={(event, value) => handleInputChange(value, "includedFiles")}
+        onChange={(event, value) => handleInputChange(value, "includedTexts")}
       />
     </Box>
   );

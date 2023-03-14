@@ -1,9 +1,8 @@
 // source language menu on main db page (Autocomplete component)
-import type { DatabaseText } from "@components/db/types";
-import type { ApiLanguageMenuData } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
 import { API_ROOT_URL } from "./constants";
+import type { ApiLanguageMenuData, DatabaseText } from "./textLists";
 
 export async function getLanguageMenuData(
   language: SourceLanguage
@@ -14,7 +13,7 @@ export async function getLanguageMenuData(
   // TODO: Add pagination on BE
   return response.result.map((menuItem: ApiLanguageMenuData) => ({
     label: menuItem.search_field,
-    id: menuItem.search_field,
+    id: menuItem.filename,
     name: menuItem.displayName,
     fileName: menuItem.filename,
     textName: menuItem.textname,

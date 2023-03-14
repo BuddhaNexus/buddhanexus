@@ -36,6 +36,7 @@
     "emailQueryLink": "Email opened"
   },
   "filtersLabels": {
+    "score": "Similarity Score:",
     "minMatch": "Minimum character/syllable matches length",
     "inclcudeExclude": "Includes and Exclude items",
     "excludeCollections": "Exclude collections",

@@ -5,20 +5,15 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
-import type { DbLang } from "utils/dbSidebar";
-import { DEFAULT_QUERY_PARAMS } from "utils/dbSidebar";
 
 // TODO: refactor for robustness
-function getActiveFilterCount(queries: any, lang: DbLang) {
+function getActiveFilterCount(queries: any, defaults: any) {
   let count = 0;
 
   Object.entries(queries).map(([key, value]) => {
-    const queryKey = key as keyof typeof DEFAULT_QUERY_PARAMS;
+    const queryKey = key as keyof typeof defaults;
 
-    if (
-      queryKey === "par_length" &&
-      DEFAULT_QUERY_PARAMS.par_length[lang] === value
-    ) {
+    if (queryKey === "par_length" && defaults.par_length === value) {
       return null;
     }
 
@@ -27,7 +22,7 @@ function getActiveFilterCount(queries: any, lang: DbLang) {
       return null;
     }
 
-    if (DEFAULT_QUERY_PARAMS[queryKey] === value) {
+    if (defaults[queryKey] === value || value === undefined) {
       return null;
     }
 
@@ -39,12 +34,12 @@ function getActiveFilterCount(queries: any, lang: DbLang) {
 }
 
 export default function CurrentResultChips() {
-  const { fileName, queryParams, serializedParams, sourceLanguage } =
+  const { fileName, queryParams, serializedParams, defaultQueryParams } =
     useDbQueryParams();
   const { t } = useTranslation("settings");
   const [mounted, setMounted] = useState(false);
 
-  const filtersCount = getActiveFilterCount(queryParams, sourceLanguage);
+  const filtersCount = getActiveFilterCount(queryParams, defaultQueryParams);
 
   const { data, isLoading } = useQuery({
     queryKey: [DbApi.ParallelCount.makeQueryKey(fileName), serializedParams],

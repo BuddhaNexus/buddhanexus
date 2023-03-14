@@ -8,7 +8,6 @@ import type { ListChildComponentProps } from "react-window";
 import { VariableSizeList } from "react-window";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import type { DatabaseText } from "@components/db/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   Autocomplete,
@@ -26,6 +25,7 @@ import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
+import type { DatabaseText } from "utils/api/textLists";
 
 import { currentDbViewAtom } from "./DbViewSelector";
 
@@ -179,11 +179,10 @@ const StyledPopper = styled(Popper)({
 });
 
 export const SourceTextSearchInput = () => {
-  const { sourceLanguage } = useDbQueryParams();
+  const { sourceLanguage, serializedParams } = useDbQueryParams();
 
   const router = useRouter();
   const currentDbView = useAtomValue(currentDbViewAtom);
-  const { serializedParams } = useDbQueryParams();
 
   const { t } = useTranslation();
 
@@ -223,9 +222,10 @@ export const SourceTextSearchInput = () => {
       disableListWrap
       disablePortal
       onChange={(target, value) =>
-        router.push(
-          `/db/${sourceLanguage}/${value?.fileName}/${currentDbView}?${serializedParams}`
-        )
+        router.push({
+          pathname: `/db/${sourceLanguage}/${value?.fileName}/${currentDbView}`,
+          query: serializedParams,
+        })
       }
     />
   );

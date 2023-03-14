@@ -36,7 +36,7 @@ export default function TextPage() {
       backgroundName={sourceLanguage}
       hasSidebar={true}
     >
-      <DbResultsPageHead currentView="text" />
+      <DbResultsPageHead />
 
       {isLoading ? (
         <CircularProgress color="inherit" />
@@ -63,7 +63,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 
   const fileName = params?.file as string;
   await queryClient.prefetchQuery(DbApi.GraphView.makeQueryKey(fileName), () =>
-    DbApi.GraphView.call(fileName, `?co_occ=2000`)
+    DbApi.GraphView.call(fileName, ``)
   );
 
   return {

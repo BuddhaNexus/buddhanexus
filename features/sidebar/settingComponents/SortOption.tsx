@@ -1,7 +1,7 @@
-import { useEffect } from "react";
 // import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
+// import { sortMethodOptionValueAtom } from "utils/dbSidebar";
 
 interface SortOptionDef {
   value: string;
@@ -18,14 +18,12 @@ const SORT_OPTIONS: SortOptionDef[] = [
 ];
 
 export default function SortOption() {
-  const { queryParams, setQueryParams } = useDbQueryParams();
+  const { queryParams } = useDbQueryParams();
   // const { t } = useTranslation("settings");
 
-  useEffect(() => {}, [queryParams]);
-
-  const handleSelectChange = (value: string) => {
-    setQueryParams({ sort_method: value });
-  };
+  /*  const handleSelectChange = (value: string) => {
+   setQueryParams({ sort_method: value });
+  }; */
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -39,7 +37,7 @@ export default function SortOption() {
           aria-labelledby="sort-option-selector-label"
           defaultValue="position"
           value={queryParams.sort_method ?? "position"}
-          onChange={(e) => handleSelectChange(e.target.value)}
+          // onChange={(e) => handleSelectChange(e.target.value)}
         >
           {SORT_OPTIONS.map((method) => {
             return (

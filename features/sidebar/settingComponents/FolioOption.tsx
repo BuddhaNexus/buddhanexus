@@ -1,22 +1,20 @@
-import { useEffect } from "react";
-import type { DatabaseFolio } from "@components/db/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
+import type { DatabaseFolio } from "utils/api/common";
 import { DbApi } from "utils/api/dbApi";
+// import { folioOptionValueAtom } from "utils/dbSidebar";
 
 const showAll = "Whole text";
 
 // TODO: add handling for functionality change for different views
 export default function FolioOption() {
-  const { fileName, queryParams, setQueryParams } = useDbQueryParams();
+  const { fileName } = useDbQueryParams();
 
-  useEffect(() => {}, [queryParams]);
-
-  const handleSelectChange = (value: string) => {
-    setQueryParams({ folio: value === showAll ? undefined : value });
-  };
+  // const handleSelectChange = (value: string) => {
+  //  setQueryParams({ folio: value === showAll ? undefined : value });
+  // };
 
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
@@ -39,8 +37,8 @@ export default function FolioOption() {
               id="folio-option-selector"
               aria-labelledby="folio-option-selector-label"
               displayEmpty={true}
-              value={queryParams.folio ?? showAll}
-              onChange={(e) => handleSelectChange(e.target.value)}
+              /*  value={queryParams.folio ?? showAll}
+              onChange={(e) => handleSelectChange(e.target.value)} */
             >
               <MenuItem value={showAll}>
                 <em>{showAll}</em>
