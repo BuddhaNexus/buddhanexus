@@ -1,13 +1,14 @@
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
 import type { SupportedLocale } from "types/i18next";
 
 import {
-  type MDXPageDataStore,
   MDX_COMPONENTS,
   MDX_IMPORTS,
   MDX_PROPS,
+  type MDXPageDataStore,
 } from "./mdxPageImports";
 
 export interface MDXFrontmatter {
@@ -28,7 +29,7 @@ export interface MDXData {
 export interface CompiledMDXData {
   slug: string;
   meta: MDXFrontmatter;
-  content: { compiledSource: string };
+  content: MDXRemoteSerializeResult;
 }
 
 type MDXPagePath = { params: { slug: string }; locale: string };

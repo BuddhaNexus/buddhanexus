@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["dbChn", "dbPli", "dbSkt", "dbTib"]
+    ["db"]
   );
 
   return {

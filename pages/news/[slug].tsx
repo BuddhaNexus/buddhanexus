@@ -34,7 +34,7 @@ export default function PostPage({
   } = post;
 
   const pubDate = new Date(date);
-  const formatedDate = pubDate.toLocaleDateString(locale, POST_DATE_OPTS);
+  const formattedDate = pubDate.toLocaleDateString(locale, POST_DATE_OPTS);
 
   const { components, props } = getMDXPageComponents({
     componentList,
@@ -55,12 +55,13 @@ export default function PostPage({
           <Typography variant="h2" component="h1" mt={4}>
             {title}
           </Typography>
-          <Typography variant="subtitle1">{formatedDate}</Typography>
+          <Typography variant="subtitle1">{formattedDate}</Typography>
 
           <MDXRemote
             compiledSource={content.compiledSource}
             components={components}
             scope={props}
+            frontmatter={content.frontmatter}
           />
         </article>
       </Paper>
