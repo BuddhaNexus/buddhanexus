@@ -25,7 +25,7 @@ export const DbViewSelector = ({ currentView }: Props) => {
   };
 
   return (
-    <FormControl variant="filled" fullWidth>
+    <FormControl variant="filled" sx={{ width: 1, mb: 2 }}>
       <InputLabel id="db-view-selector-label">
         {t(`common:dbViewSelector.view`)}
       </InputLabel>

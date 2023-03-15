@@ -26,12 +26,12 @@ export default function SortOption() {
   }; */
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: 1, mb: 2 }}>
       <FormLabel id="sort-option-selector-label">
         {/* {t("optionsLabels.sorting")} */}
         Sorting Method
       </FormLabel>
-      <FormControl sx={{ width: "100%" }}>
+      <FormControl sx={{ width: 1 }}>
         <Select
           id="sort-option-selector"
           aria-labelledby="sort-option-selector-label"

@@ -23,11 +23,10 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
+import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
 import type { DatabaseText } from "utils/api/textLists";
-
-import { currentDbViewAtom } from "./DbViewSelector";
 
 const OuterElementContext = React.createContext({});
 

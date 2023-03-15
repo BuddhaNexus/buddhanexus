@@ -25,7 +25,7 @@ export default function TextScriptOption() {
   }
 
   return (
-    <FormControl sx={{ width: "100%" }}>
+    <FormControl sx={{ width: 1 }}>
       <FormLabel id="tibetan-script-selection-label">
         {/* {t("optionsLabels.script")} */}
         Script

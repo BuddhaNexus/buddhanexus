@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useCoercedQueryValues } from "@components/hooks/useCoercedQueryValues";
 // import { useTranslation } from "react-i18next";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -7,7 +6,8 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
 import { Box, CircularProgress, Drawer, IconButton, Tab } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
+import { parLengthFilterValueAtom } from "utils/dbSidebar";
 
 import { DisplayOptionsSection } from "./DisplayOptionsSection";
 import { ExternalLinksSection } from "./ExternalLinksSection";
@@ -35,8 +35,7 @@ export function Sidebar() {
   const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);
 
-  const router = useRouter();
-  const { query, asPath } = router;
+  const initiatedValues = useAtomValue(parLengthFilterValueAtom);
 
   // TODO: resolve Hydratrion error connected with SSR / mismatching locales files
   // const { t } = useTranslation("settings");
@@ -72,7 +71,7 @@ export function Sidebar() {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              width: "100%",
+              width: 1,
             }}
           >
             <IconButton onClick={handleDrawerClose}>
@@ -88,7 +87,7 @@ export function Sidebar() {
             </IconButton>
           </Box>
         </DrawerHeader>
-        <Box sx={{ width: "100%", typography: "body1" }}>
+        <Box sx={{ width: 1, typography: "body1" }}>
           <TabContext value={activeTab}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <TabList
@@ -104,7 +103,7 @@ export function Sidebar() {
               </TabList>
             </Box>
 
-            {!asPath.includes("?") || query.score ? (
+            {initiatedValues ? (
               <>
                 <TabPanel value="1" sx={{ px: 0 }}>
                   <DisplayOptionsSection />

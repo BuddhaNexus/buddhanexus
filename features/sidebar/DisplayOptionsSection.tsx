@@ -1,9 +1,5 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
-import {
-  currentDbViewAtom,
-  DbViewSelector,
-} from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, Typography } from "@mui/material";
 import {
@@ -11,6 +7,10 @@ import {
   SortOption,
   TextScriptOption,
 } from "features/sidebar/settingComponents";
+import {
+  currentDbViewAtom,
+  DbViewSelector,
+} from "features/sidebar/settingComponents/DbViewSelector";
 import { StandinSetting } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
 import {
@@ -41,7 +41,7 @@ export const DisplayOptionsSection = () => {
 
   return options.length > 0 ? (
     <Box sx={{ mx: 2 }}>
-      <Typography sx={{ mb: 2 }} variant="h6">
+      <Typography variant="h6" component="h3" mb={2}>
         {t("headings.display")}
       </Typography>
       <DbViewSelector currentView={currentView} />

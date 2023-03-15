@@ -268,7 +268,7 @@ const LimitCollectionFilters = () => {
   };
 
   return (
-    <Box sx={{ my: 1, width: "100%" }}>
+    <Box sx={{ my: 1, width: 1 }}>
       <FormLabel id="include-exclude-filters-label">
         {t(`filtersLabels.minMatch`)}
       </FormLabel>

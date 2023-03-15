@@ -1,6 +1,6 @@
 /* eslint-disable no-inline-comments */
 /* eslint-disable line-comment-position */
-import type { DbView } from "@components/db/DbViewSelector";
+import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
 import { atom } from "jotai";
 import type { CategoryMenuItem, TextMenuItem } from "utils/api/textLists";
 

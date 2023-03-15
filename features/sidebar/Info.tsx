@@ -1,6 +1,6 @@
-import type { DbView } from "@components/db/DbViewSelector";
-import { currentDbViewAtom } from "@components/db/DbViewSelector";
 import { Typography } from "@mui/material";
+import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
+import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { useAtomValue } from "jotai";
 
 // TODO: Determine relevant support info for sub-components & add to local files.

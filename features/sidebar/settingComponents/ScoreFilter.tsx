@@ -54,10 +54,10 @@ export default function ScoreFilter() {
   ];
 
   return (
-    <Box sx={{ width: "100%", mb: 2 }}>
+    <Box sx={{ width: 1, mb: 2 }}>
       <FormLabel id="score-input-label">{t("filtersLabels.score")}</FormLabel>
       <TextField
-        sx={{ width: "100%", my: 1 }}
+        sx={{ width: 1, my: 1 }}
         value={scroeValue}
         type="number"
         inputProps={{

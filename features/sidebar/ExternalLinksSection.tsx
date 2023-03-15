@@ -42,7 +42,7 @@ export const ExternalLinksSection = () => {
 
   return listItems.length > 0 ? (
     <>
-      <Typography variant="h6" mx={2}>
+      <Typography variant="h6" component="h3" mx={2} mt={1}>
         {t("headings.links")}
       </Typography>
       <List sx={{ display: "flex", justifyContent: "flex-start" }}>

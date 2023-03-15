@@ -1,4 +1,3 @@
-import { currentDbViewAtom } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box } from "@mui/material";
 import {
@@ -6,6 +5,7 @@ import {
   ParLengthFilter,
   ScoreFilter,
 } from "features/sidebar/settingComponents";
+import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { StandinSetting } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
 import {

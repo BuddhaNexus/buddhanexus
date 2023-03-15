@@ -62,12 +62,12 @@ export default function ParLengthFilter() {
   ];
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: 1 }}>
       <FormLabel id="min-match-input-label">
         {t("filtersLabels.minMatch")}
       </FormLabel>
       <TextField
-        sx={{ width: "100%", my: 1 }}
+        sx={{ width: 1, my: 1 }}
         value={parLength ?? DEFAUT_VALUES[lang]}
         type="number"
         inputProps={{

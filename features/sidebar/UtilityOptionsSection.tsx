@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "next-i18next";
-import { currentDbViewAtom } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
@@ -9,7 +8,6 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import type { SvgIconTypeMap } from "@mui/material";
 import {
   Box,
-  Divider,
   Fade,
   List,
   ListItem,
@@ -20,6 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { useAtomValue } from "jotai";
 import {
   isSettingOmitted,
@@ -212,11 +211,10 @@ export const UtilityOptionsSection = () => {
 
   return listItems.length > 0 ? (
     <>
-      <Typography variant="h6" mx={2}>
+      <Typography variant="h6" component="h3" mx={2} mt={3}>
         {t("headings.tools")}
       </Typography>
       <List>{listItems}</List>
-      <Divider sx={{ my: 2 }} />
     </>
   ) : null;
 };

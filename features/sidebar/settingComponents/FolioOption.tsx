@@ -26,7 +26,7 @@ export default function FolioOption() {
   }
 
   return (
-    <Box sx={{ width: 1 }}>
+    <Box sx={{ width: 1, mb: 2 }}>
       {data && data.length > 1 ? (
         <>
           <FormLabel id="folio-option-selector-label">
