@@ -7,10 +7,11 @@ import { Paper, Typography } from "@mui/material";
 import fs from "fs";
 import path from "path";
 import type { SupportedLocale } from "types/i18next";
-import { type CompiledMDXData, getMDXPagePaths } from "utils/mdxPageHelpers";
 import {
+  type CompiledMDXData,
   getMDXContentBySlug,
   getMDXPageComponents,
+  getMDXPagePaths,
 } from "utils/mdxPageHelpers";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 

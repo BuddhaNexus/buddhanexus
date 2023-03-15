@@ -1,3 +1,4 @@
+import React from "react";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { DbViewSelector } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -5,10 +6,12 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress } from "@mui/material";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "features/tableView/TableView";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
-import { DbApi, getLanguageMenuData } from "utils/api/db";
+import { DbApi } from "utils/api/dbApi";
+import { getLanguageMenuData } from "utils/api/languageMenu";
 import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
@@ -49,6 +52,7 @@ export default function TablePage() {
           onStartReached={fetchPreviousPage}
         />
       )}
+      <SourceTextBrowserDrawer />
     </PageContainer>
   );
 }

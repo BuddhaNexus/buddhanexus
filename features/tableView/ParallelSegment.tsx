@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
+import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import PercentIcon from "@mui/icons-material/Percent";
-import type { Theme } from "@mui/material";
 import {
   Box,
   Card,
@@ -12,10 +12,9 @@ import {
   IconButton,
   Link,
   Tooltip,
-  useTheme,
 } from "@mui/material";
 import type { ApiTextSegment } from "types/api/table";
-import { SourceLanguage } from "utils/constants";
+import type { SourceLanguage } from "utils/constants";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
 
@@ -30,26 +29,6 @@ interface ParallelSegmentProps {
   score?: number;
 }
 
-const getLanguageColor = (language: SourceLanguage, theme: Theme): string => {
-  switch (language) {
-    case SourceLanguage.PALI: {
-      return theme.palette.common.pali;
-    }
-    case SourceLanguage.TIBETAN: {
-      return theme.palette.common.tibetan;
-    }
-    case SourceLanguage.CHINESE: {
-      return theme.palette.common.chinese;
-    }
-    case SourceLanguage.SANSKRIT: {
-      return theme.palette.common.sanskrit;
-    }
-    default: {
-      return theme.palette.common.black;
-    }
-  }
-};
-
 export const ParallelSegment = ({
   textSegmentNumbers,
   text,
@@ -59,7 +38,6 @@ export const ParallelSegment = ({
   language,
 }: ParallelSegmentProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
   const sourceLanguageName = t(`language.${language}`);
 
@@ -71,11 +49,6 @@ export const ParallelSegment = ({
   const copyTextInfoToClipboard = useCallback(async () => {
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
-
-  const languageBadgeColor = useCallback(
-    () => getLanguageColor(language, theme),
-    [language, theme]
-  );
 
   return (
     <Card sx={{ flex: 1, wordBreak: "break-all" }}>
@@ -90,17 +63,7 @@ export const ParallelSegment = ({
       >
         <Box sx={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}>
           {/* Language name */}
-          <Chip
-            size="small"
-            label={sourceLanguageName}
-            sx={{
-              m: 0.5,
-              p: 0.5,
-              color: "white",
-              fontWeight: 700,
-              backgroundColor: languageBadgeColor,
-            }}
-          />
+          <SourceLanguageChip label={sourceLanguageName} language={language} />
 
           {/* File Name */}
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
