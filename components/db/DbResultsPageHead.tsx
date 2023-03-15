@@ -10,8 +10,12 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSetQueryValues } from "@components/hooks/useSetQueryValues";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import {
+  DEFAULT_DISABLE_LIMIT_SELECT_STATE,
+  disableLimitColectionSelectAtom,
+} from "features/sidebar/settingComponents/LimitCollectionFilters.tsx";
 import { sidebarIsOpenAtom } from "features/sidebar/Sidebar";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 
 export const DbResultsPageHead = () => {
   // TODO: get full text name
@@ -24,10 +28,13 @@ export const DbResultsPageHead = () => {
 
   const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
 
+  const setDisableLimitSelectors = useSetAtom(disableLimitColectionSelectAtom);
+
   const handleSettingsClick = () => setSidebarIsOpen(!sidebarIsOpen);
 
   const handleReset = () => {
     setAllQueryValues("reset");
+    setDisableLimitSelectors(DEFAULT_DISABLE_LIMIT_SELECT_STATE);
     setQueryParams(defaultQueryParams);
   };
 

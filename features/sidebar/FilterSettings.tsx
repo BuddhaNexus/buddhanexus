@@ -2,7 +2,7 @@ import { currentDbViewAtom } from "@components/db/DbViewSelector";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box } from "@mui/material";
 import {
-  InclusionExclusionFilters,
+  LimitCollectionFilters,
   ParLengthFilter,
   ScoreFilter,
 } from "features/sidebar/settingComponents";
@@ -35,7 +35,7 @@ export const FilterSettings = () => {
       {currentFilters.includes("score") && <ScoreFilter />}
       {currentFilters.includes("par_length") && <ParLengthFilter />}
       {currentFilters.includes("limit_collection") && (
-        <InclusionExclusionFilters />
+        <LimitCollectionFilters />
       )}
       {currentFilters.includes("target_collection") &&
         StandinSetting("target_collection")}

@@ -1,13 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-// TODO: ENABLE TS AFTER REFACTOR
-
 /**
  * https://mui.com/material-ui/react-autocomplete/
  * https://codesandbox.io/s/2326jk?file=/demo.tsx
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { type ListChildComponentProps, VariableSizeList } from "react-window";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -26,7 +22,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { styled } from "@mui/styles";
-import { useAtom } from "jotai";
+import { atom, useAtom } from "jotai";
 import type { CategoryMenuItem, TextMenuItem } from "utils/api/textLists";
 import type { QueryValues } from "utils/dbSidebar";
 import {
@@ -184,7 +180,20 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-const InclusionExclusionFilters = () => {
+export const DEFAULT_DISABLE_LIMIT_SELECT_STATE = {
+  excludedCategories: false,
+  excludedTexts: false,
+  includedCategories: false,
+  includedTexts: false,
+};
+
+export const disableLimitColectionSelectAtom = atom(
+  DEFAULT_DISABLE_LIMIT_SELECT_STATE
+);
+
+const LimitCollectionFilters = () => {
+  // TODO: option filter on select to remove inaplicable texts
+
   const { t } = useTranslation("settings");
   const { setQueryParams } = useDbQueryParams();
   const { texts, categories, isLoadingCats, isLoadingTexts } = useTextLists();
@@ -193,15 +202,15 @@ const InclusionExclusionFilters = () => {
     limitCollectionFilterValueAtom
   );
 
-  const [disabledSelectors, setDisabledSelectors] = useState({
-    excludedCategories: false,
-    excludedTexts: false,
-    includedCategories: false,
-    includedTexts: false,
-  });
+  const [disableSelectors, setDisableSelectors] = useAtom(
+    disableLimitColectionSelectAtom
+  );
 
-  function setIsSelectorDisabled(key, value) {
-    setDisabledSelectors((prevState) => {
+  function setIsSelectorDisabled(
+    key: keyof QueryValues["limit_collection"],
+    value: boolean
+  ) {
+    setDisableSelectors((prevState) => {
       const updates = {
         excludedCategories: {},
         excludedTexts: {},
@@ -212,7 +221,7 @@ const InclusionExclusionFilters = () => {
         includedTexts: {
           excludedCategories: !value,
           excludedTexts: !value,
-          includedCategories: value,
+          includedCategories: !value,
         },
       };
       return { ...prevState, ...updates[key] };
@@ -226,6 +235,15 @@ const InclusionExclusionFilters = () => {
     const updatedSelectorValues = new Map();
 
     for (const value of newValues) {
+      if (filterType.includes("included")) {
+        limitCollectionValues.excludedCategories.clear();
+        limitCollectionValues.excludedTexts.clear();
+      }
+
+      if (filterType === "includedTexts") {
+        limitCollectionValues.includedCategories.clear();
+      }
+
       updatedSelectorValues.set(value.id, value);
     }
 
@@ -246,8 +264,7 @@ const InclusionExclusionFilters = () => {
       limit_collection: updatedParams.length > 0 ? updatedParams : undefined,
     });
 
-    // eslint-disable-next-line unicorn/explicit-length-check, no-extra-boolean-cast
-    setIsSelectorDisabled(filterType, !Boolean(newValues.length > 0));
+    setIsSelectorDisabled(filterType, newValues.length === 0);
   };
 
   return (
@@ -284,7 +301,7 @@ const InclusionExclusionFilters = () => {
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
         loading={isLoadingCats}
-        disabled={disabledSelectors.excludedCategories}
+        disabled={disableSelectors.excludedCategories}
         filterSelectedOptions
         disableListWrap
         disablePortal
@@ -322,7 +339,7 @@ const InclusionExclusionFilters = () => {
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
         loading={isLoadingTexts}
-        disabled={disabledSelectors.excludedTexts}
+        disabled={disableSelectors.excludedTexts}
         filterSelectedOptions
         // disableListWrap
         disablePortal
@@ -360,7 +377,7 @@ const InclusionExclusionFilters = () => {
         loading={isLoadingCats}
         // disableListWrap
         isOptionEqualToValue={(option, value) => categories.has(value.id)}
-        disabled={disabledSelectors.includedCategories}
+        disabled={disableSelectors.includedCategories}
         filterSelectedOptions
         disablePortal
         onChange={(event, value) =>
@@ -396,7 +413,7 @@ const InclusionExclusionFilters = () => {
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
         loading={isLoadingTexts}
-        disabled={disabledSelectors.includedTexts}
+        disabled={disableSelectors.includedTexts}
         filterSelectedOptions
         disableListWrap
         disablePortal
@@ -406,4 +423,4 @@ const InclusionExclusionFilters = () => {
   );
 };
 
-export default InclusionExclusionFilters;
+export default LimitCollectionFilters;

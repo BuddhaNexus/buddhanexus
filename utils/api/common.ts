@@ -22,7 +22,7 @@ export async function getParallelCount({
   serializedParams: string;
 }): Promise<Record<string, number>> {
   const res = await fetch(
-    `${API_ROOT_URL}/parallels/${fileName}/count?${serializedParams}`
+    `${API_ROOT_URL}/parallels/${fileName}/count?co_occ=30&${serializedParams}`
   );
 
   return await res.json();
