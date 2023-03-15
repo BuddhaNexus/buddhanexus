@@ -8,7 +8,7 @@ import LanguageSelect from "@components/layout/LanguageSelect";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -119,7 +119,7 @@ export const AppTopBar = () => {
               color="inherit"
               onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
             >
-              <MenuIcon fontSize="inherit" />
+              <MenuOpenIcon fontSize="inherit" />
             </IconButton>
           )}
         </Box>
