@@ -16,28 +16,26 @@ import {
 } from "utils/dbSidebar";
 
 export const FilterSettings = () => {
-  const currentDbView = useAtomValue(currentDbViewAtom);
+  const currentView = useAtomValue(currentDbViewAtom);
 
   const { sourceLanguage } = useDbQueryParams();
 
-  const currentFilters = filterList.filter(
+  const filters = filterList.filter(
     (filter: Filter) =>
       !isSettingOmitted({
         omissions,
         settingName: filter,
         dbLang: sourceLanguage,
-        view: currentDbView,
+        view: currentView,
       })
   );
 
-  return currentFilters.length > 0 ? (
+  return filters.length > 0 ? (
     <Box sx={{ mx: 2 }}>
-      {currentFilters.includes("score") && <ScoreFilter />}
-      {currentFilters.includes("par_length") && <ParLengthFilter />}
-      {currentFilters.includes("limit_collection") && (
-        <LimitCollectionFilters />
-      )}
-      {currentFilters.includes("target_collection") &&
+      {filters.includes("score") && <ScoreFilter />}
+      {filters.includes("par_length") && <ParLengthFilter />}
+      {filters.includes("limit_collection") && <LimitCollectionFilters />}
+      {filters.includes("target_collection") &&
         StandinSetting("target_collection")}
     </Box>
   ) : null;

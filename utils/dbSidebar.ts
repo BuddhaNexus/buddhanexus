@@ -14,15 +14,18 @@ export const filterList = [
   "target_collection",
 ] as const;
 
-const queriedDisplayOptionList = [
+export const queriedDisplayOptionList = [
   "folio",
   "multi_lingual",
   "sort_method",
 ] as const;
 
-const localDisplayOptionList = ["script", "showAndPositionSegmentNrs"] as const;
+export const localDisplayOptionList = [
+  "script",
+  "showAndPositionSegmentNrs",
+] as const;
 
-const utilityOptionList = [
+export const utilityOptionList = [
   "download",
   "copyQueryTitle",
   "copyQueryLink",
