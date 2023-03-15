@@ -104,14 +104,6 @@ export const UTILITY_OPTIONS_CONTEXT_OMISSIONS: UtilityOmissions = {
   },
 };
 
-export const TEMP_EXTERNAL_TEXT_LINKS: Record<DbLang, string[]> = {
-  // TODO: clarify external link sources & applications
-  pli: ["SC", "VRI"],
-  skt: ["GRETIL", "DSBC"],
-  tib: ["BDRC", "RKTS"],
-  chn: ["CBETA", "SC", "CBC"],
-};
-
 type Omission = Partial<
   Record<
     Filter | LocalDisplayOption | QueriedDisplayOption | UtilityOption,

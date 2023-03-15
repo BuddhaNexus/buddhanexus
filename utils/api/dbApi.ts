@@ -1,6 +1,7 @@
 import type { SourceLanguage } from "utils/constants";
 
 import { getFolios, getParallelCount, getSegmentsData } from "./common";
+import { getExternalLinksData } from "./externalLinks";
 import { getGraphData } from "./graph";
 import { getLanguageMenuData } from "./languageMenu";
 import { getSourceTextCollections } from "./sidebarSourceTexts";
@@ -43,5 +44,9 @@ export const DbApi = {
   FolioData: {
     makeQueryKey: (fileName: string) => ["foliosData", fileName],
     call: getFolios,
+  },
+  ExternalLinksData: {
+    makeQueryKey: (fileName: string) => ["externalLinkData", fileName],
+    call: getExternalLinksData,
   },
 };
