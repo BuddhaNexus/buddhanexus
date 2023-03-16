@@ -7,7 +7,7 @@ import { TabContext, TabList, TabPanel } from "@mui/lab/";
 import { Box, CircularProgress, Drawer, IconButton, Tab } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { parLengthFilterValueAtom } from "utils/dbSidebar";
+import { parLengthFilterValueAtom } from "utils/dbUISettings";
 
 import { DisplayOptionsSection } from "./DisplayOptionsSection";
 import { ExternalLinksSection } from "./ExternalLinksSection";

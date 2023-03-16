@@ -19,7 +19,7 @@ import {
   isSettingOmitted,
   localDisplayOptionList,
   queriedDisplayOptionList,
-} from "utils/dbSidebar";
+} from "utils/dbUISettings";
 
 export const DisplayOptionsSection = () => {
   const currentView = useAtomValue(currentDbViewAtom);

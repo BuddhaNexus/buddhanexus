@@ -5565,6 +5565,11 @@ react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-use-downloader@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/react-use-downloader/-/react-use-downloader-1.2.4.tgz#ff23b4830b1194a6899565d7441c5c7991e5c491"
+  integrity sha512-ciPb5SSKaDymZoWdaHrNbJpa20riR0fgUni48cBTseoptAMG8SEATX33UCNPGwnpZ5BFybFdTCus37KLibj8oA==
+
 react-virtuoso@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-4.1.0.tgz#44138385d87bddc7597867778f2cbcd9d4dfea79"

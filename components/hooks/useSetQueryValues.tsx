@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useRouter } from "next/router";
 import { useSetAtom } from "jotai";
 import type { CategoryMenuItem, TextMenuItem } from "utils/api/textLists";
-import type { DbLang } from "utils/dbSidebar";
+import type { DbLang } from "utils/dbUISettings";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_VALUES,
@@ -13,7 +13,7 @@ import {
   scoreFilterValueAtom,
   sortMethodOptionValueAtom,
   targetCollectionFilterValueAtom,
-} from "utils/dbSidebar";
+} from "utils/dbUISettings";
 
 export type SetQueryValues = {
   [key in keyof QueryValues]: (value: QueryValues[key]) => void;

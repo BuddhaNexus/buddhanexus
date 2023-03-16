@@ -2,12 +2,12 @@ import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { useAtom } from "jotai";
-import type { DbLang } from "utils/dbSidebar";
+import type { DbLang } from "utils/dbUISettings";
 import {
   DEFAULT_PAR_LENGTH_VALUES as DEFAUT_VALUES,
   MIN_PAR_LENGTH_VALUES as MIN_VALUES,
   parLengthFilterValueAtom,
-} from "utils/dbSidebar";
+} from "utils/dbUISettings";
 
 function valueToString(value: number) {
   return `${value}`;

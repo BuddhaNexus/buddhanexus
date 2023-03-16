@@ -13,7 +13,7 @@ import {
   FILTER_CONTEXT_OMISSIONS as omissions,
   filterList,
   isSettingOmitted,
-} from "utils/dbSidebar";
+} from "utils/dbUISettings";
 
 export const FilterSettings = () => {
   const currentView = useAtomValue(currentDbViewAtom);

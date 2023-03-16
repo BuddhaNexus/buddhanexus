@@ -1,6 +1,7 @@
 import type { SourceLanguage } from "utils/constants";
 
 import { getFolios, getParallelCount, getSegmentsData } from "./common";
+import { getParallelDownloadData } from "./downloads";
 import { getExternalLinksData } from "./externalLinks";
 import { getGraphData } from "./graph";
 import { getLanguageMenuData } from "./languageMenu";
@@ -48,5 +49,9 @@ export const DbApi = {
   ExternalLinksData: {
     makeQueryKey: (fileName: string) => ["externalLinkData", fileName],
     call: getExternalLinksData,
+  },
+  DownloadResults: {
+    makeQueryKey: (fileName: string) => ["downloadData", fileName],
+    call: getParallelDownloadData,
   },
 };

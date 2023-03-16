@@ -45,7 +45,7 @@ export async function getTableData({
 }): Promise<PagedResponse<TablePageData>> {
   // TODO: remove co_occ param after backend update
   const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/table?page=${pageNumber}&co_occ=30&${serializedParams}`
+    `${API_ROOT_URL}/files/${fileName}/table?page=${pageNumber}&co_occ=2000&${serializedParams}`
   );
   const responseJSON = await res.json();
   return { data: parseAPITableData(responseJSON), pageNumber };

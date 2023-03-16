@@ -24,11 +24,11 @@ import {
 import { styled } from "@mui/styles";
 import { atom, useAtom } from "jotai";
 import type { CategoryMenuItem, TextMenuItem } from "utils/api/textLists";
-import type { QueryValues } from "utils/dbSidebar";
+import type { QueryValues } from "utils/dbUISettings";
 import {
   type CoercedCollectionValues,
   limitCollectionFilterValueAtom,
-} from "utils/dbSidebar";
+} from "utils/dbUISettings";
 
 const OuterElementContext = React.createContext({});
 

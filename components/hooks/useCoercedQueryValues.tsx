@@ -9,7 +9,7 @@ import {
   limitCollectionFilterValueAtom,
   type QueryParams,
   // targetCollectionFilterValueAtom,
-} from "utils/dbSidebar";
+} from "utils/dbUISettings";
 
 import { useDbQueryParams } from "./useDbQueryParams";
 import { type SetQueryValues, useSetQueryValues } from "./useSetQueryValues";

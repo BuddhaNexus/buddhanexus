@@ -15,7 +15,7 @@ import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS,
   scoreFilterValueAtom,
-} from "utils/dbSidebar";
+} from "utils/dbUISettings";
 
 const queryConfig = {
   score: NumberParam,

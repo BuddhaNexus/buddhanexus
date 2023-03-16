@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { useAtom } from "jotai";
-import { scoreFilterValueAtom } from "utils/dbSidebar";
+import { scoreFilterValueAtom } from "utils/dbUISettings";
 
 function valueToString(value: number) {
   return `${value}`;

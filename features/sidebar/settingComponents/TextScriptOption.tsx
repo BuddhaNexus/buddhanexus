@@ -2,7 +2,7 @@ import * as React from "react";
 // import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
-import type { DbLang } from "utils/dbSidebar";
+import type { DbLang } from "utils/dbUISettings";
 
 type Script = "unicode" | "wylie";
 

@@ -44,7 +44,7 @@ export const ExternalLinksSection = () => {
             }
             return (
               value && (
-                <ListItem sx={{ width: "inherit", pr: 0 }}>
+                <ListItem key={key} sx={{ width: "inherit", pr: 0 }}>
                   <Link href={value} target="_blank" rel="noopener noreferrer">
                     <Image src={logos[key]} alt={`${key} logo`} height={32} />
                   </Link>
