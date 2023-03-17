@@ -1,3 +1,4 @@
+import React from "react";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -5,6 +6,7 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress } from "@mui/material";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "features/tableView/TableView";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
@@ -71,6 +73,7 @@ export default function TablePage() {
           />
         </div>
       )}
+      <SourceTextBrowserDrawer />
     </PageContainer>
   );
 }

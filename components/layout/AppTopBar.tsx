@@ -3,14 +3,18 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 import { Link } from "@components/common/Link";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import LanguageSelect from "@components/layout/LanguageSelect";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import { isNavigationDrawerOpen } from "features/atoms/layout";
+import { useSetAtom } from "jotai";
 
 interface AppBarLinkProps {
   title: string;
@@ -33,9 +37,11 @@ export const AppTopBar = () => {
   const materialTheme = useMaterialTheme();
   const { theme, setTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
+  const { sourceLanguage } = useDbQueryParams();
 
   const { route } = useRouter();
   const { t } = useTranslation();
+  const setIsDrawerOpen = useSetAtom(isNavigationDrawerOpen);
 
   const isHomeRoute = route === "/";
   const isATIIRoute = route.startsWith("/atii");
@@ -53,52 +59,70 @@ export const AppTopBar = () => {
       })}
     >
       <Toolbar>
-        <Link
-          color="inherit"
+        <Box
           sx={{
-            marginRight: "auto",
-            display: "inline-flex",
+            display: "flex",
+            flex: 1,
+            justifyContent: "flex-start",
             alignItems: "center",
           }}
-          href={isATIIRoute ? "/atii" : "/"}
-          underline="none"
-          noWrap
         >
-          <>
-            <Box
-              component="img"
-              src={
-                isATIIRoute
-                  ? "/assets/images/atii_logo.png"
-                  : "/assets/icons/bn_tree.svg"
-              }
-              width={isATIIRoute ? undefined : 64}
-              sx={{
-                maxHeight: 48,
-                minWidth: 48,
-                pr: 2,
-                [materialTheme.breakpoints.down("sm")]: {
-                  maxHeight: 36,
-                },
-              }}
-              alt="logo"
-            />
-            {!isHomeRoute && !isATIIRoute && (
+          <Link
+            color="inherit"
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+            }}
+            href={isATIIRoute ? "/atii" : "/"}
+            underline="none"
+            noWrap
+          >
+            <>
               <Box
                 component="img"
-                src="/assets/icons/bn_name.svg"
-                width={144}
+                src={
+                  isATIIRoute
+                    ? "/assets/images/atii_logo.png"
+                    : "/assets/icons/bn_tree.svg"
+                }
+                width={isATIIRoute ? undefined : 64}
                 sx={{
-                  maxHeight: 24,
+                  maxHeight: 48,
+                  minWidth: 48,
+                  pr: 2,
                   [materialTheme.breakpoints.down("sm")]: {
-                    display: "none",
+                    maxHeight: 36,
                   },
                 }}
-                alt="BuddhaNexus"
+                alt="logo"
               />
-            )}
-          </>
-        </Link>
+              {!isHomeRoute && !isATIIRoute && (
+                <Box
+                  component="img"
+                  src="/assets/icons/bn_name.svg"
+                  width={144}
+                  sx={{
+                    maxHeight: 24,
+                    [materialTheme.breakpoints.down("sm")]: {
+                      display: "none",
+                    },
+                  }}
+                  alt="BuddhaNexus"
+                />
+              )}
+            </>
+          </Link>
+
+          {sourceLanguage && (
+            <IconButton
+              sx={{ ml: { xs: 0, sm: 2 } }}
+              color="inherit"
+              onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
+            >
+              <MenuOpenIcon fontSize="inherit" />
+            </IconButton>
+          )}
+        </Box>
 
         <Box component="nav" sx={{ display: "flex", overflow: "auto" }}>
           {isATIIRoute ? (

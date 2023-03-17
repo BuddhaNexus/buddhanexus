@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { getDesignTokens } from "@components/theme";
-import type {} from "@mui/lab/themeAugmentation";
 import {
   createTheme,
   responsiveFontSizes,

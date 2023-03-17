@@ -1,3 +1,5 @@
+import type { SourceLanguage } from "utils/constants";
+
 export interface ApiSourceTextBrowserData {
   navigationmenudata: {
     collection: string;
@@ -5,7 +7,7 @@ export interface ApiSourceTextBrowserData {
       categoryname: string;
       categorydisplayname: string;
       files: {
-        available_lang: string | null;
+        available_lang: SourceLanguage[] | null;
         displayname: string;
         filename: string;
         textname: string;
@@ -14,18 +16,25 @@ export interface ApiSourceTextBrowserData {
   }[];
 }
 
-type NavigationMenuData = {
+export type NavigationMenuFileData = {
+  availableLanguages: SourceLanguage[] | null;
+  displayName: string;
+  fileName: string;
+  textName: string;
+};
+
+export type NavigationMenuCategoryData = {
+  name: string;
+  displayName: string;
+  files: NavigationMenuFileData[];
+};
+
+export type NavigationMenuData = {
   collection: string;
-  categories: {
-    name: string;
-    displayName: string;
-    files: {
-      availableLanguages: string | null;
-      displayName: string;
-      fileName: string;
-      textName: string;
-    }[];
-  }[];
+  categories: NavigationMenuCategoryData[];
 };
 
 export type SourceTextBrowserData = NavigationMenuData[];
+
+export type SourceTextBrowserDataTypes =
+  | NavigationMenuCategoryData & NavigationMenuData & NavigationMenuFileData;

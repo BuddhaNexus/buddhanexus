@@ -43,5 +43,8 @@
     "title": "Nachrichten",
     "readMore": "Weiterlesen",
     "backToNews": "Zurück zu Neuigkeiten"
+  },
+  "textBrowser": {
+    "label": "Source text browser"
   }
 }
