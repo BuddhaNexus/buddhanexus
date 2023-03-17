@@ -1,10 +1,16 @@
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
-// import { sortMethodOptionValueAtom } from "utils/dbSidebar";
+import { useAtom } from "jotai";
+import {
+  type QueryValues,
+  sortMethodOptionValueAtom,
+} from "utils/dbUISettings";
+
+type SortValue = QueryValues["sort_method"];
 
 interface SortOptionDef {
-  value: string;
+  value: SortValue;
   labelKey: "sortLength" | "sortParallel" | "sortSource";
 }
 
@@ -18,32 +24,32 @@ const SORT_OPTIONS: SortOptionDef[] = [
 ];
 
 export default function SortOption() {
-  const { queryParams } = useDbQueryParams();
-  // const { t } = useTranslation("settings");
+  const { setQueryParams } = useDbQueryParams();
+  const [sortValue, setSortValue] = useAtom(sortMethodOptionValueAtom);
+  const { t } = useTranslation("settings");
 
-  /*  const handleSelectChange = (value: string) => {
-   setQueryParams({ sort_method: value });
-  }; */
+  const handleSelectChange = (value: SortValue) => {
+    setSortValue(value);
+    setQueryParams({ sort_method: value });
+  };
 
   return (
     <Box sx={{ width: 1, mb: 2 }}>
       <FormLabel id="sort-option-selector-label">
-        {/* {t("optionsLabels.sorting")} */}
-        Sorting Method
+        {t("optionsLabels.sorting")}
       </FormLabel>
       <FormControl sx={{ width: 1 }}>
         <Select
           id="sort-option-selector"
           aria-labelledby="sort-option-selector-label"
           defaultValue="position"
-          value={queryParams.sort_method ?? "position"}
-          // onChange={(e) => handleSelectChange(e.target.value)}
+          value={sortValue ?? "position"}
+          onChange={(e) => handleSelectChange(e.target.value as SortValue)}
         >
           {SORT_OPTIONS.map((method) => {
             return (
               <MenuItem key={method.value} value={method.value}>
-                {/* {t(`optionsLabels.${method.labelKey}`)} */}
-                {method.labelKey}
+                {t(`optionsLabels.${method.labelKey}`)}
               </MenuItem>
             );
           })}

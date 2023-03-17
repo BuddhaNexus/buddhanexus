@@ -22,23 +22,21 @@ function normalizeValue(value: number | null | undefined) {
 
 export default function ScoreFilter() {
   const { setDebouncedQueryParam } = useDbQueryParams();
-
+  const [scoreValue, setScoreValue] = useAtom(scoreFilterValueAtom);
   const { t } = useTranslation("settings");
 
-  const [scroeValue, setQueryValue] = useAtom(scoreFilterValueAtom);
-
   const handleChange = (value: number) => {
-    setQueryValue(value);
+    setScoreValue(value);
     setDebouncedQueryParam("score", normalizeValue(value));
   };
 
   const handleBlur = () => {
-    if (scroeValue < 0) {
-      setQueryValue(0);
+    if (scoreValue < 0) {
+      setScoreValue(0);
     }
 
-    if (scroeValue > 100) {
-      setQueryValue(100);
+    if (scoreValue > 100) {
+      setScoreValue(100);
     }
   };
 
@@ -58,7 +56,7 @@ export default function ScoreFilter() {
       <FormLabel id="score-input-label">{t("filtersLabels.score")}</FormLabel>
       <TextField
         sx={{ width: 1, my: 1 }}
-        value={scroeValue}
+        value={scoreValue}
         type="number"
         inputProps={{
           step: 1,
@@ -72,7 +70,7 @@ export default function ScoreFilter() {
       />
       <Box sx={{ ml: 1, width: "96%" }}>
         <Slider
-          value={scroeValue}
+          value={scoreValue}
           aria-labelledby="score-input-label"
           getAriaValueText={valueToString}
           min={0}
