@@ -52,5 +52,12 @@ export const DisplayOptionsSection = () => {
         StandinSetting("showAndPositionSegmentNrs")}
       {options.includes("sort_method") && <SortOption />}
     </Box>
-  ) : null;
+  ) : (
+    <Box sx={{ mx: 2 }}>
+      <Typography variant="h6" component="h3" mb={2}>
+        {t("headings.display")}
+      </Typography>
+      <DbViewSelector currentView={currentView} />
+    </Box>
+  );
 };
