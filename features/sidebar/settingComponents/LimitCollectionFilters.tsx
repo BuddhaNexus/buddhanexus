@@ -18,8 +18,6 @@ import {
   Popper,
   TextField,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { atom, useAtom } from "jotai";
@@ -70,7 +68,7 @@ const Row = (props: ListChildComponentProps) => {
     );
   }
 
-  const [dataSetProps, { name, textName }] = dataSet;
+  const [dataSetProps, { name, ref }] = dataSet;
 
   return (
     <Box
@@ -80,29 +78,41 @@ const Row = (props: ListChildComponentProps) => {
         display: "flex",
         justifyContent: "space-between",
         flex: 1,
-        "&:nth-of-type(even)": { bgcolor: "background.accent" },
+        "&:nth-of-type(even)": {
+          bgcolor: "background.accent",
+        },
         "&:hover": { textDecoration: "underline" },
       }}
       component="li"
     >
-      <Typography
-        component="option"
-        sx={{
-          flex: 1,
-          whiteSpace: "normal",
-          wordBreak: "break-all",
+      <div
+        style={{
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          padding: "4px 0",
         }}
       >
-        {name}
-      </Typography>
-      <Typography
-        component="small"
-        variant="subtitle2"
-        {...dataSetProps}
-        sx={{ textTransform: "uppercase", fontSize: 12, whiteSpace: "normal" }}
-      >
-        {textName}
-      </Typography>
+        <Typography
+          sx={{
+            display: "inline",
+            whiteSpace: "normal",
+            wordBreak: "break-all",
+          }}
+        >
+          <Typography
+            component="span"
+            variant="subtitle2"
+            sx={{
+              textTransform: "uppercase",
+              fontWeight: 600,
+              pr: 1,
+            }}
+          >
+            {ref}
+          </Typography>
+          {name.replace(/^•\s/g, "")}
+        </Typography>
+      </div>
     </Box>
   );
 };
@@ -121,12 +131,8 @@ const ListboxComponent = React.forwardRef<
     }
   );
 
-  const theme = useTheme();
-  const smUp = useMediaQuery(theme.breakpoints.up("sm"), {
-    noSsr: true,
-  });
   const itemCount = itemData.length;
-  const itemSize = smUp ? 36 : 48;
+  const itemSize = 56;
 
   const getChildSize = (child: React.ReactChild) => {
     // eslint-disable-next-line no-prototype-builtins
@@ -134,7 +140,7 @@ const ListboxComponent = React.forwardRef<
       return 48;
     }
 
-    const charsInLine = smUp ? 80 : 40;
+    const charsInLine = 58;
     // @ts-expect-error type issue
     const lineCount = Math.ceil(child[1].name.length / charsInLine);
     return itemSize * lineCount;
@@ -303,7 +309,6 @@ const LimitCollectionFilters = () => {
         loading={isLoadingCats}
         disabled={disableSelectors.excludedCategories}
         filterSelectedOptions
-        disableListWrap
         disablePortal
         onChange={(event, value) =>
           handleInputChange(value, "excludedCategories")
@@ -341,7 +346,6 @@ const LimitCollectionFilters = () => {
         loading={isLoadingTexts}
         disabled={disableSelectors.excludedTexts}
         filterSelectedOptions
-        // disableListWrap
         disablePortal
         onChange={(event, value) => handleInputChange(value, "excludedTexts")}
       />
@@ -375,7 +379,6 @@ const LimitCollectionFilters = () => {
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
         loading={isLoadingCats}
-        // disableListWrap
         isOptionEqualToValue={(option, value) => categories.has(value.id)}
         disabled={disableSelectors.includedCategories}
         filterSelectedOptions
@@ -415,7 +418,6 @@ const LimitCollectionFilters = () => {
         loading={isLoadingTexts}
         disabled={disableSelectors.includedTexts}
         filterSelectedOptions
-        disableListWrap
         disablePortal
         onChange={(event, value) => handleInputChange(value, "includedTexts")}
       />
