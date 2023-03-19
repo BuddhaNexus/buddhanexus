@@ -31,17 +31,12 @@ export default function TablePage() {
         }),
       /* TODO: fix "null" pageParam issue causing result duplication (see: https://github.com/TanStack/query/issues/4309)
       
-      Migrating to v5 might be the best solution (see: https://github.com/TanStack/query/discussions/4252 & https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5#infinite-queries-now-need-a-defaultpageparam), but, for the mo, these options have been temporarily fixed.
-      
+      Migrating to v5 might be the best solution (see: https://github.com/TanStack/query/discussions/4252 & https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5#infinite-queries-now-need-a-defaultpageparam), .*/
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
         lastPage.pageNumber === 0
           ? lastPage.pageNumber
           : lastPage.pageNumber - 1,
-      refetchOnWindowFocus: false, */
-      getNextPageParam: (lastPage) => lastPage.pageNumber,
-      getPreviousPageParam: (lastPage) =>
-        lastPage.pageNumber === 0 ? lastPage.pageNumber : lastPage.pageNumber,
       refetchOnWindowFocus: false,
     });
 
