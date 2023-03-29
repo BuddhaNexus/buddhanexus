@@ -840,10 +840,9 @@ async def get_external_links(filename: str):
     query_links = database.AQLQuery(
         query=main_queries.QUERY_LINK, bindVars={"filename": filename}, rawResults=True
     )
-    if len(query_links.result) >= 1:
-        return get_links(filename, query_links.result[0])
-    else:
-        return {False, False}
+
+    return get_links(filename, query_links)
+
 
 
 

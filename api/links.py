@@ -1,6 +1,10 @@
 import re
 from .utils import get_language_from_filename
-def get_links(filename, links_query_result):
+def get_links(filename, links_query):
+    if links_query.result == []:
+        return {"bdrc": False, "rkts": False, "gretil": False, "dsbc": False, "cbeta": False, "suttacentral": False, "cbc": False, "vri": False}
+
+    links_query_result = links_query.result[0]
     link1 = links_query_result[0]
     link2 = links_query_result[1]
     bdrc = False
