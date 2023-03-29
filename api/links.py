@@ -14,7 +14,7 @@ def get_links(filename, links_query_result):
     lang = get_language_from_filename(filename)
 
     # for Tibetan, we serve links to BDRC and RKTS
-    if lang == "tib" and not filename.beginwith("N"): # We exclude N files from external linking
+    if lang == "tib" and not filename.beginswith("N"): # We exclude N files from external linking
         bdrc = link1
         rkts = bdrc.replace('http://purl.bdrc.io/resource/WA0RK',
                             'http://purl.rkts.eu/resource/WKT')
