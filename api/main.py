@@ -208,6 +208,7 @@ async def get_table_view(
                 "folio": folio,
             },
         )
+        print("QUERY RESULT", query.result)
         data = calculate_color_maps_table_view(query.result)
         return data
 
@@ -839,9 +840,10 @@ async def get_external_links(filename: str):
     query_links = database.AQLQuery(
         query=main_queries.QUERY_LINK, bindVars={"filename": filename}, rawResults=True
     )
-    print("query_links.result", query_links.result)
-    query_result = get_links(filename, query_links.result[0])
-    return query_result
+    if len(query_links.result) >= 1:
+        return get_links(filename, query_links.result[0])
+    else:
+        return {False, False}
 
 
 
