@@ -43,6 +43,7 @@ export default function Page({
           compiledSource={content.compiledSource}
           components={components}
           scope={props}
+          frontmatter={content.frontmatter}
         />
       </Paper>
       <Footer />

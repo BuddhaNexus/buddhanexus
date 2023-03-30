@@ -9,7 +9,7 @@ const nextConfig = {
   experimental: {
     fontLoaders: [
       {
-        loader: "@next/font/google",
+        loader: "next/font/google",
         options: { subsets: ["latin", "latin-ext"] },
       },
     ],
