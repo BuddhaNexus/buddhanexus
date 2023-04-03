@@ -263,7 +263,7 @@ RETURN {
 
 QUERY_PARALLELS_FOR_MIDDLE_TEXT = """
 LET parallels = (
-    FOR parallel_id IN parallel_ids
+    FOR parallel_id IN @parallel_ids
         FOR p IN parallels
             FILTER p._key == parallel_id
 
@@ -287,7 +287,7 @@ LET parallels = (
 )
 
 LET parallels_multi = (
-    FOR parallel_id IN parallel_ids
+    FOR parallel_id IN @parallel_ids
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
             LET par_segtext = (

@@ -126,6 +126,7 @@ def calculate_color_maps_table_view(data):
 def calculate_color_maps_middle_view(data):
     """ same procdeure as table-view but we ommit the inquiry text data"""
     for entry in data:
+        print("entry", entry)
         # it is _not_ nice that we need to test for the length of these elements; it should be dealt with at data-loader level...
         if len(entry['par_segtext']) > 0:
             join_element_par = ""
@@ -140,9 +141,7 @@ def calculate_color_maps_middle_view(data):
             par_colormap[par_start:par_end] = [1] * (par_end - par_start)
             par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
             entry['par_fulltext'] = par_fulltext
-            del(entry['par_segment'])
             del(entry['par_offset_beg'])
             del(entry['par_offset_end'])
-            del(entry['par_pos_beg'])
     return data
 

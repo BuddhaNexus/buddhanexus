@@ -98,7 +98,7 @@ async def get_parallels_for_middle(parallel_ids: List[str]):
             "parallel_ids": parallel_ids
         },
     )
-    data = calculate_color_maps_middle_view(query.result)
+    data = calculate_color_maps_middle_view(query.result[0])
     return data
 
 
