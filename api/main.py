@@ -14,7 +14,7 @@ from aksharamukha import transliterate
 from fastapi import FastAPI, HTTPException, Query
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from starlette.middleware.cors import CORSMiddleware
-from .colormaps import calculate_color_maps_text_view, calculate_color_maps_table_view
+from .colormaps import calculate_color_maps_text_view, calculate_color_maps_table_view, calculate_color_maps_middle_view
 
 from .search import search_utils
 from .models_api import ParallelsCollection
@@ -37,7 +37,7 @@ from .table_download import run_table_download, run_numbers_download
 
 API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 
-APP = FastAPI(title="Buddha Nexus Backend", version="0.2.1", openapi_prefix=API_PREFIX)
+APP = FastAPI(title="BuddhaNexus Backend", version="0.2.1", openapi_prefix=API_PREFIX)
 
 APP.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
@@ -87,27 +87,19 @@ async def get_segment(lang: str, key: str) -> Dict[str, str]:
 
 
 @APP.post("/parallels-for-middle/")
-async def get_parallels_for_middle(parallels: ParallelsCollection):
+async def get_parallels_for_middle(parallel_ids: List[str]):
     """
     :return: List of parallels for text view (middle)
     """
-    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        parallels.limit_collection
-    )
-    query_result = get_db().AQLQuery(
+    query = get_db().AQLQuery(
         query=main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
         batchSize=10000,
         bindVars={
-            "segmentnr": parallels.segmentnr,
-            "score": parallels.score,
-            "parlength": parallels.par_length,
-            "coocc": parallels.co_occ,
-            "multi_lingual": parallels.multi_lingual,
-            "limitcollection_positive": limitcollection_positive,
-            "limitcollection_negative": limitcollection_negative,
+            "parallel_ids": parallel_ids
         },
     )
-    return {"parallels": query_result.result[0]}
+    data = calculate_color_maps_middle_view(query.result)
+    return data
 
 
 @APP.get("/files/{file_name}/segments")
@@ -208,7 +200,6 @@ async def get_table_view(
                 "folio": folio,
             },
         )
-        print("QUERY RESULT", query.result)
         data = calculate_color_maps_table_view(query.result)
         return data
 

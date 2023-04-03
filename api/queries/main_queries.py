@@ -262,21 +262,10 @@ RETURN {
 """
 
 QUERY_PARALLELS_FOR_MIDDLE_TEXT = """
-LET parallel_ids = (
-    FOR segment in segments
-        FILTER segment._key == @segmentnr
-        RETURN APPEND(segment.parallel_ids, segment.parallel_ids_multi)
-    )
-
 LET parallels = (
-    FOR parallel_id IN FLATTEN(parallel_ids)
+    FOR parallel_id IN parallel_ids
         FOR p IN parallels
             FILTER p._key == parallel_id
-            FILTER p.score >= @score
-            FILTER p.par_length >= @parlength
-            FILTER p["co-occ"] <= @coocc
-            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
 
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
@@ -284,32 +273,23 @@ LET parallels = (
                         FILTER segment._key == segnr
                         RETURN segment.segtext
                )
-            FILTER POSITION(@multi_lingual, p.tgt_lang)
 
             RETURN {
                 par_segnr: p.par_segnr,
+                tgt_lang: p.tgt_lang,
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
-                root_offset_beg: p.root_offset_beg,
-                root_offset_end: p.root_offset_end-1,
                 par_segtext: par_segtext,
                 file_name: p.id,
-                root_segnr: p.root_segnr,
-                par_length: p.par_length,
-                par_pos_beg: p.par_pos_beg,
                 score: p.score,
-                "co-occ": p["co-occ"],
-                lang: p.tgt_lang,
                 length: p.par_length
             }
 )
 
 LET parallels_multi = (
-    FOR parallel_id IN FLATTEN(parallel_ids)
+    FOR parallel_id IN parallel_ids
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
-            FILTER p.score >= @score
-            FILTER POSITION(@multi_lingual,p.tgt_lang)
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
@@ -318,24 +298,19 @@ LET parallels_multi = (
             )
             RETURN {
                 par_segnr: p.par_segnr,
+                tgt_lang: p.tgt_lang,
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
-                root_offset_beg: p.root_offset_beg,
-                root_offset_end: p.root_offset_end-1,
                 par_segtext: par_segtext,
                 file_name: p.id,
-                root_segnr: p.root_segnr,
-                par_length: p.par_length,
-                par_pos_beg: p.par_pos_beg,
                 score: p.score,
-                "co-occ": p["co-occ"]
+                length: p.par_length
             }
 )
 
 LET return_parallels = (
     for p in parallels
         SORT p.score DESC, p.length DESC
-
         return p
     )
 

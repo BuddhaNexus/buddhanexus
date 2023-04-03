@@ -85,7 +85,7 @@ def calculate_color_maps_text_view(data):
 
 def calculate_color_maps_table_view(data):
     for entry in data:
-        # it is _not_ nice that we need to test for this; it should be dealt with at data-loader level...
+        # it is _not_ nice that we need to test for the length of these elements; it should be dealt with at data-loader level...
         if len(entry['root_seg_text']) > 0 and len(entry['par_segment']) > 0:
             join_element_root = ""
             join_element_par = ""
@@ -114,7 +114,6 @@ def calculate_color_maps_table_view(data):
             par_colormap[par_start:par_end] = [1] * (par_end - par_start)
             par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
             entry['par_fulltext'] = par_fulltext
-
             del(entry['par_segment'])
             del(entry['root_seg_text'])
             del(entry['root_offset_beg'])
@@ -124,4 +123,26 @@ def calculate_color_maps_table_view(data):
             del(entry['par_pos_beg'])
     return data
 
+def calculate_color_maps_middle_view(data):
+    """ same procdeure as table-view but we ommit the inquiry text data"""
+    for entry in data:
+        # it is _not_ nice that we need to test for the length of these elements; it should be dealt with at data-loader level...
+        if len(entry['par_segtext']) > 0:
+            join_element_par = ""
+            if entry['tgt_lang'] == "tib":
+                join_element_par = " "
+            par_fulltext = join_element_par.join(entry['par_segtext'])
+            par_colormap = [0] * len(par_fulltext)
+            par_end = len(par_fulltext) - (len(entry['par_segtext'][-1]) - entry['par_offset_end'])
+            if par_end > len(par_fulltext):
+                par_end = len(par_fulltext)
+            par_start = entry['par_offset_beg']
+            par_colormap[par_start:par_end] = [1] * (par_end - par_start)
+            par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
+            entry['par_fulltext'] = par_fulltext
+            del(entry['par_segment'])
+            del(entry['par_offset_beg'])
+            del(entry['par_offset_end'])
+            del(entry['par_pos_beg'])
+    return data
 
