@@ -190,6 +190,8 @@ async def get_table_view(
     limitcollection_positive, limitcollection_negative = get_collection_files_regex(
         limit_collection
     )
+    print("limitcollection_positive: ", limitcollection_positive)
+    print("limitcollection_negative: ", limitcollection_negative)
     try:
         query = get_db().AQLQuery(
             query=main_queries.QUERY_TABLE_VIEW,
