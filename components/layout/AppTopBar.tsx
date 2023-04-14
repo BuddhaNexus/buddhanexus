@@ -8,12 +8,16 @@ import LanguageSelect from "@components/layout/LanguageSelect";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import ExploreIcon from "@mui/icons-material/Explore";
+import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { isNavigationDrawerOpen } from "features/atoms/layout";
+import {
+  isGolbalSearchDialogOpen,
+  isNavigationDrawerOpen,
+} from "features/atoms/layout";
 import { useSetAtom } from "jotai";
 
 interface AppBarLinkProps {
@@ -41,6 +45,7 @@ export const AppTopBar = () => {
 
   const { route } = useRouter();
   const { t } = useTranslation();
+  const setIsDialogOpen = useSetAtom(isGolbalSearchDialogOpen);
   const setIsDrawerOpen = useSetAtom(isNavigationDrawerOpen);
 
   const isHomeRoute = route === "/";
@@ -112,16 +117,6 @@ export const AppTopBar = () => {
               )}
             </>
           </Link>
-
-          {sourceLanguage && (
-            <IconButton
-              sx={{ ml: { xs: 0, sm: 2 } }}
-              color="inherit"
-              onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
-            >
-              <MenuOpenIcon fontSize="inherit" />
-            </IconButton>
-          )}
         </Box>
 
         <Box component="nav" sx={{ display: "flex", overflow: "auto" }}>
@@ -136,9 +131,27 @@ export const AppTopBar = () => {
           )}
         </Box>
 
+        <IconButton
+          sx={{ ml: 1 }}
+          color="inherit"
+          onClick={() => setIsDialogOpen((isOpen) => !isOpen)}
+        >
+          <SearchIcon fontSize="inherit" />
+        </IconButton>
+
+        {sourceLanguage && (
+          <IconButton
+            sx={{ mx: 1 }}
+            color="inherit"
+            onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
+          >
+            <ExploreIcon fontSize="inherit" />
+          </IconButton>
+        )}
+
         {isMounted ? (
           <IconButton
-            sx={{ ml: 1 }}
+            sx={{ mx: 1 }}
             color="inherit"
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >

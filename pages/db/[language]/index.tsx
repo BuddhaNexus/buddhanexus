@@ -7,6 +7,7 @@ import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
+import { GlobalTextSearch } from "features/globalTextSearch/globalTextSearch";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
 import { DbApi } from "utils/api/dbApi";
@@ -21,6 +22,7 @@ export default function DbIndexPage() {
   return (
     <PageContainer backgroundName={sourceLanguage}>
       <SourceTextBrowserDrawer />
+      <GlobalTextSearch />
 
       <Paper elevation={1} sx={{ py: 3, px: 4 }}>
         <Typography variant="h1">{sourceLanguageName}</Typography>
