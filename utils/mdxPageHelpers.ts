@@ -1,3 +1,4 @@
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
@@ -28,7 +29,7 @@ export interface MDXData {
 export interface CompiledMDXData {
   slug: string;
   meta: MDXFrontmatter;
-  content: { compiledSource: string };
+  content: MDXRemoteSerializeResult;
 }
 
 type MDXPagePath = { params: { slug: string }; locale: string };

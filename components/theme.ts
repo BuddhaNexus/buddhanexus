@@ -1,6 +1,6 @@
+import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
 import type { PaletteMode, ThemeOptions } from "@mui/material";
 import { common, grey } from "@mui/material/colors";
-import { Source_Sans_3, Source_Serif_4 } from "@next/font/google";
 import { SourceLanguage } from "utils/constants";
 
 export const sourceSerif = Source_Serif_4();

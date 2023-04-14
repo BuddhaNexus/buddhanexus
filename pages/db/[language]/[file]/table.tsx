@@ -29,6 +29,7 @@ export default function TablePage() {
           pageNumber: pageParam,
           serializedParams,
         }),
+
       /* TODO: fix "null" pageParam issue causing result duplication (see: https://github.com/TanStack/query/issues/4309)
       
       Migrating to v5 might be the best solution (see: https://github.com/TanStack/query/discussions/4252 & https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5#infinite-queries-now-need-a-defaultpageparam), .*/
@@ -78,7 +79,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["settings"]
+    ["db"]
   );
 
   return {
