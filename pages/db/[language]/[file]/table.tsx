@@ -19,7 +19,6 @@ export default function TablePage() {
   const { sourceLanguage, fileName, serializedParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
-  // TODO: add error handling
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
     useInfiniteQuery<PagedResponse<TablePageData>>({
       queryKey: [DbApi.TableView.makeQueryKey(fileName), serializedParams],
@@ -29,10 +28,6 @@ export default function TablePage() {
           pageNumber: pageParam,
           serializedParams,
         }),
-
-      /* TODO: fix "null" pageParam issue causing result duplication (see: https://github.com/TanStack/query/issues/4309)
-      
-      Migrating to v5 might be the best solution (see: https://github.com/TanStack/query/discussions/4252 & https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5#infinite-queries-now-need-a-defaultpageparam), .*/
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
         lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
