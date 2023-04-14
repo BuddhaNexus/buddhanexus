@@ -34,9 +34,7 @@ export default function TablePage() {
       Migrating to v5 might be the best solution (see: https://github.com/TanStack/query/discussions/4252 & https://tanstack.com/query/v5/docs/react/guides/migrating-to-v5#infinite-queries-now-need-a-defaultpageparam), .*/
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
-        lastPage.pageNumber === 0
-          ? lastPage.pageNumber
-          : lastPage.pageNumber - 1,
+        lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
       refetchOnWindowFocus: false,
     });
 
