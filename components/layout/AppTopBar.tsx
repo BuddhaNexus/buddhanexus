@@ -56,6 +56,7 @@ export const AppTopBar = () => {
       elevation={0}
       sx={(theme) => ({
         borderBottom: `1px solid ${theme.palette.common.pali}`,
+        zIndex: `${theme.zIndex.drawer + 1}`,
       })}
     >
       <Toolbar>

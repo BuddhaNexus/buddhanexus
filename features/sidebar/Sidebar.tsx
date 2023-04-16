@@ -4,7 +4,14 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
-import { Box, CircularProgress, Drawer, IconButton, Tab } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Drawer,
+  IconButton,
+  Tab,
+  Toolbar,
+} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { parLengthFilterValueAtom } from "utils/dbUISettings";
@@ -61,6 +68,7 @@ export function Sidebar() {
       anchor="right"
       open={sidebarIsOpen}
     >
+      <Toolbar />
       <aside>
         <DrawerHeader
           sx={{
@@ -87,6 +95,7 @@ export function Sidebar() {
             </IconButton>
           </Box>
         </DrawerHeader>
+
         <Box sx={{ width: 1, typography: "body1" }}>
           <TabContext value={activeTab}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

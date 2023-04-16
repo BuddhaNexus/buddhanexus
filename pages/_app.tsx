@@ -4,7 +4,6 @@ import "globalStyles.css";
 import React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { appWithTranslation, i18n } from "next-i18next";
 import { NextAdapter } from "next-query-params";
 import { DefaultSeo } from "next-seo";
@@ -21,12 +20,8 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { AppBar } from "features/sidebar/MuiStyledSidebarComponents";
-import { sidebarIsOpenAtom } from "features/sidebar/Sidebar";
-import { useAtomValue } from "jotai";
 import queryString from "query-string";
 import { QueryParamProvider } from "use-query-params";
-import { SETTING_SIDEBAR_PATHS_REGEX } from "utils/constants";
 import createEmotionCache from "utils/createEmotionCache";
 import { MUIThemeProvider } from "utils/MUIThemeProvider";
 
@@ -52,9 +47,7 @@ function MyApp({
   pageProps,
   emotionCache = clientSideEmotionCache,
 }: MyAppProps) {
-  const { pathname } = useRouter();
   const [queryClient] = React.useState(() => new QueryClient());
-  const sidebarIsOpen = useAtomValue(sidebarIsOpenAtom);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -79,14 +72,7 @@ function MyApp({
               <ThemeProvider>
                 <MUIThemeProvider>
                   <CssBaseline />
-                  {/* 😭 This is a hack, there must be a better way */}
-                  {SETTING_SIDEBAR_PATHS_REGEX.test(pathname) ? (
-                    <AppBar position="fixed" open={sidebarIsOpen}>
-                      <AppTopBar />
-                    </AppBar>
-                  ) : (
-                    <AppTopBar />
-                  )}
+                  <AppTopBar />
                   <Component {...pageProps} />
                 </MUIThemeProvider>
               </ThemeProvider>
