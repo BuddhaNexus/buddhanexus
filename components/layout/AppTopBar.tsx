@@ -9,15 +9,12 @@ import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ExploreIcon from "@mui/icons-material/Explore";
-import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import {
-  isGolbalSearchDialogOpen,
-  isNavigationDrawerOpen,
-} from "features/atoms/layout";
+import { isNavigationDrawerOpen } from "features/atoms/layout";
+import GlobalTextSearch from "features/globalTextSearch/GlobalTextSearch";
 import { useSetAtom } from "jotai";
 
 interface AppBarLinkProps {
@@ -45,7 +42,6 @@ export const AppTopBar = () => {
 
   const { route } = useRouter();
   const { t } = useTranslation();
-  const setIsDialogOpen = useSetAtom(isGolbalSearchDialogOpen);
   const setIsDrawerOpen = useSetAtom(isNavigationDrawerOpen);
 
   const isHomeRoute = route === "/";
@@ -68,6 +64,7 @@ export const AppTopBar = () => {
           sx={{
             display: "flex",
             flex: 1,
+            grow: 1,
             justifyContent: "flex-start",
             alignItems: "center",
           }}
@@ -117,6 +114,18 @@ export const AppTopBar = () => {
               )}
             </>
           </Link>
+
+          {sourceLanguage && (
+            <IconButton
+              sx={{ ml: 2 }}
+              color="inherit"
+              onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
+            >
+              <ExploreIcon fontSize="inherit" />
+            </IconButton>
+          )}
+
+          <GlobalTextSearch />
         </Box>
 
         <Box component="nav" sx={{ display: "flex", overflow: "auto" }}>
@@ -130,24 +139,6 @@ export const AppTopBar = () => {
             </>
           )}
         </Box>
-
-        <IconButton
-          sx={{ ml: 1 }}
-          color="inherit"
-          onClick={() => setIsDialogOpen((isOpen) => !isOpen)}
-        >
-          <SearchIcon fontSize="inherit" />
-        </IconButton>
-
-        {sourceLanguage && (
-          <IconButton
-            sx={{ mx: 1 }}
-            color="inherit"
-            onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
-          >
-            <ExploreIcon fontSize="inherit" />
-          </IconButton>
-        )}
 
         {isMounted ? (
           <IconButton
