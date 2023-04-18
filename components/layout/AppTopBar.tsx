@@ -8,13 +8,16 @@ import LanguageSelect from "@components/layout/LanguageSelect";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import ExploreIcon from "@mui/icons-material/Explore";
+import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { isNavigationDrawerOpen } from "features/atoms/layout";
-import GlobalTextSearch from "features/globalTextSearch/GlobalTextSearch";
+import {
+  GlobalTextSearchDesktop,
+  GlobalTextSearchMobile,
+} from "features/globalTextSearch";
 import { useSetAtom } from "jotai";
 
 interface AppBarLinkProps {
@@ -52,13 +55,7 @@ export const AppTopBar = () => {
   }, []);
 
   return (
-    <AppBar
-      position="sticky"
-      elevation={0}
-      sx={(theme) => ({
-        borderBottom: `1px solid ${theme.palette.common.pali}`,
-      })}
-    >
+    <AppBar position="sticky" elevation={0}>
       <Toolbar>
         <Box
           sx={{
@@ -115,20 +112,34 @@ export const AppTopBar = () => {
             </>
           </Link>
 
-          {sourceLanguage && (
-            <IconButton
-              sx={{ ml: 2 }}
-              color="inherit"
-              onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
-            >
-              <ExploreIcon fontSize="inherit" />
-            </IconButton>
-          )}
-
-          <GlobalTextSearch />
+          <Box
+            sx={{
+              display: {
+                xs: "none",
+                lg: "flex",
+              },
+            }}
+          >
+            {sourceLanguage && (
+              <IconButton
+                sx={{ ml: 2 }}
+                color="inherit"
+                onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
+              >
+                <ExploreOutlinedIcon sx={{ fontSize: 28 }} />
+              </IconButton>
+            )}
+          </Box>
+          <GlobalTextSearchDesktop />
         </Box>
 
-        <Box component="nav" sx={{ display: "flex", overflow: "auto" }}>
+        <Box
+          component="nav"
+          sx={{
+            display: "flex",
+            overflow: "auto",
+          }}
+        >
           {isATIIRoute ? (
             <AppBarLink title="BuddhaNexus" href="/" />
           ) : (
@@ -158,6 +169,28 @@ export const AppTopBar = () => {
         )}
 
         <LanguageSelect />
+      </Toolbar>
+
+      <Toolbar
+        sx={(theme) => ({
+          display: {
+            lg: "none",
+          },
+          backgroundColor: theme?.palette.background.default,
+          opacity: 0.96,
+          borderBottom: `1px solid #c7c7c7`,
+        })}
+      >
+        {sourceLanguage && (
+          <IconButton
+            sx={{ mr: 2 }}
+            color="primary"
+            onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
+          >
+            <ExploreOutlinedIcon fontSize="large" />
+          </IconButton>
+        )}
+        <GlobalTextSearchMobile />
       </Toolbar>
     </AppBar>
   );

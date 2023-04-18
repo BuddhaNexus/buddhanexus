@@ -16,7 +16,7 @@ const SearchBoxWrapper = styled("form")<SearchBoxWrapperProps>(
   ({ theme, animation }) => ({
     position: "absolute",
     top: "-4px",
-    left: "42px",
+    left: "48px",
     right: "0",
     bottom: "-4px",
     borderRadius: theme.shape.borderRadius,
@@ -24,11 +24,8 @@ const SearchBoxWrapper = styled("form")<SearchBoxWrapperProps>(
     "&:hover": {
       backgroundColor: theme.palette.grey[200],
     },
-    // TODO: mobile
-    [theme.breakpoints.up("sm")]: {
-      animation: `${animation} 0.3s ease-in-out forwards`,
-      width: "0%",
-    },
+    animation: `${animation} 0.3s ease-in-out forwards`,
+    width: "0%",
     "@keyframes growFromLeftToRight": {
       "0%": {
         width: "0%",
@@ -64,7 +61,6 @@ const SearchBoxInput = styled(TextField)({
     },
     "&.Mui-focused fieldset": {
       borderColor: "transparent",
-      padding: "8px",
     },
   },
   "& .MuiInputBase-input": {
@@ -75,7 +71,7 @@ const SearchBoxInput = styled(TextField)({
   },
 });
 
-const GlobalTextSearch = () => {
+const GlobalTextSearchDesktop = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [animation, setAnimation] = useState("none");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -107,12 +103,21 @@ const GlobalTextSearch = () => {
   };
 
   return (
-    <Box position="relative" sx={{ width: "calc(100% - 275px)" }}>
+    <Box
+      position="relative"
+      sx={{
+        display: {
+          xs: "none",
+          lg: "flex",
+        },
+        width: `calc(100% - 288px)`,
+      }}
+    >
       <IconButton color="inherit" onClick={handleSearchIconlick}>
         {isOpen ? (
-          <CloseIcon fontSize="inherit" />
+          <CloseIcon sx={{ fontSize: 28 }} />
         ) : (
-          <SearchIcon fontSize="inherit" />
+          <SearchIcon sx={{ fontSize: 28 }} />
         )}
       </IconButton>
       <SearchBoxWrapper animation={animation}>
@@ -145,4 +150,4 @@ const GlobalTextSearch = () => {
   );
 };
 
-export default GlobalTextSearch;
+export default GlobalTextSearchDesktop;
