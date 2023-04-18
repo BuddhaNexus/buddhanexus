@@ -24,7 +24,7 @@ const SearchBoxWrapper = styled("form")<SearchBoxWrapperProps>(
     "&:hover": {
       backgroundColor: theme.palette.grey[200],
     },
-    animation: `${animation} 0.3s ease-in-out forwards`,
+    animation: `${animation} 0.2s ease-in-out forwards`,
     width: "0%",
     "@keyframes growFromLeftToRight": {
       "0%": {
@@ -83,7 +83,13 @@ const GlobalTextSearchDesktop = () => {
       inputRef.current?.focus();
     } else if (!isOpen && animation !== "none") {
       setAnimation("shrinkFromRightToLeft");
-      setSearchText("");
+
+      const timeoutId = setTimeout(() => {
+        setSearchText("");
+        setAnimation("none");
+      }, 300);
+
+      return () => clearTimeout(timeoutId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
