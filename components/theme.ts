@@ -1,5 +1,8 @@
 import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
-import type { PaletteMode, ThemeOptions } from "@mui/material";
+import type {
+  PaletteMode,
+  ThemeOptions as MuiThemeOptions,
+} from "@mui/material";
 import { common, grey } from "@mui/material/colors";
 import { SourceLanguage } from "utils/constants";
 
@@ -18,6 +21,19 @@ const SOURCE_LANGUAGE_COLORS = {
   [SourceLanguage.SANSKRIT]: "#2C284C",
   [SourceLanguage.TIBETAN]: "#66160E",
 };
+
+interface Background {
+  main: string;
+  paper: string;
+  header: string;
+  accent: string;
+}
+
+interface ThemeOptions extends MuiThemeOptions {
+  palette: MuiThemeOptions["palette"] & {
+    background: Background;
+  };
+}
 
 export const getDesignTokens = ({
   mode,
@@ -46,7 +62,6 @@ export const getDesignTokens = ({
     },
     ...(mode === "light"
       ? {
-          // palette values for light mode
           primary: {
             main: sourceLanguage
               ? SOURCE_LANGUAGE_COLORS[sourceLanguage]
@@ -56,9 +71,8 @@ export const getDesignTokens = ({
             main: "#C23211",
           },
           background: {
-            default: "#efe0c2",
+            main: "#efe0c2",
             paper: "#ffffff",
-            // @ts-expect-error: TODO: fix type issue with adding custom colors to palette
             accent: grey[50],
             header: grey[100],
           },
@@ -98,6 +112,7 @@ export const getDesignTokens = ({
             main: "#02CC3B",
           },
           background: {
+            main: common.black,
             paper: common.black,
             accent: grey[900],
             header: common.black,
