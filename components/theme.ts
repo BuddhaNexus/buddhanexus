@@ -122,9 +122,8 @@ export const getDesignTokens = ({
             main: "#02CC3B",
           },
           background: {
-            // default: "#0d0909",
             default: "#080609",
-            paper: "#0d080b",
+            paper: "#060305",
             accent: grey[900],
             header: sourceLanguage
               ? SOURCE_LANG_DARK_COLORS[sourceLanguage]
