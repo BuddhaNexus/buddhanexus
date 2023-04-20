@@ -11,7 +11,7 @@ export const ParallelSegmentText = ({ text }: Props) => (
       <Typography
         key={text}
         sx={{ display: "inline" }}
-        fontWeight={highlightColor === 1 ? 700 : 400}
+        fontWeight={highlightColor === 1 ? 600 : 400}
         color={highlightColor === 1 ? "text.primary" : "text.secondary"}
       >
         {text}

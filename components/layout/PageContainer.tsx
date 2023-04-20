@@ -1,4 +1,5 @@
 import type { FC, PropsWithChildren } from "react";
+import { useTheme } from "next-themes";
 import { Container } from "@mui/material";
 import type { Breakpoint } from "@mui/system";
 import bgChn from "@public/assets/images/bg_chn_upscaled_bw.jpg";
@@ -37,6 +38,8 @@ export const PageContainer: FC<Props> = ({
   backgroundName,
   maxWidth = "md",
 }) => {
+  const { theme } = useTheme();
+
   return (
     <>
       {backgroundName && (
@@ -47,7 +50,7 @@ export const PageContainer: FC<Props> = ({
             backgroundPosition: "center",
 
             backgroundSize: BgImageBgSize[backgroundName],
-            opacity: 0.07,
+            opacity: theme === "dark" ? 0.02 : 0.05,
             height: "100%",
             minWidth: "100vw",
             position: "fixed",
