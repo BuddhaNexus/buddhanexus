@@ -1,8 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { useCoercedQueryValues } from "@components/hooks/useCoercedQueryValues";
-// import { useTranslation } from "react-i18next";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
 import {
   Box,
@@ -12,7 +10,6 @@ import {
   Tab,
   Toolbar,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { parLengthFilterValueAtom } from "utils/dbUISettings";
 
@@ -29,6 +26,7 @@ import { UtilityOptionsSection } from "./UtilityOptionsSection";
 export const sidebarIsOpenAtom = atom(true);
 const activeTabAtom = atom("1");
 
+// TODO: remove once full settings suit is complete
 export const StandinSetting = (setting: string) => (
   <div>
     <small>{setting} setting coming to a sidebar near your soon!</small>
@@ -36,16 +34,13 @@ export const StandinSetting = (setting: string) => (
 );
 
 export function Sidebar() {
-  const theme = useTheme();
-
   useCoercedQueryValues();
   const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);
 
   const initiatedValues = useAtomValue(parLengthFilterValueAtom);
 
-  // TODO: resolve Hydratrion error connected with SSR / mismatching locales files
-  // const { t } = useTranslation("settings");
+  const { t } = useTranslation("settings");
 
   const handleDrawerClose = () => {
     setSidebarIsOpen(false);
@@ -70,47 +65,24 @@ export function Sidebar() {
     >
       <Toolbar />
       <aside>
-        <DrawerHeader
-          sx={{
-            bgcolor: "background.header",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              width: 1,
-            }}
-          >
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-
-            <IconButton href="/guide" target="_blank" rel="noopener noreferrer">
-              <HelpOutlineIcon />
-            </IconButton>
-          </Box>
-        </DrawerHeader>
-
         <Box sx={{ width: 1, typography: "body1" }}>
           <TabContext value={activeTab}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <TabList
-                aria-label="Filters, desplay options and other settings"
-                onChange={handleTabChange}
-              >
-                {/*  <Tab label={t("tabs.options")} value="1" />
-                <Tab label={t("tabs.filters")} value="2" />
-                <Tab label={t("tabs.info")} value="3" /> */}
-                <Tab label="Options" value="1" />
-                <Tab label="Filters" value="2" />
-                <Tab label="Info" value="3" />
-              </TabList>
-            </Box>
+            <DrawerHeader>
+              <Box sx={{ width: 1, borderBottom: 1, borderColor: "divider" }}>
+                <TabList
+                  aria-label="Filters, desplay options and other settings"
+                  onChange={handleTabChange}
+                >
+                  <Tab label={t("tabs.options")} value="1" />
+                  <Tab label={t("tabs.filters")} value="2" />
+                  <Tab label={t("tabs.info")} value="3" />
+                </TabList>
+              </Box>
+
+              <IconButton onClick={handleDrawerClose}>
+                <CloseRoundedIcon />
+              </IconButton>
+            </DrawerHeader>
 
             {initiatedValues ? (
               <>

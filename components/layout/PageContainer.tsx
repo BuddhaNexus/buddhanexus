@@ -67,7 +67,7 @@ export const PageContainer: FC<Props> = ({
           <Main open={sidebarIsOpen}>
             <Container
               maxWidth={maxWidth}
-              sx={{ pt: 2, flex: 1, display: "flex", flexDirection: "column" }}
+              sx={{ flex: 1, display: "flex", flexDirection: "column" }}
             >
               {children}
             </Container>

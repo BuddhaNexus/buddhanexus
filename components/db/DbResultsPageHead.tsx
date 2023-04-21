@@ -8,7 +8,7 @@ import CurrentResultChips from "@components/db/CurrentResultChips";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSetQueryValues } from "@components/hooks/useSetQueryValues";
-import SettingsIcon from "@mui/icons-material/Settings";
+import TuneIcon from "@mui/icons-material/Tune";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import {
   DEFAULT_DISABLE_LIMIT_SELECT_STATE,
@@ -42,16 +42,12 @@ export const DbResultsPageHead = () => {
 
   return (
     <>
-      <Typography variant="h2" component="h1">
-        {fileName.toUpperCase()}
-      </Typography>
-      <SourceTextSearchInput />
       <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
         spacing={2}
-        sx={{ py: 1 }}
+        sx={{ pt: 2, pb: 3 }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <CurrentResultChips />
@@ -73,10 +69,14 @@ export const DbResultsPageHead = () => {
             edge="end"
             onClick={handleSettingsClick}
           >
-            <SettingsIcon color="action" />
+            <TuneIcon color="action" />
           </IconButton>
         </Box>
       </Stack>
+      <Typography variant="h2" component="h1">
+        {fileName.toUpperCase()}
+      </Typography>
+      <SourceTextSearchInput />
     </>
   );
 };
