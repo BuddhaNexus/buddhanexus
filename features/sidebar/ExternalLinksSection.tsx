@@ -38,15 +38,17 @@ export const ExternalLinksSection = () => {
     <>
       {data
         ? Object.entries(data).map(([key, value]) => {
-            if (key === "cbc") {
-              // TODO: at time of writing, https://dazangthings.nz/cbc/ was broken. Confirm if site has been taken down, or it was a temporary issue.
-              return null;
-            }
             return (
               value && (
                 <ListItem key={key} sx={{ width: "inherit", pr: 0 }}>
                   <Link href={value} target="_blank" rel="noopener noreferrer">
-                    <Image src={logos[key]} alt={`${key} logo`} height={32} />
+                    {key === "cbc" ? (
+                      <Typography variant="h2" component="span">
+                        {key}@
+                      </Typography>
+                    ) : (
+                      <Image src={logos[key]} alt={`${key} logo`} height={32} />
+                    )}
                   </Link>
                 </ListItem>
               )
