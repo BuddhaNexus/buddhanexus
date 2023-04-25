@@ -55,7 +55,8 @@ export const AppTopBar = () => {
       position="sticky"
       elevation={0}
       sx={(theme) => ({
-        borderBottom: `1px solid ${theme.palette.common.pali}`,
+        borderBottom: `1px solid ${theme.palette.background.accent}`,
+        backgroundColor: theme.palette.background.header,
       })}
     >
       <Toolbar>

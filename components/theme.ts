@@ -1,10 +1,18 @@
 import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
 import type { PaletteMode, ThemeOptions } from "@mui/material";
-import { common, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import { SourceLanguage } from "utils/constants";
 
 export const sourceSerif = Source_Serif_4();
 export const sourceSans = Source_Sans_3();
+
+declare module "@mui/material/styles" {
+  interface TypeBackground {
+    header: string;
+    accent: string;
+    card: string;
+  }
+}
 
 interface DesignTokenParams {
   mode: PaletteMode;
@@ -12,11 +20,18 @@ interface DesignTokenParams {
   sourceLanguage: SourceLanguage;
 }
 
-const SOURCE_LANGUAGE_COLORS = {
-  [SourceLanguage.CHINESE]: "#4F2B56",
-  [SourceLanguage.PALI]: "#7C3A00",
-  [SourceLanguage.SANSKRIT]: "#2C284C",
-  [SourceLanguage.TIBETAN]: "#66160E",
+const SOURCE_LANG_LIGHT_COLORS = {
+  chn: "#4F2B56",
+  pli: "#7C3A00",
+  skt: "#2C284C",
+  tib: "#66160E",
+};
+
+const SOURCE_LANG_DARK_COLORS = {
+  chn: "#180022",
+  pli: "#110b03",
+  skt: "#0f0e1a",
+  tib: "#170604",
 };
 
 export const getDesignTokens = ({
@@ -25,13 +40,17 @@ export const getDesignTokens = ({
 }: DesignTokenParams): ThemeOptions => ({
   typography: {
     button: { fontFamily: sourceSans.style.fontFamily },
-    h1: { fontFamily: sourceSerif.style.fontFamily },
-    h2: { fontFamily: sourceSerif.style.fontFamily, fontWeight: 400 },
-    h3: { fontFamily: sourceSerif.style.fontFamily },
-    h4: { fontFamily: sourceSerif.style.fontFamily },
-    h5: { fontFamily: sourceSerif.style.fontFamily },
-    h6: { fontFamily: sourceSans.style.fontFamily },
-    body1: { fontFamily: sourceSans.style.fontFamily },
+    h1: { fontFamily: sourceSerif.style.fontFamily, fontSize: "5rem" },
+    h2: { fontFamily: sourceSerif.style.fontFamily, fontSize: "2.5rem" },
+    h3: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.75rem" },
+    h4: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.5rem" },
+    h5: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.25rem" },
+    h6: { fontFamily: sourceSans.style.fontFamily, fontSize: "1.15rem" },
+    body1: {
+      fontFamily: sourceSans.style.fontFamily,
+      fontSize: "1.15rem",
+      lineHeight: 1.65,
+    },
     body2: { fontFamily: sourceSans.style.fontFamily },
     subtitle1: { fontFamily: sourceSerif.style.fontFamily },
     subtitle2: { fontFamily: sourceSerif.style.fontFamily },
@@ -39,28 +58,20 @@ export const getDesignTokens = ({
   palette: {
     mode,
     common: {
-      pali: SOURCE_LANGUAGE_COLORS[SourceLanguage.PALI],
-      sanskrit: SOURCE_LANGUAGE_COLORS[SourceLanguage.SANSKRIT],
-      tibetan: SOURCE_LANGUAGE_COLORS[SourceLanguage.TIBETAN],
-      chinese: SOURCE_LANGUAGE_COLORS[SourceLanguage.CHINESE],
+      pali: SOURCE_LANG_LIGHT_COLORS[SourceLanguage.PALI],
+      sanskrit: SOURCE_LANG_LIGHT_COLORS[SourceLanguage.SANSKRIT],
+      tibetan: SOURCE_LANG_LIGHT_COLORS[SourceLanguage.TIBETAN],
+      chinese: SOURCE_LANG_LIGHT_COLORS[SourceLanguage.CHINESE],
     },
     ...(mode === "light"
       ? {
-          // palette values for light mode
           primary: {
             main: sourceLanguage
-              ? SOURCE_LANGUAGE_COLORS[sourceLanguage]
+              ? SOURCE_LANG_LIGHT_COLORS[sourceLanguage]
               : "#361F0D",
           },
           secondary: {
             main: "#C23211",
-          },
-          background: {
-            default: "#efe0c2",
-            paper: "#ffffff",
-            // @ts-expect-error: TODO: fix type issue with adding custom colors to palette
-            accent: grey[50],
-            header: grey[100],
           },
           error: {
             main: "#CC0202",
@@ -73,6 +84,19 @@ export const getDesignTokens = ({
           },
           success: {
             main: "#02CC3B",
+          },
+          background: {
+            default: "#efe0c2",
+            paper: "#ffffff",
+            accent: grey[50],
+            header: sourceLanguage
+              ? SOURCE_LANG_LIGHT_COLORS[sourceLanguage]
+              : "#361F0D",
+            card: grey[100],
+          },
+          text: {
+            primary: grey[900],
+            secondary: grey[600],
           },
           divider: "rgba(54,31,13,0.12)",
         }
@@ -80,7 +104,7 @@ export const getDesignTokens = ({
           // palette values for dark mode
           primary: {
             main: "#FFBC73",
-            contrastText: "#ffffff",
+            contrastText: "#fff",
           },
           secondary: {
             main: "#C23211",
@@ -98,10 +122,19 @@ export const getDesignTokens = ({
             main: "#02CC3B",
           },
           background: {
-            paper: common.black,
+            default: "#080609",
+            paper: "#060305",
             accent: grey[900],
-            header: common.black,
+            header: sourceLanguage
+              ? SOURCE_LANG_DARK_COLORS[sourceLanguage]
+              : "#0F0405",
+            card: "#121213",
           },
+          text: {
+            primary: "#d2cfcf",
+            secondary: "#a8a5a5",
+          },
+          divider: "rgba(54,31,13,0.12)",
         }),
   },
 });
