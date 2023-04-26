@@ -34,11 +34,16 @@ export const ExternalLinksSection = () => {
     refetchOnWindowFocus: false,
   });
 
-  const listItems = React.Children.toArray(
-    <>
-      {data
-        ? Object.entries(data).map(([key, value]) => {
-            return (
+  if (data && Object.keys(data).length > 0) {
+    return (
+      <>
+        <Typography variant="h6" component="h3" mx={2} mt={1}>
+          {t("headings.links")}
+        </Typography>
+
+        <List sx={{ display: "flex", justifyContent: "flex-start" }}>
+          {Object.entries(data).map(
+            ([key, value]) =>
               value && (
                 <ListItem key={key} sx={{ width: "inherit", pr: 0 }}>
                   <Link href={value} target="_blank" rel="noopener noreferrer">
@@ -52,20 +57,10 @@ export const ExternalLinksSection = () => {
                   </Link>
                 </ListItem>
               )
-            );
-          })
-        : null}
-    </>
-  );
-
-  return data && Object.keys(data).length > 0 ? (
-    <>
-      <Typography variant="h6" component="h3" mx={2} mt={1}>
-        {t("headings.links")}
-      </Typography>
-      <List sx={{ display: "flex", justifyContent: "flex-start" }}>
-        {listItems}
-      </List>
-    </>
-  ) : null;
+          )}
+        </List>
+      </>
+    );
+  }
+  return null;
 };
