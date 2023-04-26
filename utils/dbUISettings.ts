@@ -122,15 +122,11 @@ export const isSettingOmitted = ({
   dbLang: DbLang;
   view: DbView;
 }) => {
-  if (
-    omissions?.[settingName]?.[view]?.some((ommittedLang) =>
-      ["allLangs", dbLang].includes(ommittedLang)
+  return Boolean(
+    omissions?.[settingName]?.[view]?.some((omittedLang) =>
+      ["allLangs", dbLang].includes(omittedLang)
     )
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 };
 
 export interface CoercedCollectionValues {
