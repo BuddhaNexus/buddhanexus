@@ -16,6 +16,7 @@ export const Main = styled("main", {
   }),
   marginRight: 0,
   ...(open && {
+    // TODO: animating anything other than opacity and transform is not performant. Maybe you want to change this (e.g. to transform: translateY), or maybe we can just keep this in mind in case the performance becomes an issue in the future.
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,

@@ -39,7 +39,7 @@ export function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);
 
-  const initiatedValues = useAtomValue(parLengthFilterValueAtom);
+  const initialised = useAtomValue(parLengthFilterValueAtom);
 
   const { t } = useTranslation("settings");
 
@@ -85,7 +85,7 @@ export function Sidebar() {
               </IconButton>
             </DrawerHeader>
 
-            {initiatedValues ? (
+            {initialised ? (
               <>
                 <TabPanel value="1" sx={{ px: 0 }}>
                   <DisplayOptionsSection />

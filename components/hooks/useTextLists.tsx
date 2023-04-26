@@ -17,9 +17,8 @@ export const useTextLists = () => {
     queryFn: () => DbApi.CategoryMenu.call(sourceLanguage),
   });
 
-  const texts = textsData ?? (new Map() as Map<string, TextMenuItem>);
-  const categories =
-    categoriesData ?? (new Map() as Map<string, CategoryMenuItem>);
+  const texts = textsData ?? new Map<string, TextMenuItem>();
+  const categories = categoriesData ?? new Map<string, CategoryMenuItem>();
 
   return {
     texts,
