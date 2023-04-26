@@ -53,7 +53,7 @@ export function Node({
         alignItems: "center",
         fontSize: 16,
         ":hover": {
-          backgroundColor: node.isLeaf ? "inherit" : "background.header",
+          backgroundColor: node.isLeaf ? "inherit" : "background.default",
           fontWeight: 500,
         },
       }}

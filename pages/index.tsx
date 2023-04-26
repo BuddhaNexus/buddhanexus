@@ -9,6 +9,7 @@ import { Paper, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useTheme as useMaterialTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { visuallyHidden } from "@mui/utils";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
 import merge from "lodash/merge";
 import { SourceLanguage } from "utils/constants";
@@ -33,30 +34,26 @@ export default function Home() {
             p: 3,
             m: 2,
           },
-          backgroundColor: "#361F0D",
-          filter: "drop-shadow(2px 2px 1px rgba(0,0,0,0.25))",
-          borderRadius: 1,
+          backgroundColor: materialTheme.palette.background.header,
+          borderBottom: `1px solid ${theme.palette.background.accent}`,
+          borderRadiusTopLeft: 1,
+          borderRadiusTopRights: 1,
         }}
       />
       <Paper
         elevation={1}
         sx={{
           p: 4,
-          mt: 2,
+          mt: 0,
           mb: 4,
           [materialTheme.breakpoints.down("sm")]: {
             p: 3,
-            m: 2,
+            mx: 2,
+            mb: 2,
           },
         }}
       >
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="text.primary"
-          gutterBottom
-        >
+        <Typography component="h1" sx={visuallyHidden}>
           {t("global.siteTitle")}
         </Typography>
         <Typography
