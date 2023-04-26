@@ -1,9 +1,29 @@
 import React, { memo } from "react";
 import useDimensions from "react-cool-dimensions";
 import { SourceTextBrowserTree } from "@components/treeView/SourceTextBrowserTree";
-import Drawer from "@mui/material/Drawer";
+import { Drawer as MuiDrawer } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { isNavigationDrawerOpen } from "features/atoms/layout";
 import { useAtom } from "jotai";
+
+const Drawer = styled(MuiDrawer)(({ theme }) => ({
+  // zIndex linked to components/layout/AppTopBar.tsx
+  zIndex: `${theme.zIndex.drawer + 2}`,
+  width: "80vw",
+  [theme.breakpoints.up("sm")]: {
+    width: "60vw",
+  },
+  [theme.breakpoints.up("md")]: {
+    width: "40vw",
+  },
+  [theme.breakpoints.up("lg")]: {
+    width: "35vw",
+  },
+  [theme.breakpoints.up("xl")]: {
+    width: "30vw",
+  },
+  padding: 2,
+}));
 
 // TODO: preselect currently viewed text in the sidebar
 export const SourceTextBrowserDrawer = memo(function SourceTextBrowserDrawer() {
@@ -16,16 +36,6 @@ export const SourceTextBrowserDrawer = memo(function SourceTextBrowserDrawer() {
       ref={observe}
       anchor="left"
       role="navigation"
-      sx={{
-        p: 2,
-        width: {
-          xs: "80vw",
-          sm: "60vw",
-          md: "40vw",
-          lg: "35vw",
-          xl: "30vw",
-        },
-      }}
       open={isDrawerOpen}
       onClose={() => setIsDrawerOpen(false)}
     >
