@@ -8,14 +8,12 @@ import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import type { SvgIconTypeMap } from "@mui/material";
 import {
-  Box,
   Fade,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Popper,
   Typography,
 } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
@@ -36,6 +34,8 @@ import {
   UTILITY_OPTIONS_CONTEXT_OMISSIONS as omissions,
   type UtilityOption,
 } from "utils/dbUISettings";
+
+import { Popper, PopperMsgBox } from "./MuiStyledSidebarComponents";
 
 type UtilityOptionObject = {
   callback: (props: UtilityClickHandlerProps) => void;
@@ -142,21 +142,11 @@ export const UtilityOptionsSection = () => {
               open={isPopperOpen}
               anchorEl={popperAnchorEl[name]}
               placement="top"
-              sx={{ zIndex: 10000, height: "32px" }}
               transition
             >
               {({ TransitionProps }) => (
                 <Fade {...TransitionProps} timeout={200}>
-                  <Box
-                    sx={{
-                      borderRadius: "8px",
-                      p: 1,
-                      bgcolor: "#333",
-                      color: "white",
-                    }}
-                  >
-                    {t(`optionsPopperMsgs.${name}`)}
-                  </Box>
+                  <PopperMsgBox>{t(`optionsPopperMsgs.${name}`)}</PopperMsgBox>
                 </Fade>
               )}
             </Popper>

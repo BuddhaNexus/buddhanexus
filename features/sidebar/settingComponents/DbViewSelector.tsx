@@ -18,9 +18,8 @@ export const DbViewSelector = ({ currentView }: Props) => {
   const { asPath, push } = useRouter();
   const setCurrentDbView = useSetAtom(currentDbViewAtom);
 
-  const handleChange = (e: React.ChangeEvent<{ value: DbView }>) => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    push(asPath.replace(currentView, e.target.value));
+  const handleChange = async (e: React.ChangeEvent<{ value: DbView }>) => {
+    await push(asPath.replace(currentView, e.target.value));
     setCurrentDbView(e.target.value);
   };
 

@@ -1,3 +1,4 @@
+import { Box as MuiBox, Popper as MuiPopper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const SETTINGS_DRAWER_WIDTH = 360;
@@ -15,14 +16,10 @@ export const Main = styled("main", {
     duration: theme.transitions.duration.leavingScreen,
   }),
   marginRight: 0,
-  ...(open && {
-    // TODO: animating anything other than opacity and transform is not performant. Maybe you want to change this (e.g. to transform: translateY), or maybe we can just keep this in mind in case the performance becomes an issue in the future.
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginRight: SETTINGS_DRAWER_WIDTH,
-  }),
+  [theme.breakpoints.up("sm")]: {
+    marginRight: `${open ? SETTINGS_DRAWER_WIDTH : 0}px`,
+    transform: "none",
+  },
 }));
 
 export const DrawerHeader = styled("div")(({ theme }) => ({
@@ -32,4 +29,16 @@ export const DrawerHeader = styled("div")(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-start",
+}));
+
+export const Popper = styled(MuiPopper)(({ theme }) => ({
+  zIndex: theme.zIndex.tooltip,
+  height: "32px",
+}));
+
+export const PopperMsgBox = styled(MuiBox)(({ theme }) => ({
+  borderRadius: 8,
+  padding: theme.spacing(1, 2),
+  backgroundColor: theme.palette.background.inverted,
+  color: theme.palette.text.inverted,
 }));

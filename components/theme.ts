@@ -11,6 +11,10 @@ declare module "@mui/material/styles" {
     header: string;
     accent: string;
     card: string;
+    inverted: string;
+  }
+  interface TypeText {
+    inverted: string;
   }
 }
 
@@ -93,10 +97,12 @@ export const getDesignTokens = ({
               ? SOURCE_LANG_LIGHT_COLORS[sourceLanguage]
               : "#361F0D",
             card: grey[100],
+            inverted: grey[800],
           },
           text: {
             primary: grey[900],
             secondary: grey[600],
+            inverted: grey[50],
           },
           divider: "rgba(54,31,13,0.12)",
         }
@@ -123,16 +129,18 @@ export const getDesignTokens = ({
           },
           background: {
             default: "#080609",
-            paper: "#060305",
+            paper: "#110d15",
             accent: grey[900],
             header: sourceLanguage
               ? SOURCE_LANG_DARK_COLORS[sourceLanguage]
               : "#0F0405",
             card: "#121213",
+            inverted: grey[50],
           },
           text: {
             primary: "#d2cfcf",
             secondary: "#a8a5a5",
+            inverted: grey[900],
           },
           divider: "rgba(54,31,13,0.12)",
         }),
