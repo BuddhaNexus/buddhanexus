@@ -137,6 +137,18 @@ export const getDesignTokens = ({
           divider: "rgba(54,31,13,0.12)",
         }),
   },
+  components: {
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          minWidth: 0,
+          "@media (min-width: 0px)": {
+            fontSize: "1.1rem",
+          },
+        },
+      },
+    },
+  },
 });
 
 export type ThemeType = ReturnType<typeof getDesignTokens>;

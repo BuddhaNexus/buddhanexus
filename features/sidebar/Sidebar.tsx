@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useCoercedQueryValues } from "@components/hooks/useCoercedQueryValues";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
@@ -23,7 +23,7 @@ import {
 } from "./MuiStyledSidebarComponents";
 import { UtilityOptionsSection } from "./UtilityOptionsSection";
 
-export const sidebarIsOpenAtom = atom(true);
+export const isSidebarOpenAtom = atom(true);
 const activeTabAtom = atom("1");
 
 // TODO: remove once full settings suit is complete
@@ -35,7 +35,8 @@ export const StandinSetting = (setting: string) => (
 
 export function Sidebar() {
   useCoercedQueryValues();
-  const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
+
+  const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);
 
   const initiatedValues = useAtomValue(parLengthFilterValueAtom);
@@ -43,7 +44,7 @@ export function Sidebar() {
   const { t } = useTranslation("settings");
 
   const handleDrawerClose = () => {
-    setSidebarIsOpen(false);
+    setIsSidebarOpen(false);
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -61,11 +62,11 @@ export function Sidebar() {
       }}
       variant="persistent"
       anchor="right"
-      open={sidebarIsOpen}
+      open={isSidebarOpen}
     >
       <Toolbar />
       <aside>
-        <Box sx={{ width: 1, typography: "body1" }}>
+        <Box sx={{ width: 1 }}>
           <TabContext value={activeTab}>
             <DrawerHeader>
               <Box sx={{ width: 1, borderBottom: 1, borderColor: "divider" }}>

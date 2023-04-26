@@ -202,7 +202,8 @@ const LimitCollectionFilters = () => {
 
   const { t } = useTranslation("settings");
   const { setQueryParams } = useDbQueryParams();
-  const { texts, categories, isLoadingCats, isLoadingTexts } = useTextLists();
+  const { texts, categories, isLoadingCategories, isLoadingTexts } =
+    useTextLists();
 
   const [limitCollectionValues, setLimitCollectionValues] = useAtom(
     limitCollectionFilterValueAtom
@@ -295,7 +296,7 @@ const LimitCollectionFilters = () => {
               ...params.InputProps,
               endAdornment: (
                 <React.Fragment>
-                  {isLoadingCats ? (
+                  {isLoadingCategories ? (
                     <CircularProgress color="inherit" size={20} />
                   ) : null}
                   {params.InputProps.endAdornment}
@@ -306,7 +307,7 @@ const LimitCollectionFilters = () => {
         )}
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
-        loading={isLoadingCats}
+        loading={isLoadingCategories}
         disabled={disableSelectors.excludedCategories}
         filterSelectedOptions
         disablePortal
@@ -367,7 +368,7 @@ const LimitCollectionFilters = () => {
               ...params.InputProps,
               endAdornment: (
                 <React.Fragment>
-                  {isLoadingCats ? (
+                  {isLoadingCategories ? (
                     <CircularProgress color="inherit" size={20} />
                   ) : null}
                   {params.InputProps.endAdornment}
@@ -378,7 +379,7 @@ const LimitCollectionFilters = () => {
         )}
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
-        loading={isLoadingCats}
+        loading={isLoadingCategories}
         isOptionEqualToValue={(option, value) => categories.has(value.id)}
         disabled={disableSelectors.includedCategories}
         filterSelectedOptions

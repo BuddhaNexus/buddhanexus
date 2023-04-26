@@ -12,7 +12,7 @@ export const useTextLists = () => {
     queryFn: () => DbApi.TextMenu.call(sourceLanguage),
   });
 
-  const { data: categoriesData, isLoading: isLoadingCats } = useQuery({
+  const { data: categoriesData, isLoading: isLoadingCategories } = useQuery({
     queryKey: DbApi.CategoryMenu.makeQueryKey(sourceLanguage),
     queryFn: () => DbApi.CategoryMenu.call(sourceLanguage),
   });
@@ -25,6 +25,6 @@ export const useTextLists = () => {
     texts,
     categories,
     isLoadingTexts,
-    isLoadingCats,
+    isLoadingCategories,
   };
 };

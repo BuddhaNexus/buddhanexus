@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -10,25 +9,25 @@ import { DbApi } from "utils/api/dbApi";
 function getActiveFilterCount(queries: any, defaults: any) {
   let count = 0;
 
-  Object.entries(queries).map(([key, value]) => {
+  for (const [key, value] of Object.entries(queries)) {
     const queryKey = key as keyof typeof defaults;
 
     if (queryKey === "par_length" && defaults.par_length === value) {
-      return null;
+      continue;
     }
 
     if (Array.isArray(value) && value.length > 0) {
       count += value.length;
-      return null;
+      continue;
     }
 
     if (defaults[queryKey] === value || value === undefined) {
-      return null;
+      continue;
     }
 
     count += 1;
-    return null;
-  });
+    continue;
+  }
 
   return count;
 }
@@ -37,7 +36,6 @@ export default function CurrentResultChips() {
   const { fileName, queryParams, serializedParams, defaultQueryParams } =
     useDbQueryParams();
   const { t } = useTranslation("settings");
-  const [mounted, setMounted] = useState(false);
 
   const filtersCount = getActiveFilterCount(queryParams, defaultQueryParams);
 
@@ -48,11 +46,9 @@ export default function CurrentResultChips() {
         fileName,
         serializedParams,
       }),
+    // TODO: pass the same defaults to all instances of QueryClient
     refetchOnWindowFocus: false,
   });
-
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
 
   return (
     <Box>

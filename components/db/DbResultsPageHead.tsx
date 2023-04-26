@@ -3,7 +3,7 @@
 // TODO: ENABLE TS AFTER REFACTOR
 
 import { useEffect } from "react";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import CurrentResultChips from "@components/db/CurrentResultChips";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -13,8 +13,8 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import {
   DEFAULT_DISABLE_LIMIT_SELECT_STATE,
   disableLimitColectionSelectAtom,
-} from "features/sidebar/settingComponents/LimitCollectionFilters.tsx";
-import { sidebarIsOpenAtom } from "features/sidebar/Sidebar";
+} from "features/sidebar/settingComponents/LimitCollectionFilters";
+import { isSidebarOpenAtom } from "features/sidebar/Sidebar";
 import { useAtom, useSetAtom } from "jotai";
 
 export const DbResultsPageHead = () => {
@@ -24,13 +24,13 @@ export const DbResultsPageHead = () => {
 
   const { setAllQueryValues } = useSetQueryValues();
 
-  // const { t } = useTranslation("settings");
+  const { t } = useTranslation("settings");
 
-  const [sidebarIsOpen, setSidebarIsOpen] = useAtom(sidebarIsOpenAtom);
+  const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
 
   const setDisableLimitSelectors = useSetAtom(disableLimitColectionSelectAtom);
 
-  const handleSettingsClick = () => setSidebarIsOpen(!sidebarIsOpen);
+  const handleSettingsClick = () => setIsSidebarOpen(!isSidebarOpen);
 
   const handleReset = () => {
     setAllQueryValues("reset");
@@ -60,8 +60,7 @@ export const DbResultsPageHead = () => {
             size="small"
             onClick={handleReset}
           >
-            {/* {t(`resultsHead.reset`)} */}
-            Reset
+            {t(`resultsHead.reset`)}
           </Button>
           <IconButton
             color="inherit"

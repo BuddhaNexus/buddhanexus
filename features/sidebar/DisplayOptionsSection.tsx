@@ -39,7 +39,18 @@ export const DisplayOptionsSection = () => {
       })
   );
 
-  return options.length > 0 ? (
+  if (options.length === 0) {
+    return (
+      <Box sx={{ mx: 2 }}>
+        <Typography variant="h6" component="h3" mb={2}>
+          {t("headings.display")}
+        </Typography>
+        <DbViewSelector currentView={currentView} />
+      </Box>
+    );
+  }
+
+  return (
     <Box sx={{ mx: 2 }}>
       <Typography variant="h6" component="h3" mb={2}>
         {t("headings.display")}
@@ -51,13 +62,6 @@ export const DisplayOptionsSection = () => {
       {options.includes("showAndPositionSegmentNrs") &&
         StandinSetting("showAndPositionSegmentNrs")}
       {options.includes("sort_method") && <SortOption />}
-    </Box>
-  ) : (
-    <Box sx={{ mx: 2 }}>
-      <Typography variant="h6" component="h3" mb={2}>
-        {t("headings.display")}
-      </Typography>
-      <DbViewSelector currentView={currentView} />
     </Box>
   );
 };

@@ -9,7 +9,7 @@ import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
 import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
 import { Main } from "features/sidebar/MuiStyledSidebarComponents";
-import { Sidebar, sidebarIsOpenAtom } from "features/sidebar/Sidebar";
+import { isSidebarOpenAtom, Sidebar } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
 import { SourceLanguage } from "utils/constants";
 
@@ -43,7 +43,7 @@ export const PageContainer: FC<Props> = ({
   maxWidth = "md",
   hasSidebar = false,
 }) => {
-  const sidebarIsOpen = useAtomValue(sidebarIsOpenAtom);
+  const isSidebarOpen = useAtomValue(isSidebarOpenAtom);
   const { theme } = useTheme();
 
   return (
@@ -66,7 +66,7 @@ export const PageContainer: FC<Props> = ({
       )}
       {hasSidebar ? (
         <>
-          <Main open={sidebarIsOpen}>
+          <Main open={isSidebarOpen}>
             <Container
               maxWidth={maxWidth}
               sx={{ flex: 1, display: "flex", flexDirection: "column" }}
