@@ -37,16 +37,33 @@ import {
   type UtilityOption,
 } from "utils/dbUISettings";
 
-const utilityOptionComponents: [
-  UtilityOption,
-  (props: UtilityClickHandlerProps) => void,
-  OverridableComponent<SvgIconTypeMap>
-][] = [
-  ["download", onDownload, FileDownloadIcon],
-  ["copyQueryTitle", onCopyQueryTitle, LocalOfferOutlinedIcon],
-  ["copyQueryLink", onCopyQueryLink, ShareOutlinedIcon],
-  ["emailQueryLink", onEmailQueryLink, ForwardToInboxIcon],
-];
+type UtilityOptionObject = {
+  callback: (props: UtilityClickHandlerProps) => void;
+  icon: OverridableComponent<SvgIconTypeMap>;
+};
+
+type UtilityOptions = {
+  [key in UtilityOption]: UtilityOptionObject;
+};
+
+const utilityOptionComponents: UtilityOptions = {
+  download: {
+    callback: onDownload,
+    icon: FileDownloadIcon,
+  },
+  copyQueryTitle: {
+    callback: onCopyQueryTitle,
+    icon: LocalOfferOutlinedIcon,
+  },
+  copyQueryLink: {
+    callback: onCopyQueryLink,
+    icon: ShareOutlinedIcon,
+  },
+  emailQueryLink: {
+    callback: onEmailQueryLink,
+    icon: ForwardToInboxIcon,
+  },
+};
 
 export const UtilityOptionsSection = () => {
   const currentView = useAtomValue(currentDbViewAtom);
@@ -75,8 +92,9 @@ export const UtilityOptionsSection = () => {
     useState<Record<UtilityOption, HTMLElement | null>>(defaultAnchorEls);
 
   const listItems = React.Children.toArray(
-    utilityOptionComponents.map((option) => {
-      const [name, handleClick, Icon] = option;
+    Object.entries(utilityOptionComponents).map(([key, option]) => {
+      const { callback, icon: Icon } = option;
+      const name = key as UtilityOption;
 
       if (
         isSettingOmitted({
@@ -103,7 +121,7 @@ export const UtilityOptionsSection = () => {
             id={name}
             aria-describedby={popperId}
             onClick={(event) =>
-              handleClick({
+              callback({
                 event,
                 fileName,
                 popperAnchorState: [popperAnchorEl, setPopperAnchorEl],
