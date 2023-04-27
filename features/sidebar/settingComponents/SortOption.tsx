@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 import { useAtom } from "jotai";

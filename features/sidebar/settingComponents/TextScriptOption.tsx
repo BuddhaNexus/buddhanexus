@@ -1,5 +1,5 @@
 import * as React from "react";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 import type { DbLang } from "utils/dbUISettings";
@@ -13,7 +13,7 @@ const SCRIPT_OPTIONS: Partial<Record<DbLang, Script[]>> = {
 export default function TextScriptOption() {
   const [value, setValue] = React.useState("wylie");
   const { sourceLanguage } = useDbQueryParams();
-  // const { t } = useTranslation("settings");
+  const { t } = useTranslation("settings");
 
   const handleSelectChange = (value: string) => {
     //  TODO: handle script change
@@ -27,8 +27,7 @@ export default function TextScriptOption() {
   return (
     <FormControl sx={{ width: 1 }}>
       <FormLabel id="tibetan-script-selection-label">
-        {/* {t("optionsLabels.script")} */}
-        Script
+        {t("optionsLabels.script")}
       </FormLabel>
 
       <Select
@@ -41,7 +40,7 @@ export default function TextScriptOption() {
         {SCRIPT_OPTIONS[sourceLanguage]?.map((script) => {
           return (
             <MenuItem key={script} value={script}>
-              {/* {t(`optionsLabels.${script}`)} */}
+              {t(`optionsLabels.${script}`)}
               {script}
             </MenuItem>
           );

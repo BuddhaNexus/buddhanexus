@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { useAtom } from "jotai";
@@ -48,7 +48,6 @@ export default function ParLengthFilter() {
     }
   };
 
-  // TODO: get dynamic mark values
   const marks = [
     {
       value: MIN_VALUES[lang],

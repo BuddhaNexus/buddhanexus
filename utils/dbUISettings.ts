@@ -179,6 +179,7 @@ export interface QueryParams {
   par_length: number | undefined;
   folio?: string;
   sort_method?: "length2" | "position" | "quoted-text";
+  // TODO: update on backend refactor. For dev purposes "limit_collection" is being treated as the comming "included_collection" endpoint
   limit_collection?: string[];
   target_collection?: string[];
 }

@@ -1,7 +1,7 @@
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box } from "@mui/material";
 import {
-  LimitCollectionFilters,
+  // LimitCollectionFilters,
   ParLengthFilter,
   ScoreFilter,
 } from "features/sidebar/settingComponents";
@@ -34,7 +34,7 @@ export const FilterSettings = () => {
     <Box sx={{ mx: 2 }}>
       {filters.includes("score") && <ScoreFilter />}
       {filters.includes("par_length") && <ParLengthFilter />}
-      {filters.includes("limit_collection") && <LimitCollectionFilters />}
+      {/* {filters.includes("limit_collection") && <LimitCollectionFilters />} */}
       {filters.includes("target_collection") &&
         StandinSetting("target_collection")}
     </Box>
