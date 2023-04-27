@@ -1,4 +1,4 @@
-import { Box as MuiBox, Popper as MuiPopper } from "@mui/material";
+import { Box, Link, Popper as MuiPopper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 export const SETTINGS_DRAWER_WIDTH = 360;
@@ -36,9 +36,17 @@ export const Popper = styled(MuiPopper)(({ theme }) => ({
   height: "32px",
 }));
 
-export const PopperMsgBox = styled(MuiBox)(({ theme }) => ({
+export const PopperMsgBox = styled(Box)(({ theme }) => ({
   borderRadius: 8,
   padding: theme.spacing(1, 2),
   backgroundColor: theme.palette.background.inverted,
   color: theme.palette.text.inverted,
+}));
+
+export const SourceLink = styled(Link)(() => ({
+  "&:hover": {
+    filter: "brightness(80%)",
+  },
+  textDecoration: "none",
+  height: "32px",
 }));
