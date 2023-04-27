@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { List, ListItem, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import BDRCLogo from "public/assets/icons/logo_bdrc.png";
 import CBETALogo from "public/assets/icons/logo_cbeta.png";
@@ -16,11 +17,11 @@ import { DbApi } from "utils/api/dbApi";
 
 import { SourceLink } from "./MuiStyledSidebarComponents";
 
-function CBCIcon() {
+function CBCIcon({ fill }: { fill: string }) {
   return (
     <div
       style={{
-        backgroundColor: "#333333",
+        border: "1px solid #aaa",
         borderRadius: "4px",
         overflow: "hidden",
         display: "inline-block",
@@ -28,12 +29,12 @@ function CBCIcon() {
         height: "32px",
       }}
     >
-      <svg viewBox="0 0 48 32">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32">
         <text
           x="24"
           y="16"
           fontSize="16"
-          fill="white"
+          fill={fill}
           textAnchor="middle"
           dominantBaseline="middle"
         >
@@ -57,6 +58,7 @@ const logos: Record<string, StaticImageData> = {
 export const ExternalLinksSection = () => {
   const { fileName } = useDbQueryParams();
   const { t } = useTranslation("settings");
+  const theme = useTheme();
 
   const { data } = useQuery({
     queryKey: [DbApi.ExternalLinksData.makeQueryKey(fileName)],
@@ -83,7 +85,7 @@ export const ExternalLinksSection = () => {
                     title={key}
                   >
                     {key === "cbc" ? (
-                      <CBCIcon />
+                      <CBCIcon fill={theme.palette.text.primary} />
                     ) : (
                       <Image src={logos[key]} alt={`${key} logo`} height={32} />
                     )}
