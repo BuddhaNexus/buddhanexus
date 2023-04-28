@@ -1,27 +1,31 @@
+import { useEffect } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
-import { useAtom } from "jotai";
+import { StringParam, useQueryParam } from "use-query-params";
 import type { DatabaseFolio } from "utils/api/common";
 import { DbApi } from "utils/api/dbApi";
-import { folioOptionValueAtom } from "utils/dbUISettings";
+import { DEFAULT_QUERY_PARAMS } from "utils/dbUISettings";
 
 const showAll = "Whole text";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
-  const { fileName, setQueryParams } = useDbQueryParams();
-  const [folioValue, setFolioValue] = useAtom(folioOptionValueAtom);
-
+  const { fileName } = useDbQueryParams();
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
     queryFn: () => DbApi.FolioData.call(fileName),
   });
 
+  const [folioParam, setFolioParam] = useQueryParam("folio", StringParam);
+
+  useEffect(() => {
+    setFolioParam(folioParam ?? DEFAULT_QUERY_PARAMS.folio);
+  }, [folioParam, setFolioParam]);
+
   const handleSelectChange = (value: string) => {
-    setFolioValue(value);
-    setQueryParams({ folio: value === showAll ? undefined : value });
+    setFolioParam(value === showAll ? null : value);
   };
 
   if (isLoading) {
@@ -40,7 +44,7 @@ export default function FolioOption() {
               id="folio-option-selector"
               aria-labelledby="folio-option-selector-label"
               displayEmpty={true}
-              value={folioValue ?? showAll}
+              value={folioParam ?? showAll}
               onChange={(e) => handleSelectChange(e.target.value)}
             >
               <MenuItem value={showAll}>

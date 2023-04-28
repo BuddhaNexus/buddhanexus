@@ -57,6 +57,8 @@ function MyApp({
           options={{
             searchStringToObject: queryString.parse,
             objectToSearchString: queryString.stringify,
+            updateType: "replace",
+            enableBatching: true,
           }}
         >
           <QueryClientProvider client={queryClient}>

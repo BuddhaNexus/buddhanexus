@@ -22,9 +22,11 @@ import {
 } from "utils/dbUISettings";
 
 export const DisplayOptionsSection = () => {
-  const currentView = useAtomValue(currentDbViewAtom);
-  const { sourceLanguage } = useDbQueryParams();
   const { t } = useTranslation("settings");
+
+  const currentView = useAtomValue(currentDbViewAtom);
+
+  const { sourceLanguage } = useDbQueryParams();
 
   const options = [
     ...queriedDisplayOptionList,

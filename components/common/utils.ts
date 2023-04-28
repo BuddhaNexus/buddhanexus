@@ -1,9 +1,14 @@
+import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
 import type { SourceLanguage } from "utils/constants";
 
-export const getTableViewUrl = ({
+export const getTextPath = ({
   sourceLanguage,
   fileName,
+  dbView,
 }: {
   fileName?: string;
   sourceLanguage: SourceLanguage;
-}) => `/db/${sourceLanguage}/${fileName}/table`;
+  dbView: DbView;
+}) => {
+  return `/db/${sourceLanguage}/${fileName}/${dbView}`;
+};

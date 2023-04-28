@@ -1,8 +1,9 @@
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import { useAtom } from "jotai";
-import { scoreFilterValueAtom } from "utils/dbUISettings";
+import { debounce } from "lodash";
+import { NumberParam, useQueryParam } from "use-query-params";
+import { DEFAULT_QUERY_PARAMS } from "utils/dbUISettings";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -21,13 +22,26 @@ function normalizeValue(value: number | null | undefined) {
 }
 
 export default function ScoreFilter() {
-  const { setDebouncedQueryParam } = useDbQueryParams();
-  const [scoreValue, setScoreValue] = useAtom(scoreFilterValueAtom);
   const { t } = useTranslation("settings");
 
+  const [scoreParam, setScoreParam] = useQueryParam("score", NumberParam);
+  const [scoreValue, setScoreValue] = useState(
+    scoreParam ?? DEFAULT_QUERY_PARAMS.score
+  );
+
+  useEffect(() => {
+    setScoreValue(scoreParam ?? DEFAULT_QUERY_PARAMS.score);
+  }, [scoreParam]);
+
+  const debouncedSetScoreParam = useMemo(
+    () => debounce(setScoreParam, 600),
+    [setScoreParam]
+  );
+
   const handleChange = (value: number) => {
-    setScoreValue(value);
-    setDebouncedQueryParam("score", normalizeValue(value));
+    const normalizedValue = normalizeValue(value);
+    setScoreValue(normalizedValue);
+    debouncedSetScoreParam(normalizedValue);
   };
 
   const handleBlur = () => {

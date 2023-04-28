@@ -1,44 +1,39 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-// TODO: ENABLE TS AFTER REFACTOR
-
-import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { getTextPath } from "@components/common/utils";
 import CurrentResultChips from "@components/db/CurrentResultChips";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useSetQueryValues } from "@components/hooks/useSetQueryValues";
 import TuneIcon from "@mui/icons-material/Tune";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import {
-  DEFAULT_DISABLE_LIMIT_SELECT_STATE,
-  disableLimitColectionSelectAtom,
-} from "features/sidebar/settingComponents/LimitCollectionFilters";
+import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { isSidebarOpenAtom } from "features/sidebar/Sidebar";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 export const DbResultsPageHead = () => {
-  // TODO: get full text name
-  const { fileName, queryParams, setQueryParams, defaultQueryParams } =
-    useDbQueryParams();
-
-  const { setAllQueryValues } = useSetQueryValues();
-
   const { t } = useTranslation("settings");
+  const router = useRouter();
+
+  // TODO: get full text name
+  const { fileName, sourceLanguage } = useDbQueryParams();
+  const dbView = useAtomValue(currentDbViewAtom);
 
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
 
-  const setDisableLimitSelectors = useSetAtom(disableLimitColectionSelectAtom);
-
   const handleSettingsClick = () => setIsSidebarOpen(!isSidebarOpen);
 
-  const handleReset = () => {
-    setAllQueryValues("reset");
-    setDisableLimitSelectors(DEFAULT_DISABLE_LIMIT_SELECT_STATE);
-    setQueryParams(defaultQueryParams);
+  const handleReset = async () => {
+    await router.replace(
+      {
+        pathname: getTextPath({ sourceLanguage, fileName, dbView }),
+        query: "",
+      },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
   };
-
-  useEffect(() => {}, [queryParams]);
 
   return (
     <>

@@ -1,8 +1,6 @@
-/* eslint-disable no-inline-comments */
-/* eslint-disable line-comment-position */
 import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
-import { atom } from "jotai";
-import type { CategoryMenuItem, TextMenuItem } from "utils/api/textLists";
+
+import type { CategoryMenuItem, TextMenuItem } from "./api/textLists";
 
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
@@ -129,36 +127,34 @@ export const isSettingOmitted = ({
   );
 };
 
-export interface CoercedCollectionValues {
-  excludedCategories: Map<string, CategoryMenuItem>;
-  excludedTexts: Map<string, TextMenuItem>;
-  includedCategories: Map<string, CategoryMenuItem>;
-  includedTexts: Map<string, TextMenuItem>;
-}
-
-export interface QueryValues {
+export interface QueryParams {
   score: number;
-  par_length: number | undefined;
-  folio: string | undefined;
-  sort_method: "length2" | "position" | "quoted-text" | undefined;
-  limit_collection: CoercedCollectionValues;
-  target_collection: Map<string, CategoryMenuItem>;
+  par_length: number;
+  folio?: string;
+  sort_method?: "length2" | "position" | "quoted-text";
+  // TODO: update on backend refactor. For dev purposes "limit_collection" is being treated as the comming "included_collection" endpoint
+  limit_collection?: string[];
+  include_collection?: CategoryMenuItem[];
+  exclude_collection?: CategoryMenuItem[];
+  include_text?: TextMenuItem[];
+  exclude_text?: TextMenuItem[];
+  target_collection?: string[];
+  // This TS hack resolves difficulty with param -> value initialization. The useInitializeDbQueryParams hook returns an object of initial local state param values in one call, avoiding multiple useEffects.
+  [key: string]: any;
 }
 
-// Stores query values of filter & option componenets, immediately reflecting value changes made by the user
-export const DEFAULT_QUERY_VALUES: QueryValues = {
+export const DEFAULT_QUERY_PARAMS: QueryParams = {
   score: 30,
-  par_length: undefined, // Set when src lang value is available in query hook
+  // par_length is given a dummy value of 25 (lowest value applicable to all languages). The true value is initated in useDbQueryParams hook when src lang value is available.
+  par_length: 25,
   folio: undefined,
   sort_method: undefined,
-  limit_collection: {
-    excludedCategories: new Map<string, CategoryMenuItem>(),
-    excludedTexts: new Map<string, TextMenuItem>(),
-    includedCategories: new Map<string, CategoryMenuItem>(),
-    includedTexts: new Map<string, TextMenuItem>(),
-  },
-  // TODO: add default values for target_collection
-  target_collection: new Map<string, CategoryMenuItem>(),
+  limit_collection: undefined,
+  include_collection: undefined,
+  exclude_collection: undefined,
+  include_text: undefined,
+  exclude_text: undefined,
+  target_collection: undefined,
 };
 
 export const MIN_PAR_LENGTH_VALUES: Record<DbLang, number> = {
@@ -173,30 +169,3 @@ export const DEFAULT_PAR_LENGTH_VALUES: Record<DbLang, number> = {
   skt: 30,
   tib: 14,
 };
-
-export interface QueryParams {
-  score: number;
-  par_length: number | undefined;
-  folio?: string;
-  sort_method?: "length2" | "position" | "quoted-text";
-  // TODO: update on backend refactor. For dev purposes "limit_collection" is being treated as the comming "included_collection" endpoint
-  limit_collection?: string[];
-  target_collection?: string[];
-}
-
-export const DEFAULT_QUERY_PARAMS: QueryParams = {
-  ...DEFAULT_QUERY_VALUES,
-  limit_collection: undefined,
-  target_collection: undefined,
-};
-
-export const scoreFilterValueAtom = atom(DEFAULT_QUERY_VALUES.score);
-export const parLengthFilterValueAtom = atom(DEFAULT_QUERY_VALUES.par_length);
-export const folioOptionValueAtom = atom(DEFAULT_QUERY_VALUES.folio);
-export const sortMethodOptionValueAtom = atom(DEFAULT_QUERY_VALUES.sort_method);
-export const limitCollectionFilterValueAtom = atom(
-  DEFAULT_QUERY_VALUES.limit_collection
-);
-export const targetCollectionFilterValueAtom = atom(
-  DEFAULT_QUERY_VALUES.target_collection
-);

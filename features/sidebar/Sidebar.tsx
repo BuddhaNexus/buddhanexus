@@ -1,17 +1,8 @@
 import { useTranslation } from "next-i18next";
-import { useCoercedQueryValues } from "@components/hooks/useCoercedQueryValues";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext, TabList, TabPanel } from "@mui/lab/";
-import {
-  Box,
-  CircularProgress,
-  Drawer,
-  IconButton,
-  Tab,
-  Toolbar,
-} from "@mui/material";
-import { atom, useAtom, useAtomValue } from "jotai";
-import { parLengthFilterValueAtom } from "utils/dbUISettings";
+import { Box, Drawer, IconButton, Tab, Toolbar } from "@mui/material";
+import { atom, useAtom } from "jotai";
 
 import { DisplayOptionsSection } from "./DisplayOptionsSection";
 import { ExternalLinksSection } from "./ExternalLinksSection";
@@ -34,14 +25,9 @@ export const StandinSetting = (setting: string) => (
 );
 
 export function Sidebar() {
-  useCoercedQueryValues();
-
+  const { t } = useTranslation("settings");
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeTabAtom);
-
-  const initialised = useAtomValue(parLengthFilterValueAtom);
-
-  const { t } = useTranslation("settings");
 
   const handleDrawerClose = () => {
     setIsSidebarOpen(false);
@@ -85,27 +71,21 @@ export function Sidebar() {
               </IconButton>
             </DrawerHeader>
 
-            {initialised ? (
-              <>
-                <TabPanel value="1" sx={{ px: 0 }}>
-                  <DisplayOptionsSection />
+            <TabPanel value="1" sx={{ px: 0 }}>
+              <DisplayOptionsSection />
 
-                  <UtilityOptionsSection />
+              <UtilityOptionsSection />
 
-                  <ExternalLinksSection />
-                </TabPanel>
+              <ExternalLinksSection />
+            </TabPanel>
 
-                <TabPanel value="2" sx={{ px: 0 }}>
-                  <FilterSettings />
-                </TabPanel>
+            <TabPanel value="2" sx={{ px: 0 }}>
+              <FilterSettings />
+            </TabPanel>
 
-                <TabPanel value="3">
-                  <Info />
-                </TabPanel>
-              </>
-            ) : (
-              <CircularProgress color="inherit" sx={{ m: 2, flex: 1 }} />
-            )}
+            <TabPanel value="3">
+              <Info />
+            </TabPanel>
           </TabContext>
         </Box>
       </aside>

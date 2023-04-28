@@ -8,7 +8,7 @@ import type { ListChildComponentProps } from "react-window";
 import { VariableSizeList } from "react-window";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { getTableViewUrl } from "@components/common/utils";
+import { getTextPath } from "@components/common/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   Autocomplete,
@@ -24,6 +24,8 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
+import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
+import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
 import type { DatabaseText } from "utils/api/textLists";
 
@@ -177,11 +179,13 @@ const StyledPopper = styled(Popper)({
 });
 
 export const SourceTextSearchInput = () => {
-  const { sourceLanguage } = useDbQueryParams();
-
-  const router = useRouter();
-
   const { t } = useTranslation();
+  const router = useRouter();
+  const { sourceLanguage } = useDbQueryParams();
+  const dbView = useAtomValue(currentDbViewAtom);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { language, file, ...queryParams } = router.query;
 
   const { data, isLoading } = useQuery<DatabaseText[]>({
     queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),
@@ -219,9 +223,15 @@ export const SourceTextSearchInput = () => {
       disableListWrap
       disablePortal
       onChange={(target, value) =>
-        router.push(
-          getTableViewUrl({ sourceLanguage, fileName: value?.fileName })
-        )
+        router.push({
+          pathname: getTextPath({
+            sourceLanguage,
+            fileName: value?.fileName,
+            dbView,
+          }),
+          //  TODO: confirm that persistent query params are the desired behavior as previously discused.
+          query: queryParams,
+        })
       }
     />
   );

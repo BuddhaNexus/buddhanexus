@@ -1,19 +1,20 @@
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import { useAtom } from "jotai";
+import { debounce } from "lodash";
+import { NumberParam, useQueryParam } from "use-query-params";
 import type { DbLang } from "utils/dbUISettings";
 import {
   DEFAULT_PAR_LENGTH_VALUES as DEFAUT_VALUES,
   MIN_PAR_LENGTH_VALUES as MIN_VALUES,
-  parLengthFilterValueAtom,
 } from "utils/dbUISettings";
 
 function valueToString(value: number) {
   return `${value}`;
 }
 
-function normalizeValue(value: number | null | undefined, lang: DbLang) {
+function normalizeValue(value: number, lang: DbLang) {
   // TODO set dynamic max
   if (!value || value < MIN_VALUES[lang]) {
     return MIN_VALUES[lang];
@@ -27,15 +28,30 @@ function normalizeValue(value: number | null | undefined, lang: DbLang) {
 }
 
 export default function ParLengthFilter() {
-  const { sourceLanguage: lang, setDebouncedQueryParam } = useDbQueryParams();
-
   const { t } = useTranslation("settings");
 
-  const [parLength, setParLenth] = useAtom(parLengthFilterValueAtom);
+  const { sourceLanguage: lang } = useDbQueryParams();
+  const [parLengthParam, setParLengthParam] = useQueryParam(
+    "par_length",
+    NumberParam
+  );
+  const [parLength, setParLenth] = useState(
+    parLengthParam ?? DEFAUT_VALUES[lang]
+  );
+
+  useEffect(() => {
+    setParLenth(parLengthParam ?? DEFAUT_VALUES[lang]);
+  }, [parLengthParam, lang]);
+
+  const debouncedSetParLengthParam = useMemo(
+    () => debounce(setParLengthParam, 600),
+    [setParLengthParam]
+  );
 
   const handleChange = (value: number) => {
-    setParLenth(value);
-    setDebouncedQueryParam("par_length", normalizeValue(value, lang));
+    const normalizedValue = normalizeValue(value, lang);
+    setParLenth(normalizedValue);
+    debouncedSetParLengthParam(normalizedValue);
   };
 
   const handleBlur = () => {

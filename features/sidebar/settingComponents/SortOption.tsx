@@ -1,36 +1,35 @@
+import { useEffect } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
-import { useAtom } from "jotai";
-import {
-  type QueryValues,
-  sortMethodOptionValueAtom,
-} from "utils/dbUISettings";
+import { StringParam, useQueryParam } from "use-query-params";
+import { DEFAULT_QUERY_PARAMS, type QueryParams } from "utils/dbUISettings";
 
-type SortValue = QueryValues["sort_method"];
+type SortParam = NonNullable<QueryParams["sort_method"]>;
 
-interface SortOptionDef {
-  value: SortValue;
-  labelKey: "sortLength" | "sortParallel" | "sortSource";
-}
-
-const SORT_OPTIONS: SortOptionDef[] = [
-  { value: "position", labelKey: "sortSource" },
-  { value: "quoted-text", labelKey: "sortParallel" },
-  {
-    value: "length2",
-    labelKey: "sortLength",
-  },
+type Option = {
+  [K in SortParam]?: "sortLength" | "sortParallel" | "sortSource";
+};
+// TODO: add functionality - only basic reframing has been completed
+const SORT_OPTIONS: Option[] = [
+  { position: "sortSource" },
+  { "quoted-text": "sortParallel" },
+  { length2: "sortLength" },
 ];
 
 export default function SortOption() {
-  const { setQueryParams } = useDbQueryParams();
-  const [sortValue, setSortValue] = useAtom(sortMethodOptionValueAtom);
   const { t } = useTranslation("settings");
 
-  const handleSelectChange = (value: SortValue) => {
-    setSortValue(value);
-    setQueryParams({ sort_method: value });
+  const [sortMethodParam, setSortMethodParam] = useQueryParam(
+    "sort_method",
+    StringParam
+  );
+
+  useEffect(() => {
+    setSortMethodParam(sortMethodParam ?? DEFAULT_QUERY_PARAMS.sort_method);
+  }, [sortMethodParam, setSortMethodParam]);
+
+  const handleSelectChange = (value: SortParam) => {
+    setSortMethodParam(value);
   };
 
   return (
@@ -43,13 +42,15 @@ export default function SortOption() {
           id="sort-option-selector"
           aria-labelledby="sort-option-selector-label"
           defaultValue="position"
-          value={sortValue ?? "position"}
-          onChange={(e) => handleSelectChange(e.target.value as SortValue)}
+          value={sortMethodParam ?? "position"}
+          onChange={(e) => handleSelectChange(e.target.value as SortParam)}
         >
-          {SORT_OPTIONS.map((method) => {
+          {SORT_OPTIONS.map((option) => {
+            const [keyValue] = Object.entries(option);
+            const [key, value] = keyValue;
             return (
-              <MenuItem key={method.value} value={method.value}>
-                {t(`optionsLabels.${method.labelKey}`)}
+              <MenuItem key={key} value={key}>
+                {t(`optionsLabels.${value}`)}
               </MenuItem>
             );
           })}

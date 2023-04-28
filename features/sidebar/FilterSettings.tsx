@@ -1,7 +1,11 @@
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { Box } from "@mui/material";
+import { Box, FormLabel } from "@mui/material";
 import {
-  // LimitCollectionFilters,
+  ExcludeCollectionFilter,
+  ExcludeTextFilter,
+  IncludeCollectionFilter,
+  IncludeTextFilter,
   ParLengthFilter,
   ScoreFilter,
 } from "features/sidebar/settingComponents";
@@ -16,6 +20,8 @@ import {
 } from "utils/dbUISettings";
 
 export const FilterSettings = () => {
+  const { t } = useTranslation("settings");
+
   const currentView = useAtomValue(currentDbViewAtom);
 
   const { sourceLanguage } = useDbQueryParams();
@@ -34,7 +40,16 @@ export const FilterSettings = () => {
     <Box sx={{ mx: 2 }}>
       {filters.includes("score") && <ScoreFilter />}
       {filters.includes("par_length") && <ParLengthFilter />}
-      {/* {filters.includes("limit_collection") && <LimitCollectionFilters />} */}
+      {/* TODO: Update filters on new endpoint backend refactor */}
+      {filters.includes("limit_collection") && (
+        <FormLabel id="exclude-collection-filters-label">
+          {t(`filtersLabels.minMatch`)}
+        </FormLabel>
+      )}
+      {filters.includes("limit_collection") && <ExcludeCollectionFilter />}
+      {filters.includes("limit_collection") && <ExcludeTextFilter />}
+      {filters.includes("limit_collection") && <IncludeCollectionFilter />}
+      {filters.includes("limit_collection") && <IncludeTextFilter />}
       {filters.includes("target_collection") &&
         StandinSetting("target_collection")}
     </Box>
