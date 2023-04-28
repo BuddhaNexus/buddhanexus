@@ -57,7 +57,7 @@ function MyApp({
           options={{
             searchStringToObject: queryString.parse,
             objectToSearchString: queryString.stringify,
-            updateType: "replace",
+            updateType: "replaceIn",
             enableBatching: true,
           }}
         >
