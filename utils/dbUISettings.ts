@@ -1,7 +1,5 @@
 import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
 
-import type { CategoryMenuItem, TextMenuItem } from "./api/textLists";
-
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
 
@@ -134,13 +132,11 @@ export interface QueryParams {
   sort_method?: "length2" | "position" | "quoted-text";
   // TODO: update on backend refactor. For dev purposes "limit_collection" is being treated as the comming "included_collection" endpoint
   limit_collection?: string[];
-  include_collection?: CategoryMenuItem[];
-  exclude_collection?: CategoryMenuItem[];
-  include_text?: TextMenuItem[];
-  exclude_text?: TextMenuItem[];
+  include_collection?: string[];
+  exclude_collection?: string[];
+  include_text?: string[];
+  exclude_text?: string[];
   target_collection?: string[];
-  // This TS hack resolves difficulty with param -> value initialization. The useInitializeDbQueryParams hook returns an object of initial local state param values in one call, avoiding multiple useEffects.
-  [key: string]: any;
 }
 
 export const DEFAULT_QUERY_PARAMS: QueryParams = {

@@ -2,7 +2,7 @@ import type { NodeApi, NodeRendererProps } from "react-arborist";
 import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
 import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
-import { getTableViewUrl } from "@components/common/utils";
+import { getTextPath } from "@components/common/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import type { DrawerNavigationNodeData } from "@components/treeView/types";
 import { NodeDataChildType } from "@components/treeView/types";
@@ -12,6 +12,8 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ShortTextIcon from "@mui/icons-material/ShortText";
 import { Box, Chip, Tooltip, Typography } from "@mui/material";
+import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
+import { useAtomValue } from "jotai";
 import type { SourceLanguage } from "utils/constants";
 
 function FolderArrow({ node }: { node: NodeApi<DrawerNavigationNodeData> }) {
@@ -34,6 +36,7 @@ export function Node({
 }: NodeRendererProps<DrawerNavigationNodeData>) {
   const { dataType, name, fileName, availableLanguages, id } = node.data;
   const { sourceLanguage } = useDbQueryParams();
+  const dbView = useAtomValue(currentDbViewAtom);
   const { t } = useTranslation();
 
   const handleClick = () => {
@@ -84,7 +87,7 @@ export function Node({
                 fontSize: "inherit",
                 whiteSpace: "nowrap",
               }}
-              href={getTableViewUrl({ sourceLanguage, fileName })}
+              href={getTextPath({ sourceLanguage, fileName, dbView })}
             >
               {name}
             </Link>

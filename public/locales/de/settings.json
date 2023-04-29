@@ -38,7 +38,7 @@
   "filtersLabels": {
     "score": "Similarity Score:",
     "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
-    "inclcudeExclude": "Elemente ein- und ausschließen",
+    "includeExcludeFilters": "Elemente ein- und ausschließen",
     "excludeCollections": "Sammlungen ausschließen",
     "includeCollections": "Nur Sammlungen einschließen",
     "excludeTexts": "Texte ausschließen",

@@ -1,12 +1,6 @@
-// /**
-//  * https://mui.com/material-ui/react-autocomplete/
-//  * https://codesandbox.io/s/2326jk?file=/demo.tsx
-//  */
-
 import React, { useEffect, useState } from "react";
 import { type ListChildComponentProps, VariableSizeList } from "react-window";
 import { useTranslation } from "next-i18next";
-// import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useTextLists } from "@components/hooks/useTextLists";
 import {
   Autocomplete,
@@ -19,10 +13,8 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/styles";
-// import { atom, useAtom } from "jotai";
 import { ArrayParam, useQueryParam } from "use-query-params";
-// import type { CategoryMenuItem, TextMenuItem } from "utils/api/textLists";
-// import type { QueryValues } from "utils/dbUISettings";
+import type { CategoryMenuItem } from "utils/api/textLists";
 import { DEFAULT_QUERY_PARAMS } from "utils/dbUISettings";
 
 const OuterElementContext = React.createContext({});
@@ -185,54 +177,32 @@ const StyledPopper = styled(Popper)({
 const IncludeCollectionFilter = () => {
   const { t } = useTranslation("settings");
 
+  const { categories, isLoadingCategories } = useTextLists();
+
   const [includeCollectonParam, setIncludeCollectonParam] = useQueryParam(
-    "include_collection",
+    // TODO: replace with "include_collection",
+    "limit_collection",
     ArrayParam
   );
 
-  const [includeCollectonValue, setIncludeCollectonValue] = useState(
-    // TODO: Add ArrayParam to object[] coerced by id
-    DEFAULT_QUERY_PARAMS.include_collection
+  const [includeCollectonValue, setIncludeCollectonValue] = useState<
+    CategoryMenuItem[]
+  >([]);
+
+  useEffect(
+    () =>
+      setIncludeCollectonParam(
+        includeCollectonParam ?? DEFAULT_QUERY_PARAMS.include_collection
+      ),
+    [includeCollectonParam, setIncludeCollectonParam]
   );
 
-  useEffect(() => {
-    setIncludeCollectonParam(includeCollectonParam);
-  }, [includeCollectonParam, setIncludeCollectonParam]);
-
-  const { categories, isLoadingCategories } = useTextLists();
-
-  const handleInputChange = (value: any) => {
-    // TODO: figure out logic
+  const handleInputChange = (value: CategoryMenuItem[]) => {
     setIncludeCollectonValue(value);
+    setIncludeCollectonParam(() => {
+      return value.map((item) => item.id);
+    });
   };
-
-  //  TODO: clarify spec - is disabling logically impossible (per include/exclude selections) desired behaviour?
-  //
-  //   const [disableSelectors, setDisableSelectors] = useAtom(
-  //     disableLimitColectionSelectAtom
-  //   );
-
-  //   function setIsSelectorDisabled(
-  //     key: keyof QueryValues["limit_collection"],
-  //     value: boolean
-  //   ) {
-  //     setDisableSelectors((prevState) => {
-  //       const updates = {
-  //         excludedCategories: {},
-  //         excludedTexts: {},
-  //         includedCategories: {
-  //           excludedCategories: !value,
-  //           excludedTexts: !value,
-  //         },
-  //         includedTexts: {
-  //           excludedCategories: !value,
-  //           excludedTexts: !value,
-  //           includedCategories: !value,
-  //         },
-  //       };
-  //       return { ...prevState, ...updates[key] };
-  //     });
-  //   }
 
   return (
     <Box sx={{ my: 1, width: 1 }}>
@@ -248,7 +218,7 @@ const IncludeCollectionFilter = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label={t(`filtersLabels.excludeCollections`)}
+            label={t(`filtersLabels.includeCollections`)}
             InputProps={{
               ...params.InputProps,
               endAdornment: (

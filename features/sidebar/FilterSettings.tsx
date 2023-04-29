@@ -42,8 +42,8 @@ export const FilterSettings = () => {
       {filters.includes("par_length") && <ParLengthFilter />}
       {/* TODO: Update filters on new endpoint backend refactor */}
       {filters.includes("limit_collection") && (
-        <FormLabel id="exclude-collection-filters-label">
-          {t(`filtersLabels.minMatch`)}
+        <FormLabel id="exclude-include-filters-label">
+          {t(`filtersLabels.includeExcludeFilters`)}
         </FormLabel>
       )}
       {filters.includes("limit_collection") && <ExcludeCollectionFilter />}
