@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
+import {
+  CircularProgress,
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
 import { DEFAULT_QUERY_PARAMS } from "features/sidebar/common/dbSidebarSettings";
@@ -8,6 +14,7 @@ import { StringParam, useQueryParam } from "use-query-params";
 import type { DatabaseFolio } from "utils/api/common";
 import { DbApi } from "utils/api/dbApi";
 
+// TODO: translate
 const showAll = "Whole text";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
@@ -28,29 +35,40 @@ export default function FolioOption() {
     setFolioParam(value === showAll ? null : value);
   };
 
-  if (isLoading) {
-    return null;
-  }
-
   return (
     <Box sx={{ width: 1, mb: 2 }}>
-      {data && data.length > 1 ? (
-        <>
-          <FormLabel id="folio-option-selector-label">
-            Show matches for text sub-section
-          </FormLabel>
-          <FormControl sx={{ width: 1 }}>
-            <Select
-              id="folio-option-selector"
-              aria-labelledby="folio-option-selector-label"
-              displayEmpty={true}
-              value={folioParam ?? showAll}
-              onChange={(e) => handleSelectChange(e.target.value)}
-            >
-              <MenuItem value={showAll}>
-                <em>{showAll}</em>
-              </MenuItem>
-              {data.map((folio: DatabaseFolio) => {
+      <FormLabel id="folio-option-selector-label">
+        Show matches for text sub-section
+      </FormLabel>
+      <FormControl sx={{ width: 1 }}>
+        {isLoading ? (
+          <Select
+            id="folio-option-selector"
+            aria-labelledby="folio-option-selector-label"
+            displayEmpty={true}
+            value={showAll}
+          >
+            <MenuItem value={showAll}>
+              <em>{showAll}</em>
+            </MenuItem>
+            <MenuItem value="loading">
+              <CircularProgress color="inherit" size={20} />
+            </MenuItem>
+          </Select>
+        ) : (
+          <Select
+            id="folio-option-selector"
+            aria-labelledby="folio-option-selector-label"
+            displayEmpty={true}
+            value={folioParam ?? showAll}
+            onChange={(e) => handleSelectChange(e.target.value)}
+          >
+            <MenuItem value={showAll}>
+              <em>{showAll}</em>
+            </MenuItem>
+            {data &&
+              data.length > 1 &&
+              data.map((folio: DatabaseFolio) => {
                 // TODO: confirm that 0 should always be skipped (as with pli)
                 if (folio.id === "0") {
                   return null;
@@ -62,10 +80,9 @@ export default function FolioOption() {
                   </MenuItem>
                 );
               })}
-            </Select>
-          </FormControl>
-        </>
-      ) : null}
+          </Select>
+        )}
+      </FormControl>
     </Box>
   );
 }

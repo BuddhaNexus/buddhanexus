@@ -7,7 +7,6 @@ import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
 
-// TODO: refactor for robustness
 function getActiveFilterCount(queries: any, defaults: any) {
   let count = 0;
 
