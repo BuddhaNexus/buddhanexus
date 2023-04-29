@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -14,11 +15,6 @@ function getActiveFilterCount(queries: any, defaults: any) {
     const queryKey = key as keyof typeof defaults;
 
     if (queryKey === "par_length" && defaults.par_length === value) {
-      continue;
-    }
-
-    if (Array.isArray(value) && value.length > 0) {
-      count += value.length;
       continue;
     }
 
@@ -55,6 +51,16 @@ export default function CurrentResultChips() {
     refetchOnWindowFocus: false,
   });
 
+  const [parallelCount, setParallelCount] = useState(
+    isLoading ? 0 : data?.parallel_count
+  );
+
+  useEffect(() => {
+    if (data) {
+      setParallelCount(data.parallel_count);
+    }
+  }, [data]);
+
   return (
     <Box>
       <Chip
@@ -63,7 +69,7 @@ export default function CurrentResultChips() {
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box>{t("resultsHead.parallels")}</Box>
             <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
-              {isLoading ? " " : data?.parallel_count}
+              {parallelCount}
             </Box>
           </Box>
         }
