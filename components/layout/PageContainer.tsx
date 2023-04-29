@@ -8,7 +8,7 @@ import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
 import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
 import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
-import { Main } from "features/sidebar/MuiStyledSidebarComponents";
+import { Main } from "features/sidebar/common/MuiStyledSidebarComponents";
 import { isSidebarOpenAtom, Sidebar } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
 import { SourceLanguage } from "utils/constants";

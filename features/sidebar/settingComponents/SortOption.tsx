@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { useTranslation } from "next-i18next";
 import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
+import {
+  DEFAULT_QUERY_PARAMS,
+  type QueryParams,
+} from "features/sidebar/common/dbSidebarSettings";
 import { StringParam, useQueryParam } from "use-query-params";
-import { DEFAULT_QUERY_PARAMS, type QueryParams } from "utils/dbUISettings";
 
 type SortParam = NonNullable<QueryParams["sort_method"]>;
 

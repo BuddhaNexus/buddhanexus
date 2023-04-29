@@ -1,6 +1,12 @@
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel } from "@mui/material";
+import { isSettingOmitted } from "features/sidebar/common/dbSidebarHelpers";
+import {
+  type Filter,
+  FILTER_CONTEXT_OMISSIONS as omissions,
+  filterList,
+} from "features/sidebar/common/dbSidebarSettings";
 import {
   ExcludeCollectionFilter,
   ExcludeTextFilter,
@@ -12,12 +18,6 @@ import {
 import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { StandinSetting } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
-import {
-  type Filter,
-  FILTER_CONTEXT_OMISSIONS as omissions,
-  filterList,
-  isSettingOmitted,
-} from "utils/dbUISettings";
 
 export const FilterSettings = () => {
   const { t } = useTranslation("settings");

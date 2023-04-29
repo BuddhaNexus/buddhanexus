@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import queryString from "query-string";
-import type { SourceLanguage } from "utils/constants";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS,
-} from "utils/dbUISettings";
+} from "features/sidebar/common/dbSidebarSettings";
+import queryString from "query-string";
+import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {
   const { query } = useRouter();

@@ -1,4 +1,38 @@
-import type { UtilityOption } from "utils/dbUISettings";
+import type {
+  DbLang,
+  DisplayOption,
+  Filter,
+  LocalDisplayOption,
+  QueriedDisplayOption,
+  SettingContext,
+  UtilityOption,
+} from "features/sidebar/common/dbSidebarSettings";
+import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
+
+type Omission = Partial<
+  Record<
+    Filter | LocalDisplayOption | QueriedDisplayOption | UtilityOption,
+    SettingContext
+  >
+>;
+
+export const isSettingOmitted = ({
+  omissions,
+  settingName,
+  dbLang,
+  view,
+}: {
+  omissions: Omission;
+  settingName: DisplayOption | Filter | UtilityOption;
+  dbLang: DbLang;
+  view: DbView;
+}) => {
+  return Boolean(
+    omissions?.[settingName]?.[view]?.some((omittedLang) =>
+      ["allLangs", dbLang].includes(omittedLang)
+    )
+  );
+};
 
 type PopperUtilityStates<State> = [
   Record<UtilityOption, State>,
@@ -94,3 +128,31 @@ export const onEmailQueryLink = ({
     emailQueryLink: anchorEl.emailQueryLink ? null : event.currentTarget,
   });
 };
+
+//  TODO: clarify spec - is disabling logically impossible (per include/exclude filter selections) desired behaviour? Applies to all included/excluded filters.
+//
+//   const [disableSelectors, setDisableSelectors] = useAtom(
+//     disableLimitColectionSelectAtom
+//   );
+
+//   function setIsSelectorDisabled(
+//     key: keyof QueryValues["limit_collection"],
+//     value: boolean
+//   ) {
+//     setDisableSelectors((prevState) => {
+//       const updates = {
+//         excludedCategories: {},
+//         excludedTexts: {},
+//         includedCategories: {
+//           excludedCategories: !value,
+//           excludedTexts: !value,
+//         },
+//         includedTexts: {
+//           excludedCategories: !value,
+//           excludedTexts: !value,
+//           includedCategories: !value,
+//         },
+//       };
+//       return { ...prevState, ...updates[key] };
+//     });
+//   }

@@ -18,24 +18,24 @@ import {
 } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { useQuery } from "@tanstack/react-query";
-import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
-import { useAtomValue } from "jotai";
-import { DbApi } from "utils/api/dbApi";
 import {
   defaultAnchorEls,
+  isSettingOmitted,
   onCopyQueryLink,
   onCopyQueryTitle,
   onDownload,
   onEmailQueryLink,
   type UtilityClickHandlerProps,
-} from "utils/dbUISettingHelpers";
+} from "features/sidebar/common/dbSidebarHelpers";
 import {
-  isSettingOmitted,
   UTILITY_OPTIONS_CONTEXT_OMISSIONS as omissions,
   type UtilityOption,
-} from "utils/dbUISettings";
+} from "features/sidebar/common/dbSidebarSettings";
+import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
+import { useAtomValue } from "jotai";
+import { DbApi } from "utils/api/dbApi";
 
-import { Popper, PopperMsgBox } from "./MuiStyledSidebarComponents";
+import { Popper, PopperMsgBox } from "./common/MuiStyledSidebarComponents";
 
 type UtilityOptionObject = {
   callback: (props: UtilityClickHandlerProps) => void;

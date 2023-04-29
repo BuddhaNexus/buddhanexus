@@ -4,14 +4,14 @@ import { TabContext, TabList, TabPanel } from "@mui/lab/";
 import { Box, Drawer, IconButton, Tab, Toolbar } from "@mui/material";
 import { atom, useAtom } from "jotai";
 
-import { DisplayOptionsSection } from "./DisplayOptionsSection";
-import { ExternalLinksSection } from "./ExternalLinksSection";
-import { FilterSettings } from "./FilterSettings";
-import { Info } from "./Info";
+import { Info } from "./common/Info";
 import {
   DrawerHeader,
   SETTINGS_DRAWER_WIDTH,
-} from "./MuiStyledSidebarComponents";
+} from "./common/MuiStyledSidebarComponents";
+import { DisplayOptionsSection } from "./DisplayOptionsSection";
+import { ExternalLinksSection } from "./ExternalLinksSection";
+import { FilterSettings } from "./FilterSettings";
 import { UtilityOptionsSection } from "./UtilityOptionsSection";
 
 export const isSidebarOpenAtom = atom(true);

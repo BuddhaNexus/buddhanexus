@@ -22,11 +22,11 @@ import {
 // import { styled } from "@mui/styles";
 // import { atom, useAtom } from "jotai";
 // import type { CategoryMenuItem, TextMenuItem } from "utils/api/textLists";
-// import type { QueryValues } from "utils/dbUISettings";
+// import type { QueryValues } from "features/sidebar/common/dbSidebarSettings";
 // import {
 //   type CoercedCollectionValues,
 //   limitCollectionFilterValueAtom,
-// } from "utils/dbUISettings";
+// } from "features/sidebar/common/dbSidebarSettings";
 
 // const OuterElementContext = React.createContext({});
 

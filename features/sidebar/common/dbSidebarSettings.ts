@@ -4,6 +4,7 @@ const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
 
 export const filterList = [
+  // TODO: update include/exclude list when added to db
   "limit_collection",
   "par_length",
   "score",
@@ -36,8 +37,8 @@ export type LocalDisplayOption = (typeof localDisplayOptionList)[number];
 export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
 export type UtilityOption = (typeof utilityOptionList)[number];
 
-type ViewOmission = (DbLang | "allLangs")[];
-type SettingContext = Partial<Record<DbView, ViewOmission>>;
+export type ViewOmission = (DbLang | "allLangs")[];
+export type SettingContext = Partial<Record<DbView, ViewOmission>>;
 
 export type FilterOmissions = Partial<Record<Filter, SettingContext>>;
 export const FILTER_CONTEXT_OMISSIONS: FilterOmissions = {
@@ -100,37 +101,12 @@ export const UTILITY_OPTIONS_CONTEXT_OMISSIONS: UtilityOmissions = {
   },
 };
 
-type Omission = Partial<
-  Record<
-    Filter | LocalDisplayOption | QueriedDisplayOption | UtilityOption,
-    SettingContext
-  >
->;
-
-export const isSettingOmitted = ({
-  omissions,
-  settingName,
-  dbLang,
-  view,
-}: {
-  omissions: Omission;
-  settingName: DisplayOption | Filter | UtilityOption;
-  dbLang: DbLang;
-  view: DbView;
-}) => {
-  return Boolean(
-    omissions?.[settingName]?.[view]?.some((omittedLang) =>
-      ["allLangs", dbLang].includes(omittedLang)
-    )
-  );
-};
-
 export interface QueryParams {
   score: number;
   par_length: number;
   folio?: string;
   sort_method?: "length2" | "position" | "quoted-text";
-  // TODO: update on backend refactor. For dev purposes "limit_collection" is being treated as the comming "included_collection" endpoint
+  // TODO: update on backend refactor. For dev purposes "limit_collection" is being treated as the comming endpoints
   limit_collection?: string[];
   include_collection?: string[];
   exclude_collection?: string[];

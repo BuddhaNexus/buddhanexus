@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
+import { DEFAULT_QUERY_PARAMS } from "features/sidebar/common/dbSidebarSettings";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
-import { DEFAULT_QUERY_PARAMS } from "utils/dbUISettings";
 
 function valueToString(value: number) {
   return `${value}`;

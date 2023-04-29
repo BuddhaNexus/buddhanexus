@@ -15,7 +15,7 @@ import SCLogo from "public/assets/icons/logo_sc.png";
 import VRILogo from "public/assets/icons/logo_vri.png";
 import { DbApi } from "utils/api/dbApi";
 
-import { SourceLink } from "./MuiStyledSidebarComponents";
+import { SourceLink } from "./common/MuiStyledSidebarComponents";
 
 function CBCIcon({ fill }: { fill: string }) {
   return (

@@ -2,13 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import { debounce } from "lodash";
-import { NumberParam, useQueryParam } from "use-query-params";
-import type { DbLang } from "utils/dbUISettings";
+import type { DbLang } from "features/sidebar/common/dbSidebarSettings";
 import {
   DEFAULT_PAR_LENGTH_VALUES as DEFAUT_VALUES,
   MIN_PAR_LENGTH_VALUES as MIN_VALUES,
-} from "utils/dbUISettings";
+} from "features/sidebar/common/dbSidebarSettings";
+import { debounce } from "lodash";
+import { NumberParam, useQueryParam } from "use-query-params";
 
 function valueToString(value: number) {
   return `${value}`;
