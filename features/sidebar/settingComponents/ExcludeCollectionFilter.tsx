@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import {
-  ListboxComponent,
-  StyledPopper,
-} from "@components/common/textMenuSubComponents";
 import { useTextLists } from "@components/hooks/useTextLists";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
 import { DEFAULT_QUERY_PARAMS } from "features/sidebar/common/dbSidebarSettings";
+import {
+  ListboxComponent,
+  StyledPopper,
+} from "features/sidebar/common/textMenuSubComponents";
 import { ArrayParam, useQueryParam } from "use-query-params";
 import type { CategoryMenuItem } from "utils/api/textLists";
 
