@@ -54,14 +54,10 @@ export default function ParLengthFilter() {
     debouncedSetParLengthParam(normalizedValue);
   };
 
-  const handleBlur = () => {
-    if (!parLength || parLength < MIN_VALUES[lang]) {
-      setParLenth(MIN_VALUES[lang]);
-    }
-
-    if (parLength && parLength > 4000) {
-      setParLenth(4000);
-    }
+  const handleInputChange = (value: number) => {
+    const normalizedValue = normalizeValue(value, lang);
+    setParLenth(value);
+    debouncedSetParLengthParam(normalizedValue);
   };
 
   const marks = [
@@ -83,24 +79,22 @@ export default function ParLengthFilter() {
       </FormLabel>
       <TextField
         sx={{ width: 1, my: 1 }}
-        value={parLength ?? DEFAUT_VALUES[lang]}
+        value={parLength ?? ""}
         type="number"
         inputProps={{
-          step: 50,
-          min: MIN_VALUES[lang],
+          min: 0,
           max: 4000,
           type: "number",
           "aria-labelledby": "min-match-input-label",
         }}
-        onBlur={handleBlur}
-        onChange={(e) => handleChange(Number(e.target.value))}
+        onChange={(e) => handleInputChange(Number(e.target.value))}
       />
       <Box sx={{ ml: 1, width: "96%" }}>
         <Slider
           value={parLength ?? DEFAUT_VALUES[lang]}
           aria-labelledby="min-match-input-label"
           getAriaValueText={valueToString}
-          min={MIN_VALUES[lang]}
+          min={0}
           max={4000}
           marks={marks}
           onChange={(_, value) => handleChange(Number(value))}

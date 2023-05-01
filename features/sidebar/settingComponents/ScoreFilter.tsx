@@ -45,13 +45,7 @@ export default function ScoreFilter() {
   };
 
   const handleBlur = () => {
-    if (scoreValue < 0) {
-      setScoreValue(0);
-    }
-
-    if (scoreValue > 100) {
-      setScoreValue(100);
-    }
+    setScoreValue(normalizeValue(scoreValue));
   };
 
   const marks = [
