@@ -1,10 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 import {
-  DEFAULT_QUERY_PARAMS,
-  type QueryParams,
-} from "features/sidebar/common/dbSidebarSettings";
+  Box,
+  CircularProgress,
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import type { QueryParams } from "features/sidebar/common/dbSidebarSettings";
 import { StringParam, useQueryParam } from "use-query-params";
 
 type SortParam = NonNullable<QueryParams["sort_method"]>;
@@ -12,7 +17,7 @@ type SortParam = NonNullable<QueryParams["sort_method"]>;
 type Option = {
   [K in SortParam]?: "sortLength" | "sortParallel" | "sortSource";
 };
-// TODO: add functionality - only basic reframing has been completed
+
 const SORT_OPTIONS: Option[] = [
   { position: "sortSource" },
   { "quoted-text": "sortParallel" },
@@ -21,15 +26,22 @@ const SORT_OPTIONS: Option[] = [
 
 export default function SortOption() {
   const { t } = useTranslation("settings");
+  const { isReady } = useRouter();
 
   const [sortMethodParam, setSortMethodParam] = useQueryParam(
     "sort_method",
     StringParam
   );
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setSortMethodParam(sortMethodParam ?? DEFAULT_QUERY_PARAMS.sort_method);
-  }, [sortMethodParam, setSortMethodParam]);
+    if (isReady) {
+      setSortMethodParam(sortMethodParam ?? "position");
+    }
+    if (sortMethodParam) {
+      setIsLoading(false);
+    }
+  }, [isReady, sortMethodParam, setSortMethodParam]);
 
   const handleSelectChange = (value: SortParam) => {
     setSortMethodParam(value);
@@ -41,23 +53,34 @@ export default function SortOption() {
         {t("optionsLabels.sorting")}
       </FormLabel>
       <FormControl sx={{ width: 1 }}>
-        <Select
-          id="sort-option-selector"
-          aria-labelledby="sort-option-selector-label"
-          defaultValue="position"
-          value={sortMethodParam ?? "position"}
-          onChange={(e) => handleSelectChange(e.target.value as SortParam)}
-        >
-          {SORT_OPTIONS.map((option) => {
-            const [keyValue] = Object.entries(option);
-            const [key, value] = keyValue;
-            return (
-              <MenuItem key={key} value={key}>
-                {t(`optionsLabels.${value}`)}
-              </MenuItem>
-            );
-          })}
-        </Select>
+        {isLoading ? (
+          <Select
+            id="sort-option-selector"
+            aria-labelledby="sort-option-selector-label"
+            value={sortMethodParam ?? "position"}
+          >
+            <MenuItem value={sortMethodParam ?? "position"}>
+              <CircularProgress color="inherit" size={20} />
+            </MenuItem>
+          </Select>
+        ) : (
+          <Select
+            id="sort-option-selector"
+            aria-labelledby="sort-option-selector-label"
+            value={sortMethodParam}
+            onChange={(e) => handleSelectChange(e.target.value as SortParam)}
+          >
+            {SORT_OPTIONS.map((option) => {
+              const [keyValue] = Object.entries(option);
+              const [key, value] = keyValue;
+              return (
+                <MenuItem key={key} value={key}>
+                  {t(`optionsLabels.${value}`)}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        )}
       </FormControl>
     </Box>
   );
