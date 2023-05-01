@@ -14,10 +14,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { isNavigationDrawerOpen } from "features/atoms/layout";
-import {
-  GlobalTextSearchDesktop,
-  GlobalTextSearchMobile,
-} from "features/globalTextSearch";
+import GlobalTextSearchBox from "features/globalTextSearch/GlobalTextSearchBox";
 import { useSetAtom } from "jotai";
 
 interface AppBarLinkProps {
@@ -129,8 +126,8 @@ export const AppTopBar = () => {
                 <ExploreOutlinedIcon sx={{ fontSize: 28 }} />
               </IconButton>
             )}
+            <GlobalTextSearchBox />
           </Box>
-          <GlobalTextSearchDesktop />
         </Box>
 
         <Box
@@ -190,7 +187,7 @@ export const AppTopBar = () => {
             <ExploreOutlinedIcon fontSize="large" />
           </IconButton>
         )}
-        <GlobalTextSearchMobile />
+        <GlobalTextSearchBox />
       </Toolbar>
     </AppBar>
   );
