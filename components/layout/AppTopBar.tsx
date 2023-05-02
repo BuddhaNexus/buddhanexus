@@ -54,7 +54,14 @@ export const AppTopBar = () => {
   }, []);
 
   return (
-    <AppBar position="sticky" elevation={0}>
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={(theme) => ({
+        borderBottom: `1px solid ${theme.palette.background.accent}`,
+        backgroundColor: theme.palette.background.header,
+      })}
+    >
       <Toolbar>
         <Box
           sx={{
