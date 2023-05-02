@@ -9,12 +9,12 @@ import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
+import GlobalSearchIcon from "@mui/icons-material/Search";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { isNavigationDrawerOpen } from "features/atoms/layout";
-import GlobalTextSearchBox from "features/globalTextSearch/GlobalTextSearchBox";
 import { useSetAtom } from "jotai";
 
 interface AppBarLinkProps {
@@ -35,17 +35,19 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 );
 
 export const AppTopBar = () => {
+  const { t } = useTranslation();
   const materialTheme = useMaterialTheme();
   const { theme, setTheme } = useTheme();
+
   const [isMounted, setIsMounted] = useState(false);
   const { sourceLanguage } = useDbQueryParams();
 
-  const { route } = useRouter();
-  const { t } = useTranslation();
+  const { route, push } = useRouter();
   const setIsDrawerOpen = useSetAtom(isNavigationDrawerOpen);
 
   const isHomeRoute = route === "/";
   const isATIIRoute = route.startsWith("/atii");
+  const isSearchRoute = route.startsWith("/search");
 
   useEffect(() => {
     setIsMounted(true);
@@ -109,24 +111,29 @@ export const AppTopBar = () => {
             </>
           </Link>
 
-          <Box
-            sx={{
-              display: {
-                xs: "none",
-                lg: "flex",
-              },
-            }}
-          >
+          <Box sx={{ ml: 2 }}>
             {sourceLanguage && (
               <IconButton
-                sx={{ ml: 2 }}
                 color="inherit"
                 onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
               >
                 <ExploreOutlinedIcon sx={{ fontSize: 28 }} />
               </IconButton>
             )}
-            <GlobalTextSearchBox />
+
+            {!isSearchRoute && (
+              <IconButton
+                color="inherit"
+                aria-label="search"
+                onClick={() =>
+                  push({
+                    pathname: "/search",
+                  })
+                }
+              >
+                <GlobalSearchIcon sx={{ fontSize: 28 }} />
+              </IconButton>
+            )}
           </Box>
         </Box>
 
@@ -166,28 +173,6 @@ export const AppTopBar = () => {
         )}
 
         <LanguageSelect />
-      </Toolbar>
-
-      <Toolbar
-        sx={(theme) => ({
-          display: {
-            lg: "none",
-          },
-          backgroundColor: theme?.palette.background.default,
-          opacity: 0.96,
-          borderBottom: `1px solid #c7c7c7`,
-        })}
-      >
-        {sourceLanguage && (
-          <IconButton
-            sx={{ mr: 2 }}
-            color="primary"
-            onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
-          >
-            <ExploreOutlinedIcon fontSize="large" />
-          </IconButton>
-        )}
-        <GlobalTextSearchBox />
       </Toolbar>
     </AppBar>
   );
