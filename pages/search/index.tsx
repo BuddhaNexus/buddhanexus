@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+/* eslint-disable unicorn/no-abusive-eslint-disable */
+/* eslint-disable */
+// TODO: Page! Is currently rough frame receiving API data, functionality and display incomplete.
+import React, { useEffect, useState } from "react";
 import type { GetStaticProps } from "next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -9,15 +12,15 @@ import {
   Grid,
   IconButton,
   InputBase,
-  Paper,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-// import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 // import TableView from "features/tableView/TableView";
-// import type { PagedResponse } from "types/api/common";
-// import { DbApi } from "utils/api/dbApi";
+import type { PagedResponse } from "types/api/common";
+import { DbApi } from "utils/api/dbApi";
+import type { SearchPageData } from "utils/api/search";
 // import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
@@ -35,39 +38,35 @@ const SearchInput = styled(InputBase)(({ theme }) => ({
   fontSize: "20px",
 }));
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
-export default function TablePage() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function SearchPage() {
   const { sourceLanguage, fileName } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(
+    "desessāmi asaṅkhatagāmiñca maggaṁ"
+  );
+
+  useEffect(() => {}, [searchTerm]);
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
   const handleSearch = () => {
     // TODO: handle search logic here
-    return null;
   };
 
-  // TODO: add error handling
-  //   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
-  //     useInfiniteQuery<PagedResponse<TablePageData>>({
-  //       queryKey: DbApi.TableView.makeQueryKey(fileName),
-  //       queryFn: ({ pageParam = 0 }) => DbApi.TableView.call(fileName, pageParam),
-  //       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
-  //       getPreviousPageParam: (lastPage) =>
-  //         lastPage.pageNumber === 0
-  //           ? lastPage.pageNumber
-  //           : lastPage.pageNumber - 1,
-  //     });
+  const {
+    data,
+    fetchNextPage,
+    fetchPreviousPage,
+    isInitialLoading,
+    isLoading,
+  } = useInfiniteQuery<PagedResponse<SearchPageData>>({
+    queryKey: DbApi.TableView.makeQueryKey(fileName),
+    queryFn: ({ pageParam = 0 }) =>
+      DbApi.GlobalSearchData.call({ searchTerm, pageNumber: pageParam }),
+    getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
+    getPreviousPageParam: (lastPage) =>
+      lastPage.pageNumber === 0 ? lastPage.pageNumber : lastPage.pageNumber - 1,
+  });
 
   if (isFallback) {
     return (
@@ -106,24 +105,21 @@ export default function TablePage() {
 
       {searchTerm && !isLoading && (
         <>
-          <Typography>4 Results</Typography>
+          <Typography>{data?.pages[0].data.size} Results</Typography>
           <Grid
             rowSpacing={1}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             container
           >
-            <Grid xs={6} item>
-              <Item>Placeholder Item 1</Item>
-            </Grid>
-            <Grid xs={6} item>
-              <Item>Placeholder Item 2</Item>
-            </Grid>
-            <Grid xs={6} item>
-              <Item>Placeholder Item 3</Item>
-            </Grid>
-            <Grid xs={6} item>
-              <Item>Placeholder Item 4</Item>
-            </Grid>
+            <ul>
+              {[...(data?.pages[0].data.values() || [])].map((item) => (
+                <li key={item.id}>
+                  <Typography variant="h3" component="h2">
+                    {item.id}
+                  </Typography>
+                </li>
+              ))}
+            </ul>
           </Grid>
         </>
       )}

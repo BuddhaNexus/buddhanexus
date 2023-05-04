@@ -3,6 +3,7 @@ import type { SourceLanguage } from "utils/constants";
 import { getSegmentsData } from "./common";
 import { getGraphData } from "./graph";
 import { getLanguageMenuData } from "./languageMenu";
+import { getGlobalSearchData } from "./search";
 import { getSourceTextCollections } from "./sidebarSourceTexts";
 import { getTableData } from "./table";
 
@@ -26,5 +27,9 @@ export const DbApi = {
   SegmentsData: {
     makeQueryKey: (fileName: string) => ["segmentsData", fileName],
     call: getSegmentsData,
+  },
+  GlobalSearchData: {
+    makeQueryKey: (fileName: string) => ["globalSearchData", fileName],
+    call: getGlobalSearchData,
   },
 };
