@@ -7,11 +7,9 @@ import { appWithTranslation, i18n } from "next-i18next";
 import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
 import { ThemeProvider } from "next-themes";
-import { AppMDXComponents } from "@components/layout/AppMDXComponents";
 import { AppTopBar } from "@components/layout/AppTopBar";
 import type { EmotionCache } from "@emotion/react";
 import { CacheProvider } from "@emotion/react";
-import { MDXProvider } from "@mdx-js/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   Hydrate,
@@ -47,27 +45,25 @@ function MyApp({
 
   return (
     <CacheProvider value={emotionCache}>
-      <MDXProvider components={AppMDXComponents}>
-        <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.dehydratedState}>
-            <DefaultSeo {...SEO} />
-            <Head>
-              <meta
-                name="viewport"
-                content="initial-scale=1, width=device-width"
-              />
-            </Head>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <DefaultSeo {...SEO} />
+          <Head>
+            <meta
+              name="viewport"
+              content="initial-scale=1, width=device-width"
+            />
+          </Head>
 
-            <ThemeProvider>
-              <MUIThemeProvider>
-                <CssBaseline />
-                <AppTopBar />
-                <Component {...pageProps} />
-              </MUIThemeProvider>
-            </ThemeProvider>
-          </Hydrate>
-        </QueryClientProvider>
-      </MDXProvider>
+          <ThemeProvider>
+            <MUIThemeProvider>
+              <CssBaseline />
+              <AppTopBar />
+              <Component {...pageProps} />
+            </MUIThemeProvider>
+          </ThemeProvider>
+        </Hydrate>
+      </QueryClientProvider>
     </CacheProvider>
   );
 }
