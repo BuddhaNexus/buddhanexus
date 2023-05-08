@@ -9,10 +9,9 @@ import { NextAdapter } from "next-query-params";
 import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
 import { ThemeProvider } from "next-themes";
-import { AppMDXComponents } from "@components/layout/AppMDXComponents";
 import { AppTopBar } from "@components/layout/AppTopBar";
-import { CacheProvider, type EmotionCache } from "@emotion/react";
-import { MDXProvider } from "@mdx-js/react";
+import type { EmotionCache } from "@emotion/react";
+import { CacheProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   Hydrate,
@@ -51,38 +50,36 @@ function MyApp({
 
   return (
     <CacheProvider value={emotionCache}>
-      <MDXProvider components={AppMDXComponents}>
-        <QueryParamProvider
-          adapter={NextAdapter}
-          options={{
-            searchStringToObject: queryString.parse,
-            objectToSearchString: queryString.stringify,
-            updateType: "replaceIn",
-            enableBatching: true,
-          }}
-        >
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-              <DefaultSeo {...SEO} />
-              <Head>
-                <meta
-                  name="viewport"
-                  content="initial-scale=1, width=device-width"
-                />
-              </Head>
+      <QueryParamProvider
+        adapter={NextAdapter}
+        options={{
+          searchStringToObject: queryString.parse,
+          objectToSearchString: queryString.stringify,
+          updateType: "replaceIn",
+          enableBatching: true,
+        }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <DefaultSeo {...SEO} />
+            <Head>
+              <meta
+                name="viewport"
+                content="initial-scale=1, width=device-width"
+              />
+            </Head>
 
-              <ThemeProvider>
-                <MUIThemeProvider>
-                  <CssBaseline />
-                  <AppTopBar />
-                  <Component {...pageProps} />
-                </MUIThemeProvider>
-              </ThemeProvider>
-            </Hydrate>
-            <ReactQueryDevtools />
-          </QueryClientProvider>
-        </QueryParamProvider>
-      </MDXProvider>
+            <ThemeProvider>
+              <MUIThemeProvider>
+                <CssBaseline />
+                <AppTopBar />
+                <Component {...pageProps} />
+              </MUIThemeProvider>
+            </ThemeProvider>
+          </Hydrate>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      </QueryParamProvider>
     </CacheProvider>
   );
 }
