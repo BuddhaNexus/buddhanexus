@@ -20,10 +20,8 @@ export const DbResultsPageHead = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
 
-  const handleSettingsClick = () => setIsSidebarOpen(!isSidebarOpen);
-
   const handleReset = async () => {
-    await router.replace(
+    await router.push(
       {
         pathname: getTextPath({ sourceLanguage, fileName, dbView }),
         query: "",
@@ -61,7 +59,7 @@ export const DbResultsPageHead = () => {
             color="inherit"
             aria-label="open drawer"
             edge="end"
-            onClick={handleSettingsClick}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
             <TuneIcon color="action" />
           </IconButton>

@@ -22,7 +22,6 @@ function getActiveFilterCount(queries: any, defaults: any) {
     }
 
     count += 1;
-    continue;
   }
 
   return count;

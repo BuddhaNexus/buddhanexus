@@ -184,6 +184,7 @@ export const SourceTextSearchInput = () => {
   const { sourceLanguage } = useDbQueryParams();
   const dbView = useAtomValue(currentDbViewAtom);
 
+  // This creates a new `queryParams` object stripped of the `language` and `file` props avoiding them being set as query params, (See TODO below where queryParams` is used and handle accordingly)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { language, file, ...queryParams } = router.query;
 
@@ -229,7 +230,7 @@ export const SourceTextSearchInput = () => {
             fileName: value?.fileName,
             dbView,
           }),
-          //  TODO: confirm that persistent query params are the desired behavior as previously discused.
+          //  TODO: per previous spec descision, confirm whether query params should persist accross file changes, or should be reset on file change. Remove `query` prop for reset.
           query: queryParams,
         })
       }
