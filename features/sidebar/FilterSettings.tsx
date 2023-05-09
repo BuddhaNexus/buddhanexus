@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel } from "@mui/material";
@@ -26,32 +27,50 @@ export const FilterSettings = () => {
 
   const { sourceLanguage } = useDbQueryParams();
 
-  const filters = filterList.filter(
-    (filter: Filter) =>
-      !isSettingOmitted({
-        omissions,
-        settingName: filter,
-        dbLang: sourceLanguage,
-        view: currentView,
-      })
-  );
+  const filters = useMemo(() => {
+    return filterList.filter(
+      (filter: Filter) =>
+        !isSettingOmitted({
+          omissions,
+          settingName: filter,
+          dbLang: sourceLanguage,
+          view: currentView,
+        })
+    );
+  }, [sourceLanguage, currentView]);
 
   return filters.length > 0 ? (
     <Box sx={{ mx: 2 }}>
-      {filters.includes("score") && <ScoreFilter />}
-      {filters.includes("par_length") && <ParLengthFilter />}
-      {/* TODO: Update filters on new endpoint backend refactor */}
-      {filters.includes("limit_collection") && (
-        <FormLabel id="exclude-include-filters-label">
-          {t(`filtersLabels.includeExcludeFilters`)}
-        </FormLabel>
-      )}
-      {filters.includes("limit_collection") && <ExcludeCollectionFilter />}
-      {filters.includes("limit_collection") && <ExcludeTextFilter />}
-      {filters.includes("limit_collection") && <IncludeCollectionFilter />}
-      {filters.includes("limit_collection") && <IncludeTextFilter />}
-      {filters.includes("target_collection") &&
-        StandinSetting("target_collection")}
+      {filters.map((filter) => {
+        switch (filter) {
+          case "score": {
+            return <ScoreFilter />;
+          }
+          case "par_length": {
+            return <ParLengthFilter />;
+          }
+          case "limit_collection": {
+            // TODO: Update case when new endpoints are available
+            return (
+              <>
+                <FormLabel id="exclude-include-filters-label">
+                  {t(`filtersLabels.includeExcludeFilters`)}
+                </FormLabel>
+                <ExcludeCollectionFilter />
+                <ExcludeTextFilter />
+                <IncludeCollectionFilter />
+                <IncludeTextFilter />
+              </>
+            );
+          }
+          case "target_collection": {
+            return StandinSetting("target_collection");
+          }
+          default: {
+            return null;
+          }
+        }
+      })}
     </Box>
   ) : null;
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, Typography } from "@mui/material";
@@ -28,18 +28,17 @@ export const DisplayOptionsSection = () => {
 
   const { sourceLanguage } = useDbQueryParams();
 
-  const options = [
-    ...queriedDisplayOptionList,
-    ...localDisplayOptionList,
-  ].filter(
-    (option: DisplayOption) =>
-      !isSettingOmitted({
-        omissions,
-        settingName: option,
-        dbLang: sourceLanguage,
-        view: currentView,
-      })
-  );
+  const options = useMemo(() => {
+    return [...queriedDisplayOptionList, ...localDisplayOptionList].filter(
+      (option: DisplayOption) =>
+        !isSettingOmitted({
+          omissions,
+          settingName: option,
+          dbLang: sourceLanguage,
+          view: currentView,
+        })
+    );
+  }, [sourceLanguage, currentView]);
 
   if (options.length === 0) {
     return (
@@ -58,12 +57,28 @@ export const DisplayOptionsSection = () => {
         {t("headings.display")}
       </Typography>
       <DbViewSelector currentView={currentView} />
-      {options.includes("script") && <TextScriptOption />}
-      {options.includes("folio") && <FolioOption />}
-      {options.includes("multi_lingual") && StandinSetting("multi_lingual")}
-      {options.includes("showAndPositionSegmentNrs") &&
-        StandinSetting("showAndPositionSegmentNrs")}
-      {options.includes("sort_method") && <SortOption />}
+      {options.map((option) => {
+        switch (option) {
+          case "folio": {
+            return <FolioOption />;
+          }
+          case "sort_method": {
+            return <SortOption />;
+          }
+          case "multi_lingual": {
+            return StandinSetting("multi_lingual");
+          }
+          case "script": {
+            return <TextScriptOption />;
+          }
+          case "showAndPositionSegmentNrs": {
+            return StandinSetting("showAndPositionSegmentNrs");
+          }
+          default: {
+            return null;
+          }
+        }
+      })}
     </Box>
   );
 };

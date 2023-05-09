@@ -3,11 +3,12 @@ import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
 
+// Items in the settings arrays below are given in order of appearance in sidebar
 export const filterList = [
   // TODO: update include/exclude list when added to db
-  "limit_collection",
-  "par_length",
   "score",
+  "par_length",
+  "limit_collection",
   "target_collection",
 ] as const;
 
