@@ -35,12 +35,12 @@ export default function ParLengthFilter() {
     "par_length",
     NumberParam
   );
-  const [parLength, setParLenth] = useState(
+  const [parLength, setParLength] = useState(
     parLengthParam ?? DEFAUT_VALUES[lang]
   );
 
   useEffect(() => {
-    setParLenth(parLengthParam ?? DEFAUT_VALUES[lang]);
+    setParLength(parLengthParam ?? DEFAUT_VALUES[lang]);
   }, [parLengthParam, lang]);
 
   const debouncedSetParLengthParam = useMemo(
@@ -50,13 +50,13 @@ export default function ParLengthFilter() {
 
   const handleChange = (value: number) => {
     const normalizedValue = normalizeValue(value, lang);
-    setParLenth(normalizedValue);
+    setParLength(normalizedValue);
     debouncedSetParLengthParam(normalizedValue);
   };
 
   const handleInputChange = (value: number) => {
     const normalizedValue = normalizeValue(value, lang);
-    setParLenth(value);
+    setParLength(value);
     debouncedSetParLengthParam(normalizedValue);
   };
 

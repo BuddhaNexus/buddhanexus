@@ -15,27 +15,27 @@ const IncludeCollectionFilter = () => {
 
   const { categories, isLoadingCategories } = useTextLists();
 
-  const [includeCollectonParam, setIncludeCollectonParam] = useQueryParam(
+  const [includeCollectionParam, setIncludeCollectionParam] = useQueryParam(
     // TODO: replace with "include_collection",
     "limit_collection",
     ArrayParam
   );
 
-  const [includeCollectonValue, setIncludeCollectonValue] = useState<
+  const [includeCollectionValue, setIncludeCollectionValue] = useState<
     CategoryMenuItem[]
   >([]);
 
   useEffect(
     () =>
-      setIncludeCollectonParam(
-        includeCollectonParam ?? DEFAULT_QUERY_PARAMS.include_collection
+      setIncludeCollectionParam(
+        includeCollectionParam ?? DEFAULT_QUERY_PARAMS.include_collection
       ),
-    [includeCollectonParam, setIncludeCollectonParam]
+    [includeCollectionParam, setIncludeCollectionParam]
   );
 
   const handleInputChange = (value: CategoryMenuItem[]) => {
-    setIncludeCollectonValue(value);
-    setIncludeCollectonParam(() => {
+    setIncludeCollectionValue(value);
+    setIncludeCollectionParam(() => {
       return value.map((item) => item.id);
     });
   };
@@ -46,7 +46,7 @@ const IncludeCollectionFilter = () => {
         id="excluded-collections"
         sx={{ mt: 1, mb: 2 }}
         multiple={true}
-        value={includeCollectonValue ?? []}
+        value={includeCollectionValue ?? []}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
         options={[...categories.values()]}

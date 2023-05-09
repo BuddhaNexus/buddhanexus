@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-import-type-side-effects */
 // import the original type declarations
 import "i18next";
 

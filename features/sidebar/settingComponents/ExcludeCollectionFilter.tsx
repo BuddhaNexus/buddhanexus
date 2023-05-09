@@ -15,27 +15,27 @@ const ExcludeCollectionFilter = () => {
 
   const { categories, isLoadingCategories } = useTextLists();
 
-  const [excludeCollectonParam, setExcludeCollectonParam] = useQueryParam(
+  const [excludeCollectionParam, setExcludeCollectionParam] = useQueryParam(
     // TODO: replace with "exclude_collection",
     "limit_collection",
     ArrayParam
   );
 
-  const [excludeCollectonValue, setExcludeCollectonValue] = useState<
+  const [excludeCollectionValue, setExcludeCollectionValue] = useState<
     CategoryMenuItem[]
   >([]);
 
   useEffect(
     () =>
-      setExcludeCollectonParam(
-        excludeCollectonParam ?? DEFAULT_QUERY_PARAMS.exclude_collection
+      setExcludeCollectionParam(
+        excludeCollectionParam ?? DEFAULT_QUERY_PARAMS.exclude_collection
       ),
-    [excludeCollectonParam, setExcludeCollectonParam]
+    [excludeCollectionParam, setExcludeCollectionParam]
   );
 
   const handleInputChange = (value: CategoryMenuItem[]) => {
-    setExcludeCollectonValue(value);
-    setExcludeCollectonParam(() => {
+    setExcludeCollectionValue(value);
+    setExcludeCollectionParam(() => {
       return value.map((item) => `!${item.id}`);
     });
   };
@@ -46,7 +46,7 @@ const ExcludeCollectionFilter = () => {
         id="excluded-collections"
         sx={{ mt: 1, mb: 2 }}
         multiple={true}
-        value={excludeCollectonValue ?? []}
+        value={excludeCollectionValue ?? []}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
         options={[...categories.values()]}

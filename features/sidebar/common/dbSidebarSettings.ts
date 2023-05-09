@@ -3,7 +3,7 @@ import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
 
-// Items in the settings arrays below are given in order of appearance in sidebar
+// Items in the following settings arrays are given in order of appearance in sidebar
 export const filterList = [
   // TODO: update include/exclude list when added to db
   "score",
@@ -42,6 +42,8 @@ export type ViewOmission = (DbLang | "allLangs")[];
 export type SettingContext = Partial<Record<DbView, ViewOmission>>;
 
 export type FilterOmissions = Partial<Record<Filter, SettingContext>>;
+
+// Not all filters, options and utilities are applicable for all DB languages and views. The setting menu assumes each setting component is to be rended, unless defined in the following config objects listing contexts specific settings should be ommitted. For example, the `limit_collection` filter should be shown in all cases except for graph view, in any language.
 export const FILTER_CONTEXT_OMISSIONS: FilterOmissions = {
   limit_collection: { graph: ["allLangs"] },
   target_collection: {

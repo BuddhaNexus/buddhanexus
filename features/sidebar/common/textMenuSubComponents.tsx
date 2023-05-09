@@ -40,8 +40,7 @@ const Row = (props: ListChildComponentProps) => {
     fontWeight: 700,
   };
 
-  // eslint-disable-next-line no-prototype-builtins
-  if (dataSet.hasOwnProperty("group")) {
+  if (Object.hasOwn(dataSet, "group")) {
     return (
       <ListSubheader key={dataSet.key} component="div" style={inlineStyle}>
         {dataSet.group}

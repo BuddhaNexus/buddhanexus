@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-import-type-side-effects
 import "globalStyles.css";
 
 import React from "react";

@@ -1,6 +1,12 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  type SelectChangeEvent,
+} from "@mui/material";
 import { atom, useSetAtom } from "jotai";
 
 export const VIEWS = ["graph", "numbers", "table", "text"] as const;
@@ -18,9 +24,9 @@ export const DbViewSelector = ({ currentView }: Props) => {
   const { asPath, push } = useRouter();
   const setCurrentDbView = useSetAtom(currentDbViewAtom);
 
-  const handleChange = async (e: React.ChangeEvent<{ value: DbView }>) => {
+  const handleChange = async (e: SelectChangeEvent) => {
     await push(asPath.replace(currentView, e.target.value));
-    setCurrentDbView(e.target.value);
+    setCurrentDbView(e.target.value as DbView);
   };
 
   return (
@@ -32,9 +38,7 @@ export const DbViewSelector = ({ currentView }: Props) => {
         labelId="db-view-selector-label"
         id="db-view-selector"
         value={currentView}
-        onChange={(e) =>
-          handleChange(e as React.ChangeEvent<{ value: DbView }>)
-        }
+        onChange={(e: SelectChangeEvent) => handleChange(e)}
       >
         {VIEWS.map((view) => (
           <MenuItem key={view} value={view}>
