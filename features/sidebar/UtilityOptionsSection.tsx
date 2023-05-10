@@ -66,9 +66,9 @@ const utilityOptionComponents: UtilityOptions = {
 };
 
 export const UtilityOptionsSection = () => {
+  const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentDbViewAtom);
   const { fileName, sourceLanguage, serializedParams } = useDbQueryParams();
-  const { t } = useTranslation("settings");
   let href: string;
 
   if (typeof window !== "undefined") {
@@ -91,78 +91,78 @@ export const UtilityOptionsSection = () => {
   const [popperAnchorEl, setPopperAnchorEl] =
     useState<Record<UtilityOption, HTMLElement | null>>(defaultAnchorEls);
 
-  const listItems = React.Children.toArray(
-    Object.entries(utilityOptionComponents).map(([key, option]) => {
-      const { callback, icon: Icon } = option;
-      const name = key as UtilityOption;
-
-      if (
-        isSettingOmitted({
-          omissions,
-          settingName: name,
-          dbLang: sourceLanguage,
-          view: currentView,
-        })
-      ) {
-        return null;
-      }
-
-      const isPopperOpen = Boolean(popperAnchorEl[name]);
-      const showPopper = name === "download" ? Boolean(error) : true;
-      const popperId = isPopperOpen ? `${name}-popper` : undefined;
-
-      return (
-        <ListItem
-          key={name}
-          disablePadding
-          onMouseLeave={() => setPopperAnchorEl(defaultAnchorEls)}
-        >
-          <ListItemButton
-            id={name}
-            aria-describedby={popperId}
-            onClick={(event) =>
-              callback({
-                event,
-                fileName,
-                popperAnchorState: [popperAnchorEl, setPopperAnchorEl],
-                download: { call: download, file: downloadData },
-                href,
-              })
-            }
-          >
-            <ListItemIcon>
-              <Icon />
-            </ListItemIcon>
-            <ListItemText primary={t(`optionsLabels.${name}`)} />
-          </ListItemButton>
-
-          {showPopper && (
-            <Popper
-              id={popperId}
-              open={isPopperOpen}
-              anchorEl={popperAnchorEl[name]}
-              placement="top"
-              transition
-            >
-              {({ TransitionProps }) => (
-                <Fade {...TransitionProps} timeout={200}>
-                  <PopperMsgBox>{t(`optionsPopperMsgs.${name}`)}</PopperMsgBox>
-                </Fade>
-              )}
-            </Popper>
-          )}
-        </ListItem>
-      );
-    })
-  );
-
-  return listItems.length > 0 ? (
+  return Object.keys(utilityOptionComponents).length > 0 ? (
     <>
       <Typography variant="h6" component="h3" mx={2} mt={3}>
         {t("headings.tools")}
       </Typography>
 
-      <List>{listItems}</List>
+      <List>
+        {Object.entries(utilityOptionComponents).map(([key, option]) => {
+          const { callback, icon: Icon } = option;
+          const name = key as UtilityOption;
+
+          if (
+            isSettingOmitted({
+              omissions,
+              settingName: name,
+              dbLang: sourceLanguage,
+              view: currentView,
+            })
+          ) {
+            return null;
+          }
+
+          const isPopperOpen = Boolean(popperAnchorEl[name]);
+          const showPopper = name === "download" ? Boolean(error) : true;
+          const popperId = isPopperOpen ? `${name}-popper` : undefined;
+
+          return (
+            <ListItem
+              key={name}
+              disablePadding
+              onMouseLeave={() => setPopperAnchorEl(defaultAnchorEls)}
+            >
+              <ListItemButton
+                id={name}
+                aria-describedby={popperId}
+                onClick={(event) =>
+                  callback({
+                    event,
+                    fileName,
+                    popperAnchorState: [popperAnchorEl, setPopperAnchorEl],
+                    download: { call: download, file: downloadData },
+                    href,
+                  })
+                }
+              >
+                <ListItemIcon>
+                  <Icon />
+                </ListItemIcon>
+                <ListItemText primary={t(`optionsLabels.${name}`)} />
+              </ListItemButton>
+
+              {showPopper && (
+                <Popper
+                  id={popperId}
+                  open={isPopperOpen}
+                  anchorEl={popperAnchorEl[name]}
+                  placement="top"
+                  transition
+                >
+                  {({ TransitionProps }) => (
+                    <Fade {...TransitionProps} timeout={200}>
+                      <PopperMsgBox>
+                        {t(`optionsPopperMsgs.${name}`)}
+                      </PopperMsgBox>
+                    </Fade>
+                  )}
+                </Popper>
+              )}
+            </ListItem>
+          );
+        })}
+      </List>
     </>
   ) : null;
 };
