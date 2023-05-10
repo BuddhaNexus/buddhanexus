@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel } from "@mui/material";
@@ -42,17 +42,19 @@ export const FilterSettings = () => {
   return filters.length > 0 ? (
     <Box sx={{ mx: 2 }}>
       {filters.map((filter) => {
+        const key = `filter-setting-${filter}`;
+
         switch (filter) {
           case "score": {
-            return <ScoreFilter />;
+            return <ScoreFilter key={key} />;
           }
           case "par_length": {
-            return <ParLengthFilter />;
+            return <ParLengthFilter key={key} />;
           }
           case "limit_collection": {
             // TODO: Update case when new endpoints are available
             return (
-              <>
+              <Fragment key={key}>
                 <FormLabel id="exclude-include-filters-label">
                   {t(`filtersLabels.includeExcludeFilters`)}
                 </FormLabel>
@@ -60,11 +62,15 @@ export const FilterSettings = () => {
                 <ExcludeTextFilter />
                 <IncludeCollectionFilter />
                 <IncludeTextFilter />
-              </>
+              </Fragment>
             );
           }
           case "target_collection": {
-            return StandinSetting("target_collection");
+            return (
+              <Fragment key={key}>
+                {StandinSetting("target_collection")}
+              </Fragment>
+            );
           }
           default: {
             return null;

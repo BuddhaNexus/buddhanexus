@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { Fragment, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, Typography } from "@mui/material";
@@ -58,21 +58,29 @@ export const DisplayOptionsSection = () => {
       </Typography>
       <DbViewSelector currentView={currentView} />
       {options.map((option) => {
+        const key = `display-option-${option}`;
+
         switch (option) {
           case "folio": {
-            return <FolioOption />;
+            return <FolioOption key={key} />;
           }
           case "sort_method": {
-            return <SortOption />;
+            return <SortOption key={key} />;
           }
           case "multi_lingual": {
-            return StandinSetting("multi_lingual");
+            return (
+              <Fragment key={key}>{StandinSetting("multi_lingual")}</Fragment>
+            );
           }
           case "script": {
-            return <TextScriptOption />;
+            return <TextScriptOption key={key} />;
           }
           case "showAndPositionSegmentNrs": {
-            return StandinSetting("showAndPositionSegmentNrs");
+            return (
+              <Fragment key={key}>
+                {StandinSetting("showAndPositionSegmentNrs")}
+              </Fragment>
+            );
           }
           default: {
             return null;
