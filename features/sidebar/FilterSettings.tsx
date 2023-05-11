@@ -5,9 +5,8 @@ import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box, FormLabel } from "@mui/material";
 import { isSettingOmitted } from "features/sidebar/common/dbSidebarHelpers";
 import {
-  type Filter,
-  FILTER_CONTEXT_OMISSIONS as omissions,
-  filterList,
+  FILTER_OMISSIONS_CONFIG as omissions,
+  FilterEnum,
 } from "features/sidebar/common/dbSidebarSettings";
 import {
   ExcludeCollectionFilter,
@@ -28,8 +27,8 @@ export const FilterSettings = () => {
   const { sourceLanguage } = useDbQueryParams();
 
   const filters = useMemo(() => {
-    return filterList.filter(
-      (filter: Filter) =>
+    return Object.values(FilterEnum).filter(
+      (filter) =>
         !isSettingOmitted({
           omissions,
           settingName: filter,

@@ -5,10 +5,9 @@ import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box, Typography } from "@mui/material";
 import { isSettingOmitted } from "features/sidebar/common/dbSidebarHelpers";
 import {
-  DISPLAY_OPTIONS_CONTEXT_OMISSIONS as omissions,
-  type DisplayOption,
-  localDisplayOptionList,
-  queriedDisplayOptionList,
+  DISPLAY_OPTIONS_OMISSIONS_CONFIG as omissions,
+  LocalDisplayOptionEnum,
+  QueriedDisplayOptionEnum,
 } from "features/sidebar/common/dbSidebarSettings";
 import {
   FolioOption,
@@ -27,8 +26,11 @@ export const DisplayOptionsSection = () => {
   const { sourceLanguage } = useDbQueryParams();
 
   const options = useMemo(() => {
-    return [...queriedDisplayOptionList, ...localDisplayOptionList].filter(
-      (option: DisplayOption) =>
+    return [
+      ...Object.values(QueriedDisplayOptionEnum),
+      ...Object.values(LocalDisplayOptionEnum),
+    ].filter(
+      (option) =>
         !isSettingOmitted({
           omissions,
           settingName: option,

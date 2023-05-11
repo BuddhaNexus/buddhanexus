@@ -1,20 +1,10 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
 import type {
   DbLang,
-  DisplayOption,
-  Filter,
-  LocalDisplayOption,
-  QueriedDisplayOption,
-  SettingContext,
-  UtilityOption,
+  MenuOmission,
+  MenuSetting,
+  UtilityOptionEnum,
 } from "features/sidebar/common/dbSidebarSettings";
-
-type Omission = Partial<
-  Record<
-    Filter | LocalDisplayOption | QueriedDisplayOption | UtilityOption,
-    SettingContext
-  >
->;
 
 export const isSettingOmitted = ({
   omissions,
@@ -22,8 +12,8 @@ export const isSettingOmitted = ({
   dbLang,
   view,
 }: {
-  omissions: Omission;
-  settingName: DisplayOption | Filter | UtilityOption;
+  omissions: MenuOmission;
+  settingName: MenuSetting;
   dbLang: DbLang;
   view: DbViewEnum;
 }) => {
@@ -35,8 +25,8 @@ export const isSettingOmitted = ({
 };
 
 type PopperUtilityStates<State> = [
-  Record<UtilityOption, State>,
-  React.Dispatch<React.SetStateAction<Record<UtilityOption, State>>>
+  Record<UtilityOptionEnum, State>,
+  React.Dispatch<React.SetStateAction<Record<UtilityOptionEnum, State>>>
 ];
 type PopperAnchorState = PopperUtilityStates<HTMLElement | null>;
 

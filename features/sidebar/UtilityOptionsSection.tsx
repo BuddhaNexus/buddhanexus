@@ -29,24 +29,24 @@ import {
   type UtilityClickHandlerProps,
 } from "features/sidebar/common/dbSidebarHelpers";
 import {
-  UTILITY_OPTIONS_CONTEXT_OMISSIONS as omissions,
-  type UtilityOption,
+  UTILITY_OPTIONS_OMISSIONS_CONFIG as omissions,
+  UtilityOptionEnum,
 } from "features/sidebar/common/dbSidebarSettings";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
 
 import { Popper, PopperMsgBox } from "./common/MuiStyledSidebarComponents";
 
-type UtilityOptionObject = {
+type UtilityOptionProps = {
   callback: (props: UtilityClickHandlerProps) => void;
   icon: OverridableComponent<SvgIconTypeMap>;
 };
 
 type UtilityOptions = {
-  [key in UtilityOption]: UtilityOptionObject;
+  [value in UtilityOptionEnum]: UtilityOptionProps;
 };
 
-const utilityOptionComponents: UtilityOptions = {
+const utilityComponents: UtilityOptions = {
   download: {
     callback: onDownload,
     icon: FileDownloadIcon,
@@ -89,23 +89,22 @@ export const UtilityOptionsSection = () => {
   const { download, error } = useDownloader();
 
   const [popperAnchorEl, setPopperAnchorEl] =
-    useState<Record<UtilityOption, HTMLElement | null>>(defaultAnchorEls);
+    useState<Record<UtilityOptionEnum, HTMLElement | null>>(defaultAnchorEls);
 
-  return Object.keys(utilityOptionComponents).length > 0 ? (
+  return (
     <>
       <Typography variant="h6" component="h3" mx={2} mt={3}>
         {t("headings.tools")}
       </Typography>
 
       <List>
-        {Object.entries(utilityOptionComponents).map(([key, option]) => {
-          const { callback, icon: Icon } = option;
-          const name = key as UtilityOption;
+        {Object.values(UtilityOptionEnum).map((utilityKey) => {
+          const Icon = utilityComponents[utilityKey].icon;
 
           if (
             isSettingOmitted({
               omissions,
-              settingName: name,
+              settingName: utilityKey,
               dbLang: sourceLanguage,
               view: currentView,
             })
@@ -113,21 +112,22 @@ export const UtilityOptionsSection = () => {
             return null;
           }
 
-          const isPopperOpen = Boolean(popperAnchorEl[name]);
-          const showPopper = name === "download" ? Boolean(error) : true;
-          const popperId = isPopperOpen ? `${name}-popper` : undefined;
+          const isPopperOpen = Boolean(popperAnchorEl[utilityKey]);
+          const showPopper =
+            utilityKey === UtilityOptionEnum.DOWNLOAD ? Boolean(error) : true;
+          const popperId = isPopperOpen ? `${utilityKey}-popper` : undefined;
 
           return (
             <ListItem
-              key={name}
+              key={utilityKey}
               disablePadding
               onMouseLeave={() => setPopperAnchorEl(defaultAnchorEls)}
             >
               <ListItemButton
-                id={name}
+                id={utilityKey}
                 aria-describedby={popperId}
                 onClick={(event) =>
-                  callback({
+                  utilityComponents[utilityKey].callback({
                     event,
                     fileName,
                     popperAnchorState: [popperAnchorEl, setPopperAnchorEl],
@@ -139,21 +139,21 @@ export const UtilityOptionsSection = () => {
                 <ListItemIcon>
                   <Icon />
                 </ListItemIcon>
-                <ListItemText primary={t(`optionsLabels.${name}`)} />
+                <ListItemText primary={t(`optionsLabels.${utilityKey}`)} />
               </ListItemButton>
 
               {showPopper && (
                 <Popper
                   id={popperId}
                   open={isPopperOpen}
-                  anchorEl={popperAnchorEl[name]}
+                  anchorEl={popperAnchorEl[utilityKey]}
                   placement="top"
                   transition
                 >
                   {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={200}>
                       <PopperMsgBox>
-                        {t(`optionsPopperMsgs.${name}`)}
+                        {t(`optionsPopperMsgs.${utilityKey}`)}
                       </PopperMsgBox>
                     </Fade>
                   )}
@@ -164,5 +164,5 @@ export const UtilityOptionsSection = () => {
         })}
       </List>
     </>
-  ) : null;
+  );
 };

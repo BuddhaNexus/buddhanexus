@@ -4,47 +4,45 @@ const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
 
 // Items in the following settings arrays are given in order of appearance in sidebar
-export const filterList = [
-  // TODO: update include/exclude list when added to db
-  "score",
-  "par_length",
-  "limit_collection",
-  "target_collection",
-] as const;
+export enum FilterEnum {
+  SCORE = "score",
+  PAR_LENGTH = "par_length",
+  LIMIT_COLLECTION = "limit_collection",
+  TARGET_COLLECTION = "target_collection",
+}
 
-export const queriedDisplayOptionList = [
-  "folio",
-  "multi_lingual",
-  "sort_method",
-] as const;
+export enum QueriedDisplayOptionEnum {
+  FOLIO = "folio",
+  MULTI_LINGUAL = "multi_lingual",
+  SORT_METHOD = "sort_method",
+}
+export enum LocalDisplayOptionEnum {
+  SCRIPT = "script",
+  SHOW_AND_POSITION_SEGMENT_NRS = "showAndPositionSegmentNrs",
+}
+export type DisplayOption = LocalDisplayOptionEnum | QueriedDisplayOptionEnum;
 
-export const localDisplayOptionList = [
-  "script",
-  "showAndPositionSegmentNrs",
-] as const;
+export enum UtilityOptionEnum {
+  DOWNLOAD = "download",
+  COPY_QUERY_TITLE = "copyQueryTitle",
+  COPY_QUERY_LINK = "copyQueryLink",
+  EMAIL_QUERY_LINK = "emailQueryLink",
+}
 
-export const utilityOptionList = [
-  "download",
-  "copyQueryTitle",
-  "copyQueryLink",
-  "emailQueryLink",
-] as const;
-
-export const resourceLinksOptionKey = "resourceLinks";
-
-export type Filter = (typeof filterList)[number];
-export type QueriedDisplayOption = (typeof queriedDisplayOptionList)[number];
-export type LocalDisplayOption = (typeof localDisplayOptionList)[number];
-export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
-export type UtilityOption = (typeof utilityOptionList)[number];
+export type MenuSetting = DisplayOption | FilterEnum | UtilityOptionEnum;
 
 export type ViewOmission = (DbLang | "allLangs")[];
 export type SettingContext = Partial<Record<DbViewEnum, ViewOmission>>;
 
-export type FilterOmissions = Partial<Record<Filter, SettingContext>>;
+type SettingOmissions<K extends string, T = SettingContext> = Partial<
+  Record<K, T>
+>;
+
+export type MenuOmission = SettingOmissions<MenuSetting>;
 
 // Not all filters, options and utilities are applicable for all DB languages and views. The setting menu assumes each setting component is to be rendered, unless defined in the following config objects listing contexts in which specific settings should be ommitted. For example, the `limit_collection` filter should be shown in all cases except for graph view, in any language.
-export const FILTER_CONTEXT_OMISSIONS: FilterOmissions = {
+
+export const FILTER_OMISSIONS_CONFIG: SettingOmissions<FilterEnum> = {
   limit_collection: { graph: ["allLangs"] },
   target_collection: {
     numbers: ["allLangs"],
@@ -53,56 +51,52 @@ export const FILTER_CONTEXT_OMISSIONS: FilterOmissions = {
   },
 };
 
-const QUERIED_DISPLAY_OPTIONS_CONTEXT_OMISSIONS: Partial<
-  Record<QueriedDisplayOption, SettingContext>
-> = {
-  folio: {
-    // "folio" is used as "jump to" in text view and "only show" in other applicable views
-    graph: ["allLangs"],
-  },
-  multi_lingual: {
-    graph: ["allLangs"],
-    numbers: ["allLangs"],
-    table: ["allLangs"],
-  },
-  sort_method: {
-    graph: ["allLangs"],
-    numbers: ["allLangs"],
-    text: ["allLangs"],
-  },
-};
+const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayOptionEnum> =
+  {
+    folio: {
+      // "folio" is used as "jump to" in text view and "only show" in other applicable views
+      graph: ["allLangs"],
+    },
+    multi_lingual: {
+      graph: ["allLangs"],
+      numbers: ["allLangs"],
+      table: ["allLangs"],
+    },
+    sort_method: {
+      graph: ["allLangs"],
+      numbers: ["allLangs"],
+      text: ["allLangs"],
+    },
+  };
 
-const LOCAL_DISPLAY_OPTIONS_CONTEXT_OMISSIONS: Partial<
-  Record<LocalDisplayOption, SettingContext>
-> = {
-  script: {
-    graph: ["allLangs"],
-    numbers: ["allLangs"],
-    table: ["pli", "chn", "skt"],
-    text: ["pli", "chn", "skt"],
-  },
-  showAndPositionSegmentNrs: {
-    graph: ["allLangs"],
-    numbers: ["allLangs"],
-    table: ["allLangs"],
-  },
-};
+const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptionEnum> =
+  {
+    script: {
+      graph: ["allLangs"],
+      numbers: ["allLangs"],
+      table: ["pli", "chn", "skt"],
+      text: ["pli", "chn", "skt"],
+    },
+    showAndPositionSegmentNrs: {
+      graph: ["allLangs"],
+      numbers: ["allLangs"],
+      table: ["allLangs"],
+    },
+  };
 
-export type DisplayOmissions = Partial<
-  Record<LocalDisplayOption | QueriedDisplayOption, SettingContext>
->;
-export const DISPLAY_OPTIONS_CONTEXT_OMISSIONS: DisplayOmissions = {
-  ...QUERIED_DISPLAY_OPTIONS_CONTEXT_OMISSIONS,
-  ...LOCAL_DISPLAY_OPTIONS_CONTEXT_OMISSIONS,
-};
+export const DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<DisplayOption> =
+  {
+    ...QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG,
+    ...LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG,
+  };
 
-export type UtilityOmissions = Partial<Record<UtilityOption, SettingContext>>;
-export const UTILITY_OPTIONS_CONTEXT_OMISSIONS: UtilityOmissions = {
-  download: {
-    graph: ["allLangs"],
-    text: ["allLangs"],
-  },
-};
+export const UTILITY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<UtilityOptionEnum> =
+  {
+    download: {
+      graph: ["allLangs"],
+      text: ["allLangs"],
+    },
+  };
 
 export interface QueryParams {
   score: number;
