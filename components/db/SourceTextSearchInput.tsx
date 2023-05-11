@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { getTextPath } from "@components/common/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { currentViewAtom } from "@components/hooks/useDbView";
 import {
   Autocomplete,
   autocompleteClasses,
@@ -24,7 +25,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
-import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
 import type { DatabaseText } from "utils/api/textLists";
@@ -182,7 +182,7 @@ export const SourceTextSearchInput = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { sourceLanguage } = useDbQueryParams();
-  const dbView = useAtomValue(currentDbViewAtom);
+  const dbView = useAtomValue(currentViewAtom);
 
   // This creates a new `queryParams` object stripped of the `language` and `file` props avoiding them being set as query params, (See TODO below where queryParams` is used and handle accordingly)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

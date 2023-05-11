@@ -2,6 +2,7 @@ import React from "react";
 import type { GetStaticProps } from "next";
 import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress, Typography } from "@mui/material";
@@ -16,6 +17,7 @@ export { getSourceTextStaticPaths as getStaticPaths } from "utils/nextJsHelpers"
 export default function GraphPage() {
   const { sourceLanguage, fileName, serializedParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
+  useDbView();
 
   // TODO: add error handling
   const { data, isLoading } = useQuery<ApiGraphPageData>({
