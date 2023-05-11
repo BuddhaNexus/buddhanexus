@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { DEFAULT_QUERY_PARAMS } from "features/sidebar/common/dbSidebarSettings";
@@ -33,16 +33,19 @@ export default function ScoreFilter() {
     setScoreValue(scoreParam ?? DEFAULT_QUERY_PARAMS.score);
   }, [scoreParam]);
 
-  const debouncedSetScoreParam = useMemo(
+  const setDebouncedScoreValue = useMemo(
     () => debounce(setScoreParam, 600),
     [setScoreParam]
   );
 
-  const handleChange = (value: number) => {
-    const normalizedValue = normalizeValue(value);
-    setScoreValue(normalizedValue);
-    debouncedSetScoreParam(normalizedValue);
-  };
+  const handleChange = useCallback(
+    (value: number) => {
+      const normalizedValue = normalizeValue(value);
+      setScoreValue(value);
+      setDebouncedScoreValue(normalizedValue);
+    },
+    [setScoreValue, setDebouncedScoreValue]
+  );
 
   const handleBlur = () => {
     setScoreValue(normalizeValue(scoreValue));
@@ -62,6 +65,7 @@ export default function ScoreFilter() {
   return (
     <Box sx={{ width: 1, mb: 2 }}>
       <FormLabel id="score-input-label">{t("filtersLabels.score")}</FormLabel>
+      {/* TODO: define acceptance criteria for input change handling */}
       <TextField
         sx={{ width: 1, my: 1 }}
         value={scoreValue}

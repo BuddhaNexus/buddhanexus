@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
@@ -43,22 +43,19 @@ export default function ParLengthFilter() {
     setParLength(parLengthParam ?? DEFAUT_VALUES[lang]);
   }, [parLengthParam, lang]);
 
-  const debouncedSetParLengthParam = useMemo(
+  const setDebouncedParLengthParam = useMemo(
     () => debounce(setParLengthParam, 600),
     [setParLengthParam]
   );
 
-  const handleChange = (value: number) => {
-    const normalizedValue = normalizeValue(value, lang);
-    setParLength(normalizedValue);
-    debouncedSetParLengthParam(normalizedValue);
-  };
-
-  const handleInputChange = (value: number) => {
-    const normalizedValue = normalizeValue(value, lang);
-    setParLength(value);
-    debouncedSetParLengthParam(normalizedValue);
-  };
+  const handleChange = useCallback(
+    (value: number) => {
+      const normalizedValue = normalizeValue(value, lang);
+      setParLength(value);
+      setDebouncedParLengthParam(normalizedValue);
+    },
+    [lang, setParLength, setDebouncedParLengthParam]
+  );
 
   const marks = [
     {
@@ -77,6 +74,7 @@ export default function ParLengthFilter() {
       <FormLabel id="min-match-input-label">
         {t("filtersLabels.minMatch")}
       </FormLabel>
+      {/* TODO: define acceptance criteria for input change handling */}
       <TextField
         sx={{ width: 1, my: 1 }}
         value={parLength ?? ""}
@@ -87,7 +85,7 @@ export default function ParLengthFilter() {
           type: "number",
           "aria-labelledby": "min-match-input-label",
         }}
-        onChange={(e) => handleInputChange(Number(e.target.value))}
+        onChange={(e) => handleChange(Number(e.target.value))}
       />
       <Box sx={{ ml: 1, width: "96%" }}>
         <Slider
