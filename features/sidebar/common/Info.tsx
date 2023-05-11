@@ -1,10 +1,9 @@
-import { currentViewAtom } from "@components/hooks/useDbView";
+import { currentViewAtom, type DbViewEnum } from "@components/hooks/useDbView";
 import { Typography } from "@mui/material";
-import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
 import { useAtomValue } from "jotai";
 
 // TODO: Determine relevant support info for sub-components & add to local files.
-const TEMP_VIEW_INFO: Record<DbView, string> = {
+const TEMP_VIEW_INFO: Record<DbViewEnum, string> = {
   graph: `The pie-chart displays the distribution of all the matches found with the current filters across the various collections and their subsections. The distribution is weighted by length of matches found.
 
   The histogram displays the distribution of the top files that have matches with the Inquiry Text based on the accumulated length of the matches. A maximum of 50 Hit Texts are shown. 

@@ -10,9 +10,6 @@ import {
 } from "@mui/material";
 import { useAtom } from "jotai";
 
-export const VIEWS = ["graph", "numbers", "table", "text"] as const;
-export type DbView = (typeof VIEWS)[number];
-
 export const DbViewSelector = () => {
   const { t } = useTranslation();
 

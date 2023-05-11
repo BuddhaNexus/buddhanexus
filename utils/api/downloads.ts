@@ -1,11 +1,11 @@
-import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
+import type { DbViewEnum } from "@components/hooks/useDbView";
 
 import { API_ROOT_URL, RESULTS_DOWNLOAD_ROOT_URL } from "./constants";
 
 interface ApiDownloadProps {
   fileName: string;
   serializedParams: string;
-  view: DbView;
+  view: DbViewEnum;
 }
 
 export async function getParallelDownloadData({

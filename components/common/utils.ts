@@ -1,4 +1,4 @@
-import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
+import type { DbViewEnum } from "@components/hooks/useDbView";
 import type { SourceLanguage } from "utils/constants";
 
 export const getTextPath = ({
@@ -8,7 +8,7 @@ export const getTextPath = ({
 }: {
   fileName?: string;
   sourceLanguage: SourceLanguage;
-  dbView: DbView;
+  dbView: DbViewEnum;
 }) => {
   return `/db/${sourceLanguage}/${fileName}/${dbView}`;
 };

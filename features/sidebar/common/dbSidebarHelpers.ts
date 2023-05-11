@@ -1,3 +1,4 @@
+import type { DbViewEnum } from "@components/hooks/useDbView";
 import type {
   DbLang,
   DisplayOption,
@@ -7,7 +8,6 @@ import type {
   SettingContext,
   UtilityOption,
 } from "features/sidebar/common/dbSidebarSettings";
-import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
 
 type Omission = Partial<
   Record<
@@ -25,7 +25,7 @@ export const isSettingOmitted = ({
   omissions: Omission;
   settingName: DisplayOption | Filter | UtilityOption;
   dbLang: DbLang;
-  view: DbView;
+  view: DbViewEnum;
 }) => {
   return Boolean(
     omissions?.[settingName]?.[view]?.some((omittedLang) =>

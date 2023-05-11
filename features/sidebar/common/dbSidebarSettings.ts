@@ -1,4 +1,4 @@
-import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
+import type { DbViewEnum } from "@components/hooks/useDbView";
 
 const dbLangs = ["pli", "chn", "tib", "skt"] as const;
 export type DbLang = (typeof dbLangs)[number];
@@ -39,7 +39,7 @@ export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
 export type UtilityOption = (typeof utilityOptionList)[number];
 
 export type ViewOmission = (DbLang | "allLangs")[];
-export type SettingContext = Partial<Record<DbView, ViewOmission>>;
+export type SettingContext = Partial<Record<DbViewEnum, ViewOmission>>;
 
 export type FilterOmissions = Partial<Record<Filter, SettingContext>>;
 
