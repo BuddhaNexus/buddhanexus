@@ -18,7 +18,7 @@ const initiateView = (view: DbViewEnum | string): DbViewEnum => {
   return DbViewEnum.TABLE;
 };
 
-// This allows two-way url <--> setting handling
+// This allows two-way view setting: url <--> view selector
 export const useDbView = () => {
   const { pathname } = useRouter();
   const setCurrentView = useSetAtom(currentViewAtom);

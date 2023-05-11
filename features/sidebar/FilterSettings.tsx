@@ -1,6 +1,7 @@
 import { Fragment, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box, FormLabel } from "@mui/material";
 import { isSettingOmitted } from "features/sidebar/common/dbSidebarHelpers";
 import {
@@ -16,14 +17,13 @@ import {
   ParLengthFilter,
   ScoreFilter,
 } from "features/sidebar/settingComponents";
-import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { StandinSetting } from "features/sidebar/Sidebar";
 import { useAtomValue } from "jotai";
 
 export const FilterSettings = () => {
   const { t } = useTranslation("settings");
 
-  const currentView = useAtomValue(currentDbViewAtom);
+  const currentView = useAtomValue(currentViewAtom);
 
   const { sourceLanguage } = useDbQueryParams();
 

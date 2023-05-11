@@ -1,6 +1,6 @@
+import { currentViewAtom } from "@components/hooks/useDbView";
 import { Typography } from "@mui/material";
 import type { DbView } from "features/sidebar/settingComponents/DbViewSelector";
-import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { useAtomValue } from "jotai";
 
 // TODO: Determine relevant support info for sub-components & add to local files.
@@ -27,11 +27,11 @@ const TEMP_VIEW_INFO: Record<DbView, string> = {
 };
 
 export const Info = () => {
-  const currentDbView = useAtomValue(currentDbViewAtom);
+  const currentView = useAtomValue(currentViewAtom);
 
   return (
     <>
-      <Typography>{TEMP_VIEW_INFO[currentDbView]}</Typography>
+      <Typography>{TEMP_VIEW_INFO[currentView]}</Typography>
       <Typography variant="h6" mt={2}>
         Tip example
       </Typography>

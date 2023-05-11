@@ -4,9 +4,9 @@ import { getTextPath } from "@components/common/utils";
 import CurrentResultChips from "@components/db/CurrentResultChips";
 import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { currentViewAtom } from "@components/hooks/useDbView";
 import TuneIcon from "@mui/icons-material/Tune";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { isSidebarOpenAtom } from "features/sidebar/Sidebar";
 import { useAtom, useAtomValue } from "jotai";
 
@@ -16,7 +16,7 @@ export const DbResultsPageHead = () => {
 
   // TODO: get full text name
   const { fileName, sourceLanguage } = useDbQueryParams();
-  const dbView = useAtomValue(currentDbViewAtom);
+  const dbView = useAtomValue(currentViewAtom);
 
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
 

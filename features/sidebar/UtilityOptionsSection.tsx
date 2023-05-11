@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useDownloader from "react-use-downloader";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { currentViewAtom } from "@components/hooks/useDbView";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
@@ -31,7 +32,6 @@ import {
   UTILITY_OPTIONS_CONTEXT_OMISSIONS as omissions,
   type UtilityOption,
 } from "features/sidebar/common/dbSidebarSettings";
-import { currentDbViewAtom } from "features/sidebar/settingComponents/DbViewSelector";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
 
@@ -67,7 +67,7 @@ const utilityOptionComponents: UtilityOptions = {
 
 export const UtilityOptionsSection = () => {
   const { t } = useTranslation("settings");
-  const currentView = useAtomValue(currentDbViewAtom);
+  const currentView = useAtomValue(currentViewAtom);
   const { fileName, sourceLanguage, serializedParams } = useDbQueryParams();
   let href: string;
 
