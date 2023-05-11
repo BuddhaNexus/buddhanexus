@@ -34,7 +34,7 @@ export const DisplayOptionsSection = () => {
         !isSettingOmitted({
           omissions,
           settingName: option,
-          dbLang: sourceLanguage,
+          language: sourceLanguage,
           view: currentView,
         })
     );

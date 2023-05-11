@@ -105,7 +105,7 @@ export const UtilityOptionsSection = () => {
             isSettingOmitted({
               omissions,
               settingName: utilityKey,
-              dbLang: sourceLanguage,
+              language: sourceLanguage,
               view: currentView,
             })
           ) {

@@ -2,19 +2,19 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import type { DbLang } from "features/sidebar/common/dbSidebarSettings";
 import {
   DEFAULT_PAR_LENGTH_VALUES as DEFAUT_VALUES,
   MIN_PAR_LENGTH_VALUES as MIN_VALUES,
 } from "features/sidebar/common/dbSidebarSettings";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
+import type { SourceLanguage } from "utils/constants";
 
 function valueToString(value: number) {
   return `${value}`;
 }
 
-function normalizeValue(value: number, lang: DbLang) {
+function normalizeValue(value: number, lang: SourceLanguage) {
   // TODO set dynamic max
   if (!value || value < MIN_VALUES[lang]) {
     return MIN_VALUES[lang];

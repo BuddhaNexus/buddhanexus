@@ -1,25 +1,25 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
 import type {
-  DbLang,
   MenuOmission,
   MenuSetting,
   UtilityOptionEnum,
 } from "features/sidebar/common/dbSidebarSettings";
+import type { SourceLanguage } from "utils/constants";
 
 export const isSettingOmitted = ({
   omissions,
   settingName,
-  dbLang,
+  language,
   view,
 }: {
   omissions: MenuOmission;
   settingName: MenuSetting;
-  dbLang: DbLang;
+  language: SourceLanguage;
   view: DbViewEnum;
 }) => {
   return Boolean(
     omissions?.[settingName]?.[view]?.some((omittedLang) =>
-      ["allLangs", dbLang].includes(omittedLang)
+      ["allLangs", language].includes(omittedLang)
     )
   );
 };

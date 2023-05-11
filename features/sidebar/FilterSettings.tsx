@@ -32,7 +32,7 @@ export const FilterSettings = () => {
         !isSettingOmitted({
           omissions,
           settingName: filter,
-          dbLang: sourceLanguage,
+          language: sourceLanguage,
           view: currentView,
         })
     );

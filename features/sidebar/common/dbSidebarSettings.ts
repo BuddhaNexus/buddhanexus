@@ -1,7 +1,5 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
-
-const dbLangs = ["pli", "chn", "tib", "skt"] as const;
-export type DbLang = (typeof dbLangs)[number];
+import { SourceLanguage } from "utils/constants";
 
 // Items in the following settings arrays are given in order of appearance in sidebar
 export enum FilterEnum {
@@ -31,7 +29,7 @@ export enum UtilityOptionEnum {
 
 export type MenuSetting = DisplayOption | FilterEnum | UtilityOptionEnum;
 
-export type ViewOmission = (DbLang | "allLangs")[];
+export type ViewOmission = (SourceLanguage | "allLangs")[];
 export type SettingContext = Partial<Record<DbViewEnum, ViewOmission>>;
 
 type SettingOmissions<K extends string, T = SettingContext> = Partial<
@@ -74,8 +72,16 @@ const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptio
     script: {
       graph: ["allLangs"],
       numbers: ["allLangs"],
-      table: ["pli", "chn", "skt"],
-      text: ["pli", "chn", "skt"],
+      table: [
+        SourceLanguage.PALI,
+        SourceLanguage.CHINESE,
+        SourceLanguage.SANSKRIT,
+      ],
+      text: [
+        SourceLanguage.PALI,
+        SourceLanguage.CHINESE,
+        SourceLanguage.SANSKRIT,
+      ],
     },
     showAndPositionSegmentNrs: {
       graph: ["allLangs"],
@@ -126,13 +132,13 @@ export const DEFAULT_QUERY_PARAMS: QueryParams = {
   target_collection: undefined,
 };
 
-export const MIN_PAR_LENGTH_VALUES: Record<DbLang, number> = {
+export const MIN_PAR_LENGTH_VALUES: Record<SourceLanguage, number> = {
   chn: 5,
   pli: 25,
   skt: 25,
   tib: 7,
 };
-export const DEFAULT_PAR_LENGTH_VALUES: Record<DbLang, number> = {
+export const DEFAULT_PAR_LENGTH_VALUES: Record<SourceLanguage, number> = {
   chn: 7,
   pli: 30,
   skt: 30,

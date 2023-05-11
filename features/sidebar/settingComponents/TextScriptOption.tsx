@@ -2,11 +2,11 @@ import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
-import type { DbLang } from "features/sidebar/common/dbSidebarSettings";
+import type { SourceLanguage } from "utils/constants";
 
 type Script = "unicode" | "wylie";
 
-const SCRIPT_OPTIONS: Partial<Record<DbLang, Script[]>> = {
+const SCRIPT_OPTIONS: Partial<Record<SourceLanguage, Script[]>> = {
   tib: ["wylie", "unicode"],
 };
 
