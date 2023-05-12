@@ -6,30 +6,41 @@ import { getParallelDownloadData } from "./downloads";
 import { getExternalLinksData } from "./externalLinks";
 import { getGraphData } from "./graph";
 import { getLanguageMenuData } from "./languageMenu";
+import { getNumbersData } from "./numbers";
 import { getSourceTextCollections } from "./sidebarSourceTexts";
 import { getTableData } from "./table";
 import { getCategoryMenuItems, getTextMenuItems } from "./textLists";
 
 export const DbApi = {
-  LanguageMenu: {
-    makeQueryKey: (language: SourceLanguage) => ["languageMenuData", language],
-    call: getLanguageMenuData,
-  },
-  SidebarSourceTexts: {
-    makeQueryKey: (language: SourceLanguage) => ["textCollections", language],
-    call: getSourceTextCollections,
-  },
+  //* VIEWS
   GraphView: {
-    makeQueryKey: (fileName: string) => ["graphView", fileName],
+    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
+      "graphView",
+      fileName,
+      queryParams,
+    ],
     call: getGraphData,
   },
   TableView: {
     makeQueryKey: (fileName: string) => ["tableView", fileName],
     call: getTableData,
   },
+  NumbersView: {
+    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
+      "numbersView",
+      fileName,
+      queryParams,
+    ],
+    call: getNumbersData,
+  },
+  //* MENUS
   SegmentsData: {
     makeQueryKey: (fileName: string) => ["segmentsData", fileName],
     call: getSegmentsData,
+  },
+  LanguageMenu: {
+    makeQueryKey: (language: SourceLanguage) => ["languageMenuData", language],
+    call: getLanguageMenuData,
   },
   TextMenu: {
     makeQueryKey: (language: SourceLanguage) => ["textMenu", language],
@@ -39,6 +50,11 @@ export const DbApi = {
     makeQueryKey: (language: SourceLanguage) => ["categoryMenu", language],
     call: getCategoryMenuItems,
   },
+  SidebarSourceTexts: {
+    makeQueryKey: (language: SourceLanguage) => ["textCollections", language],
+    call: getSourceTextCollections,
+  },
+  //* META
   ParallelCount: {
     makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
       "parallelCount",
@@ -47,6 +63,7 @@ export const DbApi = {
     ],
     call: getParallelCount,
   },
+  //* UTILS / SETTINGS
   FolioData: {
     makeQueryKey: (fileName: string) => ["foliosData", fileName],
     call: getFolios,

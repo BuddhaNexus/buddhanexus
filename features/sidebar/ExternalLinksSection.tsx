@@ -66,6 +66,8 @@ export const ExternalLinksSection = () => {
     refetchOnWindowFocus: false,
   });
 
+  // TODO: sort out dark theme icons, http://localhost:3000/db/tib/K01D0003_H0003/table
+
   if (data && Object.keys(data).length > 0) {
     return (
       <>

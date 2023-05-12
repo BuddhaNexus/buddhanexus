@@ -5,7 +5,7 @@ import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress, Typography } from "@mui/material";
-import { dehydrate, QueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { ApiGraphPageData } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -13,14 +13,18 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export { getSourceTextStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 export default function TextPage() {
-  const { sourceLanguage, fileName, serializedParams } = useDbQueryParams();
+  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
   useDbView();
 
   // TODO: add error handling
   const { data, isLoading } = useQuery<ApiGraphPageData>({
-    queryKey: [DbApi.GraphView.makeQueryKey(fileName), serializedParams],
-    queryFn: () => DbApi.GraphView.call(fileName, serializedParams),
+    queryKey: DbApi.GraphView.makeQueryKey({ fileName, queryParams }),
+    queryFn: () =>
+      DbApi.GraphView.call({
+        fileName,
+        queryParams,
+      }),
     refetchOnWindowFocus: false,
   });
 
@@ -53,7 +57,7 @@ export default function TextPage() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const i18nProps = await getI18NextStaticProps(
     {
       locale,
@@ -61,14 +65,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     ["settings"]
   );
 
-  const queryClient = new QueryClient();
-
-  const fileName = params?.file as string;
-  await queryClient.prefetchQuery(DbApi.GraphView.makeQueryKey(fileName), () =>
-    DbApi.GraphView.call(fileName, ``)
-  );
-
   return {
-    props: { dehydratedState: dehydrate(queryClient), ...i18nProps.props },
+    props: { ...i18nProps.props },
   };
 };

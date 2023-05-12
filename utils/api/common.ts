@@ -19,9 +19,6 @@ export async function getParallelCount({
   fileName,
   queryParams,
 }: FilePropApiQuery): Promise<Record<string, number>> {
-  if (Object.keys(queryParams).length === 0) {
-    return {};
-  }
   const res = await fetch(
     `${API_ROOT_URL}/parallels/${fileName}/count?co_occ=30&${queryString.stringify(
       queryParams
