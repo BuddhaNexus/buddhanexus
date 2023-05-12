@@ -56,7 +56,11 @@ export const DbApi = {
     call: getExternalLinksData,
   },
   DownloadResults: {
-    makeQueryKey: (fileName: string) => ["downloadData", fileName],
+    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
+      "downloadData",
+      fileName,
+      queryParams,
+    ],
     call: getParallelDownloadData,
   },
 };

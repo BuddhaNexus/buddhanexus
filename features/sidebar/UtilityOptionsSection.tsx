@@ -68,7 +68,7 @@ const utilityComponents: UtilityOptions = {
 export const UtilityOptionsSection = () => {
   const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentViewAtom);
-  const { fileName, sourceLanguage, serializedParams } = useDbQueryParams();
+  const { fileName, sourceLanguage, queryParams } = useDbQueryParams();
   let href: string;
 
   if (typeof window !== "undefined") {
@@ -76,11 +76,12 @@ export const UtilityOptionsSection = () => {
   }
 
   const { data: downloadData } = useQuery({
-    queryKey: [DbApi.DownloadResults.makeQueryKey(fileName), serializedParams],
+    // TODO: only needs to be called on click
+    queryKey: DbApi.DownloadResults.makeQueryKey({ fileName, queryParams }),
     queryFn: () =>
       DbApi.DownloadResults.call({
         fileName,
-        serializedParams,
+        queryParams,
         view: currentView,
       }),
     refetchOnWindowFocus: false,

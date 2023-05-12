@@ -1,3 +1,4 @@
+import type { DbViewEnum } from "@components/hooks/useDbView";
 import type { SourceLanguage } from "utils/constants";
 
 export interface ApiGraphPageData {
@@ -21,6 +22,9 @@ export type QueryParams = Partial<URLSearchParams>;
 export interface FilePropApiQuery {
   fileName: string;
   queryParams: QueryParams;
+}
+export interface ViewPropApiQuery extends FilePropApiQuery {
+  view: DbViewEnum;
 }
 
 export interface LanguagePropApiQuery {
