@@ -8,12 +8,13 @@ import queryString from "query-string";
 import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {
-  const { query } = useRouter();
   const { t } = useTranslation();
+  const { query } = useRouter();
+  const { language, file, ...queryParams } = query;
 
-  const sourceLanguage = query.language as SourceLanguage;
+  const sourceLanguage = language as SourceLanguage;
   const sourceLanguageName = t(`language.${sourceLanguage}`);
-  const fileName = query.file as string;
+  const fileName = file as string;
 
   const defaultQueryParams = {
     score: DEFAULT_QUERY_PARAMS.score,
@@ -26,6 +27,7 @@ export const useDbQueryParams = () => {
     sourceLanguage,
     sourceLanguageName,
     fileName,
+    queryParams,
     serializedParams,
     defaultQueryParams,
   };

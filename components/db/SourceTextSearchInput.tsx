@@ -181,12 +181,8 @@ const StyledPopper = styled(Popper)({
 export const SourceTextSearchInput = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { sourceLanguage } = useDbQueryParams();
+  const { sourceLanguage, queryParams } = useDbQueryParams();
   const dbView = useAtomValue(currentViewAtom);
-
-  // This creates a new `queryParams` object stripped of the `language` and `file` props avoiding them being set as query params, (See TODO below where queryParams` is used and handle accordingly)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { language, file, ...queryParams } = router.query;
 
   const { data, isLoading } = useQuery<DatabaseText[]>({
     queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),

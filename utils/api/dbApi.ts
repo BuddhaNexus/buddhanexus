@@ -1,3 +1,4 @@
+import type { FilePropApiQuery } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
 import { getFolios, getParallelCount, getSegmentsData } from "./common";
@@ -39,7 +40,11 @@ export const DbApi = {
     call: getCategoryMenuItems,
   },
   ParallelCount: {
-    makeQueryKey: (fileName: string) => ["parallelCount", fileName],
+    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
+      "parallelCount",
+      fileName,
+      queryParams,
+    ],
     call: getParallelCount,
   },
   FolioData: {

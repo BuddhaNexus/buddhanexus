@@ -1,3 +1,5 @@
+import type { SourceLanguage } from "utils/constants";
+
 export interface ApiGraphPageData {
   histogramgraphdata: [name: string, count: number][];
   piegraphdata: [name: string, count: number][];
@@ -13,3 +15,15 @@ export interface APIResponse<T> {
 }
 
 export type PagedResponse<T> = { pageNumber: number; data: T };
+
+export type QueryParams = Partial<URLSearchParams>;
+
+export interface FilePropApiQuery {
+  fileName: string;
+  queryParams: QueryParams;
+}
+
+export interface LanguagePropApiQuery {
+  language: SourceLanguage;
+  queryParams: QueryParams;
+}

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
@@ -29,23 +28,19 @@ function getActiveFilterCount(queries: any, defaults: any) {
 
 export default function CurrentResultChips() {
   const { t } = useTranslation("settings");
-  const { query } = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { language, file, ...queryParams } = query;
-
-  const { fileName, serializedParams, defaultQueryParams } = useDbQueryParams();
+  const { fileName, queryParams, defaultQueryParams } = useDbQueryParams();
 
   const filtersCount = getActiveFilterCount(queryParams, defaultQueryParams);
 
   const { data, isLoading } = useQuery({
-    queryKey: [DbApi.ParallelCount.makeQueryKey(fileName), serializedParams],
+    // TODO: - see if the query queue can be ordered to return this item before main results. - pass the same defaults to all instances of QueryClient
+    queryKey: DbApi.ParallelCount.makeQueryKey({ fileName, queryParams }),
     queryFn: () =>
       DbApi.ParallelCount.call({
         fileName,
-        serializedParams,
+        queryParams,
       }),
-    // TODO: pass the same defaults to all instances of QueryClient
     refetchOnWindowFocus: false,
   });
 
