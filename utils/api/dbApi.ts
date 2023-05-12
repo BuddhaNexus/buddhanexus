@@ -1,7 +1,7 @@
 import type { FilePropApiQuery } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
-import { getFolios, getParallelCount, getSegmentsData } from "./common";
+import { getFolios, getParallelCount } from "./common";
 import { getParallelDownloadData } from "./downloads";
 import { getExternalLinksData } from "./externalLinks";
 import { getGraphData } from "./graph";
@@ -22,7 +22,11 @@ export const DbApi = {
     call: getGraphData,
   },
   TableView: {
-    makeQueryKey: (fileName: string) => ["tableView", fileName],
+    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
+      "tableView",
+      fileName,
+      queryParams,
+    ],
     call: getTableData,
   },
   NumbersView: {
@@ -34,10 +38,6 @@ export const DbApi = {
     call: getNumbersData,
   },
   //* MENUS
-  SegmentsData: {
-    makeQueryKey: (fileName: string) => ["segmentsData", fileName],
-    call: getSegmentsData,
-  },
   LanguageMenu: {
     makeQueryKey: (language: SourceLanguage) => ["languageMenuData", language],
     call: getLanguageMenuData,
@@ -53,6 +53,9 @@ export const DbApi = {
   SidebarSourceTexts: {
     makeQueryKey: (language: SourceLanguage) => ["textCollections", language],
     call: getSourceTextCollections,
+  },
+  SegmentsData: {
+    makeQueryKey: (fileName: string) => ["segmentsData", fileName],
   },
   //* META
   ParallelCount: {

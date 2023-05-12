@@ -59,6 +59,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const sourceLanguage = params?.language as SourceLanguage;
   await queryClient.prefetchQuery(
+    // TODO: @Hubert is this intended? If not, please feel free to remove `SegmentsData` from the `DbApi` as it's not used anywhere else.
     DbApi.SegmentsData.makeQueryKey(sourceLanguage),
     () => DbApi.SidebarSourceTexts.call(sourceLanguage)
   );

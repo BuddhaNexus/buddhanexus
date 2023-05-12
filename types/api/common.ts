@@ -1,5 +1,4 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
-import type { SourceLanguage } from "utils/constants";
 
 export interface ApiGraphPageData {
   histogramgraphdata: [name: string, count: number][];
@@ -23,11 +22,13 @@ export interface FilePropApiQuery {
   fileName: string;
   queryParams: QueryParams;
 }
-export interface ViewPropApiQuery extends FilePropApiQuery {
-  view: DbViewEnum;
+
+export interface InfiniteFilePropApiQuery {
+  fileName: string;
+  queryParams: QueryParams;
+  pageNumber: number;
 }
 
-export interface LanguagePropApiQuery {
-  language: SourceLanguage;
-  queryParams: QueryParams;
+export interface ViewPropApiQuery extends FilePropApiQuery {
+  view: DbViewEnum;
 }

@@ -1,19 +1,8 @@
-// used in numbers view.
 // TODO: transform this data to have a better structure
 import queryString from "query-string";
-import type { ApiSegmentsData, FilePropApiQuery } from "types/api/common";
+import type { FilePropApiQuery } from "types/api/common";
 
 import { API_ROOT_URL } from "./constants";
-
-export async function getSegmentsData(
-  fileName: string,
-  serializedParams: string
-): Promise<ApiSegmentsData> {
-  const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/segments?${serializedParams}&page=0`
-  );
-  return await res.json();
-}
 
 export async function getParallelCount({
   fileName,

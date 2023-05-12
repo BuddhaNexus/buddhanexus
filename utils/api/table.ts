@@ -1,4 +1,5 @@
-import type { PagedResponse } from "types/api/common";
+import queryString from "query-string";
+import type { InfiniteFilePropApiQuery, PagedResponse } from "types/api/common";
 import type { ApiTablePageData, TablePageData } from "types/api/table";
 
 import { API_ROOT_URL } from "./constants";
@@ -36,16 +37,14 @@ function parseAPITableData(apiData: ApiTablePageData): TablePageData {
 
 export async function getTableData({
   fileName,
+  queryParams,
   pageNumber,
-  serializedParams,
-}: {
-  fileName: string;
-  pageNumber: number;
-  serializedParams: string;
-}): Promise<PagedResponse<TablePageData>> {
+}: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
   // TODO: remove co_occ param after backend update
   const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/table?page=${pageNumber}&co_occ=2000&${serializedParams}`
+    `${API_ROOT_URL}/files/${fileName}/table?page=${pageNumber}&co_occ=2000&${queryString.stringify(
+      queryParams
+    )}`
   );
   const responseJSON = await res.json();
   return { data: parseAPITableData(responseJSON), pageNumber };

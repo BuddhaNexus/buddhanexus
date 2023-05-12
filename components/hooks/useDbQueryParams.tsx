@@ -4,7 +4,6 @@ import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS,
 } from "features/sidebar/common/dbSidebarSettings";
-import queryString from "query-string";
 import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {
@@ -21,14 +20,11 @@ export const useDbQueryParams = () => {
     par_length: DEFAULT_PAR_LENGTH_VALUES[sourceLanguage],
   };
 
-  const serializedParams = queryString.stringify(query);
-
   return {
     sourceLanguage,
     sourceLanguageName,
     fileName,
     queryParams,
-    serializedParams,
     defaultQueryParams,
   };
 };

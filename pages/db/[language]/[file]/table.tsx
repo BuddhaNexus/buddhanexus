@@ -17,18 +17,18 @@ import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function TablePage() {
-  const { sourceLanguage, fileName, serializedParams } = useDbQueryParams();
+  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
   useDbView();
 
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
     useInfiniteQuery<PagedResponse<TablePageData>>({
-      queryKey: [DbApi.TableView.makeQueryKey(fileName), serializedParams],
+      queryKey: DbApi.TableView.makeQueryKey({ fileName, queryParams }),
       queryFn: ({ pageParam = 0 }) =>
         DbApi.TableView.call({
           fileName,
+          queryParams,
           pageNumber: pageParam,
-          serializedParams,
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
