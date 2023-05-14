@@ -5,9 +5,11 @@ import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
+import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import { CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import type { ApiGraphPageData } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -36,7 +38,8 @@ export default function TextPage() {
   if (isFallback) {
     return (
       <PageContainer backgroundName={sourceLanguage}>
-        <CircularProgress color="inherit" />
+        <Typography>Fallback</Typography>
+        <CenteredProgress />
       </PageContainer>
     );
   }
@@ -50,7 +53,7 @@ export default function TextPage() {
       <DbResultsPageHead />
 
       {isLoading ? (
-        <CircularProgress color="inherit" />
+        <CenteredProgress />
       ) : (
         data?.piegraphdata.map(([name, count]) => (
           <Typography key={name}>
@@ -58,6 +61,8 @@ export default function TextPage() {
           </Typography>
         ))
       )}
+
+      <SourceTextBrowserDrawer />
     </PageContainer>
   );
 }

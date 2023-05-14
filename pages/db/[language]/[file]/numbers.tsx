@@ -5,8 +5,9 @@ import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
+import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import { CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import type { ApiNumbersPageData } from "types/api/common";
@@ -37,7 +38,7 @@ export default function NumbersPage() {
   if (isFallback) {
     return (
       <PageContainer backgroundName={sourceLanguage}>
-        <CircularProgress color="inherit" />
+        <CenteredProgress />
       </PageContainer>
     );
   }
@@ -54,7 +55,7 @@ export default function NumbersPage() {
       {/* The deta should probably be transformed according to our needs before using it here. */}
 
       {isLoading ? (
-        <CircularProgress color="inherit" />
+        <CenteredProgress />
       ) : (
         data?.collections[0].map((collection) => {
           const [[collectionId, collectionName]] = Object.entries(collection);

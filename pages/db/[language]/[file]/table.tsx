@@ -4,8 +4,8 @@ import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
+import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import { CircularProgress } from "@mui/material";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "features/tableView/TableView";
@@ -39,7 +39,7 @@ export default function TablePage() {
   if (isFallback) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
-        <CircularProgress color="inherit" sx={{ flex: 1 }} />
+        <CenteredProgress />
       </PageContainer>
     );
   }
@@ -53,7 +53,7 @@ export default function TablePage() {
       <DbResultsPageHead />
 
       {isInitialLoading || !data ? (
-        <CircularProgress color="inherit" sx={{ flex: 1 }} />
+        <CenteredProgress />
       ) : (
         // TODO: clarify why this extra div is needed for display
         <div style={{ height: "100vh" }}>
