@@ -12,7 +12,7 @@ import type { ApiGraphPageData } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
-export { getSourceTextStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
+export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 export default function GraphPage() {
   const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
