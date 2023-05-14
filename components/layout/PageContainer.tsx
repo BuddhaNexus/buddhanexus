@@ -29,7 +29,7 @@ const BgImageBgSize: Record<BackgroundName, Property.BackgroundSize> = {
   welcome: "cover",
 };
 
-type BackgroundName = SourceLanguage | "welcome";
+export type BackgroundName = SourceLanguage | "welcome";
 
 interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;

@@ -1,6 +1,7 @@
 import React from "react";
 import type { GetStaticProps } from "next";
 import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
+import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -19,8 +20,7 @@ export default function NumbersPage() {
   const { isFallback } = useSourceFile();
   useDbView();
 
-  // TODO: add error handling
-  const { data, isLoading } = useQuery<ApiNumbersPageData>({
+  const { data, isLoading, isError } = useQuery<ApiNumbersPageData>({
     queryKey: DbApi.NumbersView.makeQueryKey({ fileName, queryParams }),
     queryFn: () =>
       DbApi.NumbersView.call({
@@ -29,6 +29,10 @@ export default function NumbersPage() {
       }),
     refetchOnWindowFocus: false,
   });
+
+  if (isError) {
+    return <ErrorPage backgroundName={sourceLanguage} />;
+  }
 
   if (isFallback) {
     return (

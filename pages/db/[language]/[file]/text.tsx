@@ -1,5 +1,7 @@
+import React from "react";
 import type { GetStaticProps } from "next";
 import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
+import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -17,8 +19,7 @@ export default function TextPage() {
   const { isFallback } = useSourceFile();
   useDbView();
 
-  // TODO: add error handling
-  const { data, isLoading } = useQuery<ApiGraphPageData>({
+  const { data, isLoading, isError } = useQuery<ApiGraphPageData>({
     queryKey: DbApi.GraphView.makeQueryKey({ fileName, queryParams }),
     queryFn: () =>
       DbApi.GraphView.call({
@@ -27,6 +28,10 @@ export default function TextPage() {
       }),
     refetchOnWindowFocus: false,
   });
+
+  if (isError) {
+    return <ErrorPage backgroundName={sourceLanguage} />;
+  }
 
   if (isFallback) {
     return (
