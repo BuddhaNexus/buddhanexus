@@ -55,11 +55,9 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     },
   });
 
-  // TODO: use for SourceTextBrowserTree
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const sourceLanguage = params?.language as SourceLanguage;
   await queryClient.prefetchQuery(
-    DbApi.SegmentsData.makeQueryKey(sourceLanguage),
+    DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
     () => DbApi.SidebarSourceTexts.call(sourceLanguage)
   );
 

@@ -1,0 +1,47 @@
+{
+  "resultsHead": {
+    "parallels": "Parallels: ",
+    "filters": "Custom filters: {{value}}",
+    "reset": "Reset"
+  },
+  "tabs": {
+    "options": "Options",
+    "filters": "Filters",
+    "info": "Info"
+  },
+  "headings": {
+    "display": "Display",
+    "tools": "Tools",
+    "links": "Links"
+  },
+  "optionsLabels": {
+    "script": "Select text script",
+    "folio": "Go to selected text section",
+    "folioAsLimit": "Show matches from selected text section",
+    "sorting": "Sorting Method",
+    "sortSource": "Match position in source text",
+    "sortParallel": "Match position in parallel texts",
+    "sortLength": "Length of character match (>)",
+    "download": "Download results as xmlx file",
+    "wylie": "Wylie",
+    "unicode": "Unicode",
+    "copyQueryTitle": "Copy text title",
+    "copyQueryLink": "Copy results page link",
+    "emailQueryLink": "Email results page link"
+  },
+  "optionsPopperMsgs": {
+    "download": "Ooops! Something went wrong!",
+    "copyQueryTitle": "Copied",
+    "copyQueryLink": "Copied",
+    "emailQueryLink": "Email opened"
+  },
+  "filtersLabels": {
+    "score": "Similarity Score:",
+    "minMatch": "Minimum character/syllable matches length",
+    "includeExcludeFilters": "Includes and Exclude items",
+    "excludeCollections": "Exclude collections",
+    "includeCollections": "Only include collections",
+    "excludeTexts": "Exclude texts",
+    "includeTexts": "Only include texts"
+  }
+}

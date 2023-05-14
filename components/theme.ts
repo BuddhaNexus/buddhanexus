@@ -11,6 +11,10 @@ declare module "@mui/material/styles" {
     header: string;
     accent: string;
     card: string;
+    inverted: string;
+  }
+  interface TypeText {
+    inverted: string;
   }
 }
 
@@ -96,10 +100,12 @@ export const getDesignTokens = ({
               ? SOURCE_LANG_LIGHT_COLORS[sourceLanguage]
               : "#393732",
             card: grey[100],
+            inverted: grey[800],
           },
           text: {
             primary: grey[900],
             secondary: grey[600],
+            inverted: grey[50],
           },
           divider: "rgba(54,31,13,0.12)",
         }
@@ -138,9 +144,22 @@ export const getDesignTokens = ({
           text: {
             primary: "#d2cfcf",
             secondary: "#a8a5a5",
+            inverted: grey[900],
           },
           divider: "rgba(54,31,13,0.12)",
         }),
+  },
+  components: {
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          minWidth: 0,
+          "@media (min-width: 0px)": {
+            fontSize: "1.1rem",
+          },
+        },
+      },
+    },
   },
 });
 

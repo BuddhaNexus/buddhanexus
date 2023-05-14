@@ -4,6 +4,7 @@ import React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { appWithTranslation, i18n } from "next-i18next";
+import { NextAdapter } from "next-query-params";
 import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
 import { ThemeProvider } from "next-themes";
@@ -16,6 +17,9 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import queryString from "query-string";
+import { QueryParamProvider } from "use-query-params";
 import createEmotionCache from "utils/createEmotionCache";
 import { MUIThemeProvider } from "utils/MUIThemeProvider";
 
@@ -45,25 +49,36 @@ function MyApp({
 
   return (
     <CacheProvider value={emotionCache}>
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <DefaultSeo {...SEO} />
-          <Head>
-            <meta
-              name="viewport"
-              content="initial-scale=1, width=device-width"
-            />
-          </Head>
+      <QueryParamProvider
+        adapter={NextAdapter}
+        options={{
+          searchStringToObject: queryString.parse,
+          objectToSearchString: queryString.stringify,
+          updateType: "replaceIn",
+          enableBatching: true,
+        }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <DefaultSeo {...SEO} />
+            <Head>
+              <meta
+                name="viewport"
+                content="initial-scale=1, width=device-width"
+              />
+            </Head>
 
-          <ThemeProvider>
-            <MUIThemeProvider>
-              <CssBaseline />
-              <AppTopBar />
-              <Component {...pageProps} />
-            </MUIThemeProvider>
-          </ThemeProvider>
-        </Hydrate>
-      </QueryClientProvider>
+            <ThemeProvider>
+              <MUIThemeProvider>
+                <CssBaseline />
+                <AppTopBar />
+                <Component {...pageProps} />
+              </MUIThemeProvider>
+            </ThemeProvider>
+          </Hydrate>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      </QueryParamProvider>
     </CacheProvider>
   );
 }

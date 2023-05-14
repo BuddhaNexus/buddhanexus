@@ -1,14 +1,34 @@
-// used in numbers view.
 // TODO: transform this data to have a better structure
-import type { ApiSegmentsData } from "types/api/common";
+import queryString from "query-string";
+import type { FilePropApiQuery } from "types/api/common";
 
 import { API_ROOT_URL } from "./constants";
 
-export async function getSegmentsData(
-  fileName: string
-): Promise<ApiSegmentsData> {
+export async function getParallelCount({
+  fileName,
+  queryParams,
+}: FilePropApiQuery): Promise<Record<string, number>> {
   const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/segments?page=0&co_occ=2000&folio=`
+    `${API_ROOT_URL}/parallels/${fileName}/count?co_occ=30&${queryString.stringify(
+      queryParams
+    )}`
   );
+
   return await res.json();
+}
+
+export interface DatabaseFolio {
+  id: string;
+  segmentNr: string;
+}
+
+export async function getFolios(fileName: string): Promise<DatabaseFolio[]> {
+  const res = await fetch(`${API_ROOT_URL}/files/${fileName}/folios`);
+
+  const response = await res.json();
+
+  return response.folios.map((folio: { segment_nr: string; num: string }) => ({
+    id: folio.num,
+    segmentNr: folio.segment_nr,
+  }));
 }

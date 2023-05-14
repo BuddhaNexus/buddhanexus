@@ -8,6 +8,9 @@ import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
 import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
 import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
+import { Main } from "features/sidebar/common/MuiStyledSidebarComponents";
+import { isSidebarOpenAtom, Sidebar } from "features/sidebar/Sidebar";
+import { useAtomValue } from "jotai";
 import { SourceLanguage } from "utils/constants";
 
 const BgImageSrcs: Record<BackgroundName, string> = {
@@ -31,13 +34,16 @@ type BackgroundName = SourceLanguage | "welcome";
 interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;
   maxWidth?: Breakpoint;
+  hasSidebar?: boolean;
 }
 
 export const PageContainer: FC<Props> = ({
   children,
   backgroundName,
   maxWidth = "md",
+  hasSidebar = false,
 }) => {
+  const isSidebarOpen = useAtomValue(isSidebarOpenAtom);
   const { theme } = useTheme();
 
   return (
@@ -58,19 +64,33 @@ export const PageContainer: FC<Props> = ({
           }}
         />
       )}
-      <Container
-        component="main"
-        maxWidth={maxWidth}
-        sx={{
-          pt: { xs: 0, sm: 4 },
-          px: { xs: 0, sm: 2, lg: 4 },
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {children}
-      </Container>
+      {hasSidebar ? (
+        <>
+          <Main open={isSidebarOpen}>
+            <Container
+              maxWidth={maxWidth}
+              sx={{ flex: 1, display: "flex", flexDirection: "column" }}
+            >
+              {children}
+            </Container>
+          </Main>
+          <Sidebar />
+        </>
+      ) : (
+        <Container
+          component="main"
+          maxWidth={maxWidth}
+          sx={{
+            pt: { xs: 0, sm: 4 },
+            px: { xs: 0, sm: 2, lg: 4 },
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {children}
+        </Container>
+      )}
     </>
   );
 };
