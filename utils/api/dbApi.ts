@@ -54,9 +54,6 @@ export const DbApi = {
     makeQueryKey: (language: SourceLanguage) => ["textCollections", language],
     call: getSourceTextCollections,
   },
-  SegmentsData: {
-    makeQueryKey: (fileName: string) => ["segmentsData", fileName],
-  },
   //* META
   ParallelCount: {
     makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [

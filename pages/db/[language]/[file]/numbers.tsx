@@ -8,7 +8,7 @@ import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-import type { ApiSegmentsData } from "types/api/common";
+import type { ApiNumbersPageData } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
@@ -20,7 +20,7 @@ export default function NumbersPage() {
   useDbView();
 
   // TODO: add error handling
-  const { data, isLoading } = useQuery<ApiSegmentsData>({
+  const { data, isLoading } = useQuery<ApiNumbersPageData>({
     queryKey: DbApi.NumbersView.makeQueryKey({ fileName, queryParams }),
     queryFn: () =>
       DbApi.NumbersView.call({

@@ -5,7 +5,7 @@ export interface ApiGraphPageData {
   piegraphdata: [name: string, count: number][];
 }
 
-export interface ApiSegmentsData {
+export interface ApiNumbersPageData {
   collections: Record<string, string>[][];
   segments: { parallels: string[][]; segmentnr: string }[];
 }
