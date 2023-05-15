@@ -4,20 +4,22 @@ import React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { appWithTranslation, i18n } from "next-i18next";
+import { NextAdapter } from "next-query-params";
 import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
 import { ThemeProvider } from "next-themes";
-import { AppMDXComponents } from "@components/layout/AppMDXComponents";
 import { AppTopBar } from "@components/layout/AppTopBar";
 import type { EmotionCache } from "@emotion/react";
 import { CacheProvider } from "@emotion/react";
-import { MDXProvider } from "@mdx-js/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
   Hydrate,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import queryString from "query-string";
+import { QueryParamProvider } from "use-query-params";
 import createEmotionCache from "utils/createEmotionCache";
 import { MUIThemeProvider } from "utils/MUIThemeProvider";
 
@@ -47,7 +49,15 @@ function MyApp({
 
   return (
     <CacheProvider value={emotionCache}>
-      <MDXProvider components={AppMDXComponents}>
+      <QueryParamProvider
+        adapter={NextAdapter}
+        options={{
+          searchStringToObject: queryString.parse,
+          objectToSearchString: queryString.stringify,
+          updateType: "replaceIn",
+          enableBatching: true,
+        }}
+      >
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
             <DefaultSeo {...SEO} />
@@ -66,8 +76,9 @@ function MyApp({
               </MUIThemeProvider>
             </ThemeProvider>
           </Hydrate>
+          <ReactQueryDevtools />
         </QueryClientProvider>
-      </MDXProvider>
+      </QueryParamProvider>
     </CacheProvider>
   );
 }

@@ -1,7 +1,8 @@
 import React from "react";
 import type { GetStaticPaths, GetStaticProps } from "next";
-import { DbViewSelector } from "@components/db/DbViewSelector";
+import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { CircularProgress } from "@mui/material";
@@ -16,19 +17,23 @@ import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function TablePage() {
-  const { sourceLanguage, fileName } = useDbQueryParams();
+  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
+  useDbView();
 
-  // TODO: add error handling
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
     useInfiniteQuery<PagedResponse<TablePageData>>({
-      queryKey: DbApi.TableView.makeQueryKey(fileName),
-      queryFn: ({ pageParam = 0 }) => DbApi.TableView.call(fileName, pageParam),
+      queryKey: DbApi.TableView.makeQueryKey({ fileName, queryParams }),
+      queryFn: ({ pageParam = 0 }) =>
+        DbApi.TableView.call({
+          fileName,
+          queryParams,
+          pageNumber: pageParam,
+        }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
-        lastPage.pageNumber === 0
-          ? lastPage.pageNumber
-          : lastPage.pageNumber - 1,
+        lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
+      refetchOnWindowFocus: false,
     });
 
   if (isFallback) {
@@ -40,17 +45,24 @@ export default function TablePage() {
   }
 
   return (
-    <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
-      <DbViewSelector currentView="table" />
+    <PageContainer
+      maxWidth="xl"
+      backgroundName={sourceLanguage}
+      hasSidebar={true}
+    >
+      <DbResultsPageHead />
 
       {isInitialLoading || !data ? (
         <CircularProgress color="inherit" sx={{ flex: 1 }} />
       ) : (
-        <TableView
-          data={data.pages.flatMap((page) => page.data)}
-          onEndReached={fetchNextPage}
-          onStartReached={fetchPreviousPage}
-        />
+        // TODO: clarify why this extra div is needed for display
+        <div style={{ height: "100vh" }}>
+          <TableView
+            data={data.pages.flatMap((page) => page.data)}
+            onEndReached={fetchNextPage}
+            onStartReached={fetchPreviousPage}
+          />
+        </div>
       )}
       <SourceTextBrowserDrawer />
     </PageContainer>
@@ -62,7 +74,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["db"]
+    ["settings"]
   );
 
   return {

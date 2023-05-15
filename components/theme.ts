@@ -3,14 +3,18 @@ import type { PaletteMode, ThemeOptions } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { SourceLanguage } from "utils/constants";
 
-export const sourceSerif = Source_Serif_4();
-export const sourceSans = Source_Sans_3();
+export const sourceSerif = Source_Serif_4({ subsets: ["latin", "latin-ext"] });
+export const sourceSans = Source_Sans_3({ subsets: ["latin", "latin-ext"] });
 
 declare module "@mui/material/styles" {
   interface TypeBackground {
     header: string;
     accent: string;
     card: string;
+    inverted: string;
+  }
+  interface TypeText {
+    inverted: string;
   }
 }
 
@@ -28,10 +32,13 @@ const SOURCE_LANG_LIGHT_COLORS = {
 };
 
 const SOURCE_LANG_DARK_COLORS = {
-  chn: "#180022",
-  pli: "#110b03",
-  skt: "#0f0e1a",
-  tib: "#170604",
+  main: { chn: "#270431", pli: "#371f00", skt: "#0F0B2B", tib: "#260b08" },
+  accent: {
+    chn: "#f0c8d1",
+    pli: "#f5e5d1",
+    skt: "#d0cde0",
+    tib: "#f0cdd1",
+  },
 };
 
 export const getDesignTokens = ({
@@ -68,7 +75,7 @@ export const getDesignTokens = ({
           primary: {
             main: sourceLanguage
               ? SOURCE_LANG_LIGHT_COLORS[sourceLanguage]
-              : "#361F0D",
+              : "#393732",
           },
           secondary: {
             main: "#C23211",
@@ -91,19 +98,23 @@ export const getDesignTokens = ({
             accent: grey[50],
             header: sourceLanguage
               ? SOURCE_LANG_LIGHT_COLORS[sourceLanguage]
-              : "#361F0D",
+              : "#393732",
             card: grey[100],
+            inverted: grey[800],
           },
           text: {
             primary: grey[900],
             secondary: grey[600],
+            inverted: grey[50],
           },
           divider: "rgba(54,31,13,0.12)",
         }
       : {
           // palette values for dark mode
           primary: {
-            main: "#FFBC73",
+            main: sourceLanguage
+              ? SOURCE_LANG_DARK_COLORS.accent[sourceLanguage]
+              : "#E1BD97",
             contrastText: "#fff",
           },
           secondary: {
@@ -122,20 +133,33 @@ export const getDesignTokens = ({
             main: "#02CC3B",
           },
           background: {
-            default: "#080609",
-            paper: "#060305",
+            default: "#201c22",
+            paper: "#09070b",
             accent: grey[900],
             header: sourceLanguage
-              ? SOURCE_LANG_DARK_COLORS[sourceLanguage]
+              ? SOURCE_LANG_DARK_COLORS.main[sourceLanguage]
               : "#0F0405",
-            card: "#121213",
+            card: "#2c2c2f",
           },
           text: {
             primary: "#d2cfcf",
             secondary: "#a8a5a5",
+            inverted: grey[900],
           },
           divider: "rgba(54,31,13,0.12)",
         }),
+  },
+  components: {
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          minWidth: 0,
+          "@media (min-width: 0px)": {
+            fontSize: "1.1rem",
+          },
+        },
+      },
+    },
   },
 });
 

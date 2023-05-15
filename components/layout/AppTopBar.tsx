@@ -58,6 +58,7 @@ export const AppTopBar = () => {
       position="sticky"
       elevation={0}
       sx={(theme) => ({
+        zIndex: `${theme.zIndex.drawer + 1}`,
         borderBottom: `1px solid ${theme.palette.background.accent}`,
         backgroundColor: theme.palette.background.header,
       })}

@@ -1,0 +1,47 @@
+{
+  "resultsHead": {
+    "parallels": "Parallels: ",
+    "filters": "Custom filters: {{value}}",
+    "reset": "Reset"
+  },
+  "tabs": {
+    "options": "Optionen",
+    "filters": "Filter",
+    "info": "Info"
+  },
+  "headings": {
+    "display": "Anzeigen",
+    "tools": "Werkzeuge",
+    "links": "Links"
+  },
+  "optionsLabels": {
+    "script": "Textskript auswählen",
+    "folio": "Gehe zum ausgewählten Textabschnitt",
+    "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
+    "sorting": "Sortiermethode",
+    "sortSource": "Position im Quelltext abgleichen",
+    "sortParallel": "Position in parallelen Texten abgleichen",
+    "sortLength": "Länge des übereinstimmenden Zeichens (>)",
+    "wylie": "Wylie",
+    "unicode": "Unicode",
+    "download": "Ergebnisse als xmlx-Datei herunterladen",
+    "copyQueryTitle": "Texttitel kopieren",
+    "copyQueryLink": "Link der Ergebnisseite kopieren",
+    "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden"
+  },
+  "optionsPopperMsgs": {
+    "download": "Hoppla! Etwas ist schief gelaufen!",
+    "copyQueryTitle": "Kopiert",
+    "copyQueryLink": "Kopiert",
+    "emailQueryLink": "E-Mail geöffnet"
+  },
+  "filtersLabels": {
+    "score": "Similarity Score:",
+    "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
+    "includeExcludeFilters": "Elemente ein- und ausschließen",
+    "excludeCollections": "Sammlungen ausschließen",
+    "includeCollections": "Nur Sammlungen einschließen",
+    "excludeTexts": "Texte ausschließen",
+    "includeTexts": "Nur Texte einschließen"
+  }
+}

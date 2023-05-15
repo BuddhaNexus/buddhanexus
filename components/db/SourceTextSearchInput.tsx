@@ -8,9 +8,9 @@ import type { ListChildComponentProps } from "react-window";
 import { VariableSizeList } from "react-window";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { getTableViewUrl } from "@components/common/utils";
-import type { DatabaseText } from "@components/db/types";
+import { getTextPath } from "@components/common/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { currentViewAtom } from "@components/hooks/useDbView";
 import {
   Autocomplete,
   autocompleteClasses,
@@ -25,7 +25,9 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
+import type { DatabaseText } from "utils/api/textLists";
 
 const OuterElementContext = React.createContext({});
 
@@ -177,11 +179,10 @@ const StyledPopper = styled(Popper)({
 });
 
 export const SourceTextSearchInput = () => {
-  const { sourceLanguage } = useDbQueryParams();
-
-  const router = useRouter();
-
   const { t } = useTranslation();
+  const router = useRouter();
+  const { sourceLanguage, queryParams } = useDbQueryParams();
+  const dbView = useAtomValue(currentViewAtom);
 
   const { data, isLoading } = useQuery<DatabaseText[]>({
     queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),
@@ -219,9 +220,15 @@ export const SourceTextSearchInput = () => {
       disableListWrap
       disablePortal
       onChange={(target, value) =>
-        router.push(
-          getTableViewUrl({ sourceLanguage, fileName: value?.fileName })
-        )
+        router.push({
+          pathname: getTextPath({
+            sourceLanguage,
+            fileName: value?.fileName,
+            dbView,
+          }),
+          //  TODO: per previous spec descision, confirm whether query params should persist accross file changes, or should be reset on file change. Remove `query` prop for reset.
+          query: queryParams,
+        })
       }
     />
   );

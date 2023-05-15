@@ -1,28 +1,11 @@
-// Example response:
-// {
-//   displayName: 'Cūḷadhammasamādāna Sutta',
-//   search_field: 'Mn 45 Cūḷadhammasamādāna Sutta (Culadhammasamadana Sutta)',
-//   textname: 'Mn 45',
-//   filename: 'mn45',
-//   category: 'mn',
-//   available_lang: null
-// }
-
-export interface ApiLanguageMenuData {
-  displayName: string;
-  search_field: string;
-  textname: string;
-  filename: string;
-  category: string;
-  available_lang: null;
-}
+import type { DbViewEnum } from "@components/hooks/useDbView";
 
 export interface ApiGraphPageData {
   histogramgraphdata: [name: string, count: number][];
   piegraphdata: [name: string, count: number][];
 }
 
-export interface ApiSegmentsData {
+export interface ApiNumbersPageData {
   collections: Record<string, string>[][];
   segments: { parallels: string[][]; segmentnr: string }[];
 }
@@ -32,3 +15,20 @@ export interface APIResponse<T> {
 }
 
 export type PagedResponse<T> = { pageNumber: number; data: T };
+
+export type QueryParams = Partial<URLSearchParams>;
+
+export interface FilePropApiQuery {
+  fileName: string;
+  queryParams: QueryParams;
+}
+
+export interface InfiniteFilePropApiQuery {
+  fileName: string;
+  queryParams: QueryParams;
+  pageNumber: number;
+}
+
+export interface ViewPropApiQuery extends FilePropApiQuery {
+  view: DbViewEnum;
+}

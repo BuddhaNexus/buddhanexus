@@ -1,15 +1,30 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import {
+  DEFAULT_PAR_LENGTH_VALUES,
+  DEFAULT_QUERY_PARAMS,
+} from "features/sidebar/common/dbSidebarSettings";
 import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {
-  const { query } = useRouter();
   const { t } = useTranslation();
+  const { query } = useRouter();
+  const { language, file, ...queryParams } = query;
 
-  const sourceLanguage = query.language as SourceLanguage;
+  const sourceLanguage = language as SourceLanguage;
   const sourceLanguageName = t(`language.${sourceLanguage}`);
+  const fileName = file as string;
 
-  const fileName = query.file as string;
+  const defaultQueryParams = {
+    score: DEFAULT_QUERY_PARAMS.score,
+    par_length: DEFAULT_PAR_LENGTH_VALUES[sourceLanguage],
+  };
 
-  return { sourceLanguage, sourceLanguageName, fileName };
+  return {
+    sourceLanguage,
+    sourceLanguageName,
+    fileName,
+    queryParams,
+    defaultQueryParams,
+  };
 };

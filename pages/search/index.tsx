@@ -60,7 +60,7 @@ export default function SearchPage() {
     isInitialLoading,
     isLoading,
   } = useInfiniteQuery<PagedResponse<SearchPageData>>({
-    queryKey: DbApi.TableView.makeQueryKey(fileName),
+    queryKey: DbApi.TableView.makeQueryKey({ fileName, queryParams: {} }),
     queryFn: ({ pageParam = 0 }) =>
       DbApi.GlobalSearchData.call({ searchTerm, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
