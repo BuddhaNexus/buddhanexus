@@ -55,7 +55,11 @@ export const AppTopBar = () => {
   }, []);
 
   return (
-    <AppBar position="sticky" elevation={0}>
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{ zIndex: materialTheme.zIndex.drawer + 1 }}
+    >
       <Toolbar>
         <Box
           sx={{
