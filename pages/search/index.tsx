@@ -1,7 +1,5 @@
-/* eslint-disable unicorn/no-abusive-eslint-disable */
-/* eslint-disable */
 // TODO: Page! Is currently rough frame receiving API data, functionality and display incomplete.
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import type { GetStaticProps } from "next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -17,12 +15,14 @@ import {
 import { styled } from "@mui/material/styles";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-// import TableView from "features/tableView/TableView";
+import { atom, useAtom } from "jotai";
+import { debounce } from "lodash";
 import type { PagedResponse } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import type { SearchPageData } from "utils/api/search";
-// import { ALL_LOCALES, SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
+
+export const globalSearchTermAtom = atom<string>("");
 
 const StyledForm = styled("form")(({ theme }) => ({
   marginBottom: theme.spacing(5),
@@ -42,21 +42,33 @@ export default function SearchPage() {
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
-  const [searchTerm, setSearchTerm] = useState(
-    "desessāmi asaṅkhatagāmiñca maggaṁ"
-  );
+  // TODO: convert to query param as suitable
+  const [searchTerm, setSearchTerm] = useAtom(globalSearchTermAtom);
+  const [searchValue, setSearchValue] = useState(searchTerm);
 
   useEffect(() => {}, [searchTerm]);
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
-  const handleSearch = () => {
-    // TODO: handle search logic here
-  };
+  // TODO: confirm acceptance criteria - debounced search / search on enter?
+  const setDebouncedSearchTerm = useMemo(
+    () => debounce(setSearchTerm, 600),
+    [setSearchTerm]
+  );
+
+  const handleChange = useCallback(
+    (value: string) => {
+      setSearchValue(value);
+      setDebouncedSearchTerm(value);
+    },
+    [setSearchValue, setDebouncedSearchTerm]
+  );
 
   const {
     data,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     fetchNextPage,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     fetchPreviousPage,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isInitialLoading,
     isLoading,
   } = useInfiniteQuery<PagedResponse<SearchPageData>>({
@@ -86,26 +98,23 @@ export default function SearchPage() {
   return (
     <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
       <StyledForm>
+        {/* TODO: notification of search limitations (whole word only) */}
         <IconButton aria-label="search">
           <Search />
         </IconButton>
         <SearchInput
           placeholder="Enter search term"
-          value={searchTerm}
+          value={searchValue}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
-          onChange={(event) => setSearchTerm(event.target.value)}
-          onKeyPress={(event) => {
-            if (event.key === "Enter") {
-              handleSearch();
-            }
-          }}
+          onChange={(event) => handleChange(event.target.value)}
         />
         <IconButton aria-label="close" onClick={() => setSearchTerm("")}>
           <Close />
         </IconButton>
       </StyledForm>
 
+      {/* TODO: handling & i18n */}
       {!searchTerm && <Typography>No results.</Typography>}
 
       {isLoading && <CircularProgress />}
@@ -119,7 +128,7 @@ export default function SearchPage() {
             container
           >
             <ul>
-              {[...(data?.pages[0].data.values() || [])].map((item) => (
+              {[...(data?.pages[0].data.values() ?? [])].map((item) => (
                 <li key={item.id}>
                   <Typography variant="h3" component="h2">
                     {item.id}

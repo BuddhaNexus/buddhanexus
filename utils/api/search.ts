@@ -1,4 +1,4 @@
-import queryString from "query-string";
+// import queryString from "query-string";
 import type { InfiniteSerachApiQuery, PagedResponse } from "types/api/common";
 
 import { API_ROOT_URL } from "./constants";
@@ -62,15 +62,20 @@ function parseAPISearchData(apiData: SearchAPIResult[]): SearchPageData {
 
 export async function getGlobalSearchData({
   searchTerm,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   queryParams,
   pageNumber,
 }: InfiniteSerachApiQuery): Promise<PagedResponse<SearchPageData>> {
-  // TODO: Add params & pagination
-  const res = await fetch(
-    `${API_ROOT_URL}/search/${searchTerm}?page=${pageNumber}&${queryString.stringify(
-      queryParams
-    )}`
-  );
+  if (!searchTerm) {
+    return { data: new Map<string, SearchResult>(), pageNumber };
+  }
+  // TODO: update when search endpoint has been refactored
+  // const res = await fetch(
+  //   `${API_ROOT_URL}/search/${searchTerm}?page=${pageNumber}&${queryString.stringify(
+  //     queryParams
+  //   )}`
+  // );
+  const res = await fetch(`${API_ROOT_URL}/search/${searchTerm}`);
   const response = await res.json();
 
   return { data: parseAPISearchData(response.searchResults), pageNumber };

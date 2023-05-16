@@ -14,10 +14,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { isNavigationDrawerOpen } from "features/atoms/layout";
-import {
-  GlobalTextSearchDesktop,
-  GlobalTextSearchMobile,
-} from "features/globalTextSearch";
+import { GlobalSearchDesktop, GlobalSearchMobile } from "features/globalSearch";
 import { useSetAtom } from "jotai";
 
 interface AppBarLinkProps {
@@ -49,6 +46,7 @@ export const AppTopBar = () => {
 
   const isHomeRoute = route === "/";
   const isATIIRoute = route.startsWith("/atii");
+  const isSearchRoute = route.startsWith("/search");
 
   useEffect(() => {
     setIsMounted(true);
@@ -134,7 +132,7 @@ export const AppTopBar = () => {
               </IconButton>
             )}
           </Box>
-          <GlobalTextSearchDesktop />
+          {!isSearchRoute && <GlobalSearchDesktop />}
         </Box>
 
         <Box
@@ -175,27 +173,29 @@ export const AppTopBar = () => {
         <LanguageSelect />
       </Toolbar>
 
-      <Toolbar
-        sx={(theme) => ({
-          display: {
-            lg: "none",
-          },
-          backgroundColor: theme?.palette.background.default,
-          opacity: 0.96,
-          borderBottom: `1px solid #c7c7c7`,
-        })}
-      >
-        {sourceLanguage && (
-          <IconButton
-            sx={{ mr: 2 }}
-            color="primary"
-            onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
-          >
-            <ExploreOutlinedIcon fontSize="large" />
-          </IconButton>
-        )}
-        <GlobalTextSearchMobile />
-      </Toolbar>
+      {!isSearchRoute && (
+        <Toolbar
+          sx={(theme) => ({
+            display: {
+              lg: "none",
+            },
+            backgroundColor: theme?.palette.background.default,
+            opacity: 0.96,
+            borderBottom: `1px solid #c7c7c7`,
+          })}
+        >
+          {sourceLanguage && (
+            <IconButton
+              sx={{ mr: 2 }}
+              color="primary"
+              onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
+            >
+              <ExploreOutlinedIcon fontSize="large" />
+            </IconButton>
+          )}
+          <GlobalSearchMobile />
+        </Toolbar>
+      )}
     </AppBar>
   );
 };

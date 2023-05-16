@@ -33,7 +33,7 @@ export default function ScoreFilter() {
     setScoreValue(scoreParam ?? DEFAULT_QUERY_PARAMS.score);
   }, [scoreParam]);
 
-  const setDebouncedScoreValue = useMemo(
+  const setDebouncedScoreParam = useMemo(
     () => debounce(setScoreParam, 600),
     [setScoreParam]
   );
@@ -42,9 +42,9 @@ export default function ScoreFilter() {
     (value: number) => {
       const normalizedValue = normalizeValue(value);
       setScoreValue(value);
-      setDebouncedScoreValue(normalizedValue);
+      setDebouncedScoreParam(normalizedValue);
     },
-    [setScoreValue, setDebouncedScoreValue]
+    [setScoreValue, setDebouncedScoreParam]
   );
 
   const handleBlur = () => {
