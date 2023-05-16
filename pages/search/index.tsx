@@ -39,7 +39,7 @@ const SearchInput = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchPage() {
-  const { sourceLanguage, fileName } = useDbQueryParams();
+  const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
   const [searchTerm, setSearchTerm] = useState(
@@ -60,9 +60,16 @@ export default function SearchPage() {
     isInitialLoading,
     isLoading,
   } = useInfiniteQuery<PagedResponse<SearchPageData>>({
-    queryKey: DbApi.TableView.makeQueryKey({ fileName, queryParams: {} }),
+    queryKey: DbApi.GlobalSearchData.makeQueryKey({
+      searchTerm,
+      queryParams,
+    }),
     queryFn: ({ pageParam = 0 }) =>
-      DbApi.GlobalSearchData.call({ searchTerm, pageNumber: pageParam }),
+      DbApi.GlobalSearchData.call({
+        searchTerm,
+        pageNumber: pageParam,
+        queryParams,
+      }),
     getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
     getPreviousPageParam: (lastPage) =>
       lastPage.pageNumber === 0 ? lastPage.pageNumber : lastPage.pageNumber - 1,
