@@ -12,9 +12,8 @@ import {
   SearchBoxInput,
   SearchBoxWrapper,
 } from "features/globalSearch/GlobalSearchSyledMuiComponents";
-import { activeSettingsTabAtom } from "features/sidebar/Sidebar";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-import { atom, useAtom, useSetAtom } from "jotai";
+import { atom, useAtom } from "jotai";
 import { debounce } from "lodash";
 import type { PagedResponse } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
@@ -27,14 +26,10 @@ export default function SearchPage() {
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
-  const setSettingsActiveTab = useSetAtom(activeSettingsTabAtom);
   // TODO: convert to query param as suitable
   const [searchTerm, setSearchTerm] = useAtom(globalSearchTermAtom);
   const [searchValue, setSearchValue] = useState(searchTerm);
 
-  useEffect(() => {
-    setSettingsActiveTab("2");
-  }, []);
   useEffect(() => {}, [searchTerm]);
 
   // TODO: confirm acceptance criteria - debounced search / search on enter?

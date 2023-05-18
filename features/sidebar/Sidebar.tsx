@@ -1,23 +1,22 @@
-import { useTranslation } from "next-i18next";
+import { useCallback, useEffect } from "react";
+import { useRouter } from "next/router";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { TabContext, TabList, TabPanel } from "@mui/lab/";
-import { Box, Drawer, IconButton, Tab, Toolbar } from "@mui/material";
+import { TabContext } from "@mui/lab/";
+import { Box, Drawer, IconButton, Toolbar } from "@mui/material";
 import { atom, useAtom } from "jotai";
 
-import { Info } from "./common/Info";
 import {
   DrawerHeader,
   SETTINGS_DRAWER_WIDTH,
 } from "./common/MuiStyledSidebarComponents";
-import { DisplayOptionsSection } from "./DisplayOptionsSection";
-import { ExternalLinksSection } from "./ExternalLinksSection";
-import { FilterSettings } from "./FilterSettings";
-import { UtilityOptionsSection } from "./UtilityOptionsSection";
-
-type ActiveTab = "1" | "2" | "3";
+import {
+  DbFilePageSidebarTabPanels,
+  SearchPageSidebarTabPanels,
+  SidebarTabList,
+} from "./SettingTabs";
 
 export const isSidebarOpenAtom = atom(true);
-export const activeSettingsTabAtom = atom<ActiveTab>("1");
+const activeSettingsTabAtom = atom("0");
 
 // TODO: remove once full settings suit is complete
 export const StandinSetting = (setting: string) => (
@@ -27,16 +26,22 @@ export const StandinSetting = (setting: string) => (
 );
 
 export function Sidebar() {
-  const { t } = useTranslation("settings");
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeSettingsTabAtom);
 
-  const handleTabChange = (
-    event: React.SyntheticEvent,
-    newValue: ActiveTab
-  ) => {
-    setActiveTab(newValue);
-  };
+  useEffect(() => {
+    setActiveTab("0");
+  }, []);
+
+  const { route } = useRouter();
+  const isSearchRoute = route.startsWith("/search");
+
+  const handleTabChange = useCallback(
+    (event: React.SyntheticEvent, newValue: string) => {
+      setActiveTab(newValue);
+    },
+    [setActiveTab]
+  );
 
   return (
     <Drawer
@@ -57,14 +62,10 @@ export function Sidebar() {
           <TabContext value={activeTab}>
             <DrawerHeader>
               <Box sx={{ width: 1, borderBottom: 1, borderColor: "divider" }}>
-                <TabList
-                  aria-label="Filters, desplay options and other settings"
-                  onChange={handleTabChange}
-                >
-                  <Tab label={t("tabs.options")} value="1" />
-                  <Tab label={t("tabs.filters")} value="2" />
-                  <Tab label={t("tabs.info")} value="3" />
-                </TabList>
+                <SidebarTabList
+                  isSearchRoute={isSearchRoute}
+                  onTabChange={handleTabChange}
+                />
               </Box>
 
               <IconButton onClick={() => setIsSidebarOpen(false)}>
@@ -72,21 +73,11 @@ export function Sidebar() {
               </IconButton>
             </DrawerHeader>
 
-            <TabPanel value="1" sx={{ px: 0 }}>
-              <DisplayOptionsSection />
-
-              <UtilityOptionsSection />
-
-              <ExternalLinksSection />
-            </TabPanel>
-
-            <TabPanel value="2" sx={{ px: 0 }}>
-              <FilterSettings />
-            </TabPanel>
-
-            <TabPanel value="3">
-              <Info />
-            </TabPanel>
+            {isSearchRoute ? (
+              <SearchPageSidebarTabPanels />
+            ) : (
+              <DbFilePageSidebarTabPanels />
+            )}
           </TabContext>
         </Box>
       </aside>
