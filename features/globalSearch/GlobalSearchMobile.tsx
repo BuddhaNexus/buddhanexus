@@ -22,7 +22,13 @@ const GlobalSearchMobile = () => {
     <Box
       position="relative"
       sx={{
+        display: {
+          lg: "none",
+        },
+        // This component is outside of <main>, so mt & px values are given here to match padding in components/layout/PageContainer.tsx
+        mt: { xs: 2, sm: 4 },
         mb: 2,
+        px: 2,
         width: "100%",
         height: "48px",
       }}

@@ -57,7 +57,10 @@ export const AppTopBar = () => {
       <AppBar
         position="sticky"
         elevation={0}
-        sx={{ zIndex: materialTheme.zIndex.drawer + 1 }}
+        sx={{
+          zIndex: materialTheme.zIndex.drawer + 1,
+          borderBottom: `1px solid ${materialTheme.palette.background.accent}`,
+        }}
       >
         <Toolbar>
           <Box
@@ -171,20 +174,7 @@ export const AppTopBar = () => {
           <LanguageSelect />
         </Toolbar>
       </AppBar>
-      {!isSearchRoute && (
-        <Toolbar
-          sx={{
-            display: {
-              lg: "none",
-            },
-            // mt matches `main` padding in components/layout/PageContainer.tsx
-            mt: { xs: 2, sm: 4 },
-            mb: { xs: 2, sm: 0 },
-          }}
-        >
-          <GlobalSearchMobile />
-        </Toolbar>
-      )}
+      {!isSearchRoute && <GlobalSearchMobile />}
     </>
   );
 };

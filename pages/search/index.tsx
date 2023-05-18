@@ -1,4 +1,4 @@
-// TODO: Page! Is currently rough frame receiving API data, functionality and display incomplete.
+// TODO: Page! This is currently a rough frame; receiving API data, functionality and display incomplete.
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import type { GetStaticProps } from "next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -109,6 +109,7 @@ export default function SearchPage() {
 
       {isLoading && <CircularProgress />}
 
+      {/* TODO: componentize search results */}
       {searchTerm && !isLoading && (
         <>
           <Typography>{data?.pages[0].data.size} Results</Typography>

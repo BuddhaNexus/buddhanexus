@@ -70,12 +70,24 @@ export async function getGlobalSearchData({
     return { data: new Map<string, SearchResult>(), pageNumber };
   }
   // TODO: update when search endpoint has been refactored
-  // const res = await fetch(
-  //   `${API_ROOT_URL}/search/${searchTerm}?page=${pageNumber}&${queryString.stringify(
-  //     queryParams
-  //   )}`
-  // );
-  const res = await fetch(`${API_ROOT_URL}/search/${searchTerm}`);
+  const url = `${API_ROOT_URL}/search`;
+  // const body = queryString.stringify({
+  //   q: searchTerm,
+  //   ...queryParams,
+  //   page: pageNumber,
+  // });
+
+  // const options = {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/x-www-form-urlencoded",
+  //   },
+  //   body,
+  // };
+
+  // const res = await fetch(url, options);
+
+  const res = await fetch(`${url}/${searchTerm}`);
   const response = await res.json();
 
   return { data: parseAPISearchData(response.searchResults), pageNumber };

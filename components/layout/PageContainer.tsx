@@ -81,7 +81,7 @@ export const PageContainer: FC<Props> = ({
           maxWidth={maxWidth}
           sx={{
             pt: { xs: 2, sm: 4 },
-            px: { xs: 2, sm: 2, lg: 4 },
+            px: { xs: 2, lg: 4 },
             flex: 1,
             display: "flex",
             flexDirection: "column",
