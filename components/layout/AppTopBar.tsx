@@ -53,149 +53,138 @@ export const AppTopBar = () => {
   }, []);
 
   return (
-    <AppBar
-      position="sticky"
-      elevation={0}
-      sx={{ zIndex: materialTheme.zIndex.drawer + 1 }}
-    >
-      <Toolbar>
-        <Box
-          sx={{
-            display: "flex",
-            flex: 1,
-            grow: 1,
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-        >
-          <Link
-            color="inherit"
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-            }}
-            href={isATIIRoute ? "/atii" : "/"}
-            underline="none"
-            noWrap
-          >
-            <>
-              <Box
-                component="img"
-                src={
-                  isATIIRoute
-                    ? "/assets/images/atii_logo.png"
-                    : "/assets/icons/bn_tree.svg"
-                }
-                width={isATIIRoute ? undefined : 64}
-                sx={{
-                  maxHeight: 48,
-                  minWidth: 48,
-                  pr: 2,
-                  [materialTheme.breakpoints.down("sm")]: {
-                    maxHeight: 36,
-                  },
-                }}
-                alt="logo"
-              />
-              {!isHomeRoute && !isATIIRoute && (
-                <Box
-                  component="img"
-                  src="/assets/icons/bn_name.svg"
-                  width={144}
-                  sx={{
-                    maxHeight: 24,
-                    [materialTheme.breakpoints.down("sm")]: {
-                      display: "none",
-                    },
-                  }}
-                  alt="BuddhaNexus"
-                />
-              )}
-            </>
-          </Link>
-
+    <>
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{ zIndex: materialTheme.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
           <Box
             sx={{
-              display: {
-                xs: "none",
-                lg: "flex",
-              },
+              display: "flex",
+              flex: 1,
+              grow: 1,
+              justifyContent: "flex-start",
+              alignItems: "center",
             }}
           >
+            <Link
+              color="inherit"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+              }}
+              href={isATIIRoute ? "/atii" : "/"}
+              underline="none"
+              noWrap
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  [materialTheme.breakpoints.up("sm")]: {
+                    pr: 1,
+                  },
+                }}
+              >
+                <Box
+                  component="img"
+                  src={
+                    isATIIRoute
+                      ? "/assets/images/atii_logo.png"
+                      : "/assets/icons/bn_tree.svg"
+                  }
+                  width={isATIIRoute ? undefined : 64}
+                  sx={{
+                    maxHeight: 48,
+                    minWidth: 48,
+                    [materialTheme.breakpoints.down("sm")]: {
+                      maxHeight: 36,
+                    },
+                  }}
+                  alt="logo"
+                />
+                {!isHomeRoute && !isATIIRoute && (
+                  <Box
+                    component="img"
+                    src="/assets/icons/bn_name.svg"
+                    width={144}
+                    sx={{
+                      maxHeight: 24,
+                      [materialTheme.breakpoints.down("sm")]: {
+                        display: "none",
+                      },
+                    }}
+                    alt="BuddhaNexus"
+                  />
+                )}
+              </Box>
+            </Link>
+
             {sourceLanguage && (
               <IconButton
-                sx={{ ml: 2 }}
                 color="inherit"
                 onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
               >
                 <ExploreOutlinedIcon sx={{ fontSize: 28 }} />
               </IconButton>
             )}
+            {!isSearchRoute && <GlobalSearchDesktop />}
           </Box>
-          {!isSearchRoute && <GlobalSearchDesktop />}
-        </Box>
 
-        <Box
-          component="nav"
-          sx={{
-            display: "flex",
-            overflow: "auto",
-          }}
-        >
-          {isATIIRoute ? (
-            <AppBarLink title="BuddhaNexus" href="/" />
-          ) : (
-            <>
-              <DatabaseMenu />
-              <AppBarLink title={t("header.support")} href="/support" />
-              <AppBarLink title="ATII" href="/atii" />
-            </>
-          )}
-        </Box>
-
-        {isMounted ? (
-          <IconButton
-            sx={{ mx: 1 }}
-            color="inherit"
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          <Box
+            component="nav"
+            sx={{
+              display: "flex",
+              overflow: "auto",
+            }}
           >
-            {theme === "dark" ? (
-              <Brightness7Icon fontSize="inherit" />
+            {isATIIRoute ? (
+              <AppBarLink title="BuddhaNexus" href="/" />
             ) : (
-              <Brightness4Icon fontSize="inherit" />
+              <>
+                <DatabaseMenu />
+                <AppBarLink title={t("header.support")} href="/support" />
+                <AppBarLink title="ATII" href="/atii" />
+              </>
             )}
-          </IconButton>
-        ) : (
-          // prevent layout jump
-          <Box sx={{ width: 48 }} />
-        )}
+          </Box>
 
-        <LanguageSelect />
-      </Toolbar>
+          {isMounted ? (
+            <IconButton
+              sx={{ mx: 1 }}
+              color="inherit"
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              {theme === "dark" ? (
+                <Brightness7Icon fontSize="inherit" />
+              ) : (
+                <Brightness4Icon fontSize="inherit" />
+              )}
+            </IconButton>
+          ) : (
+            // prevent layout jump
+            <Box sx={{ width: 48 }} />
+          )}
 
+          <LanguageSelect />
+        </Toolbar>
+      </AppBar>
       {!isSearchRoute && (
         <Toolbar
-          sx={(theme) => ({
+          sx={{
             display: {
               lg: "none",
             },
-            backgroundColor: theme?.palette.background.default,
-            opacity: 0.96,
-            borderBottom: `1px solid #c7c7c7`,
-          })}
+            // mt matches `main` padding in components/layout/PageContainer.tsx
+            mt: { xs: 2, sm: 4 },
+            mb: { xs: 2, sm: 0 },
+          }}
         >
-          {sourceLanguage && (
-            <IconButton
-              sx={{ mr: 2 }}
-              color="primary"
-              onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
-            >
-              <ExploreOutlinedIcon fontSize="large" />
-            </IconButton>
-          )}
           <GlobalSearchMobile />
         </Toolbar>
       )}
-    </AppBar>
+    </>
   );
 };

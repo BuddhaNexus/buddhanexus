@@ -9,8 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import { useAtom } from "jotai";
 
 import {
-  MobileSearchBoxInput,
-  MobileSearchBoxWrapper,
+  SearchBoxInput,
+  SearchBoxWrapper,
 } from "./GlobalSearchSyledMuiComponents";
 import { handleEnterPress } from "./globalSearchUtils";
 
@@ -22,13 +22,13 @@ const GlobalSearchMobile = () => {
     <Box
       position="relative"
       sx={{
-        my: 2,
+        mb: 2,
         width: "100%",
         height: "48px",
       }}
     >
-      <MobileSearchBoxWrapper>
-        <MobileSearchBoxInput
+      <SearchBoxWrapper>
+        <SearchBoxInput
           placeholder="Search..."
           variant="outlined"
           value={searchTerm}
@@ -52,7 +52,7 @@ const GlobalSearchMobile = () => {
             handleEnterPress({ e, searchTerm, router })
           }
         />
-      </MobileSearchBoxWrapper>
+      </SearchBoxWrapper>
     </Box>
   );
 };

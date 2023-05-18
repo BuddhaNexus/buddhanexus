@@ -6,7 +6,7 @@ interface SearchBoxWrapperProps extends BoxProps {
   isOpen: boolean;
 }
 
-export const DesktopSearchBoxWrapper = styled("form")<SearchBoxWrapperProps>(
+export const AppTopBarSearchBoxWrapper = styled("form")<SearchBoxWrapperProps>(
   ({ theme, isOpen }) => ({
     position: "absolute",
     top: "-4px",
@@ -30,42 +30,14 @@ export const DesktopSearchBoxWrapper = styled("form")<SearchBoxWrapperProps>(
   })
 );
 
-export const DesktopSearchBoxInput = styled(TextField)({
-  "& .MuiOutlinedInput-root": {
-    padding: "0px",
-    transition: "all 0.3s ease-in-out",
-    "& fieldset": {
-      borderColor: "transparent",
-    },
-    "&:hover fieldset": {
-      borderColor: "transparent",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "transparent",
-    },
-  },
-  "& .MuiInputBase-input": {
-    transition: "all 0.3s ease-in-out",
-    "&:focus": {
-      width: "100%",
-    },
-  },
-});
-
-export const MobileSearchBoxWrapper = styled("form")(({ theme }) => ({
-  position: "absolute",
-  top: "-0",
-  left: "0",
-  right: "0",
-  bottom: "0",
+export const SearchBoxWrapper = styled("form")(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   border: `${theme.palette.primary.main} 1px solid`,
 }));
 
-export const MobileSearchBoxInput = styled(TextField)({
+export const SearchBoxInput = styled(TextField)({
   "& .MuiOutlinedInput-root": {
-    padding: "4px 0 0 0",
-    transition: "all 0.3s ease-in-out",
+    padding: "0px",
     "& fieldset": {
       borderColor: "transparent",
     },
@@ -74,14 +46,6 @@ export const MobileSearchBoxInput = styled(TextField)({
     },
     "&.Mui-focused fieldset": {
       borderColor: "transparent",
-      padding: "0px",
-    },
-  },
-  "& .MuiInputBase-input": {
-    transition: "all 0.3s ease-in-out",
-    padding: "0",
-    "&:focus": {
-      width: "100%",
     },
   },
 });

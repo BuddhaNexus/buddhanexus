@@ -5,15 +5,12 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Close, Search } from "@mui/icons-material";
-import {
-  CircularProgress,
-  Grid,
-  IconButton,
-  InputBase,
-  Typography,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { CircularProgress, Grid, IconButton, Typography } from "@mui/material";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  SearchBoxInput,
+  SearchBoxWrapper,
+} from "features/globalSearch/GlobalSearchSyledMuiComponents";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import { atom, useAtom } from "jotai";
 import { debounce } from "lodash";
@@ -23,20 +20,6 @@ import type { SearchPageData } from "utils/api/search";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export const globalSearchTermAtom = atom<string>("");
-
-const StyledForm = styled("form")(({ theme }) => ({
-  marginBottom: theme.spacing(5),
-  borderRadius: "4px",
-  border: `1px solid ${theme.palette.primary.main}`,
-}));
-
-const SearchInput = styled(InputBase)(({ theme }) => ({
-  // fullwidth minus icons
-  width: "calc(100% - 96px)",
-  height: "60px",
-  marginLeft: theme.spacing(1),
-  fontSize: "20px",
-}));
 
 export default function SearchPage() {
   const { sourceLanguage, queryParams } = useDbQueryParams();
@@ -97,22 +80,29 @@ export default function SearchPage() {
 
   return (
     <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
-      <StyledForm>
+      <SearchBoxWrapper sx={{ mb: 5 }}>
         {/* TODO: notification of search limitations (whole word only) */}
-        <IconButton aria-label="search">
-          <Search />
-        </IconButton>
-        <SearchInput
+        <SearchBoxInput
           placeholder="Enter search term"
           value={searchValue}
+          InputProps={{
+            startAdornment: (
+              <IconButton>
+                <Search />
+              </IconButton>
+            ),
+            endAdornment: (
+              <IconButton onClick={() => setSearchTerm("")}>
+                <Close />
+              </IconButton>
+            ),
+          }}
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
+          fullWidth
           onChange={(event) => handleChange(event.target.value)}
         />
-        <IconButton aria-label="close" onClick={() => setSearchTerm("")}>
-          <Close />
-        </IconButton>
-      </StyledForm>
+      </SearchBoxWrapper>
 
       {/* TODO: handling & i18n */}
       {!searchTerm && <Typography>No results.</Typography>}

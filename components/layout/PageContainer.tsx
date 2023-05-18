@@ -54,7 +54,6 @@ export const PageContainer: FC<Props> = ({
           sx={{
             background: `url(${BgImageSrcs[backgroundName]})`,
             backgroundPosition: "center",
-
             backgroundSize: BgImageBgSize[backgroundName],
             opacity: theme === "dark" ? 0.02 : 0.05,
             height: "100%",
@@ -81,8 +80,8 @@ export const PageContainer: FC<Props> = ({
           component="main"
           maxWidth={maxWidth}
           sx={{
-            pt: { xs: 0, sm: 4 },
-            px: { xs: 0, sm: 2, lg: 4 },
+            pt: { xs: 2, sm: 4 },
+            px: { xs: 2, sm: 2, lg: 4 },
             flex: 1,
             display: "flex",
             flexDirection: "column",

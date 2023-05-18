@@ -10,8 +10,8 @@ import IconButton from "@mui/material/IconButton";
 import { useAtom } from "jotai";
 
 import {
-  DesktopSearchBoxInput,
-  DesktopSearchBoxWrapper,
+  AppTopBarSearchBoxWrapper,
+  SearchBoxInput,
 } from "./GlobalSearchSyledMuiComponents";
 import { handleEnterPress } from "./globalSearchUtils";
 
@@ -57,8 +57,8 @@ const GlobalSearchDesktop = () => {
         )}
       </IconButton>
 
-      <DesktopSearchBoxWrapper isOpen={isOpen}>
-        <DesktopSearchBoxInput
+      <AppTopBarSearchBoxWrapper isOpen={isOpen}>
+        <SearchBoxInput
           inputRef={inputRef}
           // TODO: i18n
           placeholder="Search..."
@@ -79,7 +79,7 @@ const GlobalSearchDesktop = () => {
             handleEnterPress({ e, searchTerm, router })
           }
         />
-      </DesktopSearchBoxWrapper>
+      </AppTopBarSearchBoxWrapper>
     </Box>
   );
 };
