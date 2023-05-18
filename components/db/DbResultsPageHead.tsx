@@ -10,6 +10,7 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { isSidebarOpenAtom } from "features/sidebar/Sidebar";
 import { useAtom, useAtomValue } from "jotai";
 
+// TODO: determing if further context customization (global search / file selection) is needed.
 export const DbResultsPageHead = () => {
   const { t } = useTranslation("settings");
   const router = useRouter();
@@ -65,10 +66,12 @@ export const DbResultsPageHead = () => {
           </IconButton>
         </Box>
       </Stack>
-      <Typography variant="h2" component="h1">
-        {fileName.toUpperCase()}
-      </Typography>
-      <SourceTextSearchInput />
+      {fileName && (
+        <Typography variant="h2" component="h1">
+          {fileName.toUpperCase()}
+        </Typography>
+      )}
+      {sourceLanguage && <SourceTextSearchInput />}
     </>
   );
 };

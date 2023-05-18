@@ -3,6 +3,7 @@ import { useTranslation } from "next-i18next";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS,
+  MIN_PAR_LENGTH_VALUES,
 } from "features/sidebar/common/dbSidebarSettings";
 import type { SourceLanguage } from "utils/constants";
 
@@ -17,7 +18,18 @@ export const useDbQueryParams = () => {
 
   const defaultQueryParams = {
     score: DEFAULT_QUERY_PARAMS.score,
-    par_length: DEFAULT_PAR_LENGTH_VALUES[sourceLanguage],
+    par_length: sourceLanguage
+      ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
+      : DEFAULT_QUERY_PARAMS.par_length,
+  };
+
+  const parLengthConfig = {
+    default: sourceLanguage
+      ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
+      : DEFAULT_QUERY_PARAMS.par_length,
+    min: sourceLanguage
+      ? MIN_PAR_LENGTH_VALUES[sourceLanguage]
+      : MIN_PAR_LENGTH_VALUES.chn,
   };
 
   return {
@@ -26,5 +38,6 @@ export const useDbQueryParams = () => {
     fileName,
     queryParams,
     defaultQueryParams,
+    parLengthConfig,
   };
 };

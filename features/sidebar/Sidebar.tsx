@@ -14,8 +14,10 @@ import { ExternalLinksSection } from "./ExternalLinksSection";
 import { FilterSettings } from "./FilterSettings";
 import { UtilityOptionsSection } from "./UtilityOptionsSection";
 
+type ActiveTab = "1" | "2" | "3";
+
 export const isSidebarOpenAtom = atom(true);
-const activeTabAtom = atom("1");
+export const activeSettingsTabAtom = atom<ActiveTab>("1");
 
 // TODO: remove once full settings suit is complete
 export const StandinSetting = (setting: string) => (
@@ -27,13 +29,12 @@ export const StandinSetting = (setting: string) => (
 export function Sidebar() {
   const { t } = useTranslation("settings");
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
-  const [activeTab, setActiveTab] = useAtom(activeTabAtom);
+  const [activeTab, setActiveTab] = useAtom(activeSettingsTabAtom);
 
-  const handleDrawerClose = () => {
-    setIsSidebarOpen(false);
-  };
-
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleTabChange = (
+    event: React.SyntheticEvent,
+    newValue: ActiveTab
+  ) => {
     setActiveTab(newValue);
   };
 
@@ -66,7 +67,7 @@ export function Sidebar() {
                 </TabList>
               </Box>
 
-              <IconButton onClick={handleDrawerClose}>
+              <IconButton onClick={() => setIsSidebarOpen(false)}>
                 <CloseRoundedIcon />
               </IconButton>
             </DrawerHeader>

@@ -1,6 +1,7 @@
 // TODO: Page! This is currently a rough frame; receiving API data, functionality and display incomplete.
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import type { GetStaticProps } from "next";
+import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -11,8 +12,9 @@ import {
   SearchBoxInput,
   SearchBoxWrapper,
 } from "features/globalSearch/GlobalSearchSyledMuiComponents";
+import { activeSettingsTabAtom } from "features/sidebar/Sidebar";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useSetAtom } from "jotai";
 import { debounce } from "lodash";
 import type { PagedResponse } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
@@ -25,10 +27,14 @@ export default function SearchPage() {
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
 
+  const setSettingsActiveTab = useSetAtom(activeSettingsTabAtom);
   // TODO: convert to query param as suitable
   const [searchTerm, setSearchTerm] = useAtom(globalSearchTermAtom);
   const [searchValue, setSearchValue] = useState(searchTerm);
 
+  useEffect(() => {
+    setSettingsActiveTab("2");
+  }, []);
   useEffect(() => {}, [searchTerm]);
 
   // TODO: confirm acceptance criteria - debounced search / search on enter?
@@ -79,7 +85,12 @@ export default function SearchPage() {
   }
 
   return (
-    <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
+    <PageContainer
+      maxWidth="xl"
+      backgroundName={sourceLanguage}
+      hasSidebar={true}
+    >
+      <DbResultsPageHead />
       <SearchBoxWrapper sx={{ mb: 5 }}>
         {/* TODO: notification of search limitations (whole word only) */}
         <SearchBoxInput
@@ -141,7 +152,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["db"]
+    ["settings"]
   );
 
   return {

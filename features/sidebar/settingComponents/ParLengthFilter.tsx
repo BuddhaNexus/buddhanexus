@@ -2,24 +2,19 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import {
-  DEFAULT_PAR_LENGTH_VALUES as DEFAUT_VALUES,
-  MIN_PAR_LENGTH_VALUES as MIN_VALUES,
-} from "features/sidebar/common/dbSidebarSettings";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
-import type { SourceLanguage } from "utils/constants";
 
 function valueToString(value: number) {
   return `${value}`;
 }
 
-function normalizeValue(value: number, lang: SourceLanguage) {
-  // TODO set dynamic max
-  if (!value || value < MIN_VALUES[lang]) {
-    return MIN_VALUES[lang];
+function normalizeValue(value: number, min: number) {
+  if (!value || value < min) {
+    return min;
   }
 
+  // TODO set dynamic max
   if (value > 4000) {
     return 4000;
   }
@@ -30,18 +25,18 @@ function normalizeValue(value: number, lang: SourceLanguage) {
 export default function ParLengthFilter() {
   const { t } = useTranslation("settings");
 
-  const { sourceLanguage: lang } = useDbQueryParams();
+  const { parLengthConfig } = useDbQueryParams();
   const [parLengthParam, setParLengthParam] = useQueryParam(
     "par_length",
     NumberParam
   );
   const [parLength, setParLength] = useState(
-    parLengthParam ?? DEFAUT_VALUES[lang]
+    parLengthParam ?? parLengthConfig.default
   );
 
   useEffect(() => {
-    setParLength(parLengthParam ?? DEFAUT_VALUES[lang]);
-  }, [parLengthParam, lang]);
+    setParLength(parLengthParam ?? parLengthConfig.default);
+  }, [parLengthParam, parLengthConfig.default]);
 
   const setDebouncedParLengthParam = useMemo(
     () => debounce(setParLengthParam, 600),
@@ -50,17 +45,17 @@ export default function ParLengthFilter() {
 
   const handleChange = useCallback(
     (value: number) => {
-      const normalizedValue = normalizeValue(value, lang);
+      const normalizedValue = normalizeValue(value, parLengthConfig.min);
       setParLength(value);
       setDebouncedParLengthParam(normalizedValue);
     },
-    [lang, setParLength, setDebouncedParLengthParam]
+    [parLengthConfig.min, setParLength, setDebouncedParLengthParam]
   );
 
   const marks = [
     {
-      value: MIN_VALUES[lang],
-      label: `${MIN_VALUES[lang]}`,
+      value: parLengthConfig.min,
+      label: `${parLengthConfig.min}`,
     },
     // TODO set dynamic max
     {
@@ -89,7 +84,7 @@ export default function ParLengthFilter() {
       />
       <Box sx={{ ml: 1, width: "96%" }}>
         <Slider
-          value={parLength ?? DEFAUT_VALUES[lang]}
+          value={parLength ?? parLengthConfig.default}
           aria-labelledby="min-match-input-label"
           getAriaValueText={valueToString}
           min={0}
