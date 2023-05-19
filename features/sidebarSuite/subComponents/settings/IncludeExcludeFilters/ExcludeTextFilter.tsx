@@ -3,39 +3,35 @@ import { useTranslation } from "next-i18next";
 import { useTextLists } from "@components/hooks/useTextLists";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
 import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
-import {
-  ListboxComponent,
-  StyledPopper,
-} from "features/sidebarSuite/common/textMenuComponents";
 import { ArrayParam, useQueryParam } from "use-query-params";
-import type { CategoryMenuItem } from "utils/api/textLists";
+import type { TextMenuItem } from "utils/api/textLists";
 
-const ExcludeCollectionFilter = () => {
+import { ListboxComponent, StyledPopper } from "./textMenuComponents";
+
+const ExcludeTextFilter = () => {
   const { t } = useTranslation("settings");
 
-  const { categories, isLoadingCategories } = useTextLists();
+  const { texts, isLoadingTexts } = useTextLists();
 
-  const [excludeCollectionParam, setExcludeCollectionParam] = useQueryParam(
-    // TODO: replace with "exclude_collection",
+  const [excludeTextParam, setExcludeTextParam] = useQueryParam(
+    // TODO: replace with "exclude_text",
     "limit_collection",
     ArrayParam
   );
 
-  const [excludeCollectionValue, setExcludeCollectionValue] = useState<
-    CategoryMenuItem[]
-  >([]);
+  const [excludeTextValue, setExcludeTextValue] = useState<TextMenuItem[]>([]);
 
   useEffect(
     () =>
-      setExcludeCollectionParam(
-        excludeCollectionParam ?? DEFAULT_QUERY_PARAMS.exclude_collection
+      setExcludeTextParam(
+        excludeTextParam ?? DEFAULT_QUERY_PARAMS.exclude_text
       ),
-    [excludeCollectionParam, setExcludeCollectionParam]
+    [excludeTextParam, setExcludeTextParam]
   );
 
-  const handleInputChange = (value: CategoryMenuItem[]) => {
-    setExcludeCollectionValue(value);
-    setExcludeCollectionParam(() => {
+  const handleInputChange = (value: TextMenuItem[]) => {
+    setExcludeTextValue(value);
+    setExcludeTextParam(() => {
       return value.map((item) => `!${item.id}`);
     });
   };
@@ -43,23 +39,23 @@ const ExcludeCollectionFilter = () => {
   return (
     <Box sx={{ my: 1, width: 1 }}>
       <Autocomplete
-        id="excluded-collections"
+        id="excluded-texts"
         sx={{ mt: 1, mb: 2 }}
         multiple={true}
-        value={excludeCollectionValue ?? []}
+        value={excludeTextValue ?? []}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
-        options={[...categories.values()]}
+        options={[...texts.values()]}
         getOptionLabel={(option) => option.name.toUpperCase()}
         renderInput={(params) => (
           <TextField
             {...params}
-            label={t(`filtersLabels.excludeCollections`)}
+            label={t(`filtersLabels.excludeTexts`)}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
                 <React.Fragment>
-                  {isLoadingCategories ? (
+                  {isLoadingTexts ? (
                     <CircularProgress color="inherit" size={20} />
                   ) : null}
                   {params.InputProps.endAdornment}
@@ -70,7 +66,7 @@ const ExcludeCollectionFilter = () => {
         )}
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
-        loading={isLoadingCategories}
+        loading={isLoadingTexts}
         filterSelectedOptions
         disablePortal
         onChange={(event, value) => handleInputChange(value)}
@@ -79,4 +75,4 @@ const ExcludeCollectionFilter = () => {
   );
 };
 
-export default ExcludeCollectionFilter;
+export default ExcludeTextFilter;

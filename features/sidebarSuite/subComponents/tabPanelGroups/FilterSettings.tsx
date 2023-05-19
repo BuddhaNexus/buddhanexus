@@ -1,8 +1,7 @@
 import { Fragment, useMemo } from "react";
-import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
-import { Box, FormLabel } from "@mui/material";
+import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   FILTER_OMISSIONS_CONFIG as omissions,
@@ -10,18 +9,13 @@ import {
 } from "features/sidebarSuite/common/dbSidebarSettings";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
-  ExcludeCollectionFilter,
-  ExcludeTextFilter,
-  IncludeCollectionFilter,
-  IncludeTextFilter,
+  IncludeExcludeFilters,
   ParLengthFilter,
   ScoreFilter,
 } from "features/sidebarSuite/subComponents/settings";
 import { useAtomValue } from "jotai";
 
 export const FilterSettings = () => {
-  const { t } = useTranslation("settings");
-
   const currentView = useAtomValue(currentViewAtom);
 
   const { sourceLanguage } = useDbQueryParams();
@@ -52,17 +46,7 @@ export const FilterSettings = () => {
           }
           case "limit_collection": {
             // TODO: Update case when new endpoints are available
-            return (
-              <Fragment key={key}>
-                <FormLabel id="exclude-include-filters-label">
-                  {t(`filtersLabels.includeExcludeFilters`)}
-                </FormLabel>
-                <ExcludeCollectionFilter />
-                <ExcludeTextFilter />
-                <IncludeCollectionFilter />
-                <IncludeTextFilter />
-              </Fragment>
-            );
+            return <IncludeExcludeFilters key={key} />;
           }
           case "target_collection": {
             return (

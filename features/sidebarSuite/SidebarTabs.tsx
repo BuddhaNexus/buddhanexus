@@ -20,8 +20,8 @@ export const SidebarTabList = ({
 
   /* TODO: defined what's needed for search page results */
   const searchPageTabList = [
-    <Tab key="settings-tab-0" value="0" label={t("tabs.filters")} />,
-    <Tab key="settings-tab-1" value="1" label="More" />,
+    <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />,
+    <Tab key="settings-tab-2" value="2" label={t("tabs.info")} />,
   ];
 
   const dbFilePageTabList = [
