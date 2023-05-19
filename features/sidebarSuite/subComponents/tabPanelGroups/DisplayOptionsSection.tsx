@@ -3,19 +3,19 @@ import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box, Typography } from "@mui/material";
-import { isSettingOmitted } from "features/sidebar/common/dbSidebarHelpers";
+import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DISPLAY_OPTIONS_OMISSIONS_CONFIG as omissions,
   LocalDisplayOptionEnum,
   QueriedDisplayOptionEnum,
-} from "features/sidebar/common/dbSidebarSettings";
+} from "features/sidebarSuite/common/dbSidebarSettings";
+import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   FolioOption,
   SortOption,
   TextScriptOption,
-} from "features/sidebar/settingComponents";
-import { DbViewSelector } from "features/sidebar/settingComponents/DbViewSelector";
-import { StandinSetting } from "features/sidebar/Sidebar";
+} from "features/sidebarSuite/subComponents/settings";
+import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
 import { useAtomValue } from "jotai";
 
 export const DisplayOptionsSection = () => {

@@ -7,7 +7,7 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import TuneIcon from "@mui/icons-material/Tune";
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import { isSidebarOpenAtom } from "features/sidebar/Sidebar";
+import { isSidebarOpenAtom } from "features/sidebarSuite/SidebarSuite";
 import { useAtom, useAtomValue } from "jotai";
 
 // TODO: determing if further context customization (global search / file selection) is needed.

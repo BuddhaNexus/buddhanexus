@@ -13,7 +13,7 @@ import {
   DbFilePageSidebarTabPanels,
   SearchPageSidebarTabPanels,
   SidebarTabList,
-} from "./SettingTabs";
+} from "./SidebarTabs";
 
 export const isSidebarOpenAtom = atom(true);
 const activeSettingsTabAtom = atom("0");
@@ -25,7 +25,7 @@ export const StandinSetting = (setting: string) => (
   </div>
 );
 
-export function Sidebar() {
+export function SidebarSuite() {
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeSettingsTabAtom);
 

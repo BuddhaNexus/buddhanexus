@@ -4,7 +4,7 @@ import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS,
   MIN_PAR_LENGTH_VALUES,
-} from "features/sidebar/common/dbSidebarSettings";
+} from "features/sidebarSuite/common/dbSidebarSettings";
 import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {

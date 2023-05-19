@@ -3,7 +3,7 @@ import type {
   MenuOmission,
   MenuSetting,
   UtilityOptionEnum,
-} from "features/sidebar/common/dbSidebarSettings";
+} from "features/sidebarSuite/common/dbSidebarSettings";
 import type { SourceLanguage } from "utils/constants";
 
 export const isSettingOmitted = ({

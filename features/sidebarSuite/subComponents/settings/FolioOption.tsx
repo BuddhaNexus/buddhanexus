@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
-import { DEFAULT_QUERY_PARAMS } from "features/sidebar/common/dbSidebarSettings";
+import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
 import { StringParam, useQueryParam } from "use-query-params";
 import type { DatabaseFolio } from "utils/api/common";
 import { DbApi } from "utils/api/dbApi";

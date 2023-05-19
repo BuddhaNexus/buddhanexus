@@ -2,11 +2,11 @@ import { useTranslation } from "next-i18next";
 import { TabList, TabPanel } from "@mui/lab/";
 import { Tab } from "@mui/material";
 
-import { Info } from "./common/Info";
-import { DisplayOptionsSection } from "./DisplayOptionsSection";
-import { ExternalLinksSection } from "./ExternalLinksSection";
-import { FilterSettings } from "./FilterSettings";
-import { UtilityOptionsSection } from "./UtilityOptionsSection";
+import { Info } from "./subComponents/Info";
+import { DisplayOptionsSection } from "./subComponents/tabPanelGroups/DisplayOptionsSection";
+import { ExternalLinksSection } from "./subComponents/tabPanelGroups/ExternalLinksSection";
+import { FilterSettings } from "./subComponents/tabPanelGroups/FilterSettings";
+import { UtilityOptionsSection } from "./subComponents/tabPanelGroups/UtilityOptionsSection";
 
 interface SettingTabListProps {
   isSearchRoute: boolean;

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import { DEFAULT_QUERY_PARAMS } from "features/sidebar/common/dbSidebarSettings";
+import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
 

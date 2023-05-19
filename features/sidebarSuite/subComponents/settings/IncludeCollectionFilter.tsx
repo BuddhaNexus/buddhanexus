@@ -2,41 +2,41 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useTextLists } from "@components/hooks/useTextLists";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
-import { DEFAULT_QUERY_PARAMS } from "features/sidebar/common/dbSidebarSettings";
+import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
 import {
   ListboxComponent,
   StyledPopper,
-} from "features/sidebar/common/textMenuSubComponents";
+} from "features/sidebarSuite/common/textMenuComponents";
 import { ArrayParam, useQueryParam } from "use-query-params";
 import type { CategoryMenuItem } from "utils/api/textLists";
 
-const ExcludeCollectionFilter = () => {
+const IncludeCollectionFilter = () => {
   const { t } = useTranslation("settings");
 
   const { categories, isLoadingCategories } = useTextLists();
 
-  const [excludeCollectionParam, setExcludeCollectionParam] = useQueryParam(
-    // TODO: replace with "exclude_collection",
+  const [includeCollectionParam, setIncludeCollectionParam] = useQueryParam(
+    // TODO: replace with "include_collection",
     "limit_collection",
     ArrayParam
   );
 
-  const [excludeCollectionValue, setExcludeCollectionValue] = useState<
+  const [includeCollectionValue, setIncludeCollectionValue] = useState<
     CategoryMenuItem[]
   >([]);
 
   useEffect(
     () =>
-      setExcludeCollectionParam(
-        excludeCollectionParam ?? DEFAULT_QUERY_PARAMS.exclude_collection
+      setIncludeCollectionParam(
+        includeCollectionParam ?? DEFAULT_QUERY_PARAMS.include_collection
       ),
-    [excludeCollectionParam, setExcludeCollectionParam]
+    [includeCollectionParam, setIncludeCollectionParam]
   );
 
   const handleInputChange = (value: CategoryMenuItem[]) => {
-    setExcludeCollectionValue(value);
-    setExcludeCollectionParam(() => {
-      return value.map((item) => `!${item.id}`);
+    setIncludeCollectionValue(value);
+    setIncludeCollectionParam(() => {
+      return value.map((item) => item.id);
     });
   };
 
@@ -46,7 +46,7 @@ const ExcludeCollectionFilter = () => {
         id="excluded-collections"
         sx={{ mt: 1, mb: 2 }}
         multiple={true}
-        value={excludeCollectionValue ?? []}
+        value={includeCollectionValue ?? []}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
         options={[...categories.values()]}
@@ -54,7 +54,7 @@ const ExcludeCollectionFilter = () => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label={t(`filtersLabels.excludeCollections`)}
+            label={t(`filtersLabels.includeCollections`)}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -79,4 +79,4 @@ const ExcludeCollectionFilter = () => {
   );
 };
 
-export default ExcludeCollectionFilter;
+export default IncludeCollectionFilter;

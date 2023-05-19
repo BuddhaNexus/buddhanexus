@@ -9,7 +9,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import type { QueryParams } from "features/sidebar/common/dbSidebarSettings";
+import type { QueryParams } from "features/sidebarSuite/common/dbSidebarSettings";
 import { StringParam, useQueryParam } from "use-query-params";
 
 type SortParam = NonNullable<QueryParams["sort_method"]>;

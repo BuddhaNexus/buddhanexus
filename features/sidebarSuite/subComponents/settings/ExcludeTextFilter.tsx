@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useTextLists } from "@components/hooks/useTextLists";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
-import { DEFAULT_QUERY_PARAMS } from "features/sidebar/common/dbSidebarSettings";
+import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
 import {
   ListboxComponent,
   StyledPopper,
-} from "features/sidebar/common/textMenuSubComponents";
+} from "features/sidebarSuite/common/textMenuComponents";
 import { ArrayParam, useQueryParam } from "use-query-params";
 import type { TextMenuItem } from "utils/api/textLists";
 

@@ -6,6 +6,7 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { List, ListItem, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
+import { SourceLink } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
 import BDRCLogo from "public/assets/icons/logo_bdrc.png";
 import CBETALogo from "public/assets/icons/logo_cbeta.png";
 import DSBCLogo from "public/assets/icons/logo_dsbc.png";
@@ -14,8 +15,6 @@ import RKTSLogo from "public/assets/icons/logo_rkts.png";
 import SCLogo from "public/assets/icons/logo_sc.png";
 import VRILogo from "public/assets/icons/logo_vri.png";
 import { DbApi } from "utils/api/dbApi";
-
-import { SourceLink } from "./common/MuiStyledSidebarComponents";
 
 function CBCIcon({ fill }: { fill: string }) {
   return (

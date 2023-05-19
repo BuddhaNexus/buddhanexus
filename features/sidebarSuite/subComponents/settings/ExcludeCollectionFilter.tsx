@@ -2,62 +2,64 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useTextLists } from "@components/hooks/useTextLists";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
-import { DEFAULT_QUERY_PARAMS } from "features/sidebar/common/dbSidebarSettings";
+import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
 import {
   ListboxComponent,
   StyledPopper,
-} from "features/sidebar/common/textMenuSubComponents";
+} from "features/sidebarSuite/common/textMenuComponents";
 import { ArrayParam, useQueryParam } from "use-query-params";
-import type { TextMenuItem } from "utils/api/textLists";
+import type { CategoryMenuItem } from "utils/api/textLists";
 
-const IncludeTextFilter = () => {
+const ExcludeCollectionFilter = () => {
   const { t } = useTranslation("settings");
 
-  const { texts, isLoadingTexts } = useTextLists();
+  const { categories, isLoadingCategories } = useTextLists();
 
-  const [includeTextParam, setIncludeTextParam] = useQueryParam(
-    // TODO: replace with "include_text",
+  const [excludeCollectionParam, setExcludeCollectionParam] = useQueryParam(
+    // TODO: replace with "exclude_collection",
     "limit_collection",
     ArrayParam
   );
 
-  const [includeTextValue, setIncludeTextValue] = useState<TextMenuItem[]>([]);
+  const [excludeCollectionValue, setExcludeCollectionValue] = useState<
+    CategoryMenuItem[]
+  >([]);
 
   useEffect(
     () =>
-      setIncludeTextParam(
-        includeTextParam ?? DEFAULT_QUERY_PARAMS.include_text
+      setExcludeCollectionParam(
+        excludeCollectionParam ?? DEFAULT_QUERY_PARAMS.exclude_collection
       ),
-    [includeTextParam, setIncludeTextParam]
+    [excludeCollectionParam, setExcludeCollectionParam]
   );
 
-  const handleInputChange = (value: TextMenuItem[]) => {
-    setIncludeTextValue(value);
-    setIncludeTextParam(() => {
-      return value.map((item) => item.id);
+  const handleInputChange = (value: CategoryMenuItem[]) => {
+    setExcludeCollectionValue(value);
+    setExcludeCollectionParam(() => {
+      return value.map((item) => `!${item.id}`);
     });
   };
 
   return (
     <Box sx={{ my: 1, width: 1 }}>
       <Autocomplete
-        id="excluded-texts"
+        id="excluded-collections"
         sx={{ mt: 1, mb: 2 }}
         multiple={true}
-        value={includeTextValue ?? []}
+        value={excludeCollectionValue ?? []}
         PopperComponent={StyledPopper}
         ListboxComponent={ListboxComponent}
-        options={[...texts.values()]}
+        options={[...categories.values()]}
         getOptionLabel={(option) => option.name.toUpperCase()}
         renderInput={(params) => (
           <TextField
             {...params}
-            label={t(`filtersLabels.includeTexts`)}
+            label={t(`filtersLabels.excludeCollections`)}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
                 <React.Fragment>
-                  {isLoadingTexts ? (
+                  {isLoadingCategories ? (
                     <CircularProgress color="inherit" size={20} />
                   ) : null}
                   {params.InputProps.endAdornment}
@@ -68,7 +70,7 @@ const IncludeTextFilter = () => {
         )}
         renderOption={(props, option) => [props, option] as React.ReactNode}
         renderGroup={(params) => params as unknown as React.ReactNode}
-        loading={isLoadingTexts}
+        loading={isLoadingCategories}
         filterSelectedOptions
         disablePortal
         onChange={(event, value) => handleInputChange(value)}
@@ -77,4 +79,4 @@ const IncludeTextFilter = () => {
   );
 };
 
-export default IncludeTextFilter;
+export default ExcludeCollectionFilter;

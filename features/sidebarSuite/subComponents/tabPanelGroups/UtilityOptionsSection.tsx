@@ -27,15 +27,17 @@ import {
   onDownload,
   onEmailQueryLink,
   type UtilityClickHandlerProps,
-} from "features/sidebar/common/dbSidebarHelpers";
+} from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   UTILITY_OPTIONS_OMISSIONS_CONFIG as omissions,
   UtilityOptionEnum,
-} from "features/sidebar/common/dbSidebarSettings";
+} from "features/sidebarSuite/common/dbSidebarSettings";
+import {
+  Popper,
+  PopperMsgBox,
+} from "features/sidebarSuite/common/MuiStyledSidebarComponents";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
-
-import { Popper, PopperMsgBox } from "./common/MuiStyledSidebarComponents";
 
 type UtilityOptionProps = {
   callback: (props: UtilityClickHandlerProps) => void;
