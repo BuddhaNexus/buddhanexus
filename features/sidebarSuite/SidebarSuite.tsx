@@ -4,6 +4,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext } from "@mui/lab/";
 import { Box, Drawer, IconButton, Toolbar } from "@mui/material";
 import { atom, useAtom } from "jotai";
+import { StringParam, useQueryParam } from "use-query-params";
 
 import {
   DrawerHeader,
@@ -29,12 +30,18 @@ export function SidebarSuite() {
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeSettingsTabAtom);
 
-  useEffect(() => {
-    setActiveTab("0");
-  }, []);
+  const [, setCurrentLang] = useQueryParam("lang", StringParam);
 
   const { route } = useRouter();
   const isSearchRoute = route.startsWith("/search");
+
+  useEffect(() => {
+    if (!isSearchRoute) {
+      setCurrentLang(undefined);
+    }
+
+    setActiveTab("0");
+  }, []);
 
   const handleTabChange = useCallback(
     (event: React.SyntheticEvent, newValue: string) => {

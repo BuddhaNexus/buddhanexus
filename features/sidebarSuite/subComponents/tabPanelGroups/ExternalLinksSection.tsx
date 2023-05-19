@@ -54,6 +54,7 @@ const logos: Record<string, StaticImageData> = {
   vri: VRILogo,
 };
 
+// TODO: confirm this is exclusively used in DB file selection results pages and does not need to be refactored to be applied universally
 export const ExternalLinksSection = () => {
   const { fileName } = useDbQueryParams();
   const { t } = useTranslation("settings");

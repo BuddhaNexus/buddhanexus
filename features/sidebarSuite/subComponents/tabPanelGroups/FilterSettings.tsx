@@ -4,24 +4,45 @@ import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
-  FILTER_OMISSIONS_CONFIG as omissions,
-  FilterEnum,
+  DB_PAGE_FILTER_OMISSIONS_CONFIG as omissions,
+  DbPageFilterEnum,
+  SearchPageFilterEnum,
+  type SidebarSuitePageContext,
 } from "features/sidebarSuite/common/dbSidebarSettings";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   IncludeExcludeFilters,
   ParLengthFilter,
   ScoreFilter,
+  SearchLanguageSelector,
 } from "features/sidebarSuite/subComponents/settings";
 import { useAtomValue } from "jotai";
+import { StringParam, useQueryParam } from "use-query-params";
 
-export const FilterSettings = () => {
+export const FilterSettings = ({
+  pageType = "db",
+}: {
+  pageType: SidebarSuitePageContext;
+}) => {
   const currentView = useAtomValue(currentViewAtom);
 
   const { sourceLanguage } = useDbQueryParams();
 
+  const [currentLang] = useQueryParam("lang", StringParam);
+
   const filters = useMemo(() => {
-    return Object.values(FilterEnum).filter(
+    const filterList = Object.values(
+      pageType === "search" ? SearchPageFilterEnum : DbPageFilterEnum
+    );
+
+    if (pageType === "search") {
+      if (!currentLang || currentLang === "all") {
+        return filterList.filter((value) => value !== "includeExclude");
+      }
+      return filterList;
+    }
+
+    return filterList.filter(
       (filter) =>
         !isSettingOmitted({
           omissions,
@@ -30,22 +51,25 @@ export const FilterSettings = () => {
           view: currentView,
         })
     );
-  }, [sourceLanguage, currentView]);
+  }, [pageType, currentLang, sourceLanguage, currentView]);
 
   return filters.length > 0 ? (
-    <Box sx={{ mx: 2 }}>
+    <Box>
       {filters.map((filter) => {
         const key = `filter-setting-${filter}`;
 
         switch (filter) {
+          case "lang": {
+            return <SearchLanguageSelector key={key} />;
+          }
           case "score": {
             return <ScoreFilter key={key} />;
           }
           case "par_length": {
             return <ParLengthFilter key={key} />;
           }
-          case "limit_collection": {
-            // TODO: Update case when new endpoints are available
+          // TODO: Update case when new endpoints are available
+          case "includeExclude": {
             return <IncludeExcludeFilters key={key} />;
           }
           case "target_collection": {

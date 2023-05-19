@@ -11,7 +11,7 @@ import {
 import { useAtom } from "jotai";
 
 export const DbViewSelector = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("settings");
 
   const { asPath, push } = useRouter();
   const [currentView, setCurrentDbView] = useAtom(currentViewAtom);
@@ -24,7 +24,7 @@ export const DbViewSelector = () => {
   return (
     <FormControl variant="filled" sx={{ width: 1, mb: 2 }}>
       <InputLabel id="db-view-selector-label">
-        {t(`common:dbViewSelector.view`)}
+        {t(`dbViewLabels.view`)}
       </InputLabel>
       <Select
         labelId="db-view-selector-label"
@@ -34,7 +34,7 @@ export const DbViewSelector = () => {
       >
         {Object.values(DbViewEnum).map((view) => (
           <MenuItem key={view} value={view}>
-            {t(`common:dbViewSelector.${view}`)}
+            {t(`dbViewLabels.${view}`)}
           </MenuItem>
         ))}
       </Select>

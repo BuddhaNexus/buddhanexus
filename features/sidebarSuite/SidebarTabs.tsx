@@ -1,6 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { TabList, TabPanel } from "@mui/lab/";
 import { Tab } from "@mui/material";
+import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 
 import { Info } from "./subComponents/Info";
 import { DisplayOptionsSection } from "./subComponents/tabPanelGroups/DisplayOptionsSection";
@@ -21,7 +22,7 @@ export const SidebarTabList = ({
   /* TODO: defined what's needed for search page results */
   const searchPageTabList = [
     <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />,
-    <Tab key="settings-tab-2" value="2" label={t("tabs.info")} />,
+    <Tab key="settings-tab-1" value="1" label={t("tabs.info")} />,
   ];
 
   const dbFilePageTabList = [
@@ -37,10 +38,28 @@ export const SidebarTabList = ({
   );
 };
 
+export const SearchPageSidebarTabPanels = () => {
+  const { t } = useTranslation("settings");
+
+  return (
+    <>
+      <TabPanel value="0" sx={{ px: 2 }}>
+        <PanelHeading heading={t("tabs.filters")} />
+        <FilterSettings pageType="search" />
+        <UtilityOptionsSection />
+      </TabPanel>
+      {/* TODO: defined what's needed for search page results */}
+      <TabPanel value="1">
+        <Info />
+      </TabPanel>
+    </>
+  );
+};
+
 export const DbFilePageSidebarTabPanels = () => {
   return (
     <>
-      <TabPanel value="0" sx={{ px: 0 }}>
+      <TabPanel value="0" sx={{ px: 2 }}>
         <DisplayOptionsSection />
 
         <UtilityOptionsSection />
@@ -48,23 +67,9 @@ export const DbFilePageSidebarTabPanels = () => {
         <ExternalLinksSection />
       </TabPanel>
       <TabPanel value="1" sx={{ px: 0 }}>
-        <FilterSettings />
+        <FilterSettings pageType="db" />
       </TabPanel>
       <TabPanel value="2">
-        <Info />
-      </TabPanel>
-    </>
-  );
-};
-
-export const SearchPageSidebarTabPanels = () => {
-  return (
-    <>
-      <TabPanel value="0" sx={{ px: 0 }}>
-        <FilterSettings />
-      </TabPanel>
-      {/* TODO: defined what's needed for search page results */}
-      <TabPanel value="1">
         <Info />
       </TabPanel>
     </>

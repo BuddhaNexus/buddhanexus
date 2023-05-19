@@ -96,11 +96,11 @@ export const UtilityOptionsSection = () => {
 
   return (
     <>
-      <Typography variant="h6" component="h3" mx={2} mt={3}>
+      <Typography variant="h6" component="h3" mt={3}>
         {t("headings.tools")}
       </Typography>
 
-      <List>
+      <List sx={{ m: 0 }}>
         {Object.values(UtilityOptionEnum).map((utilityKey) => {
           const Icon = utilityComponents[utilityKey].icon;
 
@@ -128,6 +128,7 @@ export const UtilityOptionsSection = () => {
             >
               <ListItemButton
                 id={utilityKey}
+                sx={{ px: 0 }}
                 aria-describedby={popperId}
                 onClick={(event) =>
                   utilityComponents[utilityKey].callback({

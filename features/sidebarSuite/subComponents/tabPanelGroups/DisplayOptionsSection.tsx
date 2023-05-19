@@ -2,13 +2,14 @@ import React, { Fragment, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DISPLAY_OPTIONS_OMISSIONS_CONFIG as omissions,
   LocalDisplayOptionEnum,
   QueriedDisplayOptionEnum,
 } from "features/sidebarSuite/common/dbSidebarSettings";
+import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   FolioOption,
@@ -18,6 +19,7 @@ import {
 import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
 import { useAtomValue } from "jotai";
 
+// Exclusively used in DB file selection results pages and has not been refactored for options in multiple contexts (i.e. global search results page).
 export const DisplayOptionsSection = () => {
   const { t } = useTranslation("settings");
 
@@ -43,9 +45,7 @@ export const DisplayOptionsSection = () => {
   if (options.length === 0) {
     return (
       <Box sx={{ mx: 2 }}>
-        <Typography variant="h6" component="h3" mb={2}>
-          {t("headings.display")}
-        </Typography>
+        <PanelHeading heading={t("headings.display")} />
         <DbViewSelector />
       </Box>
     );
@@ -53,9 +53,7 @@ export const DisplayOptionsSection = () => {
 
   return (
     <Box sx={{ mx: 2 }}>
-      <Typography variant="h6" component="h3" mb={2}>
-        {t("headings.display")}
-      </Typography>
+      <PanelHeading heading={t("headings.display")} />
       <DbViewSelector />
       {options.map((option) => {
         const key = `display-option-${option}`;

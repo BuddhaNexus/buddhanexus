@@ -1,11 +1,18 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
 import { SourceLanguage } from "utils/constants";
 
+export type SidebarSuitePageContext = "db" | "search";
+
 // Items in the following settings arrays are given in order of appearance in sidebar
-export enum FilterEnum {
+export enum SearchPageFilterEnum {
+  LANG = "lang",
+  INCLUDE_EXCLUDE = "includeExclude",
+}
+
+export enum DbPageFilterEnum {
   SCORE = "score",
   PAR_LENGTH = "par_length",
-  LIMIT_COLLECTION = "limit_collection",
+  INCLUDE_EXCLUDE = "includeExclude",
   TARGET_COLLECTION = "target_collection",
 }
 
@@ -27,7 +34,7 @@ export enum UtilityOptionEnum {
   EMAIL_QUERY_LINK = "emailQueryLink",
 }
 
-export type MenuSetting = DisplayOption | FilterEnum | UtilityOptionEnum;
+export type MenuSetting = DbPageFilterEnum | DisplayOption | UtilityOptionEnum;
 
 export type ViewOmission = (SourceLanguage | "allLangs")[];
 export type SettingContext = Partial<Record<DbViewEnum, ViewOmission>>;
@@ -40,14 +47,15 @@ export type MenuOmission = SettingOmissions<MenuSetting>;
 
 // Not all filters, options and utilities are applicable for all DB languages and views. The setting menu assumes each setting component is to be rendered, unless defined in the following config objects listing contexts in which specific settings should be ommitted. For example, the `limit_collection` filter should be shown in all cases except for graph view, in any language.
 
-export const FILTER_OMISSIONS_CONFIG: SettingOmissions<FilterEnum> = {
-  limit_collection: { graph: ["allLangs"] },
-  target_collection: {
-    numbers: ["allLangs"],
-    table: ["allLangs"],
-    text: ["allLangs"],
-  },
-};
+export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilterEnum> =
+  {
+    includeExclude: { graph: ["allLangs"] },
+    target_collection: {
+      numbers: ["allLangs"],
+      table: ["allLangs"],
+      text: ["allLangs"],
+    },
+  };
 
 const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayOptionEnum> =
   {
