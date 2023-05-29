@@ -41,7 +41,6 @@ FOR f IN parallels_sorted_file
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER p["co-occ"] <= @coocc            
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
             FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
             LET root_seg_text = (
@@ -88,7 +87,6 @@ FOR f IN parallels_sorted_file
                 par_length: p.par_length,
                 root_length: p.root_length,
                 par_pos_beg: p.par_pos_beg,
-                "co-occ": p["co-occ"],
                 score: p.score,
                 src_lang: p.src_lang,
                 tgt_lang: p.tgt_lang
@@ -104,7 +102,6 @@ FOR f IN parallels_sorted_file
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER p["co-occ"] <= @coocc
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
             FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
 
@@ -177,7 +174,6 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
             par_length: p.par_length,
             root_length: p.root_length,
             par_pos_beg: p.par_pos_beg,
-            "co-occ": p["co-occ"],
             score: p.score
         }
 """
@@ -226,7 +222,6 @@ LET parallels =  (
             FILTER p._key == parallel_id
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER p["co-occ"] <= @coocc
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
             FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
 
@@ -336,7 +331,6 @@ FOR f in parallels_sorted_file
 FOR p IN current_parallels
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
-    FILTER p["co-occ"] <= @coocc
     LET filtertest = (
         FOR item IN filter_target
             RETURN REGEX_TEST(p.par_segnr[0], CONCAT("^",item,"[^y]"))
@@ -355,7 +349,6 @@ FOR p IN parallels
             FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
-    FILTER p["co-occ"] <= @coocc
     LIMIT 15000
     COLLECT WITH COUNT INTO length
     RETURN length

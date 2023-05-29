@@ -51,10 +51,11 @@ from tasks_multilingual import (
 )
 
 from global_search_function import (
-    load_search_index_skt,
-    load_search_index_pli,
-    load_search_index_tib,
-    load_search_index_chn,
+    SearchIndexSanskrit,
+    SearchIndexPali,
+    SearchIndexTibetan,
+    SearchIndexChinese,
+
     create_analyzers,
     clean_analyzers,
     create_search_views
@@ -159,25 +160,20 @@ def clean_multi_data(c):
     clean_multi()
 
 @task
-def create_search_index(
-    c,
-    index_url_skt=DEFAULT_SOURCE_URL + "/search_index_sanskrit.json.gz",
-    index_url_pli=DEFAULT_SOURCE_URL + "/search_index_pali.json.gz",
-    index_url_tib=DEFAULT_SOURCE_URL + "/search_index_tibetan.json.gz",
-    index_url_chn=DEFAULT_SOURCE_URL + "/search_index_chn.json.gz",
-):
+def create_search_index(c):
     """
     Load index data for search index from path defined in .env.
     """
     db = get_database()
+    SearchIndex = SearchIndexSanskrit()
+    SearchIndex.load_search_index(db)
+    SearchIndex = SearchIndexPali()
+    SearchIndex.load_search_index(db)
+    SearchIndex = SearchIndexTibetan()
+    SearchIndex.load_search_index(db)
+    SearchIndex = SearchIndexChinese()
+    SearchIndex.load_search_index(db)
     create_analyzers(db)
-    collections = INDEX_COLLECTION_NAMES
-    for name in collections:
-        db.create_collection(name)
-    load_search_index_skt(index_url_skt, db)
-    load_search_index_pli(index_url_pli, db)
-    load_search_index_chn(index_url_chn, db)
-    load_search_index_tib(index_url_tib, db)
     create_search_views(db)
     print("Search index data loading completed.")
 

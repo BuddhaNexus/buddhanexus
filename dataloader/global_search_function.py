@@ -1,6 +1,7 @@
 from arango.database import StandardDatabase
 import gzip
 import json
+import ijson
 from tqdm import tqdm as tqdm
 from dataloader_constants import (
     DEFAULT_LANGS,
@@ -8,6 +9,12 @@ from dataloader_constants import (
     COLLECTION_SEARCH_INDEX_SKT,
     COLLECTION_SEARCH_INDEX_PLI,
     COLLECTION_SEARCH_INDEX_CHN,
+
+    SKT_SEARCH_DATA_PATH,
+    PLI_SEARCH_DATA_PATH,
+    TIB_SEARCH_DATA_PATH,
+    CHN_SEARCH_DATA_PATH,
+
     VIEW_SEARCH_INDEX_TIB,
     VIEW_SEARCH_INDEX_TIB_FUZZY,
     VIEW_SEARCH_INDEX_PLI,
@@ -20,6 +27,8 @@ from dataloader_constants import (
     CHINESE_ANALYZER,
     ANALYZER_NAMES,
 )
+
+from dataloader_utils import get_cat_from_segmentnr
 
 from views_properties import (
     PROPERTIES_SEARCH_INDEX_TIB,
@@ -43,113 +52,103 @@ skt_stopwords_list = get_stopwords_list("../data/skt_stopwords.txt")
 pli_stopwords_list = get_stopwords_list("../data/pli_stopwords.txt")
 
 
-def load_search_index_skt(path, db: StandardDatabase):
-    with gzip.open(path) as f:
-        print(f"\nLoading file index data sanskrit...")
-        index_data = json.load(f)
-        print(f"\nInserting file index data sanskrit into DB...")
-        collection = db.collection(COLLECTION_SEARCH_INDEX_SKT)
-        # we have to do this in chunk, otherwise it will fail with broken_pipe
-        chunksize = 10000
-        for i in tqdm(range(0, len(index_data), chunksize)):
-            collection.insert_many(index_data[i : i + chunksize])
-        print(f"\nDone loading index data sanskrit+pali...")
-        print("\nDone creating View")
+class SearchIndexBase:
+    COLLECTION_NAME: str
+    DATA_PATH: str
 
-def load_search_index_pli(path, db: StandardDatabase):
-    with gzip.open(path) as f:
-        print(f"\nLoading file index data pali...")
-        index_data = json.load(f)
-        print(f"\nInserting file index data Pali into DB...")
-        collection = db.collection(COLLECTION_SEARCH_INDEX_PLI)
-        # we have to do this in chunk, otherwise it will fail with broken_pipe
-        chunksize = 10000
-        for i in tqdm(range(0, len(index_data), chunksize)):
-            collection.insert_many(index_data[i : i + chunksize])
-        print(f"\nDone loading index data sanskrit+pali...")
-        print("\nDone creating View")
+    def load_search_index(self, db: StandardDatabase):
+        with gzip.open(self.DATA_PATH, 'rb') as f:
+            current_entries = []
+            db.create_collection(self.COLLECTION_NAME)
+            collection = db.collection(self.COLLECTION_NAME) 
+            print(f"\nLoading file index data from {self.DATA_PATH}...")
+            for entry in tqdm(ijson.items(f, 'item')):
+                entry["category"] = get_cat_from_segmentnr(entry["segment_nr"][0])                
+                entry['filename'] = entry['filename'].split('/')[-1]
+                current_entries.append(entry)
+                if len(current_entries) > 10000:
+                    collection.insert_many(current_entries)
+                    current_entries = []
+            collection.insert_many(current_entries)
+            print(f"\nDone loading index data from {self.DATA_PATH}.")
 
-        
+class SearchIndexSanskrit(SearchIndexBase):
+    COLLECTION_NAME = COLLECTION_SEARCH_INDEX_SKT
+    DATA_PATH = SKT_SEARCH_DATA_PATH
 
-def load_search_index_tib(path, db: StandardDatabase):
-    with gzip.open(path) as f:
-        print(f"\nLoading file index data Tibetan...")
-        index_data = json.load(f)
-        print(f"\nInserting file index data Tibetan into DB...")
-        collection = db.collection(COLLECTION_SEARCH_INDEX_TIB)
-        # we have to do this in chunk, otherwise it will fail with broken_pipe
-        chunksize = 10000
-        for i in tqdm(range(0, len(index_data), chunksize)):
-            collection.insert_many(index_data[i : i + chunksize])
-        print(f"\nDone loading Tibetan index data...")
-        print("\nDone creating View")
+class SearchIndexPali(SearchIndexBase):
+    COLLECTION_NAME = COLLECTION_SEARCH_INDEX_PLI
+    DATA_PATH = PLI_SEARCH_DATA_PATH
 
+class SearchIndexTibetan(SearchIndexBase):
+    COLLECTION_NAME = COLLECTION_SEARCH_INDEX_TIB
+    DATA_PATH = TIB_SEARCH_DATA_PATH
 
-def load_search_index_chn(path, db: StandardDatabase):
-    with gzip.open(path) as f:
-        print(f"\nLoading file index data Chinese...")
-        index_data = json.load(f)
-        print(f"\nInserting file index data Chinese into DB...")
-        collection = db.collection(COLLECTION_SEARCH_INDEX_CHN)
-        chunksize = 10000
-        for i in tqdm(range(0, len(index_data), chunksize)):
-            collection.insert_many(index_data[i : i + chunksize])
-        print(f"\nDone loading index data Chn...")
+class SearchIndexChinese(SearchIndexBase):
+    COLLECTION_NAME = COLLECTION_SEARCH_INDEX_CHN
+    DATA_PATH = CHN_SEARCH_DATA_PATH
 
-        print("\nDone creating View for Chinese")
+class AnalyzerBase:
+    ANALYZER_NAME: str
+    CASE: str
+    STOPWORDS: list
+    ACCENT: bool    
 
+    def create_analyzer(self, db: StandardDatabase):
+        print("ANALYZER_NAMES", self.ANALYZER_NAME)
+        db.create_analyzer(
+            name=self.ANALYZER_NAME,
+            analyzer_type="text",
+            properties={
+                "locale": "en.utf-8",
+                "case": self.CASE,
+                "stopwords": self.STOPWORDS,
+                "accent": self.ACCENT,
+                "stemming": False,
+            },
+            features=["position", "norm", "frequency"],
+        )
 
+class AnalyzerSanskrit(AnalyzerBase):
+    ANALYZER_NAME = SANSKRIT_ANALYZER
+    CASE = "none"
+    STOPWORDS = skt_stopwords_list
+    ACCENT = True      
+
+class AnalyzerPali(AnalyzerBase):
+    ANALYZER_NAME = PALI_ANALYZER
+    CASE = "none"
+    STOPWORDS = pli_stopwords_list
+    ACCENT = True
+
+class AnalyzerTibetan(AnalyzerBase):    
+    ANALYZER_NAME = TIBETAN_ANALYZER
+    CASE = "none"
+    STOPWORDS = []
+    ACCENT = False
+
+class AnalyzerTibetanFuzzy(AnalyzerBase):    
+    ANALYZER_NAME = TIBETAN_FUZZY_ANALYZER
+    CASE = "none"
+    STOPWORDS = tib_stopwords_list
+    ACCENT = False
+
+#class AnalyzerChinese(AnalyzerBase):
+#    ANALYZER_NAME = CHINESE_ANALYZER
+#    CASE = "none"
+#    STOPWORDS = []
+#    ACCENT = False    
+    
 def create_analyzers(db: StandardDatabase):
-    db.create_analyzer(
-        name=TIBETAN_ANALYZER,
-        analyzer_type="text",
-        properties={
-            "locale": "en.utf-8",
-            "stopwords": [],
-            "accent": False,
-            "stemming": False,
-        },
-        features=["position", "norm", "frequency"],
-    )
-    db.create_analyzer(
-        name=TIBETAN_FUZZY_ANALYZER,
-        analyzer_type="text",
-        properties={
-            "locale": "en.utf-8",
-            "stopwords": tib_stopwords_list,
-            "accent": False,
-            "stemming": False,
-        },
-        features=["position", "norm", "frequency"],
-    )
+    Analyzer = AnalyzerTibetan()
+    Analyzer.create_analyzer(db)
+    Analyzer = AnalyzerTibetanFuzzy()
+    Analyzer.create_analyzer(db)
+    Analyzer = AnalyzerSanskrit()
+    Analyzer.create_analyzer(db)
+    Analyzer = AnalyzerPali()
+    Analyzer.create_analyzer(db)
 
-    db.create_analyzer(
-        name=SANSKRIT_ANALYZER,
-        analyzer_type="text",
-        properties={
-            "locale": "en.utf-8",
-            "case": "none",
-            "stopwords": skt_stopwords_list,
-            "accent": True,
-            "stemming": False,
-        },
-        features=["position", "norm", "frequency"],
-    )
-
-    db.create_analyzer(
-        name=PALI_ANALYZER,
-        analyzer_type="text",
-        properties={
-            "locale": "en.utf-8",
-            "case": "none",
-            "stopwords": pli_stopwords_list,
-            "accent": True,
-            "stemming": False,
-        },
-        features=["position", "norm", "frequency"],
-    )
-    
-    
 def create_search_views(db: StandardDatabase):
     print(f"\nCreating Sanskrit search views...")
     db.create_arangosearch_view(

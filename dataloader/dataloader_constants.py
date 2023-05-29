@@ -24,15 +24,25 @@ COLLECTION_MENU_COLLECTIONS = "menu_collections"
 COLLECTION_MENU_CATEGORIES = "menu_categories"
 COLLECTION_FILES_PARALLEL_COUNT = "files_parallel_count"
 COLLECTION_CATEGORIES_PARALLEL_COUNT = "categories_parallel_count"
+
+
 COLLECTION_SEARCH_INDEX_TIB = "search_index_tib"
 COLLECTION_SEARCH_INDEX_SKT = "search_index_skt"
 COLLECTION_SEARCH_INDEX_PLI = "search_index_pli"
 COLLECTION_SEARCH_INDEX_CHN = "search_index_chn"
+
+SKT_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_sanskrit.json.gz"
+PLI_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_pali.json.gz"
+TIB_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_tibetan.json.gz"
+CHN_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_chn.json.gz"
+
+
 VIEW_SEARCH_INDEX_TIB = "search_index_tib_view"
 VIEW_SEARCH_INDEX_TIB_FUZZY = "search_index_tib_fuzzy_view"
 VIEW_SEARCH_INDEX_SKT = "search_index_skt_view"
 VIEW_SEARCH_INDEX_PLI = "search_index_pli_view"
 VIEW_SEARCH_INDEX_CHN = "search_index_chn_view"
+
 TIBETAN_ANALYZER = "tibetan_analyzer"
 TIBETAN_FUZZY_ANALYZER = "tibetan_fuzzy_analyzer"
 SANSKRIT_ANALYZER = "sanskrit_analyzer"

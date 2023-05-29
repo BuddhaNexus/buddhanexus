@@ -101,12 +101,16 @@ def process_result(result_pair,search_string):
     except (RuntimeError, TypeError, NameError):
         pass
 
-def postprocess_results(search_strings, results, limitcollection_positive):
+def postprocess_results(search_strings, 
+                        results):
     new_results = []
     search_string = search_strings['skt']
     
     for result in results:
         new_results.append(process_result(result,search_string))
+    
+    for result in new_results:
+        print("RESULT", result)
     results = [x for x in new_results if x is not None]
     results = [x for x in results if 'centeredness' in x]
     results = remove_duplicate_results(results)
@@ -120,17 +124,3 @@ def postprocess_results(search_strings, results, limitcollection_positive):
     results = results[::-1]
     return results[:200] # make sure we return a fixed number of results
 
-def process_multilang_result(result_list,search_string):
-    if search_string == '':
-        return result_list
-    
-    for result in result_list:
-        if search_string in result["root_seg_text"][0]:
-            beg,end, = get_offsets(search_string,result["root_seg_text"][0])[:2]
-            result['root_offset_beg'] = beg
-            result['root_offset_end'] = end
-        if search_string in result["par_segment"][0]:
-            beg,end, = get_offsets(search_string,result["par_segment"][0])[:2]
-            result['par_offset_beg'] = beg
-            result['par_offset_end'] = end        
-    return result_list
