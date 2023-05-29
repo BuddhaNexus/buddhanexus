@@ -10,7 +10,7 @@ from ..utils import (
 
 router = APIRouter()
 
-@router.post("/middle/")
+@router.get("/middle/")
 async def get_parallels_for_middle(parallel_ids: List[str]):
     """
     :return: List of parallels for text view (middle)
