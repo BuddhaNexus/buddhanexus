@@ -12,19 +12,29 @@ import { dehydrate, useQuery } from "@tanstack/react-query";
 import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
-import type { ApiGraphPageData } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
+/**
+ * TODO
+ * 1. Display text on left side
+ * 2. Allow selection
+ * 3. Grab parallels for middle (https://buddhanexus.kc-tbts.uni-hamburg.de/api/parallels-for-middle)
+ * 4. Display using table view components
+ *
+ * Split pane: use https://github.com/johnwalley/allotment
+ *
+ * @constructor
+ */
 export default function TextPage() {
   const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
   useDbView();
 
-  const { data, isLoading, isError } = useQuery<ApiGraphPageData>({
+  const { data, isLoading, isError } = useQuery<ApiTextPageData>({
     queryKey: DbApi.GraphView.makeQueryKey({ fileName, queryParams }),
     queryFn: () =>
       DbApi.GraphView.call({
