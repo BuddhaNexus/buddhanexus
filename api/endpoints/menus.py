@@ -51,7 +51,7 @@ async def get_all_collections():
     collections_query_result = execute_query(menu_queries.QUERY_ALL_COLLECTIONS)
     return {"result": collections_query_result.result}
 
-@router.get("/sidebar/{language}")
+@router.get("/sidebar/")
 async def get_data_for_sidebar_menu(language: str):
     """
     Endpoint for sidebar menu
