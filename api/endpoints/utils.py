@@ -22,7 +22,7 @@ async def get_counts_for_file(
         limit_collection
     )
     query_graph_result = execute_query(main_queries.QUERY_COUNT_MATCHES,
-        bindVars={
+        bind_vars={
             "filename": file_name,
             "score": score,
             "parlength": par_length,
@@ -39,7 +39,7 @@ async def get_folios_for_file(file_name: str):
     suttas/PTS nrs/segments (PLI) / segments (SKT)
     """
     query_graph_result = execute_query(main_queries.QUERY_FOLIOS,
-        bindVars={"filename": file_name},
+        bind_vars={"filename": file_name},
     )
     folios = query_graph_result.result[0]
     return {"folios": folios}
@@ -60,7 +60,7 @@ async def get_multilingual(filename: str):
     """
     query_result = {"langList": []}
     query_displayname = execute_query(main_queries.QUERY_MULTILINGUAL_LANGS,
-        bindVars={"filename": filename},
+        bind_vars={"filename": filename},
         raw_results=True,
     )
     query_result = {"langList": query_displayname.result[0]}

@@ -17,7 +17,7 @@ from typing import List
 
 router = APIRouter()
 
-@router.get("/files/{file_name}/table")
+@router.get("/table")
 async def get_table_view(
     file_name: str,
     score: int = 0,
@@ -35,7 +35,7 @@ async def get_table_view(
         limit_collection
     )
     query_result = execute_query(main_queries.QUERY_TABLE_VIEW,                            
-            bindVars={
+            bind_vars={
                 "filename": file_name,
                 "score": score,
                 "parlength": par_length,
@@ -48,7 +48,7 @@ async def get_table_view(
         )
     return calculate_color_maps_table_view(query_result.result)
 
-@router.get("/files/{file_name}/tabledownload")
+@router.get("/download")
 async def get_table_download(
     file_name: str,
     score: int = 0,
@@ -66,7 +66,7 @@ async def get_table_download(
     limit_collection_regex = get_collection_files_regex(limit_collection)
 
     query_result = execute_query(main_queries.QUERY_TABLE_DOWNLOAD,                           
-            bindVars={
+            bind_vars={
                 "filename": file_name,
                 "score": score,
                 "parlength": par_length,
@@ -99,7 +99,7 @@ async def get_table_download(
     )
 
     collections_result = execute_query(menu_queries.QUERY_COLLECTION_NAMES,
-        bindVars={
+        bind_vars={
             "collections": segment_collection_results[1],
             "language": language,
         }
@@ -119,7 +119,7 @@ async def get_table_download(
         ],
     )
 
-@router.get("/files/{file_name}/multilang")
+@router.get("/multilang")
 async def get_multilang(
     file_name: str,
     multi_lingual: List[str] = Query([]),
@@ -132,7 +132,7 @@ async def get_multilang(
     :return: List of segments and parallels for the table view.
     """
     query_result = execute_query(main_queries.QUERY_MULTILINGUAL,
-        bindVars={
+        bind_vars={
             "filename": file_name,
             "multi_lingual": multi_lingual,
             "page": page,

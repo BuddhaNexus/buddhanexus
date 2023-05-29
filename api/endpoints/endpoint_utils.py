@@ -12,7 +12,7 @@ def execute_query(query, bind_vars=None, batch_size=10000, raw_results=False):
             query=query, batchSize=batch_size, bindVars=bind_vars or {},
             rawResults=raw_results
         )
-        return db_query_result.result
+        return db_query_result
     except DocumentNotFoundError as error:
         print(error)
         raise HTTPException(status_code=404, detail="Item not found") from error

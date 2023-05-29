@@ -58,7 +58,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
             query = get_db().AQLQuery(
                 query=menu_queries.QUERY_ONE_COLLECTION,
                 batchSize=1000,
-                bindVars={"collectionkey": file.replace("!", "")},
+                bind_vars={"collectionkey": file.replace("!", "")},
             )
             for item in query.result:
                 if "!" not in file:
@@ -182,7 +182,7 @@ def add_source_information(filename, query_result):
     if lang == "skt":
         query_source_information = get_db().AQLQuery(
             query=main_queries.QUERY_SOURCE,
-            bindVars={"filename": filename},
+            bind_vars={"filename": filename},
             rawResults=True,
         )
         source_id = query_source_information.result[0]["source_id"]
@@ -218,7 +218,7 @@ def get_start_integer(active_segment):
     try:
         text_segment_count_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_SEGMENT_COUNT,
-            bindVars={"segmentnr": active_segment},
+            bind_vars={"segmentnr": active_segment},
         )
         if text_segment_count_query_result.result:
             start_int = text_segment_count_query_result.result[0] - 400
@@ -247,7 +247,7 @@ def get_file_text(file_name):
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_FILE_TEXT,
-            bindVars={"filename": file_name},
+            bind_vars={"filename": file_name},
         )
 
         if text_segments_query_result.result:

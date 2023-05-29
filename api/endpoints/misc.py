@@ -24,7 +24,7 @@ async def get_counts_for_file(
     query_graph_result = get_db().AQLQuery(
         query=main_queries.QUERY_TOTAL_NUMBERS,
         batchSize=100000,
-        bindVars={
+        bind_vars={
             "filename": file_name,
             "score": score,
             "parlength": par_length,
@@ -44,7 +44,7 @@ async def get_folios_for_file(file_name: str):
     query_graph_result = get_db().AQLQuery(
         query=main_queries.QUERY_FOLIOS,
         batchSize=100000,
-        bindVars={"filename": file_name},
+        bind_vars={"filename": file_name},
     )
     folios = query_graph_result.result[0]
     return {"folios": folios}

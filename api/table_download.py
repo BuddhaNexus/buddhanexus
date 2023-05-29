@@ -296,7 +296,7 @@ def get_displayname(segmentnr, lang):
     database = get_db()
     query_displayname = database.AQLQuery(
         query=main_queries.QUERY_DISPLAYNAME,
-        bindVars={"filename": filename},
+        bind_vars={"filename": filename},
     )
 
     if query_displayname.result:

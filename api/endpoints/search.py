@@ -25,7 +25,7 @@ async def get_search_results(
     search_strings = search_utils.preprocess_search_string(search_string[:150])
     query_search = database.AQLQuery(
         query=search_queries.QUERY_SEARCH,
-        bindVars={
+        bind_vars={
             "search_string_tib": search_strings["tib"],
             "search_string_chn": search_strings["chn"],
             "search_string_skt": search_strings["skt"],

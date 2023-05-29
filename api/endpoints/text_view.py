@@ -21,7 +21,7 @@ async def get_parallels_for_middle(parallel_ids: List[str]):
         },
     )
     print(query_result[0])
-    return calculate_color_maps_middle_view(query_result[0])
+    return calculate_color_maps_middle_view(query_result.result[0])
 
 @router.get("/text-parallels/")
 async def get_file_text_segments_and_parallels(
@@ -58,7 +58,7 @@ async def get_file_text_segments_and_parallels(
         "limitcollection_negative": limitcollection_negative,
     }
     text_segments_query_result = execute_query(main_queries.QUERY_TEXT_AND_PARALLELS,
-        bindVars=current_bind_vars,
+        bind_vars=current_bind_vars,
     )
     data_with_colormaps = calculate_color_maps_text_view(text_segments_query_result.result[0])
     return data_with_colormaps

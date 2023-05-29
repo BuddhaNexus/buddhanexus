@@ -21,7 +21,7 @@ async def get_visual_view_for_file(
     language_search_term = language + "_" + searchterm
     query_collection_list = execute_query(
         main_queries.QUERY_COLLECTION_LIST,
-        bindVars={"sourcecollection": language_search_term, "selected": selected},
+        bind_vars={"sourcecollection": language_search_term, "selected": selected},
     )
     graph_data = []
     if len(selected) == 1 or re.search(r"^[A-Z][a-z]+$", searchterm):

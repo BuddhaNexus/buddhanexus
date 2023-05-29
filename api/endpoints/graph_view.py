@@ -22,7 +22,7 @@ async def get_graph_for_file(
     """
 
     query_graph_result = execute_query(main_queries.QUERY_GRAPH_VIEW,
-        bindVars={
+        bind_vars={
             "filename": file_name,
             "score": score,
             "parlength": par_length,
@@ -58,7 +58,7 @@ async def get_graph_for_file(
 
     # find the proper full names vor each collection
     collections = execute_query(menu_queries.QUERY_COLLECTION_NAMES,
-        bindVars={
+        bind_vars={
             "collections": collection_keys,
             "language": get_language_from_filename(file_name),
         }
@@ -79,7 +79,7 @@ async def get_graph_for_file(
     for name, count in total_histogram_dict.items():
         displayname = name
         query_displayname = execute_query(main_queries.QUERY_DISPLAYNAME,
-            bindVars={"filename": name},
+            bind_vars={"filename": name},
             raw_results=True,
         )
         displayname_results = query_displayname.result

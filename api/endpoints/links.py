@@ -13,6 +13,6 @@ async def get_external_links(filename: str = "",
     """
     if len(segmentnr) > 0:
         filename = segmentnr.split(":")[0]    
-    query_links = execute_query(main_queries.QUERY_LINK, bindVars={"filename": filename}, raw_results=True)
+    query_links = execute_query(main_queries.QUERY_LINK, bind_vars={"filename": filename}, raw_results=True)
     return get_links(filename, query_links)
 
