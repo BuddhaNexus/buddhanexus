@@ -1,3 +1,4 @@
+import { useTranslation } from "next-i18next";
 import type { BackgroundName } from "@components/layout/PageContainer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Typography } from "@mui/material";
@@ -7,14 +8,16 @@ export function ErrorPage({
 }: {
   backgroundName: BackgroundName;
 }) {
+  const { t } = useTranslation();
+
   return (
     <PageContainer backgroundName={backgroundName}>
       <Typography variant="h1">Error</Typography>
       <Typography variant="h3" sx={{ py: 2 }}>
-        Something went wrong.
+        {t("prompts.genericErrorTitle")}
       </Typography>
       <Typography variant="body1">
-        Please check the console for details.
+        {t("prompts.genericErrorDescription")}
       </Typography>
     </PageContainer>
   );

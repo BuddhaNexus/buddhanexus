@@ -51,7 +51,6 @@ export default function TextPage() {
   if (isFallback) {
     return (
       <PageContainer backgroundName={sourceLanguage}>
-        <Typography>Fallback</Typography>
         <CenteredProgress />
       </PageContainer>
     );
