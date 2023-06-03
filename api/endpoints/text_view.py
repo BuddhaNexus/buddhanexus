@@ -2,7 +2,7 @@ from fastapi import APIRouter, Query
 from ..queries import main_queries
 from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_middle_view
 from .endpoint_utils import execute_query
-from typing import List
+from typing import List, Dict
 from ..utils import (
     get_collection_files_regex,
     get_start_integer,
