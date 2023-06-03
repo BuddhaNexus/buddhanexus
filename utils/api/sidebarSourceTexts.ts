@@ -31,7 +31,9 @@ function parseSourceTextCollectionData(
 }
 
 export async function getSourceTextCollections(language: SourceLanguage) {
-  const res = await fetch(`${API_ROOT_URL}/menus/sidebar/${language}`);
+  const res = await fetch(
+    `${API_ROOT_URL}/menus/sidebar/?language=${language}`
+  );
   const response = await res.json();
 
   const parsedApiData = parseSourceTextCollectionData(response);

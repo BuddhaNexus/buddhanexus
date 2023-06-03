@@ -9,7 +9,7 @@ export async function getParallelCount({
   queryParams,
 }: FilePropApiQuery): Promise<Record<string, number>> {
   const res = await fetch(
-    `${API_ROOT_URL}/parallels/${fileName}/count?co_occ=30&${queryString.stringify(
+    `${API_ROOT_URL}/utils/count-matches/?file_name=${fileName}&co_occ=30&${queryString.stringify(
       queryParams
     )}`
   );
@@ -23,7 +23,9 @@ export interface DatabaseFolio {
 }
 
 export async function getFolios(fileName: string): Promise<DatabaseFolio[]> {
-  const res = await fetch(`${API_ROOT_URL}/files/${fileName}/folios`);
+  const res = await fetch(
+    `${API_ROOT_URL}/utils/folios/?file_name=${fileName}`
+  );
 
   const response = await res.json();
 
