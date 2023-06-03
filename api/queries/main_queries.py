@@ -342,7 +342,7 @@ FOR p IN current_parallels
         "filtertest":filtertest
     }"""
 
-QUERY_TOTAL_NUMBERS = """
+QUERY_COUNT_MATCHES = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)

@@ -3,7 +3,8 @@ from fastapi import HTTPException
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from ..db_connection import get_db
 
-def execute_query(query, bind_vars=None, batch_size=10000, raw_results=False):
+def execute_query(query, bind_vars=None, batch_size=100000, raw_results=False):
+    print("EXECUTE QUERY", query, bind_vars, batch_size, raw_results)
     """
     Execute a database query and handle exceptions
     """
@@ -11,7 +12,7 @@ def execute_query(query, bind_vars=None, batch_size=10000, raw_results=False):
         db_query_result = get_db().AQLQuery(
             query=query, batchSize=batch_size, bindVars=bind_vars or {},
             rawResults=raw_results
-        )
+        )        
         return db_query_result
     except DocumentNotFoundError as error:
         print(error)

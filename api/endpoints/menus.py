@@ -16,7 +16,7 @@ async def get_files_for_menu(language: str):
     else:
         menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
         bind_vars = {"language": language}
-    query_result = execute_query(menu_query, bind_vars)
+    query_result = execute_query(menu_query, bind_vars)    
     return {"results": query_result.result}
 
 
@@ -28,7 +28,7 @@ async def get_files_for_filter_menu(language: str):
     query_result = execute_query(
         menu_queries.QUERY_FILES_FOR_CATEGORY, {"language": language}
     )
-    return {"filteritems": query_result}
+    return {"filteritems": query_result.result}
 
 
 @router.get("/category/")
@@ -38,10 +38,10 @@ async def get_categories_for_filter_menu(language: str):
     """
     query_result = execute_query(
         menu_queries.QUERY_CATEGORIES_FOR_LANGUAGE,
-        {"language": language},
-        batch_size=500,
+        {"language": language},        
     )
-    return {"categoryitems": query_result}
+    
+    return {"categoryitems": query_result.result}
 
 @router.get("/collections/")
 async def get_all_collections():
