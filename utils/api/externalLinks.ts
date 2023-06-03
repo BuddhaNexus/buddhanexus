@@ -14,7 +14,9 @@ interface ApiExternalLinkData {
 export async function getExternalLinksData(
   fileName: string
 ): Promise<ApiExternalLinkData> {
-  const res = await fetch(`${API_ROOT_URL}/externallinks/${fileName}`);
+  const res = await fetch(
+    `${API_ROOT_URL}/links/external/?file_name=${fileName}`
+  );
   const response = await res.json();
 
   return response;
