@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import type { ApiTextSegment } from "types/api/table";
+import type { ApiTextSegment } from "types/api/common";
 
 interface Props {
   text: ApiTextSegment[];

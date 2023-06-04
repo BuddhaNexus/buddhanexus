@@ -12,6 +12,7 @@ import { dehydrate, useQuery } from "@tanstack/react-query";
 import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
+import type { ApiTextPageData } from "types/api/text";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -24,8 +25,8 @@ export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers"
  * 2. Allow selection
  * 3. Grab parallels for middle (https://buddhanexus.kc-tbts.uni-hamburg.de/api/parallels-for-middle)
  * 4. Display using table view components
- *
- * Split pane: use https://github.com/johnwalley/allotment
+ * ?: use /text-view/text-parallels/
+ * * Split pane: use https://github.com/johnwalley/allotment
  *
  * @constructor
  */
@@ -35,11 +36,12 @@ export default function TextPage() {
   useDbView();
 
   const { data, isLoading, isError } = useQuery<ApiTextPageData>({
-    queryKey: DbApi.GraphView.makeQueryKey({ fileName, queryParams }),
+    queryKey: DbApi.TextView.makeQueryKey({ fileName, queryParams }),
     queryFn: () =>
-      DbApi.GraphView.call({
+      DbApi.TextView.call({
         fileName,
         queryParams,
+        pageNumber: 0,
       }),
     refetchOnWindowFocus: false,
   });
@@ -64,15 +66,7 @@ export default function TextPage() {
     >
       <DbResultsPageHead />
 
-      {isLoading ? (
-        <CenteredProgress />
-      ) : (
-        data?.piegraphdata.map(([name, count]) => (
-          <Typography key={name}>
-            {name}: {count}
-          </Typography>
-        ))
-      )}
+      {isLoading ? <CenteredProgress /> : null}
 
       <SourceTextBrowserDrawer />
     </PageContainer>

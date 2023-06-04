@@ -9,6 +9,7 @@ import { getLanguageMenuData } from "./languageMenu";
 import { getNumbersData } from "./numbers";
 import { getSourceTextCollections } from "./sidebarSourceTexts";
 import { getTableData } from "./table";
+import { getTextData } from "./text";
 import { getCategoryMenuItems, getTextMenuItems } from "./textLists";
 
 export const DbApi = {
@@ -36,6 +37,14 @@ export const DbApi = {
       queryParams,
     ],
     call: getNumbersData,
+  },
+  TextView: {
+    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
+      "textView",
+      fileName,
+      queryParams,
+    ],
+    call: getTextData,
   },
   //* MENUS
   LanguageMenu: {

@@ -32,3 +32,11 @@ export interface InfiniteFilePropApiQuery {
 export interface ViewPropApiQuery extends FilePropApiQuery {
   view: DbViewEnum;
 }
+
+type ParallelHighlightColorId = 0 | 1;
+
+export type ApiTextSegment = {
+  highlightColor: ParallelHighlightColorId;
+  text: string;
+  matches?: [];
+};
