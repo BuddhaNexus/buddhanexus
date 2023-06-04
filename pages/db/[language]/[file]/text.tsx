@@ -7,12 +7,13 @@ import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import { Typography } from "@mui/material";
-import { dehydrate, useQuery } from "@tanstack/react-query";
+import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
 import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import TextView from "features/textView/TextView";
 import merge from "lodash/merge";
-import type { ApiTextPageData } from "types/api/text";
+import type { PagedResponse } from "types/api/common";
+import type { TextPageData } from "types/api/text";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -33,18 +34,23 @@ export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers"
 export default function TextPage() {
   const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
+
   useDbView();
 
-  const { data, isLoading, isError } = useQuery<ApiTextPageData>({
-    queryKey: DbApi.TextView.makeQueryKey({ fileName, queryParams }),
-    queryFn: () =>
-      DbApi.TextView.call({
-        fileName,
-        queryParams,
-        pageNumber: 0,
-      }),
-    refetchOnWindowFocus: false,
-  });
+  const { data, fetchNextPage, fetchPreviousPage, isInitialLoading, isError } =
+    useInfiniteQuery<PagedResponse<TextPageData>>({
+      queryKey: DbApi.TextView.makeQueryKey({ fileName, queryParams }),
+      queryFn: ({ pageParam = 0 }) =>
+        DbApi.TextView.call({
+          fileName,
+          queryParams,
+          pageNumber: pageParam,
+        }),
+      getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
+      getPreviousPageParam: (lastPage) =>
+        lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
+      refetchOnWindowFocus: false,
+    });
 
   if (isError) {
     return <ErrorPage backgroundName={sourceLanguage} />;
@@ -66,7 +72,15 @@ export default function TextPage() {
     >
       <DbResultsPageHead />
 
-      {isLoading ? <CenteredProgress /> : null}
+      {isInitialLoading || !data ? (
+        <CenteredProgress />
+      ) : (
+        <TextView
+          data={data?.pages.flatMap((page) => page.data)}
+          onEndReached={fetchNextPage}
+          onStartReached={fetchPreviousPage}
+        />
+      )}
 
       <SourceTextBrowserDrawer />
     </PageContainer>
