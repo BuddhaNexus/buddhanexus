@@ -57,7 +57,7 @@ export function Sidebar() {
             <DrawerHeader>
               <Box sx={{ width: 1, borderBottom: 1, borderColor: "divider" }}>
                 <TabList
-                  aria-label="Filters, desplay options and other settings"
+                  aria-label="Filters, display options and other settings"
                   onChange={handleTabChange}
                 >
                   <Tab label={t("tabs.options")} value="1" />

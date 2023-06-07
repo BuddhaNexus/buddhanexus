@@ -10,7 +10,7 @@ export async function getParallelDownloadData({
 }: ViewPropApiQuery): Promise<{ url: string; name: string } | undefined> {
   const res = await fetch(
     // this triggers the creation of an excel sheet of the data for the current view (table & number only) for the user to download. The sheet is generated on the backend and lives in a folder on the HDD of the server for a while and gets removed after a few days.
-    `${API_ROOT_URL}/table-view/table/?file_name=${fileName}&co_occ=2000&${queryString.stringify(
+    `${API_ROOT_URL}/table-view/table?file_name=${fileName}&co_occ=2000&${queryString.stringify(
       queryParams
     )}&download_data=${view}`
   );
