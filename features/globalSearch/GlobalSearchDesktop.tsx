@@ -63,6 +63,7 @@ const GlobalSearchDesktop = () => {
           // TODO: i18n
           placeholder="Search..."
           variant="outlined"
+          isNarrow={true}
           value={searchTerm}
           InputProps={{
             endAdornment: (
