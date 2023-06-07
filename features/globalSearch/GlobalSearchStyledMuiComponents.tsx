@@ -36,12 +36,15 @@ export const SearchBoxWrapper = styled("form")(({ theme }) => ({
 }));
 
 export const SearchBoxInput = styled(TextField)<SearchBoxInputProps>(
-  ({ theme, isNarrow }) => ({
+  ({ isNarrow }) => ({
     "& .MuiOutlinedInput-root": {
       padding: "0px",
-      "& input": {
-        padding: `${isNarrow ? "12px" : theme.spacing(2)}`,
-      },
+      ...(isNarrow && {
+        "& input": {
+          paddingTop: "12px",
+          paddingBottom: "12px",
+        },
+      }),
       "& fieldset": {
         borderColor: "transparent",
       },

@@ -12,7 +12,7 @@ import {
   SearchBoxInput,
   SearchBoxWrapper,
 } from "./GlobalSearchStyledMuiComponents";
-import { handleEnterPress } from "./globalSearchUtils";
+import { handleSearchInputEnterPress } from "./globalSearchUtils";
 
 const GlobalSearchMobile = () => {
   const router = useRouter();
@@ -55,7 +55,7 @@ const GlobalSearchMobile = () => {
           fullWidth
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
-            handleEnterPress({ e, searchTerm, router })
+            handleSearchInputEnterPress({ e, searchTerm, router })
           }
         />
       </SearchBoxWrapper>

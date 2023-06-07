@@ -13,7 +13,7 @@ import {
   AppTopBarSearchBoxWrapper,
   SearchBoxInput,
 } from "./GlobalSearchStyledMuiComponents";
-import { handleEnterPress } from "./globalSearchUtils";
+import { handleSearchInputEnterPress } from "./globalSearchUtils";
 
 const GlobalSearchDesktop = () => {
   const router = useRouter();
@@ -77,7 +77,7 @@ const GlobalSearchDesktop = () => {
           fullWidth
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
-            handleEnterPress({ e, searchTerm, router })
+            handleSearchInputEnterPress({ e, searchTerm, router })
           }
         />
       </AppTopBarSearchBoxWrapper>
