@@ -11,7 +11,7 @@ import { useAtom } from "jotai";
 import {
   SearchBoxInput,
   SearchBoxWrapper,
-} from "./GlobalSearchSyledMuiComponents";
+} from "./GlobalSearchStyledMuiComponents";
 import { handleEnterPress } from "./globalSearchUtils";
 
 const GlobalSearchMobile = () => {

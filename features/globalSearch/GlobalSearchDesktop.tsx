@@ -12,7 +12,7 @@ import { useAtom } from "jotai";
 import {
   AppTopBarSearchBoxWrapper,
   SearchBoxInput,
-} from "./GlobalSearchSyledMuiComponents";
+} from "./GlobalSearchStyledMuiComponents";
 import { handleEnterPress } from "./globalSearchUtils";
 
 const GlobalSearchDesktop = () => {
