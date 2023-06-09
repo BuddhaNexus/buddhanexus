@@ -29,6 +29,12 @@ export interface InfiniteFilePropApiQuery {
   pageNumber: number;
 }
 
+export interface InfiniteSerachApiQuery {
+  searchTerm: string;
+  queryParams: QueryParams;
+  pageNumber: number;
+}
+
 export interface ViewPropApiQuery extends FilePropApiQuery {
   view: DbViewEnum;
 }
