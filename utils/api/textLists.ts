@@ -39,11 +39,10 @@ export interface CategoryMenuItem {
 export async function getTextMenuItems(
   language: SourceLanguage
 ): Promise<Map<string, TextMenuItem>> {
-  const res = await fetch(`${API_ROOT_URL}/menus/${language}`);
+  const res = await fetch(`${API_ROOT_URL}/menus/files/?language=${language}`);
   const response = await res.json();
-
   // TODO: Add pagination on BE
-  return response.result.reduce(
+  return response.results.reduce(
     (map: Map<string, TextMenuItem>, text: ApiLanguageMenuData) => {
       const { displayName, search_field, textname, filename, category } = text;
       map.set(filename, {
@@ -62,7 +61,9 @@ export async function getTextMenuItems(
 export async function getCategoryMenuItems(
   language: SourceLanguage
 ): Promise<Map<string, CategoryMenuItem>> {
-  const res = await fetch(`${API_ROOT_URL}/menus/category/${language}`);
+  const res = await fetch(
+    `${API_ROOT_URL}/menus/category/?language=${language}`
+  );
   const response = await res.json();
 
   return response.categoryitems

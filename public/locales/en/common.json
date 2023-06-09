@@ -39,5 +39,9 @@
   },
   "textBrowser": {
     "label": "Source text browser"
+  },
+  "prompts": {
+    "genericErrorTitle": "Something went wrong",
+    "genericErrorDescription": "Please contact us if the issue persists."
   }
 }

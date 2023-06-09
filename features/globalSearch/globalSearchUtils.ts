@@ -6,7 +6,7 @@ interface HandleEnterPressProps {
   router: ReturnType<typeof useRouter>;
 }
 
-export const handleEnterPress = async ({
+export const handleSearchInputEnterPress = async ({
   e,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   searchTerm,
@@ -15,7 +15,6 @@ export const handleEnterPress = async ({
   // TODO: update with `/search?q=${searchTerm}` when available from endpoint
   if (e.key === "Enter") {
     e.preventDefault();
-    await router.prefetch(`/search`);
     await router.push(`/search`);
   }
 };

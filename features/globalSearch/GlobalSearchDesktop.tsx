@@ -12,8 +12,8 @@ import { useAtom } from "jotai";
 import {
   AppTopBarSearchBoxWrapper,
   SearchBoxInput,
-} from "./GlobalSearchSyledMuiComponents";
-import { handleEnterPress } from "./globalSearchUtils";
+} from "./GlobalSearchStyledMuiComponents";
+import { handleSearchInputEnterPress } from "./globalSearchUtils";
 
 const GlobalSearchDesktop = () => {
   const router = useRouter();
@@ -63,6 +63,7 @@ const GlobalSearchDesktop = () => {
           // TODO: i18n
           placeholder="Search..."
           variant="outlined"
+          isNarrow={true}
           value={searchTerm}
           InputProps={{
             endAdornment: (
@@ -76,7 +77,7 @@ const GlobalSearchDesktop = () => {
           fullWidth
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
-            handleEnterPress({ e, searchTerm, router })
+            handleSearchInputEnterPress({ e, searchTerm, router })
           }
         />
       </AppTopBarSearchBoxWrapper>

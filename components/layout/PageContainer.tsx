@@ -32,7 +32,7 @@ const BgImageBgSize: Record<BackgroundName, Property.BackgroundSize> = {
   welcome: "cover",
 };
 
-type BackgroundName = SourceLanguage | "welcome";
+export type BackgroundName = SourceLanguage | "welcome";
 
 interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;
@@ -71,7 +71,12 @@ export const PageContainer: FC<Props> = ({
           <Main open={isSidebarOpen}>
             <Container
               maxWidth={maxWidth}
-              sx={{ flex: 1, display: "flex", flexDirection: "column" }}
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+              }}
             >
               {children}
             </Container>
@@ -86,6 +91,7 @@ export const PageContainer: FC<Props> = ({
             pt: { xs: 2, sm: 4 },
             px: { xs: 2, lg: 4 },
             flex: 1,
+            height: "100%",
             display: "flex",
             flexDirection: "column",
           }}

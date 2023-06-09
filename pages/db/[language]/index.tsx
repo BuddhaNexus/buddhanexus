@@ -6,10 +6,10 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
-import { dehydrate, QueryClient } from "@tanstack/react-query";
+import { dehydrate } from "@tanstack/react-query";
+import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
-import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
@@ -42,23 +42,8 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     ["db"]
   );
 
-  const queryClient = new QueryClient({
-    // https://www.codemzy.com/blog/react-query-cachetime-staletime
-    defaultOptions: {
-      queries: {
-        // 1 hour
-        staleTime: 60 * 60 * 1000,
-
-        // 2 days
-        cacheTime: 2 * 24 * 60 * 60 * 1000,
-      },
-    },
-  });
-
-  const sourceLanguage = params?.language as SourceLanguage;
-  await queryClient.prefetchQuery(
-    DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-    () => DbApi.SidebarSourceTexts.call(sourceLanguage)
+  const queryClient = await prefetchSourceTextBrowserData(
+    params?.language as SourceLanguage
   );
 
   return merge(

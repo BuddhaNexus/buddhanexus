@@ -42,7 +42,7 @@ export async function getTableData({
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
   // TODO: remove co_occ param after backend update
   const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/table?page=${pageNumber}&co_occ=2000&${queryString.stringify(
+    `${API_ROOT_URL}/table-view/table?file_name=${fileName}&page=${pageNumber}&co_occ=2000&${queryString.stringify(
       queryParams
     )}`
   );

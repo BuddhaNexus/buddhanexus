@@ -1,20 +1,23 @@
 import React from "react";
-import type { GetStaticPaths, GetStaticProps } from "next";
+import type { GetStaticProps } from "next";
 import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
+import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import { CircularProgress } from "@mui/material";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
+import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "features/tableView/TableView";
+import merge from "lodash/merge";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
 import { DbApi } from "utils/api/dbApi";
-import { getLanguageMenuData } from "utils/api/languageMenu";
-import { ALL_LOCALES, SourceLanguage } from "utils/constants";
+import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
+
+export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 export default function TablePage() {
   const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
@@ -39,7 +42,7 @@ export default function TablePage() {
   if (isFallback) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
-        <CircularProgress color="inherit" sx={{ flex: 1 }} />
+        <CenteredProgress />
       </PageContainer>
     );
   }
@@ -53,7 +56,7 @@ export default function TablePage() {
       <DbResultsPageHead />
 
       {isInitialLoading || !data ? (
-        <CircularProgress color="inherit" sx={{ flex: 1 }} />
+        <CenteredProgress />
       ) : (
         // TODO: clarify why this extra div is needed for display
         <div style={{ height: "100vh" }}>
@@ -69,55 +72,15 @@ export default function TablePage() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const i18nProps = await getI18NextStaticProps(
-    {
-      locale,
-    },
-    ["settings"]
+export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+  const i18nProps = await getI18NextStaticProps({ locale }, ["settings"]);
+
+  const queryClient = await prefetchSourceTextBrowserData(
+    params?.language as SourceLanguage
   );
 
-  return {
-    props: {
-      ...i18nProps.props,
-    },
-  };
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const pliMenuData = await getLanguageMenuData(SourceLanguage.PALI);
-  const paliFilenames = pliMenuData.map((menuData) => menuData.fileName);
-  const chineseMenuData = await getLanguageMenuData(SourceLanguage.CHINESE);
-  const chineseFilenames = chineseMenuData.map((menuData) => menuData.fileName);
-  const sanskritMenuData = await getLanguageMenuData(SourceLanguage.SANSKRIT);
-  const sanskritFilenames = sanskritMenuData.map(
-    (menuData) => menuData.fileName
+  return merge(
+    { props: { dehydratedState: dehydrate(queryClient) } },
+    i18nProps
   );
-  const tibetanMenuData = await getLanguageMenuData(SourceLanguage.TIBETAN);
-  const tibetanFilenames = tibetanMenuData.map((menuData) => menuData.fileName);
-
-  const allFilenames = [
-    { language: SourceLanguage.TIBETAN, filenames: tibetanFilenames },
-    { language: SourceLanguage.CHINESE, filenames: chineseFilenames },
-    { language: SourceLanguage.SANSKRIT, filenames: sanskritFilenames },
-    { language: SourceLanguage.PALI, filenames: paliFilenames },
-  ];
-
-  /**
-   * Returns object like:
-   * [
-   *   { params: { language: 'pli', file: 'dn1' }, locale: 'en' },
-   *   { params: { language: 'pli', file: 'dn1' }, locale: 'de' },
-   *   { params: { language: 'pli', file: 'dn2' }, locale: 'en' },
-   *   ...
-   * ]
-   */
-  return {
-    paths: allFilenames.flatMap(({ language, filenames }) =>
-      filenames.flatMap((file) =>
-        ALL_LOCALES.map((locale) => ({ params: { language, file }, locale }))
-      )
-    ),
-    fallback: true,
-  };
 };

@@ -11,7 +11,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   SearchBoxInput,
   SearchBoxWrapper,
-} from "features/globalSearch/GlobalSearchSyledMuiComponents";
+} from "features/globalSearch/GlobalSearchStyledMuiComponents";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import { atom, useAtom } from "jotai";
 import { debounce } from "lodash";
