@@ -1,3 +1,4 @@
+import type { FC } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { getTextPath } from "@components/common/utils";
@@ -10,8 +11,12 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { isSidebarOpenAtom } from "features/sidebarSuite/SidebarSuite";
 import { useAtom, useAtomValue } from "jotai";
 
+interface Props {
+  hasSearchBox?: boolean;
+}
+
 // TODO: determing if further context customization (global search / file selection) is needed.
-export const DbResultsPageHead = () => {
+export const DbResultsPageHead: FC<Props> = ({ hasSearchBox = true }) => {
   const { t } = useTranslation("settings");
   const router = useRouter();
 
@@ -71,7 +76,7 @@ export const DbResultsPageHead = () => {
           {fileName.toUpperCase()}
         </Typography>
       )}
-      {sourceLanguage && <SourceTextSearchInput />}
+      {hasSearchBox && <SourceTextSearchInput />}
     </>
   );
 };

@@ -6,7 +6,10 @@ import { SourceLanguage as SourceLanguageEnum } from "utils/constants";
 const SearchLanguageSelector = () => {
   const { t } = useTranslation("settings");
 
-  const [currentLang, setCurrentDbLang] = useQueryParam("lang", StringParam);
+  const [currentLang, setCurrentDbLang] = useQueryParam(
+    "language",
+    StringParam
+  );
 
   return (
     <FormControl variant="filled" sx={{ width: 1, mb: 2 }}>
@@ -17,7 +20,11 @@ const SearchLanguageSelector = () => {
         labelId="db-language-selector-label"
         id="db-language-selector"
         value={currentLang ?? "all"}
-        onChange={(e) => setCurrentDbLang(e.target.value)}
+        onChange={(e) =>
+          setCurrentDbLang(
+            e.target.value === "all" ? undefined : e.target.value
+          )
+        }
       >
         <MenuItem key="all" value="all">
           {t(`dbLanguageLabels.all`)}
