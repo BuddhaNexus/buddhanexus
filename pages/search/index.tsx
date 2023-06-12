@@ -87,10 +87,11 @@ export default function SearchPage() {
     >
       <DbResultsPageHead />
       <SearchBoxWrapper sx={{ mb: 5 }}>
-        {/* TODO: notification of search limitations (whole word only) */}
+        {/* TODO: fix search OR add notification of search limitations (whole word only) */}
         <SearchBoxInput
           placeholder="Enter search term"
           value={searchValue}
+          variant="outlined"
           InputProps={{
             startAdornment: (
               <IconButton>
