@@ -22,7 +22,7 @@ import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function SearchPage() {
-  const router = useRouter();
+  const { isReady } = useRouter();
 
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
@@ -32,11 +32,11 @@ export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState(searchParam);
 
   useEffect(() => {
-    if (router.isReady) {
-      // enable search term to be set from URL if user accesses the site via a results page link
+    if (isReady) {
+      // enables search term to be set from URL if user accesses the site via a results page link
       setSearchTerm(searchParam);
     }
-  }, [router.isReady]);
+  }, [isReady]);
 
   // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
   const {
@@ -72,6 +72,8 @@ export default function SearchPage() {
     );
   }
 
+  const isNotReady = !isReady || isLoading;
+
   return (
     <PageContainer
       maxWidth="xl"
@@ -105,10 +107,10 @@ export default function SearchPage() {
         />
       </SearchBoxWrapper>
 
-      {isLoading && <CircularProgress />}
+      {isNotReady && <CircularProgress />}
 
       {/* TODO: componentize search results */}
-      {!isLoading && (
+      {!isNotReady && (
         <>
           {data ? (
             <>
