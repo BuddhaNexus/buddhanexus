@@ -20,7 +20,7 @@ export const DisplayOptionsSection = () => {
 
   const currentView = useAtomValue(currentViewAtom);
 
-  const { sourceLanguage, settingEnums, filterOmissionsConfig } =
+  const { sourceLanguage, settingEnums, settingsList, filterOmissionsConfig } =
     useDbQueryParams();
 
   const options = useMemo(() => {
@@ -55,21 +55,21 @@ export const DisplayOptionsSection = () => {
         const key = `display-option-${option}`;
 
         switch (option) {
-          case "folio": {
+          case settingsList.queryParams.folio: {
             return <FolioOption key={key} />;
           }
-          case "sort_method": {
+          case settingsList.queryParams.sortMethod: {
             return <SortOption key={key} />;
           }
-          case "multi_lingual": {
+          case settingsList.queryParams.multiLingual: {
             return (
               <Fragment key={key}>{StandinSetting("multi_lingual")}</Fragment>
             );
           }
-          case "script": {
+          case settingsList.local.script: {
             return <TextScriptOption key={key} />;
           }
-          case "showAndPositionSegmentNrs": {
+          case settingsList.local.showAndPositionSegmentNrs: {
             return (
               <Fragment key={key}>
                 {StandinSetting("showAndPositionSegmentNrs")}

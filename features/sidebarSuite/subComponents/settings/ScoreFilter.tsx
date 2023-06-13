@@ -23,10 +23,10 @@ function normalizeValue(value: number | null | undefined) {
 
 export default function ScoreFilter() {
   const { t } = useTranslation("settings");
-  const { defaultParamConfig, settingEnums } = useDbQueryParams();
+  const { defaultParamConfig, settingsList } = useDbQueryParams();
 
   const [scoreParam, setScoreParam] = useQueryParam(
-    settingEnums.DbPageFilterEnum.SCORE,
+    settingsList.queryParams.score,
     NumberParam
   );
   const [scoreValue, setScoreValue] = useState(

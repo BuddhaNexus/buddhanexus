@@ -18,14 +18,14 @@ const showAll = "Whole text";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
-  const { fileName, defaultParamConfig, settingEnums } = useDbQueryParams();
+  const { fileName, defaultParamConfig, settingsList } = useDbQueryParams();
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
     queryFn: () => DbApi.FolioData.call(fileName),
   });
 
   const [folioParam, setFolioParam] = useQueryParam(
-    settingEnums.QueriedDisplayOptionEnum.FOLIO,
+    settingsList.queryParams.folio,
     StringParam
   );
 

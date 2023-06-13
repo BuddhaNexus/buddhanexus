@@ -6,10 +6,10 @@ import { SourceLanguage as SourceLanguageEnum } from "utils/constants";
 
 const SearchLanguageSelector = () => {
   const { t } = useTranslation("settings");
-  const { settingEnums } = useDbQueryParams();
+  const { settingsList } = useDbQueryParams();
 
   const [currentLang, setCurrentDbLang] = useQueryParam(
-    settingEnums.SearchPageFilterEnum.LANGUAGE,
+    settingsList.queryParams.language,
     StringParam
   );
 

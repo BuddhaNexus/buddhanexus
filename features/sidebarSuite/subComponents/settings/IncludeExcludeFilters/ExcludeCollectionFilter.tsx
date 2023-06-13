@@ -10,12 +10,12 @@ import { ListboxComponent, StyledPopper } from "./textMenuComponents";
 
 const ExcludeCollectionFilter = () => {
   const { t } = useTranslation("settings");
-  const { defaultParamConfig, settingEnums } = useDbQueryParams();
+  const { defaultParamConfig, settingsList } = useDbQueryParams();
 
   const { categories, isLoadingCategories } = useTextLists();
 
   const [excludeCollectionParam, setExcludeCollectionParam] = useQueryParam(
-    settingEnums.DbPageFilterEnum.EXCLUDE_COLLECTION,
+    settingsList.queryParams.excludeCollection,
     ArrayParam
   );
 

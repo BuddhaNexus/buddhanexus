@@ -21,7 +21,7 @@ export const FilterSettings = ({
 }) => {
   const currentView = useAtomValue(currentViewAtom);
 
-  const { sourceLanguage, settingEnums, filterOmissionsConfig } =
+  const { sourceLanguage, settingEnums, settingsList, filterOmissionsConfig } =
     useDbQueryParams();
 
   const [currentLang] = useQueryParam(
@@ -66,20 +66,20 @@ export const FilterSettings = ({
         const key = `filter-setting-${filter}`;
 
         switch (filter) {
-          case "lang": {
+          case settingsList.queryParams.language: {
             return <SearchLanguageSelector key={key} />;
           }
-          case "score": {
+          case settingsList.queryParams.score: {
             return <ScoreFilter key={key} />;
           }
-          case "par_length": {
+          case settingsList.queryParams.parLength: {
             return <ParLengthFilter key={key} />;
           }
-          // TODO: Update case when new endpoints are available
-          case "includeExclude": {
+          // This case only tests for one of the "include exclude" params as all 4 filters are always used as a block
+          case settingsList.queryParams.includeCollection: {
             return <IncludeExcludeFilters key={key} />;
           }
-          case "target_collection": {
+          case settingsList.queryParams.targetCollection: {
             return (
               <Fragment key={key}>
                 {StandinSetting("target_collection")}

@@ -6,6 +6,7 @@ import {
   DEFAULT_QUERY_PARAMS,
   MIN_PAR_LENGTH_VALUES,
   settingEnums,
+  settingsList,
 } from "features/sidebarSuite/common/dbSidebarSettings";
 import type { SourceLanguage } from "utils/constants";
 
@@ -43,6 +44,7 @@ export const useDbQueryParams = () => {
     defaultParamConfig: DEFAULT_QUERY_PARAMS,
     parLengthConfig,
     settingEnums,
+    settingsList,
     filterOmissionsConfig: DB_PAGE_FILTER_OMISSIONS_CONFIG,
   };
 };

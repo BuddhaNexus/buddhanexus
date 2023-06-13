@@ -1,4 +1,4 @@
-import type { DbViewEnum } from "@components/hooks/useDbView";
+import { DbViewEnum } from "@components/hooks/useDbView";
 import { SourceLanguage } from "utils/constants";
 
 export type SidebarSuitePageContext = "db" | "search";
@@ -48,6 +48,34 @@ export const settingEnums = {
   UtilityOptionEnum,
 };
 
+//  This creates a unique list of available settings across the SidebarSuite. Where there is overlap (e.g. "include_collection" applies to both DB results and search results pages) the value is taken from the first listed item.
+export const settingsList = {
+  queryParams: {
+    language: SearchPageFilterEnum.LANGUAGE,
+    includeCollection: SearchPageFilterEnum.INCLUDE_COLLECTION,
+    includeText: SearchPageFilterEnum.INCLUDE_TEXT,
+    excludeCollection: SearchPageFilterEnum.EXCLUDE_COLLECTION,
+    excludeText: SearchPageFilterEnum.EXCLUDE_TEXT,
+    score: DbPageFilterEnum.SCORE,
+    parLength: DbPageFilterEnum.PAR_LENGTH,
+    targetCollection: DbPageFilterEnum.TARGET_COLLECTION,
+    folio: QueriedDisplayOptionEnum.FOLIO,
+    multiLingual: QueriedDisplayOptionEnum.MULTI_LINGUAL,
+    sortMethod: QueriedDisplayOptionEnum.SORT_METHOD,
+  },
+  remote: {
+    download: UtilityOptionEnum.DOWNLOAD,
+  },
+  local: {
+    script: LocalDisplayOptionEnum.SCRIPT,
+    showAndPositionSegmentNrs:
+      LocalDisplayOptionEnum.SHOW_AND_POSITION_SEGMENT_NRS,
+    copyQueryTitle: UtilityOptionEnum.COPY_QUERY_TITLE,
+    copyQueryLink: UtilityOptionEnum.COPY_QUERY_LINK,
+    emailQueryLink: UtilityOptionEnum.EMAIL_QUERY_LINK,
+  },
+};
+
 export type MenuSetting = DbPageFilterEnum | DisplayOption | UtilityOptionEnum;
 
 export type ViewOmission = (SourceLanguage | "allLangs")[];
@@ -63,55 +91,63 @@ export type MenuOmission = SettingOmissions<MenuSetting>;
 
 export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilterEnum> =
   {
-    include_collection: { graph: ["allLangs"] },
-    include_text: { graph: ["allLangs"] },
-    exclude_collection: { graph: ["allLangs"] },
-    exclude_text: { graph: ["allLangs"] },
-    target_collection: {
-      numbers: ["allLangs"],
-      table: ["allLangs"],
-      text: ["allLangs"],
+    [settingsList.queryParams.includeCollection]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+    },
+    [settingsList.queryParams.includeText]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+    },
+    [settingsList.queryParams.excludeCollection]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+    },
+    [settingsList.queryParams.excludeText]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+    },
+    [settingsList.queryParams.targetCollection]: {
+      [DbViewEnum.NUMBERS]: ["allLangs"],
+      [DbViewEnum.TABLE]: ["allLangs"],
+      [DbViewEnum.TEXT]: ["allLangs"],
     },
   };
 
 const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayOptionEnum> =
   {
-    folio: {
+    [settingsList.queryParams.folio]: {
       // "folio" is used as "jump to" in text view and "only show" in other applicable views
-      graph: ["allLangs"],
+      [DbViewEnum.GRAPH]: ["allLangs"],
     },
-    multi_lingual: {
-      graph: ["allLangs"],
-      numbers: ["allLangs"],
-      table: ["allLangs"],
+    [settingsList.queryParams.multiLingual]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+      [DbViewEnum.NUMBERS]: ["allLangs"],
+      [DbViewEnum.TABLE]: ["allLangs"],
     },
-    sort_method: {
-      graph: ["allLangs"],
-      numbers: ["allLangs"],
-      text: ["allLangs"],
+    [settingsList.queryParams.sortMethod]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+      [DbViewEnum.NUMBERS]: ["allLangs"],
+      [DbViewEnum.TEXT]: ["allLangs"],
     },
   };
 
 const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptionEnum> =
   {
-    script: {
-      graph: ["allLangs"],
-      numbers: ["allLangs"],
-      table: [
+    [settingsList.local.script]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+      [DbViewEnum.NUMBERS]: ["allLangs"],
+      [DbViewEnum.TABLE]: [
         SourceLanguage.PALI,
         SourceLanguage.CHINESE,
         SourceLanguage.SANSKRIT,
       ],
-      text: [
+      [DbViewEnum.TEXT]: [
         SourceLanguage.PALI,
         SourceLanguage.CHINESE,
         SourceLanguage.SANSKRIT,
       ],
     },
-    showAndPositionSegmentNrs: {
-      graph: ["allLangs"],
-      numbers: ["allLangs"],
-      table: ["allLangs"],
+    [settingsList.local.showAndPositionSegmentNrs]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+      [DbViewEnum.NUMBERS]: ["allLangs"],
+      [DbViewEnum.TABLE]: ["allLangs"],
     },
   };
 
@@ -123,9 +159,9 @@ export const DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<DisplayOption> =
 
 export const UTILITY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<UtilityOptionEnum> =
   {
-    download: {
-      graph: ["allLangs"],
-      text: ["allLangs"],
+    [settingsList.remote.download]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+      [DbViewEnum.TEXT]: ["allLangs"],
     },
   };
 

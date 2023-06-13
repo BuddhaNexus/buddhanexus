@@ -10,12 +10,12 @@ import { ListboxComponent, StyledPopper } from "./textMenuComponents";
 
 const IncludeTextFilter = () => {
   const { t } = useTranslation("settings");
-  const { defaultParamConfig, settingEnums } = useDbQueryParams();
+  const { defaultParamConfig, settingsList } = useDbQueryParams();
 
   const { texts, isLoadingTexts } = useTextLists();
 
   const [includeTextParam, setIncludeTextParam] = useQueryParam(
-    settingEnums.DbPageFilterEnum.INCLUDE_TEXT,
+    settingsList.queryParams.includeText,
     ArrayParam
   );
 

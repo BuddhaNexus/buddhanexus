@@ -35,10 +35,10 @@ export function SidebarSuite() {
   const isSearchRoute = route.startsWith("/search");
   const isTableRoute = route.startsWith("/table");
 
-  const { settingEnums } = useDbQueryParams();
+  const { settingsList } = useDbQueryParams();
 
   const [, setSortMethod] = useQueryParam(
-    settingEnums.QueriedDisplayOptionEnum.SORT_METHOD,
+    settingsList.queryParams.sortMethod,
     StringParam
   );
 

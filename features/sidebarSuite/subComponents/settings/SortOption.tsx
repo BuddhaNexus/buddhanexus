@@ -23,10 +23,10 @@ export default function SortOption() {
   const { t } = useTranslation("settings");
   const hasSelected = useRef(false);
 
-  const { settingEnums } = useDbQueryParams();
+  const { settingsList } = useDbQueryParams();
 
   const [sortMethodParam, setSortMethodParam] = useQueryParam(
-    settingEnums.QueriedDisplayOptionEnum.SORT_METHOD,
+    settingsList.queryParams.sortMethod,
     StringParam
   );
 
