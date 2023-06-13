@@ -3,10 +3,11 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { List, ListItem, Typography } from "@mui/material";
+import { List, ListItem } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { SourceLink } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
+import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import BDRCLogo from "public/assets/icons/logo_bdrc.png";
 import CBETALogo from "public/assets/icons/logo_cbeta.png";
 import DSBCLogo from "public/assets/icons/logo_dsbc.png";
@@ -71,9 +72,7 @@ export const ExternalLinksSection = () => {
   if (data && Object.keys(data).length > 0) {
     return (
       <>
-        <Typography variant="h6" component="h3" mx={2} mt={1}>
-          {t("headings.links")}
-        </Typography>
+        <PanelHeading heading={t("headings.links")} sx={{ mt: 1 }} />
 
         <List sx={{ display: "flex", justifyContent: "flex-start" }}>
           {Object.entries(data).map(

@@ -40,7 +40,7 @@ export const DisplayOptionsSection = () => {
 
   if (options.length === 0) {
     return (
-      <Box sx={{ mx: 2 }}>
+      <Box>
         <PanelHeading heading={t("headings.display")} />
         <DbViewSelector />
       </Box>
@@ -48,8 +48,9 @@ export const DisplayOptionsSection = () => {
   }
 
   return (
-    <Box sx={{ mx: 2 }}>
-      <PanelHeading heading={t("headings.display")} />
+    <Box>
+      <PanelHeading heading={t("headings.display")} sx={{ mb: 2 }} />
+
       <DbViewSelector />
       {options.map((option) => {
         const key = `display-option-${option}`;

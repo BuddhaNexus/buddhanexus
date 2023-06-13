@@ -66,7 +66,7 @@ export const DbFilePageSidebarTabPanels = () => {
 
         <ExternalLinksSection />
       </TabPanel>
-      <TabPanel value="1" sx={{ px: 0 }}>
+      <TabPanel value="1" sx={{ px: 2 }}>
         <FilterSettings pageType="db" />
       </TabPanel>
       <TabPanel value="2">

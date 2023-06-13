@@ -14,7 +14,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -31,6 +30,7 @@ import {
   Popper,
   PopperMsgBox,
 } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
+import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
 
@@ -88,9 +88,7 @@ export const UtilityOptionsSection = () => {
 
   return (
     <>
-      <Typography variant="h6" component="h3" mt={3}>
-        {t("headings.tools")}
-      </Typography>
+      <PanelHeading heading={t("headings.tools")} sx={{ mt: 3 }} />
 
       <List sx={{ m: 0 }}>
         {Object.values(settingEnums.UtilityOptionEnum).map((utilityKey) => {
