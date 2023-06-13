@@ -16,7 +16,7 @@ export const Main = styled("main", {
     duration: theme.transitions.duration.leavingScreen,
   }),
   marginRight: 0,
-  [theme.breakpoints.up("sm")]: {
+  [theme.breakpoints.up("lg")]: {
     marginRight: `${open ? SETTINGS_DRAWER_WIDTH : 0}px`,
     transform: "none",
   },
