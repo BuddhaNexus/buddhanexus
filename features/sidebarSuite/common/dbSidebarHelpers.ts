@@ -1,4 +1,6 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
+import type { SvgIconTypeMap } from "@mui/material";
+import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type {
   MenuOmission,
   MenuSetting,
@@ -24,13 +26,24 @@ export const isSettingOmitted = ({
   );
 };
 
-type PopperUtilityStates<State> = [
-  Record<UtilityOptionEnum, State>,
-  React.Dispatch<React.SetStateAction<Record<UtilityOptionEnum, State>>>
-];
-type PopperAnchorState = PopperUtilityStates<HTMLElement | null>;
+type UtilityOptionProps = {
+  callback: (props: UtilityClickHandlerProps) => void;
+  icon: OverridableComponent<SvgIconTypeMap>;
+};
 
-export interface UtilityClickHandlerProps {
+export type UtilityOptions = {
+  [value in UtilityOptionEnum]: UtilityOptionProps;
+};
+
+export type PopperAnchorState = Record<UtilityOptionEnum, HTMLElement | null>;
+
+type PopperUtilityStates<State> = [
+  State,
+  React.Dispatch<React.SetStateAction<State>>
+];
+type PopperAnchorStateHandler = PopperUtilityStates<PopperAnchorState>;
+
+interface UtilityClickHandlerProps {
   event: React.MouseEvent<HTMLElement>;
   fileName: string;
   download: {
@@ -38,7 +51,7 @@ export interface UtilityClickHandlerProps {
     file: { url: string; name: string } | undefined;
   };
   href: string;
-  popperAnchorState: PopperAnchorState;
+  popperAnchorStateHandler: PopperAnchorStateHandler;
 }
 
 export const defaultAnchorEls = {
@@ -51,9 +64,9 @@ export const defaultAnchorEls = {
 export const onDownload = ({
   download,
   event,
-  popperAnchorState,
+  popperAnchorStateHandler,
 }: UtilityClickHandlerProps) => {
-  const [anchorEl, setAnchorEl] = popperAnchorState;
+  const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
   if (download?.file) {
     const { call: getDownload, file } = download;
@@ -70,9 +83,9 @@ export const onDownload = ({
 export const onCopyQueryTitle = async ({
   event,
   fileName,
-  popperAnchorState,
+  popperAnchorStateHandler,
 }: UtilityClickHandlerProps) => {
-  const [anchorEl, setAnchorEl] = popperAnchorState;
+  const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
   setAnchorEl({
     ...defaultAnchorEls,
@@ -84,10 +97,10 @@ export const onCopyQueryTitle = async ({
 
 export const onCopyQueryLink = async ({
   event,
-  popperAnchorState,
+  popperAnchorStateHandler,
   href,
 }: UtilityClickHandlerProps) => {
-  const [anchorEl, setAnchorEl] = popperAnchorState;
+  const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
   setAnchorEl({
     ...defaultAnchorEls,
@@ -100,10 +113,10 @@ export const onCopyQueryLink = async ({
 export const onEmailQueryLink = ({
   event,
   fileName,
-  popperAnchorState,
+  popperAnchorStateHandler,
   href,
 }: UtilityClickHandlerProps) => {
-  const [anchorEl, setAnchorEl] = popperAnchorState;
+  const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
   const encodedURL = encodeURIComponent(href);
 

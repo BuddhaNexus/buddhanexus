@@ -4,11 +4,6 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
-import {
-  DISPLAY_OPTIONS_OMISSIONS_CONFIG as omissions,
-  LocalDisplayOptionEnum,
-  QueriedDisplayOptionEnum,
-} from "features/sidebarSuite/common/dbSidebarSettings";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
@@ -25,16 +20,17 @@ export const DisplayOptionsSection = () => {
 
   const currentView = useAtomValue(currentViewAtom);
 
-  const { sourceLanguage } = useDbQueryParams();
+  const { sourceLanguage, settingEnums, filterOmissionsConfig } =
+    useDbQueryParams();
 
   const options = useMemo(() => {
     return [
-      ...Object.values(QueriedDisplayOptionEnum),
-      ...Object.values(LocalDisplayOptionEnum),
+      ...Object.values(settingEnums.QueriedDisplayOptionEnum),
+      ...Object.values(settingEnums.LocalDisplayOptionEnum),
     ].filter(
       (option) =>
         !isSettingOmitted({
-          omissions,
+          omissions: filterOmissionsConfig,
           settingName: option,
           language: sourceLanguage,
           view: currentView,

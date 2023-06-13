@@ -3,12 +3,7 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
-import {
-  DB_PAGE_FILTER_OMISSIONS_CONFIG as omissions,
-  DbPageFilterEnum,
-  SearchPageFilterEnum,
-  type SidebarSuitePageContext,
-} from "features/sidebarSuite/common/dbSidebarSettings";
+import type { SidebarSuitePageContext } from "features/sidebarSuite/common/dbSidebarSettings";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   IncludeExcludeFilters,
@@ -26,13 +21,19 @@ export const FilterSettings = ({
 }) => {
   const currentView = useAtomValue(currentViewAtom);
 
-  const { sourceLanguage } = useDbQueryParams();
+  const { sourceLanguage, settingEnums, filterOmissionsConfig } =
+    useDbQueryParams();
 
-  const [currentLang] = useQueryParam("lang", StringParam);
+  const [currentLang] = useQueryParam(
+    settingEnums.SearchPageFilterEnum.LANGUAGE,
+    StringParam
+  );
 
   const filters = useMemo(() => {
     const filterList = Object.values(
-      pageType === "search" ? SearchPageFilterEnum : DbPageFilterEnum
+      pageType === "search"
+        ? settingEnums.SearchPageFilterEnum
+        : settingEnums.DbPageFilterEnum
     );
 
     if (pageType === "search") {
@@ -45,13 +46,19 @@ export const FilterSettings = ({
     return filterList.filter(
       (filter) =>
         !isSettingOmitted({
-          omissions,
+          omissions: filterOmissionsConfig,
           settingName: filter,
           language: sourceLanguage,
           view: currentView,
         })
     );
-  }, [pageType, currentLang, sourceLanguage, currentView]);
+  }, [
+    pageType,
+    currentLang,
+    sourceLanguage,
+    currentView,
+    filterOmissionsConfig,
+  ]);
 
   return filters.length > 0 ? (
     <Box>

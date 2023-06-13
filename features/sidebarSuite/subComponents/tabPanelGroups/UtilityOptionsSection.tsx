@@ -7,7 +7,6 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
-import type { SvgIconTypeMap } from "@mui/material";
 import {
   Fade,
   List,
@@ -17,7 +16,6 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { useQuery } from "@tanstack/react-query";
 import {
   defaultAnchorEls,
@@ -26,27 +24,15 @@ import {
   onCopyQueryTitle,
   onDownload,
   onEmailQueryLink,
-  type UtilityClickHandlerProps,
+  type PopperAnchorState,
+  type UtilityOptions,
 } from "features/sidebarSuite/common/dbSidebarHelpers";
-import {
-  UTILITY_OPTIONS_OMISSIONS_CONFIG as omissions,
-  UtilityOptionEnum,
-} from "features/sidebarSuite/common/dbSidebarSettings";
 import {
   Popper,
   PopperMsgBox,
 } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
-
-type UtilityOptionProps = {
-  callback: (props: UtilityClickHandlerProps) => void;
-  icon: OverridableComponent<SvgIconTypeMap>;
-};
-
-type UtilityOptions = {
-  [value in UtilityOptionEnum]: UtilityOptionProps;
-};
 
 const utilityComponents: UtilityOptions = {
   download: {
@@ -70,7 +56,13 @@ const utilityComponents: UtilityOptions = {
 export const UtilityOptionsSection = () => {
   const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentViewAtom);
-  const { fileName, sourceLanguage, queryParams } = useDbQueryParams();
+  const {
+    fileName,
+    sourceLanguage,
+    queryParams,
+    settingEnums,
+    filterOmissionsConfig,
+  } = useDbQueryParams();
   let href: string;
 
   if (typeof window !== "undefined") {
@@ -92,7 +84,7 @@ export const UtilityOptionsSection = () => {
   const { download, error } = useDownloader();
 
   const [popperAnchorEl, setPopperAnchorEl] =
-    useState<Record<UtilityOptionEnum, HTMLElement | null>>(defaultAnchorEls);
+    useState<PopperAnchorState>(defaultAnchorEls);
 
   return (
     <>
@@ -101,12 +93,12 @@ export const UtilityOptionsSection = () => {
       </Typography>
 
       <List sx={{ m: 0 }}>
-        {Object.values(UtilityOptionEnum).map((utilityKey) => {
+        {Object.values(settingEnums.UtilityOptionEnum).map((utilityKey) => {
           const Icon = utilityComponents[utilityKey].icon;
 
           if (
             isSettingOmitted({
-              omissions,
+              omissions: filterOmissionsConfig,
               settingName: utilityKey,
               language: sourceLanguage,
               view: currentView,
@@ -117,7 +109,9 @@ export const UtilityOptionsSection = () => {
 
           const isPopperOpen = Boolean(popperAnchorEl[utilityKey]);
           const showPopper =
-            utilityKey === UtilityOptionEnum.DOWNLOAD ? Boolean(error) : true;
+            utilityKey === settingEnums.UtilityOptionEnum.DOWNLOAD
+              ? Boolean(error)
+              : true;
           const popperId = isPopperOpen ? `${utilityKey}-popper` : undefined;
 
           return (
@@ -134,7 +128,10 @@ export const UtilityOptionsSection = () => {
                   utilityComponents[utilityKey].callback({
                     event,
                     fileName,
-                    popperAnchorState: [popperAnchorEl, setPopperAnchorEl],
+                    popperAnchorStateHandler: [
+                      popperAnchorEl,
+                      setPopperAnchorEl,
+                    ],
                     download: { call: download, file: downloadData },
                     href,
                   })

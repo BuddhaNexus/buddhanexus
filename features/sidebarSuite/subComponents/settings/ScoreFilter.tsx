@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
 
@@ -23,15 +23,19 @@ function normalizeValue(value: number | null | undefined) {
 
 export default function ScoreFilter() {
   const { t } = useTranslation("settings");
+  const { defaultParamConfig, settingEnums } = useDbQueryParams();
 
-  const [scoreParam, setScoreParam] = useQueryParam("score", NumberParam);
+  const [scoreParam, setScoreParam] = useQueryParam(
+    settingEnums.DbPageFilterEnum.SCORE,
+    NumberParam
+  );
   const [scoreValue, setScoreValue] = useState(
-    scoreParam ?? DEFAULT_QUERY_PARAMS.score
+    scoreParam ?? defaultParamConfig.score
   );
 
   useEffect(() => {
-    setScoreValue(scoreParam ?? DEFAULT_QUERY_PARAMS.score);
-  }, [scoreParam]);
+    setScoreValue(scoreParam ?? defaultParamConfig.score);
+  }, [defaultParamConfig, scoreParam]);
 
   const setDebouncedScoreParam = useMemo(
     () => debounce(setScoreParam, 600),

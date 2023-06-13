@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useTextLists } from "@components/hooks/useTextLists";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
-import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
 import { ArrayParam, useQueryParam } from "use-query-params";
 import type { TextMenuItem } from "utils/api/textLists";
 
@@ -10,12 +10,12 @@ import { ListboxComponent, StyledPopper } from "./textMenuComponents";
 
 const IncludeTextFilter = () => {
   const { t } = useTranslation("settings");
+  const { defaultParamConfig, settingEnums } = useDbQueryParams();
 
   const { texts, isLoadingTexts } = useTextLists();
 
   const [includeTextParam, setIncludeTextParam] = useQueryParam(
-    // TODO: replace with "include_text",
-    "limit_collection",
+    settingEnums.DbPageFilterEnum.INCLUDE_TEXT,
     ArrayParam
   );
 
@@ -23,10 +23,8 @@ const IncludeTextFilter = () => {
 
   useEffect(
     () =>
-      setIncludeTextParam(
-        includeTextParam ?? DEFAULT_QUERY_PARAMS.include_text
-      ),
-    [includeTextParam, setIncludeTextParam]
+      setIncludeTextParam(includeTextParam ?? defaultParamConfig.include_text),
+    [includeTextParam, setIncludeTextParam, defaultParamConfig]
   );
 
   const handleInputChange = (value: TextMenuItem[]) => {

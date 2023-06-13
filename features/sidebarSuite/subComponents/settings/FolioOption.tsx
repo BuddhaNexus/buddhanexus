@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
-import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
 import { StringParam, useQueryParam } from "use-query-params";
 import type { DatabaseFolio } from "utils/api/common";
 import { DbApi } from "utils/api/dbApi";
@@ -19,17 +18,20 @@ const showAll = "Whole text";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
-  const { fileName } = useDbQueryParams();
+  const { fileName, defaultParamConfig, settingEnums } = useDbQueryParams();
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
     queryFn: () => DbApi.FolioData.call(fileName),
   });
 
-  const [folioParam, setFolioParam] = useQueryParam("folio", StringParam);
+  const [folioParam, setFolioParam] = useQueryParam(
+    settingEnums.QueriedDisplayOptionEnum.FOLIO,
+    StringParam
+  );
 
   useEffect(() => {
-    setFolioParam(folioParam ?? DEFAULT_QUERY_PARAMS.folio);
-  }, [folioParam, setFolioParam]);
+    setFolioParam(folioParam ?? defaultParamConfig.folio);
+  }, [folioParam, setFolioParam, defaultParamConfig]);
 
   const handleSelectChange = (value: string) => {
     setFolioParam(value === showAll ? null : value);

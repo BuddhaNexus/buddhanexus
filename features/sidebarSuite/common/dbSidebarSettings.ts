@@ -5,14 +5,20 @@ export type SidebarSuitePageContext = "db" | "search";
 
 // Items in the following settings arrays are given in order of appearance in sidebar
 export enum SearchPageFilterEnum {
-  LANG = "lang",
-  INCLUDE_EXCLUDE = "includeExclude",
+  LANGUAGE = "language",
+  INCLUDE_COLLECTION = "include_collection",
+  INCLUDE_TEXT = "include_text",
+  EXCLUDE_COLLECTION = "exclude_collection",
+  EXCLUDE_TEXT = "exclude_text",
 }
 
 export enum DbPageFilterEnum {
   SCORE = "score",
   PAR_LENGTH = "par_length",
-  INCLUDE_EXCLUDE = "includeExclude",
+  INCLUDE_COLLECTION = "include_collection",
+  INCLUDE_TEXT = "include_text",
+  EXCLUDE_COLLECTION = "exclude_collection",
+  EXCLUDE_TEXT = "exclude_text",
   TARGET_COLLECTION = "target_collection",
 }
 
@@ -34,6 +40,14 @@ export enum UtilityOptionEnum {
   EMAIL_QUERY_LINK = "emailQueryLink",
 }
 
+export const settingEnums = {
+  SearchPageFilterEnum,
+  DbPageFilterEnum,
+  QueriedDisplayOptionEnum,
+  LocalDisplayOptionEnum,
+  UtilityOptionEnum,
+};
+
 export type MenuSetting = DbPageFilterEnum | DisplayOption | UtilityOptionEnum;
 
 export type ViewOmission = (SourceLanguage | "allLangs")[];
@@ -49,7 +63,10 @@ export type MenuOmission = SettingOmissions<MenuSetting>;
 
 export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilterEnum> =
   {
-    includeExclude: { graph: ["allLangs"] },
+    include_collection: { graph: ["allLangs"] },
+    include_text: { graph: ["allLangs"] },
+    exclude_collection: { graph: ["allLangs"] },
+    exclude_text: { graph: ["allLangs"] },
     target_collection: {
       numbers: ["allLangs"],
       table: ["allLangs"],

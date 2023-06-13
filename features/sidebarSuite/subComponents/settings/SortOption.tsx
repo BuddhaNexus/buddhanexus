@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useTranslation } from "next-i18next";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 import type { QueryParams } from "features/sidebarSuite/common/dbSidebarSettings";
 import { StringParam, useQueryParam } from "use-query-params";
@@ -22,8 +23,10 @@ export default function SortOption() {
   const { t } = useTranslation("settings");
   const hasSelected = useRef(false);
 
+  const { settingEnums } = useDbQueryParams();
+
   const [sortMethodParam, setSortMethodParam] = useQueryParam(
-    "sort_method",
+    settingEnums.QueriedDisplayOptionEnum.SORT_METHOD,
     StringParam
   );
 

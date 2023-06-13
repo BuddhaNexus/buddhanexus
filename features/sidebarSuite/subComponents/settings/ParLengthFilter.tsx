@@ -25,9 +25,9 @@ function normalizeValue(value: number, min: number) {
 export default function ParLengthFilter() {
   const { t } = useTranslation("settings");
 
-  const { parLengthConfig } = useDbQueryParams();
+  const { parLengthConfig, settingEnums } = useDbQueryParams();
   const [parLengthParam, setParLengthParam] = useQueryParam(
-    "par_length",
+    settingEnums.DbPageFilterEnum.PAR_LENGTH,
     NumberParam
   );
   const [parLength, setParLength] = useState(

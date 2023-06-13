@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import {
+  DB_PAGE_FILTER_OMISSIONS_CONFIG,
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS,
   MIN_PAR_LENGTH_VALUES,
+  settingEnums,
 } from "features/sidebarSuite/common/dbSidebarSettings";
 import type { SourceLanguage } from "utils/constants";
 
@@ -38,6 +40,9 @@ export const useDbQueryParams = () => {
     fileName,
     queryParams,
     defaultQueryParams,
+    defaultParamConfig: DEFAULT_QUERY_PARAMS,
     parLengthConfig,
+    settingEnums,
+    filterOmissionsConfig: DB_PAGE_FILTER_OMISSIONS_CONFIG,
   };
 };

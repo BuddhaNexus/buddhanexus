@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext } from "@mui/lab/";
 import { Box, Drawer, IconButton, Toolbar } from "@mui/material";
@@ -34,7 +35,12 @@ export function SidebarSuite() {
   const isSearchRoute = route.startsWith("/search");
   const isTableRoute = route.startsWith("/table");
 
-  const [, setSortMethod] = useQueryParam("sort_method", StringParam);
+  const { settingEnums } = useDbQueryParams();
+
+  const [, setSortMethod] = useQueryParam(
+    settingEnums.QueriedDisplayOptionEnum.SORT_METHOD,
+    StringParam
+  );
 
   useEffect(() => {
     if (!isTableRoute) {

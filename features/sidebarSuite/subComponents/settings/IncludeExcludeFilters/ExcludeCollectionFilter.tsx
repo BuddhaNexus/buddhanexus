@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useTextLists } from "@components/hooks/useTextLists";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
-import { DEFAULT_QUERY_PARAMS } from "features/sidebarSuite/common/dbSidebarSettings";
 import { ArrayParam, useQueryParam } from "use-query-params";
 import type { CategoryMenuItem } from "utils/api/textLists";
 
@@ -10,12 +10,12 @@ import { ListboxComponent, StyledPopper } from "./textMenuComponents";
 
 const ExcludeCollectionFilter = () => {
   const { t } = useTranslation("settings");
+  const { defaultParamConfig, settingEnums } = useDbQueryParams();
 
   const { categories, isLoadingCategories } = useTextLists();
 
   const [excludeCollectionParam, setExcludeCollectionParam] = useQueryParam(
-    // TODO: replace with "exclude_collection",
-    "limit_collection",
+    settingEnums.DbPageFilterEnum.EXCLUDE_COLLECTION,
     ArrayParam
   );
 
@@ -26,9 +26,9 @@ const ExcludeCollectionFilter = () => {
   useEffect(
     () =>
       setExcludeCollectionParam(
-        excludeCollectionParam ?? DEFAULT_QUERY_PARAMS.exclude_collection
+        excludeCollectionParam ?? defaultParamConfig.exclude_collection
       ),
-    [excludeCollectionParam, setExcludeCollectionParam]
+    [excludeCollectionParam, setExcludeCollectionParam, defaultParamConfig]
   );
 
   const handleInputChange = (value: CategoryMenuItem[]) => {

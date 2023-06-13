@@ -1,13 +1,15 @@
 import { useTranslation } from "next-i18next";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { StringParam, useQueryParam } from "use-query-params";
 import { SourceLanguage as SourceLanguageEnum } from "utils/constants";
 
 const SearchLanguageSelector = () => {
   const { t } = useTranslation("settings");
+  const { settingEnums } = useDbQueryParams();
 
   const [currentLang, setCurrentDbLang] = useQueryParam(
-    "language",
+    settingEnums.SearchPageFilterEnum.LANGUAGE,
     StringParam
   );
 
