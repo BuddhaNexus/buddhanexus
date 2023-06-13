@@ -19,6 +19,7 @@
     "folio": "Gehe zum ausgewählten Textabschnitt",
     "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
     "sorting": "Sortiermethode",
+    "sortDefault": "Standard – Match position in source text",
     "sortSource": "Position im Quelltext abgleichen",
     "sortParallel": "Position in parallelen Texten abgleichen",
     "sortLength": "Länge des übereinstimmenden Zeichens (>)",

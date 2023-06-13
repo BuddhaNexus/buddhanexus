@@ -30,14 +30,15 @@ export function SidebarSuite() {
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeSettingsTabAtom);
 
-  const [, setCurrentLang] = useQueryParam("lang", StringParam);
-
   const { route } = useRouter();
   const isSearchRoute = route.startsWith("/search");
+  const isTableRoute = route.startsWith("/table");
+
+  const [, setSortMethod] = useQueryParam("sort_method", StringParam);
 
   useEffect(() => {
-    if (!isSearchRoute) {
-      setCurrentLang(undefined);
+    if (!isTableRoute) {
+      setSortMethod(undefined);
     }
 
     setActiveTab("0");

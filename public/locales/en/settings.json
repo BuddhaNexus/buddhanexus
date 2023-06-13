@@ -19,6 +19,7 @@
     "folio": "Go to selected text section",
     "folioAsLimit": "Show matches from selected text section",
     "sorting": "Sorting Method",
+    "sortDefault": "Default – Match position in source text",
     "sortSource": "Match position in source text",
     "sortParallel": "Match position in parallel texts",
     "sortLength": "Length of character match (>)",
