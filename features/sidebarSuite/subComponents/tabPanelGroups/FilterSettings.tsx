@@ -21,8 +21,12 @@ export const FilterSettings = ({
 }) => {
   const currentView = useAtomValue(currentViewAtom);
 
-  const { sourceLanguage, settingEnums, settingsList, filterOmissionsConfig } =
-    useDbQueryParams();
+  const {
+    sourceLanguage,
+    settingEnums,
+    settingsList,
+    settingsOmissionsConfig,
+  } = useDbQueryParams();
 
   const [currentLang] = useQueryParam(
     settingEnums.SearchPageFilterEnum.LANGUAGE,
@@ -38,7 +42,10 @@ export const FilterSettings = ({
 
     if (pageType === "search") {
       if (!currentLang || currentLang === "all") {
-        return filterList.filter((value) => value !== "includeExclude");
+        return filterList.filter(
+          // This value is linked to the "include exclude" param case check below and is used to identify the whole block of filters
+          (value) => value !== settingsList.queryParams.includeCollection
+        );
       }
       return filterList;
     }
@@ -46,7 +53,7 @@ export const FilterSettings = ({
     return filterList.filter(
       (filter) =>
         !isSettingOmitted({
-          omissions: filterOmissionsConfig,
+          omissions: settingsOmissionsConfig.filters,
           settingName: filter,
           language: sourceLanguage,
           view: currentView,
@@ -57,7 +64,7 @@ export const FilterSettings = ({
     currentLang,
     sourceLanguage,
     currentView,
-    filterOmissionsConfig,
+    settingsOmissionsConfig,
   ]);
 
   return filters.length > 0 ? (

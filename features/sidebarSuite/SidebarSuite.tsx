@@ -1,11 +1,12 @@
-import { useCallback, useEffect } from "react";
-import { useRouter } from "next/router";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useCallback } from "react";
+import {
+  routePatterns,
+  useHandleRouteChange,
+} from "@components/hooks/useHandleRouteChange";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext } from "@mui/lab/";
 import { Box, Drawer, IconButton, Toolbar } from "@mui/material";
 import { atom, useAtom } from "jotai";
-import { StringParam, useQueryParam } from "use-query-params";
 
 import {
   DrawerHeader,
@@ -30,25 +31,10 @@ export const StandinSetting = (setting: string) => (
 export function SidebarSuite() {
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeSettingsTabAtom);
-
-  const { route } = useRouter();
-  const isSearchRoute = route.startsWith("/search");
-  const isTableRoute = route.startsWith("/table");
-
-  const { settingsList } = useDbQueryParams();
-
-  const [, setSortMethod] = useQueryParam(
-    settingsList.queryParams.sortMethod,
-    StringParam
-  );
-
-  useEffect(() => {
-    if (!isTableRoute) {
-      setSortMethod(undefined);
-    }
-
-    setActiveTab("0");
-  }, []);
+  const isRoute = useHandleRouteChange([
+    { route: "table", pattern: routePatterns.table },
+    { route: "search", pattern: routePatterns.search },
+  ]);
 
   const handleTabChange = useCallback(
     (event: React.SyntheticEvent, newValue: string) => {
@@ -77,7 +63,7 @@ export function SidebarSuite() {
             <DrawerHeader>
               <Box sx={{ width: 1, borderBottom: 1, borderColor: "divider" }}>
                 <SidebarTabList
-                  isSearchRoute={isSearchRoute}
+                  isSearchRoute={isRoute.search}
                   onTabChange={handleTabChange}
                 />
               </Box>
@@ -87,7 +73,7 @@ export function SidebarSuite() {
               </IconButton>
             </DrawerHeader>
 
-            {isSearchRoute ? (
+            {isRoute.search ? (
               <SearchPageSidebarTabPanels />
             ) : (
               <DbFilePageSidebarTabPanels />

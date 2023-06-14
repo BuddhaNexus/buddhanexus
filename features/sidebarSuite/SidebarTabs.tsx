@@ -10,7 +10,7 @@ import { FilterSettings } from "./subComponents/tabPanelGroups/FilterSettings";
 import { UtilityOptionsSection } from "./subComponents/tabPanelGroups/UtilityOptionsSection";
 
 interface SettingTabListProps {
-  isSearchRoute: boolean;
+  isSearchRoute: boolean | undefined;
   onTabChange: (event: React.SyntheticEvent, newValue: string) => void;
 }
 export const SidebarTabList = ({

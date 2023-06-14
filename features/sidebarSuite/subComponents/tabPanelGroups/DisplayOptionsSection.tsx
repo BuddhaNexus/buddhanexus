@@ -20,8 +20,12 @@ export const DisplayOptionsSection = () => {
 
   const currentView = useAtomValue(currentViewAtom);
 
-  const { sourceLanguage, settingEnums, settingsList, filterOmissionsConfig } =
-    useDbQueryParams();
+  const {
+    sourceLanguage,
+    settingEnums,
+    settingsList,
+    settingsOmissionsConfig,
+  } = useDbQueryParams();
 
   const options = useMemo(() => {
     return [
@@ -30,7 +34,7 @@ export const DisplayOptionsSection = () => {
     ].filter(
       (option) =>
         !isSettingOmitted({
-          omissions: filterOmissionsConfig,
+          omissions: settingsOmissionsConfig.displayOptions,
           settingName: option,
           language: sourceLanguage,
           view: currentView,

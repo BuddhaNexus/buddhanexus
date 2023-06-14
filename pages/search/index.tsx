@@ -36,7 +36,7 @@ export default function SearchPage() {
       // enables search term to be set from URL if user accesses the site via a results page link
       setSearchTerm(searchParam);
     }
-  }, [isReady]);
+  }, [isReady, setSearchTerm]);
 
   // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
   const {
@@ -64,15 +64,13 @@ export default function SearchPage() {
       lastPage.pageNumber === 0 ? lastPage.pageNumber : lastPage.pageNumber - 1,
   });
 
-  if (isFallback) {
+  if (isFallback || !isReady) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
         <CircularProgress color="inherit" sx={{ flex: 1 }} />
       </PageContainer>
     );
   }
-
-  const isNotReady = !isReady || isLoading;
 
   return (
     <PageContainer
@@ -107,10 +105,8 @@ export default function SearchPage() {
         />
       </SearchBoxWrapper>
 
-      {isNotReady && <CircularProgress />}
-
       {/* TODO: componentize search results */}
-      {!isNotReady && (
+      {!isLoading && (
         <>
           {data ? (
             <>

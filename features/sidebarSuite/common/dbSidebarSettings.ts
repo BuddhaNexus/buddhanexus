@@ -165,6 +165,14 @@ export const UTILITY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<UtilityOptionEnu
     },
   };
 
+export const SETTINGS_OMISSIONS_CONFIG = {
+  filters: { ...DB_PAGE_FILTER_OMISSIONS_CONFIG },
+  displayOptions: {
+    ...DISPLAY_OPTIONS_OMISSIONS_CONFIG,
+  },
+  utilityOptions: { ...UTILITY_OPTIONS_OMISSIONS_CONFIG },
+};
+
 export interface QueryParams {
   score: number;
   par_length: number;

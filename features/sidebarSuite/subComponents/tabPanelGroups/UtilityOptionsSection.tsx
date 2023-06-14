@@ -61,7 +61,7 @@ export const UtilityOptionsSection = () => {
     sourceLanguage,
     queryParams,
     settingEnums,
-    filterOmissionsConfig,
+    settingsOmissionsConfig,
   } = useDbQueryParams();
   let href: string;
 
@@ -96,7 +96,7 @@ export const UtilityOptionsSection = () => {
 
           if (
             isSettingOmitted({
-              omissions: filterOmissionsConfig,
+              omissions: settingsOmissionsConfig.utilityOptions,
               settingName: utilityKey,
               language: sourceLanguage,
               view: currentView,
