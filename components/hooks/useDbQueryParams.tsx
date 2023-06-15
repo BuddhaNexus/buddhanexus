@@ -1,5 +1,7 @@
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { removeDynamicRouteParams } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS,
@@ -12,12 +14,17 @@ import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {
   const { t } = useTranslation();
-  const { query } = useRouter();
-  const { language, file, ...queryParams } = query;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
 
-  const sourceLanguage = language as SourceLanguage;
+  const sourceLanguage = params.get(
+    settingsList.queryParams.language
+  ) as SourceLanguage;
   const sourceLanguageName = t(`language.${sourceLanguage}`);
-  const fileName = file as string;
+  const fileName = params.get("file") as string;
+
+  const queryParams = removeDynamicRouteParams({ route: router.route, params });
 
   const defaultQueryParams = {
     score: DEFAULT_QUERY_PARAMS.score,
@@ -35,14 +42,18 @@ export const useDbQueryParams = () => {
       : MIN_PAR_LENGTH_VALUES.chn,
   };
 
+  const sortParam = queryParams.get(settingsList.queryParams.sortMethod);
+  const sortMethodSelectConfig = sortParam ?? "position";
+
   return {
     sourceLanguage,
     sourceLanguageName,
     fileName,
-    queryParams,
+    queryParams: Object.fromEntries(queryParams.entries()),
     defaultQueryParams,
     defaultParamConfig: DEFAULT_QUERY_PARAMS,
     parLengthConfig,
+    sortMethodSelectConfig,
     settingEnums,
     settingsList,
     settingsOmissionsConfig: SETTINGS_OMISSIONS_CONFIG,

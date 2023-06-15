@@ -1,3 +1,4 @@
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { currentViewAtom, DbViewEnum } from "@components/hooks/useDbView";
@@ -13,12 +14,20 @@ import { useAtom } from "jotai";
 export const DbViewSelector = () => {
   const { t } = useTranslation("settings");
 
-  const { asPath, push } = useRouter();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const params = new URLSearchParams(searchParams);
   const [currentView, setCurrentDbView] = useAtom(currentViewAtom);
 
   const handleChange = async (e: SelectChangeEvent) => {
-    await push(asPath.replace(currentView, e.target.value));
-    setCurrentDbView(e.target.value as DbViewEnum);
+    const newView = e.target.value as DbViewEnum;
+
+    await router.push({
+      pathname: router.pathname.replace(currentView, newView),
+      query: params.toString(),
+    });
+    setCurrentDbView(newView);
   };
 
   return (

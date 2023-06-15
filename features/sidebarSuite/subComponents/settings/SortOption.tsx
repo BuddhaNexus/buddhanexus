@@ -1,13 +1,11 @@
-import { useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 import type { QueryParams } from "features/sidebarSuite/common/dbSidebarSettings";
-import { StringParam, useQueryParam } from "use-query-params";
 
-const defaultValue = "default";
-
-type SortParam = NonNullable<QueryParams["sort_method"]> | "default";
+type SortParam = NonNullable<QueryParams["sort_method"]>;
 
 type Option = {
   [K in SortParam]?: "sortLength" | "sortParallel" | "sortSource";
@@ -21,18 +19,19 @@ const SORT_OPTIONS: Option[] = [
 
 export default function SortOption() {
   const { t } = useTranslation("settings");
-  const hasSelected = useRef(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { settingsList, sortMethodSelectConfig } = useDbQueryParams();
 
-  const { settingsList } = useDbQueryParams();
+  const params = new URLSearchParams(searchParams);
 
-  const [sortMethodParam, setSortMethodParam] = useQueryParam(
-    settingsList.queryParams.sortMethod,
-    StringParam
-  );
+  const handleSelectChange = async (value: SortParam) => {
+    params.set(settingsList.queryParams.sortMethod, value);
 
-  const handleSelectChange = (value: SortParam) => {
-    hasSelected.current = true;
-    setSortMethodParam(value === defaultValue ? "position" : value);
+    await router.push({
+      pathname: router.pathname,
+      query: params.toString(),
+    });
   };
 
   return (
@@ -44,14 +43,9 @@ export default function SortOption() {
         <Select
           id="sort-option-selector"
           aria-labelledby="sort-option-selector-label"
-          value={sortMethodParam ?? defaultValue}
+          value={sortMethodSelectConfig}
           onChange={(e) => handleSelectChange(e.target.value as SortParam)}
         >
-          {!hasSelected.current && (
-            <MenuItem value={defaultValue}>
-              <em>{t("optionsLabels.sortDefault")}</em>
-            </MenuItem>
-          )}
           {SORT_OPTIONS.map((option) => {
             const [keyValue] = Object.entries(option);
             const [key, value] = keyValue;

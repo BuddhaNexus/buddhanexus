@@ -14,10 +14,3 @@ export const SOURCE_LANGUAGES = [
 
 // i18n
 export const ALL_LOCALES = ["en", "de"];
-
-export const ROUTE_PATTERNS = {
-  home: "^/$",
-  atii: "^/atii",
-  search: "^/search",
-  table: "^/db/([^/]+?/){2}table",
-};

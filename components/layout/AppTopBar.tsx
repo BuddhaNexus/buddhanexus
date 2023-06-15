@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 import { Link } from "@components/common/Link";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useIsRoute } from "@components/hooks/useIsRoute";
 import LanguageSelect from "@components/layout/LanguageSelect";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -16,7 +16,6 @@ import Toolbar from "@mui/material/Toolbar";
 import { isNavigationDrawerOpen } from "features/atoms/layout";
 import { GlobalSearchDesktop, GlobalSearchMobile } from "features/globalSearch";
 import { useSetAtom } from "jotai";
-import { ROUTE_PATTERNS } from "utils/constants";
 
 interface AppBarLinkProps {
   title: string;
@@ -36,6 +35,7 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 );
 
 export const AppTopBar = () => {
+  const router = useRouter();
   const materialTheme = useMaterialTheme();
   const { theme, setTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
@@ -44,11 +44,9 @@ export const AppTopBar = () => {
   const { t } = useTranslation();
   const setIsDrawerOpen = useSetAtom(isNavigationDrawerOpen);
 
-  const isRoute = useIsRoute([
-    { route: "home", pattern: ROUTE_PATTERNS.home },
-    { route: "atii", pattern: ROUTE_PATTERNS.atii },
-    { route: "search", pattern: ROUTE_PATTERNS.search },
-  ]);
+  const isHomeRoute = router.route.startsWith("/");
+  const isATIIRoute = router.route.startsWith("/atii");
+  const isSearchRoute = router.route.startsWith("/search");
 
   useEffect(() => {
     setIsMounted(true);
@@ -80,7 +78,7 @@ export const AppTopBar = () => {
                 display: "inline-flex",
                 alignItems: "center",
               }}
-              href={isRoute.atii ? "/atii" : "/"}
+              href={isATIIRoute ? "/atii" : "/"}
               underline="none"
               noWrap
             >
@@ -96,11 +94,11 @@ export const AppTopBar = () => {
                 <Box
                   component="img"
                   src={
-                    isRoute.atii
+                    isATIIRoute
                       ? "/assets/images/atii_logo.png"
                       : "/assets/icons/bn_tree.svg"
                   }
-                  width={isRoute.atii ? undefined : 64}
+                  width={isATIIRoute ? undefined : 64}
                   sx={{
                     maxHeight: 48,
                     minWidth: 48,
@@ -110,7 +108,7 @@ export const AppTopBar = () => {
                   }}
                   alt="logo"
                 />
-                {!isRoute.home && !isRoute.atii && (
+                {!isHomeRoute && !isATIIRoute && (
                   <Box
                     component="img"
                     src="/assets/icons/bn_name.svg"
@@ -135,7 +133,7 @@ export const AppTopBar = () => {
                 <ExploreOutlinedIcon sx={{ fontSize: 28 }} />
               </IconButton>
             )}
-            {!isRoute.search && <GlobalSearchDesktop />}
+            {!isSearchRoute && <GlobalSearchDesktop />}
           </Box>
 
           <Box
@@ -145,7 +143,7 @@ export const AppTopBar = () => {
               overflow: "auto",
             }}
           >
-            {isRoute.atii ? (
+            {isATIIRoute ? (
               <AppBarLink title="BuddhaNexus" href="/" />
             ) : (
               <>
@@ -176,7 +174,7 @@ export const AppTopBar = () => {
           <LanguageSelect />
         </Toolbar>
       </AppBar>
-      {!isRoute.search && <GlobalSearchMobile />}
+      {!isSearchRoute && <GlobalSearchMobile />}
     </>
   );
 };

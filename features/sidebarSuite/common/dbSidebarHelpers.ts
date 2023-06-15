@@ -8,6 +8,32 @@ import type {
 } from "features/sidebarSuite/common/dbSidebarSettings";
 import type { SourceLanguage } from "utils/constants";
 
+/**
+ * Removes params NextJS adds to the `router.query` object for dynamic routing that are not used for api queries.
+ *
+ * Removed params:
+ * - "file"
+ * - "language" (if current route is not `/search`).
+ *
+ * @see {@link https://nextjs.org/docs/pages/api-reference/functions/use-router#router-object}.
+ *
+ */
+export const removeDynamicRouteParams = ({
+  route,
+  params,
+}: {
+  route: string;
+  params: URLSearchParams;
+}): URLSearchParams => {
+  params.delete("file");
+
+  if (!route.startsWith("/search")) {
+    params.delete("language");
+  }
+
+  return params;
+};
+
 export const isSettingOmitted = ({
   omissions,
   settingName,

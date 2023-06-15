@@ -1,10 +1,9 @@
 import { useCallback } from "react";
-import { useIsRoute } from "@components/hooks/useIsRoute";
+import { useRouter } from "next/router";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext } from "@mui/lab/";
 import { Box, Drawer, IconButton, Toolbar } from "@mui/material";
 import { atom, useAtom } from "jotai";
-import { ROUTE_PATTERNS } from "utils/constants";
 
 import {
   DrawerHeader,
@@ -27,11 +26,10 @@ export const StandinSetting = (setting: string) => (
 );
 
 export function SidebarSuite() {
+  const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeSettingsTabAtom);
-  const isRoute = useIsRoute([
-    { route: "search", pattern: ROUTE_PATTERNS.search },
-  ]);
+  const isSearchRoute = router.route.startsWith("/search");
 
   const handleTabChange = useCallback(
     (event: React.SyntheticEvent, newValue: string) => {
@@ -60,7 +58,7 @@ export function SidebarSuite() {
             <DrawerHeader>
               <Box sx={{ width: 1, borderBottom: 1, borderColor: "divider" }}>
                 <SidebarTabList
-                  isSearchRoute={isRoute.search}
+                  isSearchRoute={isSearchRoute}
                   onTabChange={handleTabChange}
                 />
               </Box>
@@ -70,7 +68,7 @@ export function SidebarSuite() {
               </IconButton>
             </DrawerHeader>
 
-            {isRoute.search ? (
+            {isSearchRoute ? (
               <SearchPageSidebarTabPanels />
             ) : (
               <DbFilePageSidebarTabPanels />

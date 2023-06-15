@@ -1,8 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//  @ts-nocheck
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { removeDynamicRouteParams } from "features/sidebarSuite/common/dbSidebarHelpers";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
 
@@ -20,24 +19,22 @@ export function useGlobalSearch(): GlobalSearchProps {
 
   // TODO: there is an error with NextJS's searchParams type (the docs say this should be valid, https://nextjs.org/docs/app/api-reference/functions/use-search-params#updating-searchparams), see if upgrading fixes it, or cast.
   const params = new URLSearchParams(searchParams);
-
-  const pathname = "/search";
+  const queryParams = removeDynamicRouteParams({ route: router.route, params });
 
   const handleOnSearch: HandleOnSearch = async (searchTerm, e?) => {
     if (!e || e.key === "Enter") {
       e?.preventDefault();
-      params.set(settingsList.queryParams.searchString, searchTerm);
-      params.delete("file");
+      queryParams.set(settingsList.queryParams.searchString, searchTerm);
 
       await router.push({
-        pathname,
-        query: params.toString(),
+        pathname: "/search",
+        query: queryParams.toString(),
       });
     }
   };
 
   return {
     handleOnSearch,
-    searchParam: params.get(settingsList.queryParams.searchString) ?? "",
+    searchParam: queryParams.get(settingsList.queryParams.searchString) ?? "",
   };
 }
