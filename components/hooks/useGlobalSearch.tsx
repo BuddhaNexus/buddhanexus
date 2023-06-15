@@ -1,45 +1,43 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//  @ts-nocheck
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
 
-type HandleOnSearchPress = (e: InputKeyDown, searchTerm: string) => void;
-
-type HandleOnSearchClick = (searchTerm: string) => void;
+type HandleOnSearch = (searchTerm: string, e?: InputKeyDown) => void;
 
 interface GlobalSearchProps {
-  handleOnSearchPress: HandleOnSearchPress;
-  handleOnSearchClick: HandleOnSearchClick;
+  handleOnSearch: HandleOnSearch;
   searchParam: string;
 }
 
 export function useGlobalSearch(): GlobalSearchProps {
   const router = useRouter();
-  const { push, query } = router;
-  const { search_string, ...otherParams } = query;
+  const searchParams = useSearchParams();
+  const { settingsList } = useDbQueryParams();
 
-  const searchParam = typeof search_string === "string" ? search_string : "";
+  // TODO: there is an error with NextJS's searchParams type (the docs say this should be valid, https://nextjs.org/docs/app/api-reference/functions/use-search-params#updating-searchparams), see if upgrading fixes it, or cast.
+  const params = new URLSearchParams(searchParams);
+
   const pathname = "/search";
 
-  const handleOnSearchPress: HandleOnSearchPress = async (e, searchTerm) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      await push({
+  const handleOnSearch: HandleOnSearch = async (searchTerm, e?) => {
+    if (!e || e.key === "Enter") {
+      e?.preventDefault();
+      params.set(settingsList.queryParams.searchString, searchTerm);
+      params.delete("file");
+
+      await router.push({
         pathname,
-        query: { search_string: searchTerm, ...otherParams },
+        query: params.toString(),
       });
     }
   };
 
-  const handleOnSearchClick: HandleOnSearchClick = async (searchTerm) => {
-    await push({
-      pathname,
-      query: { search_string: searchTerm, ...otherParams },
-    });
-  };
-
   return {
-    handleOnSearchPress,
-    handleOnSearchClick,
-    searchParam,
+    handleOnSearch,
+    searchParam: params.get(settingsList.queryParams.searchString) ?? "",
   };
 }

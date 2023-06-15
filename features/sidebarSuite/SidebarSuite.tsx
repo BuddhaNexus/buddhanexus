@@ -1,12 +1,10 @@
 import { useCallback } from "react";
-import {
-  routePatterns,
-  useHandleRouteChange,
-} from "@components/hooks/useHandleRouteChange";
+import { useIsRoute } from "@components/hooks/useIsRoute";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext } from "@mui/lab/";
 import { Box, Drawer, IconButton, Toolbar } from "@mui/material";
 import { atom, useAtom } from "jotai";
+import { ROUTE_PATTERNS } from "utils/constants";
 
 import {
   DrawerHeader,
@@ -31,9 +29,8 @@ export const StandinSetting = (setting: string) => (
 export function SidebarSuite() {
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
   const [activeTab, setActiveTab] = useAtom(activeSettingsTabAtom);
-  const isRoute = useHandleRouteChange([
-    { route: "table", pattern: routePatterns.table },
-    { route: "search", pattern: routePatterns.search },
+  const isRoute = useIsRoute([
+    { route: "search", pattern: ROUTE_PATTERNS.search },
   ]);
 
   const handleTabChange = useCallback(

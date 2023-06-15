@@ -3,10 +3,7 @@ import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 import { Link } from "@components/common/Link";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import {
-  routePatterns,
-  useHandleRouteChange,
-} from "@components/hooks/useHandleRouteChange";
+import { useIsRoute } from "@components/hooks/useIsRoute";
 import LanguageSelect from "@components/layout/LanguageSelect";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -19,6 +16,7 @@ import Toolbar from "@mui/material/Toolbar";
 import { isNavigationDrawerOpen } from "features/atoms/layout";
 import { GlobalSearchDesktop, GlobalSearchMobile } from "features/globalSearch";
 import { useSetAtom } from "jotai";
+import { ROUTE_PATTERNS } from "utils/constants";
 
 interface AppBarLinkProps {
   title: string;
@@ -46,10 +44,10 @@ export const AppTopBar = () => {
   const { t } = useTranslation();
   const setIsDrawerOpen = useSetAtom(isNavigationDrawerOpen);
 
-  const isRoute = useHandleRouteChange([
-    { route: "home", pattern: routePatterns.home },
-    { route: "atii", pattern: routePatterns.atii },
-    { route: "search", pattern: routePatterns.search },
+  const isRoute = useIsRoute([
+    { route: "home", pattern: ROUTE_PATTERNS.home },
+    { route: "atii", pattern: ROUTE_PATTERNS.atii },
+    { route: "search", pattern: ROUTE_PATTERNS.search },
   ]);
 
   useEffect(() => {

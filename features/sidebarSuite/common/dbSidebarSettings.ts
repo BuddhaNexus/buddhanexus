@@ -6,6 +6,7 @@ export type SidebarSuitePageContext = "db" | "search";
 // Items in the following settings arrays are given in order of appearance in sidebar
 export enum SearchPageFilterEnum {
   LANGUAGE = "language",
+  SEARCH = "search_string",
   INCLUDE_COLLECTION = "include_collection",
   INCLUDE_TEXT = "include_text",
   EXCLUDE_COLLECTION = "exclude_collection",
@@ -52,6 +53,7 @@ export const settingEnums = {
 export const settingsList = {
   queryParams: {
     language: SearchPageFilterEnum.LANGUAGE,
+    searchString: SearchPageFilterEnum.SEARCH,
     includeCollection: SearchPageFilterEnum.INCLUDE_COLLECTION,
     includeText: SearchPageFilterEnum.INCLUDE_TEXT,
     excludeCollection: SearchPageFilterEnum.EXCLUDE_COLLECTION,

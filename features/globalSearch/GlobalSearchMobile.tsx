@@ -15,7 +15,7 @@ import {
 
 const GlobalSearchMobile = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { handleOnSearchPress, handleOnSearchClick } = useGlobalSearch();
+  const { handleOnSearch } = useGlobalSearch();
 
   const handleClear = () => {
     if (inputRef.current) {
@@ -47,9 +47,7 @@ const GlobalSearchMobile = () => {
           InputProps={{
             startAdornment: (
               <IconButton
-                onClick={() =>
-                  handleOnSearchClick(inputRef.current?.value ?? "")
-                }
+                onClick={() => handleOnSearch(inputRef.current?.value ?? "")}
               >
                 <SearchIcon fontSize="inherit" />
               </IconButton>
@@ -62,7 +60,7 @@ const GlobalSearchMobile = () => {
           }}
           fullWidth
           onKeyDown={(e: InputKeyDown) =>
-            handleOnSearchPress(e, inputRef.current?.value ?? "")
+            handleOnSearch(inputRef.current?.value ?? "", e)
           }
         />
       </SearchBoxWrapper>

@@ -26,8 +26,7 @@ export default function SearchPage() {
 
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
-  const { handleOnSearchPress, handleOnSearchClick, searchParam } =
-    useGlobalSearch();
+  const { handleOnSearch, searchParam } = useGlobalSearch();
 
   const [searchTerm, setSearchTerm] = useState(searchParam);
 
@@ -87,7 +86,7 @@ export default function SearchPage() {
           variant="outlined"
           InputProps={{
             startAdornment: (
-              <IconButton onClick={() => handleOnSearchClick(searchTerm)}>
+              <IconButton onClick={() => handleOnSearch(searchTerm)}>
                 <Search />
               </IconButton>
             ),
@@ -101,7 +100,7 @@ export default function SearchPage() {
           autoFocus
           fullWidth
           onChange={(event) => setSearchTerm(event.target.value)}
-          onKeyDown={(e: InputKeyDown) => handleOnSearchPress(e, searchTerm)}
+          onKeyDown={(e: InputKeyDown) => handleOnSearch(searchTerm, e)}
         />
       </SearchBoxWrapper>
 

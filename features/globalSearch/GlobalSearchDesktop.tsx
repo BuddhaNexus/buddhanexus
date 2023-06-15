@@ -18,7 +18,7 @@ const GlobalSearchDesktop = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { handleOnSearchPress, handleOnSearchClick } = useGlobalSearch();
+  const { handleOnSearch } = useGlobalSearch();
 
   useEffect(() => {
     if (isOpen) {
@@ -56,9 +56,7 @@ const GlobalSearchDesktop = () => {
           InputProps={{
             endAdornment: (
               <IconButton
-                onClick={() =>
-                  handleOnSearchClick(inputRef.current?.value ?? "")
-                }
+                onClick={() => handleOnSearch(inputRef.current?.value ?? "")}
               >
                 <KeyboardReturnIcon />
               </IconButton>
@@ -66,7 +64,7 @@ const GlobalSearchDesktop = () => {
           }}
           fullWidth
           onKeyDown={(e: InputKeyDown) =>
-            handleOnSearchPress(e, inputRef.current?.value ?? "")
+            handleOnSearch(inputRef.current?.value ?? "", e)
           }
         />
       </AppTopBarSearchBoxWrapper>
