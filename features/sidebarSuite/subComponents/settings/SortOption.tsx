@@ -1,7 +1,7 @@
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useSearchParams } from "@components/hooks/useTypedSearchParams";
 import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
 import type { QueryParams } from "features/sidebarSuite/common/dbSidebarSettings";
 

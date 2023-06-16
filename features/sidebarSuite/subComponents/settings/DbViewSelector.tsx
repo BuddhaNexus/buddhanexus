@@ -1,7 +1,7 @@
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { currentViewAtom, DbViewEnum } from "@components/hooks/useDbView";
+import { useSearchParams } from "@components/hooks/useTypedSearchParams";
 import {
   FormControl,
   InputLabel,

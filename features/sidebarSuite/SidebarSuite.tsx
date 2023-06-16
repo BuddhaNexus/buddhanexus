@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext } from "@mui/lab/";
@@ -16,7 +16,6 @@ import {
 } from "./SidebarTabs";
 
 export const isSidebarOpenAtom = atom(true);
-const activeSettingsTabAtom = atom("0");
 
 // TODO: remove once full settings suit is complete
 export const StandinSetting = (setting: string) => (
@@ -28,7 +27,7 @@ export const StandinSetting = (setting: string) => (
 export function SidebarSuite() {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
-  const [activeTab, setActiveTab] = useAtom(activeSettingsTabAtom);
+  const [activeTab, setActiveTab] = useState("0");
   const isSearchRoute = router.route.startsWith("/search");
 
   const handleTabChange = useCallback(

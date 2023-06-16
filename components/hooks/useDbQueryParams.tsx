@@ -1,6 +1,6 @@
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { useSearchParams } from "@components/hooks/useTypedSearchParams";
 import { removeDynamicRouteParams } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
@@ -18,11 +18,11 @@ export const useDbQueryParams = () => {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
 
-  const sourceLanguage = params.get(
-    settingsList.queryParams.language
-  ) as SourceLanguage;
+  const { file, language } = router.query;
+
+  const sourceLanguage = language as SourceLanguage;
   const sourceLanguageName = t(`language.${sourceLanguage}`);
-  const fileName = params.get("file") as string;
+  const fileName = file as string;
 
   const queryParams = removeDynamicRouteParams({ route: router.route, params });
 

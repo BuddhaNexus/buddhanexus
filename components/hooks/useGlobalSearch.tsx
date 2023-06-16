@@ -1,6 +1,6 @@
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useSearchParams } from "@components/hooks/useTypedSearchParams";
 import { removeDynamicRouteParams } from "features/sidebarSuite/common/dbSidebarHelpers";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
@@ -17,7 +17,6 @@ export function useGlobalSearch(): GlobalSearchProps {
   const searchParams = useSearchParams();
   const { settingsList } = useDbQueryParams();
 
-  // TODO: there is an error with NextJS's searchParams type (the docs say this should be valid, https://nextjs.org/docs/app/api-reference/functions/use-search-params#updating-searchparams), see if upgrading fixes it, or cast.
   const params = new URLSearchParams(searchParams);
   const queryParams = removeDynamicRouteParams({ route: router.route, params });
 
