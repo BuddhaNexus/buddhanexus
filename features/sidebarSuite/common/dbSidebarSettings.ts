@@ -49,34 +49,57 @@ export const settingEnums = {
   UtilityOptionEnum,
 };
 
-//  This creates a unique list of available settings across the SidebarSuite. Where there is overlap (e.g. "include_collection" applies to both DB results and search results pages) the value is taken from the first listed item.
-export const settingsList = {
-  queryParams: {
-    language: SearchPageFilterEnum.LANGUAGE,
-    searchString: SearchPageFilterEnum.SEARCH,
-    includeCollection: SearchPageFilterEnum.INCLUDE_COLLECTION,
-    includeText: SearchPageFilterEnum.INCLUDE_TEXT,
-    excludeCollection: SearchPageFilterEnum.EXCLUDE_COLLECTION,
-    excludeText: SearchPageFilterEnum.EXCLUDE_TEXT,
-    score: DbPageFilterEnum.SCORE,
-    parLength: DbPageFilterEnum.PAR_LENGTH,
-    targetCollection: DbPageFilterEnum.TARGET_COLLECTION,
-    folio: QueriedDisplayOptionEnum.FOLIO,
-    multiLingual: QueriedDisplayOptionEnum.MULTI_LINGUAL,
-    sortMethod: QueriedDisplayOptionEnum.SORT_METHOD,
-  },
-  remote: {
-    download: UtilityOptionEnum.DOWNLOAD,
-  },
-  local: {
-    script: LocalDisplayOptionEnum.SCRIPT,
-    showAndPositionSegmentNrs:
-      LocalDisplayOptionEnum.SHOW_AND_POSITION_SEGMENT_NRS,
-    copyQueryTitle: UtilityOptionEnum.COPY_QUERY_TITLE,
-    copyQueryLink: UtilityOptionEnum.COPY_QUERY_LINK,
-    emailQueryLink: UtilityOptionEnum.EMAIL_QUERY_LINK,
-  },
+/** This creates a unique list of available settings across the SidebarSuite. Where there is overlap (e.g. "include_collection" applies to both DB results and search results pages) the value is taken from the first listed item.
+ */
+
+const queryParams = {
+  language: SearchPageFilterEnum.LANGUAGE,
+  searchString: SearchPageFilterEnum.SEARCH,
+  includeCollection: SearchPageFilterEnum.INCLUDE_COLLECTION,
+  includeText: SearchPageFilterEnum.INCLUDE_TEXT,
+  excludeCollection: SearchPageFilterEnum.EXCLUDE_COLLECTION,
+  excludeText: SearchPageFilterEnum.EXCLUDE_TEXT,
+  score: DbPageFilterEnum.SCORE,
+  parLength: DbPageFilterEnum.PAR_LENGTH,
+  targetCollection: DbPageFilterEnum.TARGET_COLLECTION,
+  folio: QueriedDisplayOptionEnum.FOLIO,
+  multiLingual: QueriedDisplayOptionEnum.MULTI_LINGUAL,
+  sortMethod: QueriedDisplayOptionEnum.SORT_METHOD,
 };
+const remote = {
+  download: UtilityOptionEnum.DOWNLOAD,
+};
+const local = {
+  script: LocalDisplayOptionEnum.SCRIPT,
+  showAndPositionSegmentNrs:
+    LocalDisplayOptionEnum.SHOW_AND_POSITION_SEGMENT_NRS,
+  copyQueryTitle: UtilityOptionEnum.COPY_QUERY_TITLE,
+  copyQueryLink: UtilityOptionEnum.COPY_QUERY_LINK,
+  emailQueryLink: UtilityOptionEnum.EMAIL_QUERY_LINK,
+};
+
+export const settingsList = {
+  queryParams,
+  remote,
+  local,
+};
+
+/**
+ * Query params that only effect display (not number of results).
+ */
+export const displaySettingChipQueries: string[] = [
+  queryParams.folio,
+  queryParams.multiLingual,
+  queryParams.sortMethod,
+];
+
+/**
+ * Query params that are not counted as custom filter settings.
+ */
+export const filterChipQueryExclusions: string[] = [
+  ...displaySettingChipQueries,
+  queryParams.searchString,
+];
 
 export type MenuSetting = DbPageFilterEnum | DisplayOption | UtilityOptionEnum;
 
@@ -93,19 +116,19 @@ export type MenuOmission = SettingOmissions<MenuSetting>;
 
 export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilterEnum> =
   {
-    [settingsList.queryParams.includeCollection]: {
+    [queryParams.includeCollection]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
     },
-    [settingsList.queryParams.includeText]: {
+    [queryParams.includeText]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
     },
-    [settingsList.queryParams.excludeCollection]: {
+    [queryParams.excludeCollection]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
     },
-    [settingsList.queryParams.excludeText]: {
+    [queryParams.excludeText]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
     },
-    [settingsList.queryParams.targetCollection]: {
+    [queryParams.targetCollection]: {
       [DbViewEnum.NUMBERS]: ["allLangs"],
       [DbViewEnum.TABLE]: ["allLangs"],
       [DbViewEnum.TEXT]: ["allLangs"],
@@ -114,16 +137,16 @@ export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilterEnum>
 
 const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayOptionEnum> =
   {
-    [settingsList.queryParams.folio]: {
+    [queryParams.folio]: {
       // "folio" is used as "jump to" in text view and "only show" in other applicable views
       [DbViewEnum.GRAPH]: ["allLangs"],
     },
-    [settingsList.queryParams.multiLingual]: {
+    [queryParams.multiLingual]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
       [DbViewEnum.NUMBERS]: ["allLangs"],
       [DbViewEnum.TABLE]: ["allLangs"],
     },
-    [settingsList.queryParams.sortMethod]: {
+    [queryParams.sortMethod]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
       [DbViewEnum.NUMBERS]: ["allLangs"],
       [DbViewEnum.TEXT]: ["allLangs"],
@@ -132,7 +155,7 @@ const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayO
 
 const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptionEnum> =
   {
-    [settingsList.local.script]: {
+    [local.script]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
       [DbViewEnum.NUMBERS]: ["allLangs"],
       [DbViewEnum.TABLE]: [
@@ -146,7 +169,7 @@ const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptio
         SourceLanguage.SANSKRIT,
       ],
     },
-    [settingsList.local.showAndPositionSegmentNrs]: {
+    [local.showAndPositionSegmentNrs]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
       [DbViewEnum.NUMBERS]: ["allLangs"],
       [DbViewEnum.TABLE]: ["allLangs"],
@@ -161,7 +184,7 @@ export const DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<DisplayOption> =
 
 export const UTILITY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<UtilityOptionEnum> =
   {
-    [settingsList.remote.download]: {
+    [remote.download]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
       [DbViewEnum.TEXT]: ["allLangs"],
     },
@@ -175,32 +198,58 @@ export const SETTINGS_OMISSIONS_CONFIG = {
   utilityOptions: { ...UTILITY_OPTIONS_OMISSIONS_CONFIG },
 };
 
-export interface QueryParams {
-  score: number;
-  par_length: number;
-  folio?: string;
-  sort_method?: "length2" | "position" | "quoted-text";
-  // TODO: update on backend refactor. For dev purposes "limit_collection" is being treated as the comming endpoints
-  limit_collection?: string[];
-  include_collection?: string[];
-  exclude_collection?: string[];
-  include_text?: string[];
-  exclude_text?: string[];
-  target_collection?: string[];
-}
+type ExtractValues<T> = {
+  [K in keyof T]: T[K];
+}[keyof T];
 
-export const DEFAULT_QUERY_PARAMS: QueryParams = {
+type QueryParamsKeys = ExtractValues<typeof queryParams>;
+
+type QueryNumberParam = "par_length" | "score";
+type QueryStringParam =
+  | "folio"
+  | "language"
+  | "multi_lingual"
+  | "search_string"
+  | "target_collection";
+type QueryStringArrayParam =
+  | "exclude_collection"
+  | "exclude_text"
+  | "include_collection"
+  | "include_text";
+
+type SortMethodType = "sort_method";
+type SortMethod = "length2" | "position" | "quoted-text";
+
+type OptionalParams = QueryStringArrayParam | QueryStringParam | SortMethodType;
+
+export type QueryParams = {
+  [K in QueryParamsKeys]: K extends QueryStringParam
+    ? string | (K extends OptionalParams ? undefined : never)
+    : K extends QueryNumberParam
+    ? number
+    : K extends SortMethodType
+    ? SortMethod | (K extends OptionalParams ? undefined : never)
+    : K extends QueryStringArrayParam
+    ? string[] | (K extends OptionalParams ? undefined : never)
+    : never;
+};
+
+export type DefaultQueryParams = Omit<QueryParams, OptionalParams>;
+
+export const DEFAULT_QUERY_PARAMS_VALUES: QueryParams = {
   score: 30,
   // par_length is given a dummy value of 25 (lowest value applicable to all languages). The true value is initated in useDbQueryParams hook when src lang value is available.
   par_length: 25,
   folio: undefined,
   sort_method: undefined,
-  limit_collection: undefined,
   include_collection: undefined,
   exclude_collection: undefined,
   include_text: undefined,
   exclude_text: undefined,
   target_collection: undefined,
+  multi_lingual: undefined,
+  language: undefined,
+  search_string: undefined,
 };
 
 export const MIN_PAR_LENGTH_VALUES: Record<SourceLanguage, number> = {

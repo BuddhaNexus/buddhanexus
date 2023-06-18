@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
+import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   type InputKeyDown,
@@ -35,7 +35,7 @@ export default function SearchPage() {
       // enables search term to be set from URL if user accesses the site via a results page link
       setSearchTerm(searchParam);
     }
-  }, [isReady, setSearchTerm]);
+  }, [isReady, setSearchTerm, searchParam]);
 
   // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
   const {
@@ -77,7 +77,7 @@ export default function SearchPage() {
       backgroundName={sourceLanguage}
       hasSidebar={true}
     >
-      <DbResultsPageHead hasSearchBox={false} />
+      <QueryPageTopStack />
       <SearchBoxWrapper sx={{ mb: 5 }}>
         {/* TODO: fix search OR add notification of search limitations (whole word only) */}
         <SearchBoxInput

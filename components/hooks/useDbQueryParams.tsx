@@ -4,7 +4,7 @@ import { useSearchParams } from "@components/hooks/useTypedSearchParams";
 import { removeDynamicRouteParams } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
-  DEFAULT_QUERY_PARAMS,
+  DEFAULT_QUERY_PARAMS_VALUES,
   MIN_PAR_LENGTH_VALUES,
   settingEnums,
   SETTINGS_OMISSIONS_CONFIG,
@@ -27,16 +27,16 @@ export const useDbQueryParams = () => {
   const queryParams = removeDynamicRouteParams({ route: router.route, params });
 
   const defaultQueryParams = {
-    score: DEFAULT_QUERY_PARAMS.score,
+    score: DEFAULT_QUERY_PARAMS_VALUES.score,
     par_length: sourceLanguage
       ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
-      : DEFAULT_QUERY_PARAMS.par_length,
+      : DEFAULT_QUERY_PARAMS_VALUES.par_length,
   };
 
   const parLengthConfig = {
     default: sourceLanguage
       ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
-      : DEFAULT_QUERY_PARAMS.par_length,
+      : DEFAULT_QUERY_PARAMS_VALUES.par_length,
     min: sourceLanguage
       ? MIN_PAR_LENGTH_VALUES[sourceLanguage]
       : MIN_PAR_LENGTH_VALUES.chn,
@@ -51,7 +51,7 @@ export const useDbQueryParams = () => {
     fileName,
     queryParams: Object.fromEntries(queryParams.entries()),
     defaultQueryParams,
-    defaultParamConfig: DEFAULT_QUERY_PARAMS,
+    defaultParamConfig: DEFAULT_QUERY_PARAMS_VALUES,
     parLengthConfig,
     sortMethodSelectConfig,
     settingEnums,

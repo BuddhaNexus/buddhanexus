@@ -1,6 +1,6 @@
 import React from "react";
 import type { GetStaticProps } from "next";
-import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
+import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbView } from "@components/hooks/useDbView";
@@ -52,7 +52,7 @@ export default function GraphPage() {
       backgroundName={sourceLanguage}
       hasSidebar={true}
     >
-      <DbResultsPageHead />
+      <DbViewPageHead />
 
       {isLoading ? (
         <CenteredProgress />

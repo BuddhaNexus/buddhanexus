@@ -9,9 +9,7 @@ import type {
 import type { SourceLanguage } from "utils/constants";
 
 /**
- * Removes params NextJS adds to the `router.query` object for dynamic routing that are not used for api queries.
- *
- * Removed params:
+ * Removes params NextJS adds to the `router.query` object for dynamic routing that are not used for api queries:
  * - "file"
  * - "language" (if current route is not `/search`).
  *
