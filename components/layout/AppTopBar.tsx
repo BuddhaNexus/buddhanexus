@@ -8,12 +8,13 @@ import LanguageSelect from "@components/layout/LanguageSelect";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { isNavigationDrawerOpen } from "features/atoms/layout";
+import { GlobalSearchDesktop, GlobalSearchMobile } from "features/globalSearch";
 import { useSetAtom } from "jotai";
 
 interface AppBarLinkProps {
@@ -45,118 +46,135 @@ export const AppTopBar = () => {
 
   const isHomeRoute = route === "/";
   const isATIIRoute = route.startsWith("/atii");
+  const isSearchRoute = route.startsWith("/search");
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   return (
-    <AppBar
-      position="sticky"
-      elevation={0}
-      sx={(theme) => ({
-        zIndex: `${theme.zIndex.drawer + 1}`,
-        borderBottom: `1px solid ${theme.palette.background.accent}`,
-        backgroundColor: theme.palette.background.header,
-      })}
-    >
-      <Toolbar>
-        <Box
-          sx={{
-            display: "flex",
-            flex: 1,
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-        >
-          <Link
-            color="inherit"
+    <>
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          zIndex: materialTheme.zIndex.drawer + 1,
+          borderBottom: `1px solid ${materialTheme.palette.background.accent}`,
+        }}
+      >
+        <Toolbar>
+          <Box
             sx={{
-              display: "inline-flex",
+              display: "flex",
+              flex: 1,
+              grow: 1,
+              justifyContent: "flex-start",
               alignItems: "center",
             }}
-            href={isATIIRoute ? "/atii" : "/"}
-            underline="none"
-            noWrap
           >
-            <>
+            <Link
+              color="inherit"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+              }}
+              href={isATIIRoute ? "/atii" : "/"}
+              underline="none"
+              noWrap
+            >
               <Box
-                component="img"
-                src={
-                  isATIIRoute
-                    ? "/assets/images/atii_logo.png"
-                    : "/assets/icons/bn_tree.svg"
-                }
-                width={isATIIRoute ? undefined : 64}
                 sx={{
-                  maxHeight: 48,
-                  minWidth: 48,
-                  pr: 2,
-                  [materialTheme.breakpoints.down("sm")]: {
-                    maxHeight: 36,
+                  display: "flex",
+                  alignItems: "center",
+                  [materialTheme.breakpoints.up("sm")]: {
+                    pr: 1,
                   },
                 }}
-                alt="logo"
-              />
-              {!isHomeRoute && !isATIIRoute && (
+              >
                 <Box
                   component="img"
-                  src="/assets/icons/bn_name.svg"
-                  width={144}
+                  src={
+                    isATIIRoute
+                      ? "/assets/images/atii_logo.png"
+                      : "/assets/icons/bn_tree.svg"
+                  }
+                  width={isATIIRoute ? undefined : 64}
                   sx={{
-                    maxHeight: 24,
+                    maxHeight: 48,
+                    minWidth: 48,
                     [materialTheme.breakpoints.down("sm")]: {
-                      display: "none",
+                      maxHeight: 36,
                     },
                   }}
-                  alt="BuddhaNexus"
+                  alt="logo"
                 />
-              )}
-            </>
-          </Link>
+                {!isHomeRoute && !isATIIRoute && (
+                  <Box
+                    component="img"
+                    src="/assets/icons/bn_name.svg"
+                    width={144}
+                    sx={{
+                      maxHeight: 24,
+                      [materialTheme.breakpoints.down("sm")]: {
+                        display: "none",
+                      },
+                    }}
+                    alt="BuddhaNexus"
+                  />
+                )}
+              </Box>
+            </Link>
 
-          {sourceLanguage && (
-            <IconButton
-              sx={{ ml: { xs: 0, sm: 2 } }}
-              color="inherit"
-              onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
-            >
-              <MenuOpenIcon fontSize="inherit" />
-            </IconButton>
-          )}
-        </Box>
-
-        <Box component="nav" sx={{ display: "flex", overflow: "auto" }}>
-          {isATIIRoute ? (
-            <AppBarLink title="BuddhaNexus" href="/" />
-          ) : (
-            <>
-              <DatabaseMenu />
-              <AppBarLink title={t("header.support")} href="/support" />
-              <AppBarLink title="ATII" href="/atii" />
-            </>
-          )}
-        </Box>
-
-        {isMounted ? (
-          <IconButton
-            sx={{ ml: 1 }}
-            color="inherit"
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          >
-            {theme === "dark" ? (
-              <Brightness7Icon fontSize="inherit" />
-            ) : (
-              <Brightness4Icon fontSize="inherit" />
+            {sourceLanguage && (
+              <IconButton
+                color="inherit"
+                onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
+              >
+                <ExploreOutlinedIcon sx={{ fontSize: 28 }} />
+              </IconButton>
             )}
-          </IconButton>
-        ) : (
-          // prevent layout jump
-          <Box sx={{ width: 48 }} />
-        )}
+            {!isSearchRoute && <GlobalSearchDesktop />}
+          </Box>
 
-        <LanguageSelect />
-      </Toolbar>
-    </AppBar>
+          <Box
+            component="nav"
+            sx={{
+              display: "flex",
+              overflow: "auto",
+            }}
+          >
+            {isATIIRoute ? (
+              <AppBarLink title="BuddhaNexus" href="/" />
+            ) : (
+              <>
+                <DatabaseMenu />
+                <AppBarLink title={t("header.support")} href="/support" />
+                <AppBarLink title="ATII" href="/atii" />
+              </>
+            )}
+          </Box>
+
+          {isMounted ? (
+            <IconButton
+              sx={{ mx: 1 }}
+              color="inherit"
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              {theme === "dark" ? (
+                <Brightness7Icon fontSize="inherit" />
+              ) : (
+                <Brightness4Icon fontSize="inherit" />
+              )}
+            </IconButton>
+          ) : (
+            // prevent layout jump
+            <Box sx={{ width: 48 }} />
+          )}
+
+          <LanguageSelect />
+        </Toolbar>
+      </AppBar>
+      {!isSearchRoute && <GlobalSearchMobile />}
+    </>
   );
 };
