@@ -1,5 +1,6 @@
 import { Virtuoso } from "react-virtuoso";
 import { Paper, Typography } from "@mui/material";
+import type { SegmentColorId } from "types/api/common";
 import type { TextPageData } from "types/api/text";
 
 interface Props {
@@ -22,6 +23,22 @@ const Footer = () => {
   );
 };
 
+function getSegmentColor(highlightColor: SegmentColorId) {
+  return {
+    0: "blue",
+    1: "red",
+    2: "yellow",
+    3: "green",
+    4: "green",
+    5: "green",
+    6: "green",
+    7: "green",
+    8: "green",
+    9: "green",
+    10: "green",
+  }[highlightColor];
+}
+
 export default function TextView({
   data,
   onEndReached,
@@ -33,7 +50,11 @@ export default function TextView({
         totalCount={data.length}
         data={data}
         itemContent={(index, data) => (
-          <Typography variant="body3" component="p">
+          <Typography
+            variant="body3"
+            component="p"
+            sx={{ color: getSegmentColor(data.segmentText[0].highlightColor) }}
+          >
             {data.segmentText[0].text}
           </Typography>
         )}

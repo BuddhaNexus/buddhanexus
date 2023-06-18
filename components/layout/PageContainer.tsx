@@ -64,7 +64,6 @@ export const PageContainer: FC<Props> = ({
           sx={{
             background: `url(${BgImageSrcs[backgroundName]})`,
             backgroundPosition: "center",
-
             backgroundSize: BgImageBgSize[backgroundName],
             opacity: theme === "dark" ? 0.02 : 0.05,
             height: "100%",
