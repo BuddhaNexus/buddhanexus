@@ -5,7 +5,7 @@ import type {
   MenuOmission,
   MenuSetting,
   UtilityOptionEnum,
-} from "features/sidebarSuite/common/dbSidebarSettings";
+} from "features/sidebarSuite/config/types";
 import type { SourceLanguage } from "utils/constants";
 
 /**

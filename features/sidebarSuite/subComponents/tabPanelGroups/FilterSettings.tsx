@@ -3,7 +3,7 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
-import type { SidebarSuitePageContext } from "features/sidebarSuite/common/dbSidebarSettings";
+import type { SidebarSuitePageContext } from "features/sidebarSuite/config/types";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   IncludeExcludeFilters,

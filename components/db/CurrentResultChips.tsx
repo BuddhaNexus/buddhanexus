@@ -6,11 +6,13 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import {
-  type DefaultQueryParams,
   displaySettingChipQueries,
   filterChipQueryExclusions,
-  type QueryParams,
-} from "features/sidebarSuite/common/dbSidebarSettings";
+} from "features/sidebarSuite/config";
+import type {
+  DefaultQueryParams,
+  QueryParams,
+} from "features/sidebarSuite/config/types";
 
 function getSettingCounts({
   currentQueries,
