@@ -35,18 +35,18 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 );
 
 export const AppTopBar = () => {
-  const router = useRouter();
   const materialTheme = useMaterialTheme();
   const { theme, setTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
   const { sourceLanguage } = useDbQueryParams();
 
+  const { route } = useRouter();
   const { t } = useTranslation();
   const setIsDrawerOpen = useSetAtom(isNavigationDrawerOpen);
 
-  const isHomeRoute = router.route.startsWith("/");
-  const isATIIRoute = router.route.startsWith("/atii");
-  const isSearchRoute = router.route.startsWith("/search");
+  const isHomeRoute = route === "/";
+  const isATIIRoute = route.startsWith("/atii");
+  const isSearchRoute = route.startsWith("/search");
 
   useEffect(() => {
     setIsMounted(true);
