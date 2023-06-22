@@ -1,8 +1,10 @@
+""" This module provides the links for each filename """
 import re
 from .utils import get_language_from_filename
 
 
 def get_links(filename, links_query):
+    """get links for each file name"""
     print("get_links", filename, links_query)
     if len(links_query.result) < 1:
         return {
@@ -24,7 +26,7 @@ def get_links(filename, links_query):
     gretil = False
     dsbc = False
     cbeta = False
-    sc = False
+    sc_link = False
     cbc = False
     vri = False
     lang = get_language_from_filename(filename)
@@ -48,14 +50,14 @@ def get_links(filename, links_query):
             gretil = link1
         elif "dsbc" in link1:
             dsbc = link1
-        sc = link2
+        sc_link = link2
 
     # for Chinese, we serve links to CBETA, SC and CBC
     if lang == "chn":
         cbeta = (
             "https://cbetaonline.dila.edu.tw/" + filename + "_001"
         )  # why did we do this on the frontend:  re.sub(filename, "_[TX]", "n")
-        sc = link2
+        sc_link = link2
         cbc_filename = filename[0] + filename[4:]
         cbc = "https://dazangthings.nz/cbc/text/" + cbc_filename
 
@@ -63,7 +65,7 @@ def get_links(filename, links_query):
         if re.search("^tika|^anya|^atk", filename):
             vri = "https://www.tipitaka.org/romn/" + filename
         else:
-            sc = "https://suttacentral.net/" + filename
+            sc_link = "https://suttacentral.net/" + filename
 
     return {
         "bdrc": bdrc,
@@ -71,7 +73,7 @@ def get_links(filename, links_query):
         "gretil": gretil,
         "dsbc": dsbc,
         "cbeta": cbeta,
-        "suttacentral": sc,
+        "suttacentral": sc_link,
         "cbc": cbc,
         "vri": vri,
     }

@@ -4,7 +4,7 @@ This file contains all FastAPI endpoints for Buddhanexus.
 
 import os
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 
