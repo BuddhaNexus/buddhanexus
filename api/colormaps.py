@@ -1,3 +1,8 @@
+"""
+This file holds the functions for creating the colormaps.
+"""
+
+
 def create_segmented_text(text, colormap, matchmap):
     """create segmented text"""
     result_segments = []
