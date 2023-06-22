@@ -10,14 +10,15 @@ router = APIRouter()
 
 @router.get("/search/")
 async def get_search_results(
-    search_string: str,  
-    limit_collection: List[str] = Query([])
+    search_string: str, limit_collection: List[str] = Query([])
 ):
     """
     Returns search results for given search string.
     :return: List of search results
     """
-    limitcollection_positive, limit_collection_negative = get_collection_files_regex(limit_collection)
+    limitcollection_positive, limit_collection_negative = get_collection_files_regex(
+        limit_collection
+    )
 
     database = get_db()
     result = []
@@ -39,7 +40,7 @@ async def get_search_results(
     )
     query_result = query_search.result[0]
     result = search_utils.postprocess_results(
-        search_strings, 
+        search_strings,
         query_result,
     )
     return {"searchResults": result}

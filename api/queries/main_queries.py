@@ -58,17 +58,17 @@ FOR f IN parallels_sorted_file
             LET par_full_names = (
                 FOR file in files
                     FILTER file._key == p.par_filename
-                    RETURN {"display_name": file.displayName, 
-                    "text_name": file.textname, 
-                    "link1": file.link, 
+                    RETURN {"display_name": file.displayName,
+                    "text_name": file.textname,
+                    "link1": file.link,
                     "link2": file.link2}
                 )
             LET root_full_names = (
                 FOR file in files
                     FILTER file._key == p.root_filename
-                    RETURN {"display_name": file.displayName, 
-                    "text_name": file.textname, 
-                    "link1": file.link, 
+                    RETURN {"display_name": file.displayName,
+                    "text_name": file.textname,
+                    "link1": file.link,
                     "link2": file.link2}
                 )
             LIMIT 100 * @page,100

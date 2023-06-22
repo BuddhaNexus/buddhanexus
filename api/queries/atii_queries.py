@@ -7,15 +7,15 @@ let filelist = (
                 for rsegment in segments
                     FILTER rsegment._key == csegment
                     return LENGTH(rsegment.segtext)
-                          
+
         )
         return {
             category: file.category,
-            filename: file.filename, 
+            filename: file.filename,
             total_length: SUM(segment_lengths)
             }
 )
-return filelist   
+return filelist
 """
 
 QUERY_AUTHOR_MATCHES = """
@@ -30,7 +30,7 @@ let parallel_list = (
             for file in files
                 FILTER file.filename == p.par_filename
                 RETURN file.@role
-            )       
+            )
         return {
             root_author: root_author,
             par_author: par_author,
@@ -38,7 +38,7 @@ let parallel_list = (
             par_category: p.par_category,
             root_filename: p.root_filename,
             par_filename: p.par_filename,
-        }    
+        }
 )
-return parallel_list 
+return parallel_list
 """

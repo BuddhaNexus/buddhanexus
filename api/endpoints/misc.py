@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Query
-from .endpoint_utils  import execute_query
+from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
 from ..utils import get_language_from_filename
 from typing import List
-import re 
+import re
 
 router = APIRouter()
 
@@ -48,4 +48,3 @@ async def get_folios_for_file(file_name: str):
     )
     folios = query_graph_result.result[0]
     return {"folios": folios}
-
