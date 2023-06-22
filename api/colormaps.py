@@ -42,45 +42,42 @@ def create_segmented_text_color_only(text, colormap):
                             "highlightColor": last_color})
     return result_segments
 
-def calculate_color_maps_text_view(data):
-    time_before = time.time()
+def calculate_color_maps_text_view(data):    
+    
     textleft = data['textleft']
-    parallel_ids = data['parallel_ids']
-    parallels = data['parallels']
+    parallels_dict = dict(zip(data['parallel_ids'], data['parallels']))
+    print("parallels_dict", len(parallels_dict))
+    for entry in textleft:
+        # initialize with zeros
+        segtext_len = len(entry['segtext'])         
+        current_colormap = [0] * segtext_len # this variable holds the ints for the colors of each character
+        current_matchmap = [[None]] * segtext_len # this variable holds the ids of the parallels that are present at each character
+        # now add the color layer
+        for id in entry['parallel_ids']:            
+            current_parallel = parallels_dict.get(id)
+            if current_parallel is None:
+                #print("Warning: parallel id", id, "not found in parallels_dict")
+                continue
 
-    parallels_dict = {}    
-    for id, parallel in zip(parallel_ids, parallels):
-        parallels_dict[id] = parallel
+            start = 0 
+            end = segtext_len                
+            if current_parallel['root_segnr'][0] == entry['segnr']:
+                start = current_parallel['root_offset_beg']
+            if current_parallel['root_segnr'][-1] == entry['segnr']:
+                end = current_parallel['root_offset_end']
+            # it is embarassing that we need to do this, this should be dealt with at data-loader level
+            if end > segtext_len:
+                end = segtext_len
+            for v in range(start, end):
+                    current_colormap[v] += 1
+                    if id not in current_matchmap[v]:
+                        current_matchmap[v].append(id)
+
+        entry['segtext'] = create_segmented_text(entry['segtext'], current_colormap, current_matchmap)
     
     for entry in textleft:
-        # initialize with zeros 
-        current_colormap = [0] * len(entry['segtext'])
-        current_matchmap = [[None]] * len(entry['segtext'])
-        # now add the color layer
-        for id in entry['parallel_ids']:
-            if id in parallels_dict:
-                current_parallel = parallels_dict[id]
-                start = 0 
-                end = len(current_colormap)                
-                if current_parallel['root_segnr'][0] == entry['segnr']:
-                    start = current_parallel['root_offset_beg']
-                if current_parallel['root_segnr'][-1] == entry['segnr']:
-                    end = current_parallel['root_offset_end']
-                current_colormap[start:end] = [v+1 for v in current_colormap[start:end]]
-                for i in range(start, end):
-                    # it is _very_ suspicious that we need to check this; ideally, it shouldn't be necessary
-                    if i >= len(current_matchmap):
-                        print("Warning: index out of bounds", i, "in current_matchmap")
-                    else:
-                        if not id in current_matchmap[i]:
-                            current_matchmap[i].append(id)
-            else:
-                print("Warning: parallel id", id, "not found in parallels_dict")
-        entry['segtext'] = create_segmented_text(entry['segtext'], current_colormap, current_matchmap)
-        print("entry", entry)
-        del(entry['parallel_ids'])
-    time_after = time.time()
-    print("Time to calculate color maps: ", time_after - time_before)
+        del(entry['parallel_ids'])    
+    
     return textleft
 
 def calculate_color_maps_table_view(data):

@@ -158,7 +158,7 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
         FILTER p._key == parallel_id
         FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
         FILTER LIKE(p.root_string, @search_string, true) || LIKE(p.par_string, @search_string, true)
-        FILTER POSITION(@multi_lingual, p.tgt_lang)
+        FILTER LEN(@multi_lingual) == 0 or POSITION(@multi_lingual, p.tgt_lang)
         FILTER p.score >= @score
         LIMIT 100 * @page,100
         RETURN {
@@ -220,12 +220,12 @@ LET parallels =  (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels
             FILTER p._key == parallel_id
-            FILTER p.score >= @score
+
             FILTER p.par_length >= @parlength
             FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
             FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
 
-            FILTER POSITION(@multi_lingual, p.tgt_lang)
+            FILTER LENGTH(@multi_lingual) == 0 OR POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
             RETURN {
                 root_offset_beg: p.root_offset_beg,
@@ -239,7 +239,7 @@ LET parallels_multi =  (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels_multi
             FILTER p._key == parallel_id
-            FILTER POSITION(@multi_lingual, p.tgt_lang)
+            FILTER LENGTH(@multi_lingual) == 0 OR POSITION(@multi_lingual, p.tgt_lang)
             FILTER p.score >= @score
             RETURN {
                 root_offset_beg: p.root_offset_beg,
@@ -253,6 +253,7 @@ RETURN {
     textleft: segments,
     parallel_ids: parallel_ids,
     parallels: APPEND(parallels, parallels_multi)
+
 }
 """
 
