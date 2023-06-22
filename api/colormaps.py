@@ -55,10 +55,9 @@ def calculate_color_maps_text_view(data):
         # now add the color layer
         for id in entry['parallel_ids']:            
             current_parallel = parallels_dict.get(id)
-            if current_parallel is None:
-                #print("Warning: parallel id", id, "not found in parallels_dict")
+            if current_parallel is None:                
                 continue
-
+            
             start = 0 
             end = segtext_len                
             if current_parallel['root_segnr'][0] == entry['segnr']:
