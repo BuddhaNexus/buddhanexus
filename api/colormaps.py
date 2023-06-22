@@ -11,6 +11,7 @@ def create_segmented_text(text, colormap, matchmap):
     last_matches = [x for x in last_matches if x is not None]
     last_matches.sort()
     last_color = colormap[0]
+    # consider using: for i, _ in enumerate(text):
     for i in range(len(text)):
         current_color = colormap[i]
         current_matches = matchmap[i]
@@ -40,6 +41,7 @@ def create_segmented_text_color_only(text, colormap):
     result_segments = []
     current_segment = ""
     last_color = colormap[0]
+    # consider using: for i, _ in enumerate(text):
     for i in range(len(text)):
         current_color = colormap[i]
         if current_color != last_color:
