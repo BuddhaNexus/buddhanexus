@@ -39,10 +39,8 @@ export interface ViewPropApiQuery extends FilePropApiQuery {
   view: DbViewEnum;
 }
 
-export type SegmentColorId = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-
 export type ApiTextSegment = {
-  highlightColor: SegmentColorId;
+  highlightColor: number;
   text: string;
   matches?: [];
 };

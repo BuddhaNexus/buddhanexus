@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import type { GetStaticProps } from "next";
 import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -39,6 +39,11 @@ export default function TablePage() {
       refetchOnWindowFocus: false,
     });
 
+  const allData = useMemo(
+    () => (data ? data.pages.flatMap((page) => page.data) : []),
+    [data]
+  );
+
   if (isFallback) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
@@ -59,7 +64,7 @@ export default function TablePage() {
         <CenteredProgress />
       ) : (
         <TableView
-          data={data.pages.flatMap((page) => page.data)}
+          data={allData}
           onEndReached={fetchNextPage}
           onStartReached={fetchPreviousPage}
         />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import type { GetStaticProps } from "next";
 import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
@@ -52,6 +52,11 @@ export default function TextPage() {
       refetchOnWindowFocus: false,
     });
 
+  const allData = useMemo(
+    () => (data ? data.pages.flatMap((page) => page.data) : []),
+    [data]
+  );
+
   if (isError) {
     return <ErrorPage backgroundName={sourceLanguage} />;
   }
@@ -76,7 +81,7 @@ export default function TextPage() {
         <CenteredProgress />
       ) : (
         <TextView
-          data={data?.pages.flatMap((page) => page.data)}
+          data={allData}
           onEndReached={fetchNextPage}
           onStartReached={fetchPreviousPage}
         />
