@@ -42,5 +42,5 @@ export interface ViewPropApiQuery extends FilePropApiQuery {
 export type ApiTextSegment = {
   highlightColor: number;
   text: string;
-  matches?: [];
+  matches: [];
 };

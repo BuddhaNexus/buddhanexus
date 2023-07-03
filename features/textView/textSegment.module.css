@@ -1,0 +1,23 @@
+.segment {
+  display: inline-block;
+  /*  make button appear like span  */
+  /*background: none !important;*/
+  /*border: none;*/
+  /*padding: 0 !important;*/
+  /*!*optional*!*/
+  /*font-family: arial, sans-serif;*/
+  /*!*input has OS specific font-family*!*/
+  /*color: #069;*/
+  /*text-decoration: underline;*/
+  /*cursor: pointer;*/
+}
+
+.segment:hover {
+  /*background-color: lightgray;*/
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.segmentcontainer {
+  padding: 2px;
+}

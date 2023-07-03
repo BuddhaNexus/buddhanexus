@@ -37,9 +37,15 @@ export default function TextPage() {
 
   useDbView();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { selectedSegment, ...paramsThatShouldRefreshText } = queryParams;
+
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading, isError } =
     useInfiniteQuery<PagedResponse<TextPageData>>({
-      queryKey: DbApi.TextView.makeQueryKey({ fileName, queryParams }),
+      queryKey: DbApi.TextView.makeQueryKey({
+        fileName,
+        queryParams: paramsThatShouldRefreshText,
+      }),
       queryFn: ({ pageParam = 0 }) =>
         DbApi.TextView.call({
           fileName,
