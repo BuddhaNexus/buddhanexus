@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Depends
 from ..db_connection import get_db
-from ..utils import get_collection_files_regex
+from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
 from ..queries import search_queries
 from typing import List, AnyStr
+from ..models_api import Limits
 
 router = APIRouter()
 
@@ -11,13 +12,14 @@ router = APIRouter()
 @router.get("/search/")
 async def get_search_results(
     search_string: str,  
-    limit_collection: List[str] = Query([])
+    limits: Limits = Depends(),
 ):
     """
     Returns search results for given search string.
     :return: List of search results
     """
-    limitcollection_positive, limit_collection_negative = get_collection_files_regex(limit_collection)
+    limitcollection_positive = create_cleaned_limit_collection(limits.collection_positive + limits.file_positive)
+    limit_collection_negative = create_cleaned_limit_collection(limits.collection_negative + limits.file_negative)
 
     database = get_db()
     result = []

@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Depends
 from .endpoint_utils  import execute_query
 from ..queries import main_queries
-from ..utils import get_collection_files_regex
+from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
 from typing import List
+from ..models_api import Limits
 
 router = APIRouter()
 
@@ -13,14 +14,14 @@ async def get_counts_for_file(
     file_name: str,
     score: int = 0,
     par_length: int = 0,
-    limit_collection: List[str] = Query([]),
+    limits: Limits = Depends(),
 ):
     """
     Returns number of filtered parallels
     """
-    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection
-    )
+    limitcollection_positive = create_cleaned_limit_collection(limits.collection_positive + limits.file_positive)
+    limitcollection_negative = create_cleaned_limit_collection(limits.collection_negative + limits.file_negative)
+
     query_graph_result = execute_query(main_queries.QUERY_COUNT_MATCHES,
         bind_vars={
             "filename": file_name,

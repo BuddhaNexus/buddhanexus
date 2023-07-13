@@ -1,12 +1,13 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Depends
 from ..queries import main_queries
 from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_middle_view
 from .endpoint_utils import execute_query
 from typing import List, Dict
 from ..utils import (
-    get_collection_files_regex,
+    create_cleaned_limit_collection,
     get_start_integer,
 )
+from ..models_api import Limits
 
 router = APIRouter()
 
@@ -29,23 +30,20 @@ async def get_file_text_segments_and_parallels(
     active_segment: str = "none",
     score: int = 0,
     par_length: int = 0,
-    limit_collection: List[str] = Query([]),
+    limit: Limits = Depends(),
     multi_lingual: List[str] = Query([]),
 ):
+    
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
     """
     parallel_ids_type = "parallel_ids"
-    if len(limit_collection) > 0:
-        parallel_ids_type = "parallel_ids"
-
     start_int = 0
     if active_segment != "none":
         start_int = get_start_integer(active_segment)
 
-    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection
-    )
+    limitcollection_positive = create_cleaned_limit_collection(limit.collection_positive + limit.file_positive) 
+    limitcollection_negative = create_cleaned_limit_collection(limit.collection_negative + limit.file_negative)     
     current_bind_vars = {
         "parallel_ids_type": parallel_ids_type,
         "filename": file_name,

@@ -46,3 +46,14 @@ class ParallelsCollection(BaseModel):
     limit_collection: list
     multi_lingual: list
     file_name: str
+
+class Limits(BaseModel):
+    """
+    Limits for parallels
+    """
+
+    limit_collection_positive: list
+    limit_collection_negative: list
+    limit_file_positive: list
+    limit_file_negative: list
+    

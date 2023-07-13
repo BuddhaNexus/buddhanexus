@@ -1,19 +1,19 @@
-from fastapi import APIRouter, Query, HTTPException
-from ..db_connection import get_db
-from ..utils import get_collection_files_regex
+from fastapi import APIRouter, Query, Depends
 from ..colormaps import calculate_color_maps_table_view
 from ..utils import (
-    get_language_from_filename, 
+    create_cleaned_limit_collection, 
     get_sort_key, 
     collect_segment_results, 
     create_numbers_view_data,
-    get_folio_regex    
+    get_folio_regex, 
+    get_language_from_filename
 )
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
 from ..table_download import run_table_download, run_numbers_download
 
 from typing import List
+from ..models_api import Limits
 
 router = APIRouter()
 
@@ -22,18 +22,18 @@ async def get_table_view(
     file_name: str,
     score: int = 0,
     par_length: int = 0,
-    limit_collection: List[str] = Query([]),
+    limits: Limits = Depends(),
     page: int = 0,
-    sort_method: str = "position",
+    sort_method: str = "parallels_sorted_by_src_pos",
     folio: str = "",
 ):
     """
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
-    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection
-    )
+    limitcollection_positive = create_cleaned_limit_collection(limits.collection_positive + limits.file_positive)
+    limitcollection_negative = create_cleaned_limit_collection(limits.collection_negative + limits.file_negative)
+
     query_result = execute_query(main_queries.QUERY_TABLE_VIEW,                            
             bind_vars={
                 "filename": file_name,
@@ -53,7 +53,7 @@ async def get_table_download(
     file_name: str,
     score: int = 0,
     par_length: int = 0,
-    limit_collection: List[str] = Query([]),
+    limits: Limits = Depends(),
     sort_method: str = "position",
     folio: str = "",
     download_data: str = "table",
@@ -63,7 +63,8 @@ async def get_table_download(
     :return: List of segments and parallels for the downloaded table view.
     """
     language = get_language_from_filename(file_name)
-    limit_collection_regex = get_collection_files_regex(limit_collection)
+    limitcollection_positive = create_cleaned_limit_collection(limits.collection_positive + limits.file_positive)
+    limitcollection_negative = create_cleaned_limit_collection(limits.collection_negative + limits.file_negative)
 
     query_result = execute_query(main_queries.QUERY_TABLE_DOWNLOAD,                           
             bind_vars={
@@ -71,8 +72,8 @@ async def get_table_download(
                 "score": score,
                 "parlength": par_length,
                 "sortkey": get_sort_key(sort_method),
-                "limitcollection_positive": limit_collection_regex[0],
-                "limitcollection_negative": limit_collection_regex[1],
+                "limitcollection_positive": limitcollection_positive,
+                "limitcollection_negative": limitcollection_negative,
                 "folio": folio,
             }
         )
@@ -86,7 +87,7 @@ async def get_table_download(
                 score,
                 par_length,
                 sort_method,
-                limit_collection,
+                limits,
                 folio,
                 language,
             ],
@@ -113,7 +114,7 @@ async def get_table_download(
             score,
             par_length,
             sort_method,
-            limit_collection,
+            limits,
             folio,
             language,
         ],

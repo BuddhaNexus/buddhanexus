@@ -61,38 +61,13 @@ def create_cleaned_limit_collection(limit_collection) -> List:
                 bind_vars={"collectionkey": file.replace("!", "")},
             )
             for item in query.result:
-                if "!" not in file:
                     new_limit_collection.append(item)
-                else:
-                    new_limit_collection.append("!" + item)
         else:
             if "tib_NyGB" in file: # this is a collection-specific hack and things like this should never be done 
                 new_limit_collection.append("NG")
-            elif "!tib_NyGB" in file:
-                new_limit_collection.append("!NG")
             else:
                 new_limit_collection.append(file)    
     return new_limit_collection
-
-
-def get_collection_files_regex(limit_collection) -> List:
-    """
-    Returns a regular expression list for use in arangodb queries
-    :param limit_collection: The list of collections to limit to
-    :param language: The desired language
-    :return: The regular expressions to test if resource belongs to a given collection
-    if a collection is prefixed with !, we exclude it from the results!
-    """
-    new_limit_collection = create_cleaned_limit_collection(limit_collection)
-
-    teststring_positive = []
-    teststring_negative = []
-    for file in new_limit_collection:
-        if "!" not in file:
-            teststring_positive.append(file)
-        else:
-            teststring_negative.append(file.replace("!", ""))
-    return [teststring_positive, teststring_negative]
 
 
 def number_exists(input_string) -> bool:
