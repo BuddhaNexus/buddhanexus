@@ -4,6 +4,7 @@ from ..queries import main_queries, menu_queries
 from ..utils import get_language_from_filename
 from typing import List
 import re
+from .models.shared import GraphInput
 
 router = APIRouter()
 
@@ -12,12 +13,7 @@ COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 @router.get("/graph-view/")
 # pylint: disable=too-many-locals
-async def get_graph_for_file(
-    file_name: str,
-    score: int = 0,
-    par_length: int = 0,
-    target_collection: List[str] = Query([]),
-):
+async def get_graph_for_file(input: GraphInput):
     """
     Endpoint for graph view
     """
@@ -25,10 +21,10 @@ async def get_graph_for_file(
     query_graph_result = execute_query(
         main_queries.QUERY_GRAPH_VIEW,
         bind_vars={
-            "filename": file_name,
-            "score": score,
-            "parlength": par_length,
-            "targetcollection": target_collection,
+            "filename": input.file_name,
+            "score": input.score,
+            "parlength": input.par_length,
+            "targetcollection": input.target_collection,
         },
     )
 
@@ -63,7 +59,7 @@ async def get_graph_for_file(
         menu_queries.QUERY_COLLECTION_NAMES,
         bind_vars={
             "collections": collection_keys,
-            "language": get_language_from_filename(file_name),
+            "language": get_language_from_filename(input.file_name),
         },
     )
     collections_with_full_name = {}

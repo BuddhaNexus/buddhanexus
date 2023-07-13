@@ -1,103 +1,86 @@
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter
 from ..colormaps import calculate_color_maps_table_view
 from ..utils import (
     create_cleaned_limit_collection, 
     get_sort_key, 
-    collect_segment_results, 
-    create_numbers_view_data,
+    collect_segment_results,     
     get_folio_regex, 
     get_language_from_filename
 )
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
 from ..table_download import run_table_download, run_numbers_download
-
-from typing import List
-from ..models_api import Limits
+from .models.shared import GeneralInput, MultiLangInput
+from .numbers_view import create_numbers_view_data
 
 router = APIRouter()
 
 
 @router.get("/table")
-async def get_table_view(
-    file_name: str,
-    score: int = 0,
-    par_length: int = 0,
-    limits: Limits = Depends(),
-    page: int = 0,
-    sort_method: str = "parallels_sorted_by_src_pos",
-    folio: str = "",
+async def get_table_view(input: GeneralInput
 ):
     """
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
-    limitcollection_positive = create_cleaned_limit_collection(limits.collection_positive + limits.file_positive)
-    limitcollection_negative = create_cleaned_limit_collection(limits.collection_negative + limits.file_negative)
+    limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive)
+    limitcollection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)
 
     query_result = execute_query(main_queries.QUERY_TABLE_VIEW,                            
             bind_vars={
-                "filename": file_name,
-                "score": score,
-                "parlength": par_length,
-                "sortkey": get_sort_key(sort_method),
+                "filename": input.file_name,
+                "score": input.score,
+                "parlength": input.par_length,
+                "sortkey": get_sort_key(input.sort_method),
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
-                "page": page,
-                "folio": folio,
+                "page": input.page,
+                "folio": input.folio,
             }
         )
     return calculate_color_maps_table_view(query_result.result)
 
 
 @router.get("/download")
-async def get_table_download(
-    file_name: str,
-    score: int = 0,
-    par_length: int = 0,
-    limits: Limits = Depends(),
-    sort_method: str = "position",
-    folio: str = "",
-    download_data: str = "table",
-):
+async def get_table_download(input: GeneralInput):
     """
     Endpoint for the download table. Accepts filters.
     :return: List of segments and parallels for the downloaded table view.
     """
-    language = get_language_from_filename(file_name)
-    limitcollection_positive = create_cleaned_limit_collection(limits.collection_positive + limits.file_positive)
-    limitcollection_negative = create_cleaned_limit_collection(limits.collection_negative + limits.file_negative)
+    language = get_language_from_filename(input.file_name)
+    limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive)
+    limitcollection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)
 
     query_result = execute_query(main_queries.QUERY_TABLE_DOWNLOAD,                           
             bind_vars={
-                "filename": file_name,
-                "score": score,
-                "parlength": par_length,
-                "sortkey": get_sort_key(sort_method),
+                "filename": input.file_name,
+                "score": input.score,
+                "parlength": input.par_length,
+                "sortkey": get_sort_key(input.sort_method),
                 "limitcollection_positive": limitcollection_positive,
                 "limitcollection_negative": limitcollection_negative,
-                "folio": folio,
+                "folio": input.folio,
             }
         )
     
 
-    if download_data == "table":
+    if input.download_data == "table":
         return run_table_download(
             query_result,
             [
-                file_name,
-                score,
-                par_length,
-                sort_method,
-                limits,
-                folio,
+                input.file_name,
+                input.score,
+                input.par_length,
+                input.sort_method,
+                input.limits,
+                input.folio,
                 language,
             ],
         )
 
     segment_collection_results = collect_segment_results(
         create_numbers_view_data(
-            query_result.result, get_folio_regex(language, file_name, folio)
+            query_result.result, get_folio_regex(language, input.file_name, input.folio)
         )
     )
 
@@ -113,25 +96,19 @@ async def get_table_download(
         collections_result,
         segment_collection_results[0],
         [
-            file_name,
-            score,
-            par_length,
-            sort_method,
-            limits,
-            folio,
+            input.file_name,
+            input.score,
+            input.par_length,
+            input.sort_method,
+            input.limits,
+            input.folio,
             language,
         ],
     )
 
 
 @router.get("/multilang")
-async def get_multilang(
-    file_name: str,
-    multi_lingual: List[str] = Query([]),
-    folio: str = "",
-    page: int = 0,
-    score: int = 0,
-):
+async def get_multilang(input: MultiLangInput):
     """
     Endpoint for the multilingual table view. Accepts Parallel languages
     :return: List of segments and parallels for the table view.
@@ -139,11 +116,11 @@ async def get_multilang(
     query_result = execute_query(
         main_queries.QUERY_MULTILINGUAL,
         bind_vars={
-            "filename": file_name,
-            "multi_lingual": multi_lingual,
-            "page": page,
-            "score": score,
-            "folio": folio,
+            "filename": input.file_name,
+            "multi_lingual": input.multi_lingual,
+            "page": input.page,
+            "score": input.score,
+            "folio": input.folio,
         },
     )
     return query_result.result

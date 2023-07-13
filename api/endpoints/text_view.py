@@ -7,52 +7,44 @@ from ..utils import (
     create_cleaned_limit_collection,
     get_start_integer,
 )
-from ..models_api import Limits
+from .models.shared import MiddleInput, TextParallelsInput
 
 router = APIRouter()
 
 
 @router.get("/middle/")
-async def get_parallels_for_middle(parallel_ids: List[str]):
+async def get_parallels_for_middle(input: MiddleInput):
     """
     :return: List of parallels for text view (middle)
     """
     query_result = execute_query(
         main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
-        bind_vars={"parallel_ids": parallel_ids},
+        bind_vars={"parallel_ids": input.parallel_ids},
     )
     print(query_result[0])
     return calculate_color_maps_middle_view(query_result.result[0])
 
 
 @router.get("/text-parallels/")
-async def get_file_text_segments_and_parallels(
-    file_name: str,
-    active_segment: str = "none",
-    score: int = 0,
-    par_length: int = 0,
-    limit: Limits = Depends(),
-    multi_lingual: List[str] = Query([]),
-):
-    
+async def get_file_text_segments_and_parallels(input: TextParallelsInput):
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
     """
     parallel_ids_type = "parallel_ids"
     start_int = 0
-    if active_segment != "none":
-        start_int = get_start_integer(active_segment)
+    if input.active_segment != "none":
+        start_int = get_start_integer(input.active_segment)
 
-    limitcollection_positive = create_cleaned_limit_collection(limit.collection_positive + limit.file_positive) 
-    limitcollection_negative = create_cleaned_limit_collection(limit.collection_negative + limit.file_negative)     
+    limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive) 
+    limitcollection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)     
     current_bind_vars = {
         "parallel_ids_type": parallel_ids_type,
-        "filename": file_name,
+        "filename": input.file_name,
         "limit": 800,
         "startint": start_int,
-        "score": score,
-        "parlength": par_length,
-        "multi_lingual": multi_lingual,
+        "score": input.score,
+        "parlength": input.par_length,
+        "multi_lingual": input.multi_lingual,
         "limitcollection_positive": limitcollection_positive,
         "limitcollection_negative": limitcollection_negative,
     }
