@@ -4297,8 +4297,8 @@
     ]
   },
   {
-    "category": "atk-s",
-    "categoryname": "Aṭṭhakathā Suttas",
+    "category": "atk-s01",
+    "categoryname": "Aṭṭhakathā Dīghanikāya",
     "files": [
       "atk-s0101a0",
       "atk-s0101a1",
@@ -4334,7 +4334,13 @@
       "atk-s0103a7",
       "atk-s0103a8",
       "atk-s0103a9",
-      "atk-s0103a10",
+      "atk-s0103a10"
+    ]
+  },
+  {
+    "category": "atk-s02",
+    "categoryname": "Aṭṭhakathā Majjhimanikāya",
+    "files": [
       "atk-s0201a0",
       "atk-s0201a1",
       "atk-s0201a2",
@@ -4350,7 +4356,13 @@
       "atk-s0203a1",
       "atk-s0203a2",
       "atk-s0203a3",
-      "atk-s0203a4",
+      "atk-s0203a4"
+    ]
+  },
+  {
+    "category": "atk-s03",
+    "categoryname": "Aṭṭhakathā Saṁyuttanikāya",
+    "files": [
       "atk-s0301a0",
       "atk-s0301a1",
       "atk-s0301a2",
@@ -4407,7 +4419,13 @@
       "atk-s0305a8",
       "atk-s0305a9",
       "atk-s0305a10",
-      "atk-s0305a11",
+      "atk-s0305a11"
+    ]
+  },
+  {
+    "category": "atk-s04",
+    "categoryname": "Aṭṭhakathā Aṅguttaranikāya",
+    "files": [
       "atk-s0401a0",
       "atk-s0401a1",
       "atk-s0401a2",
@@ -4571,7 +4589,13 @@
       "atk-s0404a29",
       "atk-s0404a30",
       "atk-s0404a31",
-      "atk-s0404a32",
+      "atk-s0404a32"
+    ]
+  },
+  {
+    "category": "atk-s05",
+    "categoryname": "Aṭṭhakathā Khuddakanikāya",
+    "files": [
       "atk-s0501a0",
       "atk-s0501a1",
       "atk-s0501a2",
@@ -4825,15 +4849,21 @@
     ]
   },
   {
-    "category": "atk-vin",
-    "categoryname": "Aṭṭhakathā Vinaya",
+    "category": "atk-vin01",
+    "categoryname": "Pārājikakaṇḍa-aṭṭhakathā",
     "files": [
       "atk-vin01a0",
       "atk-vin01a1",
       "atk-vin01a2",
       "atk-vin01a3",
       "atk-vin01a4",
-      "atk-vin01a5",
+      "atk-vin01a5"
+    ]
+  },
+  {
+    "category": "atk-vin02a1",
+    "categoryname": "Pācittiya-aṭṭhakathā",
+    "files": [
       "atk-vin02a10",
       "atk-vin02a11",
       "atk-vin02a12",
@@ -4842,7 +4872,13 @@
       "atk-vin02a15",
       "atk-vin02a16",
       "atk-vin02a17",
-      "atk-vin02a18",
+      "atk-vin02a18"
+    ]
+  },
+  {
+    "category": "atk-vin02a2",
+    "categoryname": "Mahāvagga-aṭṭhakathā",
+    "files": [
       "atk-vin02a20",
       "atk-vin02a21",
       "atk-vin02a22",
@@ -4852,7 +4888,13 @@
       "atk-vin02a26",
       "atk-vin02a27",
       "atk-vin02a28",
-      "atk-vin02a29",
+      "atk-vin02a29"
+    ]
+  },
+  {
+    "category": "atk-vin02a3",
+    "categoryname": "Cūḷavagga-aṭṭhakathā",
+    "files": [
       "atk-vin02a30",
       "atk-vin02a31",
       "atk-vin02a32",
@@ -4864,7 +4906,13 @@
       "atk-vin02a38",
       "atk-vin02a39",
       "atk-vin02a310",
-      "atk-vin02a311",
+      "atk-vin02a311"
+    ]
+  },
+  {
+    "category": "atk-vin02a4",
+    "categoryname": "Parivāra-aṭṭhakathā",
+    "files": [
       "atk-vin02a40",
       "atk-vin02a41",
       "atk-vin02a42",
@@ -4886,8 +4934,8 @@
     ]
   },
   {
-    "category": "atk-abh",
-    "categoryname": "Aṭṭhakathā Abhidhamma",
+    "category": "atk-abh01",
+    "categoryname": "Dhammasaṅgaṇi-aṭṭhakathā",
     "files": [
       "atk-abh01a0",
       "atk-abh01a2",
@@ -4895,7 +4943,13 @@
       "atk-abh01a4",
       "atk-abh01a5",
       "atk-abh01a6",
-      "atk-abh01a7",
+      "atk-abh01a7"
+    ]
+  },
+  {
+    "category": "atk-abh02",
+    "categoryname": "Sammohavinodanī-aṭṭhakathā",
+    "files": [
       "atk-abh02a0",
       "atk-abh02a1",
       "atk-abh02a2",
@@ -4913,7 +4967,13 @@
       "atk-abh02a14",
       "atk-abh02a15",
       "atk-abh02a16",
-      "atk-abh02a17",
+      "atk-abh02a17"
+    ]
+  },
+  {
+    "category": "atk-abh03",
+    "categoryname": "Pañcapakaraṇa-aṭṭhakathā",
+    "files": [
       "atk-abh03a0",
       "atk-abh03a1",
       "atk-abh03a2",
@@ -4983,8 +5043,8 @@
     ]
   },
   {
-    "category": "tika-s",
-    "categoryname": "Tīkā Suttas",
+    "category": "tika-s01",
+    "categoryname": "Tīkā Dīghanikāya",
     "files": [
       "tika-s0101t0",
       "tika-s0101t1",
@@ -5034,7 +5094,13 @@
       "tika-s0105t8",
       "tika-s0105t9",
       "tika-s0105t10",
-      "tika-s0105t11",
+      "tika-s0105t11"
+    ]
+  },
+  {
+    "category": "tika-s02",
+    "categoryname": "Tīkā Majjhimanikāya",
+    "files": [
       "tika-s0201t0",
       "tika-s0201t1",
       "tika-s0201t2",
@@ -5050,7 +5116,13 @@
       "tika-s0203t1",
       "tika-s0203t2",
       "tika-s0203t3",
-      "tika-s0203t4",
+      "tika-s0203t4"
+    ]
+  },
+  {
+    "category": "tika-s03",
+    "categoryname": "Tīkā Saṁyuttanikāya",
+    "files": [
       "tika-s0301t0",
       "tika-s0301t1",
       "tika-s0301t2",
@@ -5107,7 +5179,13 @@
       "tika-s0305t8",
       "tika-s0305t9",
       "tika-s0305t10",
-      "tika-s0305t11",
+      "tika-s0305t11"
+    ]
+  },
+  {
+    "category": "tika-s04",
+    "categoryname": "Tīkā Aṅguttaranikāya",
+    "files": [
       "tika-s0401t0",
       "tika-s0401t1",
       "tika-s0401t2",
@@ -5254,7 +5332,13 @@
       "tika-s0404t24",
       "tika-s0404t25",
       "tika-s0404t26",
-      "tika-s0404t27",
+      "tika-s0404t27"
+    ]
+  },
+  {
+    "category": "tika-s05",
+    "categoryname": "Tikā Khuddakanikāya",
+    "files": [
       "tika-s0501t0",
       "tika-s0501t1",
       "tika-s0501t2",
@@ -5271,15 +5355,21 @@
     ]
   },
   {
-    "category": "tika-vin",
-    "categoryname": "Tīkā Vinaya",
+    "category": "tika-vin01",
+    "categoryname": "Tikā Sāratthadīpanī part 1",
     "files": [
       "tika-vin01t10",
       "tika-vin01t11",
       "tika-vin01t20",
       "tika-vin01t21",
       "tika-vin01t22",
-      "tika-vin01t23",
+      "tika-vin01t23"
+    ]
+  },
+  {
+    "category": "tika-vin02",
+    "categoryname": "Tikā Sāratthadīpanī part 2",
+    "files": [
       "tika-vin02t0",
       "tika-vin02t1",
       "tika-vin02t2",
@@ -5324,7 +5414,13 @@
       "tika-vin02t44",
       "tika-vin02t45",
       "tika-vin02t46",
-      "tika-vin02t47",
+      "tika-vin02t47"
+    ]
+  },
+  {
+    "category": "tika-vin04",
+    "categoryname": "Tikā Dvemātikāpāḷi",
+    "files": [
       "tika-vin04t0",
       "tika-vin04t1",
       "tika-vin04t2",
@@ -5340,7 +5436,13 @@
       "tika-vin04t13",
       "tika-vin04t14",
       "tika-vin04t15",
-      "tika-vin04t16",
+      "tika-vin04t16"
+    ]
+  },
+  {
+    "category": "tika-vin05",
+    "categoryname": "Tikā Vinayasaṅgaha-aṭṭhakathā",
+    "files": [
       "tika-vin05t0",
       "tika-vin05t1",
       "tika-vin05t2",
@@ -5375,13 +5477,25 @@
       "tika-vin05t31",
       "tika-vin05t32",
       "tika-vin05t33",
-      "tika-vin05t34",
+      "tika-vin05t34"
+    ]
+  },
+  {
+    "category": "tika-vin06",
+    "categoryname": "Tikā Vajirabuddhi",
+    "files": [
       "tika-vin06t0",
       "tika-vin06t1",
       "tika-vin06t2",
       "tika-vin06t3",
       "tika-vin06t4",
-      "tika-vin06t5",
+      "tika-vin06t5"
+    ]
+  },
+  {
+    "category": "tika-vin07",
+    "categoryname": "Tikā Vimativinodanī",
+    "files": [
       "tika-vin07t0",
       "tika-vin07t1",
       "tika-vin07t2",
@@ -5434,7 +5548,13 @@
       "tika-vin07t53",
       "tika-vin07t54",
       "tika-vin07t55",
-      "tika-vin07t56",
+      "tika-vin07t56"
+    ]
+  },
+  {
+    "category": "tika-vin08",
+    "categoryname": "Tikā Vinayālaṅkāra",
+    "files": [
       "tika-vin08t0",
       "tika-vin08t1",
       "tika-vin08t2",
@@ -5470,7 +5590,13 @@
       "tika-vin08t32",
       "tika-vin08t33",
       "tika-vin08t34",
-      "tika-vin08t35",
+      "tika-vin08t35"
+    ]
+  },
+  {
+    "category": "tika-vin09",
+    "categoryname": "Tikā Kaṅkhāvitaraṇīpurāṇa",
+    "files": [
       "tika-vin09t0",
       "tika-vin09t1",
       "tika-vin09t2",
@@ -5494,7 +5620,13 @@
       "tika-vin09t22",
       "tika-vin09t23",
       "tika-vin09t24",
-      "tika-vin09t25",
+      "tika-vin09t25"
+    ]
+  },
+  {
+    "category": "tika-vin10",
+    "categoryname": "Tikā Vinayavinicchaya-uttaravinicchaya",
+    "files": [
       "tika-vin10t0",
       "tika-vin10t1",
       "tika-vin10t2",
@@ -5502,7 +5634,13 @@
       "tika-vin10t4",
       "tika-vin10t5",
       "tika-vin10t6",
-      "tika-vin10t7",
+      "tika-vin10t7"
+    ]
+  },
+  {
+    "category": "tika-vin11",
+    "categoryname": "Tikā Vinayavinicchaya",
+    "files": [
       "tika-vin11t0",
       "tika-vin11t2",
       "tika-vin11t3",
@@ -5548,12 +5686,24 @@
       "tika-vin11t45",
       "tika-vin11t46",
       "tika-vin11t47",
-      "tika-vin11t48",
+      "tika-vin11t48"
+    ]
+  },
+  {
+    "category": "tika-vin12",
+    "categoryname": "Tikā Pācityādiyojanāpāḷi",
+    "files": [
       "tika-vin12t0",
       "tika-vin12t1",
       "tika-vin12t2",
       "tika-vin12t3",
-      "tika-vin12t4",
+      "tika-vin12t4"
+    ]
+  },
+  {
+    "category": "tika-vin13",
+    "categoryname": "Tikā Khuddasikkhā-mūlasikkhā",
+    "files": [
       "tika-vin13t0",
       "tika-vin13t1",
       "tika-vin13t2",
@@ -5562,8 +5712,8 @@
     ]
   },
   {
-    "category": "tika-abh",
-    "categoryname": "Tīkā Abhidhamma",
+    "category": "tika-abh01",
+    "categoryname": "Tīkā Dhammasaṅgaṇī-mūlaṭīkā",
     "files": [
       "tika-abh01t0",
       "tika-abh01t2",
@@ -5572,7 +5722,13 @@
       "tika-abh01t5",
       "tika-abh01t6",
       "tika-abh01t7",
-      "tika-abh01t8",
+      "tika-abh01t8"
+    ]
+  },
+  {
+    "category": "tika-abh02",
+    "categoryname": "Tīkā Vibhaṅga-mūlaṭīkā",
+    "files": [
       "tika-abh02t0",
       "tika-abh02t1",
       "tika-abh02t2",
@@ -5608,24 +5764,48 @@
       "tika-abh02t32",
       "tika-abh02t33",
       "tika-abh02t34",
-      "tika-abh02t35",
+      "tika-abh02t35"
+    ]
+  },
+  {
+    "category": "tika-abh03",
+    "categoryname": "Tīkā Pañcapakaraṇa-mūlaṭīkā",
+    "files": [
       "tika-abh03t0",
       "tika-abh03t1",
       "tika-abh03t2",
       "tika-abh03t3",
-      "tika-abh03t4",
+      "tika-abh03t4"
+    ]
+  },
+  {
+    "category": "tika-abh04",
+    "categoryname": "Tīkā Dhammasaṅgaṇī-anuṭīkā",
+    "files": [
       "tika-abh04t0",
       "tika-abh04t2",
       "tika-abh04t3",
       "tika-abh04t4",
       "tika-abh04t5",
       "tika-abh04t6",
-      "tika-abh04t7",
+      "tika-abh04t7"
+    ]
+  },
+  {
+    "category": "tika-abh05",
+    "categoryname": "Tīkā Pañcapakaraṇa-anuṭīkā",
+    "files": [
       "tika-abh05t1",
       "tika-abh05t2",
       "tika-abh05t3",
       "tika-abh05t4",
-      "tika-abh05t5",
+      "tika-abh05t5"
+    ]
+  },
+  {
+    "category": "tika-abh06",
+    "categoryname": "Tīkā Abhidhammāvatāro-nāmarūpaparicchedo",
+    "files": [
       "tika-abh06t0",
       "tika-abh06t1",
       "tika-abh06t2",
@@ -5700,7 +5880,13 @@
       "tika-abh06t74",
       "tika-abh06t75",
       "tika-abh06t76",
-      "tika-abh06t77",
+      "tika-abh06t77"
+    ]
+  },
+  {
+    "category": "tika-abh07",
+    "categoryname": "Tīkā Abhidhammatthasaṅgaho",
+    "files": [
       "tika-abh07t0",
       "tika-abh07t1",
       "tika-abh07t2",
@@ -5718,7 +5904,13 @@
       "tika-abh07t14",
       "tika-abh07t15",
       "tika-abh07t16",
-      "tika-abh07t17",
+      "tika-abh07t17"
+    ]
+  },
+  {
+    "category": "tika-abh08",
+    "categoryname": "Tīkā Abhidhammāvatāra-purāṇaṭīkā",
+    "files": [
       "tika-abh08t0",
       "tika-abh08t1",
       "tika-abh08t2",
@@ -5767,7 +5959,13 @@
       "tika-abh08t45",
       "tika-abh08t46",
       "tika-abh08t47",
-      "tika-abh08t48",
+      "tika-abh08t48"
+    ]
+  },
+  {
+    "category": "tika-abh09",
+    "categoryname": "Tīkā Abhidhammamātikāpāḷi",
+    "files": [
       "tika-abh09t0",
       "tika-abh09t1",
       "tika-abh09t2",
@@ -5785,8 +5983,8 @@
     ]
   },
   {
-    "category": "anya-e",
-    "categoryname": "Anya",
+    "category": "anya-e01",
+    "categoryname": "Visuddhimagga",
     "files": [
       "anya-e0101n0",
       "anya-e0101n1",
@@ -5872,14 +6070,26 @@
       "anya-e0105n33",
       "anya-e0105n34",
       "anya-e0105n35",
-      "anya-e0105n36",
+      "anya-e0105n36"
+    ]
+  },
+  {
+    "category": "anya-e02",
+    "categoryname": "Leḍī sayāḍo gantha-saṅgaho part 1",
+    "files": [
       "anya-e0201n0",
       "anya-e0201n1",
       "anya-e0201n2",
       "anya-e0201n3",
       "anya-e0201n4",
       "anya-e0201n5",
-      "anya-e0201n6",
+      "anya-e0201n6"
+    ]
+  },
+  {
+    "category": "anya-e03",
+    "categoryname": "Leḍī sayāḍo gantha-saṅgaho part 2",
+    "files": [
       "anya-e0301n0",
       "anya-e0301n1",
       "anya-e0301n2",
@@ -5892,7 +6102,13 @@
       "anya-e0301n9",
       "anya-e0301n10",
       "anya-e0301n11",
-      "anya-e0301n12",
+      "anya-e0301n12"
+    ]
+  },
+  {
+    "category": "anya-e04",
+    "categoryname": "Leḍī sayāḍo gantha-saṅgaho part 3",
+    "files": [
       "anya-e0401n0",
       "anya-e0401n1",
       "anya-e0401n2",
@@ -5901,7 +6117,13 @@
       "anya-e0401n5",
       "anya-e0401n6",
       "anya-e0401n7",
-      "anya-e0401n8",
+      "anya-e0401n8"
+    ]
+  },
+  {
+    "category": "anya-e05",
+    "categoryname": "Leḍī sayāḍo gantha-saṅgaho part 4",
+    "files": [
       "anya-e0501n0",
       "anya-e0501n1",
       "anya-e0501n2",
@@ -5924,7 +6146,13 @@
       "anya-e0501n19",
       "anya-e0501n20",
       "anya-e0501n21",
-      "anya-e0501n22",
+      "anya-e0501n22"
+    ]
+  },
+  {
+    "category": "anya-e06",
+    "categoryname": "Buddha-vandanā gantha-saṅgaho",
+    "files": [
       "anya-e0601n0",
       "anya-e0601n1",
       "anya-e0602n0",
@@ -5966,7 +6194,13 @@
       "anya-e0605n29",
       "anya-e0606n",
       "anya-e0607n",
-      "anya-e0608n",
+      "anya-e0608n"
+    ]
+  },
+  {
+    "category": "anya-e07",
+    "categoryname": "Vaṁsa-gantha-saṅgaho",
+    "files": [
       "anya-e0701n0",
       "anya-e0701n1",
       "anya-e0701n2",
@@ -6045,7 +6279,13 @@
       "anya-e0703n59",
       "anya-e0703n60",
       "anya-e0703n61",
-      "anya-e0703n62",
+      "anya-e0703n62"
+    ]
+  },
+  {
+    "category": "anya-e08",
+    "categoryname": "Byākaraṇa gantha-saṅgaho",
+    "files": [
       "anya-e0801n0",
       "anya-e0801n1",
       "anya-e0801n2",
@@ -6135,7 +6375,13 @@
       "anya-e0813n1",
       "anya-e0813n2",
       "anya-e0813n3",
-      "anya-e0813n4",
+      "anya-e0813n4"
+    ]
+  },
+  {
+    "category": "anya-e09",
+    "categoryname": "Saṅgāyana-puccha vissajjanā",
+    "files": [
       "anya-e0901n0",
       "anya-e0901n1",
       "anya-e0901n2",
@@ -6153,7 +6399,13 @@
       "anya-e0905n3",
       "anya-e0905n4",
       "anya-e0906n",
-      "anya-e0907n",
+      "anya-e0907n"
+    ]
+  },
+  {
+    "category": "anya-e10",
+    "categoryname": "Nīti-gantha-saṅgaho",
+    "files": [
       "anya-e1001n0",
       "anya-e1001n1",
       "anya-e1001n2",
@@ -6206,7 +6458,13 @@
       "anya-e1010n2",
       "anya-e1010n3",
       "anya-e1010n4",
-      "anya-e1010n5",
+      "anya-e1010n5"
+    ]
+  },
+  {
+    "category": "anya-e11",
+    "categoryname": "Pakiṇṇaka-gantha-saṅgaho",
+    "files": [
       "anya-e1101n0",
       "anya-e1101n1",
       "anya-e1101n2",
@@ -6218,7 +6476,13 @@
       "anya-e1102n3",
       "anya-e1102n4",
       "anya-e1102n5",
-      "anya-e1103n",
+      "anya-e1103n"
+    ]
+  },
+  {
+    "category": "anya-e12",
+    "categoryname": "Sihaḷa-gantha-saṅgaho",
+    "files": [
       "anya-e1201n",
       "anya-e1202n0",
       "anya-e1202n1",

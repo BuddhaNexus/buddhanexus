@@ -12,7 +12,14 @@ LANG_CHINESE = "chn"
 LANG_PALI = "pli"
 LANG_ENGLISH = "en"
 LANG_AI = "ai"
-DEFAULT_LANGS = (LANG_CHINESE, LANG_SANSKRIT, LANG_TIBETAN, LANG_PALI, LANG_ENGLISH, LANG_AI)
+DEFAULT_LANGS = (
+    LANG_CHINESE,
+    LANG_SANSKRIT,
+    LANG_TIBETAN,
+    LANG_PALI,
+    LANG_ENGLISH,
+    LANG_AI,
+)
 
 COLLECTION_PARALLELS = "parallels"
 COLLECTION_PARALLELS_MULTI = "parallels_multi"
@@ -24,22 +31,37 @@ COLLECTION_MENU_COLLECTIONS = "menu_collections"
 COLLECTION_MENU_CATEGORIES = "menu_categories"
 COLLECTION_FILES_PARALLEL_COUNT = "files_parallel_count"
 COLLECTION_CATEGORIES_PARALLEL_COUNT = "categories_parallel_count"
+
+
 COLLECTION_SEARCH_INDEX_TIB = "search_index_tib"
 COLLECTION_SEARCH_INDEX_SKT = "search_index_skt"
 COLLECTION_SEARCH_INDEX_PLI = "search_index_pli"
 COLLECTION_SEARCH_INDEX_CHN = "search_index_chn"
+
+SKT_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_sanskrit.json.gz"
+PLI_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_pali.json.gz"
+TIB_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_tibetan.json.gz"
+CHN_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_chn.json.gz"
+
+
 VIEW_SEARCH_INDEX_TIB = "search_index_tib_view"
 VIEW_SEARCH_INDEX_TIB_FUZZY = "search_index_tib_fuzzy_view"
 VIEW_SEARCH_INDEX_SKT = "search_index_skt_view"
 VIEW_SEARCH_INDEX_PLI = "search_index_pli_view"
 VIEW_SEARCH_INDEX_CHN = "search_index_chn_view"
+
 TIBETAN_ANALYZER = "tibetan_analyzer"
 TIBETAN_FUZZY_ANALYZER = "tibetan_fuzzy_analyzer"
 SANSKRIT_ANALYZER = "sanskrit_analyzer"
 PALI_ANALYZER = "pali_analyzer"
 CHINESE_ANALYZER = "text_zh"
 
-ANALYZER_NAMES = (TIBETAN_ANALYZER, SANSKRIT_ANALYZER, PALI_ANALYZER, TIBETAN_FUZZY_ANALYZER)
+ANALYZER_NAMES = (
+    TIBETAN_ANALYZER,
+    SANSKRIT_ANALYZER,
+    PALI_ANALYZER,
+    TIBETAN_FUZZY_ANALYZER,
+)
 
 INDEX_VIEW_NAMES = (
     VIEW_SEARCH_INDEX_SKT,

@@ -118,9 +118,8 @@ def get_spreadsheet_fields(lang, file_values):
         [segment_field, file_values[6]],
         ["Similarity Score", file_values[1]],
         ["Min. Match Length", file_values[2]],
-        ["Nr. Co-occurances", file_values[3]],
-        ["Sorting Method", file_values[4]],
-        ["Filters", " ".join(map(str, file_values[5]))],
+        ["Sorting Method", file_values[3]],
+        ["Filters", " ".join(map(str, file_values[4]))],
         ["Max. number of results", "20,000"],
     )
 
@@ -297,7 +296,7 @@ def get_displayname(segmentnr, lang):
     database = get_db()
     query_displayname = database.AQLQuery(
         query=main_queries.QUERY_DISPLAYNAME,
-        bindVars={"filename": filename},
+        bind_vars={"filename": filename},
     )
 
     if query_displayname.result:
