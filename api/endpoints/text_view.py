@@ -11,18 +11,19 @@ from ..models_api import Limits
 
 router = APIRouter()
 
+
 @router.get("/middle/")
 async def get_parallels_for_middle(parallel_ids: List[str]):
     """
     :return: List of parallels for text view (middle)
     """
-    query_result = execute_query(main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
-        bind_vars={
-            "parallel_ids": parallel_ids
-        },
+    query_result = execute_query(
+        main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
+        bind_vars={"parallel_ids": parallel_ids},
     )
     print(query_result[0])
     return calculate_color_maps_middle_view(query_result.result[0])
+
 
 @router.get("/text-parallels/")
 async def get_file_text_segments_and_parallels(
@@ -56,10 +57,12 @@ async def get_file_text_segments_and_parallels(
         "limitcollection_negative": limitcollection_negative,
     }
     print("CBV", current_bind_vars)
-    text_segments_query_result = execute_query(main_queries.QUERY_TEXT_AND_PARALLELS,
+    text_segments_query_result = execute_query(
+        main_queries.QUERY_TEXT_AND_PARALLELS,
         bind_vars=current_bind_vars,
-    )    
-    print("text_segments_query_result", text_segments_query_result)    
-    data_with_colormaps = calculate_color_maps_text_view(text_segments_query_result.result[0])
+    )
+    print("text_segments_query_result", text_segments_query_result)
+    data_with_colormaps = calculate_color_maps_text_view(
+        text_segments_query_result.result[0]
+    )
     return data_with_colormaps
-    

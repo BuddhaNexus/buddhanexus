@@ -9,12 +9,10 @@ from dataloader_constants import (
     COLLECTION_SEARCH_INDEX_SKT,
     COLLECTION_SEARCH_INDEX_PLI,
     COLLECTION_SEARCH_INDEX_CHN,
-
     SKT_SEARCH_DATA_PATH,
     PLI_SEARCH_DATA_PATH,
     TIB_SEARCH_DATA_PATH,
     CHN_SEARCH_DATA_PATH,
-
     VIEW_SEARCH_INDEX_TIB,
     VIEW_SEARCH_INDEX_TIB_FUZZY,
     VIEW_SEARCH_INDEX_PLI,
@@ -57,14 +55,14 @@ class SearchIndexBase:
     DATA_PATH: str
 
     def load_search_index(self, db: StandardDatabase):
-        with gzip.open(self.DATA_PATH, 'rb') as f:
+        with gzip.open(self.DATA_PATH, "rb") as f:
             current_entries = []
             db.create_collection(self.COLLECTION_NAME)
-            collection = db.collection(self.COLLECTION_NAME) 
+            collection = db.collection(self.COLLECTION_NAME)
             print(f"\nLoading file index data from {self.DATA_PATH}...")
-            for entry in tqdm(ijson.items(f, 'item')):
-                entry["category"] = get_cat_from_segmentnr(entry["segment_nr"][0])                
-                entry['filename'] = entry['filename'].split('/')[-1]
+            for entry in tqdm(ijson.items(f, "item")):
+                entry["category"] = get_cat_from_segmentnr(entry["segment_nr"][0])
+                entry["filename"] = entry["filename"].split("/")[-1]
                 current_entries.append(entry)
                 if len(current_entries) > 10000:
                     collection.insert_many(current_entries)
@@ -72,27 +70,32 @@ class SearchIndexBase:
             collection.insert_many(current_entries)
             print(f"\nDone loading index data from {self.DATA_PATH}.")
 
+
 class SearchIndexSanskrit(SearchIndexBase):
     COLLECTION_NAME = COLLECTION_SEARCH_INDEX_SKT
     DATA_PATH = SKT_SEARCH_DATA_PATH
+
 
 class SearchIndexPali(SearchIndexBase):
     COLLECTION_NAME = COLLECTION_SEARCH_INDEX_PLI
     DATA_PATH = PLI_SEARCH_DATA_PATH
 
+
 class SearchIndexTibetan(SearchIndexBase):
     COLLECTION_NAME = COLLECTION_SEARCH_INDEX_TIB
     DATA_PATH = TIB_SEARCH_DATA_PATH
+
 
 class SearchIndexChinese(SearchIndexBase):
     COLLECTION_NAME = COLLECTION_SEARCH_INDEX_CHN
     DATA_PATH = CHN_SEARCH_DATA_PATH
 
+
 class AnalyzerBase:
     ANALYZER_NAME: str
     CASE: str
     STOPWORDS: list
-    ACCENT: bool    
+    ACCENT: bool
 
     def create_analyzer(self, db: StandardDatabase):
         print("ANALYZER_NAMES", self.ANALYZER_NAME)
@@ -109,11 +112,13 @@ class AnalyzerBase:
             features=["position", "norm", "frequency"],
         )
 
+
 class AnalyzerSanskrit(AnalyzerBase):
     ANALYZER_NAME = SANSKRIT_ANALYZER
     CASE = "none"
     STOPWORDS = skt_stopwords_list
-    ACCENT = True      
+    ACCENT = True
+
 
 class AnalyzerPali(AnalyzerBase):
     ANALYZER_NAME = PALI_ANALYZER
@@ -121,24 +126,28 @@ class AnalyzerPali(AnalyzerBase):
     STOPWORDS = pli_stopwords_list
     ACCENT = True
 
-class AnalyzerTibetan(AnalyzerBase):    
+
+class AnalyzerTibetan(AnalyzerBase):
     ANALYZER_NAME = TIBETAN_ANALYZER
     CASE = "none"
     STOPWORDS = []
     ACCENT = False
 
-class AnalyzerTibetanFuzzy(AnalyzerBase):    
+
+class AnalyzerTibetanFuzzy(AnalyzerBase):
     ANALYZER_NAME = TIBETAN_FUZZY_ANALYZER
     CASE = "none"
     STOPWORDS = tib_stopwords_list
     ACCENT = False
 
-#class AnalyzerChinese(AnalyzerBase):
+
+# class AnalyzerChinese(AnalyzerBase):
 #    ANALYZER_NAME = CHINESE_ANALYZER
 #    CASE = "none"
 #    STOPWORDS = []
-#    ACCENT = False    
-    
+#    ACCENT = False
+
+
 def create_analyzers(db: StandardDatabase):
     Analyzer = AnalyzerTibetan()
     Analyzer.create_analyzer(db)
@@ -149,6 +158,7 @@ def create_analyzers(db: StandardDatabase):
     Analyzer = AnalyzerPali()
     Analyzer.create_analyzer(db)
 
+
 def create_search_views(db: StandardDatabase):
     print(f"\nCreating Sanskrit search views...")
     db.create_arangosearch_view(
@@ -158,7 +168,7 @@ def create_search_views(db: StandardDatabase):
     db.create_arangosearch_view(
         name=VIEW_SEARCH_INDEX_PLI, properties=PROPERTIES_SEARCH_INDEX_PLI
     )
-    
+
     print(f"\nCreating Tibetan search views...")
     db.create_arangosearch_view(
         name=VIEW_SEARCH_INDEX_TIB, properties=PROPERTIES_SEARCH_INDEX_TIB
@@ -167,13 +177,12 @@ def create_search_views(db: StandardDatabase):
         name=VIEW_SEARCH_INDEX_TIB_FUZZY,
         properties=PROPERTIES_SEARCH_INDEX_TIB_FUZZY,
     )
-    
+
     print(f"\nCreating Chinese search view...")
     db.create_arangosearch_view(
         name=VIEW_SEARCH_INDEX_CHN, properties=PROPERTIES_SEARCH_INDEX_CHN
     )
-    
-    
+
 
 def clean_analyzers(db: StandardDatabase):
     for analyzer in ANALYZER_NAMES:

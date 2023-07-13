@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Query, HTTPException, Depends
 from ..db_connection import get_db
 from ..utils import (
-    get_language_from_filename, 
-    get_sort_key, 
-    collect_segment_results, 
+    get_language_from_filename,
+    get_sort_key,
+    collect_segment_results,
     create_numbers_view_data,
     get_folio_regex,
     create_cleaned_limit_collection
@@ -52,7 +52,7 @@ async def get_numbers_view(
     sort_method: str = "parallels_sorted_by_src_pos",
     folio: str = "",
 ):
-    """ 
+    """
     Endpoint for numbers view. Input parameters are the same as for table view.
     """
 
@@ -78,7 +78,8 @@ async def get_numbers_view(
             query_result.result, get_folio_regex(language, filename, folio)
         )
     )
-    collections = execute_query(menu_queries.QUERY_COLLECTION_NAMES,
+    collections = execute_query(
+        menu_queries.QUERY_COLLECTION_NAMES,
         bind_vars={
             "collections": collection_keys,
             "language": language,
@@ -87,4 +88,4 @@ async def get_numbers_view(
     return {
         "collections": collections,
         "segments": segments_result,
-        }
+    }

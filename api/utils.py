@@ -53,7 +53,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
     new_limit_collection
     """
     new_limit_collection = []
-    for file in limit_collection:        
+    for file in limit_collection:
         if re.search("([a-z]+_[A-Z][a-z]+[a-z1-2EL-]+$)|tib_NyKM", file):
             query = get_db().AQLQuery(
                 query=menu_queries.QUERY_ONE_COLLECTION,
@@ -63,10 +63,12 @@ def create_cleaned_limit_collection(limit_collection) -> List:
             for item in query.result:
                     new_limit_collection.append(item)
         else:
-            if "tib_NyGB" in file: # this is a collection-specific hack and things like this should never be done 
+            if (
+                "tib_NyGB" in file
+            ):  # this is a collection-specific hack and things like this should never be done
                 new_limit_collection.append("NG")
             else:
-                new_limit_collection.append(file)    
+                new_limit_collection.append(file)
     return new_limit_collection
 
 

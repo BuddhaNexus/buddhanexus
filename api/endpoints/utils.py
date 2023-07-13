@@ -22,7 +22,8 @@ async def get_counts_for_file(
     limitcollection_positive = create_cleaned_limit_collection(limits.collection_positive + limits.file_positive)
     limitcollection_negative = create_cleaned_limit_collection(limits.collection_negative + limits.file_negative)
 
-    query_graph_result = execute_query(main_queries.QUERY_COUNT_MATCHES,
+    query_graph_result = execute_query(
+        main_queries.QUERY_COUNT_MATCHES,
         bind_vars={
             "filename": file_name,
             "score": score,
@@ -33,17 +34,20 @@ async def get_counts_for_file(
     )
     return {"parallel_count": query_graph_result.result[0]}
 
+
 @router.get("/folios/")
 async def get_folios_for_file(file_name: str):
     """
     Returns number of folios (TIB) / facsimiles (CHN) /
     suttas/PTS nrs/segments (PLI) / segments (SKT)
     """
-    query_graph_result = execute_query(main_queries.QUERY_FOLIOS,
+    query_graph_result = execute_query(
+        main_queries.QUERY_FOLIOS,
         bind_vars={"filename": file_name},
     )
     folios = query_graph_result.result[0]
     return {"folios": folios}
+
 
 @router.get("/sanskrittagger/")
 async def tag_sanskrit(sanskrit_string: str):
@@ -54,13 +58,15 @@ async def tag_sanskrit(sanskrit_string: str):
     result = search_utils.tag_sanskrit(sanskrit_string).replace("\n", " # ")
     return {"tagged": result}
 
+
 @router.get("/available-languages/")
 async def get_multilingual(filename: str):
     """
     Returns a list of the available languages of matches for the given file.
     """
     query_result = {"langList": []}
-    query_displayname = execute_query(main_queries.QUERY_MULTILINGUAL_LANGS,
+    query_displayname = execute_query(
+        main_queries.QUERY_MULTILINGUAL_LANGS,
         bind_vars={"filename": filename},
         raw_results=True,
     )

@@ -11,7 +11,7 @@ router = APIRouter()
 
 @router.get("/search/")
 async def get_search_results(
-    search_string: str,  
+    search_string: str, 
     limits: Limits = Depends(),
 ):
     """
@@ -41,7 +41,7 @@ async def get_search_results(
     )
     query_result = query_search.result[0]
     result = search_utils.postprocess_results(
-        search_strings, 
+        search_strings,
         query_result,
     )
     return {"searchResults": result}

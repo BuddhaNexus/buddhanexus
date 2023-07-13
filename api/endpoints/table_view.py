@@ -17,6 +17,7 @@ from ..models_api import Limits
 
 router = APIRouter()
 
+
 @router.get("/table")
 async def get_table_view(
     file_name: str,
@@ -47,6 +48,7 @@ async def get_table_view(
             }
         )
     return calculate_color_maps_table_view(query_result.result)
+
 
 @router.get("/download")
 async def get_table_download(
@@ -91,21 +93,22 @@ async def get_table_download(
                 folio,
                 language,
             ],
-        )        
-    
+        )
+
     segment_collection_results = collect_segment_results(
         create_numbers_view_data(
             query_result.result, get_folio_regex(language, file_name, folio)
         )
     )
 
-    collections_result = execute_query(menu_queries.QUERY_COLLECTION_NAMES,
+    collections_result = execute_query(
+        menu_queries.QUERY_COLLECTION_NAMES,
         bind_vars={
             "collections": segment_collection_results[1],
             "language": language,
-        }
+        },
     ).result[0]
-    
+
     return run_numbers_download(
         collections_result,
         segment_collection_results[0],
@@ -120,6 +123,7 @@ async def get_table_download(
         ],
     )
 
+
 @router.get("/multilang")
 async def get_multilang(
     file_name: str,
@@ -132,13 +136,14 @@ async def get_multilang(
     Endpoint for the multilingual table view. Accepts Parallel languages
     :return: List of segments and parallels for the table view.
     """
-    query_result = execute_query(main_queries.QUERY_MULTILINGUAL,
+    query_result = execute_query(
+        main_queries.QUERY_MULTILINGUAL,
         bind_vars={
             "filename": file_name,
             "multi_lingual": multi_lingual,
             "page": page,
             "score": score,
             "folio": folio,
-        }
+        },
     )
     return query_result.result

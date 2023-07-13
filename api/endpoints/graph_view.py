@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Query
-from .endpoint_utils  import execute_query
+from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
 from ..utils import get_language_from_filename
 from typing import List
-import re 
+import re
 
 router = APIRouter()
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
+
 
 @router.get("/graph-view/")
 # pylint: disable=too-many-locals
@@ -21,15 +22,16 @@ async def get_graph_for_file(
     Endpoint for graph view
     """
 
-    query_graph_result = execute_query(main_queries.QUERY_GRAPH_VIEW,
+    query_graph_result = execute_query(
+        main_queries.QUERY_GRAPH_VIEW,
         bind_vars={
             "filename": file_name,
             "score": score,
             "parlength": par_length,
             "targetcollection": target_collection,
-        }
+        },
     )
-    
+
     collection_keys = []
     total_collection_dict = {}
     total_histogram_dict = {}
@@ -57,11 +59,12 @@ async def get_graph_for_file(
             collection_keys.append(collection)
 
     # find the proper full names vor each collection
-    collections = execute_query(menu_queries.QUERY_COLLECTION_NAMES,
+    collections = execute_query(
+        menu_queries.QUERY_COLLECTION_NAMES,
         bind_vars={
             "collections": collection_keys,
             "language": get_language_from_filename(file_name),
-        }
+        },
     )
     collections_with_full_name = {}
     for collection_result in collections.result[0]:
@@ -78,7 +81,8 @@ async def get_graph_for_file(
     histogram_data = []
     for name, count in total_histogram_dict.items():
         displayname = name
-        query_displayname = execute_query(main_queries.QUERY_DISPLAYNAME,
+        query_displayname = execute_query(
+            main_queries.QUERY_DISPLAYNAME,
             bind_vars={"filename": name},
             raw_results=True,
         )

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Query
-from .endpoint_utils  import execute_query
+from .endpoint_utils import execute_query
 from ..queries import main_queries
 from typing import List
-import re 
+import re
 
 router = APIRouter()
 

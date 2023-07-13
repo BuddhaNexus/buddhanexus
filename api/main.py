@@ -4,11 +4,21 @@ This file contains all FastAPI endpoints for Buddhanexus.
 
 import os
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 
-from .endpoints import search, table_view, text_view, numbers_view, graph_view, visual_view, menus, utils, links
+from .endpoints import (
+    search,
+    table_view,
+    text_view,
+    numbers_view,
+    graph_view,
+    visual_view,
+    menus,
+    utils,
+    links,
+)
 
 API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
 
@@ -27,6 +37,7 @@ APP.include_router(numbers_view.router, prefix="/numbers-view")
 APP.include_router(links.router, prefix="/links")
 APP.include_router(utils.router, prefix="/utils")
 APP.include_router(menus.router, prefix="/menus")
+
 
 @APP.get("/")
 def root() -> object:
