@@ -25,7 +25,7 @@ async def get_parallels_for_middle(input: MiddleInput):
     return calculate_color_maps_middle_view(query_result.result[0])
 
 
-@router.get("/text-parallels/")
+@router.post("/text-parallels/")
 async def get_file_text_segments_and_parallels(input: TextParallelsInput):
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.

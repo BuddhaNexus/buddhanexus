@@ -1,14 +1,15 @@
 from pydantic import BaseModel
+from fastapi import Query
 
 class Limits(BaseModel):
     """
     Limits for parallels
     """
 
-    limit_collection_positive: list
-    limit_collection_negative: list
-    limit_file_positive: list
-    limit_file_negative: list
+    limit_collection_positive: list = []
+    limit_collection_negative: list = []
+    limit_file_positive: list = []
+    limit_file_negative: list = []
     
 class GeneralInput(BaseModel):
     filename: str
@@ -29,13 +30,6 @@ class MultiLangInput(BaseModel):
 class SearchInput(BaseModel):
     search_string: str
     limits: Limits
-
-class MenuInput(BaseModel):
-    language: str
-
-class LinksInput(BaseModel):    
-    file_name: str = ""
-    segmentnr: str = ""
 
 class GraphInput(BaseModel):
     file_name: str = ""    
@@ -59,13 +53,3 @@ class CountMatchesInput(BaseModel):
     score = 0
     par_length = 0
     limits: Limits
-
-class FoliosInput(BaseModel):
-    file_name: str = ""
-    folio: str = ""
-
-class TaggerInput(BaseModel):
-    sanskrit_string: str 
-
-class AvailableLanguesInput(BaseModel):
-    filename: str

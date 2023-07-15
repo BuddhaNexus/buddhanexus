@@ -1,9 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from .endpoint_utils  import execute_query
 from ..queries import main_queries
 from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
-from .models.shared import CountMatchesInput, FoliosInput, TaggerInput, AvailableLanguesInput
+from .models.shared import CountMatchesInput
 
 router = APIRouter()
 
@@ -31,38 +31,39 @@ async def get_counts_for_file(input: CountMatchesInput):
 
 
 @router.get("/folios/")
-async def get_folios_for_file(input: FoliosInput):
+async def get_folios_for_file(file_name: str = Query(..., description="File name of the text for which folios should be fetched."),
+                              ):
     """
     Returns number of folios (TIB) / facsimiles (CHN) /
     suttas/PTS nrs/segments (PLI) / segments (SKT)
     """
     query_graph_result = execute_query(
         main_queries.QUERY_FOLIOS,
-        bind_vars={"filename": input.file_name},
+        bind_vars={"filename": file_name},
     )
     folios = query_graph_result.result[0]
     return {"folios": folios}
 
 
 @router.get("/sanskrittagger/")
-async def tag_sanskrit(input: TaggerInput):
+async def tag_sanskrit(sanskrit_string: str = Query(..., description="Sanskrit string to be tagged.")):
     """
     Stemming + Tagging for Sanskrit
     :return: String with tagged Sanskrit
     """
-    result = search_utils.tag_sanskrit(input.sanskrit_string).replace("\n", " # ")
+    result = search_utils.tag_sanskrit(sanskrit_string).replace("\n", " # ")
     return {"tagged": result}
 
 
 @router.get("/available-languages/")
-async def get_multilingual(input: AvailableLanguesInput):
+async def get_multilingual(filename: str = Query(..., description="File name of the text for which the available languages should be fetched.")):
     """
     Returns a list of the available languages of matches for the given file.
     """
     query_result = {"langList": []}
     query_displayname = execute_query(
         main_queries.QUERY_MULTILINGUAL_LANGS,
-        bind_vars={"filename": input.filename},
+        bind_vars={"filename": filename},
         raw_results=True,
     )
     query_result = {"langList": query_displayname.result[0]}
