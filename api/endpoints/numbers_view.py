@@ -39,7 +39,7 @@ def create_numbers_view_data(table_results, folio_regex):
     return result
 
 
-@router.get("/numbers", response_model=NumbersViewOutput)
+@router.post("/numbers", response_model=NumbersViewOutput)
 async def get_numbers_view(input: GeneralInput):
     """
     Endpoint for numbers view. Input parameters are the same as for table view.

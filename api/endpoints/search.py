@@ -9,7 +9,7 @@ from .endpoint_utils import execute_query
 router = APIRouter()
 
 
-@router.get("/search/")
+@router.post("/search/")
 async def get_search_results(input: SearchInput):
     """
     Returns search results for given search string.

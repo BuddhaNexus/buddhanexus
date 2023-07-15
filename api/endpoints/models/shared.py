@@ -20,6 +20,15 @@ class GeneralInput(BaseModel):
     sort_method: str = "parallels_sorted_by_src_pos"
     folio: str = ""
 
+class TableDownloadInput(BaseModel):
+    filename: str
+    score: int = 0
+    par_length: int = 0
+    limits: Limits
+    sort_method: str = "parallels_sorted_by_src_pos"
+    folio: str = ""
+    download_data: str = "table"
+
 class MultiLangInput(BaseModel):
     filename: str
     score: int = 0

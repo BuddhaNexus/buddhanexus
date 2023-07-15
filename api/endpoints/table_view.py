@@ -16,7 +16,7 @@ from .numbers_view import create_numbers_view_data
 router = APIRouter()
 
 
-@router.get("/table")
+@router.post("/table")
 async def get_table_view(input: GeneralInput
 ):
     """
@@ -41,7 +41,7 @@ async def get_table_view(input: GeneralInput
     return calculate_color_maps_table_view(query_result.result)
 
 
-@router.get("/download")
+@router.post("/download")
 async def get_table_download(input: GeneralInput):
     """
     Endpoint for the download table. Accepts filters.
@@ -107,7 +107,7 @@ async def get_table_download(input: GeneralInput):
     )
 
 
-@router.get("/multilang")
+@router.post("/multilang")
 async def get_multilang(input: MultiLangInput):
     """
     Endpoint for the multilingual table view. Accepts Parallel languages

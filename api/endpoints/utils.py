@@ -8,7 +8,7 @@ from .models.shared import CountMatchesInput
 router = APIRouter()
 
 
-@router.get("/count-matches/")
+@router.post("/count-matches/")
 async def get_counts_for_file(input: CountMatchesInput):
     
     """
