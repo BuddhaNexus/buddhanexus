@@ -9,7 +9,7 @@ export async function getNumbersData({
   queryParams,
 }: FilePropApiQuery): Promise<ApiNumbersPageData> {
   const res = await fetch(
-    `${API_ROOT_URL}/files/${fileName}/segments?co_occ=30&${queryString.stringify(
+    `${API_ROOT_URL}/files/${fileName}/segments?${queryString.stringify(
       queryParams
     )}`
   );
