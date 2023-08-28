@@ -6,10 +6,10 @@ class Limits(BaseModel):
     Limits for parallels
     """
 
-    limit_collection_positive: list = []
-    limit_collection_negative: list = []
-    limit_file_positive: list = []
-    limit_file_negative: list = []
+    collection_positive: list = []
+    collection_negative: list = []
+    file_positive: list = []
+    file_negative: list = []
     
 class GeneralInput(BaseModel):
     filename: str
