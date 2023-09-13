@@ -10,7 +10,6 @@ from ..utils import (
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
 from .models.shared import GeneralInput
-from .models.numbers_view import NumbersViewOutput
 router = APIRouter()
 
 
@@ -39,7 +38,7 @@ def create_numbers_view_data(table_results, folio_regex):
     return result
 
 
-@router.post("/numbers", response_model=NumbersViewOutput)
+@router.post("/numbers")
 async def get_numbers_view(input: GeneralInput):
     """
     Endpoint for numbers view. Input parameters are the same as for table view.
@@ -48,11 +47,11 @@ async def get_numbers_view(input: GeneralInput):
     limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive)
     limitcollection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)
 
-    language = get_language_from_filename(input.filename)
+    language = get_language_from_filename(input.file_name)
 
     query_result = execute_query(main_queries.QUERY_TABLE_VIEW,                            
             bind_vars={
-                "filename": input.filename,
+                "filename": input.file_name,
                 "score": input.score,
                 "parlength": input.par_length,
                 "sortkey": get_sort_key(input.sort_method),
@@ -64,7 +63,7 @@ async def get_numbers_view(input: GeneralInput):
         )
     segments_result, collection_keys = collect_segment_results(
         create_numbers_view_data(
-            query_result.result, get_folio_regex(language, input.filename, input.folio)
+            query_result.result, get_folio_regex(language, input.file_name, input.folio)
         )
     )
     collections = execute_query(
@@ -73,9 +72,9 @@ async def get_numbers_view(input: GeneralInput):
             "collections": collection_keys,
             "language": language,
         }).result
-
-    return NumbersViewOutput(
-        segments=segments_result,
-        collections=collections
-    )
+    
+    return {
+        "segments": segments_result,
+        "collections": collections
+    }
 
