@@ -12,25 +12,25 @@ class Limits(BaseModel):
     file_negative: list = []
     
 class GeneralInput(BaseModel):
-    filename: str
+    file_name: str
     score: int = 0
     par_length: int = 0
     limits: Limits
     page: int = 0
-    sort_method: str = "parallels_sorted_by_src_pos"
+    sort_method: str = "position"
     folio: str = ""
 
 class TableDownloadInput(BaseModel):
-    filename: str
+    file_name: str
     score: int = 0
     par_length: int = 0
     limits: Limits
-    sort_method: str = "parallels_sorted_by_src_pos"
+    sort_method: str = "position"
     folio: str = ""
     download_data: str = "table"
 
 class MultiLangInput(BaseModel):
-    filename: str
+    file_name: str
     score: int = 0
     multi_lingual: list = []
     page: int = 0
