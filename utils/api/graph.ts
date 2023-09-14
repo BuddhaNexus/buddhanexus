@@ -9,7 +9,7 @@ export async function getGraphData({
   queryParams,
 }: FilePropApiQuery): Promise<ApiGraphPageData> {
   const res = await fetch(
-    `${API_ROOT_URL}/graph-view/?file_name=${fileName}&co_occ=30&${queryString.stringify(
+    `${API_ROOT_URL}/graph-view/?file_name=${fileName}&${queryString.stringify(
       queryParams
     )}`
   );

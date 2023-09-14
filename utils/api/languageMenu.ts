@@ -11,12 +11,14 @@ export async function getLanguageMenuData(
   const response = await res.json();
 
   // TODO: Add pagination on BE
-  return response.results.map((menuItem: ApiLanguageMenuData) => ({
-    label: menuItem.search_field,
-    id: menuItem.filename,
-    name: menuItem.displayName,
-    fileName: menuItem.filename,
-    textName: menuItem.textname,
-    category: menuItem.category,
-  }));
+  return (
+    response?.results?.map((menuItem: ApiLanguageMenuData) => ({
+      label: menuItem.search_field,
+      id: menuItem.filename,
+      name: menuItem.displayName,
+      fileName: menuItem.filename,
+      textName: menuItem.textname,
+      category: menuItem.category,
+    })) ?? []
+  );
 }
