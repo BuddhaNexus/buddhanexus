@@ -18,7 +18,7 @@ async def get_search_results(input: SearchInput):
     limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive)
     limit_collection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)
     result = []
-    search_string = search_string.lower()
+    search_string = input.search_string.lower()
     search_strings = search_utils.preprocess_search_string(search_string[:300])
 
     query_search = execute_query(search_queries.QUERY_SEARCH,
@@ -30,9 +30,7 @@ async def get_search_results(input: SearchInput):
             "search_string_skt_fuzzy": search_strings["skt_fuzzy"],
             "limitcollection_positive": limitcollection_positive,
             "limitcollection_negative": limit_collection_negative,
-        },
-        batchSize=300,
-        rawResults=True,
+        }
     )
     query_result = query_search.result[0]
     result = search_utils.postprocess_results(
