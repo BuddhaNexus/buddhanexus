@@ -1,11 +1,11 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
 import type { SourceLanguage } from "utils/constants";
 
-import type { settingsList } from "./composits";
 import type {
   DbPageFilterEnum,
   LocalDisplayOptionEnum,
   QueriedDisplayOptionEnum,
+  settingsList,
   UtilityOptionEnum,
 } from "./settings";
 
@@ -31,11 +31,20 @@ export type SettingOmissions<K extends string, T = SettingContext> = Partial<
 
 export type MenuOmission = SettingOmissions<MenuSetting>;
 
-type ExtractValues<T> = {
-  [K in keyof T]: T[K];
-}[keyof T];
+/**
+ * This maps over all keys in ObjectType (`[Key in keyof ObjectType]`), extracting the type of each value (`ObjectType[Key]`), and then uses `[keyof ObjectType]` to create a union type of all these value types.
+ *
+ * For example, if `ObjectType` is `{ a: number, b: string, c: boolean }`, the resulting union type would be `number | string | boolean`.
+ *
+ * Here, `QueryParamKeys` uses the string litral types aligned with available API query params set in `settingsList.queryParams`.
+ */
+type CreateUnionFromObjectValueTypes<ObjectType> = {
+  [Key in keyof ObjectType]: ObjectType[Key];
+}[keyof ObjectType];
 
-type QueryParamsKeys = ExtractValues<typeof settingsList.queryParams>;
+type QueryParamKeys = CreateUnionFromObjectValueTypes<
+  typeof settingsList.queryParams
+>;
 
 type QueryNumberParam = "par_length" | "score";
 type QueryStringParam =
@@ -53,17 +62,34 @@ type QueryStringArrayParam =
 type SortMethodType = "sort_method";
 type SortMethod = "length2" | "position" | "quoted-text";
 
-type OptionalParams = QueryStringArrayParam | QueryStringParam | SortMethodType;
+type OptionalParams =
+  | "exclude_collection"
+  | "exclude_text"
+  | "folio"
+  | "include_collection"
+  | "include_text"
+  | "language"
+  | "multi_lingual"
+  | "search_string"
+  | "sort_method"
+  | "target_collection";
 
+/**
+ * `QueryParams` defineds all query params available in the API and the types they can take (and whether or not they can be left undefined, or must have a value set).
+ *
+ * The nested ternary checking if the object key is in `QueryStringParam`, `QueryNumberParam`, `SortMethodType` or `QueryStringArrayParam` is unreasonably complex, but this is a common pattern in TS when you want to map different keys to different types.
+ *
+ * TS is perfectly bonkers; in the condition check context, `extends` means "is in".
+ */
 export type QueryParams = {
-  [K in QueryParamsKeys]: K extends QueryStringParam
-    ? string | (K extends OptionalParams ? undefined : never)
-    : K extends QueryNumberParam
+  [Key in QueryParamKeys]: Key extends QueryStringParam
+    ? string | (Key extends OptionalParams ? undefined : never)
+    : Key extends QueryNumberParam
     ? number
-    : K extends SortMethodType
-    ? SortMethod | (K extends OptionalParams ? undefined : never)
-    : K extends QueryStringArrayParam
-    ? string[] | (K extends OptionalParams ? undefined : never)
+    : Key extends SortMethodType
+    ? SortMethod | (Key extends OptionalParams ? undefined : never)
+    : Key extends QueryStringArrayParam
+    ? string[] | (Key extends OptionalParams ? undefined : never)
     : never;
 };
 

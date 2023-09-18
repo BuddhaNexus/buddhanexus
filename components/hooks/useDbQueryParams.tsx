@@ -11,7 +11,7 @@ import {
 import {
   settingEnums,
   settingsList,
-} from "features/sidebarSuite/config/composits";
+} from "features/sidebarSuite/config/settings";
 import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {

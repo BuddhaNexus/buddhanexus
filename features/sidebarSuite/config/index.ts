@@ -1,13 +1,13 @@
 import { DbViewEnum } from "@components/hooks/useDbView";
 import { SourceLanguage } from "utils/constants";
 
-import { settingsList } from "./composits";
 import type {
   DbPageFilterEnum,
   LocalDisplayOptionEnum,
   QueriedDisplayOptionEnum,
   UtilityOptionEnum,
 } from "./settings";
+import { settingsList } from "./settings";
 import type { DisplayOption, QueryParams, SettingOmissions } from "./types";
 
 const { queryParams, local, remote } = settingsList;
