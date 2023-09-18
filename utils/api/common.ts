@@ -1,8 +1,16 @@
 // TODO: transform this data to have a better structure
 import queryString from "query-string";
 import type { FilePropApiQuery } from "types/api/common";
-
+import createClient from "openapi-fetch";
+import { paths } from "codegen/api/v2";
 import { API_ROOT_URL } from "./constants";
+
+const { GET, POST } = createClient<paths>({ baseUrl: API_ROOT_URL });
+
+export const client = {
+  GET,
+  POST,
+};
 
 export async function getParallelCount({
   fileName,
