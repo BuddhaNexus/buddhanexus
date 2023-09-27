@@ -59,7 +59,7 @@ async def get_data_for_sidebar_menu(language: str = Query(..., description="lang
     Endpoint for sidebar menu
     """
 
-    if input.language == "multi":
+    if language == "multi":
         menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
         current_bind_vars = {}
     else:
