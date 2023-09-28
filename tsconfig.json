@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["components/*"],
-      "@public/*": ["public/*"]
+      "@public/*": ["public/*"],
+      "@api": ["utils/api/client.ts"]
     },
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],

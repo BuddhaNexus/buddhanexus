@@ -16,6 +16,18 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
+## API type code generation & API Client
+
+The project uses `[openapi-typescript](https://openapi-ts.pages.dev/introduction)` and `[openapi-fetch](https://openapi-ts.pages.dev/openapi-fetch/)` to interface between the backend.
+
+Types are generated from the API project's [OpenAPI docs page](https://buddhanexus2.kc-tbts.uni-hamburg.de/api/docs#/) by running:
+
+```
+npx openapi-typescript https://buddhanexus2.kc-tbts.uni-hamburg.de/openapi.json -o codegen/api/v2.d.ts
+```
+
+`openapi-fetch`'s api client (instantiated in `utils/api/client.ts`) can then be used to fetch typed data ([see docs](https://openapi-ts.pages.dev/openapi-fetch/)).
+
 ## MDX page i18n (Draft)
 
 Static pages built from mdx files are held in `/content/`. Each page has a dedicated directory containing localized mdx files for supported locals:
@@ -83,7 +95,7 @@ These can be used in mdx files, by declaring them through the optional `componen
 
 It might be worth sanity checking this implementation. Heed the wisdom of the [readme](https://github.com/hashicorp/next-mdx-remote)!
 
-## Learn More Next.js
+## Learn More about Next.js
 
 To learn more about Next.js, take a look at the following resources:
 

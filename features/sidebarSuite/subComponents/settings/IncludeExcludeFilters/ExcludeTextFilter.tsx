@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useTextLists } from "@components/hooks/useTextLists";
+import { useDbMenus } from "@components/hooks/useDbMenus";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
 import { ArrayParam, useQueryParam } from "use-query-params";
 import type { TextMenuItem } from "utils/api/textLists";
@@ -12,7 +12,7 @@ const ExcludeTextFilter = () => {
   const { t } = useTranslation("settings");
   const { defaultParamConfig, settingsList } = useDbQueryParams();
 
-  const { texts, isLoadingTexts } = useTextLists();
+  const { texts, isLoadingTexts } = useDbMenus();
 
   const [excludeTextParam, setExcludeTextParam] = useQueryParam(
     settingsList.queryParams.excludeText,

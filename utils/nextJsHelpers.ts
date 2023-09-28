@@ -2,7 +2,7 @@ import type { GetStaticPaths } from "next";
 import type { UserConfig } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { getLanguageMenuData } from "./api/languageMenu";
+import { getSourceTextMenuData } from "./api/menus";
 import { ALL_LOCALES, SOURCE_LANGUAGES, SourceLanguage } from "./constants";
 
 interface I18nProps {
@@ -47,15 +47,15 @@ export const getSourceLanguageStaticPaths: GetStaticPaths = () => ({
 });
 
 export const getDbViewFileStaticPaths: GetStaticPaths = async () => {
-  const pliMenuData = await getLanguageMenuData(SourceLanguage.PALI);
+  const pliMenuData = await getSourceTextMenuData(SourceLanguage.PALI);
   const paliFilenames = pliMenuData.map((menuData) => menuData.fileName);
-  const chineseMenuData = await getLanguageMenuData(SourceLanguage.CHINESE);
+  const chineseMenuData = await getSourceTextMenuData(SourceLanguage.CHINESE);
   const chineseFilenames = chineseMenuData.map((menuData) => menuData.fileName);
-  const sanskritMenuData = await getLanguageMenuData(SourceLanguage.SANSKRIT);
+  const sanskritMenuData = await getSourceTextMenuData(SourceLanguage.SANSKRIT);
   const sanskritFilenames = sanskritMenuData.map(
     (menuData) => menuData.fileName
   );
-  const tibetanMenuData = await getLanguageMenuData(SourceLanguage.TIBETAN);
+  const tibetanMenuData = await getSourceTextMenuData(SourceLanguage.TIBETAN);
   const tibetanFilenames = tibetanMenuData.map((menuData) => menuData.fileName);
 
   const allFilenames = [

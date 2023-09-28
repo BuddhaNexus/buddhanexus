@@ -1,4 +1,4 @@
-import { API_ROOT_URL } from "./constants";
+import apiClient from "@api";
 
 interface ApiExternalLinkData {
   bdrc: string | false;
@@ -13,11 +13,12 @@ interface ApiExternalLinkData {
 
 export async function getExternalLinksData(
   fileName: string
+  // TODO: - add segmentnr prop
 ): Promise<ApiExternalLinkData> {
-  const res = await fetch(
-    `${API_ROOT_URL}/links/external/?file_name=${fileName}`
-  );
-  const response = await res.json();
+  const { data } = await apiClient.GET("/links/external/", {
+    params: { query: { file_name: fileName, segmentnr: "dn3:0.2_0" } },
+  });
 
-  return response;
+  // TODO: - remove type casting once response model is added to api
+  return (data as ApiExternalLinkData) ?? {};
 }

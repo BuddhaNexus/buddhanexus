@@ -1,8 +1,6 @@
-import queryString from "query-string";
 import type { InfiniteFilePropApiQuery, PagedResponse } from "types/api/common";
 import type { ApiTablePageData, TablePageData } from "types/api/table";
-import { client } from "./common";
-import { API_ROOT_URL } from "./constants";
+import apiClient from "@api";
 
 function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   return apiData.map((p) => ({
@@ -40,8 +38,9 @@ export async function getTableData({
   queryParams,
   pageNumber,
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
-  const { data, error } = await client.POST("/table-view/table", {
+  const { data } = await apiClient.POST("/table-view/table", {
     body: { file_name: fileName, ...queryParams, limits: {}, page: pageNumber },
   });
+  // TODO: - remove type casting once response model is added to api
   return { data: parseAPITableData(data as ApiTablePageData), pageNumber };
 }

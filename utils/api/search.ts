@@ -1,10 +1,11 @@
 import type { InfiniteSerachApiQuery, PagedResponse } from "types/api/common";
+import apiClient from "@api";
 
 export type SearchResult = {
   id: string;
   segmentNumbers: string[];
   matchString: string;
-  filename: string;
+  fileName: string;
   matchOffsetStart: number;
   matchOffsetEnd: number;
   matchCenteredness: number;
@@ -12,49 +13,47 @@ export type SearchResult = {
   multilangResults: string[];
 };
 
-export type SearchPageData = Map<string, SearchResult>;
+export type SearchPageResults = Map<string, SearchResult>;
+export type SearchPageData = { total: number; results: SearchPageResults };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function parseAPISearchData(apiData: any): SearchPageData {
-  const result = new Map<string, SearchResult>();
-  for (const r of apiData) {
+function parseAPISearchData(apiData: any): SearchPageResults {
+  const searchResults = new Map<string, SearchResult>();
+  for (const result of apiData) {
     const searchPageResult: SearchResult = {
-      id: r._key,
-      segmentNumbers: r.segment_nr,
-      matchString: r.search_string_precise,
-      filename: r.filename,
-      matchOffsetStart: r.offset_beg,
-      matchOffsetEnd: r.offset_end,
-      matchCenteredness: r.centeredness,
-      matchDistance: r.distance,
-      multilangResults: r.multilang_results,
+      id: result._key,
+      segmentNumbers: result.segment_nr,
+      matchString: result.search_string_precise,
+      fileName: result.filename,
+      matchOffsetStart: result.offset_beg,
+      matchOffsetEnd: result.offset_end,
+      matchCenteredness: result.centeredness,
+      matchDistance: result.distance,
+      multilangResults: result.multilang_results,
     };
-    result.set(searchPageResult.id, searchPageResult);
+    searchResults.set(searchPageResult.id, searchPageResult);
   }
-  return result;
-}
-
-type DumbyData = Record<string, string>[];
-
-function simulateFetch(dummyData: DumbyData): Promise<DumbyData> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(dummyData);
-    }, 1000);
-  });
+  return searchResults;
 }
 
 export async function getGlobalSearchData({
   searchTerm,
   pageNumber,
-}: InfiniteSerachApiQuery): Promise<PagedResponse<DumbyData>> {
-  const dummyData: DumbyData = [{ id: "1", thing: "TODO" }];
+}: InfiniteSerachApiQuery): Promise<PagedResponse<SearchPageData>> {
+  // IN DEVELOPMENT
+  // TODO: Add pagination on BE
+  //  - remove type casting once response model is added to api
+  //  - review parsed prop nams.
 
-  if (!searchTerm) {
-    return { data: [], pageNumber };
-  }
+  const { data } = await apiClient.POST("/search/", {
+    body: { search_string: searchTerm, limits: {} },
+  });
 
-  const data = await simulateFetch(dummyData);
+  const castData = data as { searchResults: any[] };
+  const parsedData = parseAPISearchData(castData.searchResults);
 
-  return { data, pageNumber };
+  return {
+    data: { total: castData.searchResults.length, results: parsedData },
+    pageNumber,
+  };
 }

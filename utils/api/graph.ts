@@ -1,17 +1,14 @@
 // graph view
-import queryString from "query-string";
+import apiClient from "@api";
 import type { ApiGraphPageData, FilePropApiQuery } from "types/api/common";
-
-import { API_ROOT_URL } from "./constants";
 
 export async function getGraphData({
   fileName,
   queryParams,
 }: FilePropApiQuery): Promise<ApiGraphPageData> {
-  const res = await fetch(
-    `${API_ROOT_URL}/graph-view/?file_name=${fileName}&${queryString.stringify(
-      queryParams
-    )}`
-  );
-  return await res.json();
+  const { data } = await apiClient.POST("/graph-view/", {
+    body: { file_name: fileName, ...queryParams },
+  });
+  // TODO: - remove type casting once response model is added to api
+  return data as ApiGraphPageData;
 }

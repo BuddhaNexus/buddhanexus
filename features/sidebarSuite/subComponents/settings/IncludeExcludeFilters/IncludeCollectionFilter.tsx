@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useTextLists } from "@components/hooks/useTextLists";
+import { useDbMenus } from "@components/hooks/useDbMenus";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
 import { ArrayParam, useQueryParam } from "use-query-params";
 import type { CategoryMenuItem } from "utils/api/textLists";
@@ -12,7 +12,7 @@ const IncludeCollectionFilter = () => {
   const { t } = useTranslation("settings");
   const { defaultParamConfig, settingsList } = useDbQueryParams();
 
-  const { categories, isLoadingCategories } = useTextLists();
+  const { categories, isLoadingCategories } = useDbMenus();
 
   const [includeCollectionParam, setIncludeCollectionParam] = useQueryParam(
     settingsList.queryParams.includeCollection,

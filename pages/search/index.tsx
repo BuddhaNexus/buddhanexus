@@ -22,6 +22,7 @@ import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function SearchPage() {
+  // IN DEVELOPMENT
   const { isReady } = useRouter();
 
   const { sourceLanguage, queryParams } = useDbQueryParams();
@@ -109,22 +110,29 @@ export default function SearchPage() {
         <>
           {data ? (
             <>
-              <Typography>{data?.pages[0].data.size} Results</Typography>
-              <Grid
-                rowSpacing={1}
-                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                container
-              >
-                <ul>
-                  {[...(data?.pages[0].data.values() ?? [])].map((item) => (
-                    <li key={item.id}>
-                      <Typography variant="h3" component="h2">
-                        {item.thing}
-                      </Typography>
-                    </li>
-                  ))}
-                </ul>
-              </Grid>
+              {data.pages.flatMap((page) => (
+                <>
+                  <Typography>{page.data.total} Results</Typography>
+                  <Grid
+                    rowSpacing={1}
+                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                    container
+                  >
+                    <ul>
+                      {[...(page.data.results.values() ?? [])].map((result) => (
+                        <li key={result.id}>
+                          <Typography variant="h3" component="h2">
+                            {result.id}
+                          </Typography>
+                          <Typography component="p">
+                            {result.fileName}
+                          </Typography>
+                        </li>
+                      ))}
+                    </ul>
+                  </Grid>
+                </>
+              ))}
             </>
           ) : (
             <>

@@ -38,3 +38,28 @@ export type SourceTextBrowserData = NavigationMenuData[];
 
 export type SourceTextBrowserDataTypes =
   | NavigationMenuCategoryData & NavigationMenuData & NavigationMenuFileData;
+
+export interface ApiLanguageMenuData {
+  // Text list menu for source language
+  displayName: string;
+  search_field: string;
+  textname: string;
+  filename: string;
+  category: string;
+  available_lang: null;
+}
+
+export interface DatabaseText {
+  id: string;
+  name: string;
+  fileName: string;
+  textName: string;
+  category: string;
+  searchMatter: string;
+  label: string;
+}
+
+export interface CategoryMenuItem {
+  id: string;
+  name: string;
+}
