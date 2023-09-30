@@ -1,5 +1,5 @@
-import type { InfiniteSerachApiQuery, PagedResponse } from "types/api/common";
 import apiClient from "@api";
+import type { InfiniteSerachApiQuery, PagedResponse } from "types/api/common";
 
 export type SearchResult = {
   id: string;

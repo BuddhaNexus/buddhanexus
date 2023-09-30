@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
   "/search/": {
     /**
@@ -167,48 +166,57 @@ export interface components {
        */
       file_name?: string;
       limits: components["schemas"]["Limits"];
+
       /**
        * Score
        * @default 0
        */
       score?: number;
+
       /**
        * Par Length
        * @default 0
        */
       par_length?: number;
     };
+
     /** GeneralInput */
     GeneralInput: {
       /** File Name */
       file_name: string;
+
       /**
        * Score
        * @default 0
        */
       score?: number;
+
       /**
        * Par Length
        * @default 0
        */
       par_length?: number;
       limits: components["schemas"]["Limits"];
+
       /**
        * Page
        * @default 0
        */
       page?: number;
+
       /**
        * Sort Method
        * @default position
        */
       sort_method?: string;
+
       /**
        * Folio
        * @default
        */
       folio?: string;
     };
+
     /** GraphInput */
     GraphInput: {
       /**
@@ -216,27 +224,32 @@ export interface components {
        * @default
        */
       file_name?: string;
+
       /**
        * Score
        * @default 0
        */
       score?: number;
+
       /**
        * Par Length
        * @default 0
        */
       par_length?: number;
+
       /**
        * Target Collection
        * @default []
        */
       target_collection?: unknown[];
     };
+
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
       detail?: components["schemas"]["ValidationError"][];
     };
+
     /**
      * Limits
      * @description Limits for parallels
@@ -247,58 +260,69 @@ export interface components {
        * @default []
        */
       collection_positive?: unknown[];
+
       /**
        * Collection Negative
        * @default []
        */
       collection_negative?: unknown[];
+
       /**
        * File Positive
        * @default []
        */
       file_positive?: unknown[];
+
       /**
        * File Negative
        * @default []
        */
       file_negative?: unknown[];
     };
+
     /** MiddleInput */
     MiddleInput: {
       /** Parallel Ids */
       parallel_ids: unknown[];
     };
+
     /** MultiLangInput */
     MultiLangInput: {
       /** File Name */
       file_name: string;
+
       /**
        * Score
        * @default 0
        */
       score?: number;
+
       /**
        * Multi Lingual
        * @default []
        */
       multi_lingual?: unknown[];
+
       /**
        * Page
        * @default 0
        */
       page?: number;
+
       /**
        * Folio
        * @default
        */
       folio?: string;
     };
+
     /** SearchInput */
     SearchInput: {
       /** Search String */
       search_string: string;
       limits: components["schemas"]["Limits"];
     };
+
     /** TextParallelsInput */
     TextParallelsInput: {
       /**
@@ -306,34 +330,41 @@ export interface components {
        * @default
        */
       file_name?: string;
+
       /**
        * Active Segment
        * @default none
        */
       active_segment?: string;
+
       /**
        * Score
        * @default 0
        */
       score?: number;
+
       /**
        * Par Length
        * @default 0
        */
       par_length?: number;
       limits: components["schemas"]["Limits"];
+
       /**
        * Multi Lingual
        * @default []
        */
       multi_lingual?: unknown[];
     };
+
     /** ValidationError */
     ValidationError: {
       /** Location */
       loc: string[];
+
       /** Message */
       msg: string;
+
       /** Error Type */
       type: string;
     };
@@ -350,7 +381,6 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-
   /**
    * Get Search Results
    * @description Returns search results for given search string.
@@ -369,6 +399,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -377,6 +408,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Graph For File
    * @description Endpoint for graph view
@@ -394,6 +426,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -402,6 +435,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Visual View For File
    * @description Endpoint for visual view
@@ -421,6 +455,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -429,6 +464,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Table View
    * @description Endpoint for the table view. Accepts filters.
@@ -447,6 +483,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -455,6 +492,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Table Download
    * @description Endpoint for the download table. Accepts filters.
@@ -473,6 +511,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -481,6 +520,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Multilang
    * @description Endpoint for the multilingual table view. Accepts Parallel languages
@@ -499,6 +539,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -507,6 +548,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Parallels For Middle
    * @description :return: List of parallels for text view (middle)
@@ -524,6 +566,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -532,6 +575,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get File Text Segments And Parallels
    * @description Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
@@ -549,6 +593,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -557,6 +602,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Numbers View
    * @description Endpoint for numbers view. Input parameters are the same as for table view.
@@ -574,6 +620,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -582,6 +629,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get External Links
    * @description Returns the external links for a given filename or segmentnr.
@@ -600,6 +648,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -608,6 +657,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Counts For File
    * @description Returns number of filtered parallels
@@ -625,6 +675,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -633,6 +684,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Folios For File
    * @description Returns number of folios (TIB) / facsimiles (CHN) /
@@ -652,6 +704,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -660,6 +713,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Tag Sanskrit
    * @description Stemming + Tagging for Sanskrit
@@ -679,6 +733,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -687,6 +742,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Multilingual
    * @description Returns a list of the available languages of matches for the given file.
@@ -705,6 +761,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -713,6 +770,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Files For Menu
    * @description Endpoint that returns list of file IDs in a given language or
@@ -732,6 +790,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -740,6 +799,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Files For Filter Menu
    * @description Given a language, return list of files for the category menu
@@ -758,6 +818,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -766,6 +827,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Categories For Filter Menu
    * @description Given a language, return list of categories for the filter menu
@@ -784,6 +846,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -792,6 +855,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get All Collections
    * @description Returns list of all available collections.
@@ -806,6 +870,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Get Data For Sidebar Menu
    * @description Endpoint for sidebar menu
@@ -824,6 +889,7 @@ export interface operations {
           "application/json": unknown;
         };
       };
+
       /** @description Validation Error */
       422: {
         content: {
@@ -832,6 +898,7 @@ export interface operations {
       };
     };
   };
+
   /**
    * Root
    * @description Root API endpoint

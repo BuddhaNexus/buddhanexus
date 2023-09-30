@@ -1,14 +1,13 @@
-import type { SourceLanguage } from "utils/constants";
-import { transformDataForTreeView } from "@components/treeView/utils";
 import apiClient from "@api";
-
+import { transformDataForTreeView } from "@components/treeView/utils";
 import type {
-  ApiSourceTextBrowserData,
-  SourceTextBrowserData,
   ApiLanguageMenuData,
-  DatabaseText,
+  ApiSourceTextBrowserData,
   CategoryMenuItem,
+  DatabaseText,
+  SourceTextBrowserData,
 } from "types/api/menus";
+import type { SourceLanguage } from "utils/constants";
 
 function parseSourceTextCollectionData(
   data: ApiSourceTextBrowserData

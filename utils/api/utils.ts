@@ -1,5 +1,5 @@
-import type { FilePropApiQuery } from "types/api/common";
 import apiClient from "@api";
+import type { FilePropApiQuery } from "types/api/common";
 
 // TODO: - remove type casting once response model is added to api
 

@@ -1,18 +1,18 @@
 import type { FilePropApiQuery, QueryParams } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
-import { getFolios, getParallelCount } from "./utils";
 import { getParallelDownloadData } from "./downloads";
-import { getExternalLinksData } from "./links";
 import { getGraphData } from "./graph";
+import { getExternalLinksData } from "./links";
 import {
+  getCategoryMenuData,
   getSourceTextCollections,
   getSourceTextMenuData,
-  getCategoryMenuData,
 } from "./menus";
 import { getNumbersData } from "./numbers";
 import { getGlobalSearchData } from "./search";
 import { getTableData } from "./table";
+import { getFolios, getParallelCount } from "./utils";
 
 export const DbApi = {
   //* VIEWS
