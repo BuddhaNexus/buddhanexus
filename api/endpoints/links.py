@@ -8,11 +8,11 @@ router = APIRouter()
 
 @router.get("/external/")
 async def get_external_links(file_name: str = Query(...), 
-                             segmentnr: str = Query(...)):
+                             segmentnr: str = Query(None)):
     """
     Returns the external links for a given filename or segmentnr.
     """    
-    if len(input.segmentnr) > 0:
+    if segmentnr is not None:
         file_name = segmentnr.split(":")[0]
     query_links = execute_query(
         main_queries.QUERY_LINK, bind_vars={"filename": file_name}, raw_results=True

@@ -10,7 +10,7 @@ from ..utils import (
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
 from ..table_download import run_table_download, run_numbers_download
-from .models.shared import GeneralInput, MultiLangInput
+from .models.shared import GeneralInput, MultiLangInput, TableDownloadInput
 from .numbers_view import create_numbers_view_data
 
 router = APIRouter()
@@ -44,7 +44,7 @@ async def get_table_view(input: GeneralInput
 
 
 @router.post("/download")
-async def get_table_download(input: GeneralInput):
+async def get_table_download(input: TableDownloadInput):
     """
     Endpoint for the download table. Accepts filters.
     :return: List of segments and parallels for the downloaded table view.
