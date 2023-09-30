@@ -43,7 +43,7 @@ export const FilterSettings = ({
     if (pageType === "search") {
       if (!currentLang || currentLang === "all") {
         return filterList.filter(
-          // This value is linked to the "include exclude" param case check below and is used to identify the whole block of filters
+          // This value is linked to the "include exclude" param switch statement case below and is used to identify the whole block of filters
           (value) => value !== uniqueSettings.queryParams.includeCollection
         );
       }
@@ -66,7 +66,6 @@ export const FilterSettings = ({
     currentView,
     settingsOmissionsConfig,
     settingRenderGroups,
-    // isSettingOmitted,
     uniqueSettings,
   ]);
 
