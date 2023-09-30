@@ -111,7 +111,7 @@ export default function SearchPage() {
           {data ? (
             <>
               {data.pages.flatMap((page) => (
-                <>
+                <React.Fragment key={page.pageNumber}>
                   <Typography>{page.data.total} Results</Typography>
                   <Grid
                     rowSpacing={1}
@@ -131,7 +131,7 @@ export default function SearchPage() {
                       ))}
                     </ul>
                   </Grid>
-                </>
+                </React.Fragment>
               ))}
             </>
           ) : (

@@ -22,15 +22,15 @@ export const DisplayOptionsSection = () => {
 
   const {
     sourceLanguage,
-    settingEnums,
-    settingsList,
+    settingRenderGroups,
+    uniqueSettings,
     settingsOmissionsConfig,
   } = useDbQueryParams();
 
   const options = useMemo(() => {
     return [
-      ...Object.values(settingEnums.QueriedDisplayOptionEnum),
-      ...Object.values(settingEnums.LocalDisplayOptionEnum),
+      ...Object.values(settingRenderGroups.queriedDisplayOption),
+      ...Object.values(settingRenderGroups.localDisplayOption),
     ].filter(
       (option) =>
         !isSettingOmitted({
@@ -40,7 +40,12 @@ export const DisplayOptionsSection = () => {
           view: currentView,
         })
     );
-  }, [sourceLanguage, currentView]);
+  }, [
+    settingRenderGroups,
+    settingsOmissionsConfig.displayOptions,
+    sourceLanguage,
+    currentView,
+  ]);
 
   if (options.length === 0) {
     return (
@@ -60,21 +65,21 @@ export const DisplayOptionsSection = () => {
         const key = `display-option-${option}`;
 
         switch (option) {
-          case settingsList.queryParams.folio: {
+          case uniqueSettings.queryParams.folio: {
             return <FolioOption key={key} />;
           }
-          case settingsList.queryParams.sortMethod: {
+          case uniqueSettings.queryParams.sortMethod: {
             return <SortOption key={key} />;
           }
-          case settingsList.queryParams.multiLingual: {
+          case uniqueSettings.queryParams.multiLingual: {
             return (
               <Fragment key={key}>{StandinSetting("multi_lingual")}</Fragment>
             );
           }
-          case settingsList.local.script: {
+          case uniqueSettings.local.script: {
             return <TextScriptOption key={key} />;
           }
-          case settingsList.local.showAndPositionSegmentNrs: {
+          case uniqueSettings.local.showAndPositionSegmentNrs: {
             return (
               <Fragment key={key}>
                 {StandinSetting("showAndPositionSegmentNrs")}

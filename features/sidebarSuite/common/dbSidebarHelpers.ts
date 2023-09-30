@@ -4,32 +4,31 @@ import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type {
   MenuOmission,
   MenuSetting,
-  UtilityOptionEnum,
+  UtilityOption,
 } from "features/sidebarSuite/config/types";
 import type { SourceLanguage } from "utils/constants";
 
 /**
- * Removes params NextJS adds to the `router.query` object for dynamic routing that are not used for api queries:
- * - "file"
- * - "language" (if current route is not `/search`).
+ * Next JS stores dynamic routes in the router object query prop which is also where api query params are pushed to. Dynamic route params need to be removed to avoid polluting result page urls and sending unaccepted params in api requests.
  *
  * @see {@link https://nextjs.org/docs/pages/api-reference/functions/use-router#router-object}.
  *
  */
-export const removeDynamicRouteParams = ({
+export const getQueryParamsFromRouter = ({
   route,
   params,
 }: {
   route: string;
   params: URLSearchParams;
 }): URLSearchParams => {
-  params.delete("file");
+  const paramsWithoutDynamicRouteProps = new URLSearchParams(params);
+  paramsWithoutDynamicRouteProps.delete("file");
 
   if (!route.startsWith("/search")) {
-    params.delete("language");
+    paramsWithoutDynamicRouteProps.delete("language");
   }
 
-  return params;
+  return paramsWithoutDynamicRouteProps;
 };
 
 export const isSettingOmitted = ({
@@ -56,10 +55,10 @@ type UtilityOptionProps = {
 };
 
 export type UtilityOptions = {
-  [value in UtilityOptionEnum]: UtilityOptionProps;
+  [value in UtilityOption]: UtilityOptionProps;
 };
 
-export type PopperAnchorState = Record<UtilityOptionEnum, HTMLElement | null>;
+export type PopperAnchorState = Record<UtilityOption, HTMLElement | null>;
 
 type PopperUtilityStates<State> = [
   State,

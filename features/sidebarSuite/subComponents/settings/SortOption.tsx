@@ -21,12 +21,12 @@ export default function SortOption() {
   const { t } = useTranslation("settings");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { settingsList, sortMethodSelectConfig } = useDbQueryParams();
+  const { uniqueSettings, sortMethodSelectConfig } = useDbQueryParams();
 
   const params = new URLSearchParams(searchParams);
 
   const handleSelectChange = async (value: SortParam) => {
-    params.set(settingsList.queryParams.sortMethod, value);
+    params.set(uniqueSettings.queryParams.sortMethod, value);
 
     await router.push({
       pathname: router.pathname,
@@ -47,8 +47,8 @@ export default function SortOption() {
           onChange={(e) => handleSelectChange(e.target.value as SortParam)}
         >
           {SORT_OPTIONS.map((option) => {
-            const [keyValue] = Object.entries(option);
-            const [key, value] = keyValue;
+            const key = Object.keys(option)[0] as keyof typeof option;
+            const value = option[key]!;
             return (
               <MenuItem key={key} value={key}>
                 {t(`optionsLabels.${value}`)}

@@ -24,7 +24,8 @@ export const useDbView = () => {
   const setCurrentView = useSetAtom(currentViewAtom);
 
   const pathnameParts = pathname.split("/");
-  const pathnameView = pathnameParts[pathnameParts.length - 1];
+  const pathnameView =
+    pathnameParts[pathnameParts.length - 1] ?? DbViewEnum.TABLE;
 
   useEffect(() => {
     setCurrentView(initiateView(pathnameView));

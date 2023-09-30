@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useSearchParams } from "@components/hooks/useTypedSearchParams";
-import { removeDynamicRouteParams } from "features/sidebarSuite/common/dbSidebarHelpers";
+import { getQueryParamsFromRouter } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS_VALUES,
@@ -9,8 +9,8 @@ import {
   SETTINGS_OMISSIONS_CONFIG,
 } from "features/sidebarSuite/config";
 import {
-  settingEnums,
-  settingsList,
+  settingRenderGroups,
+  uniqueSettings,
 } from "features/sidebarSuite/config/settings";
 import type { SourceLanguage } from "utils/constants";
 
@@ -26,7 +26,7 @@ export const useDbQueryParams = () => {
   const sourceLanguageName = t(`language.${sourceLanguage}`);
   const fileName = file as string;
 
-  const queryParams = removeDynamicRouteParams({ route: router.route, params });
+  const queryParams = getQueryParamsFromRouter({ route: router.route, params });
 
   const defaultQueryParams = {
     score: DEFAULT_QUERY_PARAMS_VALUES.score,
@@ -35,6 +35,7 @@ export const useDbQueryParams = () => {
       : DEFAULT_QUERY_PARAMS_VALUES.par_length,
   };
 
+  // Chinese is used as fallback min par length as it has the lowest min par length value.
   const parLengthConfig = {
     default: sourceLanguage
       ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
@@ -44,7 +45,7 @@ export const useDbQueryParams = () => {
       : MIN_PAR_LENGTH_VALUES.chn,
   };
 
-  const sortParam = queryParams.get(settingsList.queryParams.sortMethod);
+  const sortParam = queryParams.get(uniqueSettings.queryParams.sortMethod);
   const sortMethodSelectConfig = sortParam ?? "position";
 
   return {
@@ -56,8 +57,8 @@ export const useDbQueryParams = () => {
     defaultParamConfig: DEFAULT_QUERY_PARAMS_VALUES,
     parLengthConfig,
     sortMethodSelectConfig,
-    settingEnums,
-    settingsList,
+    settingRenderGroups,
+    uniqueSettings,
     settingsOmissionsConfig: SETTINGS_OMISSIONS_CONFIG,
   };
 };

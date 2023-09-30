@@ -23,28 +23,28 @@ export const FilterSettings = ({
 
   const {
     sourceLanguage,
-    settingEnums,
-    settingsList,
+    settingRenderGroups,
+    uniqueSettings,
     settingsOmissionsConfig,
   } = useDbQueryParams();
 
   const [currentLang] = useQueryParam(
-    settingEnums.SearchPageFilterEnum.LANGUAGE,
+    settingRenderGroups.searchPageFilter.language,
     StringParam
   );
 
   const filters = useMemo(() => {
     const filterList = Object.values(
       pageType === "search"
-        ? settingEnums.SearchPageFilterEnum
-        : settingEnums.DbPageFilterEnum
+        ? settingRenderGroups.searchPageFilter
+        : settingRenderGroups.dbPageFilter
     );
 
     if (pageType === "search") {
       if (!currentLang || currentLang === "all") {
         return filterList.filter(
           // This value is linked to the "include exclude" param case check below and is used to identify the whole block of filters
-          (value) => value !== settingsList.queryParams.includeCollection
+          (value) => value !== uniqueSettings.queryParams.includeCollection
         );
       }
       return filterList;
@@ -65,6 +65,9 @@ export const FilterSettings = ({
     sourceLanguage,
     currentView,
     settingsOmissionsConfig,
+    settingRenderGroups,
+    // isSettingOmitted,
+    uniqueSettings,
   ]);
 
   return filters.length > 0 ? (
@@ -73,20 +76,20 @@ export const FilterSettings = ({
         const key = `filter-setting-${filter}`;
 
         switch (filter) {
-          case settingsList.queryParams.language: {
+          case uniqueSettings.queryParams.language: {
             return <SearchLanguageSelector key={key} />;
           }
-          case settingsList.queryParams.score: {
+          case uniqueSettings.queryParams.score: {
             return <ScoreFilter key={key} />;
           }
-          case settingsList.queryParams.parLength: {
+          case uniqueSettings.queryParams.parLength: {
             return <ParLengthFilter key={key} />;
           }
           // This case only tests for one of the "include exclude" params as all 4 filters are always used as a block
-          case settingsList.queryParams.includeCollection: {
+          case uniqueSettings.queryParams.includeCollection: {
             return <IncludeExcludeFilters key={key} />;
           }
-          case settingsList.queryParams.targetCollection: {
+          case uniqueSettings.queryParams.targetCollection: {
             return (
               <Fragment key={key}>
                 {StandinSetting("target_collection")}

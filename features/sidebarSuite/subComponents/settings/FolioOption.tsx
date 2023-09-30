@@ -10,22 +10,22 @@ import {
 import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
 import { StringParam, useQueryParam } from "use-query-params";
-import type { DatabaseFolio } from "utils/api/common";
 import { DbApi } from "utils/api/dbApi";
+import type { DatabaseFolio } from "utils/api/utils";
 
 // TODO: translate
 const showAll = "Whole text";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
-  const { fileName, defaultParamConfig, settingsList } = useDbQueryParams();
+  const { fileName, defaultParamConfig, uniqueSettings } = useDbQueryParams();
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
     queryFn: () => DbApi.FolioData.call(fileName),
   });
 
   const [folioParam, setFolioParam] = useQueryParam(
-    settingsList.queryParams.folio,
+    uniqueSettings.queryParams.folio,
     StringParam
   );
 

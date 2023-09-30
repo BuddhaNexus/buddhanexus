@@ -144,7 +144,7 @@ export const ListboxComponent = React.forwardRef<
           width="100%"
           outerElementType={OuterElementType}
           innerElementType="ul"
-          itemSize={(index: number) => getChildSize(itemData[index])}
+          itemSize={(index: number) => getChildSize(itemData[index] ?? 0)}
           overscanCount={5}
           itemCount={itemCount}
         >

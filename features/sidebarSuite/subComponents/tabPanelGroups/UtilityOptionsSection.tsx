@@ -60,7 +60,7 @@ export const UtilityOptionsSection = () => {
     fileName,
     sourceLanguage,
     queryParams,
-    settingEnums,
+    settingRenderGroups,
     settingsOmissionsConfig,
   } = useDbQueryParams();
   let href: string;
@@ -91,7 +91,7 @@ export const UtilityOptionsSection = () => {
       <PanelHeading heading={t("headings.tools")} sx={{ mt: 3 }} />
 
       <List sx={{ m: 0 }}>
-        {Object.values(settingEnums.UtilityOptionEnum).map((utilityKey) => {
+        {Object.values(settingRenderGroups.utilityOption).map((utilityKey) => {
           const Icon = utilityComponents[utilityKey].icon;
 
           if (
@@ -107,7 +107,7 @@ export const UtilityOptionsSection = () => {
 
           const isPopperOpen = Boolean(popperAnchorEl[utilityKey]);
           const showPopper =
-            utilityKey === settingEnums.UtilityOptionEnum.DOWNLOAD
+            utilityKey === settingRenderGroups.utilityOption.download
               ? Boolean(error)
               : true;
           const popperId = isPopperOpen ? `${utilityKey}-popper` : undefined;

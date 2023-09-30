@@ -1,84 +1,83 @@
-export enum SearchPageFilterEnum {
-  LANGUAGE = "language",
-  SEARCH = "search_string",
-  INCLUDE_COLLECTION = "include_collection",
-  INCLUDE_TEXT = "include_text",
-  EXCLUDE_COLLECTION = "exclude_collection",
-  EXCLUDE_TEXT = "exclude_text",
-}
+export const searchPageFilter = {
+  language: "language",
+  search: "search_string",
+  includeCollection: "include_collection",
+  includeText: "include_text",
+  excludeCollection: "exclude_collection",
+  excludeText: "exclude_text",
+} as const;
 
-export enum DbPageFilterEnum {
-  SCORE = "score",
-  PAR_LENGTH = "par_length",
-  INCLUDE_COLLECTION = "include_collection",
-  INCLUDE_TEXT = "include_text",
-  EXCLUDE_COLLECTION = "exclude_collection",
-  EXCLUDE_TEXT = "exclude_text",
-  TARGET_COLLECTION = "target_collection",
-}
+export const dbPageFilter = {
+  score: "score",
+  parLength: "par_length",
+  includeCollection: "include_collection",
+  includeText: "include_text",
+  excludeCollection: "exclude_collection",
+  excludeText: "exclude_text",
+  targetCollection: "target_collection",
+} as const;
 
-export enum QueriedDisplayOptionEnum {
-  FOLIO = "folio",
-  MULTI_LINGUAL = "multi_lingual",
-  SORT_METHOD = "sort_method",
-}
+export const queriedDisplayOption = {
+  folio: "folio",
+  multiLingual: "multi_lingual",
+  sortMethod: "sort_method",
+} as const;
 
-export enum LocalDisplayOptionEnum {
-  SCRIPT = "script",
-  SHOW_AND_POSITION_SEGMENT_NRS = "showAndPositionSegmentNrs",
-}
+export const localDisplayOption = {
+  script: "script",
+  showAndPositionSegmentNrs: "showAndPositionSegmentNrs",
+} as const;
 
-export enum UtilityOptionEnum {
-  DOWNLOAD = "download",
-  COPY_QUERY_TITLE = "copyQueryTitle",
-  COPY_QUERY_LINK = "copyQueryLink",
-  EMAIL_QUERY_LINK = "emailQueryLink",
-}
+export const utilityOption = {
+  download: "download",
+  copyQueryTitle: "copyQueryTitle",
+  copyQueryLink: "copyQueryLink",
+  emailQueryLink: "emailQueryLink",
+} as const;
 
-export const settingEnums = {
-  SearchPageFilterEnum,
-  DbPageFilterEnum,
-  QueriedDisplayOptionEnum,
-  LocalDisplayOptionEnum,
-  UtilityOptionEnum,
-};
-
-/** This creates a list of unique settings available across the SidebarSuite. Where there is overlap (e.g. "include_collection" applies to both DB results and search results pages) the value is taken from the first listed item.
+/** This creates a list of unique settings available across the SidebarSuite.
  */
 const queryParams = {
-  language: SearchPageFilterEnum.LANGUAGE,
-  searchString: SearchPageFilterEnum.SEARCH,
-  includeCollection: SearchPageFilterEnum.INCLUDE_COLLECTION,
-  includeText: SearchPageFilterEnum.INCLUDE_TEXT,
-  excludeCollection: SearchPageFilterEnum.EXCLUDE_COLLECTION,
-  excludeText: SearchPageFilterEnum.EXCLUDE_TEXT,
-  score: DbPageFilterEnum.SCORE,
-  parLength: DbPageFilterEnum.PAR_LENGTH,
-  targetCollection: DbPageFilterEnum.TARGET_COLLECTION,
-  folio: QueriedDisplayOptionEnum.FOLIO,
-  multiLingual: QueriedDisplayOptionEnum.MULTI_LINGUAL,
-  sortMethod: QueriedDisplayOptionEnum.SORT_METHOD,
+  language: searchPageFilter.language,
+  searchString: searchPageFilter.search,
+  includeCollection: searchPageFilter.includeCollection,
+  includeText: searchPageFilter.includeText,
+  excludeCollection: searchPageFilter.excludeCollection,
+  excludeText: searchPageFilter.excludeText,
+  score: dbPageFilter.score,
+  parLength: dbPageFilter.parLength,
+  targetCollection: dbPageFilter.targetCollection,
+  folio: queriedDisplayOption.folio,
+  multiLingual: queriedDisplayOption.multiLingual,
+  sortMethod: queriedDisplayOption.sortMethod,
 } as const;
 
 /** A results (.xmlx) download is triggered via an API endpoint, but is never set as a query param.
  */
 const remote = {
-  download: UtilityOptionEnum.DOWNLOAD,
+  download: utilityOption.download,
 } as const;
 
 /** No API calls needed.
  */
 const local = {
-  script: LocalDisplayOptionEnum.SCRIPT,
-  showAndPositionSegmentNrs:
-    LocalDisplayOptionEnum.SHOW_AND_POSITION_SEGMENT_NRS,
-  copyQueryTitle: UtilityOptionEnum.COPY_QUERY_TITLE,
-  copyQueryLink: UtilityOptionEnum.COPY_QUERY_LINK,
-  emailQueryLink: UtilityOptionEnum.EMAIL_QUERY_LINK,
+  script: localDisplayOption.script,
+  showAndPositionSegmentNrs: localDisplayOption.showAndPositionSegmentNrs,
+  copyQueryTitle: utilityOption.copyQueryTitle,
+  copyQueryLink: utilityOption.copyQueryLink,
+  emailQueryLink: utilityOption.emailQueryLink,
 } as const;
 
-export const settingsList = {
+export const settingRenderGroups = {
+  searchPageFilter,
+  dbPageFilter,
+  queriedDisplayOption,
+  localDisplayOption,
+  utilityOption,
+} as const;
+
+export const uniqueSettings = {
   queryParams,
   remote,
   local,
-};
+} as const;

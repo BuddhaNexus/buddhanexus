@@ -24,7 +24,8 @@ export default function NumbersPage() {
   const { isFallback } = useSourceFile();
   useDbView();
 
-  const { data, isLoading, isError } = useQuery<ApiNumbersPageData>({
+  // const { data, isLoading, isError } = useQuery<ApiNumbersPageData>({
+  const { isLoading, isError } = useQuery<ApiNumbersPageData>({
     queryKey: DbApi.NumbersView.makeQueryKey({ fileName, queryParams }),
     queryFn: () =>
       DbApi.NumbersView.call({
@@ -61,7 +62,8 @@ export default function NumbersPage() {
         <CenteredProgress />
       ) : (
         <>
-          {data?.collections &&
+          <Typography variant="h1">TODO</Typography>
+          {/* {data?.collections &&
             data.collections[0].map((collection) => {
               const [[collectionId, collectionName]] =
                 Object.entries(collection);
@@ -70,7 +72,7 @@ export default function NumbersPage() {
                   {collectionId}: {collectionName}
                 </Typography>
               );
-            })}
+            })} */}
         </>
       )}
       <SourceTextBrowserDrawer />

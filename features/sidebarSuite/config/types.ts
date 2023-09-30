@@ -2,25 +2,32 @@ import type { DbViewEnum } from "@components/hooks/useDbView";
 import type { SourceLanguage } from "utils/constants";
 
 import type {
-  DbPageFilterEnum,
-  LocalDisplayOptionEnum,
-  QueriedDisplayOptionEnum,
-  settingsList,
-  UtilityOptionEnum,
+  dbPageFilter,
+  localDisplayOption,
+  queriedDisplayOption,
+  searchPageFilter,
+  uniqueSettings,
+  utilityOption,
 } from "./settings";
 
-export {
-  type DbPageFilterEnum,
-  type LocalDisplayOptionEnum,
-  type QueriedDisplayOptionEnum,
-  type UtilityOptionEnum,
-} from "./settings";
+export type SearchPageFilter =
+  (typeof searchPageFilter)[keyof typeof searchPageFilter];
+export type DbPageFilter = (typeof dbPageFilter)[keyof typeof dbPageFilter];
+export type LocalDisplayOption =
+  (typeof localDisplayOption)[keyof typeof localDisplayOption];
+export type QueriedDisplayOption =
+  (typeof queriedDisplayOption)[keyof typeof queriedDisplayOption];
+export type UtilityOption = (typeof utilityOption)[keyof typeof utilityOption];
 
 export type SidebarSuitePageContext = "db" | "search";
 
-export type DisplayOption = LocalDisplayOptionEnum | QueriedDisplayOptionEnum;
+export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
 
-export type MenuSetting = DbPageFilterEnum | DisplayOption | UtilityOptionEnum;
+export type MenuSetting =
+  | DbPageFilter
+  | DisplayOption
+  | SearchPageFilter
+  | UtilityOption;
 
 export type ViewOmission = (SourceLanguage | "allLangs")[];
 export type SettingContext = Partial<Record<DbViewEnum, ViewOmission>>;
@@ -36,14 +43,14 @@ export type MenuOmission = SettingOmissions<MenuSetting>;
  *
  * For example, if `ObjectType` is `{ a: number, b: string, c: boolean }`, the resulting union type would be `number | string | boolean`.
  *
- * Here, `QueryParamKeys` uses the string litral types aligned with available API query params set in `settingsList.queryParams`.
+ * Here, `QueryParamKeys` uses the string litral types aligned with available API query params set in `uniqueSettings.queryParams`.
  */
 type CreateUnionFromObjectValueTypes<ObjectType> = {
   [Key in keyof ObjectType]: ObjectType[Key];
 }[keyof ObjectType];
 
 type QueryParamKeys = CreateUnionFromObjectValueTypes<
-  typeof settingsList.queryParams
+  typeof uniqueSettings.queryParams
 >;
 
 type QueryNumberParam = "par_length" | "score";

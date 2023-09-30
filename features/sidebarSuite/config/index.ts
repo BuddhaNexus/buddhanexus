@@ -1,41 +1,42 @@
 import { DbViewEnum } from "@components/hooks/useDbView";
 import { SourceLanguage } from "utils/constants";
 
+import { uniqueSettings } from "./settings";
 import type {
-  DbPageFilterEnum,
-  LocalDisplayOptionEnum,
-  QueriedDisplayOptionEnum,
-  UtilityOptionEnum,
-} from "./settings";
-import { settingsList } from "./settings";
-import type { DisplayOption, QueryParams, SettingOmissions } from "./types";
+  DbPageFilter,
+  DisplayOption,
+  LocalDisplayOption,
+  QueriedDisplayOption,
+  QueryParams,
+  SettingOmissions,
+  UtilityOption,
+} from "./types";
 
-const { queryParams, local, remote } = settingsList;
+const { queryParams, local, remote } = uniqueSettings;
 
 // Not all filters, options and utilities are applicable for all DB languages and views. The setting menu assumes each setting component is to be rendered, unless defined in the following config objects listing contexts in which specific settings should be ommitted. For example, the `limit_collection` filter should be shown in all cases except for graph view, in any language.
 
-export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilterEnum> =
-  {
-    [queryParams.includeCollection]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-    },
-    [queryParams.includeText]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-    },
-    [queryParams.excludeCollection]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-    },
-    [queryParams.excludeText]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-    },
-    [queryParams.targetCollection]: {
-      [DbViewEnum.NUMBERS]: ["allLangs"],
-      [DbViewEnum.TABLE]: ["allLangs"],
-      [DbViewEnum.TEXT]: ["allLangs"],
-    },
-  };
+export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilter> = {
+  [queryParams.includeCollection]: {
+    [DbViewEnum.GRAPH]: ["allLangs"],
+  },
+  [queryParams.includeText]: {
+    [DbViewEnum.GRAPH]: ["allLangs"],
+  },
+  [queryParams.excludeCollection]: {
+    [DbViewEnum.GRAPH]: ["allLangs"],
+  },
+  [queryParams.excludeText]: {
+    [DbViewEnum.GRAPH]: ["allLangs"],
+  },
+  [queryParams.targetCollection]: {
+    [DbViewEnum.NUMBERS]: ["allLangs"],
+    [DbViewEnum.TABLE]: ["allLangs"],
+    [DbViewEnum.TEXT]: ["allLangs"],
+  },
+};
 
-const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayOptionEnum> =
+const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayOption> =
   {
     [queryParams.folio]: {
       // "folio" is used as "jump to" in text view and "only show" in other applicable views
@@ -53,7 +54,7 @@ const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayO
     },
   };
 
-const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptionEnum> =
+const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOption> =
   {
     [local.script]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
@@ -82,7 +83,7 @@ export const DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<DisplayOption> =
     ...LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG,
   };
 
-export const UTILITY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<UtilityOptionEnum> =
+export const UTILITY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<UtilityOption> =
   {
     [remote.download]: {
       [DbViewEnum.GRAPH]: ["allLangs"],

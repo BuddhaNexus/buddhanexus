@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
 import { DbApi } from "utils/api/dbApi";
-import type { DatabaseText, CategoryMenuItem } from "types/api/menus";
 
 import { useDbQueryParams } from "./useDbQueryParams";
 
@@ -17,15 +17,13 @@ export const useDbMenus = () => {
     queryFn: () => DbApi.CategoryMenu.call(sourceLanguage),
   });
 
-  const texts = textsData?.reduce(
-    (map: Map<string, DatabaseText>, text: DatabaseText) => {
+  const texts =
+    textsData?.reduce((map: Map<string, DatabaseText>, text: DatabaseText) => {
       map.set(text.id, {
         ...text,
       });
       return map;
-    },
-    new Map()
-  );
+    }, new Map()) ?? new Map();
   const categories = categoriesData ?? new Map<string, CategoryMenuItem>();
 
   return {

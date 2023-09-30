@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSearchParams } from "@components/hooks/useTypedSearchParams";
-import { removeDynamicRouteParams } from "features/sidebarSuite/common/dbSidebarHelpers";
+import { getQueryParamsFromRouter } from "features/sidebarSuite/common/dbSidebarHelpers";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
 
@@ -15,25 +15,30 @@ interface GlobalSearchProps {
 export function useGlobalSearch(): GlobalSearchProps {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { settingsList } = useDbQueryParams();
+  const { uniqueSettings } = useDbQueryParams();
 
   const params = new URLSearchParams(searchParams);
-  const queryParams = removeDynamicRouteParams({ route: router.route, params });
 
   const handleOnSearch: HandleOnSearch = async (searchTerm, e?) => {
     if (!e || e.key === "Enter") {
       e?.preventDefault();
-      queryParams.set(settingsList.queryParams.searchString, searchTerm);
+
+      const queryParams = getQueryParamsFromRouter({
+        route: router.route,
+        params,
+      });
+      // const queryParams = params
+      queryParams.set(uniqueSettings.queryParams.searchString, searchTerm);
 
       await router.push({
         pathname: "/search",
-        query: queryParams.toString(),
+        query: Object.fromEntries(queryParams.entries()),
       });
     }
   };
 
   return {
     handleOnSearch,
-    searchParam: queryParams.get(settingsList.queryParams.searchString) ?? "",
+    searchParam: params.get(uniqueSettings.queryParams.searchString) ?? "",
   };
 }

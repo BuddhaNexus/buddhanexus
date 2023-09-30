@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbMenus } from "@components/hooks/useDbMenus";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Autocomplete, Box, CircularProgress, TextField } from "@mui/material";
+import type { CategoryMenuItem } from "types/api/menus";
 import { ArrayParam, useQueryParam } from "use-query-params";
-import type { CategoryMenuItem } from "utils/api/textLists";
 
 import { ListboxComponent, StyledPopper } from "./textMenuComponents";
 
 const IncludeCollectionFilter = () => {
   const { t } = useTranslation("settings");
-  const { defaultParamConfig, settingsList } = useDbQueryParams();
+  const { defaultParamConfig, uniqueSettings } = useDbQueryParams();
 
   const { categories, isLoadingCategories } = useDbMenus();
 
   const [includeCollectionParam, setIncludeCollectionParam] = useQueryParam(
-    settingsList.queryParams.includeCollection,
+    uniqueSettings.queryParams.includeCollection,
     ArrayParam
   );
 

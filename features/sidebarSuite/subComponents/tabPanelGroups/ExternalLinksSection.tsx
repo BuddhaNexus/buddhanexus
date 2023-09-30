@@ -88,7 +88,11 @@ export const ExternalLinksSection = () => {
                     {key === "cbc" ? (
                       <CBCIcon fill={theme.palette.text.primary} />
                     ) : (
-                      <Image src={logos[key]} alt={`${key} logo`} height={32} />
+                      <Image
+                        src={logos[key]!}
+                        alt={`${key} logo`}
+                        height={32}
+                      />
                     )}
                   </SourceLink>
                 </ListItem>

@@ -25,9 +25,9 @@ function normalizeValue(value: number, min: number) {
 export default function ParLengthFilter() {
   const { t } = useTranslation("settings");
 
-  const { parLengthConfig, settingsList } = useDbQueryParams();
+  const { parLengthConfig, uniqueSettings } = useDbQueryParams();
   const [parLengthParam, setParLengthParam] = useQueryParam(
-    settingsList.queryParams.parLength,
+    uniqueSettings.queryParams.parLength,
     NumberParam
   );
   const [parLength, setParLength] = useState(
