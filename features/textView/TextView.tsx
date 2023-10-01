@@ -37,7 +37,7 @@ export default function TextView({
   const isDarkTheme = theme === "dark";
 
   const [minColor, maxColor] = useMemo(() => {
-    const colors = data.map((item) => item.segmentText[0].highlightColor);
+    const colors = data.map((item) => item.segmentText[0]?.highlightColor ?? 0);
     return [Math.min(...colors), Math.max(...colors)];
   }, [data]);
 
@@ -45,8 +45,6 @@ export default function TextView({
     .scale("Reds")
     // small trick to make it readable in both color schemes
     .domain(isDarkTheme ? [minColor, maxColor] : [maxColor, minColor]);
-
-  console.dir(data);
 
   return (
     <Paper elevation={1} sx={{ flex: 1, p: 2, my: 1 }}>

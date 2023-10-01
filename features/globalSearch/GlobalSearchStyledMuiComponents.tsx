@@ -1,12 +1,15 @@
-import type { BoxProps } from "@mui/material/Box";
+import {
+  type BoxProps,
+  type OutlinedTextFieldProps,
+  TextField,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
 
 interface AppTopBarSearchBoxWrapperProps extends BoxProps {
   isOpen: boolean;
 }
 
-interface SearchBoxInputProps {
+interface SearchBoxInputProps extends OutlinedTextFieldProps {
   isNarrow?: boolean;
 }
 
@@ -35,25 +38,25 @@ export const SearchBoxWrapper = styled("form")(({ theme }) => ({
   border: `${theme.palette.primary.main} 1px solid`,
 }));
 
-export const SearchBoxInput = styled(TextField)<SearchBoxInputProps>(
-  ({ isNarrow }) => ({
-    "& .MuiOutlinedInput-root": {
-      padding: "0px",
-      ...(isNarrow && {
-        "& input": {
-          paddingTop: "12px",
-          paddingBottom: "12px",
-        },
-      }),
-      "& fieldset": {
-        borderColor: "transparent",
+export const SearchBoxInput = styled(TextField, {
+  shouldForwardProp: (prop) => prop !== "isNarrow",
+})<SearchBoxInputProps>(({ isNarrow }) => ({
+  "& .MuiOutlinedInput-root": {
+    padding: "0px",
+    ...(isNarrow && {
+      "& input": {
+        paddingTop: "12px",
+        paddingBottom: "12px",
       },
-      "&:hover fieldset": {
-        borderColor: "transparent",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "transparent",
-      },
+    }),
+    "& fieldset": {
+      borderColor: "transparent",
     },
-  })
-);
+    "&:hover fieldset": {
+      borderColor: "transparent",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "transparent",
+    },
+  },
+}));

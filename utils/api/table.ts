@@ -1,8 +1,6 @@
-import queryString from "query-string";
+import apiClient from "@api";
 import type { InfiniteFilePropApiQuery, PagedResponse } from "types/api/common";
 import type { ApiTablePageData, TablePageData } from "types/api/table";
-
-import { API_ROOT_URL } from "./constants";
 
 function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   return apiData.map((p) => ({
@@ -40,12 +38,9 @@ export async function getTableData({
   queryParams,
   pageNumber,
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
-  // TODO: remove co_occ param after backend update
-  const res = await fetch(
-    `${API_ROOT_URL}/table-view/table?file_name=${fileName}&page=${pageNumber}&co_occ=2000&${queryString.stringify(
-      queryParams
-    )}`
-  );
-  const responseJSON = await res.json();
-  return { data: parseAPITableData(responseJSON), pageNumber };
+  const { data } = await apiClient.POST("/table-view/table", {
+    body: { file_name: fileName, ...queryParams, limits: {}, page: pageNumber },
+  });
+  // TODO: - remove type casting once response model is added to api
+  return { data: parseAPITableData(data as ApiTablePageData), pageNumber };
 }

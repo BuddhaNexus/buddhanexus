@@ -1,35 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
-import { globalSearchTermAtom } from "pages/search";
-import { Link } from "@components/common/Link";
+import {
+  type InputKeyDown,
+  useGlobalSearch,
+} from "@components/hooks/useGlobalSearch";
 import CloseIcon from "@mui/icons-material/Close";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import { useAtom } from "jotai";
 
 import {
   AppTopBarSearchBoxWrapper,
   SearchBoxInput,
 } from "./GlobalSearchStyledMuiComponents";
-import { handleSearchInputEnterPress } from "./globalSearchUtils";
 
 const GlobalSearchDesktop = () => {
-  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useAtom(globalSearchTermAtom);
 
-  const handleSearchIconClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-    setIsOpen((open) => !open);
-    if (!isOpen) {
-      setSearchTerm("");
-    }
-  };
+  const { handleOnSearch } = useGlobalSearch();
 
   useEffect(() => {
     if (isOpen) {
@@ -49,7 +38,7 @@ const GlobalSearchDesktop = () => {
         marginRight: 3,
       }}
     >
-      <IconButton color="inherit" onClick={handleSearchIconClick}>
+      <IconButton color="inherit" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? (
           <CloseIcon sx={{ fontSize: 28 }} />
         ) : (
@@ -64,20 +53,18 @@ const GlobalSearchDesktop = () => {
           placeholder="Search..."
           variant="outlined"
           isNarrow={true}
-          value={searchTerm}
           InputProps={{
             endAdornment: (
-              <Link variant="button" href="/search" mr={1}>
-                <IconButton>
-                  <KeyboardReturnIcon />
-                </IconButton>
-              </Link>
+              <IconButton
+                onClick={() => handleOnSearch(inputRef.current?.value ?? "")}
+              >
+                <KeyboardReturnIcon />
+              </IconButton>
             ),
           }}
           fullWidth
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
-            handleSearchInputEnterPress({ e, searchTerm, router })
+          onKeyDown={(e: InputKeyDown) =>
+            handleOnSearch(inputRef.current?.value ?? "", e)
           }
         />
       </AppTopBarSearchBoxWrapper>

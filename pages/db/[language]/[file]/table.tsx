@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import type { GetStaticProps } from "next";
-import { DbResultsPageHead } from "@components/db/DbResultsPageHead";
+import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -58,7 +58,7 @@ export default function TablePage() {
       backgroundName={sourceLanguage}
       hasSidebar={true}
     >
-      <DbResultsPageHead />
+      <DbViewPageHead />
 
       {isInitialLoading || !data ? (
         <CenteredProgress />

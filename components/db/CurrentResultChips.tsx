@@ -1,79 +1,89 @@
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import MatchesChip from "@components/db/MatchesChip";
+import ParallelsChip from "@components/db/ParallelsChip";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
-import { useQuery } from "@tanstack/react-query";
-import { DbApi } from "utils/api/dbApi";
+import {
+  displaySettingChipQueries,
+  filterChipQueryExclusions,
+} from "features/sidebarSuite/config";
+import type {
+  DefaultQueryParams,
+  QueryParams,
+} from "features/sidebarSuite/config/types";
 
-function getActiveFilterCount(queries: any, defaults: any) {
-  let count = 0;
+function getSettingCounts({
+  currentQueries,
+  defaultQueries,
+}: {
+  currentQueries: Partial<QueryParams>;
+  defaultQueries: DefaultQueryParams;
+}) {
+  let display = 0;
+  let filter = 0;
 
-  for (const [key, value] of Object.entries(queries)) {
-    const queryKey = key as keyof typeof defaults;
+  for (const [key, value] of Object.entries(currentQueries)) {
+    const queryKey = key as keyof typeof defaultQueries;
 
-    if (queryKey === "par_length" && defaults.par_length === value) {
+    if (
+      defaultQueries[queryKey] === value ||
+      value === "position" ||
+      value === null
+    ) {
       continue;
     }
 
-    if (defaults[queryKey] === value || value === undefined) {
+    if (displaySettingChipQueries.includes(key)) {
+      display += 1;
       continue;
     }
 
-    count += 1;
+    if (filterChipQueryExclusions.includes(key)) {
+      continue;
+    }
+
+    filter += 1;
   }
 
-  return count;
+  return { display, filter };
 }
 
-export default function CurrentResultChips() {
+export default function CurrentResultChips({
+  matches = 0,
+}: {
+  matches?: number;
+}) {
+  const router = useRouter();
   const { t } = useTranslation("settings");
 
-  const { fileName, queryParams, defaultQueryParams } = useDbQueryParams();
+  const isSearchRoute = router.route.startsWith("/search");
+  const { queryParams, defaultQueryParams } = useDbQueryParams();
 
-  const filtersCount = getActiveFilterCount(queryParams, defaultQueryParams);
-
-  const { data, isLoading } = useQuery({
-    // TODO: - see if the query queue can be ordered to return this item before main results. - pass the same defaults to all instances of QueryClient
-    queryKey: DbApi.ParallelCount.makeQueryKey({ fileName, queryParams }),
-    queryFn: () =>
-      DbApi.ParallelCount.call({
-        fileName,
-        queryParams,
-      }),
-    refetchOnWindowFocus: false,
+  const count = getSettingCounts({
+    currentQueries: queryParams,
+    defaultQueries: defaultQueryParams,
   });
-
-  const [parallelCount, setParallelCount] = useState(
-    isLoading ? 0 : data?.parallel_count
-  );
-
-  useEffect(() => {
-    if (data) {
-      setParallelCount(data.parallel_count);
-    }
-  }, [data]);
 
   return (
     <Box>
-      <Chip
-        size="small"
-        label={
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Box>{t("resultsHead.parallels")}</Box>
-            <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
-              {parallelCount}
-            </Box>
-          </Box>
-        }
-        sx={{ mx: 0.5, p: 0.5 }}
-      />
+      {isSearchRoute ? <MatchesChip matches={matches} /> : <ParallelsChip />}
 
-      <Chip
-        size="small"
-        label={t("resultsHead.filters", { value: filtersCount })}
-        sx={{ mx: 0.5, p: 0.5 }}
-      />
+      {count.filter > 0 && (
+        <Chip
+          size="small"
+          label={t("resultsHead.filters", { value: count.filter })}
+          sx={{ mx: 0.5, p: 0.5 }}
+        />
+      )}
+      {count.display > 0 && (
+        <Chip
+          size="small"
+          label={t("resultsHead.options", { value: count.display })}
+          sx={{ mx: 0.5, p: 0.5 }}
+        />
+      )}
     </Box>
   );
 }

@@ -120,6 +120,7 @@ const rules = {
   "unicorn/prevent-abbreviations": "off",
   "unicorn/template-indent": "off",
   "unicorn/text-encoding-identifier-case": "off",
+  "unicorn/no-array-for-each": "off",
 
   // react
   "react/react-in-jsx-scope": "off",
@@ -192,7 +193,6 @@ module.exports = {
         "no-relative-import-paths",
       ],
       rules,
-
       parserOptions: {
         project: ["./tsconfig.json"], // Specify it only for TypeScript files
       },

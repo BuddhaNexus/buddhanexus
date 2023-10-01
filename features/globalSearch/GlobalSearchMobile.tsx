@@ -1,67 +1,72 @@
-import React from "react";
-import { useRouter } from "next/router";
-import { globalSearchTermAtom } from "pages/search";
-import { Link } from "@components/common/Link";
+import React, { useRef } from "react";
+import {
+  type InputKeyDown,
+  useGlobalSearch,
+} from "@components/hooks/useGlobalSearch";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
-import { useAtom } from "jotai";
 
 import {
   SearchBoxInput,
   SearchBoxWrapper,
 } from "./GlobalSearchStyledMuiComponents";
-import { handleSearchInputEnterPress } from "./globalSearchUtils";
 
 const GlobalSearchMobile = () => {
-  const router = useRouter();
-  const [searchTerm, setSearchTerm] = useAtom(globalSearchTermAtom);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { handleOnSearch } = useGlobalSearch();
 
-  const isEmpty = searchTerm === "";
+  const handleClear = () => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
+  const isEmpty = inputRef.current?.value === "";
 
   return (
-    <Box
-      position="relative"
+    <Container
+      maxWidth="md"
       sx={{
         display: {
           lg: "none",
         },
-        // This component is outside of <main>, so mt & px values are given here to match padding in components/layout/PageContainer.tsx
-        mt: { xs: 2, sm: 4 },
-        mb: 2,
-        px: 2,
-        width: "100%",
-        height: "48px",
+        // This component is outside <main>, so mt & px values are given here to match padding in components/layout/PageContainer.tsx
+        mt: 4,
+        px: { xs: 4, sm: 2 },
       }}
     >
-      <SearchBoxWrapper>
-        <SearchBoxInput
-          placeholder="Search..."
-          variant="outlined"
-          value={searchTerm}
-          InputProps={{
-            startAdornment: (
-              <Link variant="button" href="/search">
-                <IconButton>
+      <Box position="relative">
+        <SearchBoxWrapper>
+          <SearchBoxInput
+            inputRef={inputRef}
+            // TODO: i18n
+            placeholder="Search..."
+            variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <IconButton
+                  onClick={() => handleOnSearch(inputRef.current?.value ?? "")}
+                >
                   <SearchIcon fontSize="inherit" />
                 </IconButton>
-              </Link>
-            ),
-            endAdornment: !isEmpty && (
-              <IconButton onClick={() => setSearchTerm("")}>
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            ),
-          }}
-          fullWidth
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) =>
-            handleSearchInputEnterPress({ e, searchTerm, router })
-          }
-        />
-      </SearchBoxWrapper>
-    </Box>
+              ),
+              endAdornment: !isEmpty && (
+                <IconButton onClick={handleClear}>
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              ),
+            }}
+            fullWidth
+            onKeyDown={(e: InputKeyDown) =>
+              handleOnSearch(inputRef.current?.value ?? "", e)
+            }
+          />
+        </SearchBoxWrapper>
+      </Box>
+    </Container>
   );
 };
 

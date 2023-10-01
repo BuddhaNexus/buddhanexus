@@ -26,8 +26,8 @@ import {
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
+import type { DatabaseText } from "types/api/menus";
 import { DbApi } from "utils/api/dbApi";
-import type { DatabaseText } from "utils/api/textLists";
 
 const OuterElementContext = React.createContext({});
 
@@ -111,13 +111,12 @@ const ListboxComponent = React.forwardRef<
   React.HTMLAttributes<HTMLElement>
 >(function ListboxComponent(props, ref) {
   const { children, ...other } = props;
-  const itemData: React.ReactChild[] = [];
-  // eslint-disable-next-line unicorn/no-array-for-each
-  (children as React.ReactChild[]).forEach(
-    (item: React.ReactChild & { children?: React.ReactChild[] }) => {
-      itemData.push(item, ...(item.children ?? []));
+  const itemData: React.ReactNode[] = [];
+  (children as any[]).forEach((item) => {
+    if (item) {
+      itemData.push(item, ...item.children);
     }
-  );
+  });
 
   const theme = useTheme();
   const smUp = useMediaQuery(theme.breakpoints.up("sm"), {
@@ -126,9 +125,9 @@ const ListboxComponent = React.forwardRef<
   const itemCount = itemData.length;
   const itemSize = smUp ? 36 : 48;
 
-  const getChildSize = (child: React.ReactChild) => {
+  const getChildSize = (child: React.ReactNode) => {
     // eslint-disable-next-line no-prototype-builtins
-    if (child.hasOwnProperty("group")) {
+    if (child?.hasOwnProperty("group")) {
       return 48;
     }
 
@@ -185,8 +184,8 @@ export const SourceTextSearchInput = () => {
   const dbView = useAtomValue(currentViewAtom);
 
   const { data, isLoading } = useQuery<DatabaseText[]>({
-    queryKey: DbApi.LanguageMenu.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.LanguageMenu.call(sourceLanguage),
+    queryKey: DbApi.SourceTextMenu.makeQueryKey(sourceLanguage),
+    queryFn: () => DbApi.SourceTextMenu.call(sourceLanguage),
   });
 
   // TODO: Add pagination and fuzzy search on BE

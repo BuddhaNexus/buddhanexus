@@ -1,5 +1,5 @@
 import { NodeDataChildType } from "@components/treeView/types";
-import type { SourceTextBrowserData } from "types/api/sourceTextBrowser";
+import type { SourceTextBrowserData } from "types/api/menus";
 
 export function transformDataForTreeView(data: SourceTextBrowserData) {
   return data.map((collection) => ({
