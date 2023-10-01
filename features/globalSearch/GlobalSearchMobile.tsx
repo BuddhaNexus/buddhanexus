@@ -18,6 +18,8 @@ const GlobalSearchMobile = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useAtom(globalSearchTermAtom);
 
+  const isEmpty = searchTerm === "";
+
   return (
     <Box
       position="relative"
@@ -46,7 +48,7 @@ const GlobalSearchMobile = () => {
                 </IconButton>
               </Link>
             ),
-            endAdornment: (
+            endAdornment: !isEmpty && (
               <IconButton onClick={() => setSearchTerm("")}>
                 <CloseIcon fontSize="inherit" />
               </IconButton>

@@ -32,6 +32,7 @@ const MIN_CHAR_LENGTH_TO_SHOW_TOOLTIP = 42;
 export function Node({
   node,
   style,
+  // TODO: check if this `dragHandle` can be removed
   dragHandle,
 }: NodeRendererProps<DrawerNavigationNodeData>) {
   const { dataType, name, fileName, availableLanguages, id } = node.data;

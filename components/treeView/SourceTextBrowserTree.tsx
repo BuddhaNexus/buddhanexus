@@ -9,9 +9,11 @@ import {
   Backdrop,
   Box,
   CircularProgress,
+  Divider,
   FormControl,
   InputAdornment,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
@@ -54,7 +56,7 @@ interface Props {
 export const SourceTextBrowserTree = memo<Props>(
   function SourceTextBrowserTree({ parentHeight, parentWidth }) {
     const [searchTerm, setSearchTerm] = useState("");
-    const { sourceLanguage } = useDbQueryParams();
+    const { sourceLanguage, sourceLanguageName } = useDbQueryParams();
     const { observe, height: inputHeight } = useDimensions();
 
     // TODO: add error handling
@@ -67,6 +69,12 @@ export const SourceTextBrowserTree = memo<Props>(
 
     return (
       <>
+        <Typography variant="h5" sx={{ p: 2, pb: 0 }}>
+          Browse texts in {sourceLanguageName}
+        </Typography>
+
+        <Divider />
+
         {hasData && (
           <>
             {/* Search input */}
