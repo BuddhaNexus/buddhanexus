@@ -1,5 +1,6 @@
 .segment {
-  display: inline-block;
+  display: inline;
+
   /*  make button appear like span  */
   /*background: none !important;*/
   /*border: none;*/
@@ -18,6 +19,14 @@
   text-decoration: underline;
 }
 
-.segmentcontainer {
-  padding: 2px;
+.segmentContainer {
+  &__selected {
+    background-color: lightgray;
+  }
+}
+
+.segmentNumber::before {
+  content: attr(data-segmentNumber);
+  font-size: 0.65em;
+  padding: 0.4em;
 }
