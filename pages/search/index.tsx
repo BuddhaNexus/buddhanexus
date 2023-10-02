@@ -1,7 +1,12 @@
-// TODO: Page! This is currently a rough frame; receiving API data, functionality and display incomplete.
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { GetStaticProps } from "next";
+import { useRouter } from "next/router";
+import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import {
+  type InputKeyDown,
+  useGlobalSearch,
+} from "@components/hooks/useGlobalSearch";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Close, Search } from "@mui/icons-material";
@@ -12,39 +17,28 @@ import {
   SearchBoxWrapper,
 } from "features/globalSearch/GlobalSearchStyledMuiComponents";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-import { atom, useAtom } from "jotai";
-import { debounce } from "lodash";
 import type { PagedResponse } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
-import type { SearchPageData } from "utils/api/search";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
-export const globalSearchTermAtom = atom<string>("");
-
 export default function SearchPage() {
+  // IN DEVELOPMENT
+  const { isReady } = useRouter();
+
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
+  const { handleOnSearch, searchParam } = useGlobalSearch();
 
-  // TODO: convert to query param as suitable
-  const [searchTerm, setSearchTerm] = useAtom(globalSearchTermAtom);
-  const [searchValue, setSearchValue] = useState(searchTerm);
+  const [searchTerm, setSearchTerm] = useState(searchParam);
 
-  useEffect(() => {}, [searchTerm]);
+  useEffect(() => {
+    if (isReady) {
+      // enables search term to be set from URL if user accesses the site via a results page link
+      setSearchTerm(searchParam);
+    }
+  }, [isReady, setSearchTerm, searchParam]);
 
-  // TODO: confirm acceptance criteria - debounced search / search on enter?
-  const setDebouncedSearchTerm = useMemo(
-    () => debounce(setSearchTerm, 600),
-    [setSearchTerm]
-  );
-
-  const handleChange = useCallback(
-    (value: string) => {
-      setSearchValue(value);
-      setDebouncedSearchTerm(value);
-    },
-    [setSearchValue, setDebouncedSearchTerm]
-  );
-
+  // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
   const {
     data,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -54,14 +48,14 @@ export default function SearchPage() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     isInitialLoading,
     isLoading,
-  } = useInfiniteQuery<PagedResponse<SearchPageData>>({
+  } = useInfiniteQuery<PagedResponse<any>>({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
-      searchTerm,
+      searchTerm: searchParam,
       queryParams,
     }),
     queryFn: ({ pageParam = 0 }) =>
       DbApi.GlobalSearchData.call({
-        searchTerm,
+        searchTerm: searchParam,
         pageNumber: pageParam,
         queryParams,
       }),
@@ -70,7 +64,7 @@ export default function SearchPage() {
       lastPage.pageNumber === 0 ? lastPage.pageNumber : lastPage.pageNumber - 1,
   });
 
-  if (isFallback) {
+  if (isFallback || !isReady) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
         <CircularProgress color="inherit" sx={{ flex: 1 }} />
@@ -79,15 +73,21 @@ export default function SearchPage() {
   }
 
   return (
-    <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
+    <PageContainer
+      maxWidth="xl"
+      backgroundName={sourceLanguage}
+      hasSidebar={true}
+    >
+      <QueryPageTopStack />
       <SearchBoxWrapper sx={{ mb: 5 }}>
-        {/* TODO: notification of search limitations (whole word only) */}
+        {/* TODO: fix search OR add notification of search limitations (whole word only) */}
         <SearchBoxInput
           placeholder="Enter search term"
-          value={searchValue}
+          value={searchTerm ?? ""}
+          variant="outlined"
           InputProps={{
             startAdornment: (
-              <IconButton>
+              <IconButton onClick={() => handleOnSearch(searchTerm)}>
                 <Search />
               </IconButton>
             ),
@@ -100,34 +100,46 @@ export default function SearchPage() {
           // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           fullWidth
-          onChange={(event) => handleChange(event.target.value)}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          onKeyDown={(e: InputKeyDown) => handleOnSearch(searchTerm, e)}
         />
       </SearchBoxWrapper>
 
-      {/* TODO: handling & i18n */}
-      {!searchTerm && <Typography>No results.</Typography>}
-
-      {isLoading && <CircularProgress />}
-
       {/* TODO: componentize search results */}
-      {searchTerm && !isLoading && (
+      {!isLoading && (
         <>
-          <Typography>{data?.pages[0].data.size} Results</Typography>
-          <Grid
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            container
-          >
-            <ul>
-              {[...(data?.pages[0].data.values() ?? [])].map((item) => (
-                <li key={item.id}>
-                  <Typography variant="h3" component="h2">
-                    {item.id}
-                  </Typography>
-                </li>
+          {data ? (
+            <>
+              {data.pages.flatMap((page) => (
+                <React.Fragment key={page.pageNumber}>
+                  <Typography>{page.data.total} Results</Typography>
+                  <Grid
+                    rowSpacing={1}
+                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                    container
+                  >
+                    <ul>
+                      {[...(page.data.results.values() ?? [])].map((result) => (
+                        <li key={result.id}>
+                          <Typography variant="h3" component="h2">
+                            {result.id}
+                          </Typography>
+                          <Typography component="p">
+                            {result.fileName}
+                          </Typography>
+                        </li>
+                      ))}
+                    </ul>
+                  </Grid>
+                </React.Fragment>
               ))}
-            </ul>
-          </Grid>
+            </>
+          ) : (
+            <>
+              {/* TODO: i18n */}
+              <Typography>No results.</Typography>
+            </>
+          )}
         </>
       )}
 
@@ -141,7 +153,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["db"]
+    ["settings"]
   );
 
   return {

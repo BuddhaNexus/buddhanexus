@@ -32,13 +32,6 @@
   "db": {
     "searchInputPlaceholder": "Quelltext auswählen"
   },
-  "dbViewSelector": {
-    "view": "Sicht",
-    "graph": "Diagramm",
-    "numbers": "Zahlen",
-    "table": "Tabelle",
-    "text": "Text"
-  },
   "news": {
     "title": "Nachrichten",
     "readMore": "Weiterlesen",

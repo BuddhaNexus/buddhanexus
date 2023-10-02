@@ -1,7 +1,9 @@
 {
   "resultsHead": {
     "parallels": "Parallels: ",
+    "matches": "Matches: ",
     "filters": "Custom filters: {{value}}",
+    "options": "Custom options: {{value}}",
     "reset": "Reset"
   },
   "tabs": {
@@ -19,6 +21,7 @@
     "folio": "Go to selected text section",
     "folioAsLimit": "Show matches from selected text section",
     "sorting": "Sorting Method",
+    "sortDefault": "Default – Match position in source text",
     "sortSource": "Match position in source text",
     "sortParallel": "Match position in parallel texts",
     "sortLength": "Length of character match (>)",
@@ -43,5 +46,20 @@
     "includeCollections": "Only include collections",
     "excludeTexts": "Exclude texts",
     "includeTexts": "Only include texts"
+  },
+  "dbViewLabels": {
+    "view": "View",
+    "graph": "Graph",
+    "numbers": "Numbers",
+    "table": "Table",
+    "text": "Text"
+  },
+  "dbLanguageLabels": {
+    "instructions": "Database language",
+    "all": "All",
+    "pli": "Pāli",
+    "chn": "Chinese",
+    "skt": "Sanskrit",
+    "tib": "Tibetan"
   }
 }

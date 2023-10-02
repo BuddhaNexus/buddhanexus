@@ -1,7 +1,9 @@
 {
   "resultsHead": {
     "parallels": "Parallels: ",
+    "matches": "Matches: ",
     "filters": "Custom filters: {{value}}",
+    "options": "Custom options: {{value}}",
     "reset": "Reset"
   },
   "tabs": {
@@ -19,6 +21,7 @@
     "folio": "Gehe zum ausgewählten Textabschnitt",
     "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
     "sorting": "Sortiermethode",
+    "sortDefault": "Standard – Match position in source text",
     "sortSource": "Position im Quelltext abgleichen",
     "sortParallel": "Position in parallelen Texten abgleichen",
     "sortLength": "Länge des übereinstimmenden Zeichens (>)",
@@ -43,5 +46,20 @@
     "includeCollections": "Nur Sammlungen einschließen",
     "excludeTexts": "Texte ausschließen",
     "includeTexts": "Nur Texte einschließen"
+  },
+  "dbViewLabels": {
+    "view": "Sicht",
+    "graph": "Diagramm",
+    "numbers": "Zahlen",
+    "table": "Tabelle",
+    "text": "Text"
+  },
+  "dbLanguageLabels": {
+    "instructions": "Datenbank Sprache",
+    "all": "Alle",
+    "pli": "Pāli",
+    "chn": "Chinese",
+    "skt": "Sanskrit",
+    "tib": "Tibetan"
   }
 }

@@ -8,8 +8,11 @@ import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
 import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
 import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
-import { Main } from "features/sidebar/common/MuiStyledSidebarComponents";
-import { isSidebarOpenAtom, Sidebar } from "features/sidebar/Sidebar";
+import { Main } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
+import {
+  isSidebarOpenAtom,
+  SidebarSuite,
+} from "features/sidebarSuite/SidebarSuite";
 import { useAtomValue } from "jotai";
 import { SourceLanguage } from "utils/constants";
 
@@ -78,7 +81,7 @@ export const PageContainer: FC<Props> = ({
               {children}
             </Container>
           </Main>
-          <Sidebar />
+          <SidebarSuite />
         </>
       ) : (
         <Container

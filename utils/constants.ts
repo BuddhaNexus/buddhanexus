@@ -1,4 +1,4 @@
-export const enum SourceLanguage {
+export enum SourceLanguage {
   PALI = "pli",
   CHINESE = "chn",
   TIBETAN = "tib",

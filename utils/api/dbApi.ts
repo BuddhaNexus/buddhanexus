@@ -1,16 +1,18 @@
 import type { FilePropApiQuery, QueryParams } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
-import { getFolios, getParallelCount } from "./common";
 import { getParallelDownloadData } from "./downloads";
-import { getExternalLinksData } from "./externalLinks";
 import { getGraphData } from "./graph";
-import { getLanguageMenuData } from "./languageMenu";
+import { getExternalLinksData } from "./links";
+import {
+  getCategoryMenuData,
+  getSourceTextCollections,
+  getSourceTextMenuData,
+} from "./menus";
 import { getNumbersData } from "./numbers";
 import { getGlobalSearchData } from "./search";
-import { getSourceTextCollections } from "./sidebarSourceTexts";
 import { getTableData } from "./table";
-import { getCategoryMenuItems, getTextMenuItems } from "./textLists";
+import { getFolios, getParallelCount } from "./utils";
 
 export const DbApi = {
   //* VIEWS
@@ -39,32 +41,33 @@ export const DbApi = {
     call: getNumbersData,
   },
   //* MENUS
-  LanguageMenu: {
-    makeQueryKey: (language: SourceLanguage) => ["languageMenuData", language],
-    call: getLanguageMenuData,
-  },
-  TextMenu: {
-    makeQueryKey: (language: SourceLanguage) => ["textMenu", language],
-    call: getTextMenuItems,
+  SourceTextMenu: {
+    makeQueryKey: (language: SourceLanguage) => [
+      "sourceTextMenuData",
+      language,
+    ],
+    call: getSourceTextMenuData,
   },
   CategoryMenu: {
-    makeQueryKey: (language: SourceLanguage) => ["categoryMenu", language],
-    call: getCategoryMenuItems,
+    makeQueryKey: (language: SourceLanguage) => ["categoryMenuData", language],
+    call: getCategoryMenuData,
   },
   SidebarSourceTexts: {
-    makeQueryKey: (language: SourceLanguage) => ["textCollections", language],
+    makeQueryKey: (language: SourceLanguage) => [
+      "textCollectionsData",
+      language,
+    ],
     call: getSourceTextCollections,
   },
-  //* META
+  //* UTILS / SETTINGS
   ParallelCount: {
     makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
-      "parallelCount",
+      "parallelCountData",
       fileName,
       queryParams,
     ],
     call: getParallelCount,
   },
-  //* UTILS / SETTINGS
   FolioData: {
     makeQueryKey: (fileName: string) => ["foliosData", fileName],
     call: getFolios,
