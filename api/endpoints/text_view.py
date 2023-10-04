@@ -47,13 +47,12 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput):
         "limitcollection_positive": limitcollection_positive,
         "limitcollection_negative": limitcollection_negative,
     }
-
+    
     text_segments_query_result = execute_query(
         main_queries.QUERY_TEXT_AND_PARALLELS,
         bind_vars=current_bind_vars,
     )
-    
     data_with_colormaps = calculate_color_maps_text_view(
         text_segments_query_result.result[0]
-    )
+    )    
     return data_with_colormaps

@@ -2,21 +2,22 @@
 This file holds the functions for creating the colormaps.
 """
 
-
-def create_segmented_text(text, colormap, matchmap):
-    """create segmented text"""
+def create_segmented_text(text, colormap, matchmap):    
+    """Create segmented text based on the given colormap and matchmap."""
+    
+    def filter_and_sort(matches):
+        """Filter out None values and sort the matches."""
+        return sorted([x for x in matches if x is not None])
+    
     result_segments = []
     current_segment = ""
-    last_matches = matchmap[0]
-    last_matches = [x for x in last_matches if x is not None]
-    last_matches.sort()
+    last_matches = filter_and_sort(matchmap[0])
     last_color = colormap[0]
-    # consider using: for i, _ in enumerate(text):
-    for i in range(len(text)):
+
+    for i, char in enumerate(text):
         current_color = colormap[i]
-        current_matches = matchmap[i]
-        current_matches = [x for x in current_matches if x is not None]
-        current_matches.sort()
+        current_matches = filter_and_sort(matchmap[i])
+
         if current_matches != last_matches:
             result_segments.append(
                 {
@@ -26,15 +27,15 @@ def create_segmented_text(text, colormap, matchmap):
                 }
             )
             current_segment = ""
-        current_segment += text[i]
-        last_matches = current_matches
-        last_matches.sort()
-        last_color = current_color
+        
+        current_segment += char
+        last_matches, last_color = current_matches, current_color    
+    # Add the last segment
     result_segments.append(
         {"text": current_segment, "highlightColor": last_color, "matches": last_matches}
     )
+    
     return result_segments
-
 
 def create_segmented_text_color_only(text, colormap):
     """create segmented text color"""
@@ -58,8 +59,7 @@ def create_segmented_text_color_only(text, colormap):
 def calculate_color_maps_text_view(data):
     """calculates the color maps for the text view"""
     textleft = data["textleft"]
-    parallels_dict = dict(zip(data["parallel_ids"], data["parallels"]))
-    print("parallels_dict", len(parallels_dict))
+    parallels_dict = dict(zip(data["parallel_ids"], data["parallels"]))    
     for entry in textleft:
         # initialize with zeros
         segtext_len = len(entry["segtext"])
@@ -85,8 +85,8 @@ def calculate_color_maps_text_view(data):
             end = min(end, segtext_len)
             for item in range(start, end):
                 current_colormap[item] += 1
-                if id not in current_matchmap[item]:
-                    current_matchmap[item].append(id)
+                if parallel_id not in current_matchmap[item]:
+                    current_matchmap[item].append(parallel_id)
 
         entry["segtext"] = create_segmented_text(
             entry["segtext"], current_colormap, current_matchmap
