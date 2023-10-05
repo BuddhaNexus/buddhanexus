@@ -17,16 +17,7 @@ const { queryParams, local, remote } = uniqueSettings;
 // Not all filters, options and utilities are applicable for all DB languages and views. The setting menu assumes each setting component is to be rendered, unless defined in the following config objects listing contexts in which specific settings should be ommitted. For example, the `limit_collection` filter should be shown in all cases except for graph view, in any language.
 
 export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilter> = {
-  [queryParams.includeCollection]: {
-    [DbViewEnum.GRAPH]: ["allLangs"],
-  },
-  [queryParams.includeText]: {
-    [DbViewEnum.GRAPH]: ["allLangs"],
-  },
-  [queryParams.excludeCollection]: {
-    [DbViewEnum.GRAPH]: ["allLangs"],
-  },
-  [queryParams.excludeText]: {
+  [queryParams.limits]: {
     [DbViewEnum.GRAPH]: ["allLangs"],
   },
   [queryParams.targetCollection]: {
@@ -105,10 +96,7 @@ export const DEFAULT_QUERY_PARAMS_VALUES: QueryParams = {
   par_length: 25,
   folio: undefined,
   sort_method: undefined,
-  include_collection: undefined,
-  exclude_collection: undefined,
-  include_text: undefined,
-  exclude_text: undefined,
+  limits: undefined,
   target_collection: undefined,
   multi_lingual: undefined,
   language: undefined,

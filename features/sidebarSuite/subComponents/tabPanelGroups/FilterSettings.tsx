@@ -44,7 +44,7 @@ export const FilterSettings = ({
       if (!currentLang || currentLang === "all") {
         return filterList.filter(
           // This value is linked to the "include exclude" param switch statement case below and is used to identify the whole block of filters
-          (value) => value !== uniqueSettings.queryParams.includeCollection
+          (value) => value !== uniqueSettings.queryParams.limits
         );
       }
       return filterList;
@@ -84,8 +84,7 @@ export const FilterSettings = ({
           case uniqueSettings.queryParams.parLength: {
             return <ParLengthFilter key={key} />;
           }
-          // This case only tests for one of the "include exclude" params as all 4 filters are always used as a block
-          case uniqueSettings.queryParams.includeCollection: {
+          case uniqueSettings.queryParams.limits: {
             return <IncludeExcludeFilters key={key} />;
           }
           case uniqueSettings.queryParams.targetCollection: {

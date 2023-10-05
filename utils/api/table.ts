@@ -39,7 +39,7 @@ export async function getTableData({
   pageNumber,
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
   const { data } = await apiClient.POST("/table-view/table", {
-    body: { file_name: fileName, ...queryParams, limits: {}, page: pageNumber },
+    body: { file_name: fileName, limits: {}, ...queryParams, page: pageNumber },
   });
   // TODO: - remove type casting once response model is added to api
   return { data: parseAPITableData(data as ApiTablePageData), pageNumber };

@@ -1,19 +1,13 @@
 export const searchPageFilter = {
   language: "language",
   search: "search_string",
-  includeCollection: "include_collection",
-  includeText: "include_text",
-  excludeCollection: "exclude_collection",
-  excludeText: "exclude_text",
+  limits: "limits",
 } as const;
 
 export const dbPageFilter = {
   score: "score",
   parLength: "par_length",
-  includeCollection: "include_collection",
-  includeText: "include_text",
-  excludeCollection: "exclude_collection",
-  excludeText: "exclude_text",
+  limits: "limits",
   targetCollection: "target_collection",
 } as const;
 
@@ -40,10 +34,7 @@ export const utilityOption = {
 const queryParams = {
   language: searchPageFilter.language,
   searchString: searchPageFilter.search,
-  includeCollection: searchPageFilter.includeCollection,
-  includeText: searchPageFilter.includeText,
-  excludeCollection: searchPageFilter.excludeCollection,
-  excludeText: searchPageFilter.excludeText,
+  limits: searchPageFilter.limits,
   score: dbPageFilter.score,
   parLength: dbPageFilter.parLength,
   targetCollection: dbPageFilter.targetCollection,

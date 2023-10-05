@@ -1,4 +1,5 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
+import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
 import type { SourceLanguage } from "utils/constants";
 
 import type {
@@ -60,22 +61,30 @@ type QueryStringParam =
   | "multi_lingual"
   | "search_string"
   | "target_collection";
-type QueryStringArrayParam =
-  | "exclude_collection"
-  | "exclude_text"
-  | "include_collection"
-  | "include_text";
 
-type SortMethodType = "sort_method";
+export type LimitsParam = {
+  collection_positive?: CategoryMenuItem[];
+  collection_negative?: CategoryMenuItem[];
+  file_positive?: DatabaseText[];
+  file_negative?: DatabaseText[];
+};
+
+export type Limit = keyof LimitsParam;
+
+// Tecnically "limits" is not a type but TS is limited in it's ability to enforce the contents of arrays based on types, so this is being defined here as a pseduo type.
+export const limits: Limit[] = [
+  "collection_negative",
+  "collection_positive",
+  "file_negative",
+  "file_positive",
+];
+
 type SortMethod = "length2" | "position" | "quoted-text";
 
 type OptionalParams =
-  | "exclude_collection"
-  | "exclude_text"
   | "folio"
-  | "include_collection"
-  | "include_text"
   | "language"
+  | "limits"
   | "multi_lingual"
   | "search_string"
   | "sort_method"
@@ -84,19 +93,19 @@ type OptionalParams =
 /**
  * `QueryParams` defineds all query params available in the API and the types they can take (and whether or not they can be left undefined, or must have a value set).
  *
- * The nested ternary checking if the object key is in `QueryStringParam`, `QueryNumberParam`, `SortMethodType` or `QueryStringArrayParam` is unreasonably complex, but this is a common pattern in TS when you want to map different keys to different types.
+ * The nested ternary checking if the object key is in `QueryStringParam`, `QueryNumberParam` or param with a custom type is unreasonably complex, but this is a common pattern in TS when you want to map different keys to different types.
  *
- * TS is perfectly bonkers; in the condition check context, `extends` means "is in".
+ * TS is perfectly bonkers and in the condition check context, `extends` means "is in".
  */
 export type QueryParams = {
   [Key in QueryParamKeys]: Key extends QueryStringParam
     ? string | (Key extends OptionalParams ? undefined : never)
     : Key extends QueryNumberParam
     ? number
-    : Key extends SortMethodType
+    : Key extends "sort_method"
     ? SortMethod | (Key extends OptionalParams ? undefined : never)
-    : Key extends QueryStringArrayParam
-    ? string[] | (Key extends OptionalParams ? undefined : never)
+    : Key extends "limits"
+    ? LimitsParam | (Key extends OptionalParams ? undefined : never)
     : never;
 };
 
