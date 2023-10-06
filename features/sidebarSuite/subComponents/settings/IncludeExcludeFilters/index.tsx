@@ -9,8 +9,11 @@ import {
   FormLabel,
   TextField,
 } from "@mui/material";
-import type { Limit } from "features/sidebarSuite/config/types";
-import { limits, type LimitsParam } from "features/sidebarSuite/config/types";
+import {
+  type Limit,
+  limits,
+  type LimitsParam,
+} from "features/sidebarSuite/config/types";
 import { omit } from "lodash";
 import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
 import { JsonParam, useQueryParam } from "use-query-params";
@@ -49,13 +52,19 @@ const IncludeExcludeFilters = () => {
     limit: Limit,
     value: (CategoryMenuItem | DatabaseText)[]
   ) => {
-    const otherLimits = omit({ ...limitsValue }, limit);
-    const updatedLimits =
+    const otherLimits = omit({ ...limitsValue }, limit) as LimitsParam;
+    const otherLimitParams = Object.keys(otherLimits).reduce((params, key) => {
+      return {
+        ...params,
+        [key]: otherLimits?.[key as Limit]!.map((limit) => limit.id),
+      };
+    }, {});
+    const updatedLimitValues =
       value.length > 0 ? { ...otherLimits, [limit]: value } : otherLimits;
-    setLimitsValue(updatedLimits);
+    setLimitsValue(updatedLimitValues);
     setLimitsParam(
-      Object.keys(updatedLimits).length > 0
-        ? { ...updatedLimits, [limit]: value.map((limit) => limit.id) }
+      Object.keys(updatedLimitValues).length > 0
+        ? { ...otherLimitParams, [limit]: value.map((limit) => limit.id) }
         : undefined
     );
   };

@@ -106,6 +106,8 @@ export type QueryParams = {
     ? SortMethod | (Key extends OptionalParams ? undefined : never)
     : Key extends "limits"
     ? LimitsParam | (Key extends OptionalParams ? undefined : never)
+    : Key extends "target_collection"
+    ? string[] | (Key extends OptionalParams ? undefined : never)
     : never;
 };
 

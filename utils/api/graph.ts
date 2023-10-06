@@ -7,7 +7,7 @@ export async function getGraphData({
   queryParams,
 }: FilePropApiQuery): Promise<ApiGraphPageData> {
   const { data } = await apiClient.POST("/graph-view/", {
-    body: { file_name: fileName, ...queryParams },
+    body: { file_name: fileName, ...queryParams, target_collection: [] },
   });
   // TODO: - remove type casting once response model is added to api
   return data as ApiGraphPageData;
