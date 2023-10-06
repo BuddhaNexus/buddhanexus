@@ -15,8 +15,8 @@ async def get_search_results(input: SearchInput):
     Returns search results for given search string.
     :return: List of search results
     """
-    limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive)
-    limit_collection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)
+    limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include)
+    limit_collection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)
     result = []
     search_string = input.search_string.lower()
     search_strings = search_utils.preprocess_search_string(search_string[:300])
@@ -28,8 +28,8 @@ async def get_search_results(input: SearchInput):
             "search_string_skt": search_strings["skt"],
             "search_string_pli": search_strings["pli"],
             "search_string_skt_fuzzy": search_strings["skt_fuzzy"],
-            "limitcollection_positive": limitcollection_positive,
-            "limitcollection_negative": limit_collection_negative,
+            "limitcollection_positive": limitcollection_include,
+            "limitcollection_negative": limit_collection_exclude,
         }
     )
     query_result = query_search.result[0]

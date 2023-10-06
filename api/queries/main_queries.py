@@ -41,8 +41,8 @@ FOR f IN parallels_sorted_file
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
@@ -102,8 +102,8 @@ FOR f IN parallels_sorted_file
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
 
 
             LET root_seg_text = (
@@ -222,8 +222,8 @@ LET parallels =  (
             FILTER p._key == parallel_id
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
 
             FILTER POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
@@ -346,8 +346,8 @@ FOR p IN current_parallels
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels
     FILTER p.root_filename == @filename
-            FILTER LENGTH(@limitcollection_positive) == 0 OR (p.par_category IN @limitcollection_positive OR p.par_filename IN @limitcollection_positive)
-            FILTER LENGTH(@limitcollection_negative) == 0 OR (p.par_category NOT IN @limitcollection_negative AND p.par_filename NOT IN @limitcollection_negative)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
     LIMIT 15000

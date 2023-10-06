@@ -34,8 +34,8 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput):
     if input.active_segment != "none":
         start_int = get_start_integer(input.active_segment)
 
-    limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive) 
-    limitcollection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)     
+    limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include) 
+    limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)     
     current_bind_vars = {
         "parallel_ids_type": parallel_ids_type,
         "filename": input.file_name,
@@ -44,8 +44,8 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput):
         "score": input.score,
         "parlength": input.par_length,
         "multi_lingual": input.multi_lingual,
-        "limitcollection_positive": limitcollection_positive,
-        "limitcollection_negative": limitcollection_negative,
+        "limitcollection_positive": limitcollection_include,
+        "limitcollection_negative": limitcollection_exclude,
     }
     
     text_segments_query_result = execute_query(

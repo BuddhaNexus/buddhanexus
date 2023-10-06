@@ -44,8 +44,8 @@ async def get_numbers_view(input: GeneralInput):
     Endpoint for numbers view. Input parameters are the same as for table view.
     """
 
-    limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive)
-    limitcollection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)
+    limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include)
+    limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)
 
     language = get_language_from_filename(input.file_name)
 
@@ -55,8 +55,8 @@ async def get_numbers_view(input: GeneralInput):
                 "score": input.score,
                 "parlength": input.par_length,
                 "sortkey": get_sort_key(input.sort_method),
-                "limitcollection_positive": limitcollection_positive,
-                "limitcollection_negative": limitcollection_negative,
+                "limitcollection_positive": limitcollection_include,
+                "limitcollection_negative": limitcollection_exclude,
                 "page": input.page,
                 "folio": input.folio,
             }

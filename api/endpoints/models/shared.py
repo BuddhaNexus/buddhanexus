@@ -1,36 +1,29 @@
 from pydantic import BaseModel
-from fastapi import Query
 
 class Limits(BaseModel):
     """
     Limits for parallels
     """
 
-    collection_positive: list = []
-    collection_negative: list = []
-    file_positive: list = []
-    file_negative: list = []
+    limit_category_include: list
+    limit_category_exclude: list
+    limit_file_include: list
+    limit_file_exclude: list
     
 class GeneralInput(BaseModel):
-    file_name: str
+    filename: str
     score: int = 0
     par_length: int = 0
     limits: Limits
     page: int = 0
-    sort_method: str = "position"
+    sort_method: str = "parallels_sorted_by_src_pos"
     folio: str = ""
 
-class TableDownloadInput(BaseModel):
-    file_name: str
-    score: int = 0
-    par_length: int = 0
-    limits: Limits
-    sort_method: str = "position"
-    folio: str = ""
-    download_data: str = "table"
+class TableDownloadInput(GeneralInput):
+    download_data: str
 
 class MultiLangInput(BaseModel):
-    file_name: str
+    filename: str
     score: int = 0
     multi_lingual: list = []
     page: int = 0
@@ -39,6 +32,13 @@ class MultiLangInput(BaseModel):
 class SearchInput(BaseModel):
     search_string: str
     limits: Limits
+
+class MenuInput(BaseModel):
+    language: str
+
+class LinksInput(BaseModel):    
+    file_name: str = ""
+    segmentnr: str = ""
 
 class GraphInput(BaseModel):
     file_name: str = ""    
@@ -62,3 +62,13 @@ class CountMatchesInput(BaseModel):
     score = 0
     par_length = 0
     limits: Limits
+
+class FoliosInput(BaseModel):
+    file_name: str = ""
+    folio: str = ""
+
+class TaggerInput(BaseModel):
+    sanskrit_string: str 
+
+class AvailableLanguesInput(BaseModel):
+    filename: str

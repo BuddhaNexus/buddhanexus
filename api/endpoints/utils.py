@@ -15,8 +15,8 @@ async def get_counts_for_file(input: CountMatchesInput):
     """
     Returns number of filtered parallels
     """
-    limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive)
-    limitcollection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)
+    limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include)
+    limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)
 
     query_graph_result = execute_query(
         main_queries.QUERY_COUNT_MATCHES,
@@ -24,8 +24,8 @@ async def get_counts_for_file(input: CountMatchesInput):
             "filename": input.file_name,
             "score": input.score,
             "parlength": input.par_length,
-            "limitcollection_positive": limitcollection_positive,
-            "limitcollection_negative": limitcollection_negative,
+            "limitcollection_positive": limitcollection_include,
+            "limitcollection_negative": limitcollection_exclude,
         },
     )
     return {"parallel_count": query_graph_result.result[0]}

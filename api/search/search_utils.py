@@ -131,7 +131,7 @@ def postprocess_results(search_strings, results):
     results = [x for x in new_results if x is not None]
     results = [x for x in results if "centeredness" in x]
     results = remove_duplicate_results(results)
-    # results = filter_results_by_collection(results, limitcollection_positive)
+    # results = filter_results_by_collection(results, limitcollection_include)
     results = remove_duplicate_results(results)
     results = [i for n, i in enumerate(results) if i not in results[n + 1 :]]
     # First sort according to string similarity, next sort if multilang is present; the idea is that first the multilang results are shown, then the other with increasing distance

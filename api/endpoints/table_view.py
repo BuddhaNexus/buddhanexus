@@ -23,8 +23,8 @@ async def get_table_view(input: GeneralInput
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
-    limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive)
-    limitcollection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)
+    limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include)
+    limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)
     print("input.sort_method", input.sort_method)
     sortkey = get_sort_key(input.sort_method)
     print("sortkey", sortkey)
@@ -34,8 +34,8 @@ async def get_table_view(input: GeneralInput
                 "score": input.score,
                 "parlength": input.par_length,
                 "sortkey": sortkey,
-                "limitcollection_positive": limitcollection_positive,
-                "limitcollection_negative": limitcollection_negative,
+                "limitcollection_positive": limitcollection_include,
+                "limitcollection_negative": limitcollection_exclude,
                 "page": input.page,
                 "folio": input.folio,
             }
@@ -50,8 +50,8 @@ async def get_table_download(input: TableDownloadInput):
     :return: List of segments and parallels for the downloaded table view.
     """
     language = get_language_from_filename(input.file_name)
-    limitcollection_positive = create_cleaned_limit_collection(input.limits.collection_positive + input.limits.file_positive)
-    limitcollection_negative = create_cleaned_limit_collection(input.limits.collection_negative + input.limits.file_negative)
+    limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include)
+    limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)
 
     query_result = execute_query(main_queries.QUERY_TABLE_DOWNLOAD,                           
             bind_vars={
@@ -59,8 +59,8 @@ async def get_table_download(input: TableDownloadInput):
                 "score": input.score,
                 "parlength": input.par_length,
                 "sortkey": get_sort_key(input.sort_method),
-                "limitcollection_positive": limitcollection_positive,
-                "limitcollection_negative": limitcollection_negative,
+                "limitcollection_positive": limitcollection_include,
+                "limitcollection_negative": limitcollection_exclude,
                 "folio": input.folio,
             }
         )
