@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 import re 
 from ..utils import (
-    get_language_from_filename,
+    get_language_from_file_name,
     get_sort_key,
     collect_segment_results,
     get_folio_regex,
@@ -47,16 +47,16 @@ async def get_numbers_view(input: GeneralInput):
     limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include)
     limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)
 
-    language = get_language_from_filename(input.file_name)
+    language = get_language_from_file_name(input.file_name)
 
     query_result = execute_query(main_queries.QUERY_TABLE_VIEW,                            
             bind_vars={
-                "filename": input.file_name,
+                "file_name": input.file_name,
                 "score": input.score,
                 "parlength": input.par_length,
                 "sortkey": get_sort_key(input.sort_method),
-                "limitcollection_positive": limitcollection_include,
-                "limitcollection_negative": limitcollection_exclude,
+                "limitcollection_include": limitcollection_include,
+                "limitcollection_exclude": limitcollection_exclude,
                 "page": input.page,
                 "folio": input.folio,
             }

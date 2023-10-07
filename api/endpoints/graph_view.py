@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
-from ..utils import get_language_from_filename
+from ..utils import get_language_from_file_name
 from typing import List
 import re
 from .models.shared import GraphInput
@@ -21,7 +21,7 @@ async def get_graph_for_file(input: GraphInput):
     query_graph_result = execute_query(
         main_queries.QUERY_GRAPH_VIEW,
         bind_vars={
-            "filename": input.file_name,
+            "file_name": input.file_name,
             "score": input.score,
             "parlength": input.par_length,
             "targetcollection": input.target_collection,
@@ -35,13 +35,13 @@ async def get_graph_for_file(input: GraphInput):
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
-        target_filename = re.sub("_[0-9][0-9][0-9]", "", parallel["textname"])
-        if target_filename in total_histogram_dict:
-            total_histogram_dict[target_filename] += count_this_parallel
+        target_file_name = re.sub("_[0-9][0-9][0-9]", "", parallel["textname"])
+        if target_file_name in total_histogram_dict:
+            total_histogram_dict[target_file_name] += count_this_parallel
         else:
-            total_histogram_dict[target_filename] = count_this_parallel
+            total_histogram_dict[target_file_name] = count_this_parallel
 
-        collection_key = re.search(COLLECTION_PATTERN, target_filename)
+        collection_key = re.search(COLLECTION_PATTERN, target_file_name)
 
         if not collection_key:
             continue
@@ -59,7 +59,7 @@ async def get_graph_for_file(input: GraphInput):
         menu_queries.QUERY_COLLECTION_NAMES,
         bind_vars={
             "collections": collection_keys,
-            "language": get_language_from_filename(input.file_name),
+            "language": get_language_from_file_name(input.file_name),
         },
     )
     collections_with_full_name = {}
@@ -79,7 +79,7 @@ async def get_graph_for_file(input: GraphInput):
         displayname = name
         query_displayname = execute_query(
             main_queries.QUERY_DISPLAYNAME,
-            bind_vars={"filename": name},
+            bind_vars={"file_name": name},
             raw_results=True,
         )
         displayname_results = query_displayname.result

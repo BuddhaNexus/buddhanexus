@@ -5,7 +5,7 @@ from ..utils import (
     get_sort_key, 
     collect_segment_results,     
     get_folio_regex, 
-    get_language_from_filename
+    get_language_from_file_name
 )
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
@@ -30,12 +30,12 @@ async def get_table_view(input: GeneralInput
     print("sortkey", sortkey)
     query_result = execute_query(main_queries.QUERY_TABLE_VIEW,                            
             bind_vars={
-                "filename": input.file_name,
+                "file_name": input.file_name,
                 "score": input.score,
                 "parlength": input.par_length,
                 "sortkey": sortkey,
-                "limitcollection_positive": limitcollection_include,
-                "limitcollection_negative": limitcollection_exclude,
+                "limitcollection_include": limitcollection_include,
+                "limitcollection_exclude": limitcollection_exclude,
                 "page": input.page,
                 "folio": input.folio,
             }
@@ -49,18 +49,18 @@ async def get_table_download(input: TableDownloadInput):
     Endpoint for the download table. Accepts filters.
     :return: List of segments and parallels for the downloaded table view.
     """
-    language = get_language_from_filename(input.file_name)
+    language = get_language_from_file_name(input.file_name)
     limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include)
     limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)
 
     query_result = execute_query(main_queries.QUERY_TABLE_DOWNLOAD,                           
             bind_vars={
-                "filename": input.file_name,
+                "file_name": input.file_name,
                 "score": input.score,
                 "parlength": input.par_length,
                 "sortkey": get_sort_key(input.sort_method),
-                "limitcollection_positive": limitcollection_include,
-                "limitcollection_negative": limitcollection_exclude,
+                "limitcollection_include": limitcollection_include,
+                "limitcollection_exclude": limitcollection_exclude,
                 "folio": input.folio,
             }
         )
@@ -118,7 +118,7 @@ async def get_multilang(input: MultiLangInput):
     query_result = execute_query(
         main_queries.QUERY_MULTILINGUAL,
         bind_vars={
-            "filename": input.file_name,
+            "file_name": input.file_name,
             "multi_lingual": input.multi_lingual,
             "page": input.page,
             "score": input.score,

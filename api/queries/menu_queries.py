@@ -6,7 +6,7 @@ FOR file IN files
         displayName: file.displayName,
         search_field: file.search_field,
         textname: file.textname,
-        filename: file.filename,
+        file_name: file.file_name,
         category: file.category,
         available_lang: file.available_lang
     }
@@ -15,13 +15,13 @@ FOR file IN files
 QUERY_FILES_FOR_MULTILANG = """
 FOR file in files
     FILTER LENGTH(file.available_lang) > 0
-    SORT file.language, file.filename ASC
+    SORT file.language, file.file_name ASC
     RETURN {
         filelanguage: file.language,
         displayName: file.displayName,
         search_field: file.search_field,
         textname: file.textname,
-        filename: file.filename,
+        file_name: file.file_name,
         category: file.category,
         available_lang: file.available_lang
     }
@@ -32,7 +32,7 @@ FOR file IN files
         FILTER file.language == @language
         SORT file.filenr
         RETURN {
-            filename: file.filename,
+            file_name: file.file_name,
             categoryname: file.textname,
             displayname: file.displayName,
             search_field: file.search_field
@@ -74,7 +74,7 @@ FOR collection IN 1..1 OUTBOUND concat("languages/", @language) GRAPH 'collectio
                     FILTER file.category == category.category
                     SORT file.filenr
                     FILTER file
-                    RETURN { filename: file.filename, textname: file.textname, displayname: file.displayName, available_lang : file.available_lang}
+                    RETURN { file_name: file.file_name, textname: file.textname, displayname: file.displayName, available_lang : file.available_lang}
             )
             RETURN {
                 categoryname: category.category,
@@ -131,12 +131,12 @@ QUERY_FILES_PER_CATEGORY = """
 FOR file IN files_parallel_count
     FILTER file.category == @category
     FILTER file.language == @language
-    FOR filename in files
-        FILTER filename._key == file._key
+    FOR file_name in files
+        FILTER file_name._key == file._key
         SORT file.filenr
         RETURN {
-            filename: file._key,
-            displayName: filename.displayName,
+            file_name: file._key,
+            displayName: file_name.displayName,
             totallengthcount: file.totallengthcount
         }
 """

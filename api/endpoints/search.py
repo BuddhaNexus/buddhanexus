@@ -28,8 +28,8 @@ async def get_search_results(input: SearchInput):
             "search_string_skt": search_strings["skt"],
             "search_string_pli": search_strings["pli"],
             "search_string_skt_fuzzy": search_strings["skt_fuzzy"],
-            "limitcollection_positive": limitcollection_include,
-            "limitcollection_negative": limit_collection_exclude,
+            "limitcollection_include": limitcollection_include,
+            "limitcollection_exclude": limit_collection_exclude,
         }
     )
     query_result = query_search.result[0]

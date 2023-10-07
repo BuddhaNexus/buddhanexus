@@ -30,18 +30,18 @@ def get_sort_key(sort_method) -> str:
     return sort_key
 
 
-def get_language_from_filename(filename) -> str:
+def get_language_from_file_name(file_name) -> str:
     """
     Given the file ID, returns its language.
-    :param filename: The key of the file
+    :param file_name: The key of the file
     :return: Language of the file
     """
     lang = "pli"
-    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG", filename):
+    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG", file_name):
         lang = "tib"
-    elif re.search(r"(u$|u:|^Y|^XX|sc$|sc:)", filename):
+    elif re.search(r"(u$|u:|^Y|^XX|sc$|sc:)", file_name):
         lang = "skt"
-    elif re.search(r"[TX][0-9][0-9]n[0-9]", filename):
+    elif re.search(r"[TX][0-9][0-9]n[0-9]", file_name):
         lang = "chn"
     return lang
 
@@ -133,18 +133,18 @@ def get_folio_regex(language, file_name, folio) -> str:
     return start_folio
 
 
-def add_source_information(filename, query_result):
+def add_source_information(file_name, query_result):
     """
     Checks if a special source string is stored in the database.
     If not, it will return a generic message based on a regex pattern.
     Currently only works for SKT.
     TODO: We might want to add this to Pali/Chn/Tib as well in the future!
     """
-    lang = get_language_from_filename(filename)
+    lang = get_language_from_file_name(file_name)
     if lang == "skt":
         query_source_information = get_db().AQLQuery(
             query=main_queries.QUERY_SOURCE,
-            bind_vars={"filename": filename},
+            bind_vars={"file_name": file_name},
             rawResults=True,
         )
         source_id = query_source_information.result[0]["source_id"]
@@ -209,7 +209,7 @@ def get_file_text(file_name):
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_FILE_TEXT,
-            bind_vars={"filename": file_name},
+            bind_vars={"file_name": file_name},
         )
 
         if text_segments_query_result.result:

@@ -38,14 +38,14 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput):
     limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)     
     current_bind_vars = {
         "parallel_ids_type": parallel_ids_type,
-        "filename": input.file_name,
+        "file_name": input.file_name,
         "limit": 800,
         "startint": start_int,
         "score": input.score,
         "parlength": input.par_length,
         "multi_lingual": input.multi_lingual,
-        "limitcollection_positive": limitcollection_include,
-        "limitcollection_negative": limitcollection_exclude,
+        "limitcollection_include": limitcollection_include,
+        "limitcollection_exclude": limitcollection_exclude,
     }
     
     text_segments_query_result = execute_query(

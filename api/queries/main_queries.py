@@ -11,7 +11,7 @@ Rewrote 1/8 queries
 
 QUERY_FOLIOS = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file._key == @file_name
     RETURN file.folios
 """
 
@@ -34,15 +34,15 @@ RETURN FLATTEN(
 
 QUERY_TABLE_VIEW = """
 FOR f IN parallels_sorted_file
-    FILTER f._key == @filename
+    FILTER f._key == @file_name
     FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
@@ -57,7 +57,7 @@ FOR f IN parallels_sorted_file
             )
             LET par_full_names = (
                 FOR file in files
-                    FILTER file._key == p.par_filename
+                    FILTER file._key == p.par_file_name
                     RETURN {"display_name": file.displayName,
                     "text_name": file.textname,
                     "link1": file.link,
@@ -65,7 +65,7 @@ FOR f IN parallels_sorted_file
                 )
             LET root_full_names = (
                 FOR file in files
-                    FILTER file._key == p.root_filename
+                    FILTER file._key == p.root_file_name
                     RETURN {"display_name": file.displayName,
                     "text_name": file.textname,
                     "link1": file.link,
@@ -95,15 +95,15 @@ FOR f IN parallels_sorted_file
 
 QUERY_TABLE_DOWNLOAD = """
 FOR f IN parallels_sorted_file
-    FILTER f._key == @filename
+    FILTER f._key == @file_name
     FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
 
 
             LET root_seg_text = (
@@ -118,11 +118,11 @@ FOR f IN parallels_sorted_file
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
-            LET filename1 = REGEX_REPLACE(p.par_segnr[0],":.*","")
-            LET filename = REGEX_REPLACE(filename1,"_[0-9]+","")
+            LET file_name1 = REGEX_REPLACE(p.par_segnr[0],":.*","")
+            LET file_name = REGEX_REPLACE(file_name1,"_[0-9]+","")
             let displayname = (
                 FOR file IN files
-                    FILTER file._key == filename
+                    FILTER file._key == file_name
                     return file.displayName
             )
             LIMIT 20000
@@ -146,7 +146,7 @@ FOR f IN parallels_sorted_file
 QUERY_MULTILINGUAL = """
 LET parallel_ids = (
     FOR file IN files
-        FILTER file._key == @filename
+        FILTER file._key == @file_name
         FOR segmentnr IN file.segment_keys
             FOR segment in segments
                 FILTER segment._key == segmentnr
@@ -180,7 +180,7 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
 
 QUERY_FILE_TEXT = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file._key == @file_name
     LET segments = (
         FOR segmentnr IN file.segment_keys
             FOR segment in segments
@@ -198,7 +198,7 @@ RETURN {
 
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file._key == @file_name
     LET segments = (
         FOR segmentnr IN file.segment_keys
             LIMIT @startint, @limit
@@ -222,8 +222,8 @@ LET parallels =  (
             FILTER p._key == parallel_id
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
 
             FILTER POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
@@ -321,7 +321,7 @@ LET filter_target = FLATTEN(
     )
 
 FOR f in parallels_sorted_file
-    filter f._key == @filename
+    filter f._key == @file_name
     LET current_parallels = (
     for current_parallel in slice(f.parallels_randomized,0,2500)
         for p in parallels
@@ -345,9 +345,9 @@ FOR p IN current_parallels
 
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels
-    FILTER p.root_filename == @filename
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+    FILTER p.root_file_name == @file_name
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
     LIMIT 15000
@@ -357,7 +357,7 @@ FOR p IN parallels
 
 QUERY_TEXT_SEARCH = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file._key == @file_name
     FOR segment_key IN file.segment_keys
         FOR segment in segments
             FILTER segment._key == segment_key
@@ -369,19 +369,19 @@ FOR file IN files
 
 QUERY_DISPLAYNAME = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file._key == @file_name
     RETURN [file.displayName, file.textname, file.link, file.link2]
 """
 
 QUERY_LINK = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file._key == @file_name
     RETURN [file.link, file.link2]
 """
 
 QUERY_SOURCE = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file._key == @file_name
     RETURN {
         source_id: file.source,
         source_string: file.source_string
@@ -390,6 +390,6 @@ FOR file IN files
 
 QUERY_MULTILINGUAL_LANGS = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file._key == @file_name
     RETURN UNIQUE(FLATTEN([file.language, file.available_lang]))
 """

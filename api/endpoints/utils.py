@@ -21,11 +21,11 @@ async def get_counts_for_file(input: CountMatchesInput):
     query_graph_result = execute_query(
         main_queries.QUERY_COUNT_MATCHES,
         bind_vars={
-            "filename": input.file_name,
+            "file_name": input.file_name,
             "score": input.score,
             "parlength": input.par_length,
-            "limitcollection_positive": limitcollection_include,
-            "limitcollection_negative": limitcollection_exclude,
+            "limitcollection_include": limitcollection_include,
+            "limitcollection_exclude": limitcollection_exclude,
         },
     )
     return {"parallel_count": query_graph_result.result[0]}
@@ -40,7 +40,7 @@ async def get_folios_for_file(file_name: str = Query(..., description="File name
     """
     query_graph_result = execute_query(
         main_queries.QUERY_FOLIOS,
-        bind_vars={"filename": file_name},
+        bind_vars={"file_name": file_name},
     )
     folios = query_graph_result.result[0]
     return {"folios": folios}
@@ -64,7 +64,7 @@ async def get_multilingual(file_name: str = Query(..., description="File name of
     query_result = {"langList": []}
     query_displayname = execute_query(
         main_queries.QUERY_MULTILINGUAL_LANGS,
-        bind_vars={"filename": file_name},
+        bind_vars={"file_name": file_name},
         raw_results=True,
     )
     query_result = {"langList": query_displayname.result[0]}
