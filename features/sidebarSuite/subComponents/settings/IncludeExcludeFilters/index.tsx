@@ -22,10 +22,10 @@ import { ListboxComponent, StyledPopper } from "./uiComponents";
 
 // TODO: Remove on BE naming update & key alignment
 const tempi18nLabelKeys = {
-  collection_negative: "excludeCollections",
-  collection_positive: "includeCollections",
-  file_negative: "excludeTexts",
-  file_positive: "includeTexts",
+  category_exclude: "excludeCollections",
+  category_include: "includeCollections",
+  file_exclude: "excludeTexts",
+  file_include: "includeTexts",
 };
 
 const IncludeExcludeFilters = () => {

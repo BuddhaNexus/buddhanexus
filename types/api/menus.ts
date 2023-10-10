@@ -9,7 +9,7 @@ export interface ApiSourceTextBrowserData {
       files: {
         available_lang: SourceLanguage[] | null;
         displayname: string;
-        filename: string;
+        file_name: string;
         textname: string;
       }[];
     }[];
@@ -44,7 +44,7 @@ export interface ApiLanguageMenuData {
   displayName: string;
   search_field: string;
   textname: string;
-  filename: string;
+  file_name: string;
   category: string;
   available_lang: null;
 }

@@ -23,7 +23,7 @@ The project uses `[openapi-typescript](https://openapi-ts.pages.dev/introduction
 Types are generated from the API project's [OpenAPI docs page](https://buddhanexus2.kc-tbts.uni-hamburg.de/api/docs#/) by running:
 
 ```
-npx openapi-typescript https://buddhanexus2.kc-tbts.uni-hamburg.de/openapi.json -o codegen/api/v2.d.ts
+yarn openapi-ts
 ```
 
 `openapi-fetch`'s api client (instantiated in `utils/api/client.ts`) can then be used to fetch typed data ([see docs](https://openapi-ts.pages.dev/openapi-fetch/)).

@@ -5,7 +5,7 @@ import type { ApiTablePageData, TablePageData } from "types/api/table";
 function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   return apiData.map((p) => ({
     // TODO: Remove co-occurrences
-    coOccurrences: p["co-occ"],
+    // coOccurrences: p["co-occ"],
     sourceLanguage: p.src_lang,
     targetLanguage: p.tgt_lang,
     fileName: p.file_name,

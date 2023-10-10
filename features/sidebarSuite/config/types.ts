@@ -63,20 +63,20 @@ type QueryStringParam =
   | "target_collection";
 
 export type LimitsParam = {
-  collection_positive?: CategoryMenuItem[];
-  collection_negative?: CategoryMenuItem[];
-  file_positive?: DatabaseText[];
-  file_negative?: DatabaseText[];
+  category_exclude?: CategoryMenuItem[];
+  category_include?: CategoryMenuItem[];
+  file_exclude?: DatabaseText[];
+  file_include?: DatabaseText[];
 };
 
 export type Limit = keyof LimitsParam;
 
 // Tecnically "limits" is not a type but TS is limited in it's ability to enforce the contents of arrays based on types, so this is being defined here as a pseduo type.
 export const limits: Limit[] = [
-  "collection_negative",
-  "collection_positive",
-  "file_negative",
-  "file_positive",
+  "category_exclude",
+  "category_include",
+  "file_include",
+  "file_exclude",
 ];
 
 type SortMethod = "length2" | "position" | "quoted-text";

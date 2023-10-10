@@ -16,7 +16,7 @@ export type ApiTextSegment = {
 
 // Raw type from BE
 export type ApiTablePageParallel = {
-  "co-occ": number;
+  // "co-occ": number;
   file_name: string;
   src_lang: SourceLanguage;
   tgt_lang: SourceLanguage;
@@ -47,7 +47,7 @@ type FullNames = {
 
 // Type of the parsed object that's used on the FE
 export type TablePageParallel = {
-  coOccurrences: number;
+  // coOccurrences: number;
   sourceLanguage: SourceLanguage;
   targetLanguage: SourceLanguage;
   fileName: string;

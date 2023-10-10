@@ -7,8 +7,12 @@ export async function getParallelCount({
   fileName,
   queryParams,
 }: FilePropApiQuery): Promise<Record<string, number>> {
+  const limits = queryParams?.limits
+    ? JSON.parse(queryParams.limits as string)
+    : {};
+
   const { data } = await apiClient.POST("/utils/count-matches/", {
-    body: { file_name: fileName, ...queryParams, limits: {} },
+    body: { file_name: fileName, ...queryParams, limits },
   });
 
   return data as Record<string, number>;

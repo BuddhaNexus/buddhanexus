@@ -17,10 +17,10 @@ function parseSourceTextCollectionData(
     categories: categories.map(
       ({ files, categorydisplayname, categoryname }) => ({
         files: files.map(
-          ({ textname, filename, available_lang, displayname }) => ({
+          ({ textname, file_name, available_lang, displayname }) => ({
             textName: textname,
             displayName: displayname,
-            fileName: filename,
+            fileName: file_name,
             availableLanguages: available_lang,
           })
         ),
@@ -56,12 +56,12 @@ export async function getSourceTextMenuData(
   const srcTextData = data as { results: ApiLanguageMenuData[] };
   return (
     srcTextData?.results?.map((text: ApiLanguageMenuData) => {
-      const { displayName, search_field, textname, filename, category } = text;
+      const { displayName, search_field, textname, file_name, category } = text;
       return {
-        id: filename,
+        id: file_name,
         name: displayName,
         label: displayName,
-        fileName: filename,
+        fileName: file_name,
         textName: textname,
         category,
         searchMatter: search_field,

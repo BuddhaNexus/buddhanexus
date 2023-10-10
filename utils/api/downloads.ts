@@ -16,7 +16,7 @@ export async function getParallelDownloadData({
     : {};
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const path = await apiClient.POST("/table-view/download", {
-    body: { file_name: fileName, ...queryParams, limits },
+    body: { file_name: fileName, ...queryParams, limits, download_data: "" },
   });
 
   // example path: download/dn2_download.xlsx
