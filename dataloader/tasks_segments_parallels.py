@@ -46,8 +46,8 @@ SCRIPT_DIR = os.path.dirname(
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
-from api.queries import menu_queries, main_queries
-from api.utils import get_language_from_filename
+from api.queries import menu_queries
+from api.utils import get_language_from_file_name
 
 
 def load_segment_data_from_menu_files(root_url: str, threads: int, langs: list):
@@ -271,7 +271,7 @@ def load_file_parallel_counts(
     doc = {
         "_key": file["filename"],
         "category": file["category"],
-        "language": get_language_from_filename(file["filename"]),
+        "language": get_language_from_file_name(file["filename"]),
         "filenr": file["filenr"],
         "totallengthcount": total_length_count,
         "totalfilelengthcount": OrderedDict(sorted_total_file_length_count),
