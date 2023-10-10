@@ -57,7 +57,7 @@ FOR f IN parallels_sorted_file
             )
             LET par_full_names = (
                 FOR file in files
-                    FILTER file._key == p.par_file_name
+                    FILTER file._key == p.par_filename
                     RETURN {"display_name": file.displayName,
                     "text_name": file.textname,
                     "link1": file.link,
@@ -65,7 +65,7 @@ FOR f IN parallels_sorted_file
                 )
             LET root_full_names = (
                 FOR file in files
-                    FILTER file._key == p.root_file_name
+                    FILTER file._key == p.root_filename
                     RETURN {"display_name": file.displayName,
                     "text_name": file.textname,
                     "link1": file.link,
@@ -345,7 +345,7 @@ FOR p IN current_parallels
 
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels
-    FILTER p.root_file_name == @file_name
+    FILTER p.root_filename == @file_name
             FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
             FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
     FILTER p.score >= @score
