@@ -20,7 +20,8 @@ async def get_search_results(input: SearchInput):
     result = []
     search_string = input.search_string.lower()
     search_strings = search_utils.preprocess_search_string(search_string[:300])
-
+    print("LIMIT COLLECTION INCLUDE", limitcollection_include)
+    print("LIMIT COLLECTION EXCLUDE", limit_collection_exclude)
     query_search = execute_query(search_queries.QUERY_SEARCH,
         bind_vars={
             "search_string_tib": search_strings["tib"],
