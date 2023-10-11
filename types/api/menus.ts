@@ -44,7 +44,7 @@ export interface ApiLanguageMenuData {
   displayName: string;
   search_field: string;
   textname: string;
-  file_name: string;
+  filename: string;
   category: string;
   available_lang: null;
 }

@@ -56,12 +56,12 @@ export async function getSourceTextMenuData(
   const srcTextData = data as { results: ApiLanguageMenuData[] };
   return (
     srcTextData?.results?.map((text: ApiLanguageMenuData) => {
-      const { displayName, search_field, textname, file_name, category } = text;
+      const { displayName, search_field, textname, filename, category } = text;
       return {
-        id: file_name,
+        id: filename,
         name: displayName,
         label: displayName,
-        fileName: file_name,
+        fileName: filename,
         textName: textname,
         category,
         searchMatter: search_field,

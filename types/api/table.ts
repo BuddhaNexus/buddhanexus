@@ -16,7 +16,6 @@ export type ApiTextSegment = {
 
 // Raw type from BE
 export type ApiTablePageParallel = {
-  // "co-occ": number;
   file_name: string;
   src_lang: SourceLanguage;
   tgt_lang: SourceLanguage;
