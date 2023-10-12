@@ -37,10 +37,6 @@ export async function getTableData({
   queryParams,
   pageNumber,
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
-  const limits = queryParams?.limits
-    ? JSON.parse(queryParams.limits as string)
-    : {};
-
   const { data } = await apiClient.POST("/table-view/table", {
     // body: {
     //   file_name: fileName,
@@ -51,11 +47,11 @@ export async function getTableData({
     // TODO: - This is a temporary fix to enable work elsehwere. Check `getStaticPaths` functionality post BE update
     body: {
       file_name: fileName,
-      limits,
       score: 30,
       par_length: 30,
       sort_method: "position",
       ...queryParams,
+      limits: JSON.parse(queryParams.limits as string) ?? {},
       page: pageNumber,
     },
   });

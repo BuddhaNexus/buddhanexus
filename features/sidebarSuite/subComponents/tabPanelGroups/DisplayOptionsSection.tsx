@@ -1,11 +1,10 @@
-import React, { Fragment, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
-import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   FolioOption,
   SortOption,
@@ -63,6 +62,7 @@ export const DisplayOptionsSection = () => {
       <DbViewSelector />
       {options.map((option) => {
         const key = `display-option-${option}`;
+        // SEE: features/sidebarSuite/config/settings.ts for suspended setting info
 
         switch (option) {
           case uniqueSettings.queryParams.folio: {
@@ -71,21 +71,21 @@ export const DisplayOptionsSection = () => {
           case uniqueSettings.queryParams.sortMethod: {
             return <SortOption key={key} />;
           }
-          case uniqueSettings.queryParams.multiLingual: {
-            return (
-              <Fragment key={key}>{StandinSetting("multi_lingual")}</Fragment>
-            );
-          }
+          // case uniqueSettings.queryParams.multiLingual: {
+          //   return (
+          //     <React.Fragment key={key}>{StandinSetting("multi_lingual")}</React.Fragment>
+          //   );
+          // }
           case uniqueSettings.local.script: {
             return <TextScriptOption key={key} />;
           }
-          case uniqueSettings.local.showAndPositionSegmentNrs: {
-            return (
-              <Fragment key={key}>
-                {StandinSetting("showAndPositionSegmentNrs")}
-              </Fragment>
-            );
-          }
+          // case uniqueSettings.local.showAndPositionSegmentNrs: {
+          //   return (
+          //     <React.Fragment key={key}>
+          //       {StandinSetting("showAndPositionSegmentNrs")}
+          //     </React.Fragment>
+          //   );
+          // }
           default: {
             return null;
           }

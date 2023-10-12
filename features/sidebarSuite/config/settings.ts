@@ -13,13 +13,16 @@ export const dbPageFilter = {
 
 export const queriedDisplayOption = {
   folio: "folio",
-  multiLingual: "multi_lingual",
+  // disabled pending spec. Reinstate in features/sidebarSuite/subComponents/tabPanelGroups/DisplayOptionsSection.tsx case when multiLingual is supported
+  // multiLingual: "multi_lingual",
   sortMethod: "sort_method",
 } as const;
 
 export const localDisplayOption = {
   script: "script",
-  showAndPositionSegmentNrs: "showAndPositionSegmentNrs",
+  // disabled pending review. Reinstate in features/sidebarSuite/subComponents/tabPanelGroups/DisplayOptionsSection.tsx case when multiLingual is supported
+  // multiLingual: "showAndPositionSegmentNrs",
+  // showAndPositionSegmentNrs: "showAndPositionSegmentNrs",
 } as const;
 
 export const utilityOption = {
@@ -39,7 +42,7 @@ const queryParams = {
   parLength: dbPageFilter.parLength,
   targetCollection: dbPageFilter.targetCollection,
   folio: queriedDisplayOption.folio,
-  multiLingual: queriedDisplayOption.multiLingual,
+  // multiLingual: queriedDisplayOption.multiLingual,
   sortMethod: queriedDisplayOption.sortMethod,
 } as const;
 
@@ -53,7 +56,7 @@ const remote = {
  */
 const local = {
   script: localDisplayOption.script,
-  showAndPositionSegmentNrs: localDisplayOption.showAndPositionSegmentNrs,
+  // showAndPositionSegmentNrs: localDisplayOption.showAndPositionSegmentNrs,
   copyQueryTitle: utilityOption.copyQueryTitle,
   copyQueryLink: utilityOption.copyQueryLink,
   emailQueryLink: utilityOption.emailQueryLink,
