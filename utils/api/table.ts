@@ -37,6 +37,10 @@ export async function getTableData({
   queryParams,
   pageNumber,
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
+  const limits = queryParams?.limits
+    ? JSON.parse(queryParams.limits as string)
+    : {};
+
   const { data } = await apiClient.POST("/table-view/table", {
     // body: {
     //   file_name: fileName,
@@ -51,7 +55,7 @@ export async function getTableData({
       par_length: 30,
       sort_method: "position",
       ...queryParams,
-      limits: JSON.parse(queryParams.limits as string) ?? {},
+      limits,
       page: pageNumber,
     },
   });

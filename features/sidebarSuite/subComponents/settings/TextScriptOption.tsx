@@ -22,9 +22,22 @@ export default function TextScriptOption() {
     StringParam
   );
 
-  if (!SCRIPT_OPTIONS[sourceLanguage]) {
-    return null;
-  }
+  React.useEffect(() => {
+    const storedSelection = window.localStorage.getItem(
+      "tibetan-script-selection"
+    );
+
+    if (storedSelection && storedSelection !== "undefined") {
+      setScriptSelection(JSON.parse(storedSelection));
+    }
+  }, [setScriptSelection]);
+
+  React.useEffect(() => {
+    window.localStorage.setItem(
+      "tibetan-script-selection",
+      JSON.stringify(scriptSelection)
+    );
+  }, [scriptSelection]);
 
   return (
     <FormControl sx={{ width: 1 }}>
