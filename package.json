@@ -49,6 +49,7 @@
     "react-virtuoso": "^4.3.5",
     "react-window": "^1.8.9",
     "sharp": "^0.31.3",
+    "tibetan-ewts-converter": "^1.0.1",
     "use-query-params": "^2.2.0",
     "yarn": "^1.22.19"
   },
