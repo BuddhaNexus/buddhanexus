@@ -8,6 +8,7 @@ import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import {
   FolioOption,
   SortOption,
+  SourceLanguagesSelector,
   TextScriptOption,
 } from "features/sidebarSuite/subComponents/settings";
 import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
@@ -62,7 +63,6 @@ export const DisplayOptionsSection = () => {
       <DbViewSelector />
       {options.map((option) => {
         const key = `display-option-${option}`;
-        // SEE: features/sidebarSuite/config/settings.ts for suspended setting info
 
         switch (option) {
           case uniqueSettings.queryParams.folio: {
@@ -71,11 +71,10 @@ export const DisplayOptionsSection = () => {
           case uniqueSettings.queryParams.sortMethod: {
             return <SortOption key={key} />;
           }
-          // case uniqueSettings.queryParams.multiLingual: {
-          //   return (
-          //     <React.Fragment key={key}>{StandinSetting("multi_lingual")}</React.Fragment>
-          //   );
-          // }
+          case uniqueSettings.remote.availableLanguages: {
+            return <SourceLanguagesSelector key={key} />;
+          }
+          // SEE: features/sidebarSuite/config/settings.ts for suspended setting info
           case uniqueSettings.local.script: {
             return <TextScriptOption key={key} />;
           }

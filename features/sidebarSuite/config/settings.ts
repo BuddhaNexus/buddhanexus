@@ -13,20 +13,19 @@ export const dbPageFilter = {
 
 export const queriedDisplayOption = {
   folio: "folio",
-  // disabled pending spec. Reinstate in features/sidebarSuite/subComponents/tabPanelGroups/DisplayOptionsSection.tsx case when multiLingual is supported
-  // multiLingual: "multi_lingual",
   sortMethod: "sort_method",
+  availableLanguages: "multi_lingual",
 } as const;
 
 export const localDisplayOption = {
   script: "script",
-  // disabled pending review. Reinstate in features/sidebarSuite/subComponents/tabPanelGroups/DisplayOptionsSection.tsx case when multiLingual is supported
-  // multiLingual: "showAndPositionSegmentNrs",
+  // disabled pending review. Reinstate in features/sidebarSuite/subComponents/tabPanelGroups/DisplayOptionsSection.tsx case when showAndPositionSegmentNrs is supported
   // showAndPositionSegmentNrs: "showAndPositionSegmentNrs",
 } as const;
 
 export const utilityOption = {
   download: "download",
+
   copyQueryTitle: "copyQueryTitle",
   copyQueryLink: "copyQueryLink",
   emailQueryLink: "emailQueryLink",
@@ -42,14 +41,14 @@ const queryParams = {
   parLength: dbPageFilter.parLength,
   targetCollection: dbPageFilter.targetCollection,
   folio: queriedDisplayOption.folio,
-  // multiLingual: queriedDisplayOption.multiLingual,
   sortMethod: queriedDisplayOption.sortMethod,
 } as const;
 
-/** A results (.xmlx) download is triggered via an API endpoint, but is never set as a query param.
+/** Relies on an API endpoint, but a query param is not set.
  */
 const remote = {
   download: utilityOption.download,
+  availableLanguages: queriedDisplayOption.availableLanguages,
 } as const;
 
 /** No API calls needed.

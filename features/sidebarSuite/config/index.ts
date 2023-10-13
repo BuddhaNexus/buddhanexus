@@ -33,15 +33,14 @@ const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayO
       // "folio" is used as "jump to" in text view and "only show" in other applicable views
       [DbViewEnum.GRAPH]: ["allLangs"],
     },
-    // [queryParams.multiLingual]: {
-    //   [DbViewEnum.GRAPH]: ["allLangs"],
-    //   [DbViewEnum.NUMBERS]: ["allLangs"],
-    //   [DbViewEnum.TABLE]: ["allLangs"],
-    // },
     [queryParams.sortMethod]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
       [DbViewEnum.NUMBERS]: ["allLangs"],
       [DbViewEnum.TEXT]: ["allLangs"],
+    },
+    [remote.availableLanguages]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+      [DbViewEnum.NUMBERS]: ["allLangs"],
     },
   };
 
@@ -98,7 +97,6 @@ export const DEFAULT_QUERY_PARAMS_VALUES: QueryParams = {
   sort_method: undefined,
   limits: undefined,
   target_collection: undefined,
-  // multi_lingual: undefined,
   language: undefined,
   search_string: undefined,
 };
@@ -121,7 +119,8 @@ export const DEFAULT_PAR_LENGTH_VALUES: Record<SourceLanguage, number> = {
  */
 export const displaySettingChipQueries: string[] = [
   queryParams.folio,
-  // queryParams.multiLingual,
+  // TODO: confirm whether the availableLanguages selection affects the number of results returned by `/utils/count-matches/`
+  remote.availableLanguages,
   queryParams.sortMethod,
 ];
 

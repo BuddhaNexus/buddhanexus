@@ -1,5 +1,6 @@
 import apiClient from "@api";
 import type { FilePropApiQuery } from "types/api/common";
+import type { SourceLanguage } from "utils/constants";
 
 // TODO: - remove type casting once response model is added to api
 
@@ -34,4 +35,21 @@ export async function getFolios(fileName: string): Promise<DatabaseFolio[]> {
     id: folio.num,
     segmentNr: folio.segment_nr,
   }));
+}
+
+export async function getAvailableLanguages(
+  fileName: string
+): Promise<SourceLanguage[]> {
+  const { data } = await apiClient.GET("/utils/available-languages/", {
+    params: { query: { file_name: fileName } },
+  });
+
+  const awaitingTypesFromApiData = data as {
+    langList: SourceLanguage[];
+  };
+  const availableLanguages = data
+    ? awaitingTypesFromApiData.langList.filter(Boolean)
+    : [];
+
+  return availableLanguages;
 }

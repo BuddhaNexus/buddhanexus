@@ -12,7 +12,7 @@ import {
 import { getNumbersData } from "./numbers";
 import { getGlobalSearchData } from "./search";
 import { getTableData } from "./table";
-import { getFolios, getParallelCount } from "./utils";
+import { getAvailableLanguages, getFolios, getParallelCount } from "./utils";
 
 export const DbApi = {
   //* VIEWS
@@ -71,6 +71,10 @@ export const DbApi = {
   FolioData: {
     makeQueryKey: (fileName: string) => ["foliosData", fileName],
     call: getFolios,
+  },
+  AvailableLanguagesData: {
+    makeQueryKey: (fileName: string) => ["availableLanguagesData", fileName],
+    call: getAvailableLanguages,
   },
   ExternalLinksData: {
     makeQueryKey: (fileName: string) => ["externalLinkData", fileName],

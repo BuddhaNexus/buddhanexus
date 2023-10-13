@@ -20,6 +20,7 @@
     "script": "Select text script",
     "folio": "Go to selected text section",
     "folioAsLimit": "Show matches from selected text section",
+    "availableLanguages": "Text Languages",
     "sorting": "Sorting Method",
     "sortDefault": "Default – Match position in source text",
     "sortSource": "Match position in source text",
