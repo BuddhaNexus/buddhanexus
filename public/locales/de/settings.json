@@ -21,7 +21,7 @@
     "folioAsGoTo": "Gehe zum ausgewählten Textabschnitt",
     "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
     "folioShowAll": "Hele tekst",
-    "availableLanguages": "Teksttalen",
+    "availableLanguages": "Parallelle teksttalen",
     "sorting": "Sortiermethode",
     "sortDefault": "Standard – Match position in source text",
     "sortSource": "Position im Quelltext abgleichen",
@@ -59,6 +59,7 @@
   "dbLanguageLabels": {
     "instructions": "Datenbank Sprache",
     "all": "Alle",
+    "none": "Keine",
     "pli": "Pāli",
     "chn": "Chinees",
     "skt": "Sanskriet",

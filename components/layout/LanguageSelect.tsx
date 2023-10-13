@@ -1,8 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
+import LanguageIcon from "@mui/icons-material/Language";
 import { IconButton, Menu } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import type { SupportedLocale } from "types/i18next";
+// import CheckIcon from '@mui/icons-material/Check';
 
 type LocaleLabels = {
   [key in SupportedLocale]: { flag: string; full: string };
@@ -16,7 +18,7 @@ const localeLabels: LocaleLabels = {
 export default function LanguageSelect() {
   const router = useRouter();
   const { pathname, query, asPath } = router;
-  const locale = router.locale as SupportedLocale;
+  // const locale = router.locale as SupportedLocale;
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const isOpen = Boolean(anchorEl);
@@ -36,13 +38,14 @@ export default function LanguageSelect() {
     <div>
       <IconButton
         id="basic-button"
+        color="inherit"
         aria-controls={isOpen ? "language-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={isOpen ? "true" : undefined}
-        sx={{ fontSize: "1.5rem" }}
+        // sx={{ fontSize: "1.5rem" }}
         onClick={handleClick}
       >
-        {localeLabels[locale].flag}
+        <LanguageIcon sx={{ fontSize: 24 }} color="inherit" />
       </IconButton>
       <Menu
         id="language-menu"
@@ -60,6 +63,7 @@ export default function LanguageSelect() {
             <MenuItem
               key={locale}
               value={locale}
+              lang={locale}
               onClick={() => handleLanguageSwitched(locale)}
             >
               {localeLabels[locale].full}

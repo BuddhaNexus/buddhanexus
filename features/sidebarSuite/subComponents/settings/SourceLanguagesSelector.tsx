@@ -6,8 +6,10 @@ import {
   CircularProgress,
   FormControl,
   InputLabel,
+  ListItemText,
   MenuItem,
 } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import Select from "@mui/material/Select";
@@ -58,9 +60,10 @@ const SourceLanguagesSelector = () => {
     ArrayParam
   );
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   React.useEffect(() => {
     setSelectedLanguages(selectedLanguages ?? data);
-  }, [setSelectedLanguages, data, selectedLanguages, isLoading]);
+  }, [setSelectedLanguages, isLoading]);
 
   const handleChange = (event: SelectChangeEvent<typeof selectedLanguages>) => {
     const {
@@ -104,7 +107,19 @@ const SourceLanguagesSelector = () => {
               <OutlinedInput label={t("optionsLabels.availableLanguages")} />
             }
             MenuProps={MenuProps}
+            renderValue={(selected) => {
+              const renderedSelection = selected
+                .map((selection) =>
+                  t(
+                    `dbLanguageLabels.${selection as unknown as SourceLanguage}`
+                  )
+                )
+                .join(", ");
+
+              return renderedSelection;
+            }}
             multiple
+            displayEmpty
             onChange={handleChange}
           >
             {data?.map((lang: SourceLanguage) => {
@@ -118,7 +133,14 @@ const SourceLanguagesSelector = () => {
                     theme
                   )}
                 >
-                  {t(`dbLanguageLabels.${lang}`)}
+                  <Checkbox
+                    checked={
+                      selectedLanguages
+                        ? selectedLanguages.includes(lang)
+                        : false
+                    }
+                  />
+                  <ListItemText primary={t(`dbLanguageLabels.${lang}`)} />
                 </MenuItem>
               );
             })}
