@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   CircularProgress,
@@ -13,11 +14,9 @@ import { StringParam, useQueryParam } from "use-query-params";
 import { DbApi } from "utils/api/dbApi";
 import type { DatabaseFolio } from "utils/api/utils";
 
-// TODO: translate
-const showAll = "Whole text";
-
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
+  const { t } = useTranslation("settings");
   const { fileName, defaultParamConfig, uniqueSettings } = useDbQueryParams();
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
@@ -33,14 +32,16 @@ export default function FolioOption() {
     setFolioParam(folioParam ?? defaultParamConfig.folio);
   }, [folioParam, setFolioParam, defaultParamConfig]);
 
+  const showAll = t("optionsLabels.folioShowAll");
+
   const handleSelectChange = (value: string) => {
     setFolioParam(value === showAll ? null : value);
   };
 
   return (
-    <Box sx={{ width: 1, mb: 2 }}>
+    <Box sx={{ width: 1, m: 2 }}>
       <FormLabel id="folio-option-selector-label">
-        Show matches for text sub-section
+        {t("optionsLabels.folioAsLimit")}
       </FormLabel>
       <FormControl sx={{ width: 1 }}>
         {isLoading ? (

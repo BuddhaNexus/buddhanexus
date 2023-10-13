@@ -18,8 +18,9 @@
   },
   "optionsLabels": {
     "script": "Select text script",
-    "folio": "Go to selected text section",
+    "folioAsGoTo": "Go to selected text section",
     "folioAsLimit": "Show matches from selected text section",
+    "folioShowAll": "Whole text",
     "availableLanguages": "Text Languages",
     "sorting": "Sorting Method",
     "sortDefault": "Default – Match position in source text",

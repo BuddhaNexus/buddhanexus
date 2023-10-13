@@ -18,8 +18,9 @@
   },
   "optionsLabels": {
     "script": "Textskript auswählen",
-    "folio": "Gehe zum ausgewählten Textabschnitt",
+    "folioAsGoTo": "Gehe zum ausgewählten Textabschnitt",
     "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
+    "folioShowAll": "Hele tekst",
     "availableLanguages": "Teksttalen",
     "sorting": "Sortiermethode",
     "sortDefault": "Standard – Match position in source text",
