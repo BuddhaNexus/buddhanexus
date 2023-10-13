@@ -41,7 +41,7 @@ export default function FolioOption() {
 
   return (
     <Box sx={{ width: 1, my: 2 }}>
-      <FormControl sx={{ width: 1 }}>
+      <FormControl sx={{ width: 1 }} title={t("optionsLabels.folioAsLimit")}>
         <InputLabel id="folio-option-selector-label">
           {t("optionsLabels.folioAsLimit")}
         </InputLabel>
