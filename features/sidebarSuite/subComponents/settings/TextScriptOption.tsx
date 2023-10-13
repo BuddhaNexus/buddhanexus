@@ -11,7 +11,7 @@ export type Script = "Unicode" | "Wylie";
 const SCRIPT_OPTIONS: Partial<Record<SourceLanguage, Script[]>> = {
   tib: ["Unicode", "Wylie"],
 };
-const DEFALT_SCRIPT = "Unicode";
+const DEFAULT_SCRIPT = "Unicode";
 
 // TODO: add convertion to text-view on view completion
 export default function TextScriptOption() {
@@ -47,7 +47,7 @@ export default function TextScriptOption() {
         id="sort-option-selector"
         aria-labelledby="sort-option-selector-label"
         defaultValue="position"
-        value={scriptSelection ?? DEFALT_SCRIPT}
+        value={scriptSelection ?? DEFAULT_SCRIPT}
         onChange={(e) => setScriptSelection(e.target.value as Script)}
       >
         {SCRIPT_OPTIONS[sourceLanguage]?.map((script) => {
