@@ -2,7 +2,8 @@ import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
-import { StringParam, useQueryParam } from "use-query-params";
+import { scriptSelectionAtom } from "features/atoms";
+import { useAtom } from "jotai";
 import type { SourceLanguage } from "utils/constants";
 
 export type Script = "Unicode" | "Wylie";
@@ -14,13 +15,10 @@ const DEFALT_SCRIPT = "Unicode";
 
 // TODO: add convertion to text-view on view completion
 export default function TextScriptOption() {
-  const { sourceLanguage, uniqueSettings } = useDbQueryParams();
+  const { sourceLanguage } = useDbQueryParams();
   const { t } = useTranslation("settings");
 
-  const [scriptSelection, setScriptSelection] = useQueryParam(
-    uniqueSettings.local.script,
-    StringParam
-  );
+  const [scriptSelection, setScriptSelection] = useAtom(scriptSelectionAtom);
 
   React.useEffect(() => {
     const storedSelection = window.localStorage.getItem(
@@ -50,7 +48,7 @@ export default function TextScriptOption() {
         aria-labelledby="sort-option-selector-label"
         defaultValue="position"
         value={scriptSelection ?? DEFALT_SCRIPT}
-        onChange={(e) => setScriptSelection(e.target.value)}
+        onChange={(e) => setScriptSelection(e.target.value as Script)}
       >
         {SCRIPT_OPTIONS[sourceLanguage]?.map((script) => {
           return (

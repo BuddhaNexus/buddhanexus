@@ -13,7 +13,7 @@ import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { isNavigationDrawerOpen } from "features/atoms/layout";
+import { isNavigationDrawerOpen } from "features/atoms";
 import { GlobalSearchDesktop, GlobalSearchMobile } from "features/globalSearch";
 import { useSetAtom } from "jotai";
 

@@ -23,8 +23,6 @@ export const getQueryParamsFromRouter = ({
 }): URLSearchParams => {
   const apiEndpointparams = new URLSearchParams(params);
   apiEndpointparams.delete("file");
-  // "script" param is not an api param, so is removed to prevent unnecessary requests being triggered
-  apiEndpointparams.delete("script");
 
   if (!route.startsWith("/search")) {
     apiEndpointparams.delete("language");

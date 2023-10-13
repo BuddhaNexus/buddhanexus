@@ -1,6 +1,7 @@
-import { useSearchParams } from "next/navigation";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Typography } from "@mui/material";
+import { scriptSelectionAtom } from "features/atoms";
+import { useAtomValue } from "jotai";
 import { EwtsConverter } from "tibetan-ewts-converter";
 import type { ApiTextSegment } from "types/api/table";
 import { SourceLanguage } from "utils/constants";
@@ -12,14 +13,15 @@ interface Props {
 export const ParallelSegmentText = ({ text }: Props) => {
   const ewts = new EwtsConverter();
 
-  const { uniqueSettings, sourceLanguage } = useDbQueryParams();
-  const scriptParam = useSearchParams().get(uniqueSettings.local.script);
+  const { sourceLanguage } = useDbQueryParams();
+  const scriptSelection = useAtomValue(scriptSelectionAtom);
 
   return (
     <>
       {text.map(({ text, highlightColor }) => {
         const renderText =
-          scriptParam === "Wylie" && sourceLanguage === SourceLanguage.TIBETAN
+          scriptSelection === "Wylie" &&
+          sourceLanguage === SourceLanguage.TIBETAN
             ? ewts.to_unicode(text)
             : text;
         return (
