@@ -4,8 +4,9 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   CircularProgress,
   FormControl,
-  FormLabel,
+  InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
 } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -39,17 +40,18 @@ export default function FolioOption() {
   };
 
   return (
-    <Box sx={{ width: 1, m: 2 }}>
-      <FormLabel id="folio-option-selector-label">
-        {t("optionsLabels.folioAsLimit")}
-      </FormLabel>
+    <Box sx={{ width: 1, my: 2 }}>
       <FormControl sx={{ width: 1 }}>
+        <InputLabel id="folio-option-selector-label">
+          {t("optionsLabels.folioAsLimit")}
+        </InputLabel>
         {isLoading ? (
           <Select
+            labelId="folio-option-selector-label"
             id="folio-option-selector"
-            aria-labelledby="folio-option-selector-label"
             displayEmpty={true}
             value={showAll}
+            input={<OutlinedInput label={t("optionsLabels.folioAsLimit")} />}
           >
             <MenuItem value={showAll}>
               <em>{showAll}</em>
@@ -60,9 +62,10 @@ export default function FolioOption() {
           </Select>
         ) : (
           <Select
+            labelId="folio-option-selector-label"
             id="folio-option-selector"
-            aria-labelledby="folio-option-selector-label"
             displayEmpty={true}
+            input={<OutlinedInput label={t("optionsLabels.folioAsLimit")} />}
             value={folioParam ?? showAll}
             onChange={(e) => handleSelectChange(e.target.value)}
           >
@@ -72,14 +75,9 @@ export default function FolioOption() {
             {data &&
               data.length > 1 &&
               data.map((folio: DatabaseFolio) => {
-                // TODO: confirm that 0 should always be skipped (as with pli)
-                if (folio.id === "0") {
-                  return null;
-                }
-
                 return (
                   <MenuItem key={folio.id} value={folio.id}>
-                    {folio.id}
+                    {folio.segmentNr}
                   </MenuItem>
                 );
               })}

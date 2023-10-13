@@ -76,7 +76,7 @@ const SourceLanguagesSelector = () => {
   return (
     <Box sx={{ width: 1, my: 2 }}>
       <FormControl sx={{ width: 1 }}>
-        <InputLabel id="demo-multiple-name-label">
+        <InputLabel id="text-languages-selector-label">
           {t("optionsLabels.availableLanguages")}
         </InputLabel>
         {isLoading ? (
