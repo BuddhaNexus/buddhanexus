@@ -24,6 +24,7 @@ export const TextSegment = ({
 
   return (
     <section
+      style={{ display: "inline" }}
       className={`${styles.segmentContainer} ${
         isSelected && styles.segmentContainer__selected
       }`}
@@ -51,10 +52,20 @@ export const TextSegment = ({
             //     sort_method: "position",
             //   },
             // }}
-            className={styles.segment}
-            style={{ color: colorScale(highlightColor).hex() }}
+            className={`${styles.segment} ${
+              isSelected && styles.segment__selected
+            }`}
+            style={{
+              color: colorScale(highlightColor).hex(),
+              wordWrap: "break-word",
+            }}
             onClick={() => setSelectedSegmentId(segmentNumber)}
-            onKeyDown={() => setSelectedSegmentId(segmentNumber)}
+            onKeyDown={(event) => {
+              // allow selecting the segments by pressing space or enter
+              if (event.key !== " " && event.key !== "Enter") return;
+              event.preventDefault();
+              setSelectedSegmentId(segmentNumber);
+            }}
           >
             {text}
           </span>

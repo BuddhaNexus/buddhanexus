@@ -43,30 +43,26 @@ export default function TextView({
 
   const colorScale = chroma
     .scale("Reds")
+    .correctLightness(true)
+    .padding(isDarkTheme ? [0, 0.4] : [0.4, 0])
     // small trick to make it readable in both color schemes
     .domain(isDarkTheme ? [minColor, maxColor] : [maxColor, minColor]);
 
   return (
-    <Paper elevation={1} sx={{ flex: 1, p: 2, my: 1 }}>
-      {/* {data.map((segmentData, index) => (*/}
-      {/*  <TextSegment*/}
-      {/*    index={index}*/}
-      {/*    data={segmentData}*/}
-      {/*    color={colorHelix(segmentData.segmentText[0].highlightColor).hex()}*/}
-      {/*  />*/}
-      {/* ))}*/}
-
-      <Virtuoso
-        totalCount={data.length}
-        data={data}
-        itemContent={(index, data) => (
-          <TextSegment index={index} data={data} colorScale={colorScale} />
-        )}
-        endReached={onEndReached}
-        startReached={onStartReached}
-        overscan={20}
-        components={{ Footer }}
-      />
+    <Paper elevation={1} sx={{ flex: 1, py: 2, pl: 2, my: 1 }}>
+      <div style={{ width: "100%", height: "100%", paddingRight: 2 }}>
+        <Virtuoso
+          totalCount={data.length}
+          data={data}
+          itemContent={(index, data) => (
+            <TextSegment index={index} data={data} colorScale={colorScale} />
+          )}
+          endReached={onEndReached}
+          startReached={onStartReached}
+          overscan={20}
+          components={{ Footer }}
+        />
+      </div>
     </Paper>
   );
 }
