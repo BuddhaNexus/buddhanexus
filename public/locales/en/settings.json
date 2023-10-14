@@ -16,10 +16,15 @@
     "tools": "Tools",
     "links": "Links"
   },
+  "search": {
+    "placeholder": "Search..."
+  },
   "optionsLabels": {
     "script": "Select text script",
-    "folio": "Go to selected text section",
+    "folioAsGoTo": "Go to selected text section",
     "folioAsLimit": "Show matches from selected text section",
+    "folioShowAll": "Whole text",
+    "availableLanguages": "Parallel text Languages",
     "sorting": "Sorting Method",
     "sortDefault": "Default – Match position in source text",
     "sortSource": "Match position in source text",
@@ -42,10 +47,10 @@
     "score": "Similarity Score:",
     "minMatch": "Minimum character/syllable matches length",
     "includeExcludeFilters": "Includes and Exclude items",
-    "excludeCollections": "Exclude collections",
-    "includeCollections": "Only include collections",
-    "excludeTexts": "Exclude texts",
-    "includeTexts": "Only include texts"
+    "category_exclude": "Exclude collections",
+    "category_include": "Only include collections",
+    "file_exclude": "Exclude texts",
+    "file_include": "Only include texts"
   },
   "dbViewLabels": {
     "view": "View",
@@ -57,6 +62,8 @@
   "dbLanguageLabels": {
     "instructions": "Database language",
     "all": "All",
+    "none": "None",
+    "loading": "Loading...",
     "pli": "Pāli",
     "chn": "Chinese",
     "skt": "Sanskrit",

@@ -1,5 +1,5 @@
 import apiClient from "@api";
-import type { ViewPropApiQuery } from "types/api/common";
+import type { FilePropApiQuery } from "types/api/common";
 
 import { RESULTS_DOWNLOAD_ROOT_URL } from "./constants";
 
@@ -8,12 +8,15 @@ import { RESULTS_DOWNLOAD_ROOT_URL } from "./constants";
 export async function getParallelDownloadData({
   fileName,
   queryParams,
-}: ViewPropApiQuery): Promise<{ url: string; name: string } | undefined> {
+}: FilePropApiQuery): Promise<{ url: string; name: string } | undefined> {
   // this triggers the creation of an excel sheet of the data for the current view (table & number only) for the user to download. The sheet is generated on the backend and lives in a folder on the HDD of the server for a while and gets removed after a few days.
 
+  const limits = queryParams?.limits
+    ? JSON.parse(queryParams.limits as string)
+    : {};
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const path = await apiClient.POST("/table-view/download", {
-    body: { file_name: fileName, ...queryParams, limits: {} },
+    body: { file_name: fileName, ...queryParams, limits, download_data: "" },
   });
 
   // example path: download/dn2_download.xlsx

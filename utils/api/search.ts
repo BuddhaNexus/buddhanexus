@@ -24,7 +24,7 @@ function parseAPISearchData(apiData: any): SearchPageResults {
       id: result._key,
       segmentNumbers: result.segment_nr,
       matchString: result.search_string_precise,
-      fileName: result.filename,
+      fileName: result.file_name,
       matchOffsetStart: result.offset_beg,
       matchOffsetEnd: result.offset_end,
       matchCenteredness: result.centeredness,
@@ -39,14 +39,19 @@ function parseAPISearchData(apiData: any): SearchPageResults {
 export async function getGlobalSearchData({
   searchTerm,
   pageNumber,
+  queryParams,
 }: InfiniteSerachApiQuery): Promise<PagedResponse<SearchPageData>> {
   // IN DEVELOPMENT
   // TODO: Add pagination on BE
   //  - remove type casting once response model is added to api
   //  - review parsed prop nams.
+  const limits = queryParams?.limits
+    ? JSON.parse(queryParams.limits as string)
+    : {};
 
   const { data } = await apiClient.POST("/search/", {
-    body: { search_string: searchTerm, limits: {} },
+    // page: 0
+    body: { search_string: searchTerm, limits },
   });
 
   const castData = data as { searchResults: any[] };

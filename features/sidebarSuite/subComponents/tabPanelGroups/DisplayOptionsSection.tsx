@@ -1,14 +1,14 @@
-import React, { Fragment, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
-import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   FolioOption,
   SortOption,
+  SourceLanguagesSelector,
   TextScriptOption,
 } from "features/sidebarSuite/subComponents/settings";
 import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
@@ -71,21 +71,20 @@ export const DisplayOptionsSection = () => {
           case uniqueSettings.queryParams.sortMethod: {
             return <SortOption key={key} />;
           }
-          case uniqueSettings.queryParams.multiLingual: {
-            return (
-              <Fragment key={key}>{StandinSetting("multi_lingual")}</Fragment>
-            );
+          case uniqueSettings.remote.availableLanguages: {
+            return <SourceLanguagesSelector key={key} />;
           }
+          // SEE: features/sidebarSuite/config/settings.ts for suspended setting info
           case uniqueSettings.local.script: {
             return <TextScriptOption key={key} />;
           }
-          case uniqueSettings.local.showAndPositionSegmentNrs: {
-            return (
-              <Fragment key={key}>
-                {StandinSetting("showAndPositionSegmentNrs")}
-              </Fragment>
-            );
-          }
+          // case uniqueSettings.local.showAndPositionSegmentNrs: {
+          //   return (
+          //     <React.Fragment key={key}>
+          //       {StandinSetting("showAndPositionSegmentNrs")}
+          //     </React.Fragment>
+          //   );
+          // }
           default: {
             return null;
           }

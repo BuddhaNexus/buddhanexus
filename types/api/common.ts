@@ -1,4 +1,5 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
+import type { QueryParams } from "features/sidebarSuite/config/types";
 
 export interface ApiGraphPageData {
   histogramgraphdata: [name: string, count: number][];
@@ -16,22 +17,22 @@ export interface APIResponse<T> {
 
 export type PagedResponse<T> = { pageNumber: number; data: T };
 
-export type QueryParams = Partial<URLSearchParams>;
+export type Params = Partial<QueryParams>;
 
 export interface FilePropApiQuery {
   fileName: string;
-  queryParams: QueryParams;
+  queryParams: Params;
 }
 
 export interface InfiniteFilePropApiQuery {
   fileName: string;
-  queryParams: QueryParams;
+  queryParams: Params;
   pageNumber: number;
 }
 
 export interface InfiniteSerachApiQuery {
   searchTerm: string;
-  queryParams: QueryParams;
+  queryParams: Params;
   pageNumber: number;
 }
 

@@ -14,19 +14,10 @@ import type {
 
 const { queryParams, local, remote } = uniqueSettings;
 
-// Not all filters, options and utilities are applicable for all DB languages and views. The setting menu assumes each setting component is to be rendered, unless defined in the following config objects listing contexts in which specific settings should be ommitted. For example, the `limit_collection` filter should be shown in all cases except for graph view, in any language.
+// Not all filters, options and utilities are applicable for all DB languages and views. The setting menu assumes each setting component is to be rendered, unless defined in the following config objects listing contexts in which specific settings should be ommitted. For example, the `limits` filter should be shown in all cases except for graph view, in any language.
 
 export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilter> = {
-  [queryParams.includeCollection]: {
-    [DbViewEnum.GRAPH]: ["allLangs"],
-  },
-  [queryParams.includeText]: {
-    [DbViewEnum.GRAPH]: ["allLangs"],
-  },
-  [queryParams.excludeCollection]: {
-    [DbViewEnum.GRAPH]: ["allLangs"],
-  },
-  [queryParams.excludeText]: {
+  [queryParams.limits]: {
     [DbViewEnum.GRAPH]: ["allLangs"],
   },
   [queryParams.targetCollection]: {
@@ -42,15 +33,14 @@ const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayO
       // "folio" is used as "jump to" in text view and "only show" in other applicable views
       [DbViewEnum.GRAPH]: ["allLangs"],
     },
-    [queryParams.multiLingual]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-      [DbViewEnum.NUMBERS]: ["allLangs"],
-      [DbViewEnum.TABLE]: ["allLangs"],
-    },
     [queryParams.sortMethod]: {
       [DbViewEnum.GRAPH]: ["allLangs"],
       [DbViewEnum.NUMBERS]: ["allLangs"],
       [DbViewEnum.TEXT]: ["allLangs"],
+    },
+    [remote.availableLanguages]: {
+      [DbViewEnum.GRAPH]: ["allLangs"],
+      [DbViewEnum.NUMBERS]: ["allLangs"],
     },
   };
 
@@ -70,11 +60,11 @@ const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptio
         SourceLanguage.SANSKRIT,
       ],
     },
-    [local.showAndPositionSegmentNrs]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-      [DbViewEnum.NUMBERS]: ["allLangs"],
-      [DbViewEnum.TABLE]: ["allLangs"],
-    },
+    // [local.showAndPositionSegmentNrs]: {
+    //   [DbViewEnum.GRAPH]: ["allLangs"],
+    //   [DbViewEnum.NUMBERS]: ["allLangs"],
+    //   [DbViewEnum.TABLE]: ["allLangs"],
+    // },
   };
 
 export const DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<DisplayOption> =
@@ -105,12 +95,8 @@ export const DEFAULT_QUERY_PARAMS_VALUES: QueryParams = {
   par_length: 25,
   folio: undefined,
   sort_method: undefined,
-  include_collection: undefined,
-  exclude_collection: undefined,
-  include_text: undefined,
-  exclude_text: undefined,
+  limits: undefined,
   target_collection: undefined,
-  multi_lingual: undefined,
   language: undefined,
   search_string: undefined,
 };
@@ -133,7 +119,8 @@ export const DEFAULT_PAR_LENGTH_VALUES: Record<SourceLanguage, number> = {
  */
 export const displaySettingChipQueries: string[] = [
   queryParams.folio,
-  queryParams.multiLingual,
+  // TODO: confirm whether the availableLanguages selection affects the number of results returned by `/utils/count-matches/`
+  remote.availableLanguages,
   queryParams.sortMethod,
 ];
 

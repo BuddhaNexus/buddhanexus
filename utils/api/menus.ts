@@ -17,10 +17,10 @@ function parseSourceTextCollectionData(
     categories: categories.map(
       ({ files, categorydisplayname, categoryname }) => ({
         files: files.map(
-          ({ textname, filename, available_lang, displayname }) => ({
+          ({ textname, file_name, available_lang, displayname }) => ({
             textName: textname,
             displayName: displayname,
-            fileName: filename,
+            fileName: file_name,
             availableLanguages: available_lang,
           })
         ),

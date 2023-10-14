@@ -1,4 +1,4 @@
-import type { FilePropApiQuery, QueryParams } from "types/api/common";
+import type { FilePropApiQuery, Params } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
 import { getParallelDownloadData } from "./downloads";
@@ -12,7 +12,7 @@ import {
 import { getNumbersData } from "./numbers";
 import { getGlobalSearchData } from "./search";
 import { getTableData } from "./table";
-import { getFolios, getParallelCount } from "./utils";
+import { getAvailableLanguages, getFolios, getParallelCount } from "./utils";
 
 export const DbApi = {
   //* VIEWS
@@ -72,6 +72,10 @@ export const DbApi = {
     makeQueryKey: (fileName: string) => ["foliosData", fileName],
     call: getFolios,
   },
+  AvailableLanguagesData: {
+    makeQueryKey: (fileName: string) => ["availableLanguagesData", fileName],
+    call: getAvailableLanguages,
+  },
   ExternalLinksData: {
     makeQueryKey: (fileName: string) => ["externalLinkData", fileName],
     call: getExternalLinksData,
@@ -90,7 +94,7 @@ export const DbApi = {
       queryParams,
     }: {
       searchTerm: string;
-      queryParams: QueryParams;
+      queryParams: Params;
     }) => ["globalSearchData", searchTerm, queryParams],
     call: getGlobalSearchData,
   },

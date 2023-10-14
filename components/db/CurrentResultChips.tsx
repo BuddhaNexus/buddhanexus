@@ -61,6 +61,7 @@ export default function CurrentResultChips({
   const isSearchRoute = router.route.startsWith("/search");
   const { queryParams, defaultQueryParams } = useDbQueryParams();
 
+  // TODO: fix count return
   const count = getSettingCounts({
     currentQueries: queryParams,
     defaultQueries: defaultQueryParams,

@@ -3,7 +3,11 @@ import type { UserConfig } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { getSourceTextMenuData } from "./api/menus";
-import { ALL_LOCALES, SOURCE_LANGUAGES, SourceLanguage } from "./constants";
+import {
+  SOURCE_LANGUAGES,
+  SourceLanguage,
+  SUPPORTED_LOCALES,
+} from "./constants";
 
 interface I18nProps {
   props: {
@@ -38,7 +42,10 @@ export const getI18NextStaticProps: (
 };
 
 const sourceLanguagePaths = SOURCE_LANGUAGES.flatMap((language) =>
-  ALL_LOCALES.map((locale) => ({ params: { language }, locale }))
+  Object.keys(SUPPORTED_LOCALES).map((locale) => ({
+    params: { language },
+    locale,
+  }))
 );
 
 export const getSourceLanguageStaticPaths: GetStaticPaths = () => ({
@@ -77,7 +84,10 @@ export const getDbViewFileStaticPaths: GetStaticPaths = async () => {
   return {
     paths: allFilenames.flatMap(({ language, filenames }) =>
       filenames.flatMap((file) =>
-        ALL_LOCALES.map((locale) => ({ params: { language, file }, locale }))
+        Object.keys(SUPPORTED_LOCALES).map((locale) => ({
+          params: { language, file },
+          locale,
+        }))
       )
     ),
     fallback: true,

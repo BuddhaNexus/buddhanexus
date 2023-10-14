@@ -16,10 +16,15 @@
     "tools": "Werkzeuge",
     "links": "Links"
   },
+  "search": {
+    "placeholder": "Suche..."
+  },
   "optionsLabels": {
     "script": "Textskript auswählen",
-    "folio": "Gehe zum ausgewählten Textabschnitt",
+    "folioAsGoTo": "Gehe zum ausgewählten Textabschnitt",
     "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
+    "folioShowAll": "Hele tekst",
+    "availableLanguages": "Parallelle teksttalen",
     "sorting": "Sortiermethode",
     "sortDefault": "Standard – Match position in source text",
     "sortSource": "Position im Quelltext abgleichen",
@@ -42,10 +47,10 @@
     "score": "Similarity Score:",
     "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
     "includeExcludeFilters": "Elemente ein- und ausschließen",
-    "excludeCollections": "Sammlungen ausschließen",
-    "includeCollections": "Nur Sammlungen einschließen",
-    "excludeTexts": "Texte ausschließen",
-    "includeTexts": "Nur Texte einschließen"
+    "category_exclude": "Sammlungen ausschließen",
+    "category_include": "Nur Sammlungen einschließen",
+    "file_exclude": "Texte ausschließen",
+    "file_include": "Nur Texte einschließen"
   },
   "dbViewLabels": {
     "view": "Sicht",
@@ -57,9 +62,11 @@
   "dbLanguageLabels": {
     "instructions": "Datenbank Sprache",
     "all": "Alle",
+    "none": "Keine",
+    "loading": "Wird geladen...",
     "pli": "Pāli",
-    "chn": "Chinese",
-    "skt": "Sanskrit",
-    "tib": "Tibetan"
+    "chn": "Chinees",
+    "skt": "Sanskriet",
+    "tib": "Tibetaans"
   }
 }

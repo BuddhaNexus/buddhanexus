@@ -11,12 +11,20 @@ interface ApiExternalLinkData {
   vri: string | false;
 }
 
-export async function getExternalLinksData(
-  fileName: string
-  // TODO: - add segmentnr prop
-): Promise<ApiExternalLinkData> {
+export async function getExternalLinksData({
+  fileName,
+  segmentnr,
+}: {
+  fileName: string;
+  segmentnr?: string;
+}): Promise<ApiExternalLinkData> {
   const { data } = await apiClient.GET("/links/external/", {
-    params: { query: { file_name: fileName, segmentnr: "dn3:0.2_0" } },
+    params: {
+      query: {
+        file_name: fileName,
+        ...(segmentnr && { segmentnr }),
+      },
+    },
   });
 
   // TODO: - remove type casting once response model is added to api

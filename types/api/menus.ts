@@ -9,7 +9,7 @@ export interface ApiSourceTextBrowserData {
       files: {
         available_lang: SourceLanguage[] | null;
         displayname: string;
-        filename: string;
+        file_name: string;
         textname: string;
       }[];
     }[];
