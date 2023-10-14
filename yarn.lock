@@ -5786,10 +5786,10 @@ react-use-downloader@^1.2.4:
   resolved "https://registry.yarnpkg.com/react-use-downloader/-/react-use-downloader-1.2.4.tgz#ff23b4830b1194a6899565d7441c5c7991e5c491"
   integrity sha512-ciPb5SSKaDymZoWdaHrNbJpa20riR0fgUni48cBTseoptAMG8SEATX33UCNPGwnpZ5BFybFdTCus37KLibj8oA==
 
-react-virtuoso@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-4.3.5.tgz#1e882d435b2d3d8abf7c4b85235199cbfadd935d"
-  integrity sha512-MdWzmM9d8Gt5YGPIgGzRoqnYygTsriWlZrq+SqxphJTiiHs9cffnjf2Beo3SA3wRYzQJD8FI2HXtN5ACWzPFbQ==
+react-virtuoso@^4.6.1:
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/react-virtuoso/-/react-virtuoso-4.6.1.tgz#b08465be4222d9820a22fbe2fefec29e91d0b048"
+  integrity sha512-dQq0yOdRjdWIYaiTvUbudqmTodGSdWGt5lVYz3mM07TTEV91yv7eL5Fn3FPEJOA36whScxPWg0GiYBIOZYEIEA==
 
 react-window@^1.8.6:
   version "1.8.8"
