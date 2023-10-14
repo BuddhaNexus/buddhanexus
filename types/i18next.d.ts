@@ -21,3 +21,7 @@ declare module "i18next" {
 }
 
 export type SupportedLocale = "de" | "en";
+
+export type SupportedLocales = {
+  [key in SupportedLocale]: string;
+};

@@ -2,7 +2,14 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSearchParams } from "@components/hooks/useTypedSearchParams";
-import { Box, FormControl, FormLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from "@mui/material";
 import type { QueryParams } from "features/sidebarSuite/config/types";
 
 type SortParam = NonNullable<QueryParams["sort_method"]>;
@@ -35,15 +42,16 @@ export default function SortOption() {
   };
 
   return (
-    <Box sx={{ width: 1, mb: 2 }}>
-      <FormLabel id="sort-option-selector-label">
-        {t("optionsLabels.sorting")}
-      </FormLabel>
+    <Box sx={{ width: 1, my: 3 }}>
       <FormControl sx={{ width: 1 }}>
+        <InputLabel id="sort-option-selector-label">
+          {t("optionsLabels.sorting")}
+        </InputLabel>
         <Select
           id="sort-option-selector"
           aria-labelledby="sort-option-selector-label"
           value={sortMethodSelectConfig}
+          input={<OutlinedInput label={t("optionsLabels.sorting")} />}
           onChange={(e) => handleSelectChange(e.target.value as SortParam)}
         >
           {SORT_OPTIONS.map((option) => {

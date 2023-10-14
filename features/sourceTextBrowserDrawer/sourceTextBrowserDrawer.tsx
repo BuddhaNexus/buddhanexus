@@ -3,7 +3,7 @@ import useDimensions from "react-cool-dimensions";
 import { SourceTextBrowserTree } from "@components/treeView/SourceTextBrowserTree";
 import { Drawer as MuiDrawer } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { isNavigationDrawerOpen } from "features/atoms/layout";
+import { isNavigationDrawerOpen } from "features/atoms";
 import { useAtom } from "jotai";
 
 const Drawer = styled(MuiDrawer)(({ theme }) => ({

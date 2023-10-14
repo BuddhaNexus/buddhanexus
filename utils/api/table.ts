@@ -4,7 +4,6 @@ import type { ApiTablePageData, TablePageData } from "types/api/table";
 
 function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   return apiData.map((p) => ({
-    coOccurrences: p["co-occ"],
     sourceLanguage: p.src_lang,
     targetLanguage: p.tgt_lang,
     fileName: p.file_name,
@@ -38,8 +37,27 @@ export async function getTableData({
   queryParams,
   pageNumber,
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
+  const limits = queryParams?.limits
+    ? JSON.parse(queryParams.limits as string)
+    : {};
+
   const { data } = await apiClient.POST("/table-view/table", {
-    body: { file_name: fileName, ...queryParams, limits: {}, page: pageNumber },
+    // body: {
+    //   file_name: fileName,
+    //   ...queryParams,
+    //   limits,
+    //   page: pageNumber,
+    // },
+    // TODO: - This is a temporary fix to enable work elsehwere. Check `getStaticPaths` functionality post BE update
+    body: {
+      file_name: fileName,
+      score: 30,
+      par_length: 30,
+      sort_method: "position",
+      ...queryParams,
+      limits,
+      page: pageNumber,
+    },
   });
   // TODO: - remove type casting once response model is added to api
   return { data: parseAPITableData(data as ApiTablePageData), pageNumber };

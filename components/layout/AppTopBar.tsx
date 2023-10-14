@@ -4,7 +4,7 @@ import { useTranslation } from "next-i18next";
 import { useTheme } from "next-themes";
 import { Link } from "@components/common/Link";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import LanguageSelect from "@components/layout/LanguageSelect";
+import LocaleSelector from "@components/layout/LocaleSelector";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
@@ -13,7 +13,7 @@ import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { isNavigationDrawerOpen } from "features/atoms/layout";
+import { isNavigationDrawerOpen } from "features/atoms";
 import { GlobalSearchDesktop, GlobalSearchMobile } from "features/globalSearch";
 import { useSetAtom } from "jotai";
 
@@ -171,7 +171,7 @@ export const AppTopBar = () => {
             <Box sx={{ width: 48 }} />
           )}
 
-          <LanguageSelect />
+          <LocaleSelector />
         </Toolbar>
       </AppBar>
       {!isSearchRoute && <GlobalSearchMobile />}

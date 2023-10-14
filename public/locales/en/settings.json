@@ -18,8 +18,10 @@
   },
   "optionsLabels": {
     "script": "Select text script",
-    "folio": "Go to selected text section",
+    "folioAsGoTo": "Go to selected text section",
     "folioAsLimit": "Show matches from selected text section",
+    "folioShowAll": "Whole text",
+    "availableLanguages": "Parallel text Languages",
     "sorting": "Sorting Method",
     "sortDefault": "Default – Match position in source text",
     "sortSource": "Match position in source text",
@@ -57,6 +59,7 @@
   "dbLanguageLabels": {
     "instructions": "Database language",
     "all": "All",
+    "none": "None",
     "pli": "Pāli",
     "chn": "Chinese",
     "skt": "Sanskrit",

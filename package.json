@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "openapi-ts": "openapi-typescript https://buddhanexus2.kc-tbts.uni-hamburg.de/openapi.json -o codegen/api/v2.d.ts"
   },
   "dependencies": {
     "@emotion/cache": "^11.10.8",
@@ -49,6 +50,7 @@
     "react-virtuoso": "^4.3.5",
     "react-window": "^1.8.9",
     "sharp": "^0.31.3",
+    "tibetan-ewts-converter": "^1.0.1",
     "use-query-params": "^2.2.0",
     "yarn": "^1.22.19"
   },

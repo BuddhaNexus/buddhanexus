@@ -21,14 +21,14 @@ export const getQueryParamsFromRouter = ({
   route: string;
   params: URLSearchParams;
 }): URLSearchParams => {
-  const paramsWithoutDynamicRouteProps = new URLSearchParams(params);
-  paramsWithoutDynamicRouteProps.delete("file");
+  const apiEndpointparams = new URLSearchParams(params);
+  apiEndpointparams.delete("file");
 
   if (!route.startsWith("/search")) {
-    paramsWithoutDynamicRouteProps.delete("language");
+    apiEndpointparams.delete("language");
   }
 
-  return paramsWithoutDynamicRouteProps;
+  return apiEndpointparams;
 };
 
 export const isSettingOmitted = ({

@@ -1,10 +1,12 @@
 import { useEffect } from "react";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   CircularProgress,
   FormControl,
-  FormLabel,
+  InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
 } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -13,11 +15,9 @@ import { StringParam, useQueryParam } from "use-query-params";
 import { DbApi } from "utils/api/dbApi";
 import type { DatabaseFolio } from "utils/api/utils";
 
-// TODO: translate
-const showAll = "Whole text";
-
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
+  const { t } = useTranslation("settings");
   const { fileName, defaultParamConfig, uniqueSettings } = useDbQueryParams();
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
@@ -33,22 +33,25 @@ export default function FolioOption() {
     setFolioParam(folioParam ?? defaultParamConfig.folio);
   }, [folioParam, setFolioParam, defaultParamConfig]);
 
+  const showAll = t("optionsLabels.folioShowAll");
+
   const handleSelectChange = (value: string) => {
     setFolioParam(value === showAll ? null : value);
   };
 
   return (
-    <Box sx={{ width: 1, mb: 2 }}>
-      <FormLabel id="folio-option-selector-label">
-        Show matches for text sub-section
-      </FormLabel>
-      <FormControl sx={{ width: 1 }}>
+    <Box sx={{ width: 1, my: 2 }}>
+      <FormControl sx={{ width: 1 }} title={t("optionsLabels.folioAsLimit")}>
+        <InputLabel id="folio-option-selector-label">
+          {t("optionsLabels.folioAsLimit")}
+        </InputLabel>
         {isLoading ? (
           <Select
+            labelId="folio-option-selector-label"
             id="folio-option-selector"
-            aria-labelledby="folio-option-selector-label"
             displayEmpty={true}
             value={showAll}
+            input={<OutlinedInput label={t("optionsLabels.folioAsLimit")} />}
           >
             <MenuItem value={showAll}>
               <em>{showAll}</em>
@@ -59,9 +62,10 @@ export default function FolioOption() {
           </Select>
         ) : (
           <Select
+            labelId="folio-option-selector-label"
             id="folio-option-selector"
-            aria-labelledby="folio-option-selector-label"
             displayEmpty={true}
+            input={<OutlinedInput label={t("optionsLabels.folioAsLimit")} />}
             value={folioParam ?? showAll}
             onChange={(e) => handleSelectChange(e.target.value)}
           >
@@ -71,14 +75,9 @@ export default function FolioOption() {
             {data &&
               data.length > 1 &&
               data.map((folio: DatabaseFolio) => {
-                // TODO: confirm that 0 should always be skipped (as with pli)
-                if (folio.id === "0") {
-                  return null;
-                }
-
                 return (
                   <MenuItem key={folio.id} value={folio.id}>
-                    {folio.id}
+                    {folio.segmentNr}
                   </MenuItem>
                 );
               })}

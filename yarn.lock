@@ -6560,6 +6560,11 @@ through@^2.3.8:
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==
 
+tibetan-ewts-converter@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tibetan-ewts-converter/-/tibetan-ewts-converter-1.0.1.tgz#c9692eaa425d769f4beb2b6d8f8685808821fd1b"
+  integrity sha512-8DTBZTEmt+zkczWwiok7VpD4I7Xindtjven81zeB88GLmv75YimRoSOjzPXVILTHGZ90P4nSpkxr2uDxtw7B0A==
+
 tiny-glob@^0.2.9:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/tiny-glob/-/tiny-glob-0.2.9.tgz#2212d441ac17928033b110f8b3640683129d31e2"
