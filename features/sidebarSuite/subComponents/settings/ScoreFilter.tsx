@@ -69,7 +69,6 @@ export default function ScoreFilter() {
   return (
     <Box sx={{ width: 1, mb: 2 }}>
       <FormLabel id="score-input-label">{t("filtersLabels.score")}</FormLabel>
-      {/* TODO: define acceptance criteria for input change handling */}
       <TextField
         sx={{ width: 1, my: 1 }}
         value={scoreValue}
