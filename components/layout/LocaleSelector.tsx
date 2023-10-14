@@ -32,8 +32,10 @@ export default function LocaleSelector() {
         id="basic-button"
         variant="outlined"
         color="inherit"
-        // TODO: Get color from theme
-        sx={{ borderColor: "#716d6d" }}
+        sx={{
+          borderColor: (theme) =>
+            theme.palette.mode === "dark" ? "#555" : "primary.light",
+        }}
         aria-controls={isOpen ? "language-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={isOpen ? "true" : undefined}
