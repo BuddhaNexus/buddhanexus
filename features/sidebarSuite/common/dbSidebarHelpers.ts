@@ -4,8 +4,10 @@ import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import type {
   MenuOmission,
   MenuSetting,
+  QueryParams,
   UtilityOption,
 } from "features/sidebarSuite/config/types";
+import { getParallelDownloadData } from "utils/api/downloads";
 import type { SourceLanguage } from "utils/constants";
 
 /**
@@ -71,7 +73,8 @@ interface UtilityClickHandlerProps {
   fileName: string;
   download: {
     call: (url: string, name: string) => void;
-    file: { url: string; name: string } | undefined;
+    fileName: string;
+    queryParams: Partial<QueryParams>;
   };
   href: string;
   popperAnchorStateHandler: PopperAnchorStateHandler;
@@ -84,22 +87,29 @@ export const defaultAnchorEls = {
   emailQueryLink: null,
 };
 
-export const onDownload = ({
+export const onDownload = async ({
   download,
   event,
   popperAnchorStateHandler,
 }: UtilityClickHandlerProps) => {
   const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
-  if (download?.file) {
-    const { call: getDownload, file } = download;
+  const file = await getParallelDownloadData({
+    fileName: download.fileName,
+    queryParams: download.queryParams,
+  });
+
+  if (file) {
+    const { call: getDownload } = download;
 
     getDownload(file.url, file.name);
   }
 
   setAnchorEl({
     ...defaultAnchorEls,
-    download: anchorEl.download ? null : event.currentTarget,
+    download: anchorEl.download
+      ? null
+      : (event.nativeEvent.target as HTMLElement),
   });
 };
 

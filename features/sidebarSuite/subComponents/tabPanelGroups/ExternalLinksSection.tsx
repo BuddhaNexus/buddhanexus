@@ -63,7 +63,7 @@ export const ExternalLinksSection = () => {
 
   const { data } = useQuery({
     queryKey: [DbApi.ExternalLinksData.makeQueryKey(fileName)],
-    queryFn: () => DbApi.ExternalLinksData.call(fileName),
+    queryFn: () => DbApi.ExternalLinksData.call({ fileName }),
     refetchOnWindowFocus: false,
   });
 

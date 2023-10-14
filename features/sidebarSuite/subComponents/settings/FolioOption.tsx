@@ -39,19 +39,21 @@ export default function FolioOption() {
     setFolioParam(value === showAll ? null : value);
   };
 
+  const selectorLabel = t("optionsLabels.folioAsLimit");
+
   return (
     <Box sx={{ width: 1, my: 2 }}>
-      <FormControl sx={{ width: 1 }} title={t("optionsLabels.folioAsLimit")}>
+      <FormControl sx={{ width: 1 }} title={selectorLabel}>
         <InputLabel id="folio-option-selector-label">
-          {t("optionsLabels.folioAsLimit")}
+          {selectorLabel}
         </InputLabel>
         {isLoading ? (
           <Select
             labelId="folio-option-selector-label"
             id="folio-option-selector"
-            displayEmpty={true}
             value={showAll}
-            input={<OutlinedInput label={t("optionsLabels.folioAsLimit")} />}
+            input={<OutlinedInput label={selectorLabel} />}
+            displayEmpty
           >
             <MenuItem value={showAll}>
               <em>{showAll}</em>
@@ -64,9 +66,9 @@ export default function FolioOption() {
           <Select
             labelId="folio-option-selector-label"
             id="folio-option-selector"
-            displayEmpty={true}
-            input={<OutlinedInput label={t("optionsLabels.folioAsLimit")} />}
+            input={<OutlinedInput label={selectorLabel} />}
             value={folioParam ?? showAll}
+            displayEmpty
             onChange={(e) => handleSelectChange(e.target.value)}
           >
             <MenuItem value={showAll}>

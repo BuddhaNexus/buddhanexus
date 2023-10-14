@@ -24,7 +24,7 @@ interface DesignTokenParams {
   sourceLanguage: SourceLanguage;
 }
 
-const SOURCE_LANG_LIGHT_COLORS = {
+const SOURCE_LANG_COLORS = {
   chn: "#4F2B56",
   pli: "#7C3A00",
   skt: "#2C284C",
@@ -32,7 +32,7 @@ const SOURCE_LANG_LIGHT_COLORS = {
 };
 
 const SOURCE_LANG_DARK_COLORS = {
-  main: { chn: "#270431", pli: "#371f00", skt: "#0F0B2B", tib: "#260b08" },
+  // main: { chn: "#270431", pli: "#371f00", skt: "#0F0B2B", tib: "#260b08" },
   accent: {
     chn: "#f0c8d1",
     pli: "#f5e5d1",
@@ -66,16 +66,16 @@ export const getDesignTokens = ({
   palette: {
     mode,
     common: {
-      pali: SOURCE_LANG_LIGHT_COLORS[SourceLanguage.PALI],
-      sanskrit: SOURCE_LANG_LIGHT_COLORS[SourceLanguage.SANSKRIT],
-      tibetan: SOURCE_LANG_LIGHT_COLORS[SourceLanguage.TIBETAN],
-      chinese: SOURCE_LANG_LIGHT_COLORS[SourceLanguage.CHINESE],
+      pali: SOURCE_LANG_COLORS[SourceLanguage.PALI],
+      sanskrit: SOURCE_LANG_COLORS[SourceLanguage.SANSKRIT],
+      tibetan: SOURCE_LANG_COLORS[SourceLanguage.TIBETAN],
+      chinese: SOURCE_LANG_COLORS[SourceLanguage.CHINESE],
     },
     ...(mode === "light"
       ? {
           primary: {
             main: sourceLanguage
-              ? SOURCE_LANG_LIGHT_COLORS[sourceLanguage]
+              ? SOURCE_LANG_COLORS[sourceLanguage]
               : "#393732",
           },
           secondary: {
@@ -98,7 +98,7 @@ export const getDesignTokens = ({
             paper: "#ffffff",
             accent: grey[50],
             header: sourceLanguage
-              ? SOURCE_LANG_LIGHT_COLORS[sourceLanguage]
+              ? SOURCE_LANG_COLORS[sourceLanguage]
               : "#393732",
             card: grey[100],
             inverted: grey[800],
@@ -135,12 +135,12 @@ export const getDesignTokens = ({
           },
           background: {
             default: "#201c22",
-            paper: "#09070b",
+            paper: "#29262d",
             accent: grey[900],
             header: sourceLanguage
-              ? SOURCE_LANG_DARK_COLORS.main[sourceLanguage]
-              : "#0F0405",
-            card: "#2c2c2f",
+              ? SOURCE_LANG_COLORS[sourceLanguage]
+              : "#E1BD97",
+            card: "#29262d",
           },
           text: {
             primary: "#d2cfcf",
