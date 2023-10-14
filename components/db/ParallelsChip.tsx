@@ -11,9 +11,16 @@ export default function ParallelsChip() {
 
   const { fileName, queryParams } = useDbQueryParams();
 
+  // ignore some params that shouldn't result in refetching this query
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { selectedSegment, ...restOfQueryParams } = queryParams;
+
   const { data, isLoading } = useQuery({
     // TODO: - see if the query can return result before main results
-    queryKey: DbApi.ParallelCount.makeQueryKey({ fileName, queryParams }),
+    queryKey: DbApi.ParallelCount.makeQueryKey({
+      fileName,
+      queryParams: restOfQueryParams,
+    }),
     queryFn: () =>
       DbApi.ParallelCount.call({
         fileName,
