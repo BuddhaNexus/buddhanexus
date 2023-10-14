@@ -1,5 +1,6 @@
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 // import { useRouter } from "next/router";
+import { useTheme } from "next-themes";
+import { sourceSans } from "@components/theme";
 import type { Scale } from "chroma-js";
 import type { TextPageDataSegment } from "types/api/text";
 import { useQueryParam } from "use-query-params";
@@ -15,6 +16,9 @@ export const TextSegment = ({
   index: number;
   colorScale: Scale;
 }) => {
+  const { theme } = useTheme();
+  const isDarkTheme = theme === "dark";
+
   // const router = useRouter();
 
   const [selectedSegmentId, setSelectedSegmentId] =
@@ -23,26 +27,23 @@ export const TextSegment = ({
   const isSelected = selectedSegmentId === segmentNumber;
 
   return (
-    <section
-      style={{ display: "inline" }}
-      className={`${styles.segmentContainer} ${
-        isSelected && styles.segmentContainer__selected
-      }`}
-    >
+    <>
       <span
-        className={styles.segmentNumber}
+        className={`${styles.segmentNumber} ${
+          isSelected && styles.segmentNumber__selected
+        }`}
         data-segmentNumber={segmentNumber}
       />
+
       {segmentText.map(
         ({
           text,
           highlightColor,
           // matches
         }) => (
-          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-          <span
+          <button
             key={text}
-            role="figure"
+            type="button"
             tabIndex={0}
             // href={{
             //   pathname: "/db/[language]/[file]/text",
@@ -53,11 +54,14 @@ export const TextSegment = ({
             //   },
             // }}
             className={`${styles.segment} ${
-              isSelected && styles.segment__selected
+              isSelected &&
+              (isDarkTheme
+                ? styles.segment__selected__dark
+                : styles.segment__selected__light)
             }`}
             style={{
+              fontFamily: sourceSans.style.fontFamily,
               color: colorScale(highlightColor).hex(),
-              wordWrap: "break-word",
             }}
             onClick={() => setSelectedSegmentId(segmentNumber)}
             onKeyDown={(event) => {
@@ -68,9 +72,9 @@ export const TextSegment = ({
             }}
           >
             {text}
-          </span>
+          </button>
         )
       )}
-    </section>
+    </>
   );
 };
