@@ -71,7 +71,7 @@ export type LimitsParam = {
 
 export type Limit = keyof LimitsParam;
 
-// Tecnically "limits" is not a type but TS is limited in it's ability to enforce the contents of arrays based on types, so this is being defined here as a pseduo type.
+// Technically "limits" is not a type but TS is limited in it's ability to enforce the contents of arrays based on types, so this is being defined here as a pseduo type.
 export const limits: Limit[] = [
   "category_exclude",
   "category_include",

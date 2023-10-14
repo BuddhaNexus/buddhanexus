@@ -1,6 +1,8 @@
 import apiClient from "@api";
 import type { InfiniteSerachApiQuery, PagedResponse } from "types/api/common";
 
+import { parseDbPageQueryParams } from "./utils";
+
 export type SearchResult = {
   id: string;
   segmentNumbers: string[];
@@ -45,13 +47,9 @@ export async function getGlobalSearchData({
   // TODO: Add pagination on BE
   //  - remove type casting once response model is added to api
   //  - review parsed prop nams.
-  const limits = queryParams?.limits
-    ? JSON.parse(queryParams.limits as string)
-    : {};
-
   const { data } = await apiClient.POST("/search/", {
     // page: 0
-    body: { search_string: searchTerm, limits },
+    body: { search_string: searchTerm, ...parseDbPageQueryParams(queryParams) },
   });
 
   const castData = data as { searchResults: any[] };
