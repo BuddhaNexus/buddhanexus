@@ -15,7 +15,6 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import {
   defaultAnchorEls,
   isSettingOmitted,
@@ -32,7 +31,6 @@ import {
 } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import { useAtomValue } from "jotai";
-import { DbApi } from "utils/api/dbApi";
 
 const utilityComponents: UtilityOptions = {
   download: {
@@ -68,18 +66,6 @@ export const UtilityOptionsSection = () => {
   if (typeof window !== "undefined") {
     href = window.location.toString();
   }
-
-  const { data: downloadData } = useQuery({
-    // TODO: only needs to be called on click
-    queryKey: DbApi.DownloadResults.makeQueryKey({ fileName, queryParams }),
-    queryFn: () =>
-      DbApi.DownloadResults.call({
-        fileName,
-        queryParams,
-        view: currentView,
-      }),
-    refetchOnWindowFocus: false,
-  });
 
   const { download, error } = useDownloader();
 
@@ -130,7 +116,7 @@ export const UtilityOptionsSection = () => {
                       popperAnchorEl,
                       setPopperAnchorEl,
                     ],
-                    download: { call: download, file: downloadData },
+                    download: { call: download, fileName, queryParams },
                     href,
                   })
                 }

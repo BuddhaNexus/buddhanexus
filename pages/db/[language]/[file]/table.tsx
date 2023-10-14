@@ -61,7 +61,6 @@ export default function TablePage() {
       {isInitialLoading || !data ? (
         <CenteredProgress />
       ) : (
-        // TODO: clarify why this extra div is needed for display
         <div style={{ height: "100vh" }}>
           <TableView
             data={data.pages.flatMap((page) => page.data)}
