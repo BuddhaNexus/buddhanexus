@@ -3,14 +3,14 @@ import "allotment/dist/style.css";
 import React, { useMemo } from "react";
 import { Virtuoso } from "react-virtuoso";
 import { useTheme } from "next-themes";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { IconButton, Paper, Tooltip, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { Allotment } from "allotment";
 import chroma from "chroma-js";
 import type { TextPageData } from "types/api/text";
 import { useQueryParam } from "use-query-params";
 
 import { TextSegment } from "./TextSegment";
+import TextViewMiddleParallels from "./TextViewMiddleParallels";
 
 interface Props {
   data: TextPageData;
@@ -41,8 +41,10 @@ export default function TextView({
   const { theme } = useTheme();
   const isDarkTheme = theme === "dark";
 
-  const [selectedSegmentId, setSelectedSegmentId] =
-    useQueryParam("selectedSegment");
+  const [
+    selectedSegmentId,
+    // setSelectedSegmentId
+  ] = useQueryParam("selectedSegment");
 
   const colorScale = useMemo(() => {
     const colors = data.map((item) => item.segmentText[0]?.highlightColor ?? 0);
@@ -60,7 +62,6 @@ export default function TextView({
 
   return (
     <Paper elevation={1} sx={{ flex: 1, py: 2, pl: 2, my: 1 }}>
-      {/* <div style={{ width: "100%", height: "100%", paddingRight: 2 }}>*/}
       <Allotment>
         {/* Left view - text (main view) */}
         <Allotment.Pane>
@@ -79,23 +80,9 @@ export default function TextView({
 
         {/* Middle view - parallels for selected segment */}
         <Allotment.Pane visible={Boolean(selectedSegmentId)}>
-          <div>
-            <Tooltip
-              title="Clear selected segment"
-              PopperProps={{ disablePortal: true }}
-            >
-              <IconButton
-                color="inherit"
-                onClick={() => setSelectedSegmentId(undefined)}
-              >
-                {/* todo: add i18n */}
-                <HighlightOffIcon aria-label="clear selected segment" />
-              </IconButton>
-            </Tooltip>
-          </div>
+          <TextViewMiddleParallels parallelIds={[]} />
         </Allotment.Pane>
       </Allotment>
-      {/* </div>*/}
     </Paper>
   );
 }
