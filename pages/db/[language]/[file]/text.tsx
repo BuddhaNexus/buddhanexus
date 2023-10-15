@@ -24,7 +24,7 @@ export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers"
  * TODO
  * 1. Display text on left side
  * 2. Allow selection
- * 3. Grab parallels for middle (https://buddhanexus.kc-tbts.uni-hamburg.de/api/parallels-for-middle)
+ * 3. Grab parallels for middle (https://buddhanexus2.kc-tbts.uni-hamburg.de/api/text-view/middle)
  * 4. Display using table view components
  * ?: use /text-view/text-parallels/
  * * Split pane: use https://github.com/johnwalley/allotment
