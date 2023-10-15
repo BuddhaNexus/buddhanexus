@@ -16,6 +16,9 @@
     "tools": "Tools",
     "links": "Links"
   },
+  "search": {
+    "placeholder": "Search..."
+  },
   "optionsLabels": {
     "script": "Select text script",
     "folioAsGoTo": "Go to selected text section",
@@ -44,10 +47,10 @@
     "score": "Similarity Score:",
     "minMatch": "Minimum character/syllable matches length",
     "includeExcludeFilters": "Includes and Exclude items",
-    "excludeCollections": "Exclude collections",
-    "includeCollections": "Only include collections",
-    "excludeTexts": "Exclude texts",
-    "includeTexts": "Only include texts"
+    "category_exclude": "Exclude collections",
+    "category_include": "Only include collections",
+    "file_exclude": "Exclude texts",
+    "file_include": "Only include texts"
   },
   "dbViewLabels": {
     "view": "View",

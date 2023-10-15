@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useTranslation } from "next-i18next";
 import {
   type InputKeyDown,
   useGlobalSearch,
@@ -15,6 +16,7 @@ import {
 } from "./GlobalSearchStyledMuiComponents";
 
 const GlobalSearchMobile = () => {
+  const { t } = useTranslation("settings");
   const inputRef = useRef<HTMLInputElement>(null);
   const { handleOnSearch } = useGlobalSearch();
 
@@ -28,11 +30,12 @@ const GlobalSearchMobile = () => {
 
   return (
     <Container
-      maxWidth="md"
+      maxWidth="xl"
       sx={{
         display: {
           lg: "none",
         },
+        w: 1,
         // This component is outside <main>, so mt & px values are given here to match padding in components/layout/PageContainer.tsx
         mt: 4,
         px: { xs: 4, sm: 2 },
@@ -42,8 +45,7 @@ const GlobalSearchMobile = () => {
         <SearchBoxWrapper>
           <SearchBoxInput
             inputRef={inputRef}
-            // TODO: i18n
-            placeholder="Search..."
+            placeholder={t("search.placeholder")}
             variant="outlined"
             InputProps={{
               startAdornment: (

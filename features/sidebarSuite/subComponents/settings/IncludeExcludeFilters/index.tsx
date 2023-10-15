@@ -20,14 +20,6 @@ import { JsonParam, useQueryParam } from "use-query-params";
 
 import { ListboxComponent, StyledPopper } from "./uiComponents";
 
-// TODO: Remove on BE naming update & key alignment
-const tempi18nLabelKeys = {
-  category_exclude: "excludeCollections",
-  category_include: "includeCollections",
-  file_exclude: "excludeTexts",
-  file_include: "includeTexts",
-};
-
 const IncludeExcludeFilters = () => {
   const { t } = useTranslation("settings");
 
@@ -99,8 +91,7 @@ const IncludeExcludeFilters = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  // @ts-expect-error i18n dynamic key issue see https://www.i18next.com/overview/typescript#text-type-error-template-literal
-                  label={t([`filtersLabels.${tempi18nLabelKeys[limit]}`])}
+                  label={t([`filtersLabels.${limit}`])}
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (

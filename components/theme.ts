@@ -32,7 +32,7 @@ const SOURCE_LANG_COLORS = {
 };
 
 const SOURCE_LANG_DARK_COLORS = {
-  // main: { chn: "#270431", pli: "#371f00", skt: "#0F0B2B", tib: "#260b08" },
+  main: { chn: "#270431", pli: "#371f00", skt: "#0F0B2B", tib: "#260b08" },
   accent: {
     chn: "#f0c8d1",
     pli: "#f5e5d1",
@@ -76,7 +76,7 @@ export const getDesignTokens = ({
           primary: {
             main: sourceLanguage
               ? SOURCE_LANG_COLORS[sourceLanguage]
-              : "#393732",
+              : "#29262d",
           },
           secondary: {
             main: "#C23211",
@@ -99,7 +99,7 @@ export const getDesignTokens = ({
             accent: grey[50],
             header: sourceLanguage
               ? SOURCE_LANG_COLORS[sourceLanguage]
-              : "#393732",
+              : "#29262d",
             card: grey[100],
             inverted: grey[800],
           },
@@ -138,8 +138,8 @@ export const getDesignTokens = ({
             paper: "#29262d",
             accent: grey[900],
             header: sourceLanguage
-              ? SOURCE_LANG_COLORS[sourceLanguage]
-              : "#E1BD97",
+              ? SOURCE_LANG_DARK_COLORS.main[sourceLanguage]
+              : "#29262d",
             card: "#29262d",
           },
           text: {

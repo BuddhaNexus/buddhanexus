@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "next-i18next";
 import {
   type InputKeyDown,
   useGlobalSearch,
@@ -15,6 +16,7 @@ import {
 } from "./GlobalSearchStyledMuiComponents";
 
 const GlobalSearchDesktop = () => {
+  const { t } = useTranslation("settings");
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -49,8 +51,7 @@ const GlobalSearchDesktop = () => {
       <AppTopBarSearchBoxWrapper isOpen={isOpen}>
         <SearchBoxInput
           inputRef={inputRef}
-          // TODO: i18n
-          placeholder="Search..."
+          placeholder={t("search.placeholder")}
           variant="outlined"
           isNarrow={true}
           InputProps={{
