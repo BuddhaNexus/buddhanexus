@@ -1,7 +1,11 @@
 // import { useRouter } from "next/router";
 import { useTheme } from "next-themes";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { sourceSans } from "@components/theme";
 import type { Scale } from "chroma-js";
+import { scriptSelectionAtom } from "features/atoms";
+import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
+import { useAtomValue } from "jotai";
 import type { TextPageDataSegment } from "types/api/text";
 import { useQueryParam } from "use-query-params";
 
@@ -20,7 +24,8 @@ export const TextSegment = ({
   const isDarkTheme = theme === "dark";
 
   // const router = useRouter();
-
+  const { sourceLanguage } = useDbQueryParams();
+  const script = useAtomValue(scriptSelectionAtom);
   const [selectedSegmentId, setSelectedSegmentId] =
     useQueryParam("selectedSegment");
 
@@ -71,7 +76,7 @@ export const TextSegment = ({
               setSelectedSegmentId(segmentNumber);
             }}
           >
-            {text}
+            {enscriptText({ text, script, language: sourceLanguage })}
           </button>
         )
       )}

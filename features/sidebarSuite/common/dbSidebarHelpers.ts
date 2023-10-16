@@ -7,8 +7,10 @@ import type {
   QueryParams,
   UtilityOption,
 } from "features/sidebarSuite/config/types";
+import type { Script } from "features/sidebarSuite/subComponents/settings/TextScriptOption";
+import { EwtsConverter } from "tibetan-ewts-converter";
 import { getParallelDownloadData } from "utils/api/downloads";
-import type { SourceLanguage } from "utils/constants";
+import { SourceLanguage } from "utils/constants";
 
 /**
  * Next JS stores dynamic routes in the router object query prop which is also where api query params are pushed to. Dynamic route params need to be removed to avoid polluting result page urls and sending unaccepted params in api requests.
@@ -163,6 +165,21 @@ export const onEmailQueryLink = ({
     ...defaultAnchorEls,
     emailQueryLink: anchorEl.emailQueryLink ? null : event.currentTarget,
   });
+};
+
+const ewts = new EwtsConverter();
+export const enscriptText = ({
+  text,
+  language,
+  script,
+}: {
+  text: string;
+  language: SourceLanguage;
+  script: Script;
+}) => {
+  return script === "Wylie" && language === SourceLanguage.TIBETAN
+    ? ewts.to_unicode(text)
+    : text;
 };
 
 //  TODO: clarify spec - is disabling logically impossible (per include/exclude filter selections) desired behaviour? Applies to all included/excluded filters.
