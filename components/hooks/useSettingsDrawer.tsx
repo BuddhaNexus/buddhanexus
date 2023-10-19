@@ -24,7 +24,7 @@ export const useSettingsDrawer = () => {
     isSettingsOpen,
     setIsSettingsOpen,
     drawerWidth: SETTINGS_DRAWER_WIDTH,
-    isOpenMainWidth: OPEN_SETTINGS_CALC,
+    mainWidth: `${isSettingsOpen ? OPEN_SETTINGS_CALC : "100%"}`,
     parallelStackDirection,
     parallelArrowTransform,
   };
