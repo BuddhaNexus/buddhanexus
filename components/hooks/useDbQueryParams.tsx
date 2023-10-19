@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useSearchParams } from "@components/hooks/useTypedSearchParams";
+import { defaultSourceLanguagesSelection } from "features/atoms";
 import { getQueryParamsFromRouter } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
@@ -12,6 +13,7 @@ import {
   settingRenderGroups,
   uniqueSettings,
 } from "features/sidebarSuite/config/settings";
+import { useAtomValue } from "jotai";
 import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {
@@ -27,12 +29,16 @@ export const useDbQueryParams = () => {
   const fileName = file as string;
 
   const queryParams = getQueryParamsFromRouter({ route: router.route, params });
+  const multiLingualParamDefault = useAtomValue(
+    defaultSourceLanguagesSelection
+  );
 
   const defaultQueryParams = {
     score: DEFAULT_QUERY_PARAMS_VALUES.score,
     par_length: sourceLanguage
       ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
       : DEFAULT_QUERY_PARAMS_VALUES.par_length,
+    multi_lingual: multiLingualParamDefault.join(","),
   };
 
   // Chinese is used as fallback min par length as it has the lowest min par length value.

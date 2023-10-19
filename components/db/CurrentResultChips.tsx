@@ -6,8 +6,8 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import {
-  displaySettingChipQueries,
-  filterChipQueryExclusions,
+  customFiltersChipQueryExclusions,
+  customOptionsChipQueries,
 } from "features/sidebarSuite/config";
 import type {
   DefaultQueryParams,
@@ -35,16 +35,20 @@ function getSettingCounts({
       continue;
     }
 
-    if (displaySettingChipQueries.includes(key)) {
+    if (customOptionsChipQueries.includes(key)) {
       display += 1;
       continue;
     }
 
-    if (filterChipQueryExclusions.includes(key)) {
+    if (customFiltersChipQueryExclusions.includes(key)) {
       continue;
     }
 
     filter += 1;
+  }
+
+  if (!Object.keys(currentQueries).includes("multi_lingual")) {
+    display += 1;
   }
 
   return { display, filter };

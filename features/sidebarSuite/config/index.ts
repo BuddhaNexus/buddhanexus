@@ -115,9 +115,9 @@ export const DEFAULT_PAR_LENGTH_VALUES: Record<SourceLanguage, number> = {
 };
 
 /**
- * Query params that only effect display (not number of results).
+ * Query params that only effect display (not number of results); counted in "Custom options" results page chip.
  */
-export const displaySettingChipQueries: string[] = [
+export const customOptionsChipQueries: string[] = [
   queryParams.folio,
   // TODO: confirm whether the availableLanguages selection affects the number of results returned by `/utils/count-matches/`
   remote.availableLanguages,
@@ -125,9 +125,9 @@ export const displaySettingChipQueries: string[] = [
 ];
 
 /**
- * Query params that are not counted as custom filter settings.
+ * Query params that are NOT counted in results page "Custom filters" chip.
  */
-export const filterChipQueryExclusions: string[] = [
-  ...displaySettingChipQueries,
+export const customFiltersChipQueryExclusions: string[] = [
+  ...customOptionsChipQueries,
   queryParams.searchString,
 ];

@@ -5,7 +5,7 @@ import CurrentResultChips from "@components/db/CurrentResultChips";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
-import FilterListOffIcon from "@mui/icons-material/FilterListOff";
+import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
 import { Box, IconButton, Stack } from "@mui/material";
 import { useAtomValue } from "jotai";
@@ -21,7 +21,7 @@ export const QueryPageTopStack = () => {
   const { t } = useTranslation("settings");
   const router = useRouter();
 
-  const { fileName, sourceLanguage } = useDbQueryParams();
+  const { fileName, sourceLanguage, defaultQueryParams } = useDbQueryParams();
   const dbView = useAtomValue(currentViewAtom);
 
   const { isSettingsOpen, setIsSettingsOpen } = useSettingsDrawer();
@@ -35,7 +35,7 @@ export const QueryPageTopStack = () => {
     await router.push(
       {
         pathname,
-        query: "",
+        query: { multi_lingual: defaultQueryParams.multi_lingual },
       },
       undefined,
       {
@@ -69,7 +69,7 @@ export const QueryPageTopStack = () => {
           style={{ marginLeft: "8px" }}
           onClick={handleReset}
         >
-          <FilterListOffIcon color="action" />
+          <RotateLeftOutlinedIcon color="action" />
         </IconButton>
       </Box>
 

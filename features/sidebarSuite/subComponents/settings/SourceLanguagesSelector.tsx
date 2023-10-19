@@ -16,6 +16,8 @@ import Select from "@mui/material/Select";
 import type { Theme } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
+import { defaultSourceLanguagesSelection } from "features/atoms";
+import { useSetAtom } from "jotai";
 import { ArrayParam, useQueryParam } from "use-query-params";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
@@ -48,6 +50,7 @@ const SourceLanguagesSelector = () => {
   const { t } = useTranslation("settings");
   const { fileName, uniqueSettings } = useDbQueryParams();
   const theme = useTheme();
+  const setDefaults = useSetAtom(defaultSourceLanguagesSelection);
 
   const { data, isLoading } = useQuery({
     queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
@@ -61,6 +64,8 @@ const SourceLanguagesSelector = () => {
 
   /* eslint-disable react-hooks/exhaustive-deps */
   React.useEffect(() => {
+    setDefaults(data ?? []);
+
     if (!selectedLanguages) {
       setSelectedLanguages(data);
     }
