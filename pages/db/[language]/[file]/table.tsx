@@ -56,11 +56,7 @@ export default function TablePage() {
   }
 
   return (
-    <PageContainer
-      maxWidth="xl"
-      backgroundName={sourceLanguage}
-      hasSidebar={true}
-    >
+    <PageContainer maxWidth="xl" backgroundName={sourceLanguage} isQueryPage>
       <DbViewPageHead />
 
       {isInitialLoading || !data ? (

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { SETTINGS_DRAWER_WIDTH } from "@components/hooks/useSettingsDrawer";
 import {
   Box,
   FormControl,
@@ -15,7 +16,6 @@ import Select from "@mui/material/Select";
 import type { Theme } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
-import { SETTINGS_DRAWER_WIDTH } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
 import { ArrayParam, useQueryParam } from "use-query-params";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";

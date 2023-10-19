@@ -3,3 +3,4 @@ import { atom } from "jotai";
 
 export const isNavigationDrawerOpen = atom(false);
 export const scriptSelectionAtom = atom<Script>("Unicode");
+export const isSettingsOpenAtom = atom(true);

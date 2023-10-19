@@ -4,7 +4,8 @@
     "matches": "Matches: ",
     "filters": "Custom filters: {{value}}",
     "options": "Custom options: {{value}}",
-    "reset": "Reset"
+    "settingsToggle": "Toggle settings panel",
+    "reset": "Clear settings"
   },
   "tabs": {
     "options": "Options",

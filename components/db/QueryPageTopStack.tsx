@@ -4,10 +4,11 @@ import { getTextPath } from "@components/common/utils";
 import CurrentResultChips from "@components/db/CurrentResultChips";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
+import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
+import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import TuneIcon from "@mui/icons-material/Tune";
-import { Box, Button, IconButton, Stack } from "@mui/material";
-import { isSidebarOpenAtom } from "features/sidebarSuite/SidebarSuite";
-import { useAtom, useAtomValue } from "jotai";
+import { Box, IconButton, Stack } from "@mui/material";
+import { useAtomValue } from "jotai";
 
 /**
  * Renders a Stack UI component for the top of query pages with query
@@ -23,7 +24,7 @@ export const QueryPageTopStack = () => {
   const { fileName, sourceLanguage } = useDbQueryParams();
   const dbView = useAtomValue(currentViewAtom);
 
-  const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
+  const { isSettingsOpen, setIsSettingsOpen } = useSettingsDrawer();
 
   const handleReset = async () => {
     const isSearchRoute = router.route.startsWith("/search");
@@ -52,26 +53,28 @@ export const QueryPageTopStack = () => {
       sx={{ pt: 2, pb: 3 }}
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <CurrentResultChips />
-      </Box>
-
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Button
-          sx={{ p: 1, alignSelf: "flex-end" }}
-          variant="text"
-          size="small"
-          onClick={handleReset}
-        >
-          {t(`resultsHead.reset`)}
-        </Button>
         <IconButton
           color="inherit"
-          aria-label="open drawer"
+          aria-label={t(`resultsHead.settingsToggle`)}
+          title={t(`resultsHead.settingsToggle`)}
           edge="end"
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          onClick={() => setIsSettingsOpen(!isSettingsOpen)}
         >
           <TuneIcon color="action" />
         </IconButton>
+        <IconButton
+          color="inherit"
+          aria-label={t(`resultsHead.reset`)}
+          title={t(`resultsHead.reset`)}
+          style={{ marginLeft: "8px" }}
+          onClick={handleReset}
+        >
+          <FilterListOffIcon color="action" />
+        </IconButton>
+      </Box>
+
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <CurrentResultChips />
       </Box>
     </Stack>
   );

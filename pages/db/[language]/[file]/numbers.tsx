@@ -48,11 +48,7 @@ export default function NumbersPage() {
   }
 
   return (
-    <PageContainer
-      maxWidth="xl"
-      backgroundName={sourceLanguage}
-      hasSidebar={true}
-    >
+    <PageContainer maxWidth="xl" backgroundName={sourceLanguage} isQueryPage>
       <DbViewPageHead />
 
       {/* Just printing some example data: */}

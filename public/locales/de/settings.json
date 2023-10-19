@@ -1,10 +1,11 @@
 {
   "resultsHead": {
-    "parallels": "Parallels: ",
-    "matches": "Matches: ",
-    "filters": "Custom filters: {{value}}",
-    "options": "Custom options: {{value}}",
-    "reset": "Reset"
+    "parallels": "Paralleln:",
+    "matches": "Matches:",
+    "filters": "Benutzerdefinierte Filter: {{value}}",
+    "options": "Benutzerdefinierte Optionen: {{value}}",
+    "settingsToggle": "Einstellungsfeld umschalten",
+    "reset": "Einstellungen löschen"
   },
   "tabs": {
     "options": "Optionen",
@@ -65,8 +66,8 @@
     "none": "Keine",
     "loading": "Wird geladen...",
     "pli": "Pāli",
-    "chn": "Chinees",
-    "skt": "Sanskriet",
-    "tib": "Tibetaans"
+    "chn": "Chinesisch",
+    "skt": "Sanskrit",
+    "tib": "Tibetisch"
   }
 }

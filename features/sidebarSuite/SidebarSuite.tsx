@@ -1,21 +1,16 @@
 import { useCallback, useState } from "react";
 import { useRouter } from "next/router";
+import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext } from "@mui/lab/";
 import { Box, Drawer, IconButton, Toolbar } from "@mui/material";
-import { atom, useAtom } from "jotai";
 
-import {
-  DrawerHeader,
-  SETTINGS_DRAWER_WIDTH,
-} from "./common/MuiStyledSidebarComponents";
+import { DrawerHeader } from "./common/MuiStyledSidebarComponents";
 import {
   DbFilePageSidebarTabPanels,
   SearchPageSidebarTabPanels,
   SidebarTabList,
 } from "./SidebarTabs";
-
-export const isSidebarOpenAtom = atom(true);
 
 // TODO: remove once full settings suit is complete
 export const StandinSetting = (setting: string) => (
@@ -26,7 +21,8 @@ export const StandinSetting = (setting: string) => (
 
 export function SidebarSuite() {
   const router = useRouter();
-  const [isSidebarOpen, setIsSidebarOpen] = useAtom(isSidebarOpenAtom);
+  const { isSettingsOpen, setIsSettingsOpen, drawerWidth } =
+    useSettingsDrawer();
   const [activeTab, setActiveTab] = useState("0");
   const isSearchRoute = router.route.startsWith("/search");
 
@@ -40,15 +36,15 @@ export function SidebarSuite() {
   return (
     <Drawer
       sx={{
-        width: SETTINGS_DRAWER_WIDTH,
+        width: drawerWidth,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: SETTINGS_DRAWER_WIDTH,
+          width: drawerWidth,
         },
       }}
       variant="persistent"
       anchor="right"
-      open={isSidebarOpen}
+      open={isSettingsOpen}
     >
       <Toolbar />
       <aside>
@@ -62,7 +58,7 @@ export function SidebarSuite() {
                 />
               </Box>
 
-              <IconButton onClick={() => setIsSidebarOpen(false)}>
+              <IconButton onClick={() => setIsSettingsOpen(false)}>
                 <CloseRoundedIcon />
               </IconButton>
             </DrawerHeader>

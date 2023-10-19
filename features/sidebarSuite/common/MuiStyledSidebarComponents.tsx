@@ -1,7 +1,6 @@
+import { OPEN_SETTINGS_CALC } from "@components/hooks/useSettingsDrawer";
 import { Box, Link, Popper as MuiPopper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
-export const SETTINGS_DRAWER_WIDTH = 360;
 
 export const Main = styled("main", {
   shouldForwardProp: (prop) => prop !== "open",
@@ -15,9 +14,9 @@ export const Main = styled("main", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginRight: 0,
-  [theme.breakpoints.up("lg")]: {
-    marginRight: `${open ? SETTINGS_DRAWER_WIDTH : 0}px`,
+  width: "100%",
+  [theme.breakpoints.up("md")]: {
+    width: `${open ? OPEN_SETTINGS_CALC : "100%"}`,
     transform: "none",
   },
 }));
