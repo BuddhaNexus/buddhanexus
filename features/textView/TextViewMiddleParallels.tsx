@@ -12,6 +12,7 @@ interface Props {
 }
 
 export default function TextViewMiddleParallels({ parallelIds }: Props) {
+  // eslint-disable-next-line no-empty-pattern
   const {
     // sourceLanguage, fileName, queryParams
   } = useDbQueryParams();
@@ -20,6 +21,7 @@ export default function TextViewMiddleParallels({ parallelIds }: Props) {
   const [selectedSegmentId, setSelectedSegmentId] =
     useQueryParam<string>("selectedSegment");
 
+  // eslint-disable-next-line no-empty-pattern
   const {
     // data, isInitialLoading, isError
   } = useQuery<TextPageData>({

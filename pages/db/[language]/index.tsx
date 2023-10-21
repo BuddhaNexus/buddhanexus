@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     {
       locale,
     },
-    ["db"]
+    ["db", "settings"]
   );
 
   const queryClient = await prefetchSourceTextBrowserData(

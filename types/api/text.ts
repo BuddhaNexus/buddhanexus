@@ -12,6 +12,7 @@ export interface ApiTextPageDataSegment {
   segtext: ApiTextSegment[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ApiTextViewMiddleParallels {}
 
 export type ApiTextPageData = ApiTextPageDataSegment[];

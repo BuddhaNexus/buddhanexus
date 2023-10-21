@@ -3,7 +3,6 @@ import type { InfiniteFilePropApiQuery, PagedResponse } from "types/api/common";
 import type {
   ApiTextPageData,
   ApiTextPageMiddleParallelsData,
-  ApiTextViewMiddleParallels,
   TextPageData,
 } from "types/api/text";
 
@@ -18,7 +17,8 @@ function parseAPITextData(responseJSON: ApiTextPageData): TextPageData {
 
 function parseAPITextViewMiddleParallelsData(
   responseJSON: ApiTextPageMiddleParallelsData
-): TextPageMiddleParallelsData {
+): any {
+  // ): TextPageMiddleParallelsData {
   //  todo:
   return responseJSON;
 }
@@ -28,7 +28,6 @@ export async function getTextData({
   queryParams,
   pageNumber,
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TextPageData>> {
-  // TODO: remove co_occ param after backend update
   // TODO: use the multi_lingual value from query params
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data } = await apiClient.POST("/text-view/text-parallels/", {
@@ -54,6 +53,7 @@ export async function getTextViewMiddleParallelsData(
   });
 
   return {
+    // @ts-expect-error WIP
     data: parseAPITextViewMiddleParallelsData(
       data as ApiTextPageMiddleParallelsData
     ),
