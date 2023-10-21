@@ -1,4 +1,5 @@
 import { Virtuoso } from "react-virtuoso";
+import { useTranslation } from "next-i18next";
 import { Typography } from "@mui/material";
 import type { TablePageData } from "types/api/table";
 
@@ -11,6 +12,8 @@ interface Props {
 }
 
 const Footer = () => {
+  const { t } = useTranslation("common");
+
   return (
     <div
       style={{
@@ -19,7 +22,7 @@ const Footer = () => {
         justifyContent: "center",
       }}
     >
-      <Typography>Loading...</Typography>
+      <Typography>{t("prompts.loading")}</Typography>
     </div>
   );
 };

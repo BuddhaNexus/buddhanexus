@@ -4,7 +4,6 @@ import { useTranslation } from "next-i18next";
 import MatchesChip from "@components/db/MatchesChip";
 import ParallelsChip from "@components/db/ParallelsChip";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import {
   customFiltersChipQueryExclusions,
@@ -94,7 +93,7 @@ export default function CurrentResultChips({
   });
 
   return (
-    <Box>
+    <>
       {isSearchRoute ? <MatchesChip matches={matches} /> : <ParallelsChip />}
 
       {count.filter > 0 && (
@@ -111,6 +110,6 @@ export default function CurrentResultChips({
           sx={{ mx: 0.5, p: 0.5 }}
         />
       )}
-    </Box>
+    </>
   );
 }

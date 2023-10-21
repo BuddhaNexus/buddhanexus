@@ -177,7 +177,11 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-export const SourceTextSearchInput = () => {
+export const SourceTextSearchInput = ({
+  autoFocus,
+}: {
+  autoFocus?: boolean;
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
   const { sourceLanguage, queryParams } = useDbQueryParams();
@@ -187,6 +191,13 @@ export const SourceTextSearchInput = () => {
     queryKey: DbApi.SourceTextMenu.makeQueryKey(sourceLanguage),
     queryFn: () => DbApi.SourceTextMenu.call(sourceLanguage),
   });
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  React.useEffect(() => {
+    if (autoFocus) {
+      inputRef.current?.focus();
+    }
+  }, [autoFocus]);
 
   // TODO: Add pagination and fuzzy search on BE
   return (
@@ -199,6 +210,9 @@ export const SourceTextSearchInput = () => {
       renderInput={(params) => (
         <TextField
           {...params}
+          inputRef={inputRef}
+          /* eslint-disable-next-line jsx-a11y/no-autofocus */
+          autoFocus={Boolean(autoFocus)}
           label={t("db.searchInputPlaceholder")}
           InputProps={{
             ...params.InputProps,
@@ -216,6 +230,7 @@ export const SourceTextSearchInput = () => {
       renderOption={(props, option) => [props, option] as React.ReactNode}
       renderGroup={(params) => params as unknown as React.ReactNode}
       loading={isLoading}
+      openOnFocus
       disableListWrap
       disablePortal
       onChange={(target, value) =>

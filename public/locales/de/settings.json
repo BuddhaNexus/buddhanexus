@@ -1,11 +1,14 @@
 {
   "resultsHead": {
-    "parallels": "Paralleln:",
-    "matches": "Matches:",
+    "matches": "Streichhölzer:",
     "filters": "Benutzerdefinierte Filter: {{value}}",
     "options": "Benutzerdefinierte Optionen: {{value}}",
-    "settingsToggle": "Einstellungsfeld umschalten",
-    "reset": "Einstellungen löschen"
+    "settings": "Einstellungen",
+    "settingsTip": "Einstellungsfeld umschalten",
+    "reset": "Zurücksetzen",
+    "resetTip": "Standardeinstellungen des Resorts",
+    "textSelect": "Text ändern",
+    "textSelectTip": "Wählen Sie einen neuen Anfragetext"
   },
   "tabs": {
     "options": "Optionen",
@@ -25,11 +28,11 @@
     "folioAsGoTo": "Gehe zum ausgewählten Textabschnitt",
     "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
     "folioShowAll": "Hele tekst",
-    "availableLanguages": "Parallelle teksttalen",
+    "availableLanguages": "Textsprachen zuordnen",
     "sorting": "Sortiermethode",
-    "sortDefault": "Standard – Match position in source text",
-    "sortSource": "Position im Quelltext abgleichen",
-    "sortParallel": "Position in parallelen Texten abgleichen",
+    "sortDefault": "Standard – Position im Anfragetext",
+    "sortSource": "Position im Anfragetext",
+    "sortParallel": "Position in passenden Texten",
     "sortLength": "Länge des übereinstimmenden Zeichens (>)",
     "wylie": "Wylie",
     "unicode": "Unicode",
@@ -59,15 +62,5 @@
     "numbers": "Zahlen",
     "table": "Tabelle",
     "text": "Text"
-  },
-  "dbLanguageLabels": {
-    "instructions": "Datenbank Sprache",
-    "all": "Alle",
-    "none": "Keine",
-    "loading": "Wird geladen...",
-    "pli": "Pāli",
-    "chn": "Chinesisch",
-    "skt": "Sanskrit",
-    "tib": "Tibetisch"
   }
 }

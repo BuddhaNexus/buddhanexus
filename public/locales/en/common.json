@@ -8,6 +8,7 @@
     "database": "Database"
   },
   "language": {
+    "all": "All",
     "pli": "Pāli",
     "chn": "Chinese",
     "skt": "Sanskrit",
@@ -42,6 +43,9 @@
   },
   "prompts": {
     "genericErrorTitle": "Something went wrong",
-    "genericErrorDescription": "Please contact us if the issue persists."
+    "genericErrorDescription": "Please contact us if the issue persists.",
+    "loading": "Loading...",
+    "selectLanguage": "Select language",
+    "noSelection": "None selected"
   }
 }

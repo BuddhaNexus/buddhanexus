@@ -8,10 +8,11 @@
     "database": "Datenbank"
   },
   "language": {
+    "all": "Alle",
     "pli": "Pāli",
-    "chn": "Chinese",
+    "chn": "Chinesisch",
     "skt": "Sanskrit",
-    "tib": "Tibetan"
+    "tib": "Tibetisch"
   },
   "footer": {
     "about": "Über",
@@ -42,6 +43,9 @@
   },
   "prompts": {
     "genericErrorTitle": "Something went wrong",
-    "genericErrorDescription": "Please contact us if the issue persists."
+    "genericErrorDescription": "Please contact us if the issue persists.",
+    "loading": "Wird geladen...",
+    "selectLanguage": "Sprache auswählen",
+    "noSelection": "Nichts ausgewählt"
   }
 }

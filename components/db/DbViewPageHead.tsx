@@ -1,5 +1,4 @@
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
-import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Typography } from "@mui/material";
 
@@ -11,10 +10,9 @@ export const DbViewPageHead = () => {
     <>
       <QueryPageTopStack />
 
-      <Typography variant="h2" component="h1">
+      <Typography variant="h2" component="h1" mb={1}>
         {fileName.toUpperCase()}
       </Typography>
-      <SourceTextSearchInput />
     </>
   );
 };

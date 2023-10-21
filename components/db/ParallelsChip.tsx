@@ -44,7 +44,7 @@ export default function ParallelsChip() {
       size="small"
       label={
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Box>{t("resultsHead.parallels")}</Box>
+          <Box>{t("resultsHead.matches")}</Box>
           <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
             {parallelCount}
           </Box>

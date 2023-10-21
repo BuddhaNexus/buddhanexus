@@ -32,7 +32,7 @@ function getStyles(
 }
 
 const SourceLanguagesSelector = () => {
-  const { t } = useTranslation("settings");
+  const { t } = useTranslation(["settings", "common"]);
   const { defaultQueryParams, uniqueSettings } = useDbQueryParams();
   const theme = useTheme();
 
@@ -45,7 +45,7 @@ const SourceLanguagesSelector = () => {
     if (defaultQueryParams.multi_lingual) {
       setSelectedLanguages(defaultQueryParams.multi_lingual);
     }
-  }, [defaultQueryParams.multi_lingual]);
+  }, [defaultQueryParams.multi_lingual, setSelectedLanguages]);
 
   const handleChange = (event: SelectChangeEvent<typeof selectedLanguages>) => {
     const {
@@ -74,17 +74,16 @@ const SourceLanguagesSelector = () => {
               selected.length > 0 ? (
                 selected
                   .map((selection) =>
-                    t(
-                      `dbLanguageLabels.${
-                        selection as unknown as SourceLanguage
-                      }`
-                    )
+                    t(`language.${selection as unknown as SourceLanguage}`, {
+                      ns: "common",
+                    })
                   )
                   .join(", ")
               ) : (
-                // TODO: i18n
                 <em style={{ color: theme.palette.text.secondary }}>
-                  None Selected
+                  {t("prompts.noSelection", {
+                    ns: "common",
+                  })}
                 </em>
               )
             }
@@ -92,24 +91,30 @@ const SourceLanguagesSelector = () => {
             displayEmpty
             onChange={handleChange}
           >
-            {defaultQueryParams.multi_lingual?.map((lang: SourceLanguage) => (
-              <MenuItem
-                key={lang}
-                value={lang}
-                style={getStyles(
-                  lang,
-                  selectedLanguages as SourceLanguage[],
-                  theme
-                )}
-              >
-                <Checkbox
-                  checked={
-                    selectedLanguages ? selectedLanguages.includes(lang) : false
-                  }
-                />
-                <ListItemText primary={t(`dbLanguageLabels.${lang}`)} />
-              </MenuItem>
-            ))}
+            {defaultQueryParams.multi_lingual?.map(
+              (langKey: SourceLanguage) => (
+                <MenuItem
+                  key={langKey}
+                  value={langKey}
+                  style={getStyles(
+                    langKey,
+                    selectedLanguages as SourceLanguage[],
+                    theme
+                  )}
+                >
+                  <Checkbox
+                    checked={
+                      selectedLanguages
+                        ? selectedLanguages.includes(langKey)
+                        : false
+                    }
+                  />
+                  <ListItemText
+                    primary={t(`language.${langKey}`, { ns: "common" })}
+                  />
+                </MenuItem>
+              )
+            )}
           </Select>
         ) : (
           <Select

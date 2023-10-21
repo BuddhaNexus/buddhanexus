@@ -1,11 +1,14 @@
 {
   "resultsHead": {
-    "parallels": "Parallels: ",
     "matches": "Matches: ",
     "filters": "Custom filters: {{value}}",
     "options": "Custom options: {{value}}",
-    "settingsToggle": "Toggle settings panel",
-    "reset": "Clear settings"
+    "settings": "Settings",
+    "settingsTip": "Toggle settings panel",
+    "reset": "Reset",
+    "resetTip": "Resort default settings",
+    "textSelect": "Change text",
+    "textSelectTip": "Select a new inquiry text"
   },
   "tabs": {
     "options": "Options",
@@ -25,11 +28,11 @@
     "folioAsGoTo": "Go to selected text section",
     "folioAsLimit": "Show matches from selected text section",
     "folioShowAll": "Whole text",
-    "availableLanguages": "Parallel text Languages",
+    "availableLanguages": "Match text Languages",
     "sorting": "Sorting Method",
-    "sortDefault": "Default – Match position in source text",
-    "sortSource": "Match position in source text",
-    "sortParallel": "Match position in parallel texts",
+    "sortDefault": "Default – Position in inquiry text",
+    "sortSource": "Position in inquiry text",
+    "sortParallel": "Position in match texts",
     "sortLength": "Length of character match (>)",
     "download": "Download results as xmlx file",
     "wylie": "Wylie",
@@ -59,15 +62,5 @@
     "numbers": "Numbers",
     "table": "Table",
     "text": "Text"
-  },
-  "dbLanguageLabels": {
-    "instructions": "Database language",
-    "all": "All",
-    "none": "None",
-    "loading": "Loading...",
-    "pli": "Pāli",
-    "chn": "Chinese",
-    "skt": "Sanskrit",
-    "tib": "Tibetan"
   }
 }
