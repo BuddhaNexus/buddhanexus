@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import { Tree } from "react-arborist";
 import useDimensions from "react-cool-dimensions";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Node } from "@components/treeView/DrawerNavigationComponents";
 import type { DrawerNavigationNodeData } from "@components/treeView/types";
@@ -56,8 +57,10 @@ interface Props {
 export const SourceTextBrowserTree = memo<Props>(
   function SourceTextBrowserTree({ parentHeight, parentWidth }) {
     const [searchTerm, setSearchTerm] = useState("");
-    const { sourceLanguage, sourceLanguageName } = useDbQueryParams();
+    const { sourceLanguage } = useDbQueryParams();
     const { observe, height: inputHeight } = useDimensions();
+
+    const { t } = useTranslation(["common", "settings"]);
 
     // TODO: add error handling
     const { data, isLoading } = useQuery<DrawerNavigationNodeData[]>({
@@ -66,11 +69,12 @@ export const SourceTextBrowserTree = memo<Props>(
     });
 
     const hasData = !(isLoading || !data);
+    const languageName = t(`settings:dbLanguageLabels.${sourceLanguage}`);
 
     return (
       <>
         <Typography variant="h5" sx={{ p: 2, pb: 0 }}>
-          Browse texts in {sourceLanguageName}
+          {t("textBrowser.mainPrompt", { languageName })}
         </Typography>
 
         <Divider />

@@ -4,3 +4,4 @@
 npx pretty-quick --staged
 npx lint-staged
 yarn tsc
+yarn eslint .
