@@ -1,3 +1,4 @@
+import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import MatchesChip from "@components/db/MatchesChip";
@@ -17,9 +18,11 @@ import type {
 function getSettingCounts({
   currentQueries,
   defaultQueries,
+  defaultMultiLangInitialized,
 }: {
   currentQueries: Partial<QueryParams>;
   defaultQueries: DefaultQueryParams;
+  defaultMultiLangInitialized: boolean;
 }) {
   let display = 0;
   let filter = 0;
@@ -29,6 +32,9 @@ function getSettingCounts({
 
     if (
       defaultQueries[queryKey] === value ||
+      defaultQueries[queryKey] === undefined ||
+      (Array.isArray(defaultQueries[queryKey]) &&
+        [...(defaultQueries[queryKey] as string[])]?.join(",") === value) ||
       value === "position" ||
       value === null
     ) {
@@ -47,6 +53,11 @@ function getSettingCounts({
     filter += 1;
   }
 
+  if (!defaultMultiLangInitialized) {
+    return { display, filter };
+  }
+
+  // TODO: determine desired behaviour. Currently it is possible for the user to deselect all languages.
   if (!Object.keys(currentQueries).includes("multi_lingual")) {
     display += 1;
   }
@@ -65,10 +76,21 @@ export default function CurrentResultChips({
   const isSearchRoute = router.route.startsWith("/search");
   const { queryParams, defaultQueryParams } = useDbQueryParams();
 
-  // TODO: fix count return
+  // This prevents a flash of content value change while available languages for a text are being fetched and set as default.
+  const defaultMultiLangInitialized = React.useRef(false);
+  React.useEffect(() => {
+    if (
+      !defaultMultiLangInitialized.current &&
+      defaultQueryParams.multi_lingual
+    ) {
+      defaultMultiLangInitialized.current = true;
+    }
+  }, [defaultQueryParams.multi_lingual]);
+
   const count = getSettingCounts({
     currentQueries: queryParams,
     defaultQueries: defaultQueryParams,
+    defaultMultiLangInitialized: defaultMultiLangInitialized.current,
   });
 
   return (

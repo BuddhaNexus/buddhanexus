@@ -108,9 +108,9 @@ export type QueryParams = {
     ? LimitsParam | (Key extends OptionalParams ? undefined : never)
     : Key extends "target_collection"
     ? string[] | (Key extends OptionalParams ? undefined : never)
-    : Key extends "multi_lingual"
-    ? SourceLanguage[] | (Key extends OptionalParams ? undefined : never)
     : never;
 };
 
-export type DefaultQueryParams = Omit<QueryParams, OptionalParams>;
+export type DefaultQueryParams = Omit<QueryParams, OptionalParams> & {
+  multi_lingual: SourceLanguage[] | undefined;
+};

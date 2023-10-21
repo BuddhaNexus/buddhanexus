@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { SETTINGS_DRAWER_WIDTH } from "@components/hooks/useSettingsDrawer";
 import {
   Box,
+  CircularProgress,
   FormControl,
   InputLabel,
   ListItemText,
@@ -15,23 +15,8 @@ import type { SelectChangeEvent } from "@mui/material/Select";
 import Select from "@mui/material/Select";
 import type { Theme } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
-import { useQuery } from "@tanstack/react-query";
-import { defaultSourceLanguagesSelection } from "features/atoms";
-import { useSetAtom } from "jotai";
 import { ArrayParam, useQueryParam } from "use-query-params";
-import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: SETTINGS_DRAWER_WIDTH - 60,
-    },
-  },
-};
 
 function getStyles(
   name: SourceLanguage,
@@ -48,38 +33,26 @@ function getStyles(
 
 const SourceLanguagesSelector = () => {
   const { t } = useTranslation("settings");
-  const { fileName, uniqueSettings } = useDbQueryParams();
+  const { defaultQueryParams, uniqueSettings } = useDbQueryParams();
   const theme = useTheme();
-  const setDefaults = useSetAtom(defaultSourceLanguagesSelection);
-
-  const { data, isLoading } = useQuery({
-    queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
-    queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
-  });
 
   const [selectedLanguages, setSelectedLanguages] = useQueryParam(
     uniqueSettings.remote.availableLanguages,
     ArrayParam
   );
 
-  /* eslint-disable react-hooks/exhaustive-deps */
   React.useEffect(() => {
-    setDefaults(data ?? []);
-
-    if (!selectedLanguages) {
-      setSelectedLanguages(data);
+    if (defaultQueryParams.multi_lingual) {
+      setSelectedLanguages(defaultQueryParams.multi_lingual);
     }
-  }, [setSelectedLanguages, isLoading]);
+  }, [defaultQueryParams.multi_lingual]);
 
   const handleChange = (event: SelectChangeEvent<typeof selectedLanguages>) => {
     const {
       target: { value },
     } = event;
 
-    setSelectedLanguages(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setSelectedLanguages(typeof value === "string" ? value.split(",") : value);
   };
 
   const selectorLabel = t("optionsLabels.availableLanguages");
@@ -87,18 +60,19 @@ const SourceLanguagesSelector = () => {
   return (
     <Box sx={{ width: 1, my: 2 }}>
       <FormControl sx={{ width: 1 }}>
-        <InputLabel id="text-languages-selector-label">
+        <InputLabel id="text-languages-selector-label" shrink>
           {selectorLabel}
         </InputLabel>
-        <Select
-          labelId="text-languages-selector-label"
-          id="text-languages"
-          value={isLoading ? ["loading"] : [...(selectedLanguages ?? [])]}
-          input={<OutlinedInput label={selectorLabel} />}
-          MenuProps={MenuProps}
-          renderValue={(selected) => {
-            const renderedSelection = selected
-              ? selected
+        {defaultQueryParams.multi_lingual ? (
+          <Select
+            labelId="text-languages-selector-label"
+            id="text-languages"
+            label={selectorLabel}
+            value={selectedLanguages ?? []}
+            input={<OutlinedInput label={selectorLabel} notched />}
+            renderValue={(selected) =>
+              selected.length > 0 ? (
+                selected
                   .map((selection) =>
                     t(
                       `dbLanguageLabels.${
@@ -107,16 +81,18 @@ const SourceLanguagesSelector = () => {
                     )
                   )
                   .join(", ")
-              : "";
-
-            return renderedSelection;
-          }}
-          multiple
-          displayEmpty
-          onChange={handleChange}
-        >
-          {data?.map((lang: SourceLanguage) => {
-            return (
+              ) : (
+                // TODO: i18n
+                <em style={{ color: theme.palette.text.secondary }}>
+                  None Selected
+                </em>
+              )
+            }
+            multiple
+            displayEmpty
+            onChange={handleChange}
+          >
+            {defaultQueryParams.multi_lingual?.map((lang: SourceLanguage) => (
               <MenuItem
                 key={lang}
                 value={lang}
@@ -133,33 +109,24 @@ const SourceLanguagesSelector = () => {
                 />
                 <ListItemText primary={t(`dbLanguageLabels.${lang}`)} />
               </MenuItem>
-            );
-          })}
-        </Select>
+            ))}
+          </Select>
+        ) : (
+          <Select
+            labelId="text-languages-selector-label"
+            id="text-languages"
+            value="loading"
+            input={<OutlinedInput label={selectorLabel} />}
+            disabled
+          >
+            <MenuItem value="loading">
+              <CircularProgress color="inherit" size={18} />
+            </MenuItem>
+          </Select>
+        )}
       </FormControl>
     </Box>
   );
 };
 
 export default SourceLanguagesSelector;
-
-// {isLoading ? (
-//   <Select
-//     labelId="text-languages-selector-label"
-//     id="text-languages"
-//     value={selectedLanguages ?? []}
-//     input={
-//       <OutlinedInput label={selectorLabel} />
-//     }
-//     MenuProps={MenuProps}
-//     multiple
-//     displayEmpty
-//     onChange={handleChange}
-//   >
-//     <MenuItem value="loading">
-//       <CircularProgress color="inherit" size={20} />
-//     </MenuItem>
-//   </Select>
-// ) : (
-
-// )}

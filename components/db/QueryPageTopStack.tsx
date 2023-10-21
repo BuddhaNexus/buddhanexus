@@ -55,21 +55,21 @@ export const QueryPageTopStack = () => {
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <IconButton
           color="inherit"
-          aria-label={t(`resultsHead.settingsToggle`)}
-          title={t(`resultsHead.settingsToggle`)}
-          edge="end"
-          onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-        >
-          <TuneIcon color="action" />
-        </IconButton>
-        <IconButton
-          color="inherit"
           aria-label={t(`resultsHead.reset`)}
           title={t(`resultsHead.reset`)}
-          style={{ marginLeft: "8px" }}
+          edge="end"
           onClick={handleReset}
         >
           <RotateLeftOutlinedIcon color="action" />
+        </IconButton>
+        <IconButton
+          color="inherit"
+          aria-label={t(`resultsHead.settingsToggle`)}
+          title={t(`resultsHead.settingsToggle`)}
+          style={{ marginLeft: "8px" }}
+          onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+        >
+          <TuneIcon color="action" />
         </IconButton>
       </Box>
 

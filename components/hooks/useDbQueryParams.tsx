@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useSearchParams } from "@components/hooks/useTypedSearchParams";
-import { defaultSourceLanguagesSelection } from "features/atoms";
+import { useQuery } from "@tanstack/react-query";
 import { getQueryParamsFromRouter } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
@@ -13,7 +13,8 @@ import {
   settingRenderGroups,
   uniqueSettings,
 } from "features/sidebarSuite/config/settings";
-import { useAtomValue } from "jotai";
+import type { DefaultQueryParams } from "features/sidebarSuite/config/types";
+import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {
@@ -28,17 +29,17 @@ export const useDbQueryParams = () => {
   const sourceLanguageName = t(`language.${sourceLanguage}`);
   const fileName = file as string;
 
-  const queryParams = getQueryParamsFromRouter({ route: router.route, params });
-  const multiLingualParamDefault = useAtomValue(
-    defaultSourceLanguagesSelection
-  );
+  const { data: multiLangParamData } = useQuery({
+    queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
+    queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
+  });
 
-  const defaultQueryParams = {
+  const defaultQueryParams: DefaultQueryParams = {
     score: DEFAULT_QUERY_PARAMS_VALUES.score,
     par_length: sourceLanguage
       ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
       : DEFAULT_QUERY_PARAMS_VALUES.par_length,
-    multi_lingual: multiLingualParamDefault.join(","),
+    multi_lingual: multiLangParamData,
   };
 
   // Chinese is used as fallback min par length as it has the lowest min par length value.
@@ -50,6 +51,8 @@ export const useDbQueryParams = () => {
       ? MIN_PAR_LENGTH_VALUES[sourceLanguage]
       : MIN_PAR_LENGTH_VALUES.chn,
   };
+
+  const queryParams = getQueryParamsFromRouter({ route: router.route, params });
 
   const sortParam = queryParams.get(uniqueSettings.queryParams.sortMethod);
   const sortMethodSelectConfig = sortParam ?? "position";
