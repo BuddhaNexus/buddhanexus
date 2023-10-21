@@ -12,7 +12,7 @@ import {
 import { getNumbersData } from "./numbers";
 import { getGlobalSearchData } from "./search";
 import { getTableData } from "./table";
-import { getTextData } from "./text";
+import { getTextData, getTextViewMiddleParallelsData } from "./text";
 import { getAvailableLanguages, getFolios, getParallelCount } from "./utils";
 
 export const DbApi = {
@@ -48,6 +48,10 @@ export const DbApi = {
       queryParams,
     ],
     call: getTextData,
+  },
+  TextViewMiddle: {
+    makeQueryKey: (parallelIds: string[]) => parallelIds,
+    call: getTextViewMiddleParallelsData,
   },
   //* MENUS
   SourceTextMenu: {

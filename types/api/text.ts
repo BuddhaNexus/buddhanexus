@@ -12,4 +12,8 @@ export interface ApiTextPageDataSegment {
   segtext: ApiTextSegment[];
 }
 
+export interface ApiTextViewMiddleParallels {}
+
 export type ApiTextPageData = ApiTextPageDataSegment[];
+
+export type ApiTextPageMiddleParallelsData = ApiTextViewMiddleParallels[];
