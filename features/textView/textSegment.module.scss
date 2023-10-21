@@ -32,7 +32,7 @@
 
 .segmentNumber {
   &::before {
-    content: attr(data-segmentNumber);
+    content: attr(data-segmentnumber);
     font-size: 0.6rem;
     padding: 0.2em;
     margin-right: 1em;

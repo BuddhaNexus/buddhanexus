@@ -32,7 +32,7 @@ export const TextSegment = ({
         className={`${styles.segmentNumber} ${
           isSelected && styles.segmentNumber__selected
         }`}
-        data-segmentNumber={segmentNumber}
+        data-segmentnumber={segmentNumber}
       />
 
       {segmentText.map(
