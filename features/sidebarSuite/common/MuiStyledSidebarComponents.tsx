@@ -9,7 +9,7 @@ export const Main = styled("main", {
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
-  padding: theme.spacing(3),
+  padding: theme.spacing(2),
   paddingTop: 0,
   transition: theme.transitions.create("margin", {
     easing: theme.transitions.easing.sharp,

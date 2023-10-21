@@ -13,7 +13,7 @@ import {
   Link,
   Tooltip,
 } from "@mui/material";
-import type { ApiTextSegment } from "types/api/table";
+import type { ApiTextSegment } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";

@@ -39,3 +39,9 @@ export interface InfiniteSerachApiQuery {
 export interface ViewPropApiQuery extends FilePropApiQuery {
   view: DbViewEnum;
 }
+
+export type ApiTextSegment = {
+  highlightColor: number;
+  text: string;
+  matches: [];
+};

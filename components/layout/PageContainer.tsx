@@ -1,5 +1,6 @@
 import type { FC, PropsWithChildren } from "react";
 import { useTheme } from "next-themes";
+import type { SxProps } from "@mui/material";
 import { Container } from "@mui/material";
 import type { Breakpoint } from "@mui/system";
 import bgChn from "@public/assets/images/bg_chn_upscaled_bw.jpg";
@@ -49,6 +50,15 @@ export const PageContainer: FC<Props> = ({
   const isSidebarOpen = useAtomValue(isSidebarOpenAtom);
   const { theme } = useTheme();
 
+  const containerStyles: SxProps = {
+    pt: { xs: 0, sm: 4 },
+    px: { xs: 0, sm: 2, lg: 4 },
+    flex: 1,
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+  };
+
   return (
     <>
       {backgroundName && (
@@ -69,33 +79,14 @@ export const PageContainer: FC<Props> = ({
       {hasSidebar ? (
         <>
           <Main open={isSidebarOpen}>
-            <Container
-              maxWidth={maxWidth}
-              sx={{
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-              }}
-            >
+            <Container maxWidth={maxWidth} sx={containerStyles}>
               {children}
             </Container>
           </Main>
           <SidebarSuite />
         </>
       ) : (
-        <Container
-          component="main"
-          maxWidth={maxWidth}
-          sx={{
-            pt: { xs: 2, sm: 4 },
-            px: { xs: 2, lg: 4 },
-            flex: 1,
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        <Container component="main" maxWidth={maxWidth} sx={containerStyles}>
           {children}
         </Container>
       )}

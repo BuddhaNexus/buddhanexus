@@ -1,29 +1,21 @@
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Typography } from "@mui/material";
 import { scriptSelectionAtom } from "features/atoms";
+import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
 import { useAtomValue } from "jotai";
-import { EwtsConverter } from "tibetan-ewts-converter";
-import type { ApiTextSegment } from "types/api/table";
-import { SourceLanguage } from "utils/constants";
+import type { ApiTextSegment } from "types/api/common";
 
 interface Props {
   text: ApiTextSegment[];
 }
 
 export const ParallelSegmentText = ({ text }: Props) => {
-  const ewts = new EwtsConverter();
-
   const { sourceLanguage } = useDbQueryParams();
-  const scriptSelection = useAtomValue(scriptSelectionAtom);
+  const script = useAtomValue(scriptSelectionAtom);
 
   return (
     <>
       {text.map(({ text, highlightColor }) => {
-        const renderText =
-          scriptSelection === "Wylie" &&
-          sourceLanguage === SourceLanguage.TIBETAN
-            ? ewts.to_unicode(text)
-            : text;
         return (
           <Typography
             key={text}
@@ -31,7 +23,7 @@ export const ParallelSegmentText = ({ text }: Props) => {
             fontWeight={highlightColor === 1 ? 600 : 400}
             color={highlightColor === 1 ? "text.primary" : "text.secondary"}
           >
-            {renderText}
+            {enscriptText({ text, script, language: sourceLanguage })}
           </Typography>
         );
       })}

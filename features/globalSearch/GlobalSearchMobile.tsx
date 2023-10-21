@@ -26,6 +26,8 @@ const GlobalSearchMobile = () => {
     }
   };
 
+  const isEmpty = inputRef.current?.value === "";
+
   return (
     <Container
       maxWidth="xl"
@@ -34,7 +36,7 @@ const GlobalSearchMobile = () => {
           lg: "none",
         },
         w: 1,
-        // This component is outside of <main>, so mt & px values are given here to match padding in components/layout/PageContainer.tsx
+        // This component is outside <main>, so mt & px values are given here to match padding in components/layout/PageContainer.tsx
         mt: 4,
         px: { xs: 4, sm: 2 },
       }}
@@ -53,7 +55,7 @@ const GlobalSearchMobile = () => {
                   <SearchIcon fontSize="inherit" />
                 </IconButton>
               ),
-              endAdornment: (
+              endAdornment: !isEmpty && (
                 <IconButton onClick={handleClear}>
                   <CloseIcon fontSize="inherit" />
                 </IconButton>

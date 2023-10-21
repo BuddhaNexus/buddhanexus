@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports,@typescript-eslint/no-unused-vars
-import { CommonColors } from "@mui/material/styles/createPalette";
+import type React from "react";
 
 declare module "@mui/material/styles/createPalette" {
   export interface CommonColors {
@@ -7,5 +7,22 @@ declare module "@mui/material/styles/createPalette" {
     sanskrit: string;
     tibetan: string;
     chinese: string;
+  }
+}
+
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    body3: true;
+  }
+}
+
+declare module "@mui/material/styles" {
+  interface TypographyVariants {
+    body3: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    body3?: React.CSSProperties;
   }
 }

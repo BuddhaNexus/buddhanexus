@@ -2,6 +2,7 @@ import apiClient from "@api";
 import type { FilePropApiQuery } from "types/api/common";
 
 import { RESULTS_DOWNLOAD_ROOT_URL } from "./constants";
+import { parseDbPageQueryParams } from "./utils";
 
 // TODO: Awaiting api endpoint fix - remove eslint-disable-line on completion
 
@@ -11,12 +12,13 @@ export async function getParallelDownloadData({
 }: FilePropApiQuery): Promise<{ url: string; name: string } | undefined> {
   // this triggers the creation of an excel sheet of the data for the current view (table & number only) for the user to download. The sheet is generated on the backend and lives in a folder on the HDD of the server for a while and gets removed after a few days.
 
-  const limits = queryParams?.limits
-    ? JSON.parse(queryParams.limits as string)
-    : {};
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const path = await apiClient.POST("/table-view/download", {
-    body: { file_name: fileName, ...queryParams, limits, download_data: "" },
+    body: {
+      file_name: fileName,
+      ...parseDbPageQueryParams(queryParams),
+      download_data: "",
+    },
   });
 
   // example path: download/dn2_download.xlsx

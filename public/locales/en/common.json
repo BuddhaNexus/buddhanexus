@@ -38,7 +38,7 @@
     "backToNews": "Back to News"
   },
   "textBrowser": {
-    "label": "Source text browser"
+    "mainPrompt": "Browse texts in {{ languageName }}"
   },
   "prompts": {
     "genericErrorTitle": "Something went wrong",

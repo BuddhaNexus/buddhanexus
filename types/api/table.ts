@@ -1,17 +1,12 @@
 import type { SourceLanguage } from "utils/constants";
 
-type ParallelHighlightColorId = 0 | 1;
+import type { ApiTextSegment } from "./common";
 
 type ApiFullNames = {
   display_name: string;
   text_name: string;
   link1?: string;
   link2?: string;
-};
-
-export type ApiTextSegment = {
-  highlightColor: ParallelHighlightColorId;
-  text: string;
 };
 
 // Raw type from BE

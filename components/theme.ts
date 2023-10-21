@@ -59,6 +59,7 @@ export const getDesignTokens = ({
       lineHeight: 1.65,
     },
     body2: { fontFamily: sourceSans.style.fontFamily },
+    body3: { fontFamily: sourceSans.style.fontFamily },
     subtitle1: { fontFamily: sourceSerif.style.fontFamily },
     subtitle2: { fontFamily: sourceSerif.style.fontFamily },
   },
@@ -150,6 +151,16 @@ export const getDesignTokens = ({
         }),
   },
   components: {
+    MuiTypography: {
+      variants: [
+        {
+          props: { variant: "body3" },
+          style: {
+            fontSize: "1rem",
+          },
+        },
+      ],
+    },
     MuiFormLabel: {
       styleOverrides: {
         root: {

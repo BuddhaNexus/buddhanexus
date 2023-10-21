@@ -1,0 +1,44 @@
+.segment {
+  display: inline;
+  text-align: start;
+
+  //make button appear like span
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  font-size: 1rem;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  &__selected__dark {
+    background-color: #616161 !important;
+    text-decoration: underline;
+  }
+
+  &__selected__light {
+    background: #eeeeee !important;
+    text-decoration: underline;
+  }
+}
+
+.segmentContainer {
+  &__selected {
+    background-color: lightgray;
+  }
+}
+
+.segmentNumber {
+  &::before {
+    content: attr(data-segmentnumber);
+    font-size: 0.6rem;
+    padding: 0.2em;
+    margin-right: 1em;
+  }
+
+  &__selected {
+    text-decoration: underline;
+  }
+}

@@ -2,6 +2,8 @@ import apiClient from "@api";
 import type { InfiniteFilePropApiQuery, PagedResponse } from "types/api/common";
 import type { ApiTablePageData, TablePageData } from "types/api/table";
 
+import { parseDbPageQueryParams } from "./utils";
+
 function parseAPITableData(apiData: ApiTablePageData): TablePageData {
   return apiData.map((p) => ({
     sourceLanguage: p.src_lang,
@@ -37,10 +39,6 @@ export async function getTableData({
   queryParams,
   pageNumber,
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
-  const limits = queryParams?.limits
-    ? JSON.parse(queryParams.limits as string)
-    : {};
-
   const { data } = await apiClient.POST("/table-view/table", {
     // body: {
     //   file_name: fileName,
@@ -54,8 +52,7 @@ export async function getTableData({
       score: 30,
       par_length: 30,
       sort_method: "position",
-      ...queryParams,
-      limits,
+      ...parseDbPageQueryParams(queryParams),
       page: pageNumber,
     },
   });
