@@ -40,17 +40,18 @@ export default function TextPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { selectedSegment, ...paramsThatShouldRefreshText } = queryParams;
 
-  const { data, fetchNextPage, fetchPreviousPage, isInitialLoading, isError } =
+  const { data, fetchNextPage, fetchPreviousPage, isLoading, isError } =
     useInfiniteQuery<PagedResponse<TextPageData>>({
+      initialPageParam: 0,
       queryKey: DbApi.TextView.makeQueryKey({
         fileName,
         queryParams: paramsThatShouldRefreshText,
       }),
-      queryFn: ({ pageParam = 0 }) =>
+      queryFn: ({ pageParam }) =>
         DbApi.TextView.call({
           fileName,
           queryParams,
-          pageNumber: pageParam,
+          pageNumber: pageParam as number,
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
@@ -60,7 +61,7 @@ export default function TextPage() {
 
   const allData = useMemo(
     () => (data ? data.pages.flatMap((page) => page.data) : []),
-    [data]
+    [data],
   );
 
   if (isError) {
@@ -79,7 +80,7 @@ export default function TextPage() {
     <PageContainer maxWidth="xl" backgroundName={sourceLanguage} isQueryPage>
       <DbViewPageHead />
 
-      {isInitialLoading || !data ? (
+      {isLoading || !data ? (
         <CenteredProgress />
       ) : (
         <TextView
@@ -102,11 +103,11 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 
   const queryClient = await prefetchApiData(
     params?.language as SourceLanguage,
-    params?.file as string
+    params?.file as string,
   );
 
   return merge(
     { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps
+    i18nProps,
   );
 };

@@ -49,14 +49,15 @@ export default function SearchPage() {
     isInitialLoading,
     isLoading,
   } = useInfiniteQuery<PagedResponse<any>>({
+    initialPageParam: 0,
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
       searchTerm: searchParam,
       queryParams,
     }),
-    queryFn: ({ pageParam = 0 }) =>
+    queryFn: ({ pageParam }) =>
       DbApi.GlobalSearchData.call({
         searchTerm: searchParam,
-        pageNumber: pageParam,
+        pageNumber: pageParam as number,
         queryParams,
       }),
     getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
@@ -149,7 +150,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["settings", "common"]
+    ["settings", "common"],
   );
 
   return {

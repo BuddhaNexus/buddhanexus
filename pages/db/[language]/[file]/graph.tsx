@@ -72,11 +72,11 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 
   const queryClient = await prefetchApiData(
     params?.language as SourceLanguage,
-    params?.file as string
+    params?.file as string,
   );
 
   return merge(
     { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps
+    i18nProps,
   );
 };

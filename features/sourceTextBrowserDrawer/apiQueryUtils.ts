@@ -4,7 +4,7 @@ import type { SourceLanguage } from "utils/constants";
 
 export async function prefetchApiData(
   sourceLanguage: SourceLanguage,
-  fileName?: string
+  fileName?: string,
 ): Promise<QueryClient> {
   const queryClient = new QueryClient({
     // https://www.codemzy.com/blog/react-query-cachetime-staletime
@@ -14,21 +14,21 @@ export async function prefetchApiData(
         staleTime: 60 * 60 * 1000,
 
         // 2 days
-        cacheTime: 2 * 24 * 60 * 60 * 1000,
+        gcTime: 2 * 24 * 60 * 60 * 1000,
       },
     },
   });
 
-  await queryClient.prefetchQuery(
-    DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-    () => DbApi.SidebarSourceTexts.call(sourceLanguage)
-  );
+  await queryClient.prefetchQuery({
+    queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
+    queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+  });
 
   if (fileName) {
-    await queryClient.prefetchQuery(
-      DbApi.AvailableLanguagesData.makeQueryKey(fileName),
-      () => DbApi.AvailableLanguagesData.call(fileName)
-    );
+    await queryClient.prefetchQuery({
+      queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
+      queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
+    });
   }
 
   return queryClient;

@@ -34,7 +34,7 @@ export function SourceLanguageChip({
 
   const languageBadgeColor = useCallback(
     () => getLanguageColor(language, theme),
-    [language, theme]
+    [language, theme],
   );
 
   return (

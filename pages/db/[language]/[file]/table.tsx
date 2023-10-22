@@ -24,32 +24,28 @@ export default function TablePage() {
   const { isFallback } = useSourceFile();
   useDbView();
 
-  const {
-    data,
-    fetchNextPage,
-    fetchPreviousPage,
-    isInitialLoading,
-    isLoading,
-  } = useInfiniteQuery<PagedResponse<TablePageData>>({
-    queryKey: DbApi.TableView.makeQueryKey({
-      fileName,
-      queryParams,
-    }),
-    queryFn: ({ pageParam = 0 }) =>
-      DbApi.TableView.call({
+  const { data, fetchNextPage, fetchPreviousPage, isLoading } =
+    useInfiniteQuery<PagedResponse<TablePageData>>({
+      initialPageParam: 0,
+      queryKey: DbApi.TableView.makeQueryKey({
         fileName,
         queryParams,
-        pageNumber: pageParam,
       }),
-    getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
-    getPreviousPageParam: (lastPage) =>
-      lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
-    refetchOnWindowFocus: false,
-  });
+      queryFn: ({ pageParam }) =>
+        DbApi.TableView.call({
+          fileName,
+          queryParams,
+          pageNumber: pageParam as number,
+        }),
+      getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
+      getPreviousPageParam: (lastPage) =>
+        lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
+      refetchOnWindowFocus: false,
+    });
 
   const allData = useMemo(
     () => (data ? data.pages.flatMap((page) => page.data) : []),
-    [data]
+    [data],
   );
 
   if (isFallback) {
@@ -64,7 +60,7 @@ export default function TablePage() {
     <PageContainer maxWidth="xl" backgroundName={sourceLanguage} isQueryPage>
       <DbViewPageHead />
 
-      {isInitialLoading || isLoading || !data ? (
+      {isLoading || !data ? (
         <CenteredProgress />
       ) : (
         <TableView
@@ -86,11 +82,11 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
 
   const queryClient = await prefetchApiData(
     params?.language as SourceLanguage,
-    params?.file as string
+    params?.file as string,
   );
 
   return merge(
     { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps
+    i18nProps,
   );
 };

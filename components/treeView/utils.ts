@@ -11,13 +11,18 @@ export function transformDataForTreeView(data: SourceTextBrowserData) {
       name: displayName,
       dataType: NodeDataChildType.Category,
       children: files.map(
-        ({ fileName, displayName, textName, availableLanguages }) => ({
+        ({
+          fileName,
+          displayName: fileDisplayName,
+          textName,
+          availableLanguages,
+        }) => ({
           id: textName,
-          name: displayName,
+          name: fileDisplayName,
           fileName,
           availableLanguages,
           dataType: NodeDataChildType.Text,
-        })
+        }),
       ),
     })),
   }));

@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useSearchParams } from "@components/hooks/useTypedSearchParams";
 import {
   Box,
   FormControl,
@@ -29,15 +28,13 @@ export default function SortOption() {
   const router = useRouter();
   const { uniqueSettings, sortMethodSelectValue } = useDbQueryParams();
 
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
-
-  const handleSelectChange = async (value: SortParam) => {
-    params.set(uniqueSettings.queryParams.sortMethod, value);
-
+  const handleSelectChange = async (sortMethod: SortParam) => {
     await router.push({
       pathname: router.pathname,
-      query: params.toString(),
+      query: {
+        ...router.query,
+        [uniqueSettings.queryParams.sortMethod]: sortMethod,
+      },
     });
   };
 

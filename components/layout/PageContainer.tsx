@@ -12,6 +12,7 @@ import type { Property } from "csstype";
 import { SourceLanguage } from "utils/constants";
 
 import { QueryPageContent } from "./QueryPageContent";
+export type BackgroundName = SourceLanguage | "welcome";
 
 const BgImageSrcs: Record<BackgroundName, string> = {
   [SourceLanguage.TIBETAN]: bgTib.src,
@@ -28,8 +29,6 @@ const BgImageBgSize: Record<BackgroundName, Property.BackgroundSize> = {
   [SourceLanguage.PALI]: "contain",
   welcome: "cover",
 };
-
-export type BackgroundName = SourceLanguage | "welcome";
 
 interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;
