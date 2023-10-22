@@ -11,7 +11,7 @@ import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
 import { SourceLanguage } from "utils/constants";
 
-import { QueryPageContent } from "./QueryPageContent";
+import { QueryResultsPageContent } from "./QueryResultsPageContent";
 export type BackgroundName = SourceLanguage | "welcome";
 
 const BgImageSrcs: Record<BackgroundName, string> = {
@@ -33,14 +33,14 @@ const BgImageBgSize: Record<BackgroundName, Property.BackgroundSize> = {
 interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;
   maxWidth?: Breakpoint;
-  isQueryPage?: boolean;
+  isQueryResultsPage?: boolean;
 }
 
 export const PageContainer: FC<Props> = ({
   children,
   backgroundName,
   maxWidth = "md",
-  isQueryPage,
+  isQueryResultsPage,
 }) => {
   const { theme } = useTheme();
 
@@ -70,10 +70,13 @@ export const PageContainer: FC<Props> = ({
           }}
         />
       )}
-      {isQueryPage ? (
-        <QueryPageContent maxWidth={maxWidth} containerStyles={containerStyles}>
+      {isQueryResultsPage ? (
+        <QueryResultsPageContent
+          maxWidth={maxWidth}
+          containerStyles={containerStyles}
+        >
           {children}
-        </QueryPageContent>
+        </QueryResultsPageContent>
       ) : (
         <Container component="main" maxWidth={maxWidth} sx={containerStyles}>
           {children}

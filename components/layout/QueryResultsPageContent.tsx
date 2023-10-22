@@ -10,7 +10,7 @@ interface Props extends PropsWithChildren {
   maxWidth: Breakpoint;
   containerStyles: SxProps;
 }
-export const QueryPageContent: FC<Props> = ({
+export const QueryResultsPageContent: FC<Props> = ({
   children,
   maxWidth,
   containerStyles,

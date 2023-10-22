@@ -24,7 +24,7 @@ const GlobalSearchMobile = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isHomePage = router.asPath === "/";
-  const isQueryPage = /^\/(search|db.{6,})/.test(router.asPath);
+  const isQueryResultsPage = /^\/(search|db.{6,})/.test(router.asPath);
   const { handleOnSearch } = useGlobalSearch();
 
   const handleClear = () => {
@@ -37,7 +37,7 @@ const GlobalSearchMobile = () => {
 
   const { mainWidth } = useSettingsDrawer();
 
-  const boxSx = isQueryPage
+  const boxSx = isQueryResultsPage
     ? { width: { xs: 1, md: mainWidth }, px: { xs: 0, sm: 1, lg: 0 } }
     : {
         width: { xs: 1, md: 1 },
@@ -60,12 +60,12 @@ const GlobalSearchMobile = () => {
       }}
     >
       <Container
-        maxWidth={isQueryPage ? "xl" : "md"}
+        maxWidth={isQueryResultsPage ? "xl" : "md"}
         sx={{
           display: { lg: "none" },
           width: 1,
           mt: 4,
-          ...(!isHomePage && !isQueryPage && mdContainerSx),
+          ...(!isHomePage && !isQueryResultsPage && mdContainerSx),
         }}
       >
         <Box position="relative">

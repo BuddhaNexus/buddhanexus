@@ -74,7 +74,11 @@ export default function SearchPage() {
   }
 
   return (
-    <PageContainer maxWidth="xl" backgroundName={sourceLanguage} isQueryPage>
+    <PageContainer
+      maxWidth="xl"
+      backgroundName={sourceLanguage}
+      isQueryResultsPage
+    >
       <QueryPageTopStack />
       <SearchBoxWrapper sx={{ mb: 5 }}>
         {/* TODO: fix search OR add notification of search limitations (whole word only) */}

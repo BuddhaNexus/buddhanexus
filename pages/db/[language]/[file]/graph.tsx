@@ -46,7 +46,11 @@ export default function GraphPage() {
   }
 
   return (
-    <PageContainer maxWidth="xl" backgroundName={sourceLanguage} isQueryPage>
+    <PageContainer
+      maxWidth="xl"
+      backgroundName={sourceLanguage}
+      isQueryResultsPage
+    >
       <DbViewPageHead />
 
       {isLoading ? (
