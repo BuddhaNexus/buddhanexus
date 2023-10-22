@@ -36,8 +36,9 @@ export type NavigationMenuData = {
 
 export type SourceTextBrowserData = NavigationMenuData[];
 
-export type SourceTextBrowserDataTypes =
-  | NavigationMenuCategoryData & NavigationMenuData & NavigationMenuFileData;
+export type SourceTextBrowserDataTypes = NavigationMenuCategoryData &
+  NavigationMenuData &
+  NavigationMenuFileData;
 
 export interface ApiLanguageMenuData {
   // Text list menu for source language

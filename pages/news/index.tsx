@@ -87,7 +87,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["common"]
+    ["common"],
   );
 
   const allPosts = getAllPosts(["content", "news"], locale!);

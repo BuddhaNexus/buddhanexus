@@ -43,7 +43,7 @@ export const POST_DATE_OPTS: Intl.DateTimeFormatOptions = {
 export function getMDXContentBySlug(
   pathBase: string,
   slug: string,
-  locale = "en"
+  locale = "en",
 ): MDXData {
   const itemPath = path.join(`${pathBase}/${slug}/${locale}.mdx`);
   const fileContents = fs.readFileSync(itemPath, "utf8");
@@ -95,7 +95,7 @@ export function getMDXPageComponents({
 
 export function getMDXPagePaths(
   dirnames: string[],
-  locales: SupportedLocale[]
+  locales: SupportedLocale[],
 ) {
   const paths: MDXPagePath[] = [];
 

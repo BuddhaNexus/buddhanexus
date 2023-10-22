@@ -14,7 +14,7 @@ interface SearchBoxInputProps extends OutlinedTextFieldProps {
 }
 
 export const AppTopBarSearchBoxWrapper = styled(
-  "form"
+  "form",
 )<AppTopBarSearchBoxWrapperProps>(({ theme, isOpen }) => ({
   width: "100%",
   marginTop: theme.spacing(1),

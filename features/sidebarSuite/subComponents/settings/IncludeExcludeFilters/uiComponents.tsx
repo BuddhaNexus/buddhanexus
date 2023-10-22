@@ -89,7 +89,7 @@ const Row = (props: ListChildComponentProps) => {
           >
             {ref}
           </Typography>
-          {name.replace(/^•\s/g, "")}
+          {name.replaceAll(/^•\s/g, "")}
         </Typography>
       </div>
     </Box>
@@ -107,7 +107,7 @@ export const ListboxComponent = React.forwardRef<
   (children as React.ReactChild[]).forEach(
     (item: React.ReactChild & { children?: React.ReactChild[] }) => {
       itemData.push(item, ...(item.children ?? []));
-    }
+    },
   );
 
   const itemCount = itemData.length;
@@ -137,11 +137,14 @@ export const ListboxComponent = React.forwardRef<
   return (
     <div ref={ref}>
       <OuterElementContext.Provider value={other}>
+        {/* TODO: replace react-window with newer package */}
+        {/* @ts-expect-error type issue */}
         <VariableSizeList
           ref={gridRef}
           itemData={itemData}
           height={getHeight() + 2 * LISTBOX_PADDING}
           width="100%"
+          // @ts-expect-error type issue
           outerElementType={OuterElementType}
           innerElementType="ul"
           itemSize={(index: number) => getChildSize(itemData[index] ?? 0)}

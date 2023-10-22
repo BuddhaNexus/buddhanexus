@@ -26,7 +26,7 @@ export default function FolioOption() {
 
   const [folioParam, setFolioParam] = useQueryParam(
     uniqueSettings.queryParams.folio,
-    StringParam
+    StringParam,
   );
 
   useEffect(() => {
