@@ -55,7 +55,7 @@ export const useDbQueryParams = () => {
   const queryParams = getQueryParamsFromRouter({ route: router.route, params });
 
   const sortParam = queryParams.get(uniqueSettings.queryParams.sortMethod);
-  const sortMethodSelectConfig = sortParam ?? "position";
+  const sortMethodSelectValue = sortParam ?? "position";
 
   return {
     sourceLanguage,
@@ -65,7 +65,7 @@ export const useDbQueryParams = () => {
     defaultQueryParams,
     defaultParamConfig: DEFAULT_QUERY_PARAMS_VALUES,
     parLengthConfig,
-    sortMethodSelectConfig,
+    sortMethodSelectValue,
     settingRenderGroups,
     uniqueSettings,
     settingsOmissionsConfig: SETTINGS_OMISSIONS_CONFIG,

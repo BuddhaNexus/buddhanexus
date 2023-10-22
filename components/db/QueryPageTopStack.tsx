@@ -37,7 +37,7 @@ export const QueryPageTopStack = () => {
   const router = useRouter();
   const isSearchRoute = router.route.startsWith("/search");
 
-  const { fileName, sourceLanguage, defaultQueryParams } = useDbQueryParams();
+  const { fileName, sourceLanguage } = useDbQueryParams();
   const dbView = useAtomValue(currentViewAtom);
 
   const { isSettingsOpen, setIsSettingsOpen } = useSettingsDrawer();
@@ -53,7 +53,7 @@ export const QueryPageTopStack = () => {
     await router.push(
       {
         pathname,
-        query: { multi_lingual: defaultQueryParams.multi_lingual },
+        query: {},
       },
       undefined,
       {

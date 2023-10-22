@@ -44,8 +44,6 @@
   "prompts": {
     "genericErrorTitle": "Something went wrong",
     "genericErrorDescription": "Please contact us if the issue persists.",
-    "loading": "Wird geladen...",
-    "selectLanguage": "Sprache auswählen",
-    "noSelection": "Nichts ausgewählt"
+    "loading": "Wird geladen..."
   }
 }

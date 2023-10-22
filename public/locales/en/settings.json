@@ -1,4 +1,9 @@
 {
+  "generic": {
+    "selectLanguage": "Select language",
+    "noSelection": "None selected",
+    "default": "Default"
+  },
   "resultsHead": {
     "matches": "Matches: ",
     "filters": "Custom filters: {{value}}",

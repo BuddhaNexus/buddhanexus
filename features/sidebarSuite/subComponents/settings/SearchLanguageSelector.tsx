@@ -5,7 +5,7 @@ import { StringParam, useQueryParam } from "use-query-params";
 import { SourceLanguage as SourceLanguageEnum } from "utils/constants";
 
 const SearchLanguageSelector = () => {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation(["common", "settings"]);
   const { uniqueSettings } = useDbQueryParams();
 
   const [currentLang, setCurrentDbLang] = useQueryParam(
@@ -16,7 +16,7 @@ const SearchLanguageSelector = () => {
   return (
     <FormControl variant="filled" sx={{ width: 1, mb: 2 }}>
       <InputLabel id="db-language-selector-label" sx={{ mb: 1 }}>
-        {t(`prompts.selectLanguage`)}
+        {t(`settings:generic.selectLanguage`)}
       </InputLabel>
       <Select
         labelId="db-language-selector-label"

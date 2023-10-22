@@ -1,4 +1,9 @@
 {
+  "generic": {
+    "selectLanguage": "Sprache auswählen",
+    "noSelection": "Nichts ausgewählt",
+    "default": "Standard"
+  },
   "resultsHead": {
     "matches": "Streichhölzer:",
     "filters": "Benutzerdefinierte Filter: {{value}}",

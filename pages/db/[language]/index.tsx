@@ -7,7 +7,7 @@ import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Paper, Typography } from "@mui/material";
 import { dehydrate } from "@tanstack/react-query";
-import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
+import { prefetchApiData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
 import type { SourceLanguage } from "utils/constants";
@@ -42,9 +42,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     ["db", "settings"]
   );
 
-  const queryClient = await prefetchSourceTextBrowserData(
-    params?.language as SourceLanguage
-  );
+  const queryClient = await prefetchApiData(params?.language as SourceLanguage);
 
   return merge(
     { props: { dehydratedState: dehydrate(queryClient) } },

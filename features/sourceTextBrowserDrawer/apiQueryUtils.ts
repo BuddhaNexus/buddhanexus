@@ -2,8 +2,9 @@ import { QueryClient } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 
-export async function prefetchSourceTextBrowserData(
-  sourceLanguage: SourceLanguage
+export async function prefetchApiData(
+  sourceLanguage: SourceLanguage,
+  fileName?: string
 ): Promise<QueryClient> {
   const queryClient = new QueryClient({
     // https://www.codemzy.com/blog/react-query-cachetime-staletime
@@ -22,6 +23,13 @@ export async function prefetchSourceTextBrowserData(
     DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
     () => DbApi.SidebarSourceTexts.call(sourceLanguage)
   );
+
+  if (fileName) {
+    await queryClient.prefetchQuery(
+      DbApi.AvailableLanguagesData.makeQueryKey(fileName),
+      () => DbApi.AvailableLanguagesData.call(fileName)
+    );
+  }
 
   return queryClient;
 }

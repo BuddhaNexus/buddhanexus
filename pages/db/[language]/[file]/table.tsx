@@ -7,7 +7,7 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
-import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
+import { prefetchApiData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "features/tableView/TableView";
 import merge from "lodash/merge";
@@ -79,8 +79,9 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     "settings",
   ]);
 
-  const queryClient = await prefetchSourceTextBrowserData(
-    params?.language as SourceLanguage
+  const queryClient = await prefetchApiData(
+    params?.language as SourceLanguage,
+    params?.file as string
   );
 
   return merge(

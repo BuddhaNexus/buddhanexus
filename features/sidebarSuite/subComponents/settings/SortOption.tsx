@@ -27,9 +27,9 @@ const SORT_OPTIONS: Option[] = [
 export default function SortOption() {
   const { t } = useTranslation("settings");
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { uniqueSettings, sortMethodSelectConfig } = useDbQueryParams();
+  const { uniqueSettings, sortMethodSelectValue } = useDbQueryParams();
 
+  const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
 
   const handleSelectChange = async (value: SortParam) => {
@@ -50,7 +50,7 @@ export default function SortOption() {
         <Select
           id="sort-option-selector"
           aria-labelledby="sort-option-selector-label"
-          value={sortMethodSelectConfig}
+          value={sortMethodSelectValue}
           input={<OutlinedInput label={t("optionsLabels.sorting")} />}
           onChange={(e) => handleSelectChange(e.target.value as SortParam)}
         >
