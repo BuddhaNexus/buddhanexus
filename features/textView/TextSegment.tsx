@@ -78,7 +78,7 @@ export const TextSegment = ({
           >
             {enscriptText({ text, script, language: sourceLanguage })}
           </button>
-        ),
+        )
       )}
     </>
   );

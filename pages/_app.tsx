@@ -3,8 +3,7 @@ import "globalStyles.css";
 import React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { appWithTranslation } from "next-i18next";
-import i18nextConfig from "next-i18next.config";
+import { appWithTranslation, i18n } from "next-i18next";
 import { NextAdapter } from "next-query-params";
 import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
@@ -14,7 +13,7 @@ import type { EmotionCache } from "@emotion/react";
 import { CacheProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
-  HydrationBoundary,
+  Hydrate,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
@@ -26,6 +25,16 @@ import { MUIThemeProvider } from "utils/MUIThemeProvider";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
+
+if (process.env.NODE_ENV !== "production") {
+  if (typeof window === "undefined") {
+    const { applyServerHMR } = await import("i18next-hmr/server");
+    applyServerHMR(() => i18n);
+  } else {
+    const { applyClientHMR } = await import("i18next-hmr/client");
+    applyClientHMR(() => i18n);
+  }
+}
 
 interface MyAppProps extends AppProps {
   emotionCache: EmotionCache;
@@ -40,7 +49,7 @@ function MyApp({
     () =>
       new QueryClient({
         defaultOptions: { queries: { refetchOnWindowFocus: false } },
-      }),
+      })
   );
 
   return (
@@ -55,7 +64,7 @@ function MyApp({
         }}
       >
         <QueryClientProvider client={queryClient}>
-          <HydrationBoundary state={pageProps.dehydratedState}>
+          <Hydrate state={pageProps.dehydratedState}>
             <DefaultSeo {...SEO} />
             <Head>
               <meta
@@ -71,7 +80,7 @@ function MyApp({
                 <Component {...pageProps} />
               </MUIThemeProvider>
             </ThemeProvider>
-          </HydrationBoundary>
+          </Hydrate>
           <ReactQueryDevtools />
         </QueryClientProvider>
       </QueryParamProvider>
@@ -79,4 +88,4 @@ function MyApp({
   );
 }
 
-export default appWithTranslation(MyApp, i18nextConfig);
+export default appWithTranslation(MyApp);

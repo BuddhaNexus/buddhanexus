@@ -30,7 +30,7 @@ export async function getParallelDownloadData({
     .toISOString()
     .replace(/\.\w+$/, "")
     .replace(/T/, "_")
-    .replaceAll(":", "-")}.xlsx`;
+    .replace(/:/g, "-")}.xlsx`;
 
   return { url, name };
 }

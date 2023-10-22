@@ -20,7 +20,7 @@ type FooterSection = {
 
 const getFooterData: (
   t: TFunction,
-  locale: SupportedLocale,
+  locale: SupportedLocale
 ) => FooterSection[] = (t) => [
   {
     title: t("footer.about"),

@@ -1,6 +1,5 @@
 import type { SupportedLocales } from "types/i18next";
 
-// eslint-disable-next-line no-shadow
 export enum SourceLanguage {
   PALI = "pli",
   CHINESE = "chn",

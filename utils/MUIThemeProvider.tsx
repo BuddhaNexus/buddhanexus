@@ -26,10 +26,10 @@ export const MUIThemeProvider = ({ children }: PropsWithChildren) => {
           getDesignTokens({
             mode: isMounted ? (theme === "light" ? "light" : "dark") : "light",
             sourceLanguage,
-          }),
-        ),
+          })
+        )
       ),
-    [isMounted, sourceLanguage, theme],
+    [isMounted, sourceLanguage, theme]
   );
 
   return (

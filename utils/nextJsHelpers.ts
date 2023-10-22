@@ -24,15 +24,17 @@ type Locale = { locale: string | undefined };
 
 export const getI18NextStaticProps: (
   { locale }: Locale,
-  extraNamespaces?: string[],
+  extraNamespaces?: string[]
 ) => Promise<I18nProps> = async (
   { locale }: Locale,
-  extraNamespaces: string[] = [],
+  extraNamespaces: string[] = []
 ) => {
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "en", [
+        // @ts-expect-error type issues here
         "common",
+        // @ts-expect-error type issues here
         ...extraNamespaces,
       ])),
     },
@@ -43,7 +45,7 @@ const sourceLanguagePaths = SOURCE_LANGUAGES.flatMap((language) =>
   Object.keys(SUPPORTED_LOCALES).map((locale) => ({
     params: { language },
     locale,
-  })),
+  }))
 );
 
 export const getSourceLanguageStaticPaths: GetStaticPaths = () => ({
@@ -58,7 +60,7 @@ export const getDbViewFileStaticPaths: GetStaticPaths = async () => {
   const chineseFilenames = chineseMenuData.map((menuData) => menuData.fileName);
   const sanskritMenuData = await getSourceTextMenuData(SourceLanguage.SANSKRIT);
   const sanskritFilenames = sanskritMenuData.map(
-    (menuData) => menuData.fileName,
+    (menuData) => menuData.fileName
   );
   const tibetanMenuData = await getSourceTextMenuData(SourceLanguage.TIBETAN);
   const tibetanFilenames = tibetanMenuData.map((menuData) => menuData.fileName);
@@ -85,8 +87,8 @@ export const getDbViewFileStaticPaths: GetStaticPaths = async () => {
         Object.keys(SUPPORTED_LOCALES).map((locale) => ({
           params: { language, file },
           locale,
-        })),
-      ),
+        }))
+      )
     ),
     fallback: true,
   };

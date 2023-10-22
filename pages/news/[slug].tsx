@@ -79,7 +79,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     {
       locale,
     },
-    ["common"],
+    ["common"]
   );
 
   const dirSlug = params.slug as string;

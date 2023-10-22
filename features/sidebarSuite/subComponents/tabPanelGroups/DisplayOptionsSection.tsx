@@ -38,7 +38,7 @@ export const DisplayOptionsSection = () => {
           settingName: option,
           language: sourceLanguage,
           view: currentView,
-        }),
+        })
     );
   }, [
     settingRenderGroups,

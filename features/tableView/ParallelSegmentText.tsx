@@ -15,19 +15,15 @@ export const ParallelSegmentText = ({ text }: Props) => {
 
   return (
     <>
-      {text.map(({ text: segmentText, highlightColor }) => {
+      {text.map(({ text, highlightColor }) => {
         return (
           <Typography
-            key={segmentText}
+            key={text}
             sx={{ display: "inline" }}
             fontWeight={highlightColor === 1 ? 600 : 400}
             color={highlightColor === 1 ? "text.primary" : "text.secondary"}
           >
-            {enscriptText({
-              text: segmentText,
-              script,
-              language: sourceLanguage,
-            })}
+            {enscriptText({ text, script, language: sourceLanguage })}
           </Typography>
         );
       })}

@@ -106,13 +106,13 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["common", "home"],
+    ["common", "home"]
   );
 
   const queryClient = new QueryClient();
 
   return merge(
     { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps,
+    i18nProps
   );
 };

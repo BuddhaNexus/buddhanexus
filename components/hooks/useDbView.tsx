@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { atom, useSetAtom } from "jotai";
 
-// eslint-disable-next-line no-shadow
 export enum DbViewEnum {
   GRAPH = "graph",
   NUMBERS = "numbers",
@@ -25,7 +24,8 @@ export const useDbView = () => {
   const setCurrentView = useSetAtom(currentViewAtom);
 
   const pathnameParts = pathname.split("/");
-  const pathnameView = pathnameParts.at(-1) ?? DbViewEnum.TABLE;
+  const pathnameView =
+    pathnameParts[pathnameParts.length - 1] ?? DbViewEnum.TABLE;
 
   useEffect(() => {
     setCurrentView(initiateView(pathnameView));

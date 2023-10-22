@@ -6,7 +6,7 @@ import type { SourceLanguage } from "utils/constants";
 // TODO: - remove type casting once response model is added to api
 
 export function parseDbPageQueryParams(
-  params: Partial<QueryParams>,
+  params: Partial<QueryParams>
 ): Partial<QueryParams> {
   const limits = params?.limits ? JSON.parse(params.limits as string) : {};
 
@@ -43,7 +43,7 @@ export async function getFolios(fileName: string): Promise<DatabaseFolio[]> {
 }
 
 export async function getAvailableLanguages(
-  fileName: string,
+  fileName: string
 ): Promise<SourceLanguage[]> {
   const { data } = await apiClient.GET("/utils/available-languages/", {
     params: { query: { file_name: fileName } },

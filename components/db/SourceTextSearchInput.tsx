@@ -149,14 +149,11 @@ const ListboxComponent = React.forwardRef<
   return (
     <div ref={ref}>
       <OuterElementContext.Provider value={other}>
-        {/* TODO: replace react-window with newer package */}
-        {/* @ts-expect-error type issue */}
         <VariableSizeList
           ref={gridRef}
           itemData={itemData}
           height={getHeight() + 2 * LISTBOX_PADDING}
           width="100%"
-          // @ts-expect-error type issue
           outerElementType={OuterElementType}
           innerElementType="ul"
           itemSize={(index: number) => getChildSize(itemData[index])}
@@ -228,7 +225,7 @@ export const SourceTextSearchInput = () => {
             fileName: value?.fileName,
             dbView,
           }),
-          //  TODO: per previous spec decision, confirm whether query params should persist accross file changes, or should be reset on file change. Remove `query` prop for reset.
+          //  TODO: per previous spec descision, confirm whether query params should persist accross file changes, or should be reset on file change. Remove `query` prop for reset.
           query: queryParams,
         })
       }

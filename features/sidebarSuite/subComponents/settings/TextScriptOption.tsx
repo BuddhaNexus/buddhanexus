@@ -22,7 +22,7 @@ export default function TextScriptOption() {
 
   React.useEffect(() => {
     const storedSelection = window.localStorage.getItem(
-      "tibetan-script-selection",
+      "tibetan-script-selection"
     );
 
     if (storedSelection && storedSelection !== "undefined") {
@@ -33,7 +33,7 @@ export default function TextScriptOption() {
   React.useEffect(() => {
     window.localStorage.setItem(
       "tibetan-script-selection",
-      JSON.stringify(scriptSelection),
+      JSON.stringify(scriptSelection)
     );
   }, [scriptSelection]);
 

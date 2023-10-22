@@ -27,10 +27,10 @@ export default function ScoreFilter() {
 
   const [scoreParam, setScoreParam] = useQueryParam(
     uniqueSettings.queryParams.score,
-    NumberParam,
+    NumberParam
   );
   const [scoreValue, setScoreValue] = useState(
-    scoreParam ?? defaultParamConfig.score,
+    scoreParam ?? defaultParamConfig.score
   );
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function ScoreFilter() {
 
   const setDebouncedScoreParam = useMemo(
     () => debounce(setScoreParam, 600),
-    [setScoreParam],
+    [setScoreParam]
   );
 
   const handleChange = useCallback(
@@ -48,7 +48,7 @@ export default function ScoreFilter() {
       setScoreValue(value);
       setDebouncedScoreParam(normalizedValue);
     },
-    [setScoreValue, setDebouncedScoreParam],
+    [setScoreValue, setDebouncedScoreParam]
   );
 
   const handleBlur = () => {

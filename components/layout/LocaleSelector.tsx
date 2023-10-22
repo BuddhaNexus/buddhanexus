@@ -21,9 +21,9 @@ export default function LocaleSelector() {
     setAnchorEl(null);
   };
 
-  const handleLanguageChange = async (newLocale: SupportedLocale) => {
+  const handleLanguageChange = async (locale: SupportedLocale) => {
     handleClose();
-    await router.push({ pathname, query }, asPath, { locale: newLocale });
+    await router.push({ pathname, query }, asPath, { locale });
   };
 
   return (

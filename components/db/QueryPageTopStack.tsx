@@ -39,7 +39,7 @@ export const QueryPageTopStack = () => {
       undefined,
       {
         shallow: true,
-      },
+      }
     );
   };
 

@@ -34,7 +34,7 @@ const MenuProps = {
 function getStyles(
   name: SourceLanguage,
   selectedLanguages: SourceLanguage[] | undefined,
-  theme: Theme,
+  theme: Theme
 ) {
   if (!selectedLanguages) return;
   return {
@@ -56,7 +56,7 @@ const SourceLanguagesSelector = () => {
 
   const [selectedLanguages, setSelectedLanguages] = useQueryParam(
     uniqueSettings.remote.availableLanguages,
-    ArrayParam,
+    ArrayParam
   );
 
   /* eslint-disable react-hooks/exhaustive-deps */
@@ -73,7 +73,7 @@ const SourceLanguagesSelector = () => {
 
     setSelectedLanguages(
       // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value,
+      typeof value === "string" ? value.split(",") : value
     );
   };
 
@@ -98,8 +98,8 @@ const SourceLanguagesSelector = () => {
                     t(
                       `dbLanguageLabels.${
                         selection as unknown as SourceLanguage
-                      }`,
-                    ),
+                      }`
+                    )
                   )
                   .join(", ")
               : "";
@@ -118,7 +118,7 @@ const SourceLanguagesSelector = () => {
                 style={getStyles(
                   lang,
                   selectedLanguages as SourceLanguage[],
-                  theme,
+                  theme
                 )}
               >
                 <Checkbox

@@ -118,5 +118,5 @@ export const SourceTextBrowserTree = memo<Props>(
         </Backdrop>
       </>
     );
-  },
+  }
 );

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { currentViewAtom, DbViewEnum } from "@components/hooks/useDbView";
+import { useSearchParams } from "@components/hooks/useTypedSearchParams";
 import {
   FormControl,
   InputLabel,
@@ -14,17 +15,17 @@ export const DbViewSelector = () => {
   const { t } = useTranslation("settings");
 
   const router = useRouter();
+  const searchParams = useSearchParams();
 
+  const params = new URLSearchParams(searchParams);
   const [currentView, setCurrentDbView] = useAtom(currentViewAtom);
 
   const handleChange = async (e: SelectChangeEvent) => {
     const newView = e.target.value as DbViewEnum;
 
-    // TODO: clean up redundant params depending on the view that the user chooses.
-    // For example, the `sort_method` param is not applicable in the text view.
     await router.push({
       pathname: router.pathname.replace(currentView, newView),
-      query: { ...router.query },
+      query: params.toString(),
     });
     setCurrentDbView(newView);
   };

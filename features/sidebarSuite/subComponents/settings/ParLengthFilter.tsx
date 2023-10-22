@@ -28,10 +28,10 @@ export default function ParLengthFilter() {
   const { parLengthConfig, uniqueSettings } = useDbQueryParams();
   const [parLengthParam, setParLengthParam] = useQueryParam(
     uniqueSettings.queryParams.parLength,
-    NumberParam,
+    NumberParam
   );
   const [parLength, setParLength] = useState(
-    parLengthParam ?? parLengthConfig.default,
+    parLengthParam ?? parLengthConfig.default
   );
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function ParLengthFilter() {
 
   const setDebouncedParLengthParam = useMemo(
     () => debounce(setParLengthParam, 600),
-    [setParLengthParam],
+    [setParLengthParam]
   );
 
   const handleChange = useCallback(
@@ -49,7 +49,7 @@ export default function ParLengthFilter() {
       setParLength(value);
       setDebouncedParLengthParam(normalizedValue);
     },
-    [parLengthConfig.min, setParLength, setDebouncedParLengthParam],
+    [parLengthConfig.min, setParLength, setDebouncedParLengthParam]
   );
 
   const marks = [

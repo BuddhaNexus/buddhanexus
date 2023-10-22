@@ -42,16 +42,15 @@ export default function TextPage() {
 
   const { data, fetchNextPage, fetchPreviousPage, isInitialLoading, isError } =
     useInfiniteQuery<PagedResponse<TextPageData>>({
-      initialPageParam: 0,
       queryKey: DbApi.TextView.makeQueryKey({
         fileName,
         queryParams: paramsThatShouldRefreshText,
       }),
-      queryFn: ({ pageParam }) =>
+      queryFn: ({ pageParam = 0 }) =>
         DbApi.TextView.call({
           fileName,
           queryParams,
-          pageNumber: pageParam as number,
+          pageNumber: pageParam,
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
@@ -61,7 +60,7 @@ export default function TextPage() {
 
   const allData = useMemo(
     () => (data ? data.pages.flatMap((page) => page.data) : []),
-    [data],
+    [data]
   );
 
   if (isError) {
@@ -103,11 +102,11 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   const i18nProps = await getI18NextStaticProps({ locale }, ["settings"]);
 
   const queryClient = await prefetchSourceTextBrowserData(
-    params?.language as SourceLanguage,
+    params?.language as SourceLanguage
   );
 
   return merge(
     { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps,
+    i18nProps
   );
 };

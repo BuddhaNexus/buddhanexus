@@ -13,7 +13,7 @@ import { getParallelDownloadData } from "utils/api/downloads";
 import { SourceLanguage } from "utils/constants";
 
 /**
- * Next.js stores dynamic routes in the router object query prop which is also where api query params are pushed to. Dynamic route params need to be removed to avoid polluting result page urls and sending unaccepted params in api requests.
+ * Next JS stores dynamic routes in the router object query prop which is also where api query params are pushed to. Dynamic route params need to be removed to avoid polluting result page urls and sending unaccepted params in api requests.
  *
  * @see {@link https://nextjs.org/docs/pages/api-reference/functions/use-router#router-object}.
  *
@@ -25,14 +25,14 @@ export const getQueryParamsFromRouter = ({
   route: string;
   params: URLSearchParams;
 }): URLSearchParams => {
-  const apiEndpointParams = new URLSearchParams(params);
-  apiEndpointParams.delete("file");
+  const apiEndpointparams = new URLSearchParams(params);
+  apiEndpointparams.delete("file");
 
   if (!route.startsWith("/search")) {
-    apiEndpointParams.delete("language");
+    apiEndpointparams.delete("language");
   }
 
-  return apiEndpointParams;
+  return apiEndpointparams;
 };
 
 export const isSettingOmitted = ({
@@ -48,16 +48,25 @@ export const isSettingOmitted = ({
 }) => {
   return Boolean(
     omissions?.[settingName]?.[view]?.some((omittedLang) =>
-      ["allLangs", language].includes(omittedLang),
-    ),
+      ["allLangs", language].includes(omittedLang)
+    )
   );
+};
+
+type UtilityOptionProps = {
+  callback: (props: UtilityClickHandlerProps) => void;
+  icon: OverridableComponent<SvgIconTypeMap>;
+};
+
+export type UtilityOptions = {
+  [value in UtilityOption]: UtilityOptionProps;
 };
 
 export type PopperAnchorState = Record<UtilityOption, HTMLElement | null>;
 
 type PopperUtilityStates<State> = [
   State,
-  React.Dispatch<React.SetStateAction<State>>,
+  React.Dispatch<React.SetStateAction<State>>
 ];
 type PopperAnchorStateHandler = PopperUtilityStates<PopperAnchorState>;
 
@@ -72,15 +81,6 @@ interface UtilityClickHandlerProps {
   href: string;
   popperAnchorStateHandler: PopperAnchorStateHandler;
 }
-
-type UtilityOptionProps = {
-  callback: (props: UtilityClickHandlerProps) => void;
-  icon: OverridableComponent<SvgIconTypeMap>;
-};
-
-export type UtilityOptions = {
-  [value in UtilityOption]: UtilityOptionProps;
-};
 
 export const defaultAnchorEls = {
   download: null,

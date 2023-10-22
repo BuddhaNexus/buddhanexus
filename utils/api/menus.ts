@@ -10,7 +10,7 @@ import type {
 import type { SourceLanguage } from "utils/constants";
 
 function parseSourceTextCollectionData(
-  data: ApiSourceTextBrowserData,
+  data: ApiSourceTextBrowserData
 ): SourceTextBrowserData {
   return data.navigationmenudata.map(({ collection, categories }) => ({
     collection,
@@ -22,11 +22,11 @@ function parseSourceTextCollectionData(
             displayName: displayname,
             fileName: file_name,
             availableLanguages: available_lang,
-          }),
+          })
         ),
         name: categoryname,
         displayName: categorydisplayname,
-      }),
+      })
     ),
   }));
 }
@@ -38,13 +38,13 @@ export async function getSourceTextCollections(language: SourceLanguage) {
 
   // TODO: - remove type casting once response model is added to api
   const parsedApiData = parseSourceTextCollectionData(
-    data as ApiSourceTextBrowserData,
+    data as ApiSourceTextBrowserData
   );
   return transformDataForTreeView(parsedApiData);
 }
 
 export async function getSourceTextMenuData(
-  language: SourceLanguage,
+  language: SourceLanguage
 ): Promise<DatabaseText[]> {
   const { data } = await apiClient.GET("/menus/files/", {
     params: { query: { language } },
@@ -71,7 +71,7 @@ export async function getSourceTextMenuData(
 }
 
 export async function getCategoryMenuData(
-  language: SourceLanguage,
+  language: SourceLanguage
 ): Promise<Map<string, CategoryMenuItem>> {
   const { data } = await apiClient.GET("/menus/category/", {
     params: { query: { language } },
@@ -84,12 +84,12 @@ export async function getCategoryMenuData(
     .reduce(
       (
         map: Map<string, CategoryMenuItem>,
-        cat: { category: string; categoryname: string },
+        cat: { category: string; categoryname: string }
       ) => {
         const { category, categoryname } = cat;
         map.set(category, { id: category, name: categoryname });
         return map;
       },
-      new Map(),
+      new Map()
     );
 }
