@@ -64,7 +64,7 @@ export const QueryPageTopStack = () => {
 
   return (
     <Stack
-      direction="row"
+      direction={{ xs: "row", lg: "row-reverse" }}
       justifyContent="space-between"
       alignItems="center"
       spacing={2}
@@ -92,7 +92,7 @@ export const QueryPageTopStack = () => {
           {t(`resultsHead.reset`)}
         </Button>
         {!isSearchRoute && (
-          <>
+          <Box sx={{ order: { xs: 2, lg: -1 } }}>
             <Button
               variant="outlined"
               aria-label={t(`resultsHead.textSelectTip`)}
@@ -120,7 +120,7 @@ export const QueryPageTopStack = () => {
                 />
               </Box>
             </Modal>
-          </>
+          </Box>
         )}
       </Box>
 
