@@ -9,10 +9,10 @@ import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Typography } from "@mui/material";
 import { dehydrate, useQuery } from "@tanstack/react-query";
-import { prefetchApiData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
 import type { ApiGraphPageData } from "types/api/common";
+import { prefetchApiData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -31,7 +31,6 @@ export default function GraphPage() {
         fileName,
         queryParams,
       }),
-    refetchOnWindowFocus: false,
   });
 
   if (isError) {

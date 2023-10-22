@@ -26,7 +26,6 @@ export default function ParallelsChip() {
         fileName,
         queryParams,
       }),
-    refetchOnWindowFocus: false,
   });
 
   const [parallelCount, setParallelCount] = useState(

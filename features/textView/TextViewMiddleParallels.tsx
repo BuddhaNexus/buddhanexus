@@ -28,7 +28,6 @@ export default function TextViewMiddleParallels({ parallelIds }: Props) {
     queryKey: DbApi.TextViewMiddle.makeQueryKey(parallelIds),
     queryFn: () =>
       DbApi.TextViewMiddle.call(["K01n742u:13423", "K01n742u:24812"]),
-    refetchOnWindowFocus: false,
   });
 
   return (

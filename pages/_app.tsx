@@ -21,6 +21,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import queryString from "query-string";
 import { QueryParamProvider } from "use-query-params";
+import { queryCacheTimeDefaults } from "utils/api/apiQueryUtils";
 import createEmotionCache from "utils/createEmotionCache";
 import { MUIThemeProvider } from "utils/MUIThemeProvider";
 
@@ -39,7 +40,9 @@ function MyApp({
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
-        defaultOptions: { queries: { refetchOnWindowFocus: false } },
+        defaultOptions: {
+          queries: { refetchOnWindowFocus: false, ...queryCacheTimeDefaults },
+        },
       }),
   );
 
