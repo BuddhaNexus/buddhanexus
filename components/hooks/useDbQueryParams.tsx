@@ -1,6 +1,6 @@
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { useSearchParams } from "@components/hooks/useTypedSearchParams";
 import { useQuery } from "@tanstack/react-query";
 import { getQueryParamsFromRouter } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {

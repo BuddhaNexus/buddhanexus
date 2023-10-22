@@ -1,6 +1,6 @@
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useSearchParams } from "@components/hooks/useTypedSearchParams";
 import { getQueryParamsFromRouter } from "features/sidebarSuite/common/dbSidebarHelpers";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
