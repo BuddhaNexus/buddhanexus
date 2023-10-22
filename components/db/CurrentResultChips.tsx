@@ -5,6 +5,7 @@ import MatchesChip from "@components/db/MatchesChip";
 import ParallelsChip from "@components/db/ParallelsChip";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Chip from "@mui/material/Chip";
+import { useQuery } from "@tanstack/react-query";
 import {
   customFiltersChipQueryExclusions,
   customOptionsChipQueries,
@@ -13,6 +14,7 @@ import type {
   DefaultQueryParams,
   QueryParams,
 } from "features/sidebarSuite/config/types";
+import { DbApi } from "utils/api/dbApi";
 
 function getSettingCounts({
   currentQueries,
@@ -61,11 +63,19 @@ export default function CurrentResultChips({
   const { t } = useTranslation("settings");
 
   const isSearchRoute = router.route.startsWith("/search");
-  const { queryParams, defaultQueryParams } = useDbQueryParams();
+  const { fileName, queryParams, defaultQueryParams, uniqueSettings } =
+    useDbQueryParams();
+  const { data: multiLangParamData } = useQuery({
+    queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
+    queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
+  });
 
   const count = getSettingCounts({
     currentQueries: queryParams,
-    defaultQueries: defaultQueryParams,
+    defaultQueries: {
+      ...defaultQueryParams,
+      [uniqueSettings.remote.availableLanguages]: multiLangParamData,
+    },
   });
 
   return (

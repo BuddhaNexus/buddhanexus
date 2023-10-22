@@ -1,7 +1,6 @@
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { useQuery } from "@tanstack/react-query";
 import { getQueryParamsFromRouter } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
@@ -14,7 +13,6 @@ import {
   uniqueSettings,
 } from "features/sidebarSuite/config/settings";
 import type { DefaultQueryParams } from "features/sidebarSuite/config/types";
-import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 
 export const useDbQueryParams = () => {
@@ -29,17 +27,13 @@ export const useDbQueryParams = () => {
   const sourceLanguageName = t(`language.${sourceLanguage}`);
   const fileName = file as string;
 
-  const { data: multiLangParamData } = useQuery({
-    queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
-    queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
-  });
-
   const defaultQueryParams: DefaultQueryParams = {
     score: DEFAULT_QUERY_PARAMS_VALUES.score,
     par_length: sourceLanguage
       ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
       : DEFAULT_QUERY_PARAMS_VALUES.par_length,
-    multi_lingual: multiLangParamData,
+    // multi_lingual is initialized at point of use with prefetched data
+    multi_lingual: undefined,
   };
 
   // Chinese is used as fallback min par length as it has the lowest min par length value.
