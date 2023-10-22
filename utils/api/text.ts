@@ -16,7 +16,7 @@ function parseAPITextData(responseJSON: ApiTextPageData): TextPageData {
 }
 
 function parseAPITextViewMiddleParallelsData(
-  responseJSON: ApiTextPageMiddleParallelsData
+  responseJSON: ApiTextPageMiddleParallelsData,
 ): any {
   // ): TextPageMiddleParallelsData {
   //  todo:
@@ -43,7 +43,7 @@ export async function getTextData({
 }
 
 export async function getTextViewMiddleParallelsData(
-  parallelIds: string[]
+  parallelIds: string[],
 ): Promise<TextPageData> {
   // TODO: remove co_occ param after backend update
   // TODO: use the multi_lingual value from query params
@@ -55,7 +55,7 @@ export async function getTextViewMiddleParallelsData(
   return {
     // @ts-expect-error WIP
     data: parseAPITextViewMiddleParallelsData(
-      data as ApiTextPageMiddleParallelsData
+      data as ApiTextPageMiddleParallelsData,
     ),
   };
 }

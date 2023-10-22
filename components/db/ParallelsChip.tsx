@@ -30,7 +30,7 @@ export default function ParallelsChip() {
   });
 
   const [parallelCount, setParallelCount] = useState(
-    isLoading ? 0 : data?.parallel_count
+    isLoading ? 0 : data?.parallel_count,
   );
 
   useEffect(() => {

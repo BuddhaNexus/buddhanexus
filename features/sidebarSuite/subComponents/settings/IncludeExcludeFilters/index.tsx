@@ -30,25 +30,25 @@ const IncludeExcludeFilters = () => {
 
   const [limitsParam, setLimitsParam] = useQueryParam(
     uniqueSettings.queryParams.limits,
-    JsonParam
+    JsonParam,
   );
 
   const [limitsValue, setLimitsValue] = useState<LimitsParam>({});
 
   useEffect(
     () => setLimitsParam(limitsParam ?? defaultParamConfig.limits),
-    [limitsParam, setLimitsParam, defaultParamConfig]
+    [limitsParam, setLimitsParam, defaultParamConfig],
   );
 
   const handleInputChange = (
     limit: Limit,
-    value: (CategoryMenuItem | DatabaseText)[]
+    value: (CategoryMenuItem | DatabaseText)[],
   ) => {
     const otherLimits = omit({ ...limitsValue }, limit) as LimitsParam;
     const otherLimitParams = Object.keys(otherLimits).reduce((params, key) => {
       return {
         ...params,
-        [key]: otherLimits?.[key as Limit]!.map((limit) => limit.id),
+        [key]: otherLimits?.[key as Limit]!.map((limitItem) => limitItem.id),
       };
     }, {});
     const updatedLimitValues =
@@ -56,8 +56,11 @@ const IncludeExcludeFilters = () => {
     setLimitsValue(updatedLimitValues);
     setLimitsParam(
       Object.keys(updatedLimitValues).length > 0
-        ? { ...otherLimitParams, [limit]: value.map((limit) => limit.id) }
-        : undefined
+        ? {
+            ...otherLimitParams,
+            [limit]: value.map((limitItem) => limitItem.id),
+          }
+        : undefined,
     );
   };
 

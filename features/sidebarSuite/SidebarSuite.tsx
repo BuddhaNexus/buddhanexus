@@ -34,7 +34,7 @@ export function SidebarSuite() {
     (event: React.SyntheticEvent, newValue: string) => {
       setActiveTab(newValue);
     },
-    [setActiveTab]
+    [setActiveTab],
   );
 
   return (

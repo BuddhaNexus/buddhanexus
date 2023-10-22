@@ -68,8 +68,12 @@ export default function TextView({
           <Virtuoso
             totalCount={data.length}
             data={data}
-            itemContent={(index, data) => (
-              <TextSegment index={index} data={data} colorScale={colorScale} />
+            itemContent={(index, dataSegment) => (
+              <TextSegment
+                index={index}
+                data={dataSegment}
+                colorScale={colorScale}
+              />
             )}
             endReached={onEndReached}
             startReached={onStartReached}

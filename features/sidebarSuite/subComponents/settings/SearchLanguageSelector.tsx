@@ -10,7 +10,7 @@ const SearchLanguageSelector = () => {
 
   const [currentLang, setCurrentDbLang] = useQueryParam(
     uniqueSettings.queryParams.language,
-    StringParam
+    StringParam,
   );
 
   return (
@@ -24,7 +24,7 @@ const SearchLanguageSelector = () => {
         value={currentLang ?? "all"}
         onChange={(e) =>
           setCurrentDbLang(
-            e.target.value === "all" ? undefined : e.target.value
+            e.target.value === "all" ? undefined : e.target.value,
           )
         }
       >

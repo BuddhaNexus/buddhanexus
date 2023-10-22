@@ -3,7 +3,7 @@ import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 
 export async function prefetchSourceTextBrowserData(
-  sourceLanguage: SourceLanguage
+  sourceLanguage: SourceLanguage,
 ): Promise<QueryClient> {
   const queryClient = new QueryClient({
     // https://www.codemzy.com/blog/react-query-cachetime-staletime
@@ -13,15 +13,15 @@ export async function prefetchSourceTextBrowserData(
         staleTime: 60 * 60 * 1000,
 
         // 2 days
-        cacheTime: 2 * 24 * 60 * 60 * 1000,
+        gcTime: 2 * 24 * 60 * 60 * 1000,
       },
     },
   });
 
-  await queryClient.prefetchQuery(
-    DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-    () => DbApi.SidebarSourceTexts.call(sourceLanguage)
-  );
+  await queryClient.prefetchQuery({
+    queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
+    queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+  });
 
   return queryClient;
 }
