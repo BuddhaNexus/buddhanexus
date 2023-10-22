@@ -17,7 +17,6 @@ import type { Theme } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
-// import { ArrayParam, useQueryParam } from "use-query-params";
 import type { SourceLanguage } from "utils/constants";
 
 function getStyles(
@@ -63,7 +62,11 @@ const SourceLanguagesSelector = () => {
       isDefault.current = true;
       setParamValue([...(availableLanguages ?? [])]);
     }
-  }, [defaultQueryParams.multi_lingual, queryParams.multi_lingual]);
+  }, [
+    availableLanguages,
+    defaultQueryParams.multi_lingual,
+    queryParams.multi_lingual,
+  ]);
 
   const handleChange = async (event: any) => {
     const {

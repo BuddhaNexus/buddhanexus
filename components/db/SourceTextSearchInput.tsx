@@ -179,12 +179,14 @@ const StyledPopper = styled(Popper)({
 
 export const SourceTextSearchInput = ({
   autoFocus,
+  setIsModalOpen,
 }: {
   autoFocus?: boolean;
+  setIsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { sourceLanguage, queryParams } = useDbQueryParams();
+  const { sourceLanguage } = useDbQueryParams();
   const dbView = useAtomValue(currentViewAtom);
 
   const { data, isLoading } = useQuery<DatabaseText[]>({
@@ -233,17 +235,16 @@ export const SourceTextSearchInput = ({
       openOnFocus
       disableListWrap
       disablePortal
-      onChange={(target, value) =>
-        router.push({
+      onChange={async (target, value) => {
+        setIsModalOpen?.((prev) => !prev);
+        await router.push({
           pathname: getTextPath({
             sourceLanguage,
             fileName: value?.fileName,
             dbView,
           }),
-          //  TODO: per previous spec descision, confirm whether query params should persist accross file changes, or should be reset on file change. Remove `query` prop for reset.
-          query: queryParams,
-        })
-      }
+        });
+      }}
     />
   );
 };

@@ -24,23 +24,28 @@ export default function TablePage() {
   const { isFallback } = useSourceFile();
   useDbView();
 
-  const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
-    useInfiniteQuery<PagedResponse<TablePageData>>({
-      queryKey: DbApi.TableView.makeQueryKey({
+  const {
+    data,
+    fetchNextPage,
+    fetchPreviousPage,
+    isInitialLoading,
+    isLoading,
+  } = useInfiniteQuery<PagedResponse<TablePageData>>({
+    queryKey: DbApi.TableView.makeQueryKey({
+      fileName,
+      queryParams,
+    }),
+    queryFn: ({ pageParam = 0 }) =>
+      DbApi.TableView.call({
         fileName,
         queryParams,
+        pageNumber: pageParam,
       }),
-      queryFn: ({ pageParam = 0 }) =>
-        DbApi.TableView.call({
-          fileName,
-          queryParams,
-          pageNumber: pageParam,
-        }),
-      getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
-      getPreviousPageParam: (lastPage) =>
-        lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
-      refetchOnWindowFocus: false,
-    });
+    getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
+    getPreviousPageParam: (lastPage) =>
+      lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
+    refetchOnWindowFocus: false,
+  });
 
   const allData = useMemo(
     () => (data ? data.pages.flatMap((page) => page.data) : []),
@@ -59,7 +64,7 @@ export default function TablePage() {
     <PageContainer maxWidth="xl" backgroundName={sourceLanguage} isQueryPage>
       <DbViewPageHead />
 
-      {isInitialLoading || !data ? (
+      {isInitialLoading || isLoading || !data ? (
         <CenteredProgress />
       ) : (
         <TableView
