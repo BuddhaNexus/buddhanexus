@@ -10,7 +10,7 @@ export const Main = styled("main", {
   flexGrow: 1,
   padding: theme.spacing(2),
   paddingTop: 0,
-  transition: theme.transitions.create("margin", {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
