@@ -84,6 +84,15 @@ const SourceLanguagesSelector = () => {
 
   const anchorRef = React.useRef();
   const selectorLabel = t("optionsLabels.multiLingual");
+  const getRenderValue = (selected: SourceLanguage[]) => {
+    return selected.length > 0 ? (
+      selected.map((selection) => t(`common:language.${selection}`)).join(", ")
+    ) : (
+      <em style={{ color: theme.palette.text.secondary }}>
+        {t("generic.noSelection")}
+      </em>
+    );
+  };
 
   return (
     <Box ref={anchorRef} sx={{ width: 1, my: 2 }}>
@@ -99,21 +108,7 @@ const SourceLanguagesSelector = () => {
           aria-describedby="multi-lingual-selector-helper-text"
           value={paramValue}
           input={<OutlinedInput label={selectorLabel} notched />}
-          renderValue={(selected) =>
-            selected.length > 0 ? (
-              selected
-                .map((selection) =>
-                  t(
-                    `common:language.${selection as unknown as SourceLanguage}`,
-                  ),
-                )
-                .join(", ")
-            ) : (
-              <em style={{ color: theme.palette.text.secondary }}>
-                {t("generic.noSelection")}
-              </em>
-            )
-          }
+          renderValue={getRenderValue}
           multiple
           displayEmpty
           onChange={handleChange}
