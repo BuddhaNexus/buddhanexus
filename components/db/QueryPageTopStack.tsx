@@ -113,11 +113,7 @@ export const QueryPageTopStack = () => {
               onClose={handleClose}
             >
               <Box sx={modalBoxstyles}>
-                <SourceTextSearchInput
-                  /* eslint-disable-next-line jsx-a11y/no-autofocus */
-                  autoFocus={true}
-                  setIsModalOpen={setOpen}
-                />
+                <SourceTextSearchInput setIsModalOpen={setOpen} autoFocus />
               </Box>
             </Modal>
           </Box>

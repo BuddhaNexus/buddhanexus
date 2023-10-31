@@ -9,7 +9,7 @@ const eslintExtends = [
   "plugin:react/recommended",
   "plugin:react-hooks/recommended",
   "plugin:jsx-a11y/recommended",
-];
+]
 
 const rules = {
   // https://mui.com/material-ui/guides/minimizing-bundle-size/
@@ -177,7 +177,14 @@ const rules = {
   "no-underscore-dangle": "off",
   "class-methods-use-this": "off",
   "func-style": "off",
-};
+  "jsx-a11y/no-autofocus": [
+    2,
+    {
+      // focus order success criterion: https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-focus-order.html
+      ignoreNonDOM: true,
+    },
+  ],
+}
 
 module.exports = {
   parser: "@typescript-eslint/parser",
@@ -198,4 +205,4 @@ module.exports = {
     },
   ],
   extends: ["plugin:@next/next/recommended"],
-};
+}

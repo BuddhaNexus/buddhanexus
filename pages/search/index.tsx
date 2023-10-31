@@ -98,7 +98,6 @@ export default function SearchPage() {
               </IconButton>
             ),
           }}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
           fullWidth
           onChange={(event) => setSearchTerm(event.target.value)}

@@ -216,7 +216,6 @@ export const SourceTextSearchInput = ({
         <TextField
           {...params}
           inputRef={inputRef}
-          /* eslint-disable-next-line jsx-a11y/no-autofocus */
           autoFocus={Boolean(autoFocus)}
           label={t("db.searchInputPlaceholder")}
           InputProps={{
