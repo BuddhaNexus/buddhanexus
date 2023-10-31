@@ -9,7 +9,7 @@ import { Paper, Typography } from "@mui/material";
 import { dehydrate } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
-import { prefetchApiData } from "utils/api/apiQueryUtils";
+import { prefetchDefaultDbPageData } from "utils/api/apiQueryUtils";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
@@ -42,7 +42,9 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     ["db", "settings"],
   );
 
-  const queryClient = await prefetchApiData(params?.language as SourceLanguage);
+  const queryClient = await prefetchDefaultDbPageData(
+    params?.language as SourceLanguage,
+  );
 
   return merge(
     { props: { dehydratedState: dehydrate(queryClient) } },

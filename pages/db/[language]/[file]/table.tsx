@@ -12,7 +12,7 @@ import TableView from "features/tableView/TableView";
 import merge from "lodash/merge";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
-import { prefetchApiData } from "utils/api/apiQueryUtils";
+import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -83,7 +83,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
     "settings",
   ]);
 
-  const queryClient = await prefetchApiData(
+  const queryClient = await prefetchDbResultsPageData(
     params?.language as SourceLanguage,
     params?.file as string,
   );
