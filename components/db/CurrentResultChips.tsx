@@ -30,11 +30,11 @@ function getSettingCounts({
     const queryKey = key as keyof typeof defaultQueries;
 
     const query = defaultQueries[queryKey];
-    const something = [...(query) as string[]]?.join(",") === value; // sorry, don't know what this does
+    const stringifiedArrayQuery = [...(query as string[])]?.join(",") === value;
 
     if (
       query === value ||
-      Array.isArray(query) && something ||
+      (Array.isArray(query) && stringifiedArrayQuery) ||
       value === "position" ||
       value === null
     ) {
