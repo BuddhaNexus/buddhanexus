@@ -18,7 +18,7 @@ const modalBoxstyles = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "clamp(300px, 90%, 900px)",
+  width: { xs: "90vw", md: "70vw", lg: "60vw", xl: "50vw" },
   height: "500px",
   bgcolor: "background.paper",
   boxShadow: 24,
