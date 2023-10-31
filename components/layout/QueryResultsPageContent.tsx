@@ -28,7 +28,7 @@ export const QueryResultsPageContent: FC<Props> = ({
       setIsSettingsOpen(isLg);
       isInitialized.current = true;
     }
-  }, []);
+  }, [setIsSettingsOpen, isLg]);
 
   return (
     <>
