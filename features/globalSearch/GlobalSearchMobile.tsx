@@ -25,6 +25,9 @@ const GlobalSearchMobile = () => {
 
   const isHomePage = router.asPath === "/";
   const isQueryResultsPage = /^\/(search|db.{6,})/.test(router.asPath);
+  // TODO: review uniformity of page margins. For now, the handling matches differences in current page margins across the site.
+  const isPageMargin = isHomePage || isQueryResultsPage;
+
   const { handleOnSearch } = useGlobalSearch();
 
   const handleClear = () => {
@@ -48,7 +51,7 @@ const GlobalSearchMobile = () => {
 
   // linked to components/layout/PageContainer.tsx
   const mdContainerSx = {
-    px: { xs: 4, sm: 1, md: 2 },
+    px: { sm: 1, md: 2, ...(!isPageMargin && { xs: 4 }) },
     pb: { xs: 4, sm: 0 },
   };
 
@@ -65,7 +68,7 @@ const GlobalSearchMobile = () => {
           display: { lg: "none" },
           width: 1,
           mt: 4,
-          ...(!isHomePage && !isQueryResultsPage && mdContainerSx),
+          ...mdContainerSx,
         }}
       >
         <Box position="relative">
