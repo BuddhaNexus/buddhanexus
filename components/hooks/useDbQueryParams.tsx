@@ -27,12 +27,13 @@ export const useDbQueryParams = () => {
   const sourceLanguageName = t(`language.${sourceLanguage}`);
   const fileName = file as string;
 
+  // TODO: See default params need to be set here
   const defaultQueryParams: DefaultQueryParams = {
     score: DEFAULT_QUERY_PARAMS_VALUES.score,
     par_length: sourceLanguage
       ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
       : DEFAULT_QUERY_PARAMS_VALUES.par_length,
-    // multi_lingual is initialized at point of use with prefetched data
+    // multi_lingual is initialized at point of use with prefetched data (see `useQuery` fetch in `CurrentResultChips`).
     multi_lingual: undefined,
   };
 

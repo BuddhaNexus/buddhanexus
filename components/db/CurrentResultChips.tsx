@@ -16,10 +16,19 @@ import type {
 } from "features/sidebarSuite/config/types";
 import { DbApi } from "utils/api/dbApi";
 
+function getFilterCount(key: string) {
+  return customFiltersChipQueryExclusions.includes(key) ? 0 : 1;
+}
+function getDisplayOptionCount(key: string) {
+  return customOptionsChipQueries.includes(key) ? 1 : 0;
+}
+
 function getSettingCounts({
+  isSearchRoute,
   currentQueries,
   defaultQueries,
 }: {
+  isSearchRoute: boolean;
   currentQueries: Partial<QueryParams>;
   defaultQueries: DefaultQueryParams;
 }) {
@@ -29,28 +38,30 @@ function getSettingCounts({
   for (const [key, value] of Object.entries(currentQueries)) {
     const queryKey = key as keyof typeof defaultQueries;
 
-    const query = defaultQueries[queryKey];
-    const stringifiedArrayQuery = [...(query as string[])]?.join(",") === value;
+    if (isSearchRoute) {
+      filter += getFilterCount(key);
+      continue;
+    }
+
+    // default params only apply to source text results pages
+    // TODO: explore alternative default value match checking approach. Can the param just be removed from the query string?
+    const defaultValue = defaultQueries[queryKey];
+
+    // This handles params set by a controlled input selector that allow multiple selections (at the time of writing, `SourceLanguagesSelector`). The array value is stringified to enable comparison.
+    const matchesDefaultValueOfArrayParam =
+      Array.isArray(defaultValue) && [...defaultValue]?.join(",") === value;
 
     if (
-      query === value ||
-      (Array.isArray(query) && stringifiedArrayQuery) ||
+      defaultValue === value ||
+      matchesDefaultValueOfArrayParam ||
       value === "position" ||
       value === null
     ) {
       continue;
     }
 
-    if (customOptionsChipQueries.includes(key)) {
-      display += 1;
-      continue;
-    }
-
-    if (customFiltersChipQueryExclusions.includes(key)) {
-      continue;
-    }
-
-    filter += 1;
+    display += getDisplayOptionCount(key);
+    filter += getFilterCount(key);
   }
 
   return { display, filter };
@@ -73,6 +84,7 @@ export default function CurrentResultChips({
   });
 
   const count = getSettingCounts({
+    isSearchRoute,
     currentQueries: queryParams,
     defaultQueries: {
       ...defaultQueryParams,
