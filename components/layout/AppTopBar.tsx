@@ -148,7 +148,7 @@ export const AppTopBar = () => {
             ) : (
               <>
                 <DatabaseMenu />
-                <AppBarLink title={t("header.support")} href="/support" />
+                <AppBarLink title={t("header.guide")} href="/guide" />
                 <AppBarLink title="ATII" href="/atii" />
               </>
             )}
