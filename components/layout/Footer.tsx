@@ -27,7 +27,7 @@ const getFooterData: (
     links: [
       { title: t("footer.introduction"), slug: "/introduction" },
       { title: t("footer.history"), slug: "/history" },
-      { title: t("footer.guidelines"), slug: "/guidelines" },
+      { title: t("footer.guide"), slug: "/guide" },
       { title: t("footer.contact"), slug: "/contact" },
     ],
   },
