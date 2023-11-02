@@ -45,5 +45,8 @@
     "genericErrorTitle": "Something went wrong",
     "genericErrorDescription": "Please contact us if the issue persists.",
     "loading": "Wird geladen..."
+  },
+  "search": {
+    "placeholder": "Suche..."
   }
 }

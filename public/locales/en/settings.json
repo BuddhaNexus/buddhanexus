@@ -25,9 +25,6 @@
     "tools": "Tools",
     "links": "Links"
   },
-  "search": {
-    "placeholder": "Search..."
-  },
   "optionsLabels": {
     "script": "Select text script",
     "folioAsGoTo": "Go to selected text section",
