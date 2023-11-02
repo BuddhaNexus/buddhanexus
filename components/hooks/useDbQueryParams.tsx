@@ -1,7 +1,6 @@
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { getQueryParamsFromRouter } from "features/sidebarSuite/common/dbSidebarHelpers";
 import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS_VALUES,
@@ -19,7 +18,6 @@ export const useDbQueryParams = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams);
 
   const { file, language } = router.query;
 
@@ -47,7 +45,9 @@ export const useDbQueryParams = () => {
       : MIN_PAR_LENGTH_VALUES.chn,
   };
 
-  const queryParams = getQueryParamsFromRouter({ route: router.route, params });
+  const queryParams = new URLSearchParams(searchParams);
+  // Remove NextJS dynamic route param. The file name is already given in the url & `file` cannot be used to query the API.
+  queryParams.delete("file");
 
   const sortParam = queryParams.get(uniqueSettings.queryParams.sortMethod);
   const sortMethodSelectValue = sortParam ?? "position";

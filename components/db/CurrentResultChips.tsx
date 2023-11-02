@@ -10,17 +10,40 @@ import {
   customFiltersChipQueryExclusions,
   customOptionsChipQueries,
 } from "features/sidebarSuite/config";
+import { uniqueSettings } from "features/sidebarSuite/config/settings";
 import type {
   DefaultQueryParams,
+  LimitsParam,
   QueryParams,
 } from "features/sidebarSuite/config/types";
 import { DbApi } from "utils/api/dbApi";
+
+type ParamValues = string | number | LimitsParam;
 
 function getFilterCount(key: string) {
   return customFiltersChipQueryExclusions.includes(key) ? 0 : 1;
 }
 function getDisplayOptionCount(key: string) {
   return customOptionsChipQueries.includes(key) ? 1 : 0;
+}
+
+function isDefaultValue({
+  defaultQueries,
+  queryKey,
+  value,
+}: {
+  defaultQueries: DefaultQueryParams;
+  queryKey: keyof typeof defaultQueries;
+  value: ParamValues;
+}) {
+  // `defaultQueries` correspond to params that must be set for API calls. The `defaults` variable here defines the default settings used in API results, but aren't necessarily set on the FE (eg. `multi_lingual`)
+  // TODO: handling here is being reviewed for refactoring and this may be removable.
+  const defaults = {
+    ...defaultQueries,
+    [uniqueSettings.queryParams.sortMethod]: "position",
+    [uniqueSettings.queryParams.folio]: null,
+  };
+  return defaults[queryKey]?.toString() === value;
 }
 
 function getSettingCounts({
@@ -44,19 +67,7 @@ function getSettingCounts({
     }
 
     // default params only apply to source text results pages
-    // TODO: explore alternative default value match checking approach. Can the param just be removed from the query string?
-    const defaultValue = defaultQueries[queryKey];
-
-    // This handles params set by a controlled input selector that allow multiple selections (at the time of writing, `SourceLanguagesSelector`). The array value is stringified to enable comparison.
-    const matchesDefaultValueOfArrayParam =
-      Array.isArray(defaultValue) && [...defaultValue]?.join(",") === value;
-
-    if (
-      defaultValue === value ||
-      matchesDefaultValueOfArrayParam ||
-      value === "position" ||
-      value === null
-    ) {
+    if (isDefaultValue({ defaultQueries, queryKey, value })) {
       continue;
     }
 
@@ -76,8 +87,7 @@ export default function CurrentResultChips({
   const { t } = useTranslation("settings");
 
   const isSearchRoute = router.route.startsWith("/search");
-  const { fileName, queryParams, defaultQueryParams, uniqueSettings } =
-    useDbQueryParams();
+  const { fileName, queryParams, defaultQueryParams } = useDbQueryParams();
   const { data: multiLangParamData } = useQuery({
     queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
     queryFn: () => DbApi.AvailableLanguagesData.call(fileName),

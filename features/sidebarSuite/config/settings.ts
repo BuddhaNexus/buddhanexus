@@ -25,7 +25,6 @@ export const localDisplayOption = {
 
 export const utilityOption = {
   download: "download",
-
   copyQueryTitle: "copyQueryTitle",
   copyQueryLink: "copyQueryLink",
   emailQueryLink: "emailQueryLink",

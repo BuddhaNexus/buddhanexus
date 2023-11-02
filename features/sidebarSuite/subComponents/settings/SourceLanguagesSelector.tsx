@@ -46,7 +46,6 @@ const SourceLanguagesSelector = () => {
     queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
     queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
   });
-  const availableLanguagesString = availableLanguages?.join(",");
 
   const [paramValue, setParamValue] = React.useState([
     ...(availableLanguages ?? []),
@@ -65,9 +64,8 @@ const SourceLanguagesSelector = () => {
       target: { value },
     } = event;
     setParamValue(value);
-    const valueString = value.join(",");
 
-    if (valueString === availableLanguagesString) {
+    if (value.length === 0) {
       return;
     }
 
@@ -75,9 +73,8 @@ const SourceLanguagesSelector = () => {
       pathname: router.pathname,
       query: {
         ...router.query,
-        ...(valueString !== "" && {
-          [uniqueSettings.remote.availableLanguages]: valueString,
-        }),
+        // A string is given here to avoid NextJS setting params with repeated keys. This allows default value comparison in CurrentResultChips.
+        [uniqueSettings.remote.availableLanguages]: value.toString(),
       },
     });
   };
