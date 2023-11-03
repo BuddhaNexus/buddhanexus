@@ -31,8 +31,8 @@ export const useDbQueryParams = () => {
     par_length: sourceLanguage
       ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
       : DEFAULT_QUERY_PARAMS_VALUES.par_length,
-    // multi_lingual is initialized at point of use with prefetched data (see `useQuery` fetch in `CurrentResultChips`).
-    multi_lingual: undefined,
+    multi_lingual: DEFAULT_QUERY_PARAMS_VALUES.multi_lingual,
+    sort_method: DEFAULT_QUERY_PARAMS_VALUES.sort_method,
   };
 
   // Chinese is used as fallback min par length as it has the lowest min par length value.

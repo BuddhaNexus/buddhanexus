@@ -15,7 +15,6 @@ import type {
 const { queryParams, local, remote } = uniqueSettings;
 
 // Not all filters, options and utilities are applicable for all DB languages and views. The setting menu assumes each setting component is to be rendered, unless defined in the following config objects listing contexts in which specific settings should be ommitted. For example, the `limits` filter should be shown in all cases except for graph view, in any language.
-
 export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilter> = {
   [queryParams.limits]: {
     [DbViewEnum.GRAPH]: ["allLangs"],
@@ -24,6 +23,12 @@ export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilter> = {
     [DbViewEnum.NUMBERS]: ["allLangs"],
     [DbViewEnum.TABLE]: ["allLangs"],
     [DbViewEnum.TEXT]: ["allLangs"],
+  },
+  [queryParams.multiLingual]: {
+    // TODO: for context see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/pull/90#discussion_r1375272080
+    [DbViewEnum.GRAPH]: ["allLangs"],
+    [DbViewEnum.NUMBERS]: ["allLangs"],
+    [DbViewEnum.TABLE]: ["allLangs"],
   },
 };
 
@@ -37,10 +42,6 @@ const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayO
       [DbViewEnum.GRAPH]: ["allLangs"],
       [DbViewEnum.NUMBERS]: ["allLangs"],
       [DbViewEnum.TEXT]: ["allLangs"],
-    },
-    [remote.availableLanguages]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-      [DbViewEnum.NUMBERS]: ["allLangs"],
     },
   };
 
@@ -97,6 +98,8 @@ export const DEFAULT_QUERY_PARAMS_VALUES: QueryParams = {
   sort_method: undefined,
   limits: undefined,
   target_collection: undefined,
+  // multi_lingual is initialized at point of use with prefetched data (see `useQuery` fetch in `CurrentResultChips`).
+  multi_lingual: undefined,
   language: undefined,
   search_string: undefined,
 };
@@ -119,8 +122,6 @@ export const DEFAULT_PAR_LENGTH_VALUES: Record<SourceLanguage, number> = {
  */
 export const customOptionsChipQueries: string[] = [
   queryParams.folio,
-  // TODO: confirm whether the availableLanguages selection affects the number of results returned by `/utils/count-matches/`
-  remote.availableLanguages,
   queryParams.sortMethod,
 ];
 

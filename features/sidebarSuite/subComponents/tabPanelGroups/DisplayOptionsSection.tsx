@@ -8,7 +8,6 @@ import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import {
   FolioOption,
   SortOption,
-  SourceLanguagesSelector,
   TextScriptOption,
 } from "features/sidebarSuite/subComponents/settings";
 import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
@@ -70,9 +69,6 @@ export const DisplayOptionsSection = () => {
           }
           case uniqueSettings.queryParams.sortMethod: {
             return <SortOption key={key} />;
-          }
-          case uniqueSettings.remote.availableLanguages: {
-            return <SourceLanguagesSelector key={key} />;
           }
           // SEE: features/sidebarSuite/config/settings.ts for suspended setting info
           case uniqueSettings.local.script: {

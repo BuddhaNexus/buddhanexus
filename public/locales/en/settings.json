@@ -32,11 +32,12 @@
     "folioShowAll": "Whole text",
     "multiLingual": "Match text Languages",
     "multiLingualError": "At least one language needs to be selected. Showing default results.",
-    "sorting": "Sorting Method",
-    "sortDefault": "Default – Position in inquiry text",
-    "sortSource": "Position in inquiry text",
-    "sortParallel": "Position in match texts",
-    "sortLength": "Length of character match (>)",
+    "sort": {
+      "selector": "Sorting Method",
+      "position": "Default – Position in inquiry text",
+      "quoted-text":"Position in match texts",
+      "length2": "Length of character match (>)"
+    },
     "download": "Download results as xmlx file",
     "wylie": "Wylie",
     "unicode": "Unicode",

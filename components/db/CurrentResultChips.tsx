@@ -14,11 +14,12 @@ import { uniqueSettings } from "features/sidebarSuite/config/settings";
 import type {
   DefaultQueryParams,
   LimitsParam,
+  MultiLingalParam,
   QueryParams,
 } from "features/sidebarSuite/config/types";
 import { DbApi } from "utils/api/dbApi";
 
-type ParamValues = string | number | LimitsParam;
+type ParamValues = string | number | LimitsParam | MultiLingalParam;
 
 function getFilterCount(key: string) {
   return customFiltersChipQueryExclusions.includes(key) ? 0 : 1;
@@ -98,7 +99,7 @@ export default function CurrentResultChips({
     currentQueries: queryParams,
     defaultQueries: {
       ...defaultQueryParams,
-      [uniqueSettings.remote.availableLanguages]: multiLangParamData,
+      [uniqueSettings.queryParams.multiLingual]: multiLangParamData,
     },
   });
 

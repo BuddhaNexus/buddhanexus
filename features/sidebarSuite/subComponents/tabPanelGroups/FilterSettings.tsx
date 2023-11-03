@@ -10,6 +10,7 @@ import {
   ParLengthFilter,
   ScoreFilter,
   SearchLanguageSelector,
+  SourceLanguagesSelector,
 } from "features/sidebarSuite/subComponents/settings";
 import { useAtomValue } from "jotai";
 import { StringParam, useQueryParam } from "use-query-params";
@@ -83,6 +84,9 @@ export const FilterSettings = ({
           }
           case uniqueSettings.queryParams.parLength: {
             return <ParLengthFilter key={key} />;
+          }
+          case uniqueSettings.queryParams.multiLingual: {
+            return <SourceLanguagesSelector key={key} />;
           }
           case uniqueSettings.queryParams.limits: {
             return <IncludeExcludeFilters key={key} />;
