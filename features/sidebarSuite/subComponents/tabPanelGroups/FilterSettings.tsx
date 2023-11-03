@@ -7,10 +7,10 @@ import type { SidebarSuitePageContext } from "features/sidebarSuite/config/types
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   IncludeExcludeFilters,
+  MultiLingualSelector,
   ParLengthFilter,
   ScoreFilter,
   SearchLanguageSelector,
-  SourceLanguagesSelector,
 } from "features/sidebarSuite/subComponents/settings";
 import { useAtomValue } from "jotai";
 import { StringParam, useQueryParam } from "use-query-params";
@@ -86,7 +86,7 @@ export const FilterSettings = ({
             return <ParLengthFilter key={key} />;
           }
           case uniqueSettings.queryParams.multiLingual: {
-            return <SourceLanguagesSelector key={key} />;
+            return <MultiLingualSelector key={key} />;
           }
           case uniqueSettings.queryParams.limits: {
             return <IncludeExcludeFilters key={key} />;

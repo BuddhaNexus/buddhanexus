@@ -35,7 +35,7 @@ function getStyles(
   };
 }
 
-const SourceLanguagesSelector = () => {
+const MultiLingualSelector = () => {
   const { t } = useTranslation(["settings", "common"]);
   const router = useRouter();
   const { fileName, queryParams, uniqueSettings } = useDbQueryParams();
@@ -153,4 +153,4 @@ const SourceLanguagesSelector = () => {
   );
 };
 
-export default SourceLanguagesSelector;
+export default MultiLingualSelector;
