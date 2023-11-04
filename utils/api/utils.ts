@@ -45,6 +45,10 @@ export async function getFolios(fileName: string): Promise<DatabaseFolio[]> {
 export async function getAvailableLanguages(
   fileName: string,
 ): Promise<SourceLanguage[]> {
+  if (!fileName) {
+    return [];
+  }
+
   const { data } = await apiClient.GET("/utils/available-languages/", {
     params: { query: { file_name: fileName } },
   });
@@ -52,9 +56,6 @@ export async function getAvailableLanguages(
   const awaitingTypesFromApiData = data as {
     langList: SourceLanguage[];
   };
-  const availableLanguages = data
-    ? awaitingTypesFromApiData.langList.filter(Boolean)
-    : [];
 
-  return availableLanguages;
+  return data ? awaitingTypesFromApiData.langList.filter(Boolean) : [];
 }

@@ -9,10 +9,10 @@ import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Typography } from "@mui/material";
 import { dehydrate, useQuery } from "@tanstack/react-query";
-import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
 import type { ApiNumbersPageData } from "types/api/common";
+import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -32,7 +32,6 @@ export default function NumbersPage() {
         fileName,
         queryParams,
       }),
-    refetchOnWindowFocus: false,
   });
 
   if (isError) {
@@ -51,7 +50,7 @@ export default function NumbersPage() {
     <PageContainer
       maxWidth="xl"
       backgroundName={sourceLanguage}
-      hasSidebar={true}
+      isQueryResultsPage
     >
       <DbViewPageHead />
 
@@ -81,10 +80,14 @@ export default function NumbersPage() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const i18nProps = await getI18NextStaticProps({ locale }, ["settings"]);
+  const i18nProps = await getI18NextStaticProps({ locale }, [
+    "common",
+    "settings",
+  ]);
 
-  const queryClient = await prefetchSourceTextBrowserData(
+  const queryClient = await prefetchDbResultsPageData(
     params?.language as SourceLanguage,
+    params?.file as string,
   );
 
   return merge(

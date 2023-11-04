@@ -9,14 +9,9 @@ import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
 import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
 import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
 import type { Property } from "csstype";
-import { Main } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
-import {
-  isSidebarOpenAtom,
-  SidebarSuite,
-} from "features/sidebarSuite/SidebarSuite";
-import { useAtomValue } from "jotai";
 import { SourceLanguage } from "utils/constants";
 
+import { QueryResultsPageContent } from "./QueryResultsPageContent";
 export type BackgroundName = SourceLanguage | "welcome";
 
 const BgImageSrcs: Record<BackgroundName, string> = {
@@ -38,16 +33,15 @@ const BgImageBgSize: Record<BackgroundName, Property.BackgroundSize> = {
 interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;
   maxWidth?: Breakpoint;
-  hasSidebar?: boolean;
+  isQueryResultsPage?: boolean;
 }
 
 export const PageContainer: FC<Props> = ({
   children,
   backgroundName,
   maxWidth = "md",
-  hasSidebar = false,
+  isQueryResultsPage,
 }) => {
-  const isSidebarOpen = useAtomValue(isSidebarOpenAtom);
   const { theme } = useTheme();
 
   const containerStyles: SxProps = {
@@ -76,15 +70,13 @@ export const PageContainer: FC<Props> = ({
           }}
         />
       )}
-      {hasSidebar ? (
-        <>
-          <Main open={isSidebarOpen}>
-            <Container maxWidth={maxWidth} sx={containerStyles}>
-              {children}
-            </Container>
-          </Main>
-          <SidebarSuite />
-        </>
+      {isQueryResultsPage ? (
+        <QueryResultsPageContent
+          maxWidth={maxWidth}
+          containerStyles={containerStyles}
+        >
+          {children}
+        </QueryResultsPageContent>
       ) : (
         <Container component="main" maxWidth={maxWidth} sx={containerStyles}>
           {children}

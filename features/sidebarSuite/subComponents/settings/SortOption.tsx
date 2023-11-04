@@ -9,26 +9,17 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import type { QueryParams } from "features/sidebarSuite/config/types";
-
-type SortParam = NonNullable<QueryParams["sort_method"]>;
-
-type Option = {
-  [K in SortParam]?: "sortLength" | "sortParallel" | "sortSource";
-};
-
-const SORT_OPTIONS: Option[] = [
-  { position: "sortSource" },
-  { "quoted-text": "sortParallel" },
-  { length2: "sortLength" },
-];
+import {
+  type SortMethod,
+  sortMethods,
+} from "features/sidebarSuite/config/types";
 
 export default function SortOption() {
   const { t } = useTranslation("settings");
   const router = useRouter();
-  const { uniqueSettings, sortMethodSelectConfig } = useDbQueryParams();
+  const { uniqueSettings, sortMethodSelectValue } = useDbQueryParams();
 
-  const handleSelectChange = async (sortMethod: SortParam) => {
+  const handleSelectChange = async (sortMethod: SortMethod) => {
     await router.push({
       pathname: router.pathname,
       query: {
@@ -42,21 +33,19 @@ export default function SortOption() {
     <Box sx={{ width: 1, my: 3 }}>
       <FormControl sx={{ width: 1 }}>
         <InputLabel id="sort-option-selector-label">
-          {t("optionsLabels.sorting")}
+          {t("optionsLabels.sort.selector")}
         </InputLabel>
         <Select
           id="sort-option-selector"
           aria-labelledby="sort-option-selector-label"
-          value={sortMethodSelectConfig}
-          input={<OutlinedInput label={t("optionsLabels.sorting")} />}
-          onChange={(e) => handleSelectChange(e.target.value as SortParam)}
+          value={sortMethodSelectValue}
+          input={<OutlinedInput label={t("optionsLabels.sort.selector")} />}
+          onChange={(e) => handleSelectChange(e.target.value as SortMethod)}
         >
-          {SORT_OPTIONS.map((option) => {
-            const key = Object.keys(option)[0] as keyof typeof option;
-            const value = option[key]!;
+          {sortMethods.map((option) => {
             return (
-              <MenuItem key={key} value={key}>
-                {t(`optionsLabels.${value}`)}
+              <MenuItem key={option} value={option}>
+                {t(`optionsLabels.sort.${option}`)}
               </MenuItem>
             );
           })}

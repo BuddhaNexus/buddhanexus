@@ -1,12 +1,15 @@
+// order sets appearance in sidebar
 export const searchPageFilter = {
   language: "language",
   search: "search_string",
   limits: "limits",
 } as const;
 
+// order sets appearance in sidebar
 export const dbPageFilter = {
   score: "score",
   parLength: "par_length",
+  multiLingual: "multi_lingual",
   limits: "limits",
   targetCollection: "target_collection",
 } as const;
@@ -14,7 +17,6 @@ export const dbPageFilter = {
 export const queriedDisplayOption = {
   folio: "folio",
   sortMethod: "sort_method",
-  availableLanguages: "multi_lingual",
 } as const;
 
 export const localDisplayOption = {
@@ -25,7 +27,6 @@ export const localDisplayOption = {
 
 export const utilityOption = {
   download: "download",
-
   copyQueryTitle: "copyQueryTitle",
   copyQueryLink: "copyQueryLink",
   emailQueryLink: "emailQueryLink",
@@ -40,6 +41,7 @@ const queryParams = {
   score: dbPageFilter.score,
   parLength: dbPageFilter.parLength,
   targetCollection: dbPageFilter.targetCollection,
+  multiLingual: dbPageFilter.multiLingual,
   folio: queriedDisplayOption.folio,
   sortMethod: queriedDisplayOption.sortMethod,
 } as const;
@@ -48,7 +50,6 @@ const queryParams = {
  */
 const remote = {
   download: utilityOption.download,
-  availableLanguages: queriedDisplayOption.availableLanguages,
 } as const;
 
 /** No API calls needed.

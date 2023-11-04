@@ -1,7 +1,7 @@
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useSearchParams } from "@components/hooks/useTypedSearchParams";
-import { getQueryParamsFromRouter } from "features/sidebarSuite/common/dbSidebarHelpers";
+import { searchPageFilter } from "features/sidebarSuite/config/settings";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
 
@@ -23,16 +23,20 @@ export function useGlobalSearch(): GlobalSearchProps {
     if (!e || e.key === "Enter") {
       e?.preventDefault();
 
-      const queryParams = getQueryParamsFromRouter({
-        route: router.route,
-        params,
+      const query: Record<string, string> = {
+        [uniqueSettings.queryParams.searchString]: searchTerm,
+      };
+
+      Object.entries(router.query).forEach(([key, value]) => {
+        // This resets query values if the search has been initiated from a source text results page. The source language setting.persists.
+        if (value && Object.keys(searchPageFilter).includes(key)) {
+          query[key] = value.toString();
+        }
       });
-      // const queryParams = params
-      queryParams.set(uniqueSettings.queryParams.searchString, searchTerm);
 
       await router.push({
         pathname: "/search",
-        query: Object.fromEntries(queryParams.entries()),
+        query,
       });
     }
   };

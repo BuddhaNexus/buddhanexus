@@ -4,20 +4,21 @@
     "language": "Sprache"
   },
   "header": {
-    "support": "Unterstützung",
+    "guide": "Richtlinien",
     "database": "Datenbank"
   },
   "language": {
+    "all": "Alle",
     "pli": "Pāli",
-    "chn": "Chinese",
+    "chn": "Chinesisch",
     "skt": "Sanskrit",
-    "tib": "Tibetan"
+    "tib": "Tibetisch"
   },
   "footer": {
     "about": "Über",
     "introduction": "Einführung",
     "history": "Geschichte",
-    "guidelines": "Richtlinien",
+    "guide": "Richtlinien",
     "community": "Gemeinschaft",
     "institutions": "Institutionen",
     "people": "Personen",
@@ -42,6 +43,10 @@
   },
   "prompts": {
     "genericErrorTitle": "Something went wrong",
-    "genericErrorDescription": "Please contact us if the issue persists."
+    "genericErrorDescription": "Please contact us if the issue persists.",
+    "loading": "Wird geladen..."
+  },
+  "search": {
+    "placeholder": "Suche..."
   }
 }

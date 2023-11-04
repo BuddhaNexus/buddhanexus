@@ -60,7 +60,7 @@ export const SourceTextBrowserTree = memo<Props>(
     const { sourceLanguage } = useDbQueryParams();
     const { observe, height: inputHeight } = useDimensions();
 
-    const { t } = useTranslation(["common", "settings"]);
+    const { t } = useTranslation(["common"]);
 
     // TODO: add error handling
     const { data, isLoading } = useQuery<DrawerNavigationNodeData[]>({
@@ -69,7 +69,7 @@ export const SourceTextBrowserTree = memo<Props>(
     });
 
     const hasData = !(isLoading || !data);
-    const languageName = t(`settings:dbLanguageLabels.${sourceLanguage}`);
+    const languageName = t(`language.${sourceLanguage}`);
 
     return (
       <>

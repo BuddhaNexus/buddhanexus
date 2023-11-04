@@ -4,10 +4,11 @@
     "language": "Language"
   },
   "header": {
-    "support": "Support",
+    "guide": "Guide",
     "database": "Database"
   },
   "language": {
+    "all": "All",
     "pli": "Pāli",
     "chn": "Chinese",
     "skt": "Sanskrit",
@@ -17,7 +18,7 @@
     "about": "About",
     "introduction": "Introduction",
     "history": "History",
-    "guidelines": "Guidelines",
+    "guide": "Guide",
     "community": "Community",
     "institutions": "Institutions",
     "people": "People",
@@ -42,6 +43,10 @@
   },
   "prompts": {
     "genericErrorTitle": "Something went wrong",
-    "genericErrorDescription": "Please contact us if the issue persists."
+    "genericErrorDescription": "Please contact us if the issue persists.",
+    "loading": "Loading..."
+  },
+  "search": {
+    "placeholder": "Search..."
   }
 }

@@ -7,12 +7,12 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
-import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "features/tableView/TableView";
 import merge from "lodash/merge";
 import type { PagedResponse } from "types/api/common";
 import type { TablePageData } from "types/api/table";
+import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -24,7 +24,7 @@ export default function TablePage() {
   const { isFallback } = useSourceFile();
   useDbView();
 
-  const { data, fetchNextPage, fetchPreviousPage, isInitialLoading } =
+  const { data, fetchNextPage, fetchPreviousPage, isLoading } =
     useInfiniteQuery<PagedResponse<TablePageData>>({
       initialPageParam: 0,
       queryKey: DbApi.TableView.makeQueryKey({
@@ -40,7 +40,6 @@ export default function TablePage() {
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
         lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
-      refetchOnWindowFocus: false,
     });
 
   const allData = useMemo(
@@ -60,11 +59,11 @@ export default function TablePage() {
     <PageContainer
       maxWidth="xl"
       backgroundName={sourceLanguage}
-      hasSidebar={true}
+      isQueryResultsPage
     >
       <DbViewPageHead />
 
-      {isInitialLoading || !data ? (
+      {isLoading || !data ? (
         <CenteredProgress />
       ) : (
         <TableView
@@ -79,10 +78,14 @@ export default function TablePage() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const i18nProps = await getI18NextStaticProps({ locale }, ["settings"]);
+  const i18nProps = await getI18NextStaticProps({ locale }, [
+    "common",
+    "settings",
+  ]);
 
-  const queryClient = await prefetchSourceTextBrowserData(
+  const queryClient = await prefetchDbResultsPageData(
     params?.language as SourceLanguage,
+    params?.file as string,
   );
 
   return merge(

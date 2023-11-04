@@ -12,29 +12,6 @@ import { EwtsConverter } from "tibetan-ewts-converter";
 import { getParallelDownloadData } from "utils/api/downloads";
 import { SourceLanguage } from "utils/constants";
 
-/**
- * Next.js stores dynamic routes in the router object query prop which is also where api query params are pushed to. Dynamic route params need to be removed to avoid polluting result page urls and sending unaccepted params in api requests.
- *
- * @see {@link https://nextjs.org/docs/pages/api-reference/functions/use-router#router-object}.
- *
- */
-export const getQueryParamsFromRouter = ({
-  route,
-  params,
-}: {
-  route: string;
-  params: URLSearchParams;
-}): URLSearchParams => {
-  const apiEndpointParams = new URLSearchParams(params);
-  apiEndpointParams.delete("file");
-
-  if (!route.startsWith("/search")) {
-    apiEndpointParams.delete("language");
-  }
-
-  return apiEndpointParams;
-};
-
 export const isSettingOmitted = ({
   omissions,
   settingName,

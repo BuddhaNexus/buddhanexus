@@ -150,13 +150,13 @@ const ListboxComponent = React.forwardRef<
     <div ref={ref}>
       <OuterElementContext.Provider value={other}>
         {/* TODO: replace react-window with newer package */}
-        {/* @ts-expect-error type issue */}
+        {/* @ts-expect-error inherited VariableSizeList issue */}
         <VariableSizeList
           ref={gridRef}
           itemData={itemData}
           height={getHeight() + 2 * LISTBOX_PADDING}
           width="100%"
-          // @ts-expect-error type issue
+          // @ts-expect-error DHH had a point ;-)
           outerElementType={OuterElementType}
           innerElementType="ul"
           itemSize={(index: number) => getChildSize(itemData[index])}
@@ -180,16 +180,29 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-export const SourceTextSearchInput = () => {
+export const SourceTextSearchInput = ({
+  autoFocus,
+  setIsModalOpen,
+}: {
+  autoFocus?: boolean;
+  setIsModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { sourceLanguage, queryParams } = useDbQueryParams();
+  const { sourceLanguage } = useDbQueryParams();
   const dbView = useAtomValue(currentViewAtom);
 
   const { data, isLoading } = useQuery<DatabaseText[]>({
     queryKey: DbApi.SourceTextMenu.makeQueryKey(sourceLanguage),
     queryFn: () => DbApi.SourceTextMenu.call(sourceLanguage),
   });
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  React.useEffect(() => {
+    if (autoFocus) {
+      inputRef.current?.focus();
+    }
+  }, [autoFocus]);
 
   // TODO: Add pagination and fuzzy search on BE
   return (
@@ -202,6 +215,8 @@ export const SourceTextSearchInput = () => {
       renderInput={(params) => (
         <TextField
           {...params}
+          inputRef={inputRef}
+          autoFocus={Boolean(autoFocus)}
           label={t("db.searchInputPlaceholder")}
           InputProps={{
             ...params.InputProps,
@@ -219,19 +234,19 @@ export const SourceTextSearchInput = () => {
       renderOption={(props, option) => [props, option] as React.ReactNode}
       renderGroup={(params) => params as unknown as React.ReactNode}
       loading={isLoading}
+      openOnFocus
       disableListWrap
       disablePortal
-      onChange={(target, value) =>
-        router.push({
+      onChange={async (target, value) => {
+        setIsModalOpen?.((prev) => !prev);
+        await router.push({
           pathname: getTextPath({
             sourceLanguage,
             fileName: value?.fileName,
             dbView,
           }),
-          //  TODO: per previous spec decision, confirm whether query params should persist accross file changes, or should be reset on file change. Remove `query` prop for reset.
-          query: queryParams,
-        })
-      }
+        });
+      }}
     />
   );
 };

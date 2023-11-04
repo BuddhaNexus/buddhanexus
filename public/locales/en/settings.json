@@ -1,10 +1,19 @@
 {
+  "generic": {
+    "selectLanguage": "Select language",
+    "noSelection": "None selected",
+    "default": "Default"
+  },
   "resultsHead": {
-    "parallels": "Parallels: ",
     "matches": "Matches: ",
     "filters": "Custom filters: {{value}}",
     "options": "Custom options: {{value}}",
-    "reset": "Reset"
+    "settings": "Settings",
+    "settingsTip": "Toggle settings panel",
+    "reset": "Reset",
+    "resetTip": "Resort default settings",
+    "textSelect": "Change text",
+    "textSelectTip": "Select a new inquiry text"
   },
   "tabs": {
     "options": "Options",
@@ -16,20 +25,19 @@
     "tools": "Tools",
     "links": "Links"
   },
-  "search": {
-    "placeholder": "Search..."
-  },
   "optionsLabels": {
     "script": "Select text script",
     "folioAsGoTo": "Go to selected text section",
     "folioAsLimit": "Show matches from selected text section",
     "folioShowAll": "Whole text",
-    "availableLanguages": "Parallel text Languages",
-    "sorting": "Sorting Method",
-    "sortDefault": "Default – Match position in source text",
-    "sortSource": "Match position in source text",
-    "sortParallel": "Match position in parallel texts",
-    "sortLength": "Length of character match (>)",
+    "multiLingual": "Match text Languages",
+    "multiLingualError": "At least one language needs to be selected. Showing default results.",
+    "sort": {
+      "selector": "Sorting Method",
+      "position": "Default – Position in inquiry text",
+      "quoted-text":"Position in match texts",
+      "length2": "Length of character match (>)"
+    },
     "download": "Download results as xmlx file",
     "wylie": "Wylie",
     "unicode": "Unicode",
@@ -58,15 +66,5 @@
     "numbers": "Numbers",
     "table": "Table",
     "text": "Text"
-  },
-  "dbLanguageLabels": {
-    "instructions": "Database language",
-    "all": "All",
-    "none": "None",
-    "loading": "Loading...",
-    "pli": "Pāli",
-    "chn": "Chinese",
-    "skt": "Sanskrit",
-    "tib": "Tibetan"
   }
 }

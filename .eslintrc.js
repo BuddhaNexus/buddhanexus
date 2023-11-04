@@ -177,6 +177,14 @@ const rules = {
   "no-underscore-dangle": "off",
   "class-methods-use-this": "off",
   "func-style": "off",
+  "jsx-a11y/no-autofocus": [
+    2,
+    {
+      // focus order success criterion: https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-focus-order.html
+      // TODO: review focus return handling.
+      ignoreNonDOM: true,
+    },
+  ],
 };
 
 module.exports = {

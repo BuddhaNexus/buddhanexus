@@ -8,12 +8,12 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
-import { prefetchSourceTextBrowserData } from "features/sourceTextBrowserDrawer/apiQueryUtils";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TextView from "features/textView/TextView";
 import merge from "lodash/merge";
 import type { PagedResponse } from "types/api/common";
 import type { TextPageData } from "types/api/text";
+import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -40,7 +40,7 @@ export default function TextPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { selectedSegment, ...paramsThatShouldRefreshText } = queryParams;
 
-  const { data, fetchNextPage, fetchPreviousPage, isInitialLoading, isError } =
+  const { data, fetchNextPage, fetchPreviousPage, isLoading, isError } =
     useInfiniteQuery<PagedResponse<TextPageData>>({
       initialPageParam: 0,
       queryKey: DbApi.TextView.makeQueryKey({
@@ -56,7 +56,6 @@ export default function TextPage() {
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
         lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
-      refetchOnWindowFocus: false,
     });
 
   const allData = useMemo(
@@ -80,11 +79,11 @@ export default function TextPage() {
     <PageContainer
       maxWidth="xl"
       backgroundName={sourceLanguage}
-      hasSidebar={true}
+      isQueryResultsPage
     >
       <DbViewPageHead />
 
-      {isInitialLoading || !data ? (
+      {isLoading || !data ? (
         <CenteredProgress />
       ) : (
         <TextView
@@ -100,10 +99,14 @@ export default function TextPage() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const i18nProps = await getI18NextStaticProps({ locale }, ["settings"]);
+  const i18nProps = await getI18NextStaticProps({ locale }, [
+    "common",
+    "settings",
+  ]);
 
-  const queryClient = await prefetchSourceTextBrowserData(
+  const queryClient = await prefetchDbResultsPageData(
     params?.language as SourceLanguage,
+    params?.file as string,
   );
 
   return merge(
