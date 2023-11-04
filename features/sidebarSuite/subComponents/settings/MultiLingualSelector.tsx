@@ -6,12 +6,11 @@ import {
   Box,
   Fade,
   FormControl,
-  InputLabel,
+  FormLabel,
   ListItemText,
   MenuItem,
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
 import type { Theme } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
@@ -36,7 +35,7 @@ function getStyles(
   };
 }
 
-const SourceLanguagesSelector = () => {
+const MultiLingualSelector = () => {
   const { t } = useTranslation(["settings", "common"]);
   const router = useRouter();
   const { fileName, queryParams, uniqueSettings } = useDbQueryParams();
@@ -46,7 +45,6 @@ const SourceLanguagesSelector = () => {
     queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
     queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
   });
-  const availableLanguagesString = availableLanguages?.join(",");
 
   const [paramValue, setParamValue] = React.useState([
     ...(availableLanguages ?? []),
@@ -65,9 +63,8 @@ const SourceLanguagesSelector = () => {
       target: { value },
     } = event;
     setParamValue(value);
-    const valueString = value.join(",");
 
-    if (valueString === availableLanguagesString) {
+    if (value.length === 0) {
       return;
     }
 
@@ -75,9 +72,8 @@ const SourceLanguagesSelector = () => {
       pathname: router.pathname,
       query: {
         ...router.query,
-        ...(valueString !== "" && {
-          [uniqueSettings.remote.availableLanguages]: valueString,
-        }),
+        // A string is given here to avoid NextJS setting params with repeated keys. This allows default value comparison in CurrentResultChips.
+        [uniqueSettings.queryParams.multiLingual]: value.toString(),
       },
     });
   };
@@ -95,19 +91,22 @@ const SourceLanguagesSelector = () => {
   };
 
   return (
-    <Box ref={anchorRef} sx={{ width: 1, my: 2 }}>
+    <Box ref={anchorRef} sx={{ width: 1, mt: 1, mb: 2 }}>
       <FormControl sx={{ width: 1 }} error={paramValue.length === 0}>
-        <InputLabel id="multi-lingual-selector-label" shrink>
+        <FormLabel sx={{ mb: 1 }} id="multi-lingual-selector-label">
           {selectorLabel}
-        </InputLabel>
+        </FormLabel>
+        {/* <InputLabel id="multi-lingual-selector-label" shrink>
+          
+        </InputLabel> */}
 
         <Select
           labelId="multi-lingual-selector-label"
           id="multi-lingual-selector"
-          label={selectorLabel}
+          // label={selectorLabel}
           aria-describedby="multi-lingual-selector-helper-text"
           value={paramValue}
-          input={<OutlinedInput label={selectorLabel} notched />}
+          // input={<OutlinedInput label={selectorLabel} notched />}
           renderValue={getRenderValue}
           multiple
           displayEmpty
@@ -135,7 +134,7 @@ const SourceLanguagesSelector = () => {
             {
               name: "offset",
               options: {
-                offset: [0, 70],
+                offset: [0, 20],
               },
             },
           ]}
@@ -154,4 +153,4 @@ const SourceLanguagesSelector = () => {
   );
 };
 
-export default SourceLanguagesSelector;
+export default MultiLingualSelector;

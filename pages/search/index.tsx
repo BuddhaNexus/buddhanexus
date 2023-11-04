@@ -25,6 +25,7 @@ export default function SearchPage() {
   // IN DEVELOPMENT
   const { isReady } = useRouter();
 
+  // TODO: fix server error if no search term
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
   const { handleOnSearch, searchParam } = useGlobalSearch();
@@ -45,8 +46,6 @@ export default function SearchPage() {
     fetchNextPage,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     fetchPreviousPage,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    isInitialLoading,
     isLoading,
   } = useInfiniteQuery<PagedResponse<any>>({
     initialPageParam: 0,
@@ -65,10 +64,12 @@ export default function SearchPage() {
       lastPage.pageNumber === 0 ? lastPage.pageNumber : lastPage.pageNumber - 1,
   });
 
-  if (isFallback || !isReady) {
+  if (isFallback) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
-        <CircularProgress color="inherit" sx={{ flex: 1 }} />
+        <div>
+          <CircularProgress color="inherit" sx={{ flex: 1 }} />
+        </div>
       </PageContainer>
     );
   }
@@ -106,7 +107,11 @@ export default function SearchPage() {
       </SearchBoxWrapper>
 
       {/* TODO: componentize search results */}
-      {!isLoading && (
+      {isLoading ? (
+        <div>
+          <CircularProgress color="inherit" sx={{ flex: 1 }} />
+        </div>
+      ) : (
         <>
           {data ? (
             <>

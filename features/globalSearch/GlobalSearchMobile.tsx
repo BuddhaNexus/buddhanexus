@@ -20,7 +20,7 @@ import {
 
 const GlobalSearchMobile = () => {
   const router = useRouter();
-  const { t } = useTranslation("settings");
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isHomePage = router.asPath === "/";

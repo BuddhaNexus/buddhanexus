@@ -10,16 +10,49 @@ import {
   customFiltersChipQueryExclusions,
   customOptionsChipQueries,
 } from "features/sidebarSuite/config";
+import { uniqueSettings } from "features/sidebarSuite/config/settings";
 import type {
   DefaultQueryParams,
+  LimitsParam,
+  MultiLingalParam,
   QueryParams,
 } from "features/sidebarSuite/config/types";
 import { DbApi } from "utils/api/dbApi";
 
+type ParamValues = string | number | LimitsParam | MultiLingalParam;
+
+function getFilterCount(key: string) {
+  return customFiltersChipQueryExclusions.includes(key) ? 0 : 1;
+}
+function getDisplayOptionCount(key: string) {
+  return customOptionsChipQueries.includes(key) ? 1 : 0;
+}
+
+function isDefaultValue({
+  defaultQueries,
+  queryKey,
+  value,
+}: {
+  defaultQueries: DefaultQueryParams;
+  queryKey: keyof typeof defaultQueries;
+  value: ParamValues;
+}) {
+  // `defaultQueries` correspond to params that must be set for API calls. The `defaults` variable here defines the default settings used in API results, but aren't necessarily set on the FE (eg. `multi_lingual`)
+  // TODO: handling here is being reviewed for refactoring and this may be removable.
+  const defaults = {
+    ...defaultQueries,
+    [uniqueSettings.queryParams.sortMethod]: "position",
+    [uniqueSettings.queryParams.folio]: null,
+  };
+  return defaults[queryKey]?.toString() === value;
+}
+
 function getSettingCounts({
+  isSearchRoute,
   currentQueries,
   defaultQueries,
 }: {
+  isSearchRoute: boolean;
   currentQueries: Partial<QueryParams>;
   defaultQueries: DefaultQueryParams;
 }) {
@@ -29,28 +62,18 @@ function getSettingCounts({
   for (const [key, value] of Object.entries(currentQueries)) {
     const queryKey = key as keyof typeof defaultQueries;
 
-    const query = defaultQueries[queryKey];
-    const stringifiedArrayQuery = [...(query as string[])]?.join(",") === value;
-
-    if (
-      query === value ||
-      (Array.isArray(query) && stringifiedArrayQuery) ||
-      value === "position" ||
-      value === null
-    ) {
+    if (isSearchRoute) {
+      filter += getFilterCount(key);
       continue;
     }
 
-    if (customOptionsChipQueries.includes(key)) {
-      display += 1;
+    // default params only apply to source text results pages
+    if (isDefaultValue({ defaultQueries, queryKey, value })) {
       continue;
     }
 
-    if (customFiltersChipQueryExclusions.includes(key)) {
-      continue;
-    }
-
-    filter += 1;
+    display += getDisplayOptionCount(key);
+    filter += getFilterCount(key);
   }
 
   return { display, filter };
@@ -65,18 +88,18 @@ export default function CurrentResultChips({
   const { t } = useTranslation("settings");
 
   const isSearchRoute = router.route.startsWith("/search");
-  const { fileName, queryParams, defaultQueryParams, uniqueSettings } =
-    useDbQueryParams();
+  const { fileName, queryParams, defaultQueryParams } = useDbQueryParams();
   const { data: multiLangParamData } = useQuery({
     queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
     queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
   });
 
   const count = getSettingCounts({
+    isSearchRoute,
     currentQueries: queryParams,
     defaultQueries: {
       ...defaultQueryParams,
-      [uniqueSettings.remote.availableLanguages]: multiLangParamData,
+      [uniqueSettings.queryParams.multiLingual]: multiLangParamData,
     },
   });
 

@@ -7,6 +7,7 @@ import type { SidebarSuitePageContext } from "features/sidebarSuite/config/types
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   IncludeExcludeFilters,
+  MultiLingualSelector,
   ParLengthFilter,
   ScoreFilter,
   SearchLanguageSelector,
@@ -83,6 +84,9 @@ export const FilterSettings = ({
           }
           case uniqueSettings.queryParams.parLength: {
             return <ParLengthFilter key={key} />;
+          }
+          case uniqueSettings.queryParams.multiLingual: {
+            return <MultiLingualSelector key={key} />;
           }
           case uniqueSettings.queryParams.limits: {
             return <IncludeExcludeFilters key={key} />;
