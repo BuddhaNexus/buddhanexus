@@ -7,7 +7,7 @@ import { PageContainer } from "@components/layout/PageContainer";
 import { sourceSerif } from "@components/theme";
 import { Paper } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useTheme as useMaterialTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
@@ -18,7 +18,7 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export default function Home() {
   const { t } = useTranslation();
 
-  const materialTheme = useMaterialTheme();
+  const materialTheme = useTheme();
 
   return (
     <PageContainer backgroundName="welcome">

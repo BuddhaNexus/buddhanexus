@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import type { Theme } from "@mui/material";
-import { Chip, useTheme as useMaterialTheme } from "@mui/material";
+import { Chip, useTheme } from "@mui/material";
 import { SourceLanguage } from "utils/constants";
 
 const getLanguageColor = (language: SourceLanguage, theme: Theme): string => {
@@ -30,7 +30,7 @@ export function SourceLanguageChip({
   label: string;
   language: SourceLanguage;
 }) {
-  const materialTheme = useMaterialTheme();
+  const materialTheme = useTheme();
 
   const languageBadgeColor = useCallback(
     () => getLanguageColor(language, materialTheme),

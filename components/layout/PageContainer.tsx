@@ -1,7 +1,6 @@
 import type { FC, PropsWithChildren } from "react";
 import type { SxProps } from "@mui/material";
 import { Container } from "@mui/material";
-import { useColorScheme } from "@mui/material/styles";
 import type { Breakpoint } from "@mui/system";
 import bgChn from "@public/assets/images/bg_chn_upscaled_bw.jpg";
 import bgPli from "@public/assets/images/bg_pli_upscaled_bw.jpg";
@@ -42,8 +41,6 @@ export const PageContainer: FC<Props> = ({
   maxWidth = "md",
   isQueryResultsPage,
 }) => {
-  const { mode } = useColorScheme();
-
   const containerStyles: SxProps = {
     pt: { xs: 0, sm: 4 },
     px: { xs: 0, sm: 2, lg: 4 },
@@ -58,16 +55,20 @@ export const PageContainer: FC<Props> = ({
       {backgroundName && (
         <Container
           maxWidth={false}
-          sx={{
+          sx={(theme) => ({
             background: `url(${BgImageSrcs[backgroundName]})`,
             backgroundPosition: "center",
             backgroundSize: BgImageBgSize[backgroundName],
-            opacity: mode === "dark" ? 0.02 : 0.05,
+            opacity: 0.05,
+            // @ts-expect-error MUI css variable type mismatch
+            [theme.getColorSchemeSelector("dark")]: {
+              opacity: 0.02,
+            },
             height: "100%",
             minWidth: "100vw",
             position: "fixed",
             zIndex: -1,
-          }}
+          })}
         />
       )}
       {isQueryResultsPage ? (

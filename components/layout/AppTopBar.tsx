@@ -9,7 +9,7 @@ import Brightness1Icon from "@mui/icons-material/Brightness4";
 import Brightness2Icon from "@mui/icons-material/Brightness7";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
+import { IconButton, useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { useColorScheme } from "@mui/material/styles";
@@ -36,7 +36,7 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 );
 
 export const AppTopBar = () => {
-  const materialTheme = useMaterialTheme();
+  const materialTheme = useTheme();
 
   const { mode, setMode } = useColorScheme();
   const { sourceLanguage } = useDbQueryParams();
