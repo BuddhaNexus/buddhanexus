@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
-import { useTheme } from "next-themes";
 import type { SxProps } from "@mui/material";
 import { Container } from "@mui/material";
+import { useColorScheme } from "@mui/material/styles";
 import type { Breakpoint } from "@mui/system";
 import bgChn from "@public/assets/images/bg_chn_upscaled_bw.jpg";
 import bgPli from "@public/assets/images/bg_pli_upscaled_bw.jpg";
@@ -42,7 +42,7 @@ export const PageContainer: FC<Props> = ({
   maxWidth = "md",
   isQueryResultsPage,
 }) => {
-  const { theme } = useTheme();
+  const { mode } = useColorScheme();
 
   const containerStyles: SxProps = {
     pt: { xs: 0, sm: 4 },
@@ -62,7 +62,7 @@ export const PageContainer: FC<Props> = ({
             background: `url(${BgImageSrcs[backgroundName]})`,
             backgroundPosition: "center",
             backgroundSize: BgImageBgSize[backgroundName],
-            opacity: theme === "dark" ? 0.02 : 0.05,
+            opacity: mode === "dark" ? 0.02 : 0.05,
             height: "100%",
             minWidth: "100vw",
             position: "fixed",

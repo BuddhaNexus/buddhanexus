@@ -2,9 +2,9 @@ import "allotment/dist/style.css";
 
 import React, { useMemo } from "react";
 import { Virtuoso } from "react-virtuoso";
-import { useTheme } from "next-themes";
 import { EmptyPlaceholder, Footer } from "@components/db/ListComponents";
 import { Paper } from "@mui/material";
+import { useColorScheme } from "@mui/material/styles";
 import { Allotment } from "allotment";
 import chroma from "chroma-js";
 import type { TextPageData } from "types/api/text";
@@ -25,8 +25,8 @@ export default function TextView({
   onEndReached,
   onStartReached,
 }: Props) {
-  const { theme } = useTheme();
-  const isDarkTheme = theme === "dark";
+  const { mode } = useColorScheme();
+  const isDarkTheme = mode === "dark";
 
   const [
     selectedSegmentId,

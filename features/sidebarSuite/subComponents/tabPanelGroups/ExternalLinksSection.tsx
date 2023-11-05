@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { List, ListItem } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { useTheme as useMaterialTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { SourceLink } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
@@ -59,7 +59,7 @@ const logos: Record<string, StaticImageData> = {
 export const ExternalLinksSection = () => {
   const { fileName } = useDbQueryParams();
   const { t } = useTranslation("settings");
-  const theme = useTheme();
+  const materialTheme = useMaterialTheme();
 
   const { data } = useQuery({
     queryKey: [DbApi.ExternalLinksData.makeQueryKey(fileName)],
@@ -85,7 +85,7 @@ export const ExternalLinksSection = () => {
                     title={key}
                   >
                     {key === "cbc" ? (
-                      <CBCIcon fill={theme.palette.text.primary} />
+                      <CBCIcon fill={materialTheme.palette.text.primary} />
                     ) : (
                       <Image
                         src={logos[key]!}

@@ -8,7 +8,6 @@ import i18nextConfig from "next-i18next.config";
 import { NextAdapter } from "next-query-params";
 import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
-import { ThemeProvider } from "next-themes";
 import { AppTopBar } from "@components/layout/AppTopBar";
 import type { EmotionCache } from "@emotion/react";
 import { CacheProvider } from "@emotion/react";
@@ -23,7 +22,7 @@ import queryString from "query-string";
 import { QueryParamProvider } from "use-query-params";
 import { queryCacheTimeDefaults } from "utils/api/apiQueryUtils";
 import createEmotionCache from "utils/createEmotionCache";
-import { MUIThemeProvider } from "utils/MUIThemeProvider";
+import { ThemeProvider } from "utils/ThemeProvider";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -68,11 +67,9 @@ function MyApp({
             </Head>
 
             <ThemeProvider>
-              <MUIThemeProvider>
-                <CssBaseline />
-                <AppTopBar />
-                <Component {...pageProps} />
-              </MUIThemeProvider>
+              <CssBaseline />
+              <AppTopBar />
+              <Component {...pageProps} />
             </ThemeProvider>
           </HydrationBoundary>
           <ReactQueryDevtools />
