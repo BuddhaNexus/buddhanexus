@@ -3,7 +3,8 @@ import "allotment/dist/style.css";
 import React, { useMemo } from "react";
 import { Virtuoso } from "react-virtuoso";
 import { useTheme } from "next-themes";
-import { Paper, Typography } from "@mui/material";
+import { EmptyPlaceholder, Footer } from "@components/db/ListComponents";
+import { Paper } from "@mui/material";
 import { Allotment } from "allotment";
 import chroma from "chroma-js";
 import type { TextPageData } from "types/api/text";
@@ -17,20 +18,6 @@ interface Props {
   onEndReached: () => void;
   onStartReached: () => void;
 }
-
-const Footer = () => {
-  return (
-    <div
-      style={{
-        padding: "2rem",
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      <Typography>Loading...</Typography>
-    </div>
-  );
-};
 
 // todo: check other elements in segmentText
 export default function TextView({
@@ -60,6 +47,8 @@ export default function TextView({
     );
   }, [data, isDarkTheme]);
 
+  const hasData = data.length > 0;
+
   return (
     <Paper elevation={1} sx={{ flex: 1, py: 2, pl: 2, my: 1 }}>
       <Allotment>
@@ -67,7 +56,7 @@ export default function TextView({
         <Allotment.Pane>
           <Virtuoso
             totalCount={data.length}
-            data={data}
+            data={hasData ? data : undefined}
             itemContent={(index, dataSegment) => (
               <TextSegment
                 index={index}
@@ -78,7 +67,10 @@ export default function TextView({
             endReached={onEndReached}
             startReached={onStartReached}
             overscan={20}
-            components={{ Footer }}
+            components={{
+              Footer: hasData ? Footer : undefined,
+              EmptyPlaceholder,
+            }}
           />
         </Allotment.Pane>
 

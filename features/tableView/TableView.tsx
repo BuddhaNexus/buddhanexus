@@ -1,6 +1,5 @@
 import { Virtuoso } from "react-virtuoso";
-import { useTranslation } from "next-i18next";
-import { Typography } from "@mui/material";
+import { EmptyPlaceholder, Footer } from "@components/db/ListComponents";
 import type { TablePageData } from "types/api/table";
 
 import { TableViewRow } from "./TableViewRow";
@@ -11,36 +10,22 @@ interface Props {
   onStartReached: () => void;
 }
 
-const Footer = () => {
-  const { t } = useTranslation("common");
-
-  return (
-    <div
-      style={{
-        padding: "2rem",
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      <Typography>{t("prompts.loading")}</Typography>
-    </div>
-  );
-};
-
 export default function TableView({
   data,
   onEndReached,
   onStartReached,
 }: Props) {
+  const hasData = data.length > 0;
+  // we have to pass `undefined` here to display the EmptyPlaceholder.
   return (
     <Virtuoso
       totalCount={data.length}
-      data={data}
+      data={hasData ? data : undefined}
       itemContent={(index, parallel) => <TableViewRow parallel={parallel} />}
       endReached={onEndReached}
       startReached={onStartReached}
       overscan={20}
-      components={{ Footer }}
+      components={{ Footer: hasData ? Footer : undefined, EmptyPlaceholder }}
     />
   );
 }
