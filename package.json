@@ -54,6 +54,7 @@
     "yarn": "^1.22.19"
   },
   "devDependencies": {
+    "@swc/plugin-emotion": "^2.5.96",
     "@tanstack/react-query-devtools": "^5.7.2",
     "@types/chroma-js": "^2.4.2",
     "@types/lodash": "^4.14.200",

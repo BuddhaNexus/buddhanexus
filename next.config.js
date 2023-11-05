@@ -8,7 +8,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    plugins: [["@swc/plugin-emotion"]],
+    swcPlugins: [["@swc/plugin-emotion", {}]],
   },
   compiler: { emotion: true },
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
