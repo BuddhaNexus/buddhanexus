@@ -40,7 +40,9 @@ export const DbViewSelector = () => {
         value={currentView}
         onChange={(e: SelectChangeEvent) => handleChange(e)}
       >
-        {Object.values(DbViewEnum).map((view) => (
+        {/* Temporarily disabling the graph and numbers views. When ready, replace with: */}
+        {/* {Object.values(DbViewEnum).map((view) => ( */}
+        {(["table", "text"] as const).map((view) => (
           <MenuItem key={view} value={view}>
             {t(`dbViewLabels.${view}`)}
           </MenuItem>
