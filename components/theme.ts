@@ -1,6 +1,7 @@
 import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
-import type { PaletteMode, ThemeOptions } from "@mui/material";
 import { grey } from "@mui/material/colors";
+// eslint-disable-next-line no-restricted-imports
+import type { CssVarsThemeOptions } from "@mui/material/styles/experimental_extendTheme";
 import { SourceLanguage } from "utils/constants";
 
 export const sourceSerif = Source_Serif_4({ subsets: ["latin", "latin-ext"] });
@@ -19,7 +20,6 @@ declare module "@mui/material/styles" {
 }
 
 interface DesignTokenParams {
-  mode: PaletteMode;
   // some theme elements depend on the source language selected
   sourceLanguage: SourceLanguage;
 }
@@ -41,10 +41,100 @@ const SOURCE_LANG_DARK_COLORS = {
   },
 };
 
+const commonPaletteColors = {
+  pali: SOURCE_LANG_COLORS[SourceLanguage.PALI],
+  sanskrit: SOURCE_LANG_COLORS[SourceLanguage.SANSKRIT],
+  tibetan: SOURCE_LANG_COLORS[SourceLanguage.TIBETAN],
+  chinese: SOURCE_LANG_COLORS[SourceLanguage.CHINESE],
+};
+
 export const getDesignTokens = ({
-  mode,
   sourceLanguage,
-}: DesignTokenParams): ThemeOptions => ({
+}: DesignTokenParams): CssVarsThemeOptions => ({
+  colorSchemes: {
+    light: {
+      palette: {
+        common: commonPaletteColors,
+        primary: {
+          main: sourceLanguage ? SOURCE_LANG_COLORS[sourceLanguage] : "#29262d",
+        },
+        secondary: {
+          main: "#C23211",
+        },
+        error: {
+          main: "#CC0202",
+        },
+        warning: {
+          main: "#FE8027",
+        },
+        info: {
+          main: "#0DC0E8",
+        },
+        success: {
+          main: "#02CC3B",
+        },
+        background: {
+          default: "#efe0c2",
+          paper: "#ffffff",
+          accent: grey[50],
+          header: sourceLanguage
+            ? SOURCE_LANG_COLORS[sourceLanguage]
+            : "#29262d",
+          card: grey[100],
+          inverted: grey[800],
+        },
+        text: {
+          primary: grey[900],
+          secondary: grey[700],
+          inverted: grey[50],
+        },
+        divider: "rgba(54,31,13,0.12)",
+      },
+    },
+    dark: {
+      // palette values for dark mode
+      palette: {
+        common: commonPaletteColors,
+        primary: {
+          main: sourceLanguage
+            ? SOURCE_LANG_DARK_COLORS.accent[sourceLanguage]
+            : "#E1BD97",
+          contrastText: "#fff",
+        },
+        secondary: {
+          main: "#C23211",
+        },
+        error: {
+          main: "#CC0202",
+        },
+        warning: {
+          main: "#FE8027",
+        },
+        info: {
+          main: "#0DC0E8",
+        },
+        success: {
+          main: "#02CC3B",
+        },
+        background: {
+          default: "#201c22",
+          paper: "#29262d",
+          accent: grey[900],
+          header: sourceLanguage
+            ? SOURCE_LANG_DARK_COLORS.main[sourceLanguage]
+            : "#29262d",
+          card: "#29262d",
+        },
+        text: {
+          primary: "#d2cfcf",
+          secondary: "#a8a5a5",
+          inverted: grey[900],
+        },
+        divider: "rgba(54,31,13,0.12)",
+      },
+    },
+  },
+
   typography: {
     button: { fontFamily: sourceSans.style.fontFamily },
     h1: { fontFamily: sourceSerif.style.fontFamily, fontSize: "5rem" },
@@ -62,93 +152,6 @@ export const getDesignTokens = ({
     body3: { fontFamily: sourceSans.style.fontFamily },
     subtitle1: { fontFamily: sourceSerif.style.fontFamily },
     subtitle2: { fontFamily: sourceSerif.style.fontFamily },
-  },
-  palette: {
-    mode,
-    common: {
-      pali: SOURCE_LANG_COLORS[SourceLanguage.PALI],
-      sanskrit: SOURCE_LANG_COLORS[SourceLanguage.SANSKRIT],
-      tibetan: SOURCE_LANG_COLORS[SourceLanguage.TIBETAN],
-      chinese: SOURCE_LANG_COLORS[SourceLanguage.CHINESE],
-    },
-    ...(mode === "light"
-      ? {
-          primary: {
-            main: sourceLanguage
-              ? SOURCE_LANG_COLORS[sourceLanguage]
-              : "#29262d",
-          },
-          secondary: {
-            main: "#C23211",
-          },
-          error: {
-            main: "#CC0202",
-          },
-          warning: {
-            main: "#FE8027",
-          },
-          info: {
-            main: "#0DC0E8",
-          },
-          success: {
-            main: "#02CC3B",
-          },
-          background: {
-            default: "#efe0c2",
-            paper: "#ffffff",
-            accent: grey[50],
-            header: sourceLanguage
-              ? SOURCE_LANG_COLORS[sourceLanguage]
-              : "#29262d",
-            card: grey[100],
-            inverted: grey[800],
-          },
-          text: {
-            primary: grey[900],
-            secondary: grey[700],
-            inverted: grey[50],
-          },
-          divider: "rgba(54,31,13,0.12)",
-        }
-      : {
-          // palette values for dark mode
-          primary: {
-            main: sourceLanguage
-              ? SOURCE_LANG_DARK_COLORS.accent[sourceLanguage]
-              : "#E1BD97",
-            contrastText: "#fff",
-          },
-          secondary: {
-            main: "#C23211",
-          },
-          error: {
-            main: "#CC0202",
-          },
-          warning: {
-            main: "#FE8027",
-          },
-          info: {
-            main: "#0DC0E8",
-          },
-          success: {
-            main: "#02CC3B",
-          },
-          background: {
-            default: "#201c22",
-            paper: "#29262d",
-            accent: grey[900],
-            header: sourceLanguage
-              ? SOURCE_LANG_DARK_COLORS.main[sourceLanguage]
-              : "#29262d",
-            card: "#29262d",
-          },
-          text: {
-            primary: "#d2cfcf",
-            secondary: "#a8a5a5",
-            inverted: grey[900],
-          },
-          divider: "rgba(54,31,13,0.12)",
-        }),
   },
   components: {
     MuiTypography: {

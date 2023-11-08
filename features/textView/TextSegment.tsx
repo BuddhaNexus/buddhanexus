@@ -1,7 +1,7 @@
 // import { useRouter } from "next/router";
-import { useTheme } from "next-themes";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { sourceSans } from "@components/theme";
+import { useColorScheme } from "@mui/material/styles";
 import type { Scale } from "chroma-js";
 import { scriptSelectionAtom } from "features/atoms";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
@@ -20,8 +20,8 @@ export const TextSegment = ({
   index: number;
   colorScale: Scale;
 }) => {
-  const { theme } = useTheme();
-  const isDarkTheme = theme === "dark";
+  const { mode } = useColorScheme();
+  const isDarkTheme = mode === "dark";
 
   // const router = useRouter();
   const { sourceLanguage } = useDbQueryParams();

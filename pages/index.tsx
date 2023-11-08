@@ -5,9 +5,9 @@ import { ContentLanguageSelector } from "@components/layout/ContentLanguageSelec
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { sourceSerif } from "@components/theme";
-import { Paper, useTheme } from "@mui/material";
+import { Paper } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useTheme as useMaterialTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
@@ -18,8 +18,7 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export default function Home() {
   const { t } = useTranslation();
 
-  const theme = useTheme();
-  const materialTheme = useMaterialTheme();
+  const materialTheme = useTheme();
 
   return (
     <PageContainer backgroundName="welcome">
@@ -35,7 +34,7 @@ export default function Home() {
             m: 2,
           },
           backgroundColor: materialTheme.palette.background.header,
-          borderBottom: `1px solid ${theme.palette.background.accent}`,
+          borderBottom: `1px solid ${materialTheme.palette.background.accent}`,
           borderRadiusTopLeft: 1,
           borderRadiusTopRights: 1,
         }}
@@ -77,22 +76,22 @@ export default function Home() {
           <ContentLanguageSelector
             title="Pāli"
             href={`/db/${SourceLanguage.PALI}`}
-            color={theme.palette.common.pali}
+            color={materialTheme.palette.common.pali}
           />
           <ContentLanguageSelector
             title="Sanskrit"
             href={`/db/${SourceLanguage.SANSKRIT}`}
-            color={theme.palette.common.sanskrit}
+            color={materialTheme.palette.common.sanskrit}
           />
           <ContentLanguageSelector
             title="Tibetan"
             href={`/db/${SourceLanguage.TIBETAN}`}
-            color={theme.palette.common.tibetan}
+            color={materialTheme.palette.common.tibetan}
           />
           <ContentLanguageSelector
             title="Chinese"
             href={`/db/${SourceLanguage.CHINESE}`}
-            color={theme.palette.common.chinese}
+            color={materialTheme.palette.common.chinese}
           />
         </Box>
       </Paper>

@@ -3,6 +3,7 @@ import type { DocumentContext } from "next/document";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import i18nextConfig from "next-i18next.config";
 import createEmotionServer from "@emotion/server/create-instance";
+import { getInitColorSchemeScript } from "@mui/material/styles";
 import createEmotionCache from "utils/createEmotionCache";
 
 export default class MyDocument extends Document {
@@ -46,7 +47,7 @@ export default class MyDocument extends Document {
 
     return (
       <Html lang={currentLocale}>
-        <Head nonce={process.env.nonce}>
+        <Head nonce={process.env.nonce} data-color-scheme="light">
           <script
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
@@ -94,6 +95,7 @@ export default class MyDocument extends Document {
         </Head>
 
         <body>
+          {getInitColorSchemeScript()}
           <Main />
           <NextScript nonce={process.env.nonce} />
         </body>

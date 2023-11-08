@@ -1,7 +1,12 @@
 import { type FC, type PropsWithChildren, useEffect, useRef } from "react";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import type { SxProps } from "@mui/material";
-import { Container, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Container,
+  Typography,
+  useMediaQuery,
+  useTheme as useMaterialTheme,
+} from "@mui/material";
 import type { Breakpoint } from "@mui/system";
 import { visuallyHidden } from "@mui/utils";
 import { Main } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
@@ -17,8 +22,8 @@ export const QueryResultsPageContent: FC<Props> = ({
   containerStyles,
 }) => {
   const isInitialized = useRef(false);
-  const theme = useTheme();
-  const isLg = useMediaQuery(theme.breakpoints.up("lg"), {
+  const materialTheme = useMaterialTheme();
+  const isLg = useMediaQuery(materialTheme.breakpoints.up("lg"), {
     noSsr: true,
   });
 
