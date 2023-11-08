@@ -11,6 +11,14 @@ body > div {
   transition: opacity 200ms;
 }
 
+/* Sets the light/dark values of `theme.palette.text.primary` for mdx links to mirror the `Link` component & fix a11y issue. */
+html[data-theme="light"] .mdx-content a {
+  color: #29262d;
+}
+html[data-theme="dark"] .mdx-content a {
+  color: #d2cfcf;
+}
+
 address {
   font-style: normal;
 }

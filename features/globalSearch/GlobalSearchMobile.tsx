@@ -80,6 +80,8 @@ const GlobalSearchMobile = () => {
               InputProps={{
                 startAdornment: (
                   <IconButton
+                    // TODO: i18n
+                    aria-label="Run search"
                     onClick={() =>
                       handleOnSearch(inputRef.current?.value ?? "")
                     }
@@ -88,7 +90,11 @@ const GlobalSearchMobile = () => {
                   </IconButton>
                 ),
                 endAdornment: !isEmpty && (
-                  <IconButton onClick={handleClear}>
+                  <IconButton
+                    // TODO: i18n
+                    aria-label="Clear search field"
+                    onClick={handleClear}
+                  >
                     <CloseIcon fontSize="inherit" />
                   </IconButton>
                 ),

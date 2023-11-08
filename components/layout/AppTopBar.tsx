@@ -37,6 +37,7 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 export const AppTopBar = () => {
   const materialTheme = useMaterialTheme();
   const { theme, setTheme } = useTheme();
+  const themeInverse = theme === "dark" ? "light" : "dark";
   const [isMounted, setIsMounted] = useState(false);
   const { sourceLanguage } = useDbQueryParams();
 
@@ -61,6 +62,7 @@ export const AppTopBar = () => {
           zIndex: materialTheme.zIndex.drawer + 1,
           borderBottom: `1px solid ${materialTheme.palette.background.accent}`,
         }}
+        data-testid="app-bar"
       >
         <Toolbar>
           <Box
@@ -158,7 +160,10 @@ export const AppTopBar = () => {
             <IconButton
               sx={{ mx: 1 }}
               color="inherit"
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              // TODO i18n
+              aria-label={`${themeInverse} theme`}
+              data-testid="theme-toggle"
+              onClick={() => setTheme(themeInverse)}
             >
               {theme === "dark" ? (
                 <Brightness7Icon fontSize="inherit" />
@@ -174,7 +179,7 @@ export const AppTopBar = () => {
           <LocaleSelector />
         </Toolbar>
       </AppBar>
-      {!isSearchRoute && <GlobalSearchMobile />}
+      <aside>{!isSearchRoute && <GlobalSearchMobile />}</aside>
     </>
   );
 };
