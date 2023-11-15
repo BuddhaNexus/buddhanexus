@@ -1,5 +1,4 @@
 import type { FC, PropsWithChildren } from "react";
-import { useTheme } from "next-themes";
 import type { SxProps } from "@mui/material";
 import { Container } from "@mui/material";
 import type { Breakpoint } from "@mui/system";
@@ -42,8 +41,6 @@ export const PageContainer: FC<Props> = ({
   maxWidth = "md",
   isQueryResultsPage,
 }) => {
-  const { theme } = useTheme();
-
   const containerStyles: SxProps = {
     pt: { xs: 0, sm: 4 },
     px: { xs: 0, sm: 2, lg: 4 },
@@ -58,16 +55,20 @@ export const PageContainer: FC<Props> = ({
       {backgroundName && (
         <Container
           maxWidth={false}
-          sx={{
+          sx={(theme) => ({
             background: `url(${BgImageSrcs[backgroundName]})`,
             backgroundPosition: "center",
             backgroundSize: BgImageBgSize[backgroundName],
-            opacity: theme === "dark" ? 0.02 : 0.05,
+            opacity: 0.05,
+            // @ts-expect-error MUI css variable type mismatch
+            [theme.getColorSchemeSelector("dark")]: {
+              opacity: 0.02,
+            },
             height: "100%",
             minWidth: "100vw",
             position: "fixed",
             zIndex: -1,
-          }}
+          })}
         />
       )}
       {isQueryResultsPage ? (

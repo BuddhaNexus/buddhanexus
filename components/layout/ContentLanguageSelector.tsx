@@ -2,7 +2,7 @@ import type { FC } from "react";
 import React from "react";
 import { Link } from "@components/common/Link";
 import { Box, Typography } from "@mui/material";
-import { useTheme as useMaterialTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 
 interface Props {
   title: string;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const ContentLanguageSelector: FC<Props> = ({ title, href, color }) => {
-  const materialTheme = useMaterialTheme();
+  const materialTheme = useTheme();
 
   return (
     <Link

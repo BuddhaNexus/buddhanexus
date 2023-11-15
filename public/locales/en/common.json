@@ -44,7 +44,8 @@
   "prompts": {
     "genericErrorTitle": "Something went wrong",
     "genericErrorDescription": "Please contact us if the issue persists.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "noResults": "No results found."
   },
   "search": {
     "placeholder": "Search..."

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { useTheme } from "next-themes";
 import { Link } from "@components/common/Link";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import LocaleSelector from "@components/layout/LocaleSelector";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+import Brightness1Icon from "@mui/icons-material/Brightness4";
+import Brightness2Icon from "@mui/icons-material/Brightness7";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
-import { IconButton, useTheme as useMaterialTheme } from "@mui/material";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import { IconButton, useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import { useColorScheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import { isNavigationDrawerOpen } from "features/atoms";
 import { GlobalSearchDesktop, GlobalSearchMobile } from "features/globalSearch";
@@ -35,14 +36,16 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
 );
 
 export const AppTopBar = () => {
-  const materialTheme = useMaterialTheme();
-  const { theme, setTheme } = useTheme();
-  const [isMounted, setIsMounted] = useState(false);
+  const materialTheme = useTheme();
+
+  const { mode, setMode } = useColorScheme();
   const { sourceLanguage } = useDbQueryParams();
 
   const { route } = useRouter();
   const { t } = useTranslation();
   const setIsDrawerOpen = useSetAtom(isNavigationDrawerOpen);
+
+  const [isMounted, setIsMounted] = useState(false);
 
   const isHomeRoute = route === "/";
   const isATIIRoute = route.startsWith("/atii");
@@ -135,7 +138,6 @@ export const AppTopBar = () => {
             )}
             {!isSearchRoute && <GlobalSearchDesktop />}
           </Box>
-
           <Box
             component="nav"
             sx={{
@@ -153,24 +155,21 @@ export const AppTopBar = () => {
               </>
             )}
           </Box>
-
-          {isMounted ? (
-            <IconButton
-              sx={{ mx: 1 }}
-              color="inherit"
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            >
-              {theme === "dark" ? (
-                <Brightness7Icon fontSize="inherit" />
+          <IconButton
+            sx={{ mr: 1 }}
+            color="inherit"
+            onClick={() => setMode(mode === "light" ? "dark" : "light")}
+          >
+            {isMounted ? (
+              mode === "dark" ? (
+                <Brightness1Icon fontSize="inherit" />
               ) : (
-                <Brightness4Icon fontSize="inherit" />
-              )}
-            </IconButton>
-          ) : (
-            // prevent layout jump
-            <Box sx={{ width: 48 }} />
-          )}
-
+                <Brightness2Icon fontSize="inherit" />
+              )
+            ) : (
+              <HourglassEmptyIcon fontSize="inherit" />
+            )}
+          </IconButton>
           <LocaleSelector />
         </Toolbar>
       </AppBar>

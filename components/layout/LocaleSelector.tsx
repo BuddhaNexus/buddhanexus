@@ -30,12 +30,8 @@ export default function LocaleSelector() {
     <div>
       <Button
         id="basic-button"
-        variant="outlined"
+        variant="text"
         color="inherit"
-        sx={{
-          borderColor: (theme) =>
-            theme.palette.mode === "dark" ? "#555" : "primary.light",
-        }}
         aria-controls={isOpen ? "language-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={isOpen ? "true" : undefined}

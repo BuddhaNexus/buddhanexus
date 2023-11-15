@@ -30,11 +30,11 @@ export function SourceLanguageChip({
   label: string;
   language: SourceLanguage;
 }) {
-  const theme = useTheme();
+  const materialTheme = useTheme();
 
   const languageBadgeColor = useCallback(
-    () => getLanguageColor(language, theme),
-    [language, theme],
+    () => getLanguageColor(language, materialTheme),
+    [language, materialTheme],
   );
 
   return (
