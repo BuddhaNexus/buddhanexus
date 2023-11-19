@@ -1,46 +1,53 @@
 import React from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { IconButton, Tooltip } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import type { TextPageData } from "types/api/text";
-import { useQueryParam } from "use-query-params";
+import { selectedSegmentMatchesAtom } from "features/atoms/textView";
+import { ParallelSegment } from "features/tableView/ParallelSegment";
+import { useAtomValue } from "jotai";
+import { TextViewMiddleParallelsData } from "types/api/text";
 import { DbApi } from "utils/api/dbApi";
 
-interface Props {
-  parallelIds: string[];
-}
+import { ClearSelectedSegmentButton } from "./ClearSelectedSegmentButton";
 
-export default function TextViewMiddleParallels({ parallelIds }: Props) {
+export default function TextViewMiddleParallels() {
   // eslint-disable-next-line no-empty-pattern
   const {
     // sourceLanguage, fileName, queryParams
   } = useDbQueryParams();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedSegmentId, setSelectedSegmentId] =
-    useQueryParam<string>("selectedSegment");
+  const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
 
-  // eslint-disable-next-line no-empty-pattern
-  const {
-    // data, isInitialLoading, isError
-  } = useQuery<TextPageData>({
-    queryKey: DbApi.TextViewMiddle.makeQueryKey(parallelIds),
-    queryFn: () =>
-      DbApi.TextViewMiddle.call(["K01n742u:13423", "K01n742u:24812"]),
+  const { data } = useQuery<TextViewMiddleParallelsData>({
+    queryKey: DbApi.TextViewMiddle.makeQueryKey(selectedSegmentMatches),
+    queryFn: () => DbApi.TextViewMiddle.call(selectedSegmentMatches),
   });
 
   return (
-    <div>
-      <Tooltip
-        title="Clear selected segment"
-        PopperProps={{ disablePortal: true }}
-      >
-        <IconButton color="inherit" onClick={() => setSelectedSegmentId("")}>
-          {/* todo: add i18n */}
-          <HighlightOffIcon aria-label="clear selected segment" />
-        </IconButton>
-      </Tooltip>
+    <div style={{ overflow: "scroll", height: "100%" }}>
+      <ClearSelectedSegmentButton />
+      <p>{selectedSegmentMatches.length} Matches</p>
+      <div style={{}}>
+        {data?.map(
+          ({
+            fileName,
+            parallelLength,
+            parallelFullText,
+            parallelSegmentNumbers,
+            score,
+            targetLanguage,
+          }) => (
+            <ParallelSegment
+              key={fileName + score + parallelLength}
+              displayName={fileName}
+              language={targetLanguage}
+              length={parallelLength}
+              text={parallelFullText}
+              score={score}
+              textSegmentNumbers={parallelSegmentNumbers}
+            />
+          ),
+        )}
+      </div>
     </div>
   );
 }

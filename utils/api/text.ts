@@ -4,6 +4,7 @@ import type {
   ApiTextPageData,
   ApiTextPageMiddleParallelsData,
   TextPageData,
+  TextViewMiddleParallelsData,
 } from "types/api/text";
 
 import { parseDbPageQueryParams } from "./utils";
@@ -16,11 +17,16 @@ function parseAPITextData(responseJSON: ApiTextPageData): TextPageData {
 }
 
 function parseAPITextViewMiddleParallelsData(
-  responseJSON: ApiTextPageMiddleParallelsData,
-): any {
-  // ): TextPageMiddleParallelsData {
-  //  todo:
-  return responseJSON;
+  apiData: ApiTextPageMiddleParallelsData,
+): TextViewMiddleParallelsData {
+  return apiData.map((p) => ({
+    targetLanguage: p.tgt_lang,
+    fileName: p.file_name,
+    score: p.score,
+    parallelFullText: p.par_fulltext,
+    parallelSegmentNumbers: p.par_segnr,
+    parallelLength: p.length,
+  }));
 }
 
 export async function getTextData({
@@ -44,7 +50,7 @@ export async function getTextData({
 
 export async function getTextViewMiddleParallelsData(
   parallelIds: string[],
-): Promise<TextPageData> {
+): Promise<TextViewMiddleParallelsData> {
   // TODO: remove co_occ param after backend update
   // TODO: use the multi_lingual value from query params
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -52,10 +58,7 @@ export async function getTextViewMiddleParallelsData(
     body: { parallel_ids: parallelIds },
   });
 
-  return {
-    // @ts-expect-error WIP
-    data: parseAPITextViewMiddleParallelsData(
-      data as ApiTextPageMiddleParallelsData,
-    ),
-  };
+  return parseAPITextViewMiddleParallelsData(
+    data as ApiTextPageMiddleParallelsData,
+  );
 }

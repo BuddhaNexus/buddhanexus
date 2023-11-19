@@ -1,11 +1,11 @@
-// import { useRouter } from "next/router";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { sourceSans } from "@components/theme";
 import { useColorScheme } from "@mui/material/styles";
 import type { Scale } from "chroma-js";
 import { scriptSelectionAtom } from "features/atoms";
+import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import type { TextPageDataSegment } from "types/api/text";
 import { useQueryParam } from "use-query-params";
 
@@ -23,11 +23,12 @@ export const TextSegment = ({
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
 
-  // const router = useRouter();
-  const { sourceLanguage } = useDbQueryParams();
-  const script = useAtomValue(scriptSelectionAtom);
   const [selectedSegmentId, setSelectedSegmentId] =
     useQueryParam("selectedSegment");
+  const { sourceLanguage } = useDbQueryParams();
+
+  const scriptSelection = useAtomValue(scriptSelectionAtom);
+  const setSelectedSegmentMatches = useSetAtom(selectedSegmentMatchesAtom);
 
   const isSelected = selectedSegmentId === segmentNumber;
 
@@ -40,46 +41,40 @@ export const TextSegment = ({
         data-segmentnumber={segmentNumber}
       />
 
-      {segmentText.map(
-        ({
-          text,
-          highlightColor,
-          // matches
-        }) => (
-          <button
-            key={text}
-            type="button"
-            tabIndex={0}
-            // href={{
-            //   pathname: "/db/[language]/[file]/text",
-            //   query: {
-            //     ...router.query,
-            //     matches: matches.join(","),
-            //     sort_method: "position",
-            //   },
-            // }}
-            className={`${styles.segment} ${
-              isSelected &&
-              (isDarkTheme
-                ? styles.segment__selected__dark
-                : styles.segment__selected__light)
-            }`}
-            style={{
-              fontFamily: sourceSans.style.fontFamily,
-              color: colorScale(highlightColor).hex(),
-            }}
-            onClick={() => setSelectedSegmentId(segmentNumber)}
-            onKeyDown={(event) => {
-              // allow selecting the segments by pressing space or enter
-              if (event.key !== " " && event.key !== "Enter") return;
-              event.preventDefault();
-              setSelectedSegmentId(segmentNumber);
-            }}
-          >
-            {enscriptText({ text, script, language: sourceLanguage })}
-          </button>
-        ),
-      )}
+      {segmentText.map(({ text, highlightColor, matches }) => (
+        <button
+          key={text}
+          type="button"
+          tabIndex={0}
+          className={`${styles.segment} ${
+            isSelected &&
+            (isDarkTheme
+              ? styles.segment__selected__dark
+              : styles.segment__selected__light)
+          }`}
+          style={{
+            fontFamily: sourceSans.style.fontFamily,
+            color: colorScale(highlightColor).hex(),
+          }}
+          onClick={() => {
+            setSelectedSegmentMatches(matches);
+            setSelectedSegmentId(segmentNumber);
+          }}
+          onKeyDown={(event) => {
+            // allow selecting the segments by pressing space or enter
+            if (event.key !== " " && event.key !== "Enter") return;
+            event.preventDefault();
+            setSelectedSegmentMatches(matches);
+            setSelectedSegmentId(segmentNumber);
+          }}
+        >
+          {enscriptText({
+            text,
+            script: scriptSelection,
+            language: sourceLanguage,
+          })}
+        </button>
+      ))}
     </>
   );
 };

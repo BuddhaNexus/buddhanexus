@@ -28,10 +28,7 @@ export default function TextView({
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
 
-  const [
-    selectedSegmentId,
-    // setSelectedSegmentId
-  ] = useQueryParam("selectedSegment");
+  const [selectedSegmentId] = useQueryParam("selectedSegment");
 
   const colorScale = useMemo(() => {
     const colors = data.map((item) => item.segmentText[0]?.highlightColor ?? 0);
@@ -76,7 +73,7 @@ export default function TextView({
 
         {/* Middle view - parallels for selected segment */}
         <Allotment.Pane visible={Boolean(selectedSegmentId)}>
-          <TextViewMiddleParallels parallelIds={[]} />
+          <TextViewMiddleParallels />
         </Allotment.Pane>
       </Allotment>
     </Paper>
