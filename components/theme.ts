@@ -85,7 +85,7 @@ export const getDesignTokens = ({
         },
         text: {
           primary: grey[900],
-          secondary: grey[600],
+          secondary: grey[700],
           inverted: grey[50],
         },
         divider: "rgba(54,31,13,0.12)",

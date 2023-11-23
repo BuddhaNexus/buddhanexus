@@ -11,6 +11,14 @@ body > div {
   transition: opacity 200ms;
 }
 
+/* Sets the light/dark values of `theme.palette.text.primary` for mdx links to be consistent with tsx links & fix a11y issue. */
+html[data-mui-color-scheme="light"] .mdx-content a {
+  color: #29262d;
+}
+html[data-mui-color-scheme="dark"] .mdx-content a {
+  color: #d2cfcf;
+}
+
 address {
   font-style: normal;
 }

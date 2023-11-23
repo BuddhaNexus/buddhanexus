@@ -67,8 +67,17 @@ export default function SearchPage() {
   if (isFallback) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
+        {/* TODO: align other results pages to match this. To avoide CLS and for logical flow, it makes sense for this to be the first element. */}
+        <Typography variant="h2" component="h1" mb={1}>
+          {/* TODO: i18n */}
+          Search Results
+        </Typography>
         <div>
-          <CircularProgress color="inherit" sx={{ flex: 1 }} />
+          <CircularProgress
+            aria-label="loading"
+            color="inherit"
+            sx={{ flex: 1 }}
+          />
         </div>
       </PageContainer>
     );
@@ -80,7 +89,11 @@ export default function SearchPage() {
       backgroundName={sourceLanguage}
       isQueryResultsPage
     >
-      <QueryPageTopStack />
+      <Typography variant="h2" component="h1" mb={1}>
+        {/* TODO: i18n */}
+        Search Results
+      </Typography>
+
       <SearchBoxWrapper sx={{ mb: 5 }}>
         {/* TODO: fix search OR add notification of search limitations (whole word only) */}
         <SearchBoxInput
@@ -89,12 +102,18 @@ export default function SearchPage() {
           variant="outlined"
           InputProps={{
             startAdornment: (
-              <IconButton onClick={() => handleOnSearch(searchTerm)}>
+              <IconButton
+                aria-label="Run search"
+                onClick={() => handleOnSearch(searchTerm)}
+              >
                 <Search />
               </IconButton>
             ),
             endAdornment: (
-              <IconButton onClick={() => setSearchTerm("")}>
+              <IconButton
+                aria-label="Clear search field"
+                onClick={() => setSearchTerm("")}
+              >
                 <Close />
               </IconButton>
             ),
@@ -106,10 +125,17 @@ export default function SearchPage() {
         />
       </SearchBoxWrapper>
 
+      <QueryPageTopStack />
+
       {/* TODO: componentize search results */}
       {isLoading ? (
         <div>
-          <CircularProgress color="inherit" sx={{ flex: 1 }} />
+          {/* TODO: i18n */}
+          <CircularProgress
+            aria-label="loading"
+            color="inherit"
+            sx={{ flex: 1 }}
+          />
         </div>
       ) : (
         <>

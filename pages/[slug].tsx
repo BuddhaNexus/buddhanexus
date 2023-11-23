@@ -34,7 +34,7 @@ export default function Page({
 
   return (
     <PageContainer>
-      <Paper elevation={1} sx={{ py: 3, px: 4 }}>
+      <Paper className="mdx-content" elevation={1} sx={{ py: 3, px: 4 }}>
         <Typography variant="h2" component="h1">
           {title}
         </Typography>
