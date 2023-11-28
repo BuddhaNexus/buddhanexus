@@ -44,7 +44,7 @@ export default function PostPage({
 
   return (
     <PageContainer>
-      <Paper elevation={1} sx={{ py: 3, px: 4 }}>
+      <Paper className="mdx-content" elevation={1} sx={{ py: 3, px: 4 }}>
         <Link href="/news">
           <Typography variant="body1" display="flex" alignItems="center">
             <ArrowBackIosIcon fontSize="small" />
@@ -55,7 +55,9 @@ export default function PostPage({
           <Typography variant="h2" component="h1" mt={4}>
             {title}
           </Typography>
-          <Typography variant="subtitle1">{formattedDate}</Typography>
+          <Typography variant="subtitle1" component="p">
+            {formattedDate}
+          </Typography>
 
           <MDXRemote
             compiledSource={content.compiledSource}

@@ -64,6 +64,7 @@ export const AppTopBar = () => {
           zIndex: materialTheme.zIndex.drawer + 1,
           borderBottom: `1px solid ${materialTheme.palette.background.accent}`,
         }}
+        data-testid="app-bar"
       >
         <Toolbar>
           <Box
@@ -158,6 +159,9 @@ export const AppTopBar = () => {
           <IconButton
             sx={{ mr: 1 }}
             color="inherit"
+            // TODO i18n
+            aria-label="Toggle theme"
+            data-testid="theme-toggle"
             onClick={() => setMode(mode === "light" ? "dark" : "light")}
           >
             {isMounted ? (
@@ -173,7 +177,7 @@ export const AppTopBar = () => {
           <LocaleSelector />
         </Toolbar>
       </AppBar>
-      {!isSearchRoute && <GlobalSearchMobile />}
+      <aside>{!isSearchRoute && <GlobalSearchMobile />}</aside>
     </>
   );
 };

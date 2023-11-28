@@ -7,6 +7,7 @@ export function Copyright(props: any) {
       variant="body2"
       color="text.secondary"
       align="center"
+      fontSize={16}
       {...props}
     >
       <Link color="inherit" href="https://www.aai.uni-hamburg.de/en.html">
