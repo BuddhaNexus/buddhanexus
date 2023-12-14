@@ -204,10 +204,15 @@ FOR file IN files
             LIMIT @startint, @limit
             FOR segment in segments
                 FILTER segment._key == segmentnr
+                LET parallel_ids = (
+                    FOR p IN parallels
+                        FILTER segmentnr IN p.root_segnr
+                        RETURN p._key
+                        )
                 RETURN {
                     segnr: segment.segnr,
                     segtext: segment.segtext,
-                    parallel_ids: APPEND(segment.@parallel_ids_type, segment.parallel_ids_multi)
+                    parallel_ids: parallel_ids
                 }
         )
 
