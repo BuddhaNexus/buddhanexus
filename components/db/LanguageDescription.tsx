@@ -13,7 +13,14 @@ const ChineseDescription = () => {
         <Trans
           i18nKey="chn.p01"
           t={t}
-          components={[<Link key="0" href="https://www.cbeta.org/" />]}
+          components={[
+            <Link
+              key="0"
+              href="https://www.cbeta.org/"
+              target="_blank"
+              rel="noopener"
+            />,
+          ]}
         />
       </Typography>
 
@@ -35,7 +42,14 @@ const PaliDescription = () => {
         <Trans
           i18nKey="pli.p01"
           t={t}
-          components={[<Link key="0" href="https://tipitaka.org/" />]}
+          components={[
+            <Link
+              key="0"
+              href="https://tipitaka.org/"
+              target="_blank"
+              rel="noopener"
+            />,
+          ]}
         />
       </Typography>
 
@@ -44,8 +58,18 @@ const PaliDescription = () => {
           i18nKey="pli.p02"
           t={t}
           components={[
-            <Link key="0" href="https://github.com/suttacentral/bilara-data" />,
-            <Link key="1" href="https://suttacentral.net/" />,
+            <Link
+              key="0"
+              href="https://github.com/suttacentral/bilara-data"
+              target="_blank"
+              rel="noopener"
+            />,
+            <Link
+              key="1"
+              href="https://suttacentral.net/"
+              target="_blank"
+              rel="noopener"
+            />,
           ]}
         />
       </Typography>
@@ -76,9 +100,21 @@ const SanskritDescription = () => {
             <Link
               key="0"
               href="http://gretil.sub.uni-goettingen.de/gretil.html"
+              target="_blank"
+              rel="noopener"
             />,
-            <Link key="1" href="https://www.dsbcproject.org/" />,
-            <Link key="2" href="https://www.suttacentral.net/" />,
+            <Link
+              key="1"
+              href="https://www.dsbcproject.org/"
+              target="_blank"
+              rel="noopener"
+            />,
+            <Link
+              key="2"
+              href="https://www.suttacentral.net/"
+              target="_blank"
+              rel="noopener"
+            />,
           ]}
         />
       </Typography>
@@ -94,7 +130,12 @@ const SanskritDescription = () => {
           i18nKey="skt.p04"
           t={t}
           components={[
-            <Link key="0" href="https://buddhanexus.net/sanskrit-tools" />,
+            <Link
+              key="0"
+              href="https://buddhanexus.net/sanskrit-tools"
+              target="_blank"
+              rel="noopener"
+            />,
           ]}
         />
       </Typography>
@@ -120,8 +161,18 @@ const TibetanDescription = () => {
           i18nKey="tib.p01"
           t={t}
           components={[
-            <Link key="0" href="https://asianclassics.org/" />,
-            <Link key="1" href="https://www.tbrc.org/" />,
+            <Link
+              key="0"
+              href="https://asianclassics.org/"
+              target="_blank"
+              rel="noopener"
+            />,
+            <Link
+              key="1"
+              href="https://www.tbrc.org/"
+              target="_blank"
+              rel="noopener"
+            />,
           ]}
         />
       </Typography>
