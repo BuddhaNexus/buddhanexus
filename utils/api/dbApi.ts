@@ -13,7 +13,12 @@ import { getNumbersData } from "./numbers";
 import { getGlobalSearchData } from "./search";
 import { getTableData } from "./table";
 import { getTextData, getTextViewMiddleParallelsData } from "./text";
-import { getAvailableLanguages, getFolios, getParallelCount } from "./utils";
+import {
+  getAvailableLanguages,
+  getFolios,
+  getParallelCount,
+  getTextDisplayName,
+} from "./utils";
 
 export const DbApi = {
   //* VIEWS
@@ -110,5 +115,13 @@ export const DbApi = {
       queryParams: Params;
     }) => ["globalSearchData", searchTerm, queryParams],
     call: getGlobalSearchData,
+  },
+};
+
+// TODO: - this is a test to see if this is the best method to get the display name for all views with minimum backend work (just reinstating an old endpoint). If it is, we add it to the main db api and can remove this
+export const OldDbApi = {
+  TextDisplayName: {
+    makeQueryKey: (fileName: string) => ["textNameData", fileName],
+    call: getTextDisplayName,
   },
 };

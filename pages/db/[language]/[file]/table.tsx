@@ -22,6 +22,7 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
+// TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
   const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
