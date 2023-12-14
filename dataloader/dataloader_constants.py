@@ -5,20 +5,20 @@ ARANGO_USER = os.environ["ARANGO_USER"]
 ARANGO_PASSWORD = os.environ["ARANGO_ROOT_PASSWORD"]
 ARANGO_HOST = f"http://{os.environ['ARANGO_HOST']}:{os.environ['ARANGO_PORT']}"
 DEFAULT_SOURCE_URL = os.environ["SOURCE_FILES_URL"]
+DEFAULT_TSV_URL = os.environ["TSV_FILES_URL"]
 
 LANG_TIBETAN = "tib"
 LANG_SANSKRIT = "skt"
 LANG_CHINESE = "chn"
 LANG_PALI = "pli"
 LANG_ENGLISH = "en"
-LANG_AI = "ai"
+
 DEFAULT_LANGS = (
     LANG_CHINESE,
     LANG_SANSKRIT,
     LANG_TIBETAN,
     LANG_PALI,
     LANG_ENGLISH,
-    LANG_AI,
 )
 
 COLLECTION_PARALLELS = "parallels"
@@ -38,11 +38,10 @@ COLLECTION_SEARCH_INDEX_SKT = "search_index_skt"
 COLLECTION_SEARCH_INDEX_PLI = "search_index_pli"
 COLLECTION_SEARCH_INDEX_CHN = "search_index_chn"
 
-SKT_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_sanskrit.json.gz"
-PLI_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_pali.json.gz"
-TIB_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_tibetan.json.gz"
-CHN_SEARCH_DATA_PATH = DEFAULT_SOURCE_URL + "search_index_chn.json.gz"
-
+SKT_TSV_DATA_PATH = DEFAULT_TSV_URL + "skt/"
+PLI_TSV_DATA_PATH = DEFAULT_TSV_URL + "pli/"
+TIB_TSV_DATA_PATH = DEFAULT_TSV_URL + "tib/"
+CHN_TSV_DATA_PATH = DEFAULT_TSV_URL + "chn/"
 
 VIEW_SEARCH_INDEX_TIB = "search_index_tib_view"
 VIEW_SEARCH_INDEX_TIB_FUZZY = "search_index_tib_fuzzy_view"

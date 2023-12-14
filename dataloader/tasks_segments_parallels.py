@@ -16,8 +16,7 @@ from dataloader_constants import (
     LANG_CHINESE,
     LANG_TIBETAN,
     LANG_SANSKRIT,
-    LANG_ENGLISH,
-    LANG_AI,
+
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_SEGMENTS,
@@ -444,8 +443,8 @@ def create_indices(db: StandardDatabase):
     db_collection.add_hash_index(["src_lang"], unique=False)
     db_collection.add_hash_index(["par_category"], unique=False)
     db_collection.add_hash_index(["root_category"], unique=False)
+    db_collection.add_hash_index(["root_segnr"], unique=False)    
 
-    ###    db_collection.en
     db_collection = db.collection(COLLECTION_FILES)
     db_collection.add_hash_index(["language"], unique=False)
     db_collection.add_hash_index(["category"], unique=False)

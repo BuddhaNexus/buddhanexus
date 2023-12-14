@@ -7,7 +7,7 @@ from arango import (
 from arango.database import StandardDatabase
 from tqdm import tqdm as tqdm
 
-from global_search_function import clean_analyzers
+from load_segments import clean_analyzers
 
 from dataloader_constants import (
     COLLECTION_NAMES,

@@ -20,12 +20,13 @@ from dataloader_constants import (
     LANG_SANSKRIT,
     LANG_CHINESE,
     LANG_ENGLISH,
-    LANG_AI,
     ARANGO_USER,
     ARANGO_PASSWORD,
     ARANGO_HOST,
     LANG_SANSKRIT,
 )
+def get_filename_from_segmentnr(segmentnr):
+    return segmentnr.split(":")[0]
 
 
 def get_arango_client() -> ArangoClient:
@@ -96,11 +97,9 @@ def should_download_file(file_lang: str, file_name: str) -> bool:
         return True
     if file_lang == LANG_ENGLISH:
         return True
-    if file_lang == LANG_AI:
-        return True
     else:
         return False
-
+    
 
 def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
     """
@@ -133,6 +132,13 @@ def get_collection_list_for_language(language, all_cols):
             total_collection_list.append(col["collection"])
     return total_collection_list
 
+def check_if_collection_exists(db, collection_name):
+    collections = db.collections()
+    for collection in collections:
+        if collection["name"] == collection_name:
+            return True
+        
+
 
 def get_categories_for_language_collection(
     language_collection, query_collection_cursor
@@ -157,8 +163,6 @@ def get_language_name(language_key):
         return "Sanskrit"
     elif language_key == LANG_ENGLISH:
         return "English"
-    elif language_key == LANG_AI:
-        return "Artificial"
     else:
         return "Unknown"
 

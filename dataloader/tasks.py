@@ -34,27 +34,29 @@ from dataloader_constants import (
     LANG_CHINESE,
     LANG_SANSKRIT,
     LANG_ENGLISH,
-    LANG_AI,
     DEFAULT_LANGS,
 )
 
 from tasks_segments_parallels import (
-    load_segment_data_from_menu_files,
     create_indices,
     calculate_parallel_totals,
     load_sources,
-)
+) 
 
 from tasks_multilingual import load_multilingual_parallels, clean_multi
 
-from global_search_function import (
-    SearchIndexSanskrit,
-    SearchIndexPali,
-    SearchIndexTibetan,
-    SearchIndexChinese,
+from load_segments import (
+    LoadSegmentsSanskrit,
+    LoadSegmentsPali,
+    LoadSegmentsTibetan,
+    LoadSegmentsChinese,
     create_analyzers,
     clean_analyzers,
     create_search_views,
+)
+from load_parallels import (
+    load_parallels_from_folder,
+    sort_parallels
 )
 
 from tasks_menu import (
@@ -73,6 +75,8 @@ from clean_database import (
     clean_menu_collections_db,
     clean_all_lang_db,
 )
+
+from load_files import load_file_data_from_menu_files, sort_segnrs
 
 
 @task
@@ -113,11 +117,14 @@ def create_collections(
         except CollectionCreateError as e:
             print("Error creating edge collection: ", e)
     print(f"created {collections} collections")
+    print("Creating Indices")
+    create_indices(db)
+    print("Creation of indices done.")
 
 
 @task
 def load_segment_files(
-    c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=False
+    c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=True
 ):
     """
     Download, parse and load source data into database collections.
@@ -126,16 +133,51 @@ def load_segment_files(
     :param root_url: URL to the server where source files are stored
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
-    thread_count = 10  # os.cpu_count() - 1
+    db = get_database()
+    SEGMENT_LOADERS = {
+        "skt": LoadSegmentsSanskrit,
+        "pli": LoadSegmentsPali,
+        "tib": LoadSegmentsTibetan,
+        "zh": LoadSegmentsChinese
+    }
+    number_of_threads = os.cpu_count() - 1    
+    number_of_threads = 25
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
     print(
-        f"Loading source files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
+        f"Loading source files from {root_url} using {f'{number_of_threads} threads' if threaded else '1 thread'}."
     )
-    load_segment_data_from_menu_files(root_url, thread_count if threaded else 1, lang)
-
+    
+    load_file_data_from_menu_files(lang, db)
+    for l in lang:
+        print("LANG: ", l)
+        SegmentLoaderClass = SEGMENT_LOADERS.get(l)                
+        if SegmentLoaderClass:        
+            loader = SegmentLoaderClass()
+            #loader.load(number_of_threads=number_of_threads)
+    sort_segnrs(db)    
     print("Segment data loading completed.")
+    print("Creating analyzers and search views...")
+    create_analyzers(db)
+    create_search_views(db)
+    print("Analyzers and search views created.")
+
+@task
+def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=True):
+    thread_count = os.cpu_count() - 1
+    if lang != DEFAULT_LANGS:
+        lang = ["".join(lang)]
+    print(
+        f"Loading parallel files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
+    )
+    db = get_database()
+    for clang in lang:
+        print("LANG: ", clang)
+        #load_parallels_from_folder(root_url + clang, db, thread_count if threaded else 1)
+    create_indices(db)
+    sort_parallels(db)
+    ###
 
 
 @task
@@ -147,7 +189,7 @@ def load_multi_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     :param root_url: URL to the server where source files are stored
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
-    thread_count = 10  # os.cpu_count() - 1
+    thread_count = 1  # os.cpu_count() - 1
     # this is a hack to work around the way parameters are passed via invoke
     load_multilingual_parallels(root_url, thread_count if threaded else 1)
     print("Multi-lingual data loading completed.")
@@ -293,15 +335,6 @@ def clean_english(c):
     """
     clean_all_lang_db(LANG_ENGLISH)
 
-
-@task
-def clean_ai(c):
-    """
-    Clear ai segments collections completely.
-
-    :param c: invoke.py context object
-    """
-    clean_all_lang_db(LANG_AI)
 
 
 @task
