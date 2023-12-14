@@ -48,7 +48,7 @@ const Row = (props: ListChildComponentProps) => {
     );
   }
 
-  const [dataSetProps, { name, ref }] = dataSet;
+  const [dataSetProps, { name, id, ref }] = dataSet;
   return (
     <Box
       {...dataSetProps}
@@ -89,7 +89,7 @@ const Row = (props: ListChildComponentProps) => {
           >
             {ref}
           </Typography>
-          {name.replaceAll(/^•\s/g, "")}
+          {id}: {name.replaceAll(/^•\s/g, "")}
         </Typography>
       </div>
     </Box>
