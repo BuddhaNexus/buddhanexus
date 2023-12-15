@@ -86,7 +86,6 @@ const Row = (props: ListChildComponentProps) => {
           WebkitLineClamp: 3,
           overflow: "hidden",
           textOverflow: "ellipsis",
-          // padding: "4px 0",
         }}
       >
         <Typography
