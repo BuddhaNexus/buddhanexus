@@ -151,6 +151,8 @@ const rules = {
   "simple-import-sort/exports": "error",
   "no-duplicate-imports": "off",
   "import/no-duplicates": "error",
+  "line-comment-position": "off",
+  "no-inline-comments": "off",
   "simple-import-sort/imports": [
     "error",
     {

@@ -28,8 +28,19 @@ function useResetCache(data: any) {
   return ref;
 }
 
-// px
-const LISTBOX_PADDING = 8;
+const LISTBOX_PADDING = 8; // px
+const maxLines = 3;
+const defaultItemHeight = 56;
+const lineHeight = 40;
+
+const createLable = (id: string, name: string) =>
+  `${id}: ${name.replaceAll(/^•\s/g, "")}`;
+
+const getNumberOfLines = (lable: string) => {
+  const charsPerLine = 26;
+  const lines = Math.ceil(lable.length / charsPerLine);
+  return lines;
+};
 
 const Row = (props: ListChildComponentProps) => {
   const { data, index, style } = props;
@@ -48,7 +59,11 @@ const Row = (props: ListChildComponentProps) => {
     );
   }
 
-  const [dataSetProps, { name, id, ref }] = dataSet;
+  const [dataSetProps, { name, id }] = dataSet;
+
+  const lable = createLable(id, name);
+  const lines = getNumberOfLines(lable);
+
   return (
     <Box
       {...dataSetProps}
@@ -66,30 +81,23 @@ const Row = (props: ListChildComponentProps) => {
     >
       <div
         style={{
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 3,
           overflow: "hidden",
           textOverflow: "ellipsis",
-          padding: "4px 0",
+          // padding: "4px 0",
         }}
       >
         <Typography
+          title={lines > maxLines ? lable : undefined}
           sx={{
             display: "inline",
             whiteSpace: "normal",
             wordBreak: "break-all",
           }}
         >
-          <Typography
-            component="span"
-            variant="subtitle2"
-            sx={{
-              textTransform: "uppercase",
-              fontWeight: 600,
-              pr: 1,
-            }}
-          >
-            {ref}
-          </Typography>
-          {id}: {name.replaceAll(/^•\s/g, "")}
+          {lable}
         </Typography>
       </div>
     </Box>
@@ -111,7 +119,6 @@ export const ListboxComponent = React.forwardRef<
   );
 
   const itemCount = itemData.length;
-  const itemSize = 56;
 
   const getChildSize = (child: React.ReactChild) => {
     // eslint-disable-next-line no-prototype-builtins
@@ -119,15 +126,18 @@ export const ListboxComponent = React.forwardRef<
       return 48;
     }
 
-    const charsInLine = 58;
     // @ts-expect-error type issue
-    const lineCount = Math.ceil(child[1].name.length / charsInLine);
-    return itemSize * lineCount;
+    const [itemProps] = child;
+    const { id, name } = itemProps;
+    const lines = getNumberOfLines(createLable(id, name));
+    const itemHeight = lines * lineHeight;
+
+    return lines <= maxLines ? itemHeight : lineHeight * maxLines;
   };
 
-  const getHeight = () => {
+  const getListHeight = () => {
     if (itemCount > 8) {
-      return 10 * itemSize;
+      return 10 * defaultItemHeight;
     }
     return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
   };
@@ -142,7 +152,7 @@ export const ListboxComponent = React.forwardRef<
         <VariableSizeList
           ref={gridRef}
           itemData={itemData}
-          height={getHeight() + 2 * LISTBOX_PADDING}
+          height={getListHeight() + 2 * LISTBOX_PADDING}
           width="100%"
           // @ts-expect-error type issue
           outerElementType={OuterElementType}
