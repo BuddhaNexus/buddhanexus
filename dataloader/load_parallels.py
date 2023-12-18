@@ -167,7 +167,7 @@ def sort_parallels_for_file(data):
     print("Sorting parallels for file: ", filename)
     collection_parallels = db.collection(COLLECTION_PARALLELS)
     parallels = list(collection_parallels.find({"root_filename": filename}))
-    print(parallels[:100])
+        
     ids_sorted_by_src_pos = sort_and_extract_ids(parallels, key=lambda x: x["root_segnr"][0])
     ids_sorted_by_tgt_pos = sort_and_extract_ids(parallels, key=lambda x: x["par_segnr"][0])
     ids_sorted_by_length_src = sort_and_extract_ids(parallels, key=lambda x: x["root_length"], natural=False)

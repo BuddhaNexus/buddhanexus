@@ -7,7 +7,7 @@ from arango import (
 from arango.database import StandardDatabase
 from tqdm import tqdm as tqdm
 
-from load_segments import clean_analyzers
+from global_search import clean_analyzers
 
 from dataloader_constants import (
     COLLECTION_NAMES,
@@ -43,7 +43,8 @@ def clean_search_index_db():
             if db.has_collection(name):
                 db.delete_collection(name)
         for name in INDEX_VIEW_NAMES:
-            db.delete_view(name)
+            if name in db.views():
+                db.delete_view(name)       
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % name, e)
     clean_analyzers(db)
@@ -101,8 +102,6 @@ def clean_segment_collections_db():
     db = get_database()
 
     try:
-        db.delete_graph(GRAPH_FILES_SEGMENTS)
-        db.delete_graph(GRAPH_FILES_PARALLELS)
         for name in (
             COLLECTION_SEGMENTS,
             COLLECTION_PARALLELS,
@@ -125,6 +124,7 @@ def clean_menu_collections_db():
     try:
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
         for name in (
+            
             COLLECTION_MENU_COLLECTIONS,
             COLLECTION_MENU_CATEGORIES,
             COLLECTION_LANGUAGES,

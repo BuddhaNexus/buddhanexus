@@ -16,6 +16,7 @@ from dataloader_constants import (
     INDEX_COLLECTION_NAMES,
     INDEX_VIEW_NAMES,
     DEFAULT_SOURCE_URL,
+    DEFAULT_TSV_URL,
     COLLECTION_SEGMENTS,
     COLLECTION_PARALLELS,
     COLLECTION_FILES,
@@ -50,10 +51,14 @@ from load_segments import (
     LoadSegmentsPali,
     LoadSegmentsTibetan,
     LoadSegmentsChinese,
-    create_analyzers,
+)
+
+from global_search import (
+    create_analyzers, 
     clean_analyzers,
     create_search_views,
 )
+
 from load_parallels import (
     load_parallels_from_folder,
     sort_parallels
@@ -76,7 +81,7 @@ from clean_database import (
     clean_all_lang_db,
 )
 
-from load_files import load_file_data_from_menu_files, sort_segnrs
+from load_texts import load_text_data_from_menu_files, sort_segnrs
 
 
 @task
@@ -123,11 +128,11 @@ def create_collections(
 
 
 @task
-def load_segment_files(
-    c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=True
+def load_text_segments(
+    c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded=True
 ):
     """
-    Download, parse and load source data into database collections.
+    Load texts and their segments into the database
 
     :param c: invoke.py context object
     :param root_url: URL to the server where source files are stored
@@ -141,7 +146,7 @@ def load_segment_files(
         "zh": LoadSegmentsChinese
     }
     number_of_threads = os.cpu_count() - 1    
-    number_of_threads = 25
+    number_of_threads = 24
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
@@ -149,13 +154,13 @@ def load_segment_files(
         f"Loading source files from {root_url} using {f'{number_of_threads} threads' if threaded else '1 thread'}."
     )
     
-    load_file_data_from_menu_files(lang, db)
+    load_text_data_from_menu_files(lang, db)
     for l in lang:
         print("LANG: ", l)
         SegmentLoaderClass = SEGMENT_LOADERS.get(l)                
         if SegmentLoaderClass:        
             loader = SegmentLoaderClass()
-            #loader.load(number_of_threads=number_of_threads)
+            loader.load(number_of_threads=number_of_threads)
     sort_segnrs(db)    
     print("Segment data loading completed.")
     print("Creating analyzers and search views...")
@@ -203,26 +208,6 @@ def clean_multi_data(c):
     :param c: invoke.py context object
     """
     clean_multi()
-
-
-@task
-def create_search_index(c):
-    """
-    Load index data for search index from path defined in .env.
-    """
-    db = get_database()
-    SearchIndex = SearchIndexSanskrit()
-    SearchIndex.load_search_index(db)
-    SearchIndex = SearchIndexPali()
-    SearchIndex.load_search_index(db)
-    SearchIndex = SearchIndexTibetan()
-    SearchIndex.load_search_index(db)
-    SearchIndex = SearchIndexChinese()
-    SearchIndex.load_search_index(db)
-    create_analyzers(db)
-    create_search_views(db)
-    print("Search index data loading completed.")
-
 
 @task
 def clean_search_index(c):

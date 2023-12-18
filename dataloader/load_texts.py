@@ -1,3 +1,6 @@
+""" 
+This file contains the code to load the text metadata from the menu files into the database.
+"""
 from arango.database import StandardDatabase
 import json 
 from dataloader_constants import COLLECTION_FILES, COLLECTION_SEGMENTS
@@ -13,6 +16,7 @@ SCRIPT_DIR = os.path.dirname(
     os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
 from api.utils import get_language_from_file_name
 
 
@@ -61,17 +65,19 @@ def get_folios_from_segment_keys(segment_keys, lang):
     return folios
 
 
-def load_file_data_from_menu_files(langs: list, db: StandardDatabase):
+def load_text_data_from_menu_files(langs: list, db: StandardDatabase):
     collection = db.collection(COLLECTION_FILES)
     for language in langs:
         with open(f"../data/{language}-files.json") as f:
-            print(f"\nLoading segment data from menu files in {language}:...")
+            print(f"\nLoading text meta data from menu files in {language}:...")
             files_data = json.load(f)
             filtered_file_data = [
                     file
                     for file in files_data
                     if should_download_file(language, file["filename"])
                 ]
+            # add language attribute to each entry
+            
             
             filtered_file_data = [{**file, **{"_key": file["filename"]}} for file in filtered_file_data ]            
             filtered_file_data = [{**file, **{"segment_keys": []}} for file in filtered_file_data ]
@@ -79,7 +85,7 @@ def load_file_data_from_menu_files(langs: list, db: StandardDatabase):
             filtered_file_data = [{**file, **{"language": language}} for file in filtered_file_data ]
 
             collection.insert_many(filtered_file_data)
-            print(f"Loaded {len(filtered_file_data)} files from {language}.")
+            print(f"Loaded {len(filtered_file_data)} meta data from {language}.")
     collection.add_hash_index(fields=["filename"], unique=True)
     collection.add_hash_index(fields=["category"], unique=False)
 
@@ -100,19 +106,21 @@ def sort_segnrs(db: StandardDatabase):
         folios = get_folios_from_segment_keys(files[filename], lang)     
         print(filename)           
         file = collection_files.get(filename)
-        if file:            
-            file["segment_keys"] = files[filename]
-            file['lang'] = lang
-            file['folios'] = folios            
-            collection_files.update(file)
-        else:
-            print(f"Could not find file {filename} in db.")
-            file = {"_key": filename, 
-                    "filename": filename,  
-                    "language": lang,
-                    "folios": folios,                    
-                    "segment_keys": files[filename]}
-            collection_files.insert(file)
+        # this is a hack since arango doesn't permit [] in keys; we need to fix the data!
+        if not "=[" in filename:
+            if file:            
+                file["segment_keys"] = files[filename]
+                file['language'] = lang
+                file['folios'] = folios            
+                collection_files.update(file)
+            else:
+                print(f"Could not find file {filename} in db.")
+                file = {"_key": filename, 
+                        "filename": filename,  
+                        "language": lang,
+                        "folios": folios,                    
+                        "segment_keys": files[filename]}
+                collection_files.insert(file)
     print("Done sorting segment numbers.")
 
 
