@@ -57,6 +57,8 @@ const GlobalSearchDesktop = () => {
         {isOpen && (
           <SearchBoxInput
             inputRef={inputRef}
+            role="searchbox"
+            aria-label="Search"
             placeholder={t("search.placeholder")}
             variant="outlined"
             isNarrow={true}

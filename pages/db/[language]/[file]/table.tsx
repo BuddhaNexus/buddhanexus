@@ -53,6 +53,7 @@ export default function TablePage() {
   if (isFallback) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
+        <DbViewPageHead />
         <CenteredProgress />
       </PageContainer>
     );

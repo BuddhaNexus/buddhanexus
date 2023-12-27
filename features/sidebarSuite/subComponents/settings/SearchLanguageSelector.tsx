@@ -20,6 +20,7 @@ const SearchLanguageSelector = () => {
       </InputLabel>
       <Select
         labelId="db-language-selector-label"
+        aria-labelledby="db-language-selector-label"
         id="db-language-selector"
         value={currentLang ?? "all"}
         onChange={(e) =>

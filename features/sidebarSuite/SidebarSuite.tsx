@@ -47,7 +47,7 @@ export function SidebarSuite() {
       open={isSettingsOpen}
     >
       <Toolbar />
-      <aside>
+      <aside id="db-results-settings-sidebar">
         <Box sx={{ width: 1 }}>
           <TabContext value={activeTab}>
             <DrawerHeader>
@@ -58,7 +58,10 @@ export function SidebarSuite() {
                 />
               </Box>
 
-              <IconButton onClick={() => setIsSettingsOpen(false)}>
+              <IconButton
+                aria-label="close settings"
+                onClick={() => setIsSettingsOpen(false)}
+              >
                 <CloseRoundedIcon />
               </IconButton>
             </DrawerHeader>

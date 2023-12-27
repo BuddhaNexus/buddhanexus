@@ -75,6 +75,7 @@ export const QueryPageTopStack = () => {
       >
         <Button
           variant="outlined"
+          data-testid="db-results-settings-button"
           aria-label={t(`resultsHead.settingsTip`)}
           title={t(`resultsHead.settingsTip`)}
           startIcon={<TuneIcon />}
@@ -84,6 +85,7 @@ export const QueryPageTopStack = () => {
         </Button>
         <Button
           variant="outlined"
+          data-testid="db-results-clear-settings-button"
           aria-label={t(`resultsHead.resetTip`)}
           title={t(`resultsHead.resetTip`)}
           startIcon={<RotateLeftOutlinedIcon />}
@@ -95,6 +97,7 @@ export const QueryPageTopStack = () => {
           <Box sx={{ order: { xs: 2, lg: -1 } }}>
             <Button
               variant="outlined"
+              data-testid="db-results-text-select-modal-button"
               aria-label={t(`resultsHead.textSelectTip`)}
               title={t(`resultsHead.textSelectTip`)}
               startIcon={<GradingOutlinedIcon />}
