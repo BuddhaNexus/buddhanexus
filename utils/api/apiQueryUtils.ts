@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { DbApi } from "utils/api/dbApi";
+import { DbApi, OldDbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 
 export const queryCacheTimeDefaults = {
@@ -29,7 +29,6 @@ export async function prefetchDefaultDbPageData(
   return queryClient;
 }
 
-// TODO: confirm spect for multi_lingal query param. For discussion see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/pull/90#discussion_r1375272080
 export async function prefetchDbResultsPageData(
   sourceLanguage: SourceLanguage,
   fileName: string,
@@ -43,15 +42,23 @@ export async function prefetchDbResultsPageData(
     },
   });
 
+  // TODO: the current implementation uses an endpoint from the old API, we should switch to the new one when available
   await queryClient.prefetchQuery({
-    queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+    queryKey: OldDbApi.TextDisplayName.makeQueryKey(fileName),
+    queryFn: () => OldDbApi.TextDisplayName.call(fileName),
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
-    queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
-  });
+  // TODO: review. disabled for now to lighten build burden.
+  // await queryClient.prefetchQuery({
+  //   queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
+  //   queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+  // });
+
+  // TODO: confirm spect for multi_lingal query param. For discussion see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/117
+  // await queryClient.prefetchQuery({
+  //   queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
+  //   queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
+  // });
 
   return queryClient;
 }
