@@ -81,6 +81,7 @@ const Row = (props: ListChildComponentProps) => {
     >
       <div
         style={{
+          // TODO: convert to `flex` when api is available for testing
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
           WebkitLineClamp: 3,
