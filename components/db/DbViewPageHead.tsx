@@ -11,7 +11,7 @@ export const DbViewPageHead = () => {
       <QueryPageTopStack />
 
       <Typography variant="h2" component="h1" mb={1}>
-        {fileName.toUpperCase()}
+        {fileName?.toUpperCase()}
       </Typography>
     </>
   );
