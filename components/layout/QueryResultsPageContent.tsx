@@ -1,10 +1,11 @@
-import { type FC, type PropsWithChildren, useEffect, useRef } from "react";
+import { type FC, type PropsWithChildren, useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import type { SxProps } from "@mui/material";
 import {
   Container,
   Typography,
-  useMediaQuery,
   useTheme as useMaterialTheme,
 } from "@mui/material";
 import type { Breakpoint } from "@mui/system";
@@ -21,24 +22,24 @@ export const QueryResultsPageContent: FC<Props> = ({
   maxWidth,
   containerStyles,
 }) => {
-  const isInitialized = useRef(false);
-  const materialTheme = useMaterialTheme();
-  const isLg = useMediaQuery(materialTheme.breakpoints.up("lg"), {
-    noSsr: true,
-  });
+  const { t } = useTranslation();
+  const { fileName } = useDbQueryParams();
 
+  const lgWidth = useMaterialTheme().breakpoints.values.lg;
+
+  const [isInitialized, setIsInitialized] = useState(false);
   const { isSettingsOpen, setIsSettingsOpen } = useSettingsDrawer();
 
   useEffect(() => {
-    if (!isInitialized.current) {
-      setIsSettingsOpen(isLg);
-      isInitialized.current = true;
+    if (!isInitialized) {
+      setIsSettingsOpen(window.innerWidth >= lgWidth);
+      setIsInitialized(true);
     }
-  }, [setIsSettingsOpen, isLg]);
+  }, [isInitialized, lgWidth, setIsSettingsOpen]);
 
   return (
     <>
-      {isInitialized.current ? (
+      {isInitialized ? (
         <Main open={isSettingsOpen}>
           <Container maxWidth={maxWidth} sx={containerStyles}>
             {children}
@@ -48,7 +49,7 @@ export const QueryResultsPageContent: FC<Props> = ({
       ) : (
         <main style={{ height: "100%" }}>
           <Typography component="h1" sx={visuallyHidden}>
-            Loading...
+            {fileName ?? t("search.pageTitle")}
           </Typography>
         </main>
       )}
