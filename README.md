@@ -51,6 +51,15 @@ Static pages built from mdx files are held in `/content/`. Each page has a dedic
 
 Content files must contain frontmatter following the schema defined in the `MDXFrontmatter` interface.
 
+So that external link open in new tabs it is necessary to use regular html `a` elements with `target="_blank" rel="noopener"` attributes.
+
+Original native mdx links have been converted with:
+
+```
+\[((.*?\n?){0,4})\]\((\s*?http(.*?\n?){0,4})\)
+<a href="$3" target="_blank" rel="noopener">$1</a>
+```
+
 ### Localized URLs
 
 <details>
