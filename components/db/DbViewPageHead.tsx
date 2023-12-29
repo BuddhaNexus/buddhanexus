@@ -36,7 +36,6 @@ export const DbViewPageHead = () => {
           {fileName?.toUpperCase()}: {displayName}
         </Typography>
       )}
-
     </>
   );
 };
