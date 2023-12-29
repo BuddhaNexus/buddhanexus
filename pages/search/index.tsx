@@ -10,8 +10,9 @@ import {
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Close, Search } from "@mui/icons-material";
-import { CircularProgress, Grid, IconButton, Typography } from "@mui/material";
+import { CircularProgress, IconButton, Typography } from "@mui/material";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { SearchResults } from "features/globalSearch";
 import {
   SearchBoxInput,
   SearchBoxWrapper,
@@ -20,6 +21,8 @@ import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/source
 import type { PagedResponse } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
+
+import { tempSearchData } from "./tempData";
 
 export default function SearchPage() {
   // IN DEVELOPMENT
@@ -41,6 +44,7 @@ export default function SearchPage() {
 
   // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     data,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     fetchNextPage,
@@ -127,51 +131,45 @@ export default function SearchPage() {
 
       <QueryPageTopStack />
 
+      <SearchResults
+        data={tempSearchData.searchResults}
+        onEndReached={fetchNextPage}
+        onStartReached={fetchPreviousPage}
+      />
+
       {/* TODO: componentize search results */}
       {isLoading ? (
         <div>
-          {/* TODO: i18n */}
+          {/* TODO: i18n
           <CircularProgress
             aria-label="loading"
             color="inherit"
             sx={{ flex: 1 }}
-          />
+          /> */}
         </div>
       ) : (
-        <>
-          {data ? (
-            <>
-              {data.pages.flatMap((page) => (
-                <React.Fragment key={page.pageNumber}>
-                  <Typography>{page.data.total} Results</Typography>
-                  <Grid
-                    rowSpacing={1}
-                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                    container
-                  >
-                    <ul>
-                      {[...(page.data.results.values() ?? [])].map((result) => (
-                        <li key={result.id}>
-                          <Typography variant="h3" component="h2">
-                            {result.id}
-                          </Typography>
-                          <Typography component="p">
-                            {result.fileName}
-                          </Typography>
-                        </li>
-                      ))}
-                    </ul>
-                  </Grid>
-                </React.Fragment>
-              ))}
-            </>
-          ) : (
-            <>
-              {/* TODO: i18n */}
-              <Typography>No results.</Typography>
-            </>
-          )}
-        </>
+        <div />
+        // <>
+        //   {data ? (
+        //     <>
+        //       {data.pages.flatMap((page) => (
+        //         <React.Fragment key={page.pageNumber}>
+        //           <Typography>{page.data.total} Results</Typography>
+        //           <SearchResults
+        //             data={tempSearchData}
+        //             onEndReached={fetchNextPage}
+        //             onStartReached={fetchPreviousPage}
+        //           />
+        //         </React.Fragment>
+        //       ))}
+        //     </>
+        //   ) : (
+        //     <>
+        //       {/* TODO: i18n */}
+        //       <Typography>No results.</Typography>
+        //     </>
+        //   )}
+        // </>
       )}
 
       <SourceTextBrowserDrawer />
