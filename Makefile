@@ -80,91 +80,10 @@ clean-db:
 	@docker exec -t dataloader bash -c "invoke create-db create-collections"
 
 # these commands are for loading individual datasets asynchronously
-load-sanskrit-data:
-	@docker exec -ti dataloader bash -c "invoke load-menu-files"
-	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=skt"
-	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
-	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
-	@docker exec -ti dataloader bash -c "invoke add-sources"
-
 load-tibetan-data:
-	@docker exec -ti dataloader bash -c "invoke load-menu-files"
-	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=tib"
-	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
-	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
-
-load-chinese-data:
-	@docker exec -ti dataloader bash -c "invoke load-menu-files"
-	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=chn"
-	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
-	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
-
-load-pali-data:
-	@docker exec -ti dataloader bash -c "invoke load-menu-files"
-	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=pli"
-	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
-	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
-
-load-multi-data:
-	@docker exec -ti dataloader bash -c "invoke load-multi-files"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
-
-load-english-data:
-	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=en"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
-
-load-ai-data:
-	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded --lang=ai"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
-
-clean-multi-data:
-	@docker exec -t dataloader bash -c "invoke clean-multi-data"
-
-clean-english-data:
-	@docker exec -t dataloader bash -c "invoke clean-english"
-
-clean-ai-data:
-	@docker exec -t dataloader bash -c "invoke clean-ai"
-
-# the following four commands are for partial unloading of individual datasets
-clean-tibetan-data:
-	@docker exec -t dataloader bash -c "invoke clean-tibetan"
-	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-
-clean-sanskrit-data:
-	@docker exec -t dataloader bash -c "invoke clean-sanskrit"
-	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-
-clean-chinese-data:
-	@docker exec -t dataloader bash -c "invoke clean-chinese"
-	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-
-clean-pali-data:
-	@docker exec -t dataloader bash -c "invoke clean-pali"
-	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-
-# clean & remove the search-index
-clean-search-index:
-	@docker exec -t dataloader bash -c "invoke clean-search-index"
-
-clean-totals:
-	@docker exec -t dataloader bash -c "invoke clean-totals-collection"
-	@docker exec -t dataloader bash -c "invoke calculate-collection-totals"
-
-clean-menu-data:
-	@docker exec -t dataloader bash -c "invoke clean-menu-collections"
-
-clean-segments:
-	@docker exec -t dataloader bash -c "invoke clean-segment-collections"
-
+	#@docker exec -t dataloader bash -c "invoke #load-menu-files"
+	#@docker exec -t dataloader bash -c "invoke load-text-segments --lang=tib"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=tib"
 # List available commands for the dataloader
 list-tasks:
 	@docker exec -t dataloader bash -c "invoke --list"
