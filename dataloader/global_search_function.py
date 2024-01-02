@@ -26,7 +26,7 @@ from dataloader_constants import (
     ANALYZER_NAMES,
 )
 
-from dataloader_utils import get_cat_from_segmentnr
+from utils import get_cat_from_segmentnr
 
 from views_properties import (
     PROPERTIES_SEARCH_INDEX_TIB,

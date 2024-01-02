@@ -12,7 +12,7 @@ from dataloader_constants import (
     COLLECTION_FILES,
 )
 
-from dataloader_utils import get_database
+from utils import get_database
 
 # The below function is used for debugging purposes only.
 # Uncomment it if needed.

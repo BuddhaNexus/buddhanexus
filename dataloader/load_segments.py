@@ -4,9 +4,12 @@ This code loads the segments for the files into the database.
 
 from collections import defaultdict
 import os 
+import natsort
 import multiprocessing
 import pandas as pd 
 from tqdm import tqdm as tqdm
+from arango.database import StandardDatabase
+
 from dataloader_constants import (
     COLLECTION_SEARCH_INDEX_TIB,
     COLLECTION_SEARCH_INDEX_SKT,
@@ -20,9 +23,15 @@ from dataloader_constants import (
     COLLECTION_FILES,
 )
 
-from dataloader_utils import get_cat_from_segmentnr, check_if_collection_exists
-from dataloader_utils import get_database
+from utils import (
+    get_cat_from_segmentnr, 
+    get_language_from_file_name,
+    check_if_collection_exists, 
+    get_database, 
+    should_download_file
+)
 
+from folios import get_folios_from_segment_keys
 
 def sliding_window(data_list, window_size=3):
     """Generates sliding windows from a list."""
@@ -41,10 +50,16 @@ class LoadSegmentsBase:
     DATA_PATH: str
     def _load_segments(self, file_df, db) -> None:        
         segments = [
-            {"segnr": segnr, "segtext": original}
+            {"_key": segnr,
+            "segnr": segnr, 
+             "segtext": original,
+             "language": self.LANG}
             for segnr, original in zip(file_df["segmentnr"], file_df["original"])
         ]        
+        db.collection(COLLECTION_SEGMENTS).delete_many({"language": self.LANG})
         db.collection(COLLECTION_SEGMENTS).insert_many(segments)
+        db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr", "language"])
+
         segnrs = [segment["segnr"] for segment in segments]
         filename = get_filename_from_segmentnr(segnrs[0])
         # hack as this filename breaks the DB 
@@ -52,7 +67,7 @@ class LoadSegmentsBase:
             return
         # check if filename is in collection
         current_file = db.collection(COLLECTION_FILES).get(filename)
-        if current_file:            
+        if current_file:
             current_file['segment_keys'] += segnrs
             db.collection(COLLECTION_FILES).update(current_file)
         else:
@@ -85,9 +100,14 @@ class LoadSegmentsBase:
                     "original": original,
                     "stemmed": stem,
                     "category": category,
+                    "language": self.LANG,
                 }
             )
+        db.collection(self.SEARCH_COLLECTION_NAME).delete_many({"language": self.LANG})
+
         db.collection(self.SEARCH_COLLECTION_NAME).insert_many(search_index_entries)
+        
+        db.collection(self.SEARCH_COLLECTION_NAME).add_hash_index(fields=["segment_nr", "language"])
         
     def _process_file(self, file):
         db = get_database()
@@ -107,9 +127,8 @@ class LoadSegmentsBase:
         category_files = defaultdict(list)
         if os.path.isdir(self.DATA_PATH):
             for file in os.listdir(self.DATA_PATH):
-                if file.endswith(".tsv"):
+                if file.endswith(".tsv") and should_download_file(file):
                     category = get_cat_from_segmentnr(file)
-                    print(category, file)
                     category_files[category].append(file)
                     if number_of_threads == 1:
                         self._process_file(file)
@@ -124,8 +143,44 @@ class LoadSegmentsBase:
         else:
             for file_group in tqdm(list(category_files.values())):
                 process_file_group_helper((self, file_group))
-
         print("DONE LOADING DATA")
+        self._sort_segnrs()
+        
+
+    def _sort_segnrs(self):
+        db = get_database()
+        print("\nSorting segment numbers...")
+        collection_segments = db.collection(COLLECTION_SEGMENTS)
+        collection_files = db.collection(COLLECTION_FILES)
+        files = {}    
+        segments = collection_segments.find({"language": self.LANG})
+        for segment in tqdm(segments):
+            filename = get_filename_from_segmentnr(segment["segnr"])            
+            if filename not in files:
+                files[filename] = []
+            files[filename].append(segment["segnr"])    
+        for filename in tqdm(files):
+            files[filename] = natsort.natsorted(files[filename])        
+            lang = get_language_from_file_name(filename)
+            folios = get_folios_from_segment_keys(files[filename], lang)     
+            print(filename)           
+            file = collection_files.get(filename)
+            # this is a hack since arango doesn't permit [] in keys; we need to fix the data!
+            if not "=[" in filename:
+                if file:            
+                    file["segment_keys"] = files[filename]
+                    file['language'] = lang
+                    file['folios'] = folios            
+                    collection_files.update(file)
+                else:
+                    print(f"Could not find file {filename} in db.")
+                    file = {"_key": filename, 
+                            "filename": filename,  
+                            "language": lang,
+                            "folios": folios,                    
+                            "segment_keys": files[filename]}
+                    collection_files.insert(file)
+        print("Done sorting segment numbers.")
 
 
 class LoadSegmentsSanskrit(LoadSegmentsBase):
@@ -147,3 +202,8 @@ class LoadSegmentsChinese(LoadSegmentsBase):
     SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_CHN
     DATA_PATH = CHN_TSV_DATA_PATH
     LANG = "chn"
+
+
+
+
+        

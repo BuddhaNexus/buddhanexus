@@ -19,11 +19,12 @@ from dataloader_constants import (
     COLLECTION_FILES,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
 )
+from folios import get_folios_from_segment_keys
 
 from dataloader_models import Parallel, Segment, MenuItem
-from dataloader_utils import (
+from utils import (
     get_cat_from_segmentnr,
-    natural_keys,
+    should_download_file
 )
 
 # allow importing from api directory
@@ -34,53 +35,10 @@ SCRIPT_DIR = os.path.dirname(
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.queries import menu_queries
-from api.utils import get_language_from_file_name
+from utils import get_language_from_file_name
 
 
 
-def get_folios_from_segment_keys(segment_keys, lang):
-    folios = []
-    if lang == LANG_CHINESE:
-        last_num = ""
-        for segment_key in segment_keys:
-            num = segment_key.split("_")[1].split(":")[0]
-            if num != last_num:
-                folios.append({"num": num, "segment_nr": segment_key})
-                last_num = num
-    elif lang == LANG_TIBETAN:
-        last_num = ""
-        for segment_key in segment_keys:
-            num = segment_key.split(":")[1].split("-")[0]
-            if num != last_num:
-                folios.append({"num": num, "segment_nr": segment_key})
-                last_num = num
-    elif lang == LANG_PALI:
-        last_num = ""
-        for segment_key in segment_keys:
-            num = segment_key.split(":")[1].split(".")[0].split("_")[0]
-            if re.search(r"^(anya|tika|atk)", segment_key):
-                if num.endswith("0") and num != last_num:
-                    folios.append({"num": num, "segment_nr": segment_key})
-                    last_num = num
-            else:
-                if num != last_num:
-                    folios.append({"num": num, "segment_nr": segment_key})
-                    last_num = num
-    elif lang == LANG_SANSKRIT:
-        last_num = ""
-        for segment_key in segment_keys:
-            if re.search(r"^(K14dhppat|K10udanav|K10uvs)", segment_key):
-                num = segment_key.split(":")[1].split("_")[1]
-                if num != last_num:
-                    folios.append({"num": num, "segment_nr": segment_key})
-                    last_num = num
-            else:
-                num = segment_key.split(":")[1].split(".")[0].split("_")[0]
-                if num.endswith("0") and num != last_num:
-                    folios.append({"num": num, "segment_nr": segment_key})
-                    last_num = num
-
-    return folios
 
 def load_parallels(parallels, db: StandardDatabase) -> None:
     """
@@ -95,6 +53,8 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
     parallels_to_be_inserted = []
 
     for parallel in parallels:
+        if not should_download_file(parallel["root_segnr"][0]):
+            continue
         category_root = get_cat_from_segmentnr(parallel["root_segnr"][0])
         category_parallel = get_cat_from_segmentnr(parallel["par_segnr"][0])
         folios_list = get_folios_from_segment_keys(
@@ -132,11 +92,11 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
 
 
 def process_file(path, db):
-    print("Processing file: ", path)
+    print("Processing file: ", path)    
     parallels = json.load(gzip.open(path, "rt", encoding="utf-8"))
     load_parallels(parallels, db)
 
-def load_parallels_from_folder(folder, db, number_of_threads):
+def load_parallels_for_language(folder, lang, db, number_of_threads):
     """
     Given a folder with parallel json files, load them all into the `parallels` collection
 
@@ -144,12 +104,17 @@ def load_parallels_from_folder(folder, db, number_of_threads):
     :param db: ArangoDB connection object
     :param number_of_threads: Number of threads to use for parallel loading
     """
+    db_collection = db.collection(COLLECTION_PARALLELS)
+    # delete all parallels for this language
+    db_collection.delete_many({"src_lang": lang})
+    folder = os.path.join(folder, lang)
     files = os.listdir(folder)
     files = list(filter(lambda f: f.endswith(".json.gz"), files))
     pool = multiprocessing.Pool(number_of_threads)
     for file in files:
         pool.apply_async(process_file, args=(os.path.join(folder, file), db))
-        #process_file(os.path.join(folder, file), db)
+        #process_file(os.path.join(folder, file), db)    
+    db_collection.add_hash_index(fields=['root_segnr', 'par_segnr', 'root_filename', 'par_filename', 'root_category', 'par_category', 'src_lang'])
     pool.close()
     pool.join()
 
@@ -160,7 +125,7 @@ def sort_and_extract_ids(parallels, key, natural=True):
         sorted_parallels = natsort.natsorted(parallels, key=key)
     else:
         sorted_parallels = sorted(parallels, key=key)
-    return [p["_id"] for p in sorted_parallels]
+    return [p["_key"] for p in sorted_parallels]
 
 def sort_parallels_for_file(data):
     filename, db = data
@@ -176,6 +141,7 @@ def sort_parallels_for_file(data):
     
     lang = get_language_from_file_name(filename)
     return {
+        "_key": filename,
         "filename": filename,
         "lang": lang,
         "parallels_sorted_by_src_pos": ids_sorted_by_src_pos,
@@ -192,22 +158,23 @@ def chunks(lst, n):
 
 def sort_parallels(db: StandardDatabase):
     print("\nSorting parallels...")
-
     collection_files = db.collection(COLLECTION_FILES)
     collection_parallels_sorted = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
-
-    filenames = [[file["filename"], db] for file in tqdm(collection_files.all())]
+    
+    filenames = [[file["filename"], db] for file in tqdm(collection_files.all())]    
     # keep only filenames that contain T06
-    filenames = [f for f in filenames if "T06" in f[0]]
+    filenames = [f for f in filenames if should_download_file(f[0])]
 
-    pool = multiprocessing.Pool(12)
+    pool = multiprocessing.Pool(4)
 
     # Process in chunks of 20
-    for chunk in tqdm(chunks(filenames, 20)):
+    for chunk in tqdm(chunks(filenames, 50)):
         # Using list() here ensures that the pool processes all items in the current chunk before moving on
         results = list(tqdm(pool.imap_unordered(sort_parallels_for_file, chunk), total=len(chunk)))
         collection_parallels_sorted.insert_many(results)
-
+        
+    # add hash index on filename
+    collection_parallels_sorted.add_hash_index(fields=['filename', 'lang'])
     pool.close()
     pool.join()
 

@@ -13,23 +13,10 @@ from invoke import task
 from dataloader_constants import (
     DB_NAME,
     COLLECTION_NAMES,
-    INDEX_COLLECTION_NAMES,
-    INDEX_VIEW_NAMES,
     DEFAULT_SOURCE_URL,
     DEFAULT_TSV_URL,
-    COLLECTION_SEGMENTS,
-    COLLECTION_PARALLELS,
-    COLLECTION_FILES,
-    COLLECTION_MENU_COLLECTIONS,
-    COLLECTION_MENU_CATEGORIES,
-    COLLECTION_FILES_PARALLEL_COUNT,
     EDGE_COLLECTION_NAMES,
-    COLLECTION_CATEGORIES_PARALLEL_COUNT,
-    EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
     GRAPH_COLLECTIONS_CATEGORIES,
-    COLLECTION_LANGUAGES,
-    EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
-    EDGE_COLLECTION_CATEGORY_HAS_FILES,
     LANG_TIBETAN,
     LANG_PALI,
     LANG_CHINESE,
@@ -37,14 +24,6 @@ from dataloader_constants import (
     LANG_ENGLISH,
     DEFAULT_LANGS,
 )
-
-from tasks_segments_parallels import (
-    create_indices,
-    calculate_parallel_totals,
-    load_sources,
-) 
-
-from tasks_multilingual import load_multilingual_parallels, clean_multi
 
 from load_segments import (
     LoadSegmentsSanskrit,
@@ -60,7 +39,7 @@ from global_search import (
 )
 
 from load_parallels import (
-    load_parallels_from_folder,
+    load_parallels_for_language,
     sort_parallels
 )
 
@@ -70,7 +49,7 @@ from tasks_menu import (
     create_collections_categories_graph,
 )
 
-from dataloader_utils import get_database, get_system_database
+from utils import get_database, get_system_database
 
 from clean_database import (
     clean_search_index_db,
@@ -81,7 +60,7 @@ from clean_database import (
     clean_all_lang_db,
 )
 
-from load_texts import load_text_data_from_menu_files, sort_segnrs
+from load_texts import load_text_data_from_menu_files
 
 
 @task
@@ -89,7 +68,7 @@ def create_db(c):
     """
     Create empty database with name specified in the .env file
 
-    :param c: invoke.py context object
+    am c: invoke.py context object
     """
     try:
         sys_db = get_system_database()
@@ -122,10 +101,7 @@ def create_collections(
         except CollectionCreateError as e:
             print("Error creating edge collection: ", e)
     print(f"created {collections} collections")
-    print("Creating Indices")
-    create_indices(db)
-    print("Creation of indices done.")
-
+    
 
 @task
 def load_text_segments(
@@ -145,8 +121,7 @@ def load_text_segments(
         "tib": LoadSegmentsTibetan,
         "zh": LoadSegmentsChinese
     }
-    number_of_threads = os.cpu_count() - 1    
-    number_of_threads = 24
+    number_of_threads = os.cpu_count()    
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
@@ -161,7 +136,6 @@ def load_text_segments(
         if SegmentLoaderClass:        
             loader = SegmentLoaderClass()
             loader.load(number_of_threads=number_of_threads)
-    sort_segnrs(db)    
     print("Segment data loading completed.")
     print("Creating analyzers and search views...")
     create_analyzers(db)
@@ -170,19 +144,18 @@ def load_text_segments(
 
 @task
 def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=True):
-    thread_count = os.cpu_count() - 1
+    thread_count = os.cpu_count()
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
     print(
         f"Loading parallel files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
     )
     db = get_database()
-    for clang in lang:
-        print("LANG: ", clang)
-        #load_parallels_from_folder(root_url + clang, db, thread_count if threaded else 1)
-    create_indices(db)
+    #for clang in lang:
+    #    print("LANG: ", clang)
+    #    load_parallels_for_language(root_url, clang, db, thread_count if threaded else 1)
     sort_parallels(db)
-    ###
+    
 
 
 @task
@@ -341,15 +314,6 @@ def load_menu_files(c):
     create_collections_categories_graph(db)
 
     print("Menu data loading completed!")
-
-
-@task
-def add_indices(c):
-    db = get_database()
-    print("Creating Indices")
-    create_indices(db)
-    print("Creation of indices done.")
-
 
 @task
 def add_sources(c):

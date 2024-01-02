@@ -4,7 +4,7 @@ from arango import DocumentInsertError, DocumentUpdateError, IndexCreateError
 from arango.collection import StandardCollection, EdgeCollection
 from arango.database import StandardDatabase
 
-from dataloader_utils import get_language_name
+from utils import get_language_name
 from dataloader_constants import (
     COLLECTION_MENU_COLLECTIONS,
     DEFAULT_LANGS,

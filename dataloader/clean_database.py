@@ -30,7 +30,7 @@ from dataloader_constants import (
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
 )
 
-from dataloader_utils import get_database, get_system_database
+from utils import get_database, get_system_database
 
 
 def clean_search_index_db():
