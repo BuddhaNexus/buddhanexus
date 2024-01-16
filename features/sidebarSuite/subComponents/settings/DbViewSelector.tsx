@@ -37,6 +37,8 @@ export const DbViewSelector = () => {
       <Select
         labelId="db-view-selector-label"
         id="db-view-selector"
+        aria-labelledby="db-view-selector-label"
+        data-testid="db-view-selector"
         value={currentView}
         onChange={(e: SelectChangeEvent) => handleChange(e)}
       >
