@@ -202,8 +202,3 @@ class LoadSegmentsChinese(LoadSegmentsBase):
     SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_CHN
     DATA_PATH = CHN_TSV_DATA_PATH
     LANG = "chn"
-
-
-
-
-        

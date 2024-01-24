@@ -12,7 +12,6 @@ from ..queries import main_queries, menu_queries
 from .models.shared import GeneralInput
 router = APIRouter()
 
-
 def create_numbers_view_data(table_results, folio_regex):
     """
     This function converts the table-view output into a format that is usable for the numbers-view.

@@ -55,7 +55,6 @@ def create_segmented_text_color_only(text, colormap):
     result_segments.append({"text": current_segment, "highlightColor": last_color})
     return result_segments
 
-
 def calculate_color_maps_text_view(data):    
     """calculates the color maps for the text view"""
     textleft = data["textleft"]

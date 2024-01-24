@@ -8,7 +8,6 @@ from .endpoint_utils import execute_query
 
 router = APIRouter()
 
-
 @router.post("/search/")
 async def get_search_results(input: SearchInput):
     """

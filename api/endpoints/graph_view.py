@@ -10,14 +10,12 @@ router = APIRouter()
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
-
 @router.post("/graph-view/")
 # pylint: disable=too-many-locals
 async def get_graph_for_file(input: GraphInput):
     """
     Endpoint for graph view
     """
-
     query_graph_result = execute_query(
         main_queries.QUERY_GRAPH_VIEW,
         bind_vars={

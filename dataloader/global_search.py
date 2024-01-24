@@ -1,6 +1,7 @@
 """
 Here we create the search index and analyzers for the global search in the text elements.
 """
+
 from arango.database import StandardDatabase
 from tqdm import tqdm as tqdm
 from dataloader_constants import (

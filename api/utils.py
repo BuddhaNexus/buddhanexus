@@ -13,7 +13,6 @@ from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
-
 def get_sort_key(sort_method) -> str:
     """
     Returns the correct sort_key for table and numbers queries

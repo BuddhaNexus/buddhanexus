@@ -7,7 +7,6 @@ import os
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-
 from .endpoints import (
     search,
     table_view,

@@ -304,7 +304,6 @@ def clean_chinese(c):
     """
     clean_all_lang_db(LANG_CHINESE)
 
-
 @task()
 def load_menu_files(c):
     print("Loading menu collections...")
@@ -320,7 +319,6 @@ def add_sources(c):
     db = get_database()
     print("adding source information")
     load_sources(db, DEFAULT_SOURCE_URL)
-
 
 @task
 def calculate_collection_totals(c):

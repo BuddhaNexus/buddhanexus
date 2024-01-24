@@ -5,7 +5,6 @@ from ..links import get_links
 
 router = APIRouter()
 
-
 @router.get("/external/")
 async def get_external_links(file_name: str = Query(...), 
                              segmentnr: str = Query(None)):

@@ -39,23 +39,19 @@ from api.utils import get_cat_from_segmentnr, get_language_from_file_name
 def get_filename_from_segmentnr(segmentnr):
     return segmentnr.split(":")[0]
 
-
 def get_arango_client() -> ArangoClient:
     """Get Arango Client instance"""
     return ArangoClient(hosts=ARANGO_HOST)
-
 
 def get_system_database() -> StandardDatabase:
     """Return system database instance"""
     client = get_arango_client()
     return client.db("_system", username=ARANGO_USER, password=ARANGO_PASSWORD)
 
-
 def get_database() -> StandardDatabase:
     """Return buddhanexus database instance"""
     client = get_arango_client()
     return client.db(DB_NAME, username=ARANGO_USER, password=ARANGO_PASSWORD)
-
 
 def get_remote_bytes(file_url) -> io.BytesIO:
     """
@@ -65,7 +61,6 @@ def get_remote_bytes(file_url) -> io.BytesIO:
     """
     result = urlfetch.fetch(file_url)
     return io.BytesIO(result.content)
-
 
 def execute_in_parallel(task, items, threads) -> None:
     """

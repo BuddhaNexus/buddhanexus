@@ -50,3 +50,4 @@ def get_folios_from_segment_keys(segment_keys, lang):
                     last_num = num
 
     return folios
+    

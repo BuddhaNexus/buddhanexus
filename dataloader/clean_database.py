@@ -50,7 +50,6 @@ def clean_search_index_db():
     clean_analyzers(db)
     print("search index cleaned.")
 
-
 def clean_all_collections_db():
     """
     Clear all the database collections completely.

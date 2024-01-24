@@ -2,8 +2,6 @@ from pydantic import BaseModel
 from typing import List
 from .shared import Limits
 
-
-
 class SegmentResult(BaseModel):
     # Define the structure of a segment result here
     pass

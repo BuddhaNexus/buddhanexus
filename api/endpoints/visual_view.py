@@ -6,7 +6,6 @@ import re
 
 router = APIRouter()
 
-
 @router.get("/visual-view/")
 async def get_visual_view_for_file(
     # TODO: what is "selected"? Find better name

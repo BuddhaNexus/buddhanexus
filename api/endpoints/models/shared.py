@@ -5,7 +5,6 @@ class Limits(BaseModel):
     """
     Limits for parallels
     """
-
     category_include: list = []
     category_exclude: list = []
     file_include: list = []

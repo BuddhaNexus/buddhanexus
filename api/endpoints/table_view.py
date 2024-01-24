@@ -15,7 +15,6 @@ from .numbers_view import create_numbers_view_data
 
 router = APIRouter()
 
-
 @router.post("/table")
 async def get_table_view(input: GeneralInput
 ):

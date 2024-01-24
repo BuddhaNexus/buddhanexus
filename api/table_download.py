@@ -10,7 +10,6 @@ from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
-
 def run_table_download(query, file_values):
 
     """

@@ -3,7 +3,6 @@ from .endpoint_utils import execute_query
 from ..queries import menu_queries
 router = APIRouter()
 
-
 @router.get("/files/")
 async def get_files_for_menu(language: str = Query(..., description="language to be used")):
     """

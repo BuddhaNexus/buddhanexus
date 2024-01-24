@@ -1,4 +1,5 @@
 # TODO: Refactor this function. Split into smaller chunks.
+
 def calculate_parallel_totals():
     # This function goes over all the data and groups it into totals for the visual view
     # This takes some time to run on the full dataset.

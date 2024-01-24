@@ -34,8 +34,6 @@ from api.queries import menu_queries
 from utils import get_language_from_file_name
 
 
-
-
 def load_parallels(parallels, db: StandardDatabase) -> None:
     """
     Given an array of parallel objects, load them all into the `parallels` collection

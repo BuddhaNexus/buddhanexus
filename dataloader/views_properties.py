@@ -36,7 +36,6 @@ PROPERTIES_SEARCH_INDEX_TIB_FUZZY = {
     "trackListPositions": False,
 }
 
-
 PROPERTIES_SEARCH_INDEX_SKT = {
     "cleanupIntervalStep": 0,
     "links": {

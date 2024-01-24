@@ -1,6 +1,7 @@
 """ 
 This file contains the code to load the text metadata from the menu files into the database.
 """
+
 from arango.database import StandardDatabase
 import json 
 from dataloader_constants import COLLECTION_FILES, COLLECTION_SEGMENTS

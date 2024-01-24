@@ -11,7 +11,6 @@ from .models.shared import MiddleInput, TextParallelsInput
 
 router = APIRouter()
 
-
 @router.post("/middle/")
 async def get_parallels_for_middle(input: MiddleInput):
     """
