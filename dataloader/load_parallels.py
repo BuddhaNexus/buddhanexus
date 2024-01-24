@@ -11,13 +11,9 @@ import multiprocessing
 import natsort
 
 from dataloader_constants import (
-    LANG_PALI,
-    LANG_CHINESE,
-    LANG_TIBETAN,
-    LANG_SANSKRIT,
-    COLLECTION_PARALLELS,
-    COLLECTION_FILES,
+    COLLECTION_PARALLELS,    
     COLLECTION_PARALLELS_SORTED_BY_FILE,
+    MATCH_LIMIT
 )
 from folios import get_folios_from_segment_keys
 
@@ -114,68 +110,49 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     for file in files:
         pool.apply_async(process_file, args=(os.path.join(folder, file), db))
         #process_file(os.path.join(folder, file), db)    
-    db_collection.add_hash_index(fields=['root_segnr', 'par_segnr', 'root_filename', 'par_filename', 'root_category', 'par_category', 'src_lang'])
+    db_collection.add_hash_index(fields=['root_filename', 'par_filename', 'root_category', 'par_category', 'src_lang', 'par_lang'], unique=False)
+    # add index for root_segnr on all list items
+    db_collection.add_hash_index(fields=['root_segnr[*]'], unique=False)    
+    db_collection.add_hash_index(fields=['par_segnr[*]'], unique=False)
+
     pool.close()
     pool.join()
 
+def load_sorted_parallels_file(path, lang, db_collection):
+    print("Loading sorted parallels for file: ", path)
+    current_files = json.load(gzip.open(path, "rt", encoding="utf-8"))    
+    for file in tqdm(current_files):
+        if not should_download_file(file["filename"]):
+            continue
+        file["_key"] = file["filename"]    
+        file["lang"] = lang
+        # print all keys of file        
+        file['parallels_sorted_by_src_pos'] = file['ids_sorted_by_root_segnr'][:MATCH_LIMIT]
+        file['parallels_sorted_by_tgt_pos'] = file['ids_sorted_by_par_segnr'][:MATCH_LIMIT]
+        file['parallels_sorted_by_length_src'] = file['ids_sorted_by_root_length'][:MATCH_LIMIT]
+        file['parallels_sorted_by_length_tgt'] = file['ids_sorted_by_par_length'][:MATCH_LIMIT]
+        file['parallels_randomized'] = file['ids_shuffled'][:MATCH_LIMIT]
+        db_collection.insert(file, overwrite=True)
 
-def sort_and_extract_ids(parallels, key, natural=True):
-    """Helper function to sort parallels and extract their IDs."""
-    if natural:
-        sorted_parallels = natsort.natsorted(parallels, key=key)
-    else:
-        sorted_parallels = sorted(parallels, key=key)
-    return [p["_key"] for p in sorted_parallels]
+def load_sorted_parallels_for_language(folder, lang, db):
+    """
+    Given a folder with parallel json files, load them all into the `parallels` collection
 
-def sort_parallels_for_file(data):
-    filename, db = data
-    print("Sorting parallels for file: ", filename)
-    collection_parallels = db.collection(COLLECTION_PARALLELS)
-    parallels = list(collection_parallels.find({"root_filename": filename}))
-        
-    ids_sorted_by_src_pos = sort_and_extract_ids(parallels, key=lambda x: x["root_segnr"][0])
-    ids_sorted_by_tgt_pos = sort_and_extract_ids(parallels, key=lambda x: x["par_segnr"][0])
-    ids_sorted_by_length_src = sort_and_extract_ids(parallels, key=lambda x: x["root_length"], natural=False)
-    ids_sorted_by_length_tgt = sort_and_extract_ids(parallels, key=lambda x: x["par_length"], natural=False)
-    ids_randomized = random.sample(ids_sorted_by_src_pos, len(ids_sorted_by_src_pos))
+    :param folder: Folder with parallel json files
+    :param db: ArangoDB connection object
+    :param number_of_threads: Number of threads to use for parallel loading
+    """
     
-    lang = get_language_from_file_name(filename)
-    return {
-        "_key": filename,
-        "filename": filename,
-        "lang": lang,
-        "parallels_sorted_by_src_pos": ids_sorted_by_src_pos,
-        "parallels_sorted_by_tgt_pos": ids_sorted_by_tgt_pos,
-        "parallels_sorted_by_length_src": ids_sorted_by_length_src,
-        "parallels_sorted_by_length_tgt": ids_sorted_by_length_tgt,
-        "parallels_randomized": ids_randomized,
-    }
-
-def chunks(lst, n):
-    """Yield successive n-sized chunks from lst."""
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
-
-def sort_parallels(db: StandardDatabase):
-    print("\nSorting parallels...")
-    collection_files = db.collection(COLLECTION_FILES)
-    collection_parallels_sorted = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
+    print("Loading sorted parallels for language: ", lang)
+    db_collection = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
+    # delete all parallels for this language
+    db_collection.delete_many({"lang": lang})
+    folder = os.path.join(folder, lang, "stats")
+    files = os.listdir(folder)
+    files = list(filter(lambda f: f.endswith("_stats.json.gz"), files))    
+    files = list(filter(lambda f: not "global" in f, files))    
+    for file in tqdm(files):
+        load_sorted_parallels_file(os.path.join(folder, file), lang, db_collection)
+    db_collection.add_hash_index(fields=['filename', 'lang'])
     
-    filenames = [[file["filename"], db] for file in tqdm(collection_files.all())]    
-    # keep only filenames that contain T06
-    filenames = [f for f in filenames if should_download_file(f[0])]
-
-    pool = multiprocessing.Pool(4)
-
-    # Process in chunks of 20
-    for chunk in tqdm(chunks(filenames, 50)):
-        # Using list() here ensures that the pool processes all items in the current chunk before moving on
-        results = list(tqdm(pool.imap_unordered(sort_parallels_for_file, chunk), total=len(chunk)))
-        collection_parallels_sorted.insert_many(results)
-        
-    # add hash index on filename
-    collection_parallels_sorted.add_hash_index(fields=['filename', 'lang'])
-    pool.close()
-    pool.join()
-
-    print("Done sorting parallels.")
+    print("Done loading sorted parallels for language: ", lang)

@@ -36,8 +36,7 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput):
 
     limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include) 
     limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)     
-    current_bind_vars = {
-        "parallel_ids_type": parallel_ids_type,
+    current_bind_vars = {        
         "file_name": input.file_name,
         "limit": 800,
         "startint": start_int,

@@ -37,7 +37,7 @@ def get_language_from_file_name(file_name) -> str:
     :return: Language of the file
     """
     lang = "pli"
-    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG", file_name):
+    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG|NY|TZ", file_name):
         lang = "tib"
     elif re.search(r"(u$|u:|^Y|^XX|sc$|sc:)", file_name):
         lang = "skt"
@@ -228,3 +228,17 @@ def get_file_text(file_name):
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
+
+def get_cat_from_segmentnr(segmentnr):
+    # when the segmentnr is not Pali:
+    cat = ""
+    search = re.search("^[A-Z]+[0-9]+", segmentnr)
+    if search:
+        cat = search[0]
+    else:
+        search = re.search("^[a-z-]+", segmentnr)
+        if search:
+            cat = search[0]
+        else:
+            cat = segmentnr[0:2]
+    return cat
