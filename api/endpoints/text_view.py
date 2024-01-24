@@ -11,6 +11,7 @@ from .models.shared import MiddleInput, TextParallelsInput
 
 router = APIRouter()
 
+
 @router.post("/middle/")
 async def get_parallels_for_middle(input: MiddleInput):
     """
@@ -19,7 +20,7 @@ async def get_parallels_for_middle(input: MiddleInput):
     query_result = execute_query(
         main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
         bind_vars={"parallel_ids": input.parallel_ids},
-    )    
+    )
     return calculate_color_maps_middle_view(query_result.result[0])
 
 
@@ -33,9 +34,13 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput):
     if input.active_segment != "none":
         start_int = get_start_integer(input.active_segment)
 
-    limitcollection_include = create_cleaned_limit_collection(input.limits.category_include + input.limits.file_include) 
-    limitcollection_exclude = create_cleaned_limit_collection(input.limits.category_exclude + input.limits.file_exclude)     
-    current_bind_vars = {        
+    limitcollection_include = create_cleaned_limit_collection(
+        input.limits.category_include + input.limits.file_include
+    )
+    limitcollection_exclude = create_cleaned_limit_collection(
+        input.limits.category_exclude + input.limits.file_exclude
+    )
+    current_bind_vars = {
         "file_name": input.file_name,
         "limit": 800,
         "startint": start_int,
@@ -45,12 +50,12 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput):
         "limitcollection_include": limitcollection_include,
         "limitcollection_exclude": limitcollection_exclude,
     }
-    
+
     text_segments_query_result = execute_query(
         main_queries.QUERY_TEXT_AND_PARALLELS,
         bind_vars=current_bind_vars,
     )
     data_with_colormaps = calculate_color_maps_text_view(
         text_segments_query_result.result[0]
-    )    
+    )
     return data_with_colormaps

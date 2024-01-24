@@ -1,11 +1,7 @@
 import re
 
-from dataloader_constants import (
-    LANG_CHINESE, 
-    LANG_TIBETAN, 
-    LANG_PALI, 
-    LANG_SANSKRIT
-)
+from dataloader_constants import LANG_CHINESE, LANG_TIBETAN, LANG_PALI, LANG_SANSKRIT
+
 
 def get_folios_from_segment_keys(segment_keys, lang):
     folios = []
@@ -50,4 +46,3 @@ def get_folios_from_segment_keys(segment_keys, lang):
                     last_num = num
 
     return folios
-    

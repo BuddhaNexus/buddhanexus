@@ -12,8 +12,8 @@ from arango.database import StandardDatabase
 import urlfetch
 from tqdm import trange
 from joblib import Parallel as ParallelJobRunner, delayed
-import os 
-import sys 
+import os
+import sys
 
 from dataloader_constants import (
     DB_NAME,
@@ -36,22 +36,27 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.utils import get_cat_from_segmentnr, get_language_from_file_name
 
+
 def get_filename_from_segmentnr(segmentnr):
     return segmentnr.split(":")[0]
+
 
 def get_arango_client() -> ArangoClient:
     """Get Arango Client instance"""
     return ArangoClient(hosts=ARANGO_HOST)
+
 
 def get_system_database() -> StandardDatabase:
     """Return system database instance"""
     client = get_arango_client()
     return client.db("_system", username=ARANGO_USER, password=ARANGO_PASSWORD)
 
+
 def get_database() -> StandardDatabase:
     """Return buddhanexus database instance"""
     client = get_arango_client()
     return client.db(DB_NAME, username=ARANGO_USER, password=ARANGO_PASSWORD)
+
 
 def get_remote_bytes(file_url) -> io.BytesIO:
     """
@@ -61,6 +66,7 @@ def get_remote_bytes(file_url) -> io.BytesIO:
     """
     result = urlfetch.fetch(file_url)
     return io.BytesIO(result.content)
+
 
 def execute_in_parallel(task, items, threads) -> None:
     """
@@ -93,10 +99,9 @@ def should_download_file(file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    #if "T06" in file_name:
+    # if "T06" in file_name:
     return True
-        
-    
+
 
 def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
     """
@@ -129,11 +134,13 @@ def get_collection_list_for_language(language, all_cols):
             total_collection_list.append(col["collection"])
     return total_collection_list
 
+
 def check_if_collection_exists(db, collection_name):
     collections = db.collections()
     for collection in collections:
         if collection["name"] == collection_name:
             return True
+
 
 def check_if_view_exists(db, view_name):
     views = db.views()
@@ -180,5 +187,3 @@ def natural_keys(text):
     (See Toothy's implementation in the comments)
     """
     return [atoi(c) for c in re.split(r"(\d+)", text)]
-
-

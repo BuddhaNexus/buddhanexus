@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from ..db_connection import get_db
 
+
 def execute_query(query, bind_vars=None, batch_size=100000, raw_results=False):
     """
     Execute a database query and handle exceptions

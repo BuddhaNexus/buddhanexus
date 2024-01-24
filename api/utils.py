@@ -13,6 +13,7 @@ from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
+
 def get_sort_key(sort_method) -> str:
     """
     Returns the correct sort_key for table and numbers queries
@@ -60,7 +61,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
                 bind_vars={"collectionkey": file.replace("!", "")},
             )
             for item in query.result:
-                    new_limit_collection.append(item)
+                new_limit_collection.append(item)
         else:
             if (
                 "tib_NyGB" in file
@@ -98,10 +99,6 @@ def collect_segment_results(segments) -> List:
         segments_result.append(segment)
 
     return segments_result, collection_keys
-
-
-
-
 
 
 def get_folio_regex(language, file_name, folio) -> str:
@@ -227,6 +224,7 @@ def get_file_text(file_name):
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
+
 
 def get_cat_from_segmentnr(segmentnr):
     # when the segmentnr is not Pali:

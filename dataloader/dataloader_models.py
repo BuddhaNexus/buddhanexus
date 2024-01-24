@@ -1,5 +1,6 @@
 from typing import List
 
+
 class Segment(dict):
     segnr: str
     segtext: str
@@ -19,6 +20,7 @@ class Parallel(dict):
     root_offset_beg: int
     root_offset_end: int
     root_segnr: List[str]
+
 
 # todo: check if up to date
 class MenuItem(dict):

@@ -10,6 +10,7 @@ from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
+
 def run_table_download(query, file_values):
 
     """
@@ -285,7 +286,7 @@ def get_spreadsheet_values(parallel, lang):
 
 
 def get_displayname(segmentnr, lang):
-    
+
     """
     Downloads the displaynames for the worksheet
     """
@@ -297,7 +298,7 @@ def get_displayname(segmentnr, lang):
         query=main_queries.QUERY_DISPLAYNAME,
         bind_vars={"file_name": file_name},
     )
-    
+
     if query_displayname.error:
         # Print the error message for debugging
         print(query_displayname.errorMsg)

@@ -2,13 +2,14 @@
 This file holds the functions for creating the colormaps.
 """
 
-def create_segmented_text(text, colormap, matchmap):    
+
+def create_segmented_text(text, colormap, matchmap):
     """Create segmented text based on the given colormap and matchmap."""
-    
+
     def filter_and_sort(matches):
         """Filter out None values and sort the matches."""
         return sorted([x for x in matches if x is not None])
-    
+
     result_segments = []
     current_segment = ""
     last_matches = filter_and_sort(matchmap[0])
@@ -27,15 +28,16 @@ def create_segmented_text(text, colormap, matchmap):
                 }
             )
             current_segment = ""
-        
+
         current_segment += char
-        last_matches, last_color = current_matches, current_color    
+        last_matches, last_color = current_matches, current_color
     # Add the last segment
     result_segments.append(
         {"text": current_segment, "highlightColor": last_color, "matches": last_matches}
     )
-    
+
     return result_segments
+
 
 def create_segmented_text_color_only(text, colormap):
     """create segmented text color"""
@@ -55,10 +57,11 @@ def create_segmented_text_color_only(text, colormap):
     result_segments.append({"text": current_segment, "highlightColor": last_color})
     return result_segments
 
-def calculate_color_maps_text_view(data):    
+
+def calculate_color_maps_text_view(data):
     """calculates the color maps for the text view"""
     textleft = data["textleft"]
-    parallels_dict = dict(zip(data["parallel_ids"], data["parallels"]))    
+    parallels_dict = dict(zip(data["parallel_ids"], data["parallels"]))
     for entry in textleft:
         # initialize with zeros
         segtext_len = len(entry["segtext"])

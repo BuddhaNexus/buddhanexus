@@ -9,6 +9,7 @@ from pyArango.connection import Connection, Database
 
 DB_NAME = os.environ["ARANGO_BASE_DB_NAME"]
 
+
 def get_db() -> Database:
     """
     Returns database instance

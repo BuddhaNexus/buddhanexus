@@ -44,11 +44,12 @@ def clean_search_index_db():
                 db.delete_collection(name)
         for name in INDEX_VIEW_NAMES:
             if name in db.views():
-                db.delete_view(name)       
+                db.delete_view(name)
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % name, e)
     clean_analyzers(db)
     print("search index cleaned.")
+
 
 def clean_all_collections_db():
     """
@@ -123,7 +124,6 @@ def clean_menu_collections_db():
     try:
         db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
         for name in (
-            
             COLLECTION_MENU_COLLECTIONS,
             COLLECTION_MENU_CATEGORIES,
             COLLECTION_LANGUAGES,

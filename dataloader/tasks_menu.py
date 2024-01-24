@@ -17,6 +17,7 @@ from dataloader_constants import (
     COLLECTION_FILES,
 )
 
+
 def create_collections_categories_graph(db: StandardDatabase) -> None:
     if db.has_graph(GRAPH_COLLECTIONS_CATEGORIES):
         return
