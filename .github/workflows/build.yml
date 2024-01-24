@@ -23,4 +23,4 @@ jobs:
           python -m pip install -r setup/requirements-dataloader.txt
           python -m pip install -r setup/requirements-fastapi.txt
       - name: Lint with pylint
-        run: pylint ./api/*.py --disable=fixme,bad-continuation,too-many-arguments,too-few-public-methods,duplicate-code --extension-pkg-whitelist=pydantic
+        run: pylint ./api/*.py --disable=fixme,too-many-arguments,too-few-public-methods,duplicate-code --extension-pkg-whitelist=pydantic

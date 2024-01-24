@@ -227,7 +227,9 @@ def get_file_text(file_name):
 
 
 def get_cat_from_segmentnr(segmentnr):
-    # when the segmentnr is not Pali:
+    """
+    when the segmentnr is not Pali:
+    """
     cat = ""
     search = re.search("^[A-Z]+[0-9]+", segmentnr)
     if search:
