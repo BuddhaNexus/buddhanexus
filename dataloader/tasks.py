@@ -93,14 +93,15 @@ def create_collections(
     for name in collections:
         try:
             db.create_collection(name)
+            print(f"created collection: {name}")
         except CollectionCreateError as e:
             print(f"Error creating collection {name}: ", e)
     for name in edge_collections:
         try:
             db.create_collection(name, edge=True)
+            print(f"created edge collection: {name}.")
         except CollectionCreateError as e:
             print("Error creating edge collection: ", e)
-    print(f"created {collections} collections")
 
 
 @task
