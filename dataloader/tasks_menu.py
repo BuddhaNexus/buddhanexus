@@ -194,12 +194,33 @@ def load_all_menu_categories(db: StandardDatabase):
             categories = json.load(f)
             category_count = 0
             for category in categories:
-                load_menu_category(
+                if type(category) == dict:
+                    handle_category(categories_db_collection,
+                                    category_has_files_edge_db_collection,
+                                    language,
+                                    category_count,
+                                    category)
+                    category_count += 1
+                elif type(category) == list:
+                    for nested_category in category:
+                        assert type(nested_category) == dict
+                        handle_category(categories_db_collection,
+                                        category_has_files_edge_db_collection,
+                                        language,
+                                        category_count,
+                                        nested_category)
+                        category_count += 1
+                else:
+                    print(f"illigal data type in menu category: type: {type(category)}")
+                    print(category)
+                    raise TypeError()
+            print("✓")
+
+def handle_category(categories_db_collection, category_has_files_edge_db_collection, language, category_count, category):
+    load_menu_category(
                     category,
                     category_count,
                     language,
                     categories_db_collection,
                     category_has_files_edge_db_collection,
                 )
-                category_count += 1
-            print("✓")
