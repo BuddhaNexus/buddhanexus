@@ -25,6 +25,8 @@ services:
       - .:/opt/buddhanexus
     env_file:
       - .env
+    environment:
+      - TSV_FILES_URL=todo ##################################
     links:
       - "arangodb"
     depends_on:
