@@ -8,13 +8,16 @@ tib_path = "/mnt/code/buddhanexus/json/tib/"
 chn_path = "/mnt/code/buddhanexus/json/chn/"
 skt_path = "/mnt/code/buddhanexus/json/skt/"
 
+
 def count_file(filepath):
-    jfile = gzip.open(filepath, 'r')
+    jfile = gzip.open(filepath, "r")
     data = json.load(jfile)
-    total = 0 
+    total = 0
     for segment in data[0]:
-        total += len(segment['segtext'])
-    return total 
+        total += len(segment["segtext"])
+    return total
+
+
 def count_path(path):
     total_length = 0
     filelist = []

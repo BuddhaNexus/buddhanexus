@@ -1,11 +1,14 @@
 from fastapi import APIRouter, Query
 from .endpoint_utils import execute_query
 from ..queries import menu_queries
+
 router = APIRouter()
 
 
 @router.get("/files/")
-async def get_files_for_menu(language: str = Query(..., description="language to be used")):
+async def get_files_for_menu(
+    language: str = Query(..., description="language to be used")
+):
     """
     Endpoint that returns list of file IDs in a given language or
     all files available in multilang if the language is multi.
@@ -21,7 +24,9 @@ async def get_files_for_menu(language: str = Query(..., description="language to
 
 
 @router.get("/filter/")
-async def get_files_for_filter_menu(language: str = Query(..., description="language to be used")):
+async def get_files_for_filter_menu(
+    language: str = Query(..., description="language to be used")
+):
     """
     Given a language, return list of files for the category menu
     """
@@ -32,7 +37,9 @@ async def get_files_for_filter_menu(language: str = Query(..., description="lang
 
 
 @router.get("/category/")
-async def get_categories_for_filter_menu(language: str = Query(..., description="language to be used")):
+async def get_categories_for_filter_menu(
+    language: str = Query(..., description="language to be used")
+):
     """
     Given a language, return list of categories for the filter menu
     """
@@ -54,7 +61,9 @@ async def get_all_collections():
 
 
 @router.get("/sidebar/")
-async def get_data_for_sidebar_menu(language: str = Query(..., description="language to be used")):
+async def get_data_for_sidebar_menu(
+    language: str = Query(..., description="language to be used")
+):
     """
     Endpoint for sidebar menu
     """

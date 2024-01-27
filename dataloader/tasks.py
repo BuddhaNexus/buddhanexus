@@ -33,14 +33,14 @@ from load_segments import (
 )
 
 from global_search import (
-    create_analyzers, 
+    create_analyzers,
     clean_analyzers,
     create_search_views,
 )
 
 from load_parallels import (
     load_parallels_for_language,
-    load_sorted_parallels_for_language
+    load_sorted_parallels_for_language,
 )
 
 from tasks_menu import (
@@ -101,12 +101,10 @@ def create_collections(
         except CollectionCreateError as e:
             print("Error creating edge collection: ", e)
     print(f"created {collections} collections")
-    
+
 
 @task
-def load_text_segments(
-    c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded=True
-):
+def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded=True):
     """
     Load texts and their segments into the database
 
@@ -119,21 +117,21 @@ def load_text_segments(
         "skt": LoadSegmentsSanskrit,
         "pli": LoadSegmentsPali,
         "tib": LoadSegmentsTibetan,
-        "zh": LoadSegmentsChinese
+        "zh": LoadSegmentsChinese,
     }
-    number_of_threads = os.cpu_count()    
+    number_of_threads = os.cpu_count()
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
     print(
         f"Loading source files from {root_url} using {f'{number_of_threads} threads' if threaded else '1 thread'}."
     )
-    
+
     load_text_data_from_menu_files(lang, db)
     for l in lang:
         print("LANG: ", l)
-        SegmentLoaderClass = SEGMENT_LOADERS.get(l)                
-        if SegmentLoaderClass:        
+        SegmentLoaderClass = SEGMENT_LOADERS.get(l)
+        if SegmentLoaderClass:
             loader = SegmentLoaderClass()
             loader.load(number_of_threads=number_of_threads)
     print("Segment data loading completed.")
@@ -141,6 +139,7 @@ def load_text_segments(
     create_analyzers(db)
     create_search_views(db)
     print("Analyzers and search views created.")
+
 
 @task
 def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=True):
@@ -153,9 +152,10 @@ def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=
     db = get_database()
     for clang in lang:
         print("LANG: ", clang)
-        load_parallels_for_language(root_url, clang, db, thread_count if threaded else 1)
+        load_parallels_for_language(
+            root_url, clang, db, thread_count if threaded else 1
+        )
         load_sorted_parallels_for_language(root_url, clang, db)
-    
 
 
 @task
@@ -181,6 +181,7 @@ def clean_multi_data(c):
     :param c: invoke.py context object
     """
     clean_multi()
+
 
 @task
 def clean_search_index(c):
@@ -294,7 +295,6 @@ def clean_english(c):
     clean_all_lang_db(LANG_ENGLISH)
 
 
-
 @task
 def clean_chinese(c):
     """
@@ -314,6 +314,7 @@ def load_menu_files(c):
     create_collections_categories_graph(db)
 
     print("Menu data loading completed!")
+
 
 @task
 def add_sources(c):

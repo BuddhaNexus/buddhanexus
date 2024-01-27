@@ -17,7 +17,6 @@ async def get_graph_for_file(input: GraphInput):
     """
     Endpoint for graph view
     """
-
     query_graph_result = execute_query(
         main_queries.QUERY_GRAPH_VIEW,
         bind_vars={

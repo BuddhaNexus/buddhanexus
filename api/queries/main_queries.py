@@ -5,8 +5,7 @@ Todo:
 - When this gets too big (>300 lines), consider splitting this into
   several files inside a "queries" directory.
 
-# Progress:
-Rewrote 1/8 queries
+# Progress: Rewrote 1/8 queries
 """
 
 QUERY_FOLIOS = """

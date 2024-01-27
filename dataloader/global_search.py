@@ -1,6 +1,7 @@
 """
 Here we create the search index and analyzers for the global search in the text elements.
 """
+
 from arango.database import StandardDatabase
 from tqdm import tqdm as tqdm
 from dataloader_constants import (
@@ -26,6 +27,7 @@ from views_properties import (
     PROPERTIES_SEARCH_INDEX_CHN,
 )
 
+
 def get_stopwords_list(path):
     stopwords = []
     with open(path) as file:
@@ -38,13 +40,14 @@ tib_stopwords_list = get_stopwords_list("../data/tib_stopwords.txt")
 skt_stopwords_list = get_stopwords_list("../data/skt_stopwords.txt")
 pli_stopwords_list = get_stopwords_list("../data/pli_stopwords.txt")
 
+
 class AnalyzerBase:
     ANALYZER_NAME: str
     CASE: str
     STOPWORDS: list
     ACCENT: bool
 
-    def create_analyzer(self, db: StandardDatabase):        
+    def create_analyzer(self, db: StandardDatabase):
         db.create_analyzer(
             name=self.ANALYZER_NAME,
             analyzer_type="text",
@@ -64,6 +67,7 @@ class AnalyzerSanskrit(AnalyzerBase):
     CASE = "none"
     STOPWORDS = skt_stopwords_list
     ACCENT = True
+
 
 class AnalyzerPali(AnalyzerBase):
     ANALYZER_NAME = PALI_ANALYZER
@@ -103,22 +107,32 @@ def create_analyzers(db: StandardDatabase):
     Analyzer = AnalyzerPali()
     Analyzer.create_analyzer(db)
 
+
 def clean_analyzers(db: StandardDatabase):
     for analyzer in ANALYZER_NAMES:
         if analyzer in db.analyzers():
-            db.delete_analyzer(analyzer)    
+            db.delete_analyzer(analyzer)
 
-def create_search_view(db: StandardDatabase, view_name: str, view_properties: dict, language: str):
+
+def create_search_view(
+    db: StandardDatabase, view_name: str, view_properties: dict, language: str
+):
     """Helper function to create a search view for a specified language."""
     print(f"\nCreating {language} search views...")
     if not check_if_view_exists(db, view_name):
         db.create_arangosearch_view(name=view_name, properties=view_properties)
 
+
 def create_search_views(db: StandardDatabase):
-    #create_search_view(db, VIEW_SEARCH_INDEX_PLI, PROPERTIES_SEARCH_INDEX_PLI, "Pali")
-    #create_search_view(db, VIEW_SEARCH_INDEX_SKT, PROPERTIES_SEARCH_INDEX_SKT, "Sanskrit")
-    create_search_view(db, VIEW_SEARCH_INDEX_TIB, PROPERTIES_SEARCH_INDEX_TIB, "Tibetan")
-    create_search_view(db, VIEW_SEARCH_INDEX_TIB_FUZZY, PROPERTIES_SEARCH_INDEX_TIB_FUZZY, "Tibetan Fuzzy")
-    #create_search_view(db, VIEW_SEARCH_INDEX_CHN, PROPERTIES_SEARCH_INDEX_CHN, "Chinese")
-
-
+    # create_search_view(db, VIEW_SEARCH_INDEX_PLI, PROPERTIES_SEARCH_INDEX_PLI, "Pali")
+    # create_search_view(db, VIEW_SEARCH_INDEX_SKT, PROPERTIES_SEARCH_INDEX_SKT, "Sanskrit")
+    create_search_view(
+        db, VIEW_SEARCH_INDEX_TIB, PROPERTIES_SEARCH_INDEX_TIB, "Tibetan"
+    )
+    create_search_view(
+        db,
+        VIEW_SEARCH_INDEX_TIB_FUZZY,
+        PROPERTIES_SEARCH_INDEX_TIB_FUZZY,
+        "Tibetan Fuzzy",
+    )
+    # create_search_view(db, VIEW_SEARCH_INDEX_CHN, PROPERTIES_SEARCH_INDEX_CHN, "Chinese")

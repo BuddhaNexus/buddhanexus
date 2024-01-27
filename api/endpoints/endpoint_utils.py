@@ -1,5 +1,4 @@
 from fastapi import HTTPException
-
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from ..db_connection import get_db
 

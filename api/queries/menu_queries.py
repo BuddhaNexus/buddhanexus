@@ -36,7 +36,6 @@ FOR file IN files
             categoryname: file.textname,
             displayname: file.displayName,
             search_field: file.search_field
-
         }
 """
 

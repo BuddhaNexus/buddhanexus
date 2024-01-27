@@ -61,10 +61,8 @@ LET combined_results = (
                         par_string : p.par_string
                         }
             )
-
         RETURN [result,multilang_results]
     )
 
 RETURN combined_results
-
 """
