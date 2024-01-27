@@ -41,49 +41,23 @@ create-collections:
 load-menu-data:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
 
-# Load segment & parallel data from remote url based on local menu files.
-load-segment-data:
-	@docker exec -t dataloader bash -c "invoke load-segment-files"
-
-# Load segment & parallel data from remote url based on local menu files - asynchronously.
-load-segment-data-async:
-	@docker exec -t dataloader bash -c "invoke load-segment-files --threaded"
-
 # Load & build the search-index
-create-search-index:
-	@docker exec -t dataloader bash -c "invoke create-search-index"
-
-add-segment-index:
-	@docker exec -ti dataloader bash -c "invoke add-indices"
 
 add-sources:
 	@docker exec -ti dataloader bash -c "invoke add-sources"
-
-# Load all (segment, parallel & menu) data
-load-data:
-	@docker exec -ti dataloader bash -c "invoke load-menu-files"
-	@docker exec -ti dataloader bash -c "invoke load-segment-files"
-	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
-	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
-
-# Load all data - asynchronously
-load-data-async:
-	@docker exec -ti dataloader bash -c "invoke load-menu-files"
-	@docker exec -ti dataloader bash -c "invoke load-segment-files --threaded"
-	@docker exec -ti dataloader bash -c "invoke clean-totals-collection"
-	@docker exec -ti dataloader bash -c "invoke calculate-collection-totals"
-	@docker exec -ti dataloader bash -c "invoke add-indices"
 
 clean-db:
 	@docker exec -t dataloader bash -c "invoke clean-all-collections"
 	@docker exec -t dataloader bash -c "invoke create-db create-collections"
 
 # these commands are for loading individual datasets asynchronously
+# @Vladimir this is all you need for now, use 'make run-dev' to start the docker image and then run 'make load-tibetan-data'. If you want to remove data, run 'make clean-db'
 load-tibetan-data:
-	#@docker exec -t dataloader bash -c "invoke #load-menu-files"
-	#@docker exec -t dataloader bash -c "invoke load-text-segments --lang=tib"
+	@docker exec -t dataloader bash -c "invoke create-collections"
+	@docker exec -t dataloader bash -c "invoke load-menu-files"
+	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=tib"
 	@docker exec -t dataloader bash -c "invoke load-parallels --lang=tib"
+
 # List available commands for the dataloader
 list-tasks:
 	@docker exec -t dataloader bash -c "invoke --list"
