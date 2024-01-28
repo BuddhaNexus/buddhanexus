@@ -6279,7 +6279,6 @@
         ],
         "categoryname": "NK133(po)"
     },
-    [
         {
             "category": "TZ19",
             "files": [
@@ -9856,8 +9855,7 @@
                 "TZ67-SIDDHAM-035"
             ],
             "category_name": "TZ67"
-        }
-    ],
+        },
     {
         "category": "NY",
         "files": [
