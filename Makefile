@@ -53,11 +53,22 @@ clean-db:
 # these commands are for loading individual datasets asynchronously
 # @Vladimir this is all you need for now, use 'make run-dev' to start the docker image and then run 'make load-tibetan-data'. If you want to remove data, run 'make clean-db'
 load-tibetan-data:
-	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=tib"
+	#@docker exec -t dataloader bash -c "invoke create-collections"
+	#@docker exec -t dataloader bash -c "invoke load-menu-files"
+	#@docker exec -t dataloader bash -c "invoke load-text-segments --lang=tib"
 	@docker exec -t dataloader bash -c "invoke load-parallels --lang=tib"
 
+load-pali-data:
+	#@docker exec -t dataloader bash -c "invoke create-collections"
+	#@docker exec -t dataloader bash -c "invoke load-menu-files"
+	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=pli"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=pli"
+
+load-chinese-data:
+	#@docker exec -t dataloader bash -c "invoke create-collections"
+	#@docker exec -t dataloader bash -c "invoke load-menu-files"
+	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=chn"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=chn"
 # List available commands for the dataloader
 list-tasks:
 	@docker exec -t dataloader bash -c "invoke --list"
