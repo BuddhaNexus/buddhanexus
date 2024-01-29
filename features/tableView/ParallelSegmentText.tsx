@@ -15,7 +15,7 @@ export const ParallelSegmentText = ({ text }: Props) => {
 
   return (
     <>
-      {text.map(({ text: segmentText, highlightColor }) => {
+      {text?.map(({ text: segmentText, highlightColor }) => {
         return (
           <Typography
             key={segmentText}
