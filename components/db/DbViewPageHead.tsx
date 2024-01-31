@@ -6,15 +6,14 @@ import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { startCase } from "lodash";
-import { OldDbApi } from "utils/api/dbApi";
+import { DbApi } from "utils/api/dbApi";
 
 export const DbViewPageHead = () => {
   const { fileName } = useDbQueryParams();
 
-  // TODO: the current implementation uses an endpoint from the old API, we should switch to the new one when available
   const { data: displayName, isLoading } = useQuery({
-    queryKey: OldDbApi.TextDisplayName.makeQueryKey(fileName),
-    queryFn: () => OldDbApi.TextDisplayName.call(fileName),
+    queryKey: DbApi.TextDisplayName.makeQueryKey(fileName),
+    queryFn: () => DbApi.TextDisplayName.call(fileName),
   });
 
   const dbView = useAtomValue(currentViewAtom);

@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { DbApi, OldDbApi } from "utils/api/dbApi";
+import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 
 export const queryCacheTimeDefaults = {
@@ -42,10 +42,9 @@ export async function prefetchDbResultsPageData(
     },
   });
 
-  // TODO: the current implementation uses an endpoint from the old API, we should switch to the new one when available
   await queryClient.prefetchQuery({
-    queryKey: OldDbApi.TextDisplayName.makeQueryKey(fileName),
-    queryFn: () => OldDbApi.TextDisplayName.call(fileName),
+    queryKey: DbApi.TextDisplayName.makeQueryKey(fileName),
+    queryFn: () => DbApi.TextDisplayName.call(fileName),
   });
 
   // TODO: review. disabled for now to lighten build burden.

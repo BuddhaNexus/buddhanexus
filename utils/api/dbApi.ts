@@ -116,10 +116,6 @@ export const DbApi = {
     }) => ["globalSearchData", searchTerm, queryParams],
     call: getGlobalSearchData,
   },
-};
-
-// TODO: - this is a test to see if this is the best method to get the display name for all views with minimum backend work (just reinstating an old endpoint). If it is, we add it to the main db api and can remove this
-export const OldDbApi = {
   TextDisplayName: {
     makeQueryKey: (fileName: string) => ["textNameData", fileName],
     call: getTextDisplayName,

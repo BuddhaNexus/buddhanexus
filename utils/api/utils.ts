@@ -3,8 +3,6 @@ import type { QueryParams } from "features/sidebarSuite/config/types";
 import type { FilePropApiQuery } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
-import { API_OLD_ROOT_URL } from "./constants";
-
 // TODO: - remove type casting once response model is added to api
 
 export function parseDbPageQueryParams(
@@ -62,13 +60,20 @@ export async function getAvailableLanguages(
   return data ? awaitingTypesFromApiData.langList.filter(Boolean) : [];
 }
 
-// TODO: this is a temporary implementation for the "End of Year" release - remove or refactor as suitable. See dbApi.ts for more details
-interface TempDataType {
-  displayData?: string[];
-}
 export async function getTextDisplayName(fileName: string): Promise<string> {
-  const response = await fetch(`${API_OLD_ROOT_URL}/displayname/${fileName}`);
-  const data = (await response.json()) as TempDataType;
+  if (!fileName) {
+    return "";
+  }
 
-  return data?.displayData?.[0] ?? "";
+  const { data } = await apiClient.GET("/utils/displayname/", {
+    params: { query: { segmentnr: fileName } },
+  });
+
+  const awaitingTypesFromApiData = data as {
+    displayname: string[];
+  };
+
+  const [textName] = awaitingTypesFromApiData.displayname;
+
+  return textName ?? "";
 }
