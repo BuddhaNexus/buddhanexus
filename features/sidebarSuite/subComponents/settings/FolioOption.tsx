@@ -51,6 +51,7 @@ export default function FolioOption() {
           <Select
             labelId="folio-option-selector-label"
             id="folio-option-selector"
+            aria-labelledby="folio-option-selector-label"
             value={showAll}
             input={<OutlinedInput label={selectorLabel} />}
             displayEmpty
@@ -66,6 +67,7 @@ export default function FolioOption() {
           <Select
             labelId="folio-option-selector-label"
             id="folio-option-selector"
+            aria-labelledby="folio-option-selector-label"
             input={<OutlinedInput label={selectorLabel} />}
             value={folioParam ?? showAll}
             displayEmpty

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
@@ -26,6 +27,7 @@ import { tempSearchData } from "./tempData";
 
 export default function SearchPage() {
   // IN DEVELOPMENT
+  const { t } = useTranslation();
   const { isReady } = useRouter();
 
   // TODO: fix server error if no search term
@@ -73,8 +75,7 @@ export default function SearchPage() {
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
         {/* TODO: align other results pages to match this. To avoide CLS and for logical flow, it makes sense for this to be the first element. */}
         <Typography variant="h2" component="h1" mb={1}>
-          {/* TODO: i18n */}
-          Search Results
+          {t("search.pageTitle")}
         </Typography>
         <div>
           <CircularProgress
@@ -94,8 +95,7 @@ export default function SearchPage() {
       isQueryResultsPage
     >
       <Typography variant="h2" component="h1" mb={1}>
-        {/* TODO: i18n */}
-        Search Results
+        {t("search.pageTitle")}
       </Typography>
 
       <SearchBoxWrapper sx={{ mb: 5 }}>

@@ -1,7 +1,10 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 import { Box, CircularProgress } from "@mui/material";
 
 export function CenteredProgress() {
+  const { t } = useTranslation();
+
   return (
     <Box
       sx={{
@@ -11,7 +14,7 @@ export function CenteredProgress() {
         flex: 1,
       }}
     >
-      <CircularProgress color="inherit" />
+      <CircularProgress color="inherit" aria-label={t("prompts.loading")} />
     </Box>
   );
 }

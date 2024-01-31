@@ -75,6 +75,8 @@ const GlobalSearchMobile = () => {
           <SearchBoxWrapper>
             <SearchBoxInput
               inputRef={inputRef}
+              role="searchbox"
+              aria-label="Search"
               placeholder={t("search.placeholder")}
               variant="outlined"
               InputProps={{
