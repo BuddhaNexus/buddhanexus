@@ -48,6 +48,7 @@
     "noResults": "No results found."
   },
   "search": {
+    "pageTitle": "Search Results",
     "placeholder": "Search..."
   }
 }

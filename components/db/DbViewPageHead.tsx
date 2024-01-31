@@ -28,11 +28,11 @@ export const DbViewPageHead = () => {
       <QueryPageTopStack />
       {isLoading ? (
         <Typography variant="h2" component="h1" mb={1}>
-          {fileName.toUpperCase()}
+          {fileName?.toUpperCase()}
         </Typography>
       ) : (
         <Typography variant="h2" component="h1" mb={1}>
-          {fileName.toUpperCase()}: {displayName}
+          {fileName?.toUpperCase()}: {displayName}
         </Typography>
       )}
     </>
