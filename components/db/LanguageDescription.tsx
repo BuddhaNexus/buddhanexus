@@ -15,7 +15,7 @@ const ChineseDescription = () => {
           t={t}
           components={[
             <Link
-              key="0"
+              key="chn-p01-link"
               href="https://www.cbeta.org/"
               target="_blank"
               rel="noopener"
@@ -44,7 +44,7 @@ const PaliDescription = () => {
           t={t}
           components={[
             <Link
-              key="0"
+              key="pli-p01-link"
               href="https://tipitaka.org/"
               target="_blank"
               rel="noopener"
@@ -59,13 +59,13 @@ const PaliDescription = () => {
           t={t}
           components={[
             <Link
-              key="0"
+              key="pli-p02-01"
               href="https://github.com/suttacentral/bilara-data"
               target="_blank"
               rel="noopener"
             />,
             <Link
-              key="1"
+              key="pli-p02-02"
               href="https://suttacentral.net/"
               target="_blank"
               rel="noopener"
@@ -98,19 +98,19 @@ const SanskritDescription = () => {
           t={t}
           components={[
             <Link
-              key="0"
+              key="skt-p01-01"
               href="http://gretil.sub.uni-goettingen.de/gretil.html"
               target="_blank"
               rel="noopener"
             />,
             <Link
-              key="1"
+              key="skt-p01-02"
               href="https://www.dsbcproject.org/"
               target="_blank"
               rel="noopener"
             />,
             <Link
-              key="2"
+              key="skt-p01-03"
               href="https://www.suttacentral.net/"
               target="_blank"
               rel="noopener"
@@ -131,7 +131,7 @@ const SanskritDescription = () => {
           t={t}
           components={[
             <Link
-              key="0"
+              key="skt-p04-01"
               href="https://buddhanexus.net/sanskrit-tools"
               target="_blank"
               rel="noopener"
@@ -162,13 +162,13 @@ const TibetanDescription = () => {
           t={t}
           components={[
             <Link
-              key="0"
+              key="tib-p01-link-01"
               href="https://asianclassics.org/"
               target="_blank"
               rel="noopener"
             />,
             <Link
-              key="1"
+              key="tib-p01-link-02"
               href="https://www.tbrc.org/"
               target="_blank"
               rel="noopener"
