@@ -1,39 +1,56 @@
 import apiClient from "@api";
 import type { InfiniteSerachApiQuery, PagedResponse } from "types/api/common";
+import type { SourceLanguage } from "utils/constants";
 
 import { parseDbPageQueryParams } from "./utils";
 
 export type SearchResult = {
   id: string;
   segmentNumbers: string[];
-  matchString: string;
+  matchStringOriginal: string;
+  matchStringStemmed: string;
+  category: string;
+  language: SourceLanguage;
   fileName: string;
   matchOffsetStart: number;
   matchOffsetEnd: number;
   matchCenteredness: number;
   matchDistance: number;
-  multilangResults: string[];
 };
 
-export type SearchPageResults = Map<string, SearchResult>;
-export type SearchPageData = { total: number; results: SearchPageResults };
+export type SearchPageResults = SearchResult[];
+// export type SearchPageData = { data: SearchPageResults };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function parseAPISearchData(apiData: any): SearchPageResults {
-  const searchResults = new Map<string, SearchResult>();
+  const searchResults: SearchPageResults = [];
   for (const result of apiData) {
-    const searchPageResult: SearchResult = {
-      id: result._key,
-      segmentNumbers: result.segment_nr,
-      matchString: result.search_string_precise,
-      fileName: result.file_name,
-      matchOffsetStart: result.offset_beg,
-      matchOffsetEnd: result.offset_end,
-      matchCenteredness: result.centeredness,
-      matchDistance: result.distance,
-      multilangResults: result.multilang_results,
-    };
-    searchResults.set(searchPageResult.id, searchPageResult);
+    const {
+      _key,
+      segment_nr,
+      original,
+      stemmed,
+      category,
+      language,
+      file_name,
+      offset_beg,
+      offset_end,
+      centeredness,
+      distance,
+    } = result;
+    searchResults.push({
+      id: _key,
+      segmentNumbers: segment_nr,
+      matchStringOriginal: original,
+      matchStringStemmed: stemmed,
+      category,
+      language,
+      fileName: file_name,
+      matchOffsetStart: offset_beg,
+      matchOffsetEnd: offset_end,
+      matchCenteredness: centeredness,
+      matchDistance: distance,
+    });
   }
   return searchResults;
 }
@@ -42,7 +59,7 @@ export async function getGlobalSearchData({
   searchTerm,
   pageNumber,
   queryParams,
-}: InfiniteSerachApiQuery): Promise<PagedResponse<SearchPageData>> {
+}: InfiniteSerachApiQuery): Promise<PagedResponse<SearchPageResults>> {
   // IN DEVELOPMENT
   // TODO: Add pagination on BE
   //  - remove type casting once response model is added to api
@@ -53,10 +70,9 @@ export async function getGlobalSearchData({
   });
 
   const castData = data as { searchResults: any[] };
-  const parsedData = parseAPISearchData(castData.searchResults);
 
   return {
-    data: { total: castData.searchResults.length, results: parsedData },
+    data: parseAPISearchData(castData.searchResults),
     pageNumber,
   };
 }

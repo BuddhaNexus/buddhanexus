@@ -42,9 +42,7 @@ const ListContainer = styled("ul")(() => ({
 
 export default function SearchResults({
   data,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onEndReached,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onStartReached,
 }: Props) {
   const hasData = data.length > 0;
@@ -73,6 +71,8 @@ export default function SearchResults({
         exit: (velocity) => Math.abs(velocity) < 100,
         // change: (_, range) => console.log({ range }),
       }}
+      endReached={onEndReached}
+      startReached={onStartReached}
     />
   );
 }

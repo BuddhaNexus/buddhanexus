@@ -21,9 +21,8 @@ import {
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import type { PagedResponse } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
+import { type SearchPageResults } from "utils/api/search";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
-
-import { tempSearchData } from "./tempData";
 
 export default function SearchPage() {
   // IN DEVELOPMENT
@@ -45,35 +44,45 @@ export default function SearchPage() {
   }, [isReady, setSearchTerm, searchParam]);
 
   // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
-  const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    data,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    fetchNextPage,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    fetchPreviousPage,
-    isLoading,
-  } = useInfiniteQuery<PagedResponse<any>>({
-    initialPageParam: 0,
-    queryKey: DbApi.GlobalSearchData.makeQueryKey({
-      searchTerm: searchParam,
-      queryParams,
-    }),
-    queryFn: ({ pageParam }) =>
-      DbApi.GlobalSearchData.call({
+  const { data, fetchNextPage, fetchPreviousPage, isLoading } =
+    useInfiniteQuery<PagedResponse<SearchPageResults>>({
+      initialPageParam: 0,
+      queryKey: DbApi.GlobalSearchData.makeQueryKey({
         searchTerm: searchParam,
-        pageNumber: pageParam as number,
         queryParams,
       }),
-    getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
-    getPreviousPageParam: (lastPage) =>
-      lastPage.pageNumber === 0 ? lastPage.pageNumber : lastPage.pageNumber - 1,
-  });
+      queryFn: ({ pageParam }) =>
+        DbApi.GlobalSearchData.call({
+          searchTerm: searchParam,
+          pageNumber: pageParam as number,
+          queryParams,
+        }),
+      getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
+      getPreviousPageParam: (lastPage) =>
+        lastPage.pageNumber === 0
+          ? lastPage.pageNumber
+          : lastPage.pageNumber - 1,
+    });
+
+  // TODO: awaiting paginated data; refactor once backend work is done.
+  // const allData = React.useMemo(
+  //   () => (data ? data.pages.flatMap((page) => page.data) : []),
+  //   [data]
+  // );
+  // <---- temporary handling
+  const allData = React.useMemo(() => {
+    const sortedData = data
+      ? data.pages[0]?.data
+          .sort((a, b) => b.matchCenteredness - a.matchCenteredness)
+          .sort((a, b) => a.matchDistance - b.matchDistance)
+      : [];
+    return sortedData;
+  }, [data]);
+  // ----->
 
   if (isFallback) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
-        {/* TODO: align other results pages to match this. To avoide CLS and for logical flow, it makes sense for this to be the first element. */}
         <Typography variant="h2" component="h1" mb={1}>
           {t("search.pageTitle")}
         </Typography>
@@ -131,45 +140,33 @@ export default function SearchPage() {
 
       <QueryPageTopStack />
 
-      <SearchResults
-        data={tempSearchData.searchResults}
-        onEndReached={fetchNextPage}
-        onStartReached={fetchPreviousPage}
-      />
-
-      {/* TODO: componentize search results */}
       {isLoading ? (
         <div>
-          {/* TODO: i18n
+          {/* TODO: i18n */}
           <CircularProgress
             aria-label="loading"
             color="inherit"
             sx={{ flex: 1 }}
-          /> */}
+          />
         </div>
       ) : (
-        <div />
-        // <>
-        //   {data ? (
-        //     <>
-        //       {data.pages.flatMap((page) => (
-        //         <React.Fragment key={page.pageNumber}>
-        //           <Typography>{page.data.total} Results</Typography>
-        //           <SearchResults
-        //             data={tempSearchData}
-        //             onEndReached={fetchNextPage}
-        //             onStartReached={fetchPreviousPage}
-        //           />
-        //         </React.Fragment>
-        //       ))}
-        //     </>
-        //   ) : (
-        //     <>
-        //       {/* TODO: i18n */}
-        //       <Typography>No results.</Typography>
-        //     </>
-        //   )}
-        // </>
+        <>
+          {data ? (
+            <>
+              <Typography>{allData?.length} Results</Typography>
+              <SearchResults
+                data={allData}
+                onEndReached={fetchNextPage}
+                onStartReached={fetchPreviousPage}
+              />
+            </>
+          ) : (
+            <>
+              {/* TODO: i18n */}
+              <Typography>No results.</Typography>
+            </>
+          )}
+        </>
       )}
 
       <SourceTextBrowserDrawer />
@@ -182,7 +179,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["settings", "common"],
+    ["settings"],
   );
 
   return {
