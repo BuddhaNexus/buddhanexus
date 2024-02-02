@@ -50,9 +50,10 @@ export default function FolioOption() {
         {isLoading ? (
           <Select
             labelId="folio-option-selector-label"
-            id="folio-option-selector"
-            aria-labelledby="folio-option-selector-label"
             value={showAll}
+            inputProps={{
+              id: "folio-option-selector",
+            }}
             input={<OutlinedInput label={selectorLabel} />}
             displayEmpty
           >
@@ -66,8 +67,9 @@ export default function FolioOption() {
         ) : (
           <Select
             labelId="folio-option-selector-label"
-            id="folio-option-selector"
-            aria-labelledby="folio-option-selector-label"
+            inputProps={{
+              id: "folio-option-selector",
+            }}
             input={<OutlinedInput label={selectorLabel} />}
             value={folioParam ?? showAll}
             displayEmpty
