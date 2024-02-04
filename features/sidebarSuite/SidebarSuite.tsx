@@ -47,7 +47,10 @@ export function SidebarSuite() {
       open={isSettingsOpen}
     >
       <Toolbar />
-      <aside id="db-results-settings-sidebar">
+      <aside
+        id="db-results-settings-sidebar"
+        aria-label="settings and info tabs"
+      >
         <Box sx={{ width: 1 }}>
           <TabContext value={activeTab}>
             <DrawerHeader>

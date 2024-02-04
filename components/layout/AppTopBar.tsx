@@ -177,9 +177,11 @@ export const AppTopBar = () => {
           <LocaleSelector />
         </Toolbar>
       </AppBar>
-      <aside id="mobile-search">
-        {!isSearchRoute && <GlobalSearchMobile />}
-      </aside>
+      {!isSearchRoute && (
+        <aside id="mobile-search" aria-label="search">
+          <GlobalSearchMobile />
+        </aside>
+      )}
     </>
   );
 };
