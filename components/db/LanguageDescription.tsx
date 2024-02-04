@@ -59,13 +59,13 @@ const PaliDescription = () => {
           t={t}
           components={[
             <Link
-              key="pli-p02-01"
+              key="pli-p02-link-01"
               href="https://github.com/suttacentral/bilara-data"
               target="_blank"
               rel="noopener"
             />,
             <Link
-              key="pli-p02-02"
+              key="pli-p02-link-02"
               href="https://suttacentral.net/"
               target="_blank"
               rel="noopener"
@@ -98,19 +98,19 @@ const SanskritDescription = () => {
           t={t}
           components={[
             <Link
-              key="skt-p01-01"
+              key="skt-p01-link-01"
               href="http://gretil.sub.uni-goettingen.de/gretil.html"
               target="_blank"
               rel="noopener"
             />,
             <Link
-              key="skt-p01-02"
+              key="skt-p01-link-02"
               href="https://www.dsbcproject.org/"
               target="_blank"
               rel="noopener"
             />,
             <Link
-              key="skt-p01-03"
+              key="skt-p01-link-03"
               href="https://www.suttacentral.net/"
               target="_blank"
               rel="noopener"
@@ -131,7 +131,7 @@ const SanskritDescription = () => {
           t={t}
           components={[
             <Link
-              key="skt-p04-01"
+              key="skt-p04-link"
               href="https://buddhanexus.net/sanskrit-tools"
               target="_blank"
               rel="noopener"
