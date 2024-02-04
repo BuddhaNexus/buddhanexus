@@ -13,7 +13,12 @@ import { getNumbersData } from "./numbers";
 import { getGlobalSearchData } from "./search";
 import { getTableData } from "./table";
 import { getTextData, getTextViewMiddleParallelsData } from "./text";
-import { getAvailableLanguages, getFolios, getParallelCount } from "./utils";
+import {
+  getAvailableLanguages,
+  getFolios,
+  getParallelCount,
+  getTextDisplayName,
+} from "./utils";
 
 export const DbApi = {
   //* VIEWS
@@ -110,5 +115,9 @@ export const DbApi = {
       queryParams: Params;
     }) => ["globalSearchData", searchTerm, queryParams],
     call: getGlobalSearchData,
+  },
+  TextDisplayName: {
+    makeQueryKey: (fileName: string) => ["textNameData", fileName],
+    call: getTextDisplayName,
   },
 };

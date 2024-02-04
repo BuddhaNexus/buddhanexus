@@ -59,3 +59,21 @@ export async function getAvailableLanguages(
 
   return data ? awaitingTypesFromApiData.langList.filter(Boolean) : [];
 }
+
+export async function getTextDisplayName(fileName: string): Promise<string> {
+  if (!fileName) {
+    return "";
+  }
+
+  const { data } = await apiClient.GET("/utils/displayname/", {
+    params: { query: { segmentnr: fileName } },
+  });
+
+  const awaitingTypesFromApiData = data as {
+    displayname: string[];
+  };
+
+  const [textName] = awaitingTypesFromApiData.displayname;
+
+  return textName ?? "";
+}

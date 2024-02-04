@@ -102,10 +102,12 @@ const MultiLingualSelector = () => {
 
         <Select
           labelId="multi-lingual-selector-label"
-          id="multi-lingual-selector"
           // label={selectorLabel}
           aria-describedby="multi-lingual-selector-helper-text"
           value={paramValue}
+          inputProps={{
+            id: "multi-lingual-selector",
+          }}
           // input={<OutlinedInput label={selectorLabel} notched />}
           renderValue={getRenderValue}
           multiple

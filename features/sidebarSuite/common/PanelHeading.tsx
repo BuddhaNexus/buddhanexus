@@ -8,7 +8,7 @@ export default function PanelHeading({
   sx?: SxProps;
 }) {
   return (
-    <Typography variant="h6" component="h3" sx={sx}>
+    <Typography variant="h6" component="h2" sx={sx}>
       {heading}
     </Typography>
   );

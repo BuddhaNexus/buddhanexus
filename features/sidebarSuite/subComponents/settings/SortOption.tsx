@@ -36,9 +36,11 @@ export default function SortOption() {
           {t("optionsLabels.sort.selector")}
         </InputLabel>
         <Select
-          id="sort-option-selector"
-          aria-labelledby="sort-option-selector-label"
           value={sortMethodSelectValue}
+          labelId="sort-option-selector-label"
+          inputProps={{
+            id: "sort-option-selector",
+          }}
           input={<OutlinedInput label={t("optionsLabels.sort.selector")} />}
           onChange={(e) => handleSelectChange(e.target.value as SortMethod)}
         >
