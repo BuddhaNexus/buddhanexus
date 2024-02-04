@@ -7,18 +7,15 @@ import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import {
-  // dehydrate,
-  useInfiniteQuery,
-} from "@tanstack/react-query";
+import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TextView from "features/textView/TextView";
 import merge from "lodash/merge";
 import type { PagedResponse } from "types/api/common";
 import type { TextPageData } from "types/api/text";
-// import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
+import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
-// import type { SourceLanguage } from "utils/constants";
+import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
@@ -101,22 +98,19 @@ export default function TextPage() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-  // params
-}) => {
+export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   const i18nProps = await getI18NextStaticProps({ locale }, [
     "common",
     "settings",
   ]);
 
-  // const queryClient = await prefetchDbResultsPageData(
-  //   params?.language as SourceLanguage,
-  //   params?.file as string,
-  // );
+  const queryClient = await prefetchDbResultsPageData(
+    params?.language as SourceLanguage,
+    params?.file as string,
+  );
 
   return merge(
-    // { props: { dehydratedState: dehydrate(queryClient) } },
+    { props: { dehydratedState: dehydrate(queryClient) } },
     i18nProps,
   );
 };
