@@ -53,7 +53,7 @@ export async function prefetchDbResultsPageData(
   //   queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
   // });
 
-  // TODO: confirm spect for multi_lingal query param. For discussion see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/117
+  // TODO: confirm spec for multi_lingal query param. For discussion see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/117
   // await queryClient.prefetchQuery({
   //   queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
   //   queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
