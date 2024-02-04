@@ -178,7 +178,7 @@ export const AppTopBar = () => {
         </Toolbar>
       </AppBar>
       {!isSearchRoute && (
-        <aside id="mobile-search" aria-label="mobile search">
+        <aside id="mobile-search" aria-label="search">
           <GlobalSearchMobile />
         </aside>
       )}
