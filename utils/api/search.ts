@@ -1,21 +1,23 @@
 import apiClient from "@api";
-import type { InfiniteSerachApiQuery, PagedResponse } from "types/api/common";
+import type { SerachApiQuery } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
 import { parseDbPageQueryParams } from "./utils";
 
+export type MatchTextPart = {
+  text: string;
+  highlightColor: 0 | 1;
+};
+
 export type SearchResult = {
   id: string;
-  segmentNumbers: string[];
-  matchStringOriginal: string;
-  matchStringStemmed: string;
   category: string;
   language: SourceLanguage;
-  fileName: string;
-  matchOffsetStart: number;
-  matchOffsetEnd: number;
-  matchCenteredness: number;
-  matchDistance: number;
+  segmentNumber: string;
+  displayName: string;
+  links: string[];
+  similarity: number;
+  matchTextParts: MatchTextPart[];
 };
 
 export type SearchPageResults = SearchResult[];
@@ -26,53 +28,44 @@ function parseAPISearchData(apiData: any): SearchPageResults {
   const searchResults: SearchPageResults = [];
   for (const result of apiData) {
     const {
-      _key,
-      segment_nr,
-      original,
-      stemmed,
       category,
       language,
-      file_name,
-      offset_beg,
-      offset_end,
-      centeredness,
-      distance,
+      segment_nr,
+      full_names: { display_name, text_name, link1, link2 },
+      similarity,
+      segtext,
     } = result;
     searchResults.push({
-      id: _key,
-      segmentNumbers: segment_nr,
-      matchStringOriginal: original,
-      matchStringStemmed: stemmed,
+      id: text_name,
       category,
       language,
-      fileName: file_name,
-      matchOffsetStart: offset_beg,
-      matchOffsetEnd: offset_end,
-      matchCenteredness: centeredness,
-      matchDistance: distance,
+      segmentNumber: segment_nr,
+      displayName: display_name,
+      links: [link1, link2],
+      similarity,
+      matchTextParts: segtext,
     });
   }
   return searchResults;
 }
 
+/**
+ * Return has a hard limit of 200 matches.
+ * @see https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/122#issuecomment-1925895599
+ */
 export async function getGlobalSearchData({
   searchTerm,
-  pageNumber,
   queryParams,
-}: InfiniteSerachApiQuery): Promise<PagedResponse<SearchPageResults>> {
-  // IN DEVELOPMENT
-  // TODO: Add pagination on BE
-  //  - remove type casting once response model is added to api
-  //  - review parsed prop nams.
+}: SerachApiQuery): Promise<SearchPageResults> {
+  //  TODO: remove type casting once response model is added to api
   const { data } = await apiClient.POST("/search/", {
-    // page: 0
-    body: { search_string: searchTerm, ...parseDbPageQueryParams(queryParams) },
+    body: {
+      search_string: searchTerm,
+      ...parseDbPageQueryParams(queryParams),
+    },
   });
 
   const castData = data as { searchResults: any[] };
 
-  return {
-    data: parseAPISearchData(castData.searchResults),
-    pageNumber,
-  };
+  return parseAPISearchData(castData.searchResults);
 }

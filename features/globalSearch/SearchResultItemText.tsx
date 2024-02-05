@@ -3,42 +3,30 @@ import { Typography } from "@mui/material";
 import { scriptSelectionAtom } from "features/atoms";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
 import { useAtomValue } from "jotai";
+import type { MatchTextPart } from "utils/api/search";
 
 interface Props {
-  matchText: {
-    id: string;
-    matchStringOriginal: string;
-    matchStringStemmed: string;
-    matchOffsetStart: number;
-    matchOffsetEnd: number;
-  };
+  id: string;
+  textParts: MatchTextPart[];
 }
 
-export const SearchResultItemText = ({ matchText }: Props) => {
+export const SearchResultItemText = ({ id, textParts }: Props) => {
   const { sourceLanguage } = useDbQueryParams();
   const script = useAtomValue(scriptSelectionAtom);
 
-  const { id, matchStringStemmed, matchOffsetStart, matchOffsetEnd } =
-    matchText;
-
-  const subStringStart = matchOffsetStart === 0 ? 0 : matchOffsetStart - 1;
-
-  const matchStart = matchStringStemmed.slice(0, matchOffsetStart);
-  const searchTerm = matchStringStemmed.slice(subStringStart, matchOffsetEnd);
-  const matchEnd = matchStringStemmed.slice(matchOffsetEnd - 1);
-
   return (
     <>
-      {[matchStart, searchTerm, matchEnd].map((textPart, index) => {
+      {textParts.map((textPart, index) => {
+        const { text, highlightColor: highlighted } = textPart;
         return (
           <Typography
             key={`search-match-${id}-${index}`}
             sx={{ display: "inline" }}
-            fontWeight={index === 1 ? 600 : 400}
-            color={index === 1 ? "text.primary" : "text.secondary"}
+            fontWeight={highlighted === 1 ? 600 : 400}
+            color={highlighted === 1 ? "text.primary" : "text.secondary"}
           >
             {enscriptText({
-              text: textPart,
+              text,
               script,
               language: sourceLanguage,
             })}

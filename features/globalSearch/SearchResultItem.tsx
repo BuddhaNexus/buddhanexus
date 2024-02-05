@@ -1,9 +1,8 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
 import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
-import AdjustOutlinedIcon from "@mui/icons-material/AdjustOutlined";
 import CopyIcon from "@mui/icons-material/ContentCopy";
-import MovingOutlinedIcon from "@mui/icons-material/MovingOutlined";
+import DifferenceIcon from "@mui/icons-material/Difference";
 import {
   Box,
   Card,
@@ -27,27 +26,19 @@ export const SearchResultItem = ({ result }: Props) => {
 
   const {
     id,
-    segmentNumbers,
     language,
-    fileName,
-    matchCenteredness,
-    matchDistance,
-    ...text
+    segmentNumber,
+    displayName,
+    similarity,
+    matchTextParts,
   } = result;
 
-  // TODO: awaiting endpoint update
-  const displayName = fileName;
-
-  // // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
-  const [textName, segmentName] = segmentNumbers[0]
-    ? segmentNumbers[0].split(":")
-    : [];
-
   const copyTextInfoToClipboard = useCallback(async () => {
-    await navigator.clipboard.writeText(
-      `${segmentNumbers.join("-")}: ${displayName}`,
-    );
-  }, []);
+    await navigator.clipboard.writeText(`${segmentNumber}: ${displayName}`);
+  }, [segmentNumber, displayName]);
+
+  const roundedSimilarity =
+    similarity % 1 === 0 ? similarity : similarity.toFixed(2);
 
   return (
     <Card sx={{ flex: 1, wordBreak: "break-all" }}>
@@ -70,45 +61,28 @@ export const SearchResultItem = ({ result }: Props) => {
             language={language}
           />
 
-          <Box>
-            <Tooltip
-              title="Match distance"
-              PopperProps={{ disablePortal: true }}
-            >
-              <Chip
-                size="small"
-                color="primary"
-                variant="outlined"
-                icon={<MovingOutlinedIcon />}
-                label={matchDistance}
-                sx={{ mr: 0.5, my: 0.5, p: 0.5 }}
-              />
-            </Tooltip>
-            {matchCenteredness && (
-              <Tooltip
-                title="Match centeredness"
-                PopperProps={{ disablePortal: true }}
-              >
-                <Chip
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                  icon={<AdjustOutlinedIcon />}
-                  label={matchCenteredness}
-                  sx={{ mr: 0.5, my: 0.5, p: 0.5 }}
-                />
-              </Tooltip>
-            )}
-          </Box>
+          <Tooltip
+            title={`Similarity: ${roundedSimilarity}/100`}
+            PopperProps={{ disablePortal: true }}
+          >
+            <Chip
+              size="small"
+              color="primary"
+              variant="outlined"
+              icon={<DifferenceIcon />}
+              label={roundedSimilarity}
+              sx={{ mr: 0.5, my: 0.5, p: 0.5 }}
+            />
+          </Tooltip>
         </Box>
 
         <Box sx={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}>
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
             <Link
-              href={`/db/${language}/${textName}/text?selectedSegment=${segmentName}`}
+              href={`/db/${language}/${id}/text?selectedSegment=${segmentNumber}`}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
             >
-              {segmentNumbers[0]}
+              {segmentNumber}
             </Link>
           </Tooltip>
           <IconButton
@@ -124,7 +98,7 @@ export const SearchResultItem = ({ result }: Props) => {
       <Divider />
 
       <CardContent>
-        <SearchResultItemText matchText={{ id, ...text }} />
+        <SearchResultItemText id={id} textParts={matchTextParts} />
       </CardContent>
     </Card>
   );

@@ -105,7 +105,11 @@ export default function CurrentResultChips({
 
   return (
     <>
-      {isSearchRoute ? <MatchesChip matches={matches} /> : <ParallelsChip />}
+      {isSearchRoute ? (
+        <MatchesChip matches={matches} isSearchRoute />
+      ) : (
+        <ParallelsChip />
+      )}
 
       {count.filter > 0 && (
         <Chip

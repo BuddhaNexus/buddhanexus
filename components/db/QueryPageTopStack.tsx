@@ -32,7 +32,7 @@ const modalBoxstyles = {
  * - search page
  *
  */
-export const QueryPageTopStack = () => {
+export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   const { t } = useTranslation("settings");
   const router = useRouter();
   const isSearchRoute = router.route.startsWith("/search");
@@ -132,7 +132,7 @@ export const QueryPageTopStack = () => {
           gap: 1,
         }}
       >
-        <CurrentResultChips />
+        <CurrentResultChips matches={matches} />
       </Box>
     </Stack>
   );

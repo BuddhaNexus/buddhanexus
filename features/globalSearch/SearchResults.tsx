@@ -7,8 +7,6 @@ import { SearchResultSkeletonItem } from "./SearchResultSkeletonItem";
 
 interface Props {
   data: any;
-  onEndReached: () => void;
-  onStartReached: () => void;
 }
 
 const ItemContainer = styled("div")(({ theme }) => ({
@@ -40,11 +38,7 @@ const ListContainer = styled("ul")(() => ({
   paddingInline: "0",
 })) as GridComponents["List"];
 
-export default function SearchResults({
-  data,
-  onEndReached,
-  onStartReached,
-}: Props) {
+export default function SearchResults({ data }: Props) {
   const hasData = data.length > 0;
   // we have to pass `undefined` here to display the EmptyPlaceholder.
   return (
@@ -71,8 +65,6 @@ export default function SearchResults({
         exit: (velocity) => Math.abs(velocity) < 100,
         // change: (_, range) => console.log({ range }),
       }}
-      endReached={onEndReached}
-      startReached={onStartReached}
     />
   );
 }

@@ -12,14 +12,13 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Close, Search } from "@mui/icons-material";
 import { CircularProgress, IconButton, Typography } from "@mui/material";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { SearchResults } from "features/globalSearch";
 import {
   SearchBoxInput,
   SearchBoxWrapper,
 } from "features/globalSearch/GlobalSearchStyledMuiComponents";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-import type { PagedResponse } from "types/api/common";
 import { DbApi } from "utils/api/dbApi";
 import { type SearchPageResults } from "utils/api/search";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -44,41 +43,21 @@ export default function SearchPage() {
   }, [isReady, setSearchTerm, searchParam]);
 
   // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
-  const { data, fetchNextPage, fetchPreviousPage, isLoading } =
-    useInfiniteQuery<PagedResponse<SearchPageResults>>({
-      initialPageParam: 0,
-      queryKey: DbApi.GlobalSearchData.makeQueryKey({
+  const { data, isLoading } = useQuery<SearchPageResults>({
+    queryKey: DbApi.GlobalSearchData.makeQueryKey({
+      searchTerm: searchParam,
+      queryParams,
+    }),
+    queryFn: () =>
+      DbApi.GlobalSearchData.call({
         searchTerm: searchParam,
         queryParams,
       }),
-      queryFn: ({ pageParam }) =>
-        DbApi.GlobalSearchData.call({
-          searchTerm: searchParam,
-          pageNumber: pageParam as number,
-          queryParams,
-        }),
-      getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
-      getPreviousPageParam: (lastPage) =>
-        lastPage.pageNumber === 0
-          ? lastPage.pageNumber
-          : lastPage.pageNumber - 1,
-    });
+  });
 
-  // TODO: awaiting paginated data; refactor once backend work is done.
-  // const allData = React.useMemo(
-  //   () => (data ? data.pages.flatMap((page) => page.data) : []),
-  //   [data]
-  // );
-  // <---- temporary handling
-  const allData = React.useMemo(() => {
-    const sortedData = data
-      ? data.pages[0]?.data
-          .sort((a, b) => b.matchCenteredness - a.matchCenteredness)
-          .sort((a, b) => a.matchDistance - b.matchDistance)
-      : [];
-    return sortedData;
+  const sortedData = React.useMemo(() => {
+    return data ? data.sort((a, b) => b.similarity - a.similarity) : [];
   }, [data]);
-  // ----->
 
   if (isFallback) {
     return (
@@ -131,14 +110,13 @@ export default function SearchPage() {
               </IconButton>
             ),
           }}
-          autoFocus
           fullWidth
           onChange={(event) => setSearchTerm(event.target.value)}
           onKeyDown={(e: InputKeyDown) => handleOnSearch(searchTerm, e)}
         />
       </SearchBoxWrapper>
 
-      <QueryPageTopStack />
+      <QueryPageTopStack matches={sortedData?.length ?? 0} />
 
       {isLoading ? (
         <div>
@@ -152,18 +130,11 @@ export default function SearchPage() {
       ) : (
         <>
           {data ? (
-            <>
-              <Typography>{allData?.length} Results</Typography>
-              <SearchResults
-                data={allData}
-                onEndReached={fetchNextPage}
-                onStartReached={fetchPreviousPage}
-              />
-            </>
+            <SearchResults data={sortedData} />
           ) : (
             <>
               {/* TODO: i18n */}
-              <Typography>No results.</Typography>
+              <Typography>No results. Try search for…</Typography>
             </>
           )}
         </>
