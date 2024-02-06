@@ -20,7 +20,7 @@ const GlobalSearchDesktop = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { handleOnSearch } = useGlobalSearch();
+  const { handleSearchAction } = useGlobalSearch();
 
   useEffect(() => {
     if (isOpen) {
@@ -61,21 +61,29 @@ const GlobalSearchDesktop = () => {
             aria-label="Search"
             placeholder={t("search.placeholder")}
             variant="outlined"
-            isNarrow={true}
             InputProps={{
               endAdornment: (
                 <IconButton
                   // TODO: i18n
                   aria-label="Run search"
-                  onClick={() => handleOnSearch(inputRef.current?.value ?? "")}
+                  onClick={() =>
+                    handleSearchAction({
+                      searchTerm: inputRef.current?.value ?? "",
+                    })
+                  }
                 >
                   <KeyboardReturnIcon />
                 </IconButton>
               ),
             }}
+            isNarrow
             fullWidth
             onKeyDown={(e: InputKeyDown) =>
-              handleOnSearch(inputRef.current?.value ?? "", e)
+              handleSearchAction({
+                searchTerm: inputRef.current?.value ?? "",
+                event: e,
+                setIsOpen,
+              })
             }
           />
         )}

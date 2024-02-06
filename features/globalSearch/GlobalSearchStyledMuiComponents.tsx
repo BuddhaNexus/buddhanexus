@@ -42,6 +42,7 @@ export const SearchBoxInput = styled(TextField, {
   shouldForwardProp: (prop) => prop !== "isNarrow",
 })<SearchBoxInputProps>(({ isNarrow }) => ({
   "& .MuiOutlinedInput-root": {
+    maxHeight: "48px",
     padding: "0px",
     ...(isNarrow && {
       "& input": {

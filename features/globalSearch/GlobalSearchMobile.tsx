@@ -28,7 +28,7 @@ const GlobalSearchMobile = () => {
   // TODO: review uniformity of page margins. For now, the handling matches differences in current page margins across the site.
   const isPageMargin = isHomePage || isQueryResultsPage;
 
-  const { handleOnSearch } = useGlobalSearch();
+  const { handleSearchAction } = useGlobalSearch();
 
   const handleClear = () => {
     if (inputRef.current) {
@@ -85,7 +85,9 @@ const GlobalSearchMobile = () => {
                     // TODO: i18n
                     aria-label="Run search"
                     onClick={() =>
-                      handleOnSearch(inputRef.current?.value ?? "")
+                      handleSearchAction({
+                        searchTerm: inputRef.current?.value ?? "",
+                      })
                     }
                   >
                     <SearchIcon fontSize="inherit" />
@@ -103,7 +105,10 @@ const GlobalSearchMobile = () => {
               }}
               fullWidth
               onKeyDown={(e: InputKeyDown) =>
-                handleOnSearch(inputRef.current?.value ?? "", e)
+                handleSearchAction({
+                  searchTerm: inputRef.current?.value ?? "",
+                  event: e,
+                })
               }
             />
           </SearchBoxWrapper>

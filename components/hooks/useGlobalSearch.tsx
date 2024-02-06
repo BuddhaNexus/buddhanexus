@@ -5,10 +5,15 @@ import { searchPageFilter } from "features/sidebarSuite/config/settings";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
 
-type HandleOnSearch = (searchTerm: string, e?: InputKeyDown) => void;
+type HandleSearchActionProps = {
+  searchTerm: string;
+  event?: InputKeyDown;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+};
+type HandleSearchAction = (props: HandleSearchActionProps) => void;
 
 interface GlobalSearchProps {
-  handleOnSearch: HandleOnSearch;
+  handleSearchAction: HandleSearchAction;
   searchParam: string;
 }
 
@@ -19,9 +24,11 @@ export function useGlobalSearch(): GlobalSearchProps {
 
   const params = new URLSearchParams(searchParams);
 
-  const handleOnSearch: HandleOnSearch = async (searchTerm, e?) => {
-    if (!e || e.key === "Enter") {
-      e?.preventDefault();
+  const handleSearchAction: HandleSearchAction = async (props) => {
+    const { searchTerm, event, setIsOpen } = props;
+
+    if (!event || event.key === "Enter") {
+      event?.preventDefault();
 
       const query: Record<string, string> = {
         [uniqueSettings.queryParams.searchString]: searchTerm,
@@ -39,10 +46,14 @@ export function useGlobalSearch(): GlobalSearchProps {
         query,
       });
     }
+
+    if (event?.key === "Escape" && setIsOpen) {
+      setIsOpen((prev) => !prev);
+    }
   };
 
   return {
-    handleOnSearch,
+    handleSearchAction,
     searchParam: params.get(uniqueSettings.queryParams.searchString) ?? "",
   };
 }

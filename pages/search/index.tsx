@@ -31,7 +31,7 @@ export default function SearchPage() {
   // TODO: fix server error if no search term
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
-  const { handleOnSearch, searchParam } = useGlobalSearch();
+  const { handleSearchAction, searchParam } = useGlobalSearch();
 
   const [searchTerm, setSearchTerm] = useState(searchParam);
 
@@ -96,7 +96,7 @@ export default function SearchPage() {
             startAdornment: (
               <IconButton
                 aria-label="Run search"
-                onClick={() => handleOnSearch(searchTerm)}
+                onClick={() => handleSearchAction({ searchTerm })}
               >
                 <Search />
               </IconButton>
@@ -112,7 +112,9 @@ export default function SearchPage() {
           }}
           fullWidth
           onChange={(event) => setSearchTerm(event.target.value)}
-          onKeyDown={(e: InputKeyDown) => handleOnSearch(searchTerm, e)}
+          onKeyDown={(e: InputKeyDown) =>
+            handleSearchAction({ searchTerm, event: e })
+          }
         />
       </SearchBoxWrapper>
 
