@@ -39,13 +39,11 @@ const ListContainer = styled("ul")(() => ({
 })) as GridComponents["List"];
 
 export default function SearchResults({ data }: Props) {
-  const hasData = data.length > 0;
-  // we have to pass `undefined` here to display the EmptyPlaceholder.
   return (
     <VirtuosoGrid
       totalCount={data.length}
       overscan={200}
-      data={hasData ? data : undefined}
+      data={data}
       components={{
         Item: ItemContainer,
         List: ListContainer,

@@ -31,7 +31,7 @@ function useResetCache(data: any) {
 const LISTBOX_PADDING = 8; // px
 const maxLines = 3;
 const defaultItemHeight = 56;
-const lineHeight = 40;
+const lineHeight = 36;
 
 const createLable = (id: string, name: string) =>
   `${id}: ${name.replaceAll(/^•\s/g, "")}`;
@@ -65,6 +65,7 @@ const Row = (props: ListChildComponentProps) => {
   const lines = getNumberOfLines(lable);
 
   return (
+    // TODO: convert to styled components
     <Box
       {...dataSetProps}
       style={inlineStyle}
@@ -81,7 +82,7 @@ const Row = (props: ListChildComponentProps) => {
     >
       <div
         style={{
-          // TODO: convert to `flex` when api is available for testing
+          // "-webkit-box" used to handle line-clamping
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
           WebkitLineClamp: 3,
@@ -97,7 +98,13 @@ const Row = (props: ListChildComponentProps) => {
             wordBreak: "break-all",
           }}
         >
-          {lable}
+          <Typography
+            sx={{ fontWeight: 600, color: "text.secondary" }}
+            component="span"
+          >
+            {id}:
+          </Typography>{" "}
+          {name}
         </Typography>
       </div>
     </Box>
@@ -128,7 +135,7 @@ export const ListboxComponent = React.forwardRef<
 
     // @ts-expect-error type issue
     const [itemProps] = child;
-    const { id, name } = itemProps;
+    const { id, key: name } = itemProps;
     const lines = getNumberOfLines(createLable(id, name));
     const itemHeight = lines * lineHeight;
 

@@ -131,12 +131,12 @@ export default function SearchPage() {
         </div>
       ) : (
         <>
-          {data ? (
+          {sortedData.length > 0 ? (
             <SearchResults data={sortedData} />
           ) : (
             <>
               {/* TODO: i18n */}
-              <Typography>No results. Try search for…</Typography>
+              <Typography>No results found. Try search for…</Typography>
             </>
           )}
         </>
