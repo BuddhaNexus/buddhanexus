@@ -119,7 +119,7 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
         "tib": LoadSegmentsTibetan,
         "zh": LoadSegmentsChinese,
     }
-    number_of_threads = os.cpu_count()
+    number_of_threads = 4 # os.cpu_count() / 2
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
@@ -137,7 +137,7 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
     print("Segment data loading completed.")
     print("Creating analyzers and search views...")
     create_analyzers(db)
-    create_search_views(db)
+    # create_search_views(db)
     print("Analyzers and search views created.")
 
 

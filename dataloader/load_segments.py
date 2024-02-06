@@ -60,8 +60,14 @@ class LoadSegmentsBase:
             {"_key": segnr, "segnr": segnr, "segtext": original, "language": self.LANG}
             for segnr, original in zip(file_df["segmentnr"], file_df["original"])
         ]
+        # print(f"DEBUG: segments[:3]: {segments[:3]}")
         db.collection(COLLECTION_SEGMENTS).delete_many({"language": self.LANG})
-        db.collection(COLLECTION_SEGMENTS).insert_many(segments)
+        for s in tqdm(segments):
+            try:
+                db.collection(COLLECTION_SEGMENTS).insert(s)
+            except Exception as e:
+                print("===>>> ERROR: Error: ", e.message)
+                print("===>>> ERROR: Problem with sengment: ", s)
         db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr", "language"])
 
         segnrs = [segment["segnr"] for segment in segments]
@@ -88,12 +94,14 @@ class LoadSegmentsBase:
         stems = sliding_window(file_df["stemmed"].tolist(), 3)
         search_index_entries = []
         for segnr, original, stem in zip(segmentnrs, originals, stems):
+            
             if self.LANG == "chn":
                 original = "".join(original)
                 stem = "".join(stem)
             else:
                 original = " ".join(original)
-                stem = " ".join(stem)
+                if type(stem) == str:
+                    stem = " ".join(stem)
             category = get_cat_from_segmentnr(segnr[1])
 
             search_index_entries.append(
@@ -129,9 +137,11 @@ class LoadSegmentsBase:
             db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr"])
 
         category_files = defaultdict(list)
+        print(f"DEBUG: LoadSegmentBase.DATA_PATH: {self.DATA_PATH}")
         if os.path.isdir(self.DATA_PATH):
             for file in os.listdir(self.DATA_PATH):
                 if file.endswith(".tsv") and should_download_file(file):
+                    print(f"DEBUG: file: { file }")
                     category = get_cat_from_segmentnr(file)
                     category_files[category].append(file)
                     if number_of_threads == 1:
