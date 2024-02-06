@@ -1,34 +1,33 @@
 import { DbViewEnum } from "@components/hooks/useDbView";
 import { SourceLanguage } from "utils/constants";
 
-import { uniqueSettings } from "./settings";
-import type {
-  DbPageFilter,
+import {
   DisplayOption,
   LocalDisplayOption,
+  PageFilter,
   QueriedDisplayOption,
-  QueryParams,
-  SettingOmissions,
+  uniqueSettings,
   UtilityOption,
-} from "./types";
+} from "./settings";
+import type { QueryParams, SettingOmissions } from "./types";
 
 const { queryParams, local, remote } = uniqueSettings;
 
 // Not all filters, options and utilities are applicable for all DB languages and views. The setting menu assumes each setting component is to be rendered, unless defined in the following config objects listing contexts in which specific settings should be ommitted. For example, the `limits` filter should be shown in all cases except for graph view, in any language.
-export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<DbPageFilter> = {
+export const DB_PAGE_FILTER_OMISSIONS_CONFIG: SettingOmissions<PageFilter> = {
   [queryParams.limits]: {
-    [DbViewEnum.GRAPH]: ["allLangs"],
+    [DbViewEnum.GRAPH]: ["all"],
   },
   [queryParams.targetCollection]: {
-    [DbViewEnum.NUMBERS]: ["allLangs"],
-    [DbViewEnum.TABLE]: ["allLangs"],
-    [DbViewEnum.TEXT]: ["allLangs"],
+    [DbViewEnum.NUMBERS]: ["all"],
+    [DbViewEnum.TABLE]: ["all"],
+    [DbViewEnum.TEXT]: ["all"],
   },
   [queryParams.multiLingual]: {
     // TODO: for context see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/pull/90#discussion_r1375272080
-    [DbViewEnum.GRAPH]: ["allLangs"],
-    [DbViewEnum.NUMBERS]: ["allLangs"],
-    [DbViewEnum.TABLE]: ["allLangs"],
+    [DbViewEnum.GRAPH]: ["all"],
+    [DbViewEnum.NUMBERS]: ["all"],
+    [DbViewEnum.TABLE]: ["all"],
   },
 };
 
@@ -36,20 +35,20 @@ const QUERIED_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<QueriedDisplayO
   {
     [queryParams.folio]: {
       // "folio" is used as "jump to" in text view and "only show" in other applicable views
-      [DbViewEnum.GRAPH]: ["allLangs"],
+      [DbViewEnum.GRAPH]: ["all"],
     },
     [queryParams.sortMethod]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-      [DbViewEnum.NUMBERS]: ["allLangs"],
-      [DbViewEnum.TEXT]: ["allLangs"],
+      [DbViewEnum.GRAPH]: ["all"],
+      [DbViewEnum.NUMBERS]: ["all"],
+      [DbViewEnum.TEXT]: ["all"],
     },
   };
 
 const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOption> =
   {
     [local.script]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-      [DbViewEnum.NUMBERS]: ["allLangs"],
+      [DbViewEnum.GRAPH]: ["all"],
+      [DbViewEnum.NUMBERS]: ["all"],
       [DbViewEnum.TABLE]: [
         SourceLanguage.PALI,
         SourceLanguage.CHINESE,
@@ -62,9 +61,9 @@ const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptio
       ],
     },
     // [local.showAndPositionSegmentNrs]: {
-    //   [DbViewEnum.GRAPH]: ["allLangs"],
-    //   [DbViewEnum.NUMBERS]: ["allLangs"],
-    //   [DbViewEnum.TABLE]: ["allLangs"],
+    //   [DbViewEnum.GRAPH]: ["all"],
+    //   [DbViewEnum.NUMBERS]: ["all"],
+    //   [DbViewEnum.TABLE]: ["all"],
     // },
   };
 
@@ -77,8 +76,12 @@ export const DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<DisplayOption> =
 export const UTILITY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<UtilityOption> =
   {
     [remote.download]: {
-      [DbViewEnum.GRAPH]: ["allLangs"],
-      [DbViewEnum.TEXT]: ["allLangs"],
+      [DbViewEnum.GRAPH]: ["all"],
+      [DbViewEnum.TEXT]: ["all"],
+      search: ["all"],
+    },
+    [local.copyQueryTitle]: {
+      search: ["all"],
     },
   };
 

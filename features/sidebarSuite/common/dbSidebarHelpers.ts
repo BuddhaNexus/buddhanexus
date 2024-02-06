@@ -1,11 +1,11 @@
-import type { DbViewEnum } from "@components/hooks/useDbView";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import type { UtilityOption } from "features/sidebarSuite/config/settings";
 import type {
   MenuOmission,
   MenuSetting,
   QueryParams,
-  UtilityOption,
+  SettingOmissionContext,
 } from "features/sidebarSuite/config/types";
 import type { Script } from "features/sidebarSuite/subComponents/settings/TextScriptOption";
 import { EwtsConverter } from "tibetan-ewts-converter";
@@ -16,16 +16,16 @@ export const isSettingOmitted = ({
   omissions,
   settingName,
   language,
-  view,
+  pageContext,
 }: {
   omissions: MenuOmission;
   settingName: MenuSetting;
   language: SourceLanguage;
-  view: DbViewEnum;
+  pageContext: SettingOmissionContext;
 }) => {
   return Boolean(
-    omissions?.[settingName]?.[view]?.some((omittedLang) =>
-      ["allLangs", language].includes(omittedLang),
+    omissions?.[settingName]?.[pageContext]?.some((omittedLang) =>
+      ["all", language].includes(omittedLang),
     ),
   );
 };

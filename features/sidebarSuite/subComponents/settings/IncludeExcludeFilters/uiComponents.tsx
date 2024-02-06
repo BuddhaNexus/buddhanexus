@@ -33,8 +33,11 @@ const maxLines = 3;
 const defaultItemHeight = 56;
 const lineHeight = 36;
 
-const createLable = (id: string, name: string) =>
-  `${id}: ${name.replaceAll(/^•\s/g, "")}`;
+const trimName = (name: string) => {
+  return name.replaceAll(/^•\s/g, "");
+};
+
+const createLable = (id: string, name: string) => `${id}: ${trimName(name)}`;
 
 const getNumberOfLines = (lable: string) => {
   const charsPerLine = 26;
@@ -104,7 +107,7 @@ const Row = (props: ListChildComponentProps) => {
           >
             {id}:
           </Typography>{" "}
-          {name}
+          {trimName(name)}
         </Typography>
       </div>
     </Box>

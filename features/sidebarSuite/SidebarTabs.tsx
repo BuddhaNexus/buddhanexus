@@ -19,7 +19,6 @@ export const SidebarTabList = ({
 }: SettingTabListProps) => {
   const { t } = useTranslation("settings");
 
-  /* TODO: defined what's needed for search page results */
   const searchPageTabList = [
     <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />,
     <Tab key="settings-tab-1" value="1" label={t("tabs.info")} />,
@@ -48,7 +47,6 @@ export const SearchPageSidebarTabPanels = () => {
         <FilterSettings pageType="search" />
         <UtilityOptionsSection />
       </TabPanel>
-      {/* TODO: defined what's needed for search page results */}
       <TabPanel value="1">
         <Info />
       </TabPanel>
@@ -67,7 +65,7 @@ export const DbFilePageSidebarTabPanels = () => {
         <ExternalLinksSection />
       </TabPanel>
       <TabPanel value="1" sx={{ px: 2 }}>
-        <FilterSettings pageType="db" />
+        <FilterSettings pageType="dbResult" />
       </TabPanel>
       <TabPanel value="2">
         <Info />

@@ -8,7 +8,7 @@ import {
   SETTINGS_OMISSIONS_CONFIG,
 } from "features/sidebarSuite/config";
 import {
-  settingRenderGroups,
+  pageSettings,
   uniqueSettings,
 } from "features/sidebarSuite/config/settings";
 import type { DefaultQueryParams } from "features/sidebarSuite/config/types";
@@ -61,7 +61,7 @@ export const useDbQueryParams = () => {
     defaultParamConfig: DEFAULT_QUERY_PARAMS_VALUES,
     parLengthConfig,
     sortMethodSelectValue,
-    settingRenderGroups,
+    pageSettings,
     uniqueSettings,
     settingsOmissionsConfig: SETTINGS_OMISSIONS_CONFIG,
   };

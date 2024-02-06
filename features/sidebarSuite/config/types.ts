@@ -2,36 +2,20 @@ import type { DbViewEnum } from "@components/hooks/useDbView";
 import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
 import type { SourceLanguage } from "utils/constants";
 
-import type {
-  dbPageFilter,
-  localDisplayOption,
-  queriedDisplayOption,
-  searchPageFilter,
+import {
+  DisplayOption,
+  PageFilter,
   uniqueSettings,
-  utilityOption,
+  UtilityOption,
 } from "./settings";
 
-export type SearchPageFilter =
-  (typeof searchPageFilter)[keyof typeof searchPageFilter];
-export type DbPageFilter = (typeof dbPageFilter)[keyof typeof dbPageFilter];
-export type LocalDisplayOption =
-  (typeof localDisplayOption)[keyof typeof localDisplayOption];
-export type QueriedDisplayOption =
-  (typeof queriedDisplayOption)[keyof typeof queriedDisplayOption];
-export type UtilityOption = (typeof utilityOption)[keyof typeof utilityOption];
+export type SidebarSuitePageContext = "dbResult" | "search";
+export type SettingOmissionContext = DbViewEnum | "search";
 
-export type SidebarSuitePageContext = "db" | "search";
+export type MenuSetting = PageFilter | DisplayOption | UtilityOption;
 
-export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
-
-export type MenuSetting =
-  | DbPageFilter
-  | DisplayOption
-  | SearchPageFilter
-  | UtilityOption;
-
-export type ViewOmission = (SourceLanguage | "allLangs")[];
-export type SettingContext = Partial<Record<DbViewEnum, ViewOmission>>;
+export type Omission = (SourceLanguage | "all")[];
+export type SettingContext = Partial<Record<SettingOmissionContext, Omission>>;
 
 export type SettingOmissions<K extends string, T = SettingContext> = Partial<
   Record<K, T>
