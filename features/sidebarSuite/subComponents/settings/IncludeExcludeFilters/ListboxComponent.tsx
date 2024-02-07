@@ -1,13 +1,13 @@
 import React from "react";
 import { type ListChildComponentProps, VariableSizeList } from "react-window";
+import { ListSubheader } from "@mui/material";
+
 import {
-  autocompleteClasses,
-  Box,
-  ListSubheader,
-  Popper,
-  Typography,
-} from "@mui/material";
-import { styled } from "@mui/styles";
+  ListLabel,
+  ListLabelId,
+  ListLabelWapper,
+  RowItem,
+} from "./muiStyledComponents";
 
 const OuterElementContext = React.createContext({});
 
@@ -68,54 +68,18 @@ const Row = (props: ListChildComponentProps) => {
   const lines = getNumberOfLines(lable);
 
   return (
-    // TODO: convert to styled components
-    <Box
-      {...dataSetProps}
-      style={inlineStyle}
-      sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        flex: 1,
-        "&:nth-of-type(even)": {
-          bgcolor: "background.accent",
-        },
-        "&:hover": { textDecoration: "underline" },
-      }}
-      component="li"
-    >
-      <div
-        style={{
-          // "-webkit-box" used to handle line-clamping
-          display: "-webkit-box",
-          WebkitBoxOrient: "vertical",
-          WebkitLineClamp: 3,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-      >
-        <Typography
-          title={lines > maxLines ? lable : undefined}
-          sx={{
-            display: "inline",
-            whiteSpace: "normal",
-            wordBreak: "break-all",
-          }}
-        >
-          <Typography
-            sx={{ fontWeight: 600, color: "text.secondary" }}
-            component="span"
-          >
-            {id}:
-          </Typography>{" "}
-          {trimName(name)}
-        </Typography>
-      </div>
-    </Box>
+    <RowItem inheretedStyles={inlineStyle} {...dataSetProps} component="li">
+      <ListLabelWapper>
+        <ListLabel title={lines > maxLines ? lable : undefined}>
+          <ListLabelId component="span">{id}:</ListLabelId> {trimName(name)}
+        </ListLabel>
+      </ListLabelWapper>
+    </RowItem>
   );
 };
 
 // Adapter for react-window
-export const ListboxComponent = React.forwardRef<
+const ListboxComponent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLElement>
 >(function ListboxComponent(props, ref) {
@@ -178,12 +142,4 @@ export const ListboxComponent = React.forwardRef<
   );
 });
 
-export const StyledPopper = styled(Popper)({
-  [`& .${autocompleteClasses.listbox}`]: {
-    boxSizing: "border-box",
-    "& ul": {
-      padding: 0,
-      margin: 0,
-    },
-  },
-});
+export default ListboxComponent;

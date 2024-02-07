@@ -8,11 +8,6 @@ import { styled } from "@mui/material/styles";
 interface AppTopBarSearchBoxWrapperProps extends BoxProps {
   isOpen: boolean;
 }
-
-interface SearchBoxInputProps extends OutlinedTextFieldProps {
-  isNarrow?: boolean;
-}
-
 export const AppTopBarSearchBoxWrapper = styled(
   "form",
 )<AppTopBarSearchBoxWrapperProps>(({ theme, isOpen }) => ({
@@ -38,6 +33,9 @@ export const SearchBoxWrapper = styled("form")(({ theme }) => ({
   border: `${theme.palette.primary.main} 1px solid`,
 }));
 
+interface SearchBoxInputProps extends OutlinedTextFieldProps {
+  isNarrow?: boolean;
+}
 export const SearchBoxInput = styled(TextField, {
   shouldForwardProp: (prop) => prop !== "isNarrow",
 })<SearchBoxInputProps>(({ isNarrow }) => ({
