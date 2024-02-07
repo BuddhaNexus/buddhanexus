@@ -17,7 +17,6 @@ from dataloader_constants import (
 )
 from folios import get_folios_from_segment_keys
 
-from dataloader_models import Parallel, Segment, MenuItem
 from utils import get_cat_from_segmentnr, should_download_file
 
 # allow importing from api directory

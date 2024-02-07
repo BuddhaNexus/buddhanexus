@@ -5,6 +5,8 @@ from arango.collection import StandardCollection, EdgeCollection
 from arango.database import StandardDatabase
 
 from utils import get_language_name
+from dataloader_validator import validate_json, METADATA_ROOT
+
 from dataloader_constants import (
     COLLECTION_MENU_COLLECTIONS,
     DEFAULT_LANGS,
@@ -127,7 +129,14 @@ def load_all_menu_collections(db: StandardDatabase):
                 {"_key": language, "name": get_language_name(language)}
             )
 
-        with open(f"../data/{language}-collections.json") as file:
+        collections_filepath = (
+            f"{METADATA_ROOT}{language}-collections.json"  # TODO: no hardcoding
+        )
+        collections_schema = f"{METADATA_ROOT}/schemas/collections.json"  # TODO: no hardcoding
+        if not validate_json(collections_schema, collections_filepath):  # TODO: no hardcoding
+            return
+
+        with open(collections_filepath) as file:
             print(f"Loading menu collections in {language}...")
             collections = json.load(file)
             collection_count = 0
@@ -189,7 +198,11 @@ def load_all_menu_categories(db: StandardDatabase):
         EDGE_COLLECTION_CATEGORY_HAS_FILES
     )
     for language in DEFAULT_LANGS:
-        with open(f"../data/{language}-categories.json") as f:
+        categories_filepath = f"{METADATA_ROOT}{language}-categories.json"   # TODO: no hardcoding
+        categories_schema = f"{METADATA_ROOT}/schemas/categories.json"   # TODO: no hardcoding
+        if not validate_json(categories_schema, categories_filepath):
+            return
+        with open(categories_filepath) as f:
             print(f"Loading menu categories in {language}...")
             categories = json.load(f)
             category_count = 0
