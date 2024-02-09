@@ -1,5 +1,7 @@
 import {
+  Box,
   type BoxProps,
+  Link,
   type OutlinedTextFieldProps,
   TextField,
 } from "@mui/material";
@@ -59,3 +61,21 @@ export const SearchBoxInput = styled(TextField, {
     },
   },
 }));
+
+export const SearchResultHeaderChips = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between",
+  flexWrap: "wrap",
+  alignItems: "center",
+});
+
+export const SearchResultHeaderTitleRow = styled(Box)({
+  alignItems: "center",
+  display: "flex",
+  flexWrap: "wrap",
+});
+export const SearchResultLink = styled(Link)({
+  display: "inline-block",
+  wordBreak: "break-word",
+  m: 0.5,
+});

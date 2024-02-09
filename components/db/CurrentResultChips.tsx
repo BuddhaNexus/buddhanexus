@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import MatchesChip from "@components/db/MatchesChip";
 import ParallelsChip from "@components/db/ParallelsChip";
+import SearchMatchesChip from "@components/db/SearchMatchesChip";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
@@ -106,7 +106,7 @@ export default function CurrentResultChips({
   return (
     <>
       {isSearchRoute ? (
-        <MatchesChip matches={matches} isSearchRoute />
+        <SearchMatchesChip matches={matches} isSearchRoute />
       ) : (
         <ParallelsChip />
       )}

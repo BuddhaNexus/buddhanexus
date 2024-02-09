@@ -4,17 +4,20 @@ import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";
 import {
-  Box,
   Card,
   CardContent,
   Chip,
   Divider,
   IconButton,
-  Link,
   Tooltip,
 } from "@mui/material";
 import type { SearchResult } from "utils/api/search";
 
+import {
+  SearchResultHeaderChips,
+  SearchResultHeaderTitleRow,
+  SearchResultLink,
+} from "./GlobalSearchStyledMuiComponents";
 import { SearchResultItemText } from "./SearchResultItemText";
 
 interface Props {
@@ -40,6 +43,8 @@ export const SearchResultItem = ({ result }: Props) => {
   const roundedSimilarity =
     similarity % 1 === 0 ? similarity : similarity.toFixed(2);
 
+  const path = `/db/${language}/${id}/text?selectedSegment=${segmentNumber}`;
+
   return (
     <Card sx={{ flex: 1, wordBreak: "break-all" }}>
       <CardContent
@@ -47,15 +52,7 @@ export const SearchResultItem = ({ result }: Props) => {
           bgcolor: "background.card",
         }}
       >
-        <Box
-          // TODO: convert to styled component
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
+        <SearchResultHeaderChips>
           <SourceLanguageChip
             label={t(`language.${language}`)}
             language={language}
@@ -74,16 +71,11 @@ export const SearchResultItem = ({ result }: Props) => {
               sx={{ mr: 0.5, my: 0.5, p: 0.5 }}
             />
           </Tooltip>
-        </Box>
+        </SearchResultHeaderChips>
 
-        <Box sx={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}>
+        <SearchResultHeaderTitleRow>
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
-            <Link
-              href={`/db/${language}/${id}/text?selectedSegment=${segmentNumber}`}
-              sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
-            >
-              {segmentNumber}
-            </Link>
+            <SearchResultLink href={path}>{segmentNumber}</SearchResultLink>
           </Tooltip>
           <IconButton
             aria-label="copy"
@@ -92,7 +84,7 @@ export const SearchResultItem = ({ result }: Props) => {
           >
             <CopyIcon fontSize="inherit" />
           </IconButton>
-        </Box>
+        </SearchResultHeaderTitleRow>
       </CardContent>
 
       <Divider />
