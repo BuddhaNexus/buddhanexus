@@ -10,6 +10,8 @@ import pandas as pd
 from tqdm import tqdm as tqdm
 from arango.database import StandardDatabase
 
+from dataloader_models import Segment, validate_df
+
 from dataloader_constants import (
     COLLECTION_SEARCH_INDEX_TIB,
     COLLECTION_SEARCH_INDEX_SKT,
@@ -122,10 +124,12 @@ class LoadSegmentsBase:
         )
 
     def _process_file(self, file):
+        print(f"Processing file: { file }")
         db = get_database()
         file_df = pd.read_csv(os.path.join(self.DATA_PATH, file), sep="\t")
-        self._load_segments(file_df, db)
-        self._load_segments_to_search_index(file_df, db)
+        if validate_df(self.DATA_PATH, Segment, file_df):
+            self._load_segments(file_df, db)
+            self._load_segments_to_search_index(file_df, db)
 
     def load(self, number_of_threads: int = 1) -> None:
         # only create collection if it does not exist
@@ -141,7 +145,6 @@ class LoadSegmentsBase:
         if os.path.isdir(self.DATA_PATH):
             for file in os.listdir(self.DATA_PATH):
                 if file.endswith(".tsv") and should_download_file(file):
-                    print(f"DEBUG: file: { file }")
                     category = get_cat_from_segmentnr(file)
                     category_files[category].append(file)
                     if number_of_threads == 1:

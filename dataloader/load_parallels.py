@@ -10,6 +10,8 @@ from arango.database import StandardDatabase
 import multiprocessing
 import natsort
 
+from dataloader_models import Match, validate_dict_list
+
 from dataloader_constants import (
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
@@ -82,8 +84,11 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
 
 def process_file(path, db):
     print("Processing file: ", path)
-    parallels = json.load(gzip.open(path, "rt", encoding="utf-8"))
-    load_parallels(parallels, db)
+    parallels = json.load(gzip.open(path, "rt", encoding="utf-8")) # returns a list of dicts
+    print(f">>> Validating {path}: ", end="")
+    if (validate_dict_list(path, Match, parallels)):
+        print(f"OK\nLoading {path}")
+        load_parallels(parallels, db)
 
 
 def load_parallels_for_language(folder, lang, db, number_of_threads):
@@ -125,7 +130,7 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
 
 def load_sorted_parallels_file(path, lang, db_collection):
     print("Loading sorted parallels for file: ", path)
-    current_files = json.load(gzip.open(path, "rt", encoding="utf-8"))
+    current_files = json.load(gzip.open(path, "rt", encoding="utf-8")) # returns a list of dicts???
     for file in tqdm(current_files):
         if not should_download_file(file["filename"]):
             continue

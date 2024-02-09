@@ -16,7 +16,7 @@ def validate_json(schema_path, doc_path):
         
     try:
         validate(instance=doc, schema=schema)
-        print(f"Validated {doc_path}: ok")
+        print(f"Validating {doc_path}: OK")
         return True
     except ValidationError as e:
         print(e.message)
