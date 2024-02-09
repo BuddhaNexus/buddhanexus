@@ -12,7 +12,7 @@ import {
 import {
   type Limit,
   limits,
-  type LimitsParam,
+  type LimitsFilterValue,
 } from "features/sidebarSuite/config/types";
 import { omit } from "lodash";
 import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
@@ -34,7 +34,7 @@ const IncludeExcludeFilters = () => {
     JsonParam,
   );
 
-  const [limitsValue, setLimitsValue] = useState<LimitsParam>({});
+  const [limitsValue, setLimitsValue] = useState<LimitsFilterValue>({});
 
   useEffect(
     () => setLimitsParam(limitsParam ?? defaultParamConfig.limits),
@@ -45,7 +45,7 @@ const IncludeExcludeFilters = () => {
     limit: Limit,
     value: (CategoryMenuItem | DatabaseText)[],
   ) => {
-    const otherLimits = omit({ ...limitsValue }, limit) as LimitsParam;
+    const otherLimits = omit({ ...limitsValue }, limit) as LimitsFilterValue;
     const otherLimitParams = Object.keys(otherLimits).reduce((params, key) => {
       return {
         ...params,

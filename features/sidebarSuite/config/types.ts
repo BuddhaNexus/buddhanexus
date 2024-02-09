@@ -47,14 +47,21 @@ type QueryStringParam =
 
 export type MultiLingalParam = SourceLanguage[] | undefined;
 
-export type LimitsParam = {
+export type LimitsFilterValue = {
   category_exclude?: CategoryMenuItem[];
   category_include?: CategoryMenuItem[];
   file_exclude?: DatabaseText[];
   file_include?: DatabaseText[];
 };
 
-export type Limit = keyof LimitsParam;
+export type LimitsParam = {
+  category_exclude?: string[];
+  category_include?: string[];
+  file_exclude?: string[];
+  file_include?: string[];
+};
+
+export type Limit = keyof LimitsFilterValue;
 
 // Technically "limits" is not a type but TS is limited in it's ability to enforce the contents of arrays based on types, so this is being defined here as a pseduo type.
 export const limits: Limit[] = [
@@ -97,7 +104,7 @@ export type QueryParams = {
     : Key extends "sort_method"
     ? SortMethod | (Key extends UndefinedParams ? undefined : never)
     : Key extends "limits"
-    ? LimitsParam | (Key extends UndefinedParams ? undefined : never)
+    ? LimitsFilterValue | (Key extends UndefinedParams ? undefined : never)
     : Key extends "target_collection"
     ? string[] | (Key extends UndefinedParams ? undefined : never)
     : Key extends "multi_lingual"

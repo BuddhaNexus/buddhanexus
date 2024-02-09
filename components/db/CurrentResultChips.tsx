@@ -13,13 +13,13 @@ import {
 import { uniqueSettings } from "features/sidebarSuite/config/settings";
 import type {
   DefaultQueryParams,
-  LimitsParam,
+  LimitsFilterValue,
   MultiLingalParam,
   QueryParams,
 } from "features/sidebarSuite/config/types";
 import { DbApi } from "utils/api/dbApi";
 
-type ParamValues = string | number | LimitsParam | MultiLingalParam;
+type ParamValues = string | number | LimitsFilterValue | MultiLingalParam;
 
 function getFilterCount(key: string) {
   return customFiltersChipQueryExclusions.includes(key) ? 0 : 1;
