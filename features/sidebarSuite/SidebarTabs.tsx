@@ -25,8 +25,8 @@ export const SidebarTabList = ({
   ];
 
   const dbFilePageTabList = [
-    <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />,
-    <Tab key="settings-tab-1" value="1" label={t("tabs.filters")} />,
+    <Tab key="settings-tab-0" value="0" label={t("tabs.filters")} />,
+    <Tab key="settings-tab-1" value="1" label={t("tabs.options")} />,
     <Tab key="settings-tab-2" value="2" label={t("tabs.info")} />,
   ];
 
@@ -57,14 +57,14 @@ export const SearchPageSidebarTabPanels = () => {
 export const DbFilePageSidebarTabPanels = () => {
   return (
     <>
-      <TabPanel value="0" sx={{ px: 2 }}>
+      <TabPanel value="1" sx={{ px: 2 }}>
         <DisplayOptionsSection />
 
         <UtilityOptionsSection />
 
         <ExternalLinksSection />
       </TabPanel>
-      <TabPanel value="1" sx={{ px: 2 }}>
+      <TabPanel value="0" sx={{ px: 2 }}>
         <FilterSettings pageType="dbResult" />
       </TabPanel>
       <TabPanel value="2">

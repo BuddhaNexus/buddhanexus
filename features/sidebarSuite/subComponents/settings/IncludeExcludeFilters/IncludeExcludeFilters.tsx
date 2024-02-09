@@ -12,14 +12,44 @@ import {
 import {
   type Limit,
   limits,
+  type LimitsFilterValue,
   type LimitsParam,
 } from "features/sidebarSuite/config/types";
-import { omit } from "lodash";
 import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
 import { JsonParam, useQueryParam } from "use-query-params";
 
 import ListboxComponent from "./ListboxComponent";
 import { StyledPopper } from "./muiStyledComponents";
+
+function getValuesFromParams(
+  params: LimitsParam,
+  texts: Map<string, DatabaseText>,
+  categories: Map<string, CategoryMenuItem>,
+) {
+  return Object.entries(params).reduce((values, [filter, selections]) => {
+    const list = filter.startsWith("category") ? categories : texts;
+
+    const filterItems = selections.map((id) => list.get(id));
+
+    return { ...values, [filter]: filterItems };
+  }, {});
+}
+function getParamsFromValues(
+  updatedLimit: Limit,
+  updatedvalue: (CategoryMenuItem | DatabaseText)[],
+  params: LimitsParam,
+) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { [updatedLimit]: prevValue, ...otherLimitParams } = params;
+
+  const updatedParam = updatedvalue.map((item) => item.id);
+  return {
+    ...otherLimitParams,
+    ...(updatedParam.length > 0 && {
+      [updatedLimit]: updatedParam,
+    }),
+  };
+}
 
 const IncludeExcludeFilters = () => {
   const { t } = useTranslation("settings");
@@ -34,34 +64,32 @@ const IncludeExcludeFilters = () => {
     JsonParam,
   );
 
-  const [limitsValue, setLimitsValue] = useState<LimitsParam>({});
+  const [limitsValue, setLimitsValue] = useState<LimitsFilterValue>({});
 
-  useEffect(
-    () => setLimitsParam(limitsParam ?? defaultParamConfig.limits),
-    [limitsParam, setLimitsParam, defaultParamConfig],
-  );
+  useEffect(() => {
+    const values = getValuesFromParams(limitsParam ?? {}, texts, categories);
+
+    setLimitsValue(values ?? defaultParamConfig.limits);
+  }, [texts, categories, limitsParam, setLimitsParam, defaultParamConfig]);
 
   const handleInputChange = (
     limit: Limit,
     value: (CategoryMenuItem | DatabaseText)[],
   ) => {
-    const otherLimits = omit({ ...limitsValue }, limit) as LimitsParam;
-    const otherLimitParams = Object.keys(otherLimits).reduce((params, key) => {
-      return {
-        ...params,
-        [key]: otherLimits?.[key as Limit]!.map((limitItem) => limitItem.id),
-      };
-    }, {});
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { [limit]: prevValue, ...otherLimitValues } = limitsValue;
+
     const updatedLimitValues =
-      value.length > 0 ? { ...otherLimits, [limit]: value } : otherLimits;
+      value.length > 0
+        ? { ...otherLimitValues, [limit]: value }
+        : otherLimitValues;
     setLimitsValue(updatedLimitValues);
+
+    const updatedParams = getParamsFromValues(limit, value, limitsParam ?? {});
     setLimitsParam(
-      Object.keys(updatedLimitValues).length > 0
-        ? {
-            ...otherLimitParams,
-            [limit]: value.map((limitItem) => limitItem.id),
-          }
-        : undefined,
+      Object.keys(updatedParams).length > 0
+        ? updatedParams
+        : defaultParamConfig.limits,
     );
   };
 
