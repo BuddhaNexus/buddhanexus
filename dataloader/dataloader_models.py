@@ -4,7 +4,7 @@ Models for data
 
 from typing import List
 from enum import Enum
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
 
 class Lang(str, Enum):
@@ -41,14 +41,15 @@ class Match(BaseModel):
     tgt_lang: Lang
 
 
+
 class Segment(BaseModel):
     """
     The base model of a segment object
     """
 
-    segmentnr: str  # Globally unique ID for segment
-    original: str  # Text content of segment
-    stemmed: str  # Text content of segment
+    segmentnr: str = Field(..., min_length=1)  # Globally unique ID for segment
+    original: str = Field(..., min_length=1)  # Text content of segment
+    stemmed: str = Field(..., min_length=1)  # Text content of segment
     # lang: Lang  # language name
 
 
