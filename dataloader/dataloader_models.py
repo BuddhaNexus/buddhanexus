@@ -19,7 +19,7 @@ class Match(BaseModel):
     """
     The base model of a Parallel object
     """
-    id: str
+    id: str = Field(..., min_length=1)
     score: float
     par_length: int
     root_length: int
@@ -31,8 +31,8 @@ class Match(BaseModel):
     par_segnr: List[str]
     root_segtext: List[str]
     par_segtext: List[str]
-    root_string: str
-    par_string: str
+    root_string: str = Field(..., min_length=1)
+    par_string: str = Field(..., min_length=1)
     root_offset_beg: int
     root_offset_end: int
     par_offset_beg: int

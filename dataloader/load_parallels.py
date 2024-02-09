@@ -85,9 +85,9 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
 def process_file(path, db):
     print("Processing file: ", path)
     parallels = json.load(gzip.open(path, "rt", encoding="utf-8")) # returns a list of dicts
-    print(f">>> Validating {path}: ", end="")
+    print(f"Validating {path}")
     if (validate_dict_list(path, Match, parallels)):
-        print(f"OK\nLoading {path}")
+        print(f"Loading {path}")
         load_parallels(parallels, db)
 
 
