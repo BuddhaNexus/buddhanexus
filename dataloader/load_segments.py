@@ -64,12 +64,7 @@ class LoadSegmentsBase:
         ]
         # print(f"DEBUG: segments[:3]: {segments[:3]}")
         db.collection(COLLECTION_SEGMENTS).delete_many({"language": self.LANG})
-        for s in tqdm(segments):
-            try:
-                db.collection(COLLECTION_SEGMENTS).insert(s)
-            except Exception as e:
-                print("===>>> ERROR: Error: ", e.message)
-                print("===>>> ERROR: Problem with sengment: ", s)
+        db.collection(COLLECTION_SEGMENTS).insert_many(segments)
         db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr", "language"])
 
         segnrs = [segment["segnr"] for segment in segments]
@@ -102,8 +97,7 @@ class LoadSegmentsBase:
                 stem = "".join(stem)
             else:
                 original = " ".join(original)
-                if type(stem) == str:
-                    stem = " ".join(stem)
+                stem = " ".join(stem)
             category = get_cat_from_segmentnr(segnr[1])
 
             search_index_entries.append(
@@ -141,7 +135,7 @@ class LoadSegmentsBase:
             db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr"])
 
         category_files = defaultdict(list)
-        print(f"DEBUG: LoadSegmentBase.DATA_PATH: {self.DATA_PATH}")
+        print(f"Loading Segments from: {self.DATA_PATH}")
         if os.path.isdir(self.DATA_PATH):
             for file in os.listdir(self.DATA_PATH):
                 if file.endswith(".tsv") and should_download_file(file):
