@@ -67,7 +67,9 @@ export const FilterSettings = ({
             return <MultiLingualSelector key={key} />;
           }
           case uniqueSettings.queryParams.limits: {
-            return <IncludeExcludeFilters key={key} />;
+            return (
+              <IncludeExcludeFilters key={key} lanuguage={sourceLanguage} />
+            );
           }
           case uniqueSettings.queryParams.targetCollection: {
             return (

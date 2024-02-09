@@ -51,7 +51,7 @@ function getParamsFromValues(
   };
 }
 
-const IncludeExcludeFilters = () => {
+const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
   const { t } = useTranslation("settings");
 
   const { defaultParamConfig, uniqueSettings } = useDbQueryParams();
@@ -63,14 +63,26 @@ const IncludeExcludeFilters = () => {
     uniqueSettings.queryParams.limits,
     JsonParam,
   );
-
   const [limitsValue, setLimitsValue] = useState<LimitsFilterValue>({});
 
   useEffect(() => {
-    const values = getValuesFromParams(limitsParam ?? {}, texts, categories);
+    if (lanuguage) {
+      const values = getValuesFromParams(limitsParam ?? {}, texts, categories);
+      setLimitsValue(values);
+    } else {
+      setLimitsParam(defaultParamConfig.limits);
+      setLimitsValue({});
+    }
+  }, [
+    texts,
+    categories,
+    limitsParam,
+    setLimitsParam,
+    lanuguage,
+    defaultParamConfig,
+  ]);
 
-    setLimitsValue(values ?? defaultParamConfig.limits);
-  }, [texts, categories, limitsParam, setLimitsParam, defaultParamConfig]);
+  if (!lanuguage) return null;
 
   const handleInputChange = (
     limit: Limit,
