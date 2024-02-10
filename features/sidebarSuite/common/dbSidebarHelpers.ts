@@ -132,8 +132,12 @@ export const onEmailQueryLink = ({
 
   const encodedURL = encodeURIComponent(href);
 
-  const subject = `BuddhaNexus serach results - ${fileName.toUpperCase()}`;
-  const body = `Here is a link to search results for ${fileName.toUpperCase()}: ${encodedURL}`;
+  const subject = fileName
+    ? `BuddhaNexus serach results - ${fileName.toUpperCase()}`
+    : `BuddhaNexus serach results`;
+  const body = fileName
+    ? `Here is a link to search results for ${fileName.toUpperCase()}: ${encodedURL}`
+    : `Here is a link to your search results: ${encodedURL}`;
 
   const link = document.createElement("a");
   link.href = `mailto:?subject=${subject}&body=${body}`;

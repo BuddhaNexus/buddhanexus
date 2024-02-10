@@ -47,6 +47,7 @@ export const SearchPageSidebarTabPanels = () => {
         <FilterSettings pageType="search" />
         <UtilityOptionsSection />
       </TabPanel>
+
       <TabPanel value="1">
         <Info />
       </TabPanel>
@@ -57,16 +58,16 @@ export const SearchPageSidebarTabPanels = () => {
 export const DbFilePageSidebarTabPanels = () => {
   return (
     <>
-      <TabPanel value="1" sx={{ px: 2 }}>
-        <DisplayOptionsSection />
-
-        <UtilityOptionsSection />
-
-        <ExternalLinksSection />
-      </TabPanel>
       <TabPanel value="0" sx={{ px: 2 }}>
         <FilterSettings pageType="dbResult" />
       </TabPanel>
+
+      <TabPanel value="1" sx={{ px: 2 }}>
+        <DisplayOptionsSection />
+        <UtilityOptionsSection />
+        <ExternalLinksSection />
+      </TabPanel>
+
       <TabPanel value="2">
         <Info />
       </TabPanel>

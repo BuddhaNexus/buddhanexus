@@ -63,24 +63,23 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
     uniqueSettings.queryParams.limits,
     JsonParam,
   );
+
   const [limitsValue, setLimitsValue] = useState<LimitsFilterValue>({});
 
+  const isInitiated = React.useRef(false);
   useEffect(() => {
-    if (lanuguage) {
+    if (!lanuguage) return;
+
+    if (!isInitiated.current && !isLoadingTexts && !isLoadingCategories) {
       const values = getValuesFromParams(limitsParam ?? {}, texts, categories);
       setLimitsValue(values);
-    } else {
-      setLimitsParam(defaultParamConfig.limits);
+      isInitiated.current = true;
+    }
+
+    if (Object.keys(limitsValue).length > 0 && !limitsParam) {
       setLimitsValue({});
     }
-  }, [
-    texts,
-    categories,
-    limitsParam,
-    setLimitsParam,
-    lanuguage,
-    defaultParamConfig,
-  ]);
+  }, [lanuguage, isInitiated, texts, categories, limitsParam, setLimitsParam]);
 
   if (!lanuguage) return null;
 
