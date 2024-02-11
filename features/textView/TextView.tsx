@@ -38,7 +38,7 @@ export default function TextView({
       chroma
         .scale("Reds")
         .correctLightness(true)
-        .padding(isDarkTheme ? [0, 0.4] : [0.4, 0])
+        .padding(isDarkTheme ? [0, 0.3] : [0.3, 0])
         // small trick to make it readable in both color schemes
         .domain(isDarkTheme ? [minColor, maxColor] : [maxColor, minColor])
     );
@@ -47,19 +47,15 @@ export default function TextView({
   const hasData = data.length > 0;
 
   return (
-    <Paper elevation={1} sx={{ flex: 1, py: 2, pl: 2, my: 1 }}>
+    <Paper elevation={1} sx={{ flex: 1, py: 1, pl: 2, my: 0 }}>
       <Allotment>
         {/* Left view - text (main view) */}
         <Allotment.Pane>
           <Virtuoso
             totalCount={data.length}
             data={hasData ? data : undefined}
-            itemContent={(index, dataSegment) => (
-              <TextSegment
-                index={index}
-                data={dataSegment}
-                colorScale={colorScale}
-              />
+            itemContent={(_, dataSegment) => (
+              <TextSegment data={dataSegment} colorScale={colorScale} />
             )}
             endReached={onEndReached}
             startReached={onStartReached}

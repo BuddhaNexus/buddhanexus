@@ -13,11 +13,9 @@ import styles from "./textSegment.module.scss";
 
 export const TextSegment = ({
   data: { segmentText, segmentNumber },
-  // index,
   colorScale,
 }: {
   data: TextPageDataSegment;
-  index: number;
   colorScale: Scale;
 }) => {
   const { mode } = useColorScheme();
@@ -41,40 +39,43 @@ export const TextSegment = ({
         data-segmentnumber={segmentNumber}
       />
 
-      {segmentText.map(({ text, highlightColor, matches }) => (
-        <button
-          key={text}
-          type="button"
-          tabIndex={0}
-          className={`${styles.segment} ${
-            isSelected &&
-            (isDarkTheme
-              ? styles.segment__selected__dark
-              : styles.segment__selected__light)
-          }`}
-          style={{
-            fontFamily: sourceSans.style.fontFamily,
-            color: colorScale(highlightColor).hex(),
-          }}
-          onClick={() => {
-            setSelectedSegmentMatches(matches);
-            setSelectedSegmentId(segmentNumber);
-          }}
-          onKeyDown={(event) => {
-            // allow selecting the segments by pressing space or enter
-            if (event.key !== " " && event.key !== "Enter") return;
-            event.preventDefault();
-            setSelectedSegmentMatches(matches);
-            setSelectedSegmentId(segmentNumber);
-          }}
-        >
-          {enscriptText({
-            text,
-            script: scriptSelection,
-            language: sourceLanguage,
-          })}
-        </button>
-      ))}
+      {segmentText.map(({ text, highlightColor, matches }, i) => {
+        return (
+          <button
+            key={segmentNumber + text + i}
+            type="button"
+            tabIndex={0}
+            className={`${styles.segment} ${
+              isSelected &&
+              (isDarkTheme
+                ? styles.segment__selected__dark
+                : styles.segment__selected__light)
+            }`}
+            style={{
+              fontFamily: sourceSans.style.fontFamily,
+              color: colorScale(highlightColor).hex(),
+              // color: SEGMENT_COLORS[highlightColor],
+            }}
+            onClick={() => {
+              setSelectedSegmentMatches(matches);
+              setSelectedSegmentId(segmentNumber);
+            }}
+            onKeyDown={(event) => {
+              // allow selecting the segments by pressing space or enter
+              if (event.key !== " " && event.key !== "Enter") return;
+              event.preventDefault();
+              setSelectedSegmentMatches(matches);
+              setSelectedSegmentId(segmentNumber);
+            }}
+          >
+            {enscriptText({
+              text,
+              script: scriptSelection,
+              language: sourceLanguage,
+            })}
+          </button>
+        );
+      })}
     </>
   );
 };

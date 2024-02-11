@@ -23,9 +23,30 @@ export default function TextViewMiddleParallels() {
   });
 
   return (
-    <div style={{ overflow: "scroll", height: "100%" }}>
-      <ClearSelectedSegmentButton />
-      <p>{selectedSegmentMatches.length} Matches</p>
+    <div
+      style={{
+        overflow: "scroll",
+        height: "100%",
+        paddingRight: 8,
+        paddingLeft: 8,
+      }}
+    >
+      <div
+        data-testid="middle-view-header"
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <p style={{ paddingRight: 4 }}>
+          {selectedSegmentMatches.length} Matches
+        </p>
+        <div>
+          <ClearSelectedSegmentButton />
+        </div>
+      </div>
+
       <div style={{}}>
         {data?.map(
           ({
