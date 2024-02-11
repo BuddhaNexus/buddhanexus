@@ -1,10 +1,10 @@
 QUERY_FILES_FOR_LANGUAGE = """
 FOR file IN files
     FILTER file.language == @language
+    FILTER file.displayName != null
     SORT file.filenr
     RETURN {
-        displayName: file.displayName,
-        search_field: file.search_field,
+        displayName: file.displayName,        
         textname: file.textname,
         filename: file.filename,
         category: file.category,

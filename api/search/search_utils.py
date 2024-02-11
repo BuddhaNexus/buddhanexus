@@ -1,6 +1,7 @@
 import re
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
 from fuzzysearch import levenshtein_ngram
+from ..utils import shorten_segment_names
 import pyewts
 
 bn_analyzer = bn_translate.analyzer()
@@ -8,7 +9,7 @@ tib_converter = pyewts.pyewts()
 from aksharamukha import transliterate
 
 
-def preprocess_search_string(search_string):
+def preprocess_search_string(search_string, language):
     tib = ""
     chn = ""
     skt = ""
@@ -47,6 +48,14 @@ def preprocess_search_string(search_string):
         chn = search_string
     else:
         skt = search_string
+    if language == "skt":
+        tib = chn = pli = ""
+    if language == "tib":
+        chn = pli = ""
+    if language == "chn":
+        tib = pli = ""    
+    if language == "pli":
+        tib = chn = ""
     return {"skt": skt, "skt_fuzzy": skt_fuzzy, "tib": tib, "pli": pli, "chn": chn}
 
 
@@ -103,17 +112,19 @@ def remove_duplicate_results(results):
     return return_results
 
 
-def process_result(result_pair, search_string):
-    result, multilang_results = result_pair
+def process_result(result, search_string):    
     try:
         beg, end, centeredness, distance = get_offsets(
-            search_string, result["search_string_precise"]
+            search_string, result["original"]
         )
         result["offset_beg"] = beg
         result["offset_end"] = end
+        result['distance'] = distance
         result["centeredness"] = centeredness
-        result["distance"] = distance
-        result["multilang_results"] = multilang_results
+        result['similarity'] = 100 
+        if distance != 0 :
+            result['similarity'] = 100 - distance / len(search_string)
+        result['segment_nr'] = shorten_segment_names(result['segment_nr'])
         return result
     except (RuntimeError, TypeError, NameError):
         pass
@@ -126,8 +137,6 @@ def postprocess_results(search_strings, results):
     for result in results:
         new_results.append(process_result(result, search_string))
 
-    for result in new_results:
-        print("RESULT", result)
     results = [x for x in new_results if x is not None]
     results = [x for x in results if "centeredness" in x]
     results = remove_duplicate_results(results)
@@ -136,7 +145,5 @@ def postprocess_results(search_strings, results):
     results = [i for n, i in enumerate(results) if i not in results[n + 1 :]]
     # First sort according to string similarity, next sort if multilang is present; the idea is that first the multilang results are shown, then the other with increasing distance
     results = sorted(results, key=lambda i: i["distance"])
-    results = results[::-1]
-    results = sorted(results, key=lambda i: len(i["multilang_results"]))
     results = results[::-1]
     return results[:200]  # make sure we return a fixed number of results

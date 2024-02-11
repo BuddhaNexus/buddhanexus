@@ -359,7 +359,7 @@ FOR file IN files
 
 QUERY_DISPLAYNAME = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file.filename == @filename
     RETURN [file.displayName, file.textname, file.link, file.link2]
 """
 
