@@ -51,7 +51,7 @@ export const ParallelSegment = ({
   }, [infoToCopy]);
 
   return (
-    <Card sx={{ flex: 1, wordBreak: "break-all" }}>
+    <Card sx={{ flex: 1, wordBreak: "break-all", my: 1 }} elevation={1}>
       <CardContent
         sx={{
           display: "flex",

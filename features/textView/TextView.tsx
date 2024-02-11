@@ -47,7 +47,7 @@ export default function TextView({
   const hasData = data.length > 0;
 
   return (
-    <Paper elevation={1} sx={{ flex: 1, py: 1, pl: 2, my: 0 }}>
+    <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
       <Allotment>
         {/* Left view - text (main view) */}
         <Allotment.Pane>

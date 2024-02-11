@@ -34,26 +34,40 @@ export const TextSegment = ({
     <>
       <span
         className={`${styles.segmentNumber} ${
-          isSelected && styles.segmentNumber__selected
+          isSelected && styles["segmentNumber--selected"]
         }`}
         data-segmentnumber={segmentNumber}
       />
 
       {segmentText.map(({ text, highlightColor, matches }, i) => {
+        const segmentKey = segmentNumber + text + i;
+        const textContent = enscriptText({
+          text,
+          script: scriptSelection,
+          language: sourceLanguage,
+        });
+        if (matches.length === 0) {
+          return (
+            <span key={segmentKey} className={styles.segment}>
+              {textContent}
+            </span>
+          );
+        }
         return (
           <button
-            key={segmentNumber + text + i}
+            key={segmentKey}
             type="button"
             tabIndex={0}
-            className={`${styles.segment} ${
+            className={`${styles.segment} ${styles["segment--button"]} ${
               isSelected &&
               (isDarkTheme
-                ? styles.segment__selected__dark
-                : styles.segment__selected__light)
+                ? styles["segment--selected-dark"]
+                : styles["segment--selected-light"])
             }`}
             style={{
               fontFamily: sourceSans.style.fontFamily,
               color: colorScale(highlightColor).hex(),
+              // todo: uncomment to enable old Frontend segment colors
               // color: SEGMENT_COLORS[highlightColor],
             }}
             onClick={() => {
@@ -68,11 +82,7 @@ export const TextSegment = ({
               setSelectedSegmentId(segmentNumber);
             }}
           >
-            {enscriptText({
-              text,
-              script: scriptSelection,
-              language: sourceLanguage,
-            })}
+            {textContent}
           </button>
         );
       })}

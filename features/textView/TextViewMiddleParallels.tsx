@@ -47,7 +47,7 @@ export default function TextViewMiddleParallels() {
         </div>
       </div>
 
-      <div style={{}}>
+      <div>
         {data?.map(
           ({
             fileName,

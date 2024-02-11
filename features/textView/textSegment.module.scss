@@ -8,17 +8,17 @@
   padding: 0 !important;
   font-size: 1rem;
 
-  &:hover {
+  &--button:hover {
     cursor: pointer;
     text-decoration: underline;
   }
 
-  &__selected__dark {
+  &--selected-dark {
     background-color: #616161 !important;
     text-decoration: underline;
   }
 
-  &__selected__light {
+  &--selected-light {
     background: #eeeeee !important;
     text-decoration: underline;
   }
@@ -38,7 +38,7 @@
     margin-right: 1em;
   }
 
-  &__selected {
+  &--selected {
     text-decoration: underline;
   }
 }
