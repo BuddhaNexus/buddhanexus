@@ -1,6 +1,7 @@
 import {
   Box,
   type BoxProps,
+  Card,
   Link,
   type OutlinedTextFieldProps,
   TextField,
@@ -60,6 +61,15 @@ export const SearchBoxInput = styled(TextField, {
       borderColor: "transparent",
     },
   },
+}));
+
+export const SearchResultCard = styled(Card)(({ theme }) => ({
+  flexGrow: 1,
+  width: "100%",
+  [theme.breakpoints.up("lg")]: {
+    width: "31%",
+  },
+  wordBreak: "break-all",
 }));
 
 export const SearchResultHeaderChips = styled(Box)({

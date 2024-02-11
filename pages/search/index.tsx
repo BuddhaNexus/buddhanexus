@@ -23,6 +23,14 @@ import { DbApi } from "utils/api/dbApi";
 import { type SearchPageResults } from "utils/api/search";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
+function chunkArray(array: SearchPageResults, chunkSize: number) {
+  const chunks = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    chunks.push(array.slice(i, i + chunkSize));
+  }
+  return chunks;
+}
+
 export default function SearchPage() {
   // IN DEVELOPMENT
   const { t } = useTranslation();
@@ -43,7 +51,7 @@ export default function SearchPage() {
   }, [isReady, setSearchTerm, searchParam]);
 
   // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
-  const { data, isLoading } = useQuery<SearchPageResults>({
+  const { data: rawData, isLoading } = useQuery<SearchPageResults>({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
       searchTerm: searchParam,
       queryParams,
@@ -55,9 +63,13 @@ export default function SearchPage() {
       }),
   });
 
-  const sortedData = React.useMemo(() => {
-    return data ? data.sort((a, b) => b.similarity - a.similarity) : [];
-  }, [data]);
+  const data = React.useMemo(() => {
+    const sortedData = rawData
+      ? rawData.sort((a, b) => b.similarity - a.similarity)
+      : [];
+    // see SearchResultsRow.tsx for explanation of workaround needing chunked data
+    return chunkArray(sortedData, 3);
+  }, [rawData]);
 
   if (isFallback) {
     return (
@@ -118,7 +130,7 @@ export default function SearchPage() {
         />
       </SearchBoxWrapper>
 
-      <QueryPageTopStack matches={sortedData?.length ?? 0} />
+      <QueryPageTopStack matches={rawData?.length ?? 0} />
 
       {isLoading ? (
         <div>
@@ -131,8 +143,8 @@ export default function SearchPage() {
         </div>
       ) : (
         <>
-          {sortedData.length > 0 ? (
-            <SearchResults data={sortedData} />
+          {data.length > 0 ? (
+            <SearchResults data={data} />
           ) : (
             <>
               {/* TODO: i18n */}

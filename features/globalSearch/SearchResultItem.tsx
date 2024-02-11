@@ -3,17 +3,11 @@ import { useTranslation } from "next-i18next";
 import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";
-import {
-  Card,
-  CardContent,
-  Chip,
-  Divider,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { CardContent, Chip, Divider, IconButton, Tooltip } from "@mui/material";
 import type { SearchResult } from "utils/api/search";
 
 import {
+  SearchResultCard,
   SearchResultHeaderChips,
   SearchResultHeaderTitleRow,
   SearchResultLink,
@@ -46,7 +40,7 @@ export const SearchResultItem = ({ result }: Props) => {
   const path = `/db/${language}/${id}/text?selectedSegment=${segmentNumber}`;
 
   return (
-    <Card sx={{ flex: 1, wordBreak: "break-all" }}>
+    <SearchResultCard>
       <CardContent
         sx={{
           bgcolor: "background.card",
@@ -92,6 +86,6 @@ export const SearchResultItem = ({ result }: Props) => {
       <CardContent>
         <SearchResultItemText id={id} textParts={matchTextParts} />
       </CardContent>
-    </Card>
+    </SearchResultCard>
   );
 };
