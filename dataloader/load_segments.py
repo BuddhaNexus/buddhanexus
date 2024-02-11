@@ -10,6 +10,8 @@ import pandas as pd
 from tqdm import tqdm as tqdm
 from arango.database import StandardDatabase
 
+from dataloader_models import Segment, validate_df
+
 from dataloader_constants import (
     COLLECTION_SEARCH_INDEX_TIB,
     COLLECTION_SEARCH_INDEX_SKT,
@@ -60,6 +62,7 @@ class LoadSegmentsBase:
             {"_key": segnr, "segnr": segnr, "segtext": original, "language": self.LANG}
             for segnr, original in zip(file_df["segmentnr"], file_df["original"])
         ]
+        # print(f"DEBUG: segments[:3]: {segments[:3]}")
         db.collection(COLLECTION_SEGMENTS).delete_many({"language": self.LANG})
         db.collection(COLLECTION_SEGMENTS).insert_many(segments)
         db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr", "language"])
@@ -88,8 +91,6 @@ class LoadSegmentsBase:
         stems = sliding_window(file_df["stemmed"].tolist(), 3)
         search_index_entries = []
         for segnr, original, stem in zip(segmentnrs, originals, stems):
-            originl = [str(o) for o in original]
-            stem = [str(s) for s in stem]
             if self.LANG == "chn":
                 original = "".join(original)
                 stem = "".join(stem)
@@ -118,6 +119,7 @@ class LoadSegmentsBase:
         )
 
     def _process_file(self, file):
+        print(f"Processing file: { file }")
         db = get_database()
         try:
             file_df = pd.read_csv(os.path.join(self.DATA_PATH, file), sep="\t")
@@ -125,7 +127,7 @@ class LoadSegmentsBase:
             self._load_segments_to_search_index(file_df, db)
         except Exception as e:
             print(f"Error while processing file {file}: {e}")
-
+            
     def load(self, number_of_threads: int = 1) -> None:
         # only create collection if it does not exist
         db = get_database()
@@ -136,6 +138,7 @@ class LoadSegmentsBase:
             db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr"])
 
         category_files = defaultdict(list)
+        print(f"Loading Segments from: {self.DATA_PATH}")
         if os.path.isdir(self.DATA_PATH):
             for file in os.listdir(self.DATA_PATH):
                 if file.endswith(".tsv") and should_download_file(file):

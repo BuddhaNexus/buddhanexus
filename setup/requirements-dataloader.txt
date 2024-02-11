@@ -10,3 +10,5 @@ pre-commit==1.21.0
 unidecode
 fastapi
 pandas
+natsort
+jsonschema

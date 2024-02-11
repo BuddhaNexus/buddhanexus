@@ -6311,7 +6311,7 @@
                 "TZ19-DZA-027",
                 "TZ19-DZA-028"
             ],
-            "category_name": "TZ19"
+            "categoryname": "TZ19"
         },
         {
             "category": "TZ32",
@@ -6377,7 +6377,7 @@
                 "TZ32-KHI-055",
                 "TZ32-KHI-056"
             ],
-            "category_name": "TZ32"
+            "categoryname": "TZ32"
         },
         {
             "category": "TZ53~",
@@ -6438,7 +6438,7 @@
                 "TZ53~-'I-054",
                 "TZ53~-'I-055"
             ],
-            "category_name": "TZ53~"
+            "categoryname": "TZ53~"
         },
         {
             "category": "TZ65",
@@ -6453,7 +6453,7 @@
                 "TZ65-HAA-008",
                 "TZ65-HAA-009"
             ],
-            "category_name": "TZ65"
+            "categoryname": "TZ65"
         },
         {
             "category": "TZ4",
@@ -6501,7 +6501,7 @@
                 "TZ4-NGA-041",
                 "TZ4-NGA-042"
             ],
-            "category_name": "TZ4"
+            "categoryname": "TZ4"
         },
         {
             "category": "TZ51",
@@ -6579,7 +6579,7 @@
                 "TZ51-ZHI-069",
                 "TZ51-ZHI-070"
             ],
-            "category_name": "TZ51"
+            "categoryname": "TZ51"
         },
         {
             "category": "TZ50",
@@ -6648,7 +6648,7 @@
                 "TZ50-WI-062",
                 "TZ50-WI-063"
             ],
-            "category_name": "TZ50"
+            "categoryname": "TZ50"
         },
         {
             "category": "TZ53",
@@ -6709,7 +6709,7 @@
                 "TZ53-'I-054",
                 "TZ53-'I-055"
             ],
-            "category_name": "TZ53"
+            "categoryname": "TZ53"
         },
         {
             "category": "TZ52",
@@ -6775,7 +6775,7 @@
                 "TZ52-ZI-058",
                 "TZ52-ZI-059"
             ],
-            "category_name": "TZ52"
+            "categoryname": "TZ52"
         },
         {
             "category": "TZ55",
@@ -6817,7 +6817,7 @@
                 "TZ55-RI-035",
                 "TZ55-RI-036"
             ],
-            "category_name": "TZ55"
+            "categoryname": "TZ55"
         },
         {
             "category": "TZ54",
@@ -6863,7 +6863,7 @@
                 "TZ54-YI-039",
                 "TZ54-YI-040"
             ],
-            "category_name": "TZ54"
+            "categoryname": "TZ54"
         },
         {
             "category": "TZ57",
@@ -6891,7 +6891,7 @@
                 "TZ57-SHI-021",
                 "TZ57-SHI-022"
             ],
-            "category_name": "TZ57"
+            "categoryname": "TZ57"
         },
         {
             "category": "TZ69",
@@ -6899,7 +6899,7 @@
                 "TZ69RTZ Volume 69 Full Text Tibetan",
                 "TZ69-WAM-001"
             ],
-            "category_name": "TZ69"
+            "categoryname": "TZ69"
         },
         {
             "category": "TZ59",
@@ -6937,7 +6937,7 @@
                 "TZ59-HI-031",
                 "TZ59-HI-032"
             ],
-            "category_name": "TZ59"
+            "categoryname": "TZ59"
         },
         {
             "category": "TZ58",
@@ -6972,7 +6972,7 @@
                 "TZ58-SI-026",
                 "TZ58-SI-027"
             ],
-            "category_name": "TZ58"
+            "categoryname": "TZ58"
         },
         {
             "category": "TZ37",
@@ -7008,7 +7008,7 @@
                 "TZ37-JI-029",
                 "TZ37-JI-030"
             ],
-            "category_name": "TZ37"
+            "categoryname": "TZ37"
         },
         {
             "category": "TZ36",
@@ -7068,7 +7068,7 @@
                 "TZ36-CHI-053",
                 "TZ36-CHI-054"
             ],
-            "category_name": "TZ36"
+            "categoryname": "TZ36"
         },
         {
             "category": "TZ35",
@@ -7101,7 +7101,7 @@
                 "TZ35-CI-026",
                 "TZ35-CI-027"
             ],
-            "category_name": "TZ35"
+            "categoryname": "TZ35"
         },
         {
             "category": "TZ34",
@@ -7186,7 +7186,7 @@
                 "TZ34-NGI-078",
                 "TZ34-NGI-079"
             ],
-            "category_name": "TZ34"
+            "categoryname": "TZ34"
         },
         {
             "category": "TZ33",
@@ -7237,7 +7237,7 @@
                 "TZ33-GI-044",
                 "TZ33-GI-045"
             ],
-            "category_name": "TZ33"
+            "categoryname": "TZ33"
         },
         {
             "category": "TZ18",
@@ -7288,7 +7288,7 @@
                 "TZ18-TSHA-044",
                 "TZ18-TSHA-045"
             ],
-            "category_name": "TZ18"
+            "categoryname": "TZ18"
         },
         {
             "category": "TZ31",
@@ -7338,7 +7338,7 @@
                 "TZ31-KI-039",
                 "TZ31-KI-040"
             ],
-            "category_name": "TZ31"
+            "categoryname": "TZ31"
         },
         {
             "category": "TZ30",
@@ -7377,7 +7377,7 @@
                 "TZ30-A-030",
                 "TZ30-A-031"
             ],
-            "category_name": "TZ30"
+            "categoryname": "TZ30"
         },
         {
             "category": "TZ15",
@@ -7421,7 +7421,7 @@
                 "TZ15-BA-037",
                 "TZ15-BA-038"
             ],
-            "category_name": "TZ15"
+            "categoryname": "TZ15"
         },
         {
             "category": "TZ14",
@@ -7461,7 +7461,7 @@
                 "TZ14-PHA-033",
                 "TZ14-PHA-034"
             ],
-            "category_name": "TZ14"
+            "categoryname": "TZ14"
         },
         {
             "category": "TZ17",
@@ -7505,14 +7505,14 @@
                 "TZ17-TSA-037",
                 "TZ17-TSA-038"
             ],
-            "category_name": "TZ17"
+            "categoryname": "TZ17"
         },
         {
             "category": "TZ70",
             "files": [
                 "TZ70-MAA-001"
             ],
-            "category_name": "TZ70"
+            "categoryname": "TZ70"
         },
         {
             "category": "TZ11",
@@ -7590,7 +7590,7 @@
                 "TZ11-DA-071",
                 "TZ11-DA-072"
             ],
-            "category_name": "TZ11"
+            "categoryname": "TZ11"
         },
         {
             "category": "TZ10",
@@ -7649,7 +7649,7 @@
                 "TZ10-THA-052",
                 "TZ10-THA-053"
             ],
-            "category_name": "TZ10"
+            "categoryname": "TZ10"
         },
         {
             "category": "TZ13",
@@ -7726,7 +7726,7 @@
                 "TZ13-PA-070",
                 "TZ13-PA-071"
             ],
-            "category_name": "TZ13"
+            "categoryname": "TZ13"
         },
         {
             "category": "TZ38",
@@ -7785,7 +7785,7 @@
                 "TZ38-NYI-050",
                 "TZ38-NYI-051"
             ],
-            "category_name": "TZ38"
+            "categoryname": "TZ38"
         },
         {
             "category": "TZ1",
@@ -7802,7 +7802,7 @@
                 "TZ1-KA-010",
                 "TZ1-KA-011"
             ],
-            "category_name": "TZ1"
+            "categoryname": "TZ1"
         },
         {
             "category": "TZ3",
@@ -7852,7 +7852,7 @@
                 "TZ3-GA-041",
                 "TZ3-GA-044"
             ],
-            "category_name": "TZ3"
+            "categoryname": "TZ3"
         },
         {
             "category": "TZ2",
@@ -7864,7 +7864,7 @@
                 "TZ2-KHA-005",
                 "TZ2-KHA-006"
             ],
-            "category_name": "TZ2"
+            "categoryname": "TZ2"
         },
         {
             "category": "TZ5",
@@ -7924,7 +7924,7 @@
                 "TZ5-CA-053",
                 "TZ5-CA-054"
             ],
-            "category_name": "TZ5"
+            "categoryname": "TZ5"
         },
         {
             "category": "TZ12",
@@ -7968,7 +7968,7 @@
                 "TZ12-NA-037",
                 "TZ12-NA-038"
             ],
-            "category_name": "TZ12"
+            "categoryname": "TZ12"
         },
         {
             "category": "TZ7",
@@ -8009,7 +8009,7 @@
                 "TZ7-JA-034",
                 "TZ7-JA-035"
             ],
-            "category_name": "TZ7"
+            "categoryname": "TZ7"
         },
         {
             "category": "TZ6",
@@ -8058,7 +8058,7 @@
                 "TZ6-CHA-041",
                 "TZ6-CHA-042"
             ],
-            "category_name": "TZ6"
+            "categoryname": "TZ6"
         },
         {
             "category": "TZ9",
@@ -8109,7 +8109,7 @@
                 "TZ9-TA-044",
                 "TZ9-TA-045"
             ],
-            "category_name": "TZ9"
+            "categoryname": "TZ9"
         },
         {
             "category": "TZ8",
@@ -8145,7 +8145,7 @@
                 "TZ8-NYA-026",
                 "TZ8-NYA-027"
             ],
-            "category_name": "TZ8"
+            "categoryname": "TZ8"
         },
         {
             "category": "TZ24",
@@ -8190,12 +8190,12 @@
                 "TZ24-YA-038",
                 "TZ24-YA-039"
             ],
-            "category_name": "TZ24"
+            "categoryname": "TZ24"
         },
         {
             "category": "TZ72",
             "files": [],
-            "category_name": "TZ72"
+            "categoryname": "TZ72"
         },
         {
             "category": "TZ21",
@@ -8250,7 +8250,7 @@
                 "TZ21-ZHA-048",
                 "TZ21-ZHA-049"
             ],
-            "category_name": "TZ21"
+            "categoryname": "TZ21"
         },
         {
             "category": "TZ16",
@@ -8301,7 +8301,7 @@
                 "TZ16-MA-043",
                 "TZ16-MA-044"
             ],
-            "category_name": "TZ16"
+            "categoryname": "TZ16"
         },
         {
             "category": "TZ71",
@@ -8309,7 +8309,7 @@
                 "TZ71-YAA-001",
                 "TZ71-YAA-002"
             ],
-            "category_name": "TZ71"
+            "categoryname": "TZ71"
         },
         {
             "category": "TZ46",
@@ -8368,7 +8368,7 @@
                 "TZ46-MI-052",
                 "TZ46-MI-053"
             ],
-            "category_name": "TZ46"
+            "categoryname": "TZ46"
         },
         {
             "category": "TZ47",
@@ -8434,7 +8434,7 @@
                 "TZ47-TSI-059",
                 "TZ47-TSI-060"
             ],
-            "category_name": "TZ47"
+            "categoryname": "TZ47"
         },
         {
             "category": "TZ44",
@@ -8527,7 +8527,7 @@
                 "TZ44-PHI-086",
                 "TZ44-PHI-087"
             ],
-            "category_name": "TZ44"
+            "categoryname": "TZ44"
         },
         {
             "category": "TZ45",
@@ -8606,7 +8606,7 @@
                 "TZ45-BI-072",
                 "TZ45-BI-073"
             ],
-            "category_name": "TZ45"
+            "categoryname": "TZ45"
         },
         {
             "category": "TZ42",
@@ -8680,7 +8680,7 @@
                 "TZ42-NI-067",
                 "TZ42-NI-068"
             ],
-            "category_name": "TZ42"
+            "categoryname": "TZ42"
         },
         {
             "category": "TZ43",
@@ -8741,7 +8741,7 @@
                 "TZ43-PI-054",
                 "TZ43-PI-055"
             ],
-            "category_name": "TZ43"
+            "categoryname": "TZ43"
         },
         {
             "category": "TZ40",
@@ -8805,7 +8805,7 @@
                 "TZ40-THI-056",
                 "TZ40-THI-057"
             ],
-            "category_name": "TZ40"
+            "categoryname": "TZ40"
         },
         {
             "category": "TZ41",
@@ -8869,7 +8869,7 @@
                 "TZ41-DI-055",
                 "TZ41-DI-056"
             ],
-            "category_name": "TZ41"
+            "categoryname": "TZ41"
         },
         {
             "category": "TZ64",
@@ -8877,7 +8877,7 @@
                 "TZ64-SO-001",
                 "TZ64-SO-002"
             ],
-            "category_name": "TZ64"
+            "categoryname": "TZ64"
         },
         {
             "category": "TZ56",
@@ -8920,7 +8920,7 @@
                 "TZ56-LI-035",
                 "TZ56-LI-036"
             ],
-            "category_name": "TZ56"
+            "categoryname": "TZ56"
         },
         {
             "category": "TZ48",
@@ -8988,7 +8988,7 @@
                 "TZ48-TSHI-061",
                 "TZ48-TSHI-062"
             ],
-            "category_name": "TZ48"
+            "categoryname": "TZ48"
         },
         {
             "category": "TZ49",
@@ -9072,7 +9072,7 @@
                 "TZ49-DZI-076",
                 "TZ49-DZI-077"
             ],
-            "category_name": "TZ49"
+            "categoryname": "TZ49"
         },
         {
             "category": "TZ68",
@@ -9080,7 +9080,7 @@
                 "TZ68-AE-001",
                 "TZ68-AE-002"
             ],
-            "category_name": "TZ68"
+            "categoryname": "TZ68"
         },
         {
             "category": "TZ25",
@@ -9136,7 +9136,7 @@
                 "TZ25-RA-049",
                 "TZ25-RA-050"
             ],
-            "category_name": "TZ25"
+            "categoryname": "TZ25"
         },
         {
             "category": "TZ26",
@@ -9193,7 +9193,7 @@
                 "TZ26-LA-050",
                 "TZ26-LA-051"
             ],
-            "category_name": "TZ26"
+            "categoryname": "TZ26"
         },
         {
             "category": "TZ27",
@@ -9250,7 +9250,7 @@
                 "TZ27-SHA-044",
                 "TZ27-SHA-045"
             ],
-            "category_name": "TZ27"
+            "categoryname": "TZ27"
         },
         {
             "category": "TZ20",
@@ -9318,7 +9318,7 @@
                 "TZ20-WA-061",
                 "TZ20-WA-062"
             ],
-            "category_name": "TZ20"
+            "categoryname": "TZ20"
         },
         {
             "category": "TZ39",
@@ -9373,7 +9373,7 @@
                 "TZ39-TI-046-1",
                 "TZ39-TI-046-2"
             ],
-            "category_name": "TZ39"
+            "categoryname": "TZ39"
         },
         {
             "category": "TZ22",
@@ -9419,7 +9419,7 @@
                 "TZ22-ZA-039",
                 "TZ22-ZA-040"
             ],
-            "category_name": "TZ22"
+            "categoryname": "TZ22"
         },
         {
             "category": "TZ23",
@@ -9466,7 +9466,7 @@
                 "TZ23-'A-040",
                 "TZ23-'A-041"
             ],
-            "category_name": "TZ23"
+            "categoryname": "TZ23"
         },
         {
             "category": "TZ60",
@@ -9493,7 +9493,7 @@
                 "TZ60-AI-017",
                 "TZ60-AI-018-1"
             ],
-            "category_name": "TZ60"
+            "categoryname": "TZ60"
         },
         {
             "category": "TZ61",
@@ -9569,7 +9569,7 @@
                 "TZ61-OM-069",
                 "TZ61-OM-070"
             ],
-            "category_name": "TZ61"
+            "categoryname": "TZ61"
         },
         {
             "category": "TZ62",
@@ -9676,7 +9676,7 @@
                 "TZ62-AA-100",
                 "TZ62-AA-101"
             ],
-            "category_name": "TZ62"
+            "categoryname": "TZ62"
         },
         {
             "category": "TZ63",
@@ -9717,7 +9717,7 @@
                 "TZ63-HUNG-034",
                 "TZ63-HUNG-035"
             ],
-            "category_name": "TZ63"
+            "categoryname": "TZ63"
         },
         {
             "category": "TZ28",
@@ -9762,7 +9762,7 @@
                 "TZ28-SA-037",
                 "TZ28-SA-038"
             ],
-            "category_name": "TZ28"
+            "categoryname": "TZ28"
         },
         {
             "category": "TZ29",
@@ -9798,7 +9798,7 @@
                 "TZ29-HA-028",
                 "TZ29-HA-029"
             ],
-            "category_name": "TZ29"
+            "categoryname": "TZ29"
         },
         {
             "category": "TZ66",
@@ -9813,7 +9813,7 @@
                 "TZ66-MANGALAM-008",
                 "TZ66-MANGALAM-009"
             ],
-            "category_name": "TZ66"
+            "categoryname": "TZ66"
         },
         {
             "category": "TZ67",
@@ -9854,7 +9854,7 @@
                 "TZ67-SIDDHAM-034",
                 "TZ67-SIDDHAM-035"
             ],
-            "category_name": "TZ67"
+            "categoryname": "TZ67"
         },
     {
         "category": "NY",
@@ -11021,6 +11021,6 @@
             "NY0273",
             "NY0629"
         ],
-        "category_name": "NY"
+        "categoryname": "NY"
     }
 ]
