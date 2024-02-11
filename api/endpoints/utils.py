@@ -52,6 +52,24 @@ async def get_folios_for_file(
     folios = query_graph_result.result[0]
     return {"folios": folios}
 
+@router.get("/displayname/")
+async def get_displayname_for_segmentnr(
+    segmentnr: str = Query(
+        ..., description="Segmentnr for which the displayname should be fetched."
+    ),
+):
+    """
+    Returns the displayname for a given segmentnr
+    """
+    filename = segmentnr.split(":")[0]
+    query_graph_result = execute_query(
+        main_queries.QUERY_DISPLAYNAME,
+        bind_vars={"filename": filename},
+    )
+    print(query_graph_result.result)
+    displayname = query_graph_result.result[0]
+    return {"displayname": displayname}
+
 
 @router.get("/sanskrittagger/")
 async def tag_sanskrit(
