@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
-import { Box } from "@mui/material";
+import { Box, FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import {
@@ -74,13 +74,17 @@ export const DisplayOptionsSection = () => {
           case uniqueSettings.local.script: {
             return <TextScriptOption key={key} />;
           }
-          // case uniqueSettings.local.showAndPositionSegmentNrs: {
-          //   return (
-          //     <React.Fragment key={key}>
-          //       {StandinSetting("showAndPositionSegmentNrs")}
-          //     </React.Fragment>
-          //   );
-          // }
+          case uniqueSettings.local.showSegmentNrs: {
+            return (
+              <FormGroup>
+                <FormControlLabel
+                  control={<Switch />}
+                  // todo: i18n
+                  label="Hide segment numbers"
+                />
+              </FormGroup>
+            );
+          }
           default: {
             return null;
           }

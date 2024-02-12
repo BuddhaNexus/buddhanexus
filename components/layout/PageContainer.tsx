@@ -43,7 +43,7 @@ export const PageContainer: FC<Props> = ({
 }) => {
   const containerStyles: SxProps = {
     pt: { xs: 0, sm: 4 },
-    px: { xs: 0, sm: 0, lg: 0 },
+    px: { xs: 0, sm: 2, lg: 1 },
     flex: 1,
     height: "100%",
     display: "flex",
