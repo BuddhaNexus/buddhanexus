@@ -9,9 +9,8 @@ import { NextAdapter } from "next-query-params";
 import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
 import { AppTopBar } from "@components/layout/AppTopBar";
-import type { EmotionCache } from "@emotion/react";
-import { CacheProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
+import { AppCacheProvider } from "@mui/material-nextjs/v14-pagesRouter";
 import {
   HydrationBoundary,
   QueryClient,
@@ -21,21 +20,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import queryString from "query-string";
 import { QueryParamProvider } from "use-query-params";
 import { queryCacheTimeDefaults } from "utils/api/apiQueryUtils";
-import createEmotionCache from "utils/createEmotionCache";
 import { ThemeProvider } from "utils/ThemeProvider";
 
-// Client-side cache, shared for the whole session of the user in the browser.
-const clientSideEmotionCache = createEmotionCache();
-
-interface MyAppProps extends AppProps {
-  emotionCache: EmotionCache;
-}
-
-function MyApp({
-  Component,
-  pageProps,
-  emotionCache = clientSideEmotionCache,
-}: MyAppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -46,7 +33,7 @@ function MyApp({
   );
 
   return (
-    <CacheProvider value={emotionCache}>
+    <AppCacheProvider>
       <QueryParamProvider
         adapter={NextAdapter}
         options={{
@@ -75,7 +62,7 @@ function MyApp({
           <ReactQueryDevtools />
         </QueryClientProvider>
       </QueryParamProvider>
-    </CacheProvider>
+    </AppCacheProvider>
   );
 }
 
