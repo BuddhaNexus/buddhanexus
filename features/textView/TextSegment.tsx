@@ -1,4 +1,5 @@
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { shouldHideSegmentNumbersAtom } from "@components/hooks/useDbView";
 import { sourceSans } from "@components/theme";
 import { useColorScheme } from "@mui/material/styles";
 import type { Scale } from "chroma-js";
@@ -21,6 +22,8 @@ export const TextSegment = ({
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
 
+  const shouldHideSegmentNumbers = useAtomValue(shouldHideSegmentNumbersAtom);
+
   const [selectedSegmentId, setSelectedSegmentId] =
     useQueryParam("selectedSegment");
   const { sourceLanguage } = useDbQueryParams();
@@ -35,7 +38,7 @@ export const TextSegment = ({
       <span
         className={`${styles.segmentNumber} ${
           isSelected && styles["segmentNumber--selected"]
-        }`}
+        } ${shouldHideSegmentNumbers && styles["segmentNumber--hidden"]}`}
         data-segmentnumber={segmentNumber}
       />
 

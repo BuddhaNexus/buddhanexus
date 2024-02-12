@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { atom, useSetAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
 // eslint-disable-next-line no-shadow
 export enum DbViewEnum {
@@ -11,6 +12,10 @@ export enum DbViewEnum {
 }
 
 export const currentViewAtom = atom<DbViewEnum>(DbViewEnum.TABLE);
+export const shouldHideSegmentNumbersAtom = atomWithStorage<boolean>(
+  "shouldHideSegmentNumbers",
+  false,
+);
 
 const initiateView = (view: DbViewEnum | string): DbViewEnum => {
   if (Object.values(DbViewEnum).includes(view as DbViewEnum)) {

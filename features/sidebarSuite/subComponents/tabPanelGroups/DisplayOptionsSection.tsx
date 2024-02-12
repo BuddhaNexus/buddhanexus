@@ -1,7 +1,10 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@components/hooks/useDbView";
+import {
+  currentViewAtom,
+  shouldHideSegmentNumbersAtom,
+} from "@components/hooks/useDbView";
 import { Box, FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
@@ -11,13 +14,17 @@ import {
   TextScriptOption,
 } from "features/sidebarSuite/subComponents/settings";
 import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 // Exclusively used in DB file selection results pages and has not been refactored for options in multiple contexts (i.e. global search results page).
 export const DisplayOptionsSection = () => {
   const { t } = useTranslation("settings");
 
   const currentView = useAtomValue(currentViewAtom);
+
+  const [shouldHideSegmentNumbers, setShouldHideSegmentNumbers] = useAtom(
+    shouldHideSegmentNumbersAtom,
+  );
 
   const {
     sourceLanguage,
@@ -60,6 +67,7 @@ export const DisplayOptionsSection = () => {
       <PanelHeading heading={t("headings.display")} sx={{ mb: 2 }} />
 
       <DbViewSelector />
+
       {options.map((option) => {
         const key = `display-option-${option}`;
 
@@ -76,9 +84,16 @@ export const DisplayOptionsSection = () => {
           }
           case uniqueSettings.local.showSegmentNrs: {
             return (
-              <FormGroup>
+              <FormGroup key={key}>
                 <FormControlLabel
-                  control={<Switch />}
+                  control={
+                    <Switch
+                      checked={shouldHideSegmentNumbers}
+                      onChange={(event) =>
+                        setShouldHideSegmentNumbers(event.target.checked)
+                      }
+                    />
+                  }
                   // todo: i18n
                   label="Hide segment numbers"
                 />
