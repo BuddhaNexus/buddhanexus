@@ -40,8 +40,13 @@ export default function TextPage() {
 
   useDbView();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { selectedSegment, ...paramsThatShouldRefreshText } = queryParams;
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    selectedSegment,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    selectedSegmentIndex,
+    ...paramsThatShouldRefreshText
+  } = queryParams;
 
   const { data, fetchNextPage, fetchPreviousPage, isLoading, isError } =
     useInfiniteQuery<PagedResponse<TextPageData>>({

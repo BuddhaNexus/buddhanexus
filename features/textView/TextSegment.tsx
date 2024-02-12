@@ -22,33 +22,40 @@ export const TextSegment = ({
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
 
-  const shouldHideSegmentNumbers = useAtomValue(shouldHideSegmentNumbersAtom);
-
   const [selectedSegmentId, setSelectedSegmentId] =
     useQueryParam("selectedSegment");
+  const [selectedSegmentIndex, setSelectedSegmentIndex] = useQueryParam(
+    "selectedSegmentIndex",
+  );
   const { sourceLanguage } = useDbQueryParams();
 
+  const shouldHideSegmentNumbers = useAtomValue(shouldHideSegmentNumbersAtom);
   const scriptSelection = useAtomValue(scriptSelectionAtom);
   const setSelectedSegmentMatches = useSetAtom(selectedSegmentMatchesAtom);
 
-  const isSelected = selectedSegmentId === segmentNumber;
+  const isSegmentSelected = selectedSegmentId === segmentNumber;
 
   return (
     <>
       <span
         className={`${styles.segmentNumber} ${
-          isSelected && styles["segmentNumber--selected"]
+          isSegmentSelected && styles["segmentNumber--selected"]
         } ${shouldHideSegmentNumbers && styles["segmentNumber--hidden"]}`}
         data-segmentnumber={segmentNumber}
       />
 
       {segmentText.map(({ text, highlightColor, matches }, i) => {
-        const segmentKey = segmentNumber + text + i;
+        const segmentKey = segmentNumber + i;
         const textContent = enscriptText({
           text,
           script: scriptSelection,
           language: sourceLanguage,
         });
+        const isSegmentPartSelected =
+          isSegmentSelected &&
+          typeof selectedSegmentIndex === "string" &&
+          Number.parseInt(selectedSegmentIndex, 10) === i;
+
         if (matches.length === 0) {
           return (
             <span key={segmentKey} className={styles.segment}>
@@ -62,7 +69,7 @@ export const TextSegment = ({
             type="button"
             tabIndex={0}
             className={`${styles.segment} ${styles["segment--button"]} ${
-              isSelected &&
+              isSegmentPartSelected &&
               (isDarkTheme
                 ? styles["segment--selected-dark"]
                 : styles["segment--selected-light"])
@@ -76,6 +83,7 @@ export const TextSegment = ({
             onClick={() => {
               setSelectedSegmentMatches(matches);
               setSelectedSegmentId(segmentNumber);
+              setSelectedSegmentIndex(i);
             }}
             onKeyDown={(event) => {
               // allow selecting the segments by pressing space or enter
@@ -83,6 +91,7 @@ export const TextSegment = ({
               event.preventDefault();
               setSelectedSegmentMatches(matches);
               setSelectedSegmentId(segmentNumber);
+              setSelectedSegmentIndex(i);
             }}
           >
             {textContent}

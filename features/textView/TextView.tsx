@@ -48,8 +48,8 @@ export default function TextView({
 
   return (
     <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
-      <Allotment>
-        {/* Left view - text (main view) */}
+      <Allotment defaultSizes={[4, 3]}>
+        {/* Left pane - text (main view) */}
         <Allotment.Pane>
           <Virtuoso
             totalCount={data.length}
@@ -67,7 +67,7 @@ export default function TextView({
           />
         </Allotment.Pane>
 
-        {/* Middle view - parallels for selected segment */}
+        {/* Middle pane - parallels for selected segment */}
         <Allotment.Pane visible={Boolean(selectedSegmentId)}>
           <TextViewMiddleParallels />
         </Allotment.Pane>
