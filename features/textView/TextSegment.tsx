@@ -12,7 +12,7 @@ import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
 import { useAtomValue, useSetAtom } from "jotai";
 import type { TextPageDataSegment } from "types/api/text";
-import { useQueryParam } from "use-query-params";
+import { NumberParam, StringParam, useQueryParam } from "use-query-params";
 
 import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
 import styles from "./textSegment.module.scss";
@@ -27,10 +27,13 @@ export const TextSegment = ({
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
 
-  const [selectedSegmentId, setSelectedSegmentId] =
-    useQueryParam("selectedSegment");
+  const [selectedSegmentId, setSelectedSegmentId] = useQueryParam(
+    "selectedSegment",
+    StringParam,
+  );
   const [selectedSegmentIndex, setSelectedSegmentIndex] = useQueryParam(
     "selectedSegmentIndex",
+    NumberParam,
   );
   const { sourceLanguage } = useDbQueryParams();
 
@@ -51,8 +54,8 @@ export const TextSegment = ({
 
   // find matches for the selected segment when the page is first rendered
   useLayoutEffect(() => {
-    if (!isSegmentSelected) return;
-    const locationFromQueryParams = segmentText[Number(selectedSegmentIndex)];
+    if (!isSegmentSelected || !selectedSegmentIndex) return;
+    const locationFromQueryParams = segmentText[selectedSegmentIndex];
     if (!locationFromQueryParams) return;
     setSelectedSegmentMatches(locationFromQueryParams.matches);
   }, [
@@ -80,9 +83,7 @@ export const TextSegment = ({
           language: sourceLanguage,
         });
         const isSegmentPartSelected =
-          isSegmentSelected &&
-          typeof selectedSegmentIndex === "string" &&
-          Number.parseInt(selectedSegmentIndex, 10) === i;
+          isSegmentSelected && selectedSegmentIndex === i;
 
         if (matches.length === 0) {
           return (
