@@ -36,14 +36,16 @@
       "selector": "Sortiermethode",
       "position": "Standard – Position im Anfragetext",
       "quoted-text": "Position in passenden Texten",
-      "length2": "Länge des übereinstimmenden Zeichens (>)",
+      "length2": "Länge des übereinstimmenden Zeichens (>)"
     },
     "wylie": "Wylie",
     "unicode": "Unicode",
     "download": "Ergebnisse als xmlx-Datei herunterladen",
     "copyQueryTitle": "Texttitel kopieren",
     "copyQueryLink": "Link der Ergebnisseite kopieren",
-    "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden"
+    "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden",
+    "hideSegmentNumbers": "Segmentnummern ausblenden",
+    "usePreviousSegmentColors": "Verwenden Sie Segmentfarben der vorherigen Website"
   },
   "optionsPopperMsgs": {
     "download": "Hoppla! Etwas ist schief gelaufen!",

@@ -31,7 +31,10 @@
     "contact": "Kontakt"
   },
   "db": {
-    "searchInputPlaceholder": "Quelltext auswählen"
+    "searchInputPlaceholder": "Quelltext auswählen",
+    "length": "Länge",
+    "score": "Punktzahl",
+    "matches": "Matches"
   },
   "news": {
     "title": "Nachrichten",

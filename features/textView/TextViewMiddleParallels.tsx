@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Numbers } from "@mui/icons-material";
 import { Chip } from "@mui/material";
@@ -16,6 +17,7 @@ export default function TextViewMiddleParallels() {
   const {
     // sourceLanguage, fileName, queryParams
   } = useDbQueryParams();
+  const { t } = useTranslation();
 
   const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
 
@@ -70,7 +72,7 @@ export default function TextViewMiddleParallels() {
         }}
       >
         <Chip
-          label={`${selectedSegmentMatches.length} Matches`}
+          label={`${selectedSegmentMatches.length} ${t("db.matches")}`}
           variant="outlined"
           size="small"
           icon={<Numbers />}

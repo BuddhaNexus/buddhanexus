@@ -31,7 +31,10 @@
     "contact": "Contact"
   },
   "db": {
-    "searchInputPlaceholder": "Choose source text"
+    "searchInputPlaceholder": "Choose source text",
+    "length": "Length",
+    "score": "Score",
+    "matches": "Matches"
   },
   "news": {
     "title": "News",

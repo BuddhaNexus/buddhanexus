@@ -98,8 +98,7 @@ export const DisplayOptionsSection = () => {
                       }
                     />
                   }
-                  // todo: i18n
-                  label="Hide segment numbers"
+                  label={t("optionsLabels.hideSegmentNumbers")}
                 />
                 <FormControlLabel
                   control={
@@ -110,8 +109,7 @@ export const DisplayOptionsSection = () => {
                       }
                     />
                   }
-                  // todo: i18n
-                  label="Use segment colors from the previous website"
+                  label={t("optionsLabels.usePreviousSegmentColors")}
                 />
               </FormGroup>
             );

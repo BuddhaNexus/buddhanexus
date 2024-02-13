@@ -3,6 +3,7 @@ import { useTranslation } from "next-i18next";
 import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import PercentIcon from "@mui/icons-material/Percent";
+import StraightenIcon from "@mui/icons-material/Straighten";
 import {
   Box,
   Card,
@@ -92,22 +93,32 @@ export const ParallelSegment = ({
           }}
         >
           {score && (
-            <Tooltip title="Score" PopperProps={{ disablePortal: true }}>
+            <Tooltip
+              title={`${t("db.score")}: ${score}`}
+              PopperProps={{ disablePortal: true }}
+            >
               <Chip
                 size="small"
                 color="primary"
                 variant="outlined"
                 icon={<PercentIcon />}
                 label={score}
+                sx={{ m: 0.5, p: 0.5 }}
               />
             </Tooltip>
           )}
 
-          <Chip
-            size="small"
-            label={`Length: ${length}`}
-            sx={{ m: 0.5, p: 0.5 }}
-          />
+          <Tooltip
+            title={`${t("db.length")}: ${length}`}
+            PopperProps={{ disablePortal: true }}
+          >
+            <Chip
+              size="small"
+              label={length}
+              icon={<StraightenIcon />}
+              sx={{ m: 0.5, p: 0.5 }}
+            />
+          </Tooltip>
         </Box>
       </CardContent>
 
