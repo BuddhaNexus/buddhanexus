@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Numbers } from "@mui/icons-material";
-import { Chip } from "@mui/material";
+import { Chip, CircularProgress } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { ParallelSegment } from "features/tableView/ParallelSegment";
@@ -21,7 +21,7 @@ export default function TextViewMiddleParallels() {
 
   const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
 
-  const { data } = useQuery<TextViewMiddleParallelsData>({
+  const { data, isLoading } = useQuery<TextViewMiddleParallelsData>({
     queryKey: DbApi.TextViewMiddle.makeQueryKey(selectedSegmentMatches),
     queryFn: () => DbApi.TextViewMiddle.call(selectedSegmentMatches),
   });
@@ -63,6 +63,15 @@ export default function TextViewMiddleParallels() {
         paddingLeft: 8,
       }}
     >
+      <CircularProgress
+        style={{
+          display: isLoading ? "block" : "none",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      />
       <div
         data-testid="middle-view-header"
         style={{

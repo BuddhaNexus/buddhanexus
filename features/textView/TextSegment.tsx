@@ -1,3 +1,4 @@
+import { useCallback, useLayoutEffect } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   shouldHideSegmentNumbersAtom,
@@ -39,6 +40,28 @@ export const TextSegment = ({
   const setSelectedSegmentMatches = useSetAtom(selectedSegmentMatchesAtom);
 
   const isSegmentSelected = selectedSegmentId === segmentNumber;
+
+  const updateSelectedLocationInGlobalState = useCallback(
+    (location: { id: string; index: number; matches: string[] }) => {
+      setSelectedSegmentId(location.id);
+      setSelectedSegmentIndex(location.index);
+    },
+    [setSelectedSegmentId, setSelectedSegmentIndex],
+  );
+
+  // find matches for the selected segment when the page is first rendered
+  useLayoutEffect(() => {
+    if (!isSegmentSelected) return;
+    const locationFromQueryParams = segmentText[Number(selectedSegmentIndex)];
+    if (!locationFromQueryParams) return;
+    setSelectedSegmentMatches(locationFromQueryParams.matches);
+  }, [
+    isSegmentSelected,
+    segmentText,
+    selectedSegmentId,
+    selectedSegmentIndex,
+    setSelectedSegmentMatches,
+  ]);
 
   return (
     <>
@@ -86,17 +109,21 @@ export const TextSegment = ({
                 : colorScale(highlightColor).hex(),
             }}
             onClick={() => {
-              setSelectedSegmentMatches(matches);
-              setSelectedSegmentId(segmentNumber);
-              setSelectedSegmentIndex(i);
+              updateSelectedLocationInGlobalState({
+                id: segmentNumber,
+                matches,
+                index: i,
+              });
             }}
             onKeyDown={(event) => {
               // allow selecting the segments by pressing space or enter
               if (event.key !== " " && event.key !== "Enter") return;
               event.preventDefault();
-              setSelectedSegmentMatches(matches);
-              setSelectedSegmentId(segmentNumber);
-              setSelectedSegmentIndex(i);
+              updateSelectedLocationInGlobalState({
+                id: segmentNumber,
+                matches,
+                index: i,
+              });
             }}
           >
             {textContent}
