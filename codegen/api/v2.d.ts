@@ -3,6 +3,7 @@
  * Do not make direct changes to the file.
  */
 
+
 export interface paths {
   "/search/": {
     /**
@@ -92,6 +93,13 @@ export interface paths {
      * suttas/PTS nrs/segments (PLI) / segments (SKT)
      */
     get: operations["get_folios_for_file_utils_folios__get"];
+  };
+  "/utils/displayname/": {
+    /**
+     * Get Displayname For Segmentnr
+     * @description Returns the displayname for a given segmentnr
+     */
+    get: operations["get_displayname_for_segmentnr_utils_displayname__get"];
   };
   "/utils/sanskrittagger/": {
     /**
@@ -382,6 +390,7 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
+
   /**
    * Get Search Results
    * @description Returns search results for given search string.
@@ -674,6 +683,32 @@ export interface operations {
       query: {
         /** @description File name of the text for which folios should be fetched. */
         file_name: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": unknown;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get Displayname For Segmentnr
+   * @description Returns the displayname for a given segmentnr
+   */
+  get_displayname_for_segmentnr_utils_displayname__get: {
+    parameters: {
+      query: {
+        /** @description Segmentnr for which the displayname should be fetched. */
+        segmentnr: string;
       };
     };
     responses: {

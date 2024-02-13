@@ -173,9 +173,13 @@ export const getDesignTokens = ({
     MuiInputLabel: {
       styleOverrides: {
         root: ({ theme }) => ({
-          ...(theme.palette.mode === "dark" && {
-            color: theme.palette.grey[400],
-          }),
+          ...(theme.palette.mode === "dark"
+            ? {
+                color: "white",
+              }
+            : {
+                color: theme.palette.grey[900],
+              }),
         }),
       },
     },

@@ -29,7 +29,6 @@ export async function prefetchDefaultDbPageData(
   return queryClient;
 }
 
-// TODO: confirm spect for multi_lingal query param. For discussion see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/pull/90#discussion_r1375272080
 export async function prefetchDbResultsPageData(
   sourceLanguage: SourceLanguage,
   fileName: string,
@@ -44,14 +43,21 @@ export async function prefetchDbResultsPageData(
   });
 
   await queryClient.prefetchQuery({
-    queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+    queryKey: DbApi.TextDisplayName.makeQueryKey(fileName),
+    queryFn: () => DbApi.TextDisplayName.call(fileName),
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
-    queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
-  });
+  // TODO: review. disabled for now to lighten build burden.
+  // await queryClient.prefetchQuery({
+  //   queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
+  //   queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+  // });
+
+  // TODO: confirm spec for multi_lingal query param. For discussion see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/117
+  // await queryClient.prefetchQuery({
+  //   queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
+  //   queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
+  // });
 
   return queryClient;
 }
