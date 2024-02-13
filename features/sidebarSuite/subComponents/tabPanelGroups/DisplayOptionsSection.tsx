@@ -4,6 +4,7 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   currentViewAtom,
   shouldHideSegmentNumbersAtom,
+  shouldUseOldSegmentColorsAtom,
 } from "@components/hooks/useDbView";
 import { Box, FormControlLabel, FormGroup, Switch } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
@@ -24,6 +25,9 @@ export const DisplayOptionsSection = () => {
 
   const [shouldHideSegmentNumbers, setShouldHideSegmentNumbers] = useAtom(
     shouldHideSegmentNumbersAtom,
+  );
+  const [shouldUseOldSegmentColors, setShouldUseOldSegmentColors] = useAtom(
+    shouldUseOldSegmentColorsAtom,
   );
 
   const {
@@ -96,6 +100,18 @@ export const DisplayOptionsSection = () => {
                   }
                   // todo: i18n
                   label="Hide segment numbers"
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={shouldUseOldSegmentColors}
+                      onChange={(event) =>
+                        setShouldUseOldSegmentColors(event.target.checked)
+                      }
+                    />
+                  }
+                  // todo: i18n
+                  label="Use segment colors from the previous website"
                 />
               </FormGroup>
             );

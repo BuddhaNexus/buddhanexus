@@ -1,5 +1,8 @@
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { shouldHideSegmentNumbersAtom } from "@components/hooks/useDbView";
+import {
+  shouldHideSegmentNumbersAtom,
+  shouldUseOldSegmentColorsAtom,
+} from "@components/hooks/useDbView";
 import { sourceSans } from "@components/theme";
 import { useColorScheme } from "@mui/material/styles";
 import type { Scale } from "chroma-js";
@@ -10,6 +13,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import type { TextPageDataSegment } from "types/api/text";
 import { useQueryParam } from "use-query-params";
 
+import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
 import styles from "./textSegment.module.scss";
 
 export const TextSegment = ({
@@ -29,6 +33,7 @@ export const TextSegment = ({
   );
   const { sourceLanguage } = useDbQueryParams();
 
+  const shouldUseOldSegmentColors = useAtomValue(shouldUseOldSegmentColorsAtom);
   const shouldHideSegmentNumbers = useAtomValue(shouldHideSegmentNumbersAtom);
   const scriptSelection = useAtomValue(scriptSelectionAtom);
   const setSelectedSegmentMatches = useSetAtom(selectedSegmentMatchesAtom);
@@ -76,9 +81,9 @@ export const TextSegment = ({
             }`}
             style={{
               fontFamily: sourceSans.style.fontFamily,
-              color: colorScale(highlightColor).hex(),
-              // todo: uncomment to enable old Frontend segment colors
-              // color: SEGMENT_COLORS[highlightColor],
+              color: shouldUseOldSegmentColors
+                ? OLD_WEBSITE_SEGMENT_COLORS[highlightColor]
+                : colorScale(highlightColor).hex(),
             }}
             onClick={() => {
               setSelectedSegmentMatches(matches);

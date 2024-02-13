@@ -16,6 +16,10 @@ export const shouldHideSegmentNumbersAtom = atomWithStorage<boolean>(
   "shouldHideSegmentNumbers",
   false,
 );
+export const shouldUseOldSegmentColorsAtom = atomWithStorage<boolean>(
+  "shouldUseOldSegmentColors",
+  false,
+);
 
 const initiateView = (view: DbViewEnum | string): DbViewEnum => {
   if (Object.values(DbViewEnum).includes(view as DbViewEnum)) {
