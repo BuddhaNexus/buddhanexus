@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { Numbers } from "@mui/icons-material";
+import { Chip } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { ParallelSegment } from "features/tableView/ParallelSegment";
@@ -22,33 +24,12 @@ export default function TextViewMiddleParallels() {
     queryFn: () => DbApi.TextViewMiddle.call(selectedSegmentMatches),
   });
 
-  return (
-    <div
-      style={{
-        overflow: "scroll",
-        height: "100%",
-        paddingRight: 8,
-        paddingLeft: 8,
-      }}
-    >
-      <div
-        data-testid="middle-view-header"
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
-      >
-        <p style={{ paddingRight: 4 }}>
-          {selectedSegmentMatches.length} Matches
-        </p>
-        <div>
-          <ClearSelectedSegmentButton />
-        </div>
-      </div>
-
-      <div>
-        {data?.map(
+  const parallelsToDisplay = useMemo(
+    () =>
+      data
+        // hide empty parallels
+        ?.filter((parallel) => parallel.parallelFullText)
+        .map(
           ({
             fileName,
             parallelLength,
@@ -67,8 +48,39 @@ export default function TextViewMiddleParallels() {
               textSegmentNumbers={parallelSegmentNumbers}
             />
           ),
-        )}
+        ),
+    [data],
+  );
+
+  return (
+    <div
+      style={{
+        overflow: "scroll",
+        height: "100%",
+        paddingRight: 8,
+        paddingLeft: 8,
+      }}
+    >
+      <div
+        data-testid="middle-view-header"
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <Chip
+          label={`${selectedSegmentMatches.length} Matches`}
+          variant="outlined"
+          size="small"
+          icon={<Numbers />}
+        />
+        <div>
+          <ClearSelectedSegmentButton />
+        </div>
       </div>
+
+      <div>{parallelsToDisplay}</div>
     </div>
   );
 }

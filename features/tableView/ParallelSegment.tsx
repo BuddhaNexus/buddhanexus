@@ -99,7 +99,6 @@ export const ParallelSegment = ({
                 variant="outlined"
                 icon={<PercentIcon />}
                 label={score}
-                sx={{ mr: 0.5, my: 0.5, p: 0.5 }}
               />
             </Tooltip>
           )}
