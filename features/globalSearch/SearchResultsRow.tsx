@@ -5,6 +5,7 @@ import type { SearchResult } from "utils/api/search";
 import { SearchResultItem } from "./SearchResultItem";
 
 interface Props {
+  row: number;
   rowItems: SearchResult[];
 }
 
@@ -25,7 +26,7 @@ const DummyFillerItem = styled("div")(({ theme }) => ({
   wordBreak: "break-all",
 }));
 
-export const SearchResultsRow = ({ rowItems }: Props) => {
+export const SearchResultsRow = ({ row, rowItems }: Props) => {
   /* search results data is grouped into 3-item arrays in `pages/search/index.tsx`. This is a workaround to simulate the `VituosoGrid` component which can't be used due to its inability to handle vairable item heights (see: https://virtuoso.dev/troubleshooting). Creating rows with a stable height fixes the jumping behaviour, allowing a grid layout for better desktop UX. 
   
   In cases where the number of items in the last row is less than 3, the row is filled with dummy items so that flex items are evenly distributed.  
@@ -35,8 +36,11 @@ export const SearchResultsRow = ({ rowItems }: Props) => {
 
   return (
     <ListContainer>
-      {rowItems.map((result) => (
-        <SearchResultItem key={result.id} result={result} />
+      {rowItems.map((result, index) => (
+        <SearchResultItem
+          key={`row${row}-item${index}-${result.segmentNumber}`}
+          result={result}
+        />
       ))}
       {rowFillerCount
         ? [...String(rowFillerCount)].map((dummyItem) => (

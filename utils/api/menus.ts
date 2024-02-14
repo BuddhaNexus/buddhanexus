@@ -87,7 +87,11 @@ export async function getCategoryMenuData(
         cat: { category: string; categoryname: string },
       ) => {
         const { category, categoryname } = cat;
-        map.set(category, { id: category, name: categoryname });
+        map.set(category, {
+          id: category,
+          name: categoryname,
+          searchMatter: `${category} ${categoryname}`,
+        });
         return map;
       },
       new Map(),

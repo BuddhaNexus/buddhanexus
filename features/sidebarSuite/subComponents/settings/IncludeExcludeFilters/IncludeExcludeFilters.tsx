@@ -131,7 +131,7 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
               // sets the rendered option label
               ListboxComponent={ListboxComponent}
               options={options}
-              getOptionLabel={(option) => option.name.toUpperCase()}
+              getOptionLabel={(option) => `${option.id} ${option.searchMatter}`}
               renderInput={(params) => (
                 <TextField
                   {...params}

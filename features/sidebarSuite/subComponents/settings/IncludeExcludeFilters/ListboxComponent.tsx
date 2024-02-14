@@ -1,6 +1,6 @@
 import React from "react";
 import { type ListChildComponentProps, VariableSizeList } from "react-window";
-import { ListSubheader } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 
 import {
   ListLabel,
@@ -36,16 +36,16 @@ const lineHeight = 36;
 const trimName = (name: string) => {
   return name.replaceAll(/^•\s/g, "");
 };
-
-const createLable = (id: string, name: string) => `${id}: ${trimName(name)}`;
+const createMenuItemLable = (id: string, name: string) =>
+  `${id}: ${trimName(name)}`;
 
 const getNumberOfLines = (lable: string) => {
-  const charsPerLine = 26;
+  const charsPerLine = 38;
   const lines = Math.ceil(lable.length / charsPerLine);
   return lines;
 };
 
-const Row = (props: ListChildComponentProps) => {
+const Rows = (props: ListChildComponentProps) => {
   const { data, index, style } = props;
   const dataSet = data[index];
   const inlineStyle = {
@@ -53,80 +53,73 @@ const Row = (props: ListChildComponentProps) => {
     top: (style.top as number) + LISTBOX_PADDING,
     fontWeight: 700,
   };
-
-  if (Object.hasOwn(dataSet, "group")) {
-    return (
-      <ListSubheader key={dataSet.key} component="div" style={inlineStyle}>
-        {dataSet.group}
-      </ListSubheader>
-    );
-  }
-
   const [dataSetProps, { name, id }] = dataSet;
 
-  const lable = createLable(id, name);
+  const lable = createMenuItemLable(id, name);
   const lines = getNumberOfLines(lable);
 
   return (
-    <RowItem inheretedStyles={inlineStyle} {...dataSetProps} component="li">
+    <RowItem inheretedstyles={inlineStyle} {...dataSetProps} component="li">
       <ListLabelWapper>
-        <ListLabel title={lines > maxLines ? lable : undefined}>
-          <ListLabelId component="span">{id}:</ListLabelId> {trimName(name)}
-        </ListLabel>
+        <Tooltip
+          title={<Typography>{name}</Typography>}
+          disableHoverListener={lines < maxLines}
+        >
+          <ListLabel>
+            <ListLabelId component="span">{id}:</ListLabelId> {trimName(name)}
+          </ListLabel>
+        </Tooltip>
       </ListLabelWapper>
     </RowItem>
   );
 };
 
+const getChildSize = (child: React.ReactNode) => {
+  // @ts-expect-error type issue
+  const [itemProps] = child;
+  const { id, key: name } = itemProps;
+  const lines = getNumberOfLines(createMenuItemLable(id, name));
+  const itemHeight = lines * lineHeight;
+
+  return lines <= maxLines ? itemHeight : lineHeight * maxLines;
+};
+
+const getListHeight = (itemData: React.ReactNode[]) => {
+  if (itemData.length > 8) {
+    return 10 * defaultItemHeight;
+  }
+  return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
+};
+
 // Adapter for react-window
 const ListboxComponent = React.forwardRef<
-  HTMLDivElement,
+  HTMLUListElement,
   React.HTMLAttributes<HTMLElement>
 >(function ListboxComponent(props, ref) {
   const { children, ...other } = props;
-  const itemData: React.ReactChild[] = [];
-  // eslint-disable-next-line unicorn/no-array-for-each
-  (children as React.ReactChild[]).forEach(
-    (item: React.ReactChild & { children?: React.ReactChild[] }) => {
-      itemData.push(item, ...(item.children ?? []));
-    },
-  );
+  const itemData: React.ReactNode[] = [];
+
+  if (Array.isArray(children)) {
+    children.forEach(
+      (item: React.ReactNode & { children?: React.ReactNode[] }) => {
+        itemData.push(item, ...(item.children ?? []));
+      },
+    );
+  }
 
   const itemCount = itemData.length;
-
-  const getChildSize = (child: React.ReactChild) => {
-    // eslint-disable-next-line no-prototype-builtins
-    if (child.hasOwnProperty("group")) {
-      return 48;
-    }
-
-    // @ts-expect-error type issue
-    const [itemProps] = child;
-    const { id, key: name } = itemProps;
-    const lines = getNumberOfLines(createLable(id, name));
-    const itemHeight = lines * lineHeight;
-
-    return lines <= maxLines ? itemHeight : lineHeight * maxLines;
-  };
-
-  const getListHeight = () => {
-    if (itemCount > 8) {
-      return 10 * defaultItemHeight;
-    }
-    return itemData.map(getChildSize).reduce((a, b) => a + b, 0);
-  };
 
   const gridRef = useResetCache(itemCount);
 
   return (
-    <div ref={ref}>
+    <ul ref={ref} style={{ padding: "0" }}>
       <OuterElementContext.Provider value={other}>
         {/* TODO: replace react-window with newer package */}
         {/* @ts-expect-error type issue */}
         <VariableSizeList
           ref={gridRef}
           itemData={itemData}
-          height={getListHeight() + 2 * LISTBOX_PADDING}
+          height={getListHeight(itemData) + 2 * LISTBOX_PADDING}
           width="100%"
           // @ts-expect-error type issue
           outerElementType={OuterElementType}
@@ -135,10 +128,10 @@ const ListboxComponent = React.forwardRef<
           overscanCount={5}
           itemCount={itemCount}
         >
-          {Row}
+          {Rows}
         </VariableSizeList>
       </OuterElementContext.Provider>
-    </div>
+    </ul>
   );
 });
 

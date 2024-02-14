@@ -1,6 +1,6 @@
+import { Tooltip, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
-import Tooltip from "@mui/material/Tooltip";
 
 export default function CappedMatchesChip({
   label,
@@ -14,7 +14,7 @@ export default function CappedMatchesChip({
   return (
     <Tooltip
       id="matches-tooltip"
-      title={<span style={{ fontSize: "1rem" }}>{message}</span>}
+      title={<Typography>{message}</Typography>}
       placement="top-start"
       PopperProps={{ disablePortal: true }}
       sx={{ fontSize: "1rem" }}

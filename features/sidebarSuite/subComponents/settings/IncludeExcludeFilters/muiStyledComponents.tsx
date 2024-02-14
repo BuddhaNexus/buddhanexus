@@ -19,10 +19,10 @@ export const StyledPopper = styled(Popper)({
 });
 
 interface RowProps extends BoxProps {
-  inheretedStyles: React.CSSProperties;
+  inheretedstyles: React.CSSProperties;
 }
-export const RowItem = styled(Box)<RowProps>(({ inheretedStyles }) => ({
-  ...inheretedStyles,
+export const RowItem = styled(Box)<RowProps>(({ inheretedstyles }) => ({
+  ...inheretedstyles,
   display: "flex",
   justifyContent: "space-between",
   flex: 1,

@@ -12,9 +12,12 @@ export default function SearchResults({ data }: Props) {
       totalCount={data.length}
       data={data}
       itemContent={(index, rowItems) => (
-        <SearchResultsRow rowItems={rowItems} />
+        <SearchResultsRow rowItems={rowItems} row={index} />
       )}
       overscan={20}
+      components={{
+        Footer: () => <div style={{ paddingBottom: "20px" }} />,
+      }}
     />
   );
 }
