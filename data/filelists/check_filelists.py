@@ -1,12 +1,12 @@
 import json, os
 import collections
 
-FILELISTS_DIR = "/home/wo/bn/buddhanexus/data/filelists/"
+FILELISTS_DIR = "../data/filelists/"
 
-files_json ="/home/wo/bn/buddhanexus/data/tib-files.json"
-filelist_txt = "/home/wo/bn/buddhanexus/data/filelists/tib_all_tsv_2024-01-30.txt"
+files_json ="../data/tib-files.json"
+filelist_txt = "../data/filelists/tib_all_tsv_2024-01-30.txt"
 
-cat_json = "data/tib-categories.json"
+cat_json = "../data/tib-categories.json"
 
 def write_list(str_list, output_file_name):
     with open(output_file_name, "w+") as f:

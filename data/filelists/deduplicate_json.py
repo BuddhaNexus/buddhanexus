@@ -1,12 +1,12 @@
 import json, os
 import collections
 
-FILELISTS_DIR = "/home/wo/bn/buddhanexus/data/filelists/"
+FILELISTS_DIR = "../data/filelists/"
 
-files_json = "/home/wo/bn/buddhanexus/data/tib-files.json"
-filelist_txt = "/home/wo/bn/buddhanexus/data/filelists/tib_all_tsv_2024-01-30.txt"
+files_json = "../data/tib-files.json"
+filelist_txt = "../data/filelists/tib_all_tsv_2024-01-30.txt"
 
-cat_json = "data/tib-categories.json"
+cat_json = "../data/tib-categories.json"
 
 
 with open(files_json, "r") as f:
@@ -21,6 +21,7 @@ for d in files_dict_list:
 # deduplicate list of dicts
 # https://stackoverflow.com/questions/9427163/remove-duplicate-dict-in-list-in-python
 dedup_list = [dict(t) for t in {tuple(d.items()) for d in files_dict_list}]
+print(len(dedup_list))
 
 sorted(dedup_list, key=lambda d: d["filename"])
 for i, d in enumerate(dedup_list):
