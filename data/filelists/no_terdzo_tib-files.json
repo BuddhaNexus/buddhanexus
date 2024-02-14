@@ -51,7 +51,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-004",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-004",
         "displayName": "rtsa gsum spyi'i skong bsdus ",
-        "filenr": 6
+        "filenr": 6,
+        "alt_filename": "TZ67-SIDDHAM-004"
     },
     {
         "category": "K08",
@@ -191,7 +192,8 @@
         "filename": "TDZ-Terdzo-AA-083",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-083",
         "displayName": "rdzogs chen sde gsum cha lag bdud rtsi sman gyi sgrub thabs ye shes mchog gi bcud len ",
-        "filenr": 22
+        "filenr": 22,
+        "alt_filename": "TZ62-AA-083"
     },
     {
         "category": "K12",
@@ -378,7 +380,8 @@
         "filename": "TDZ-Terdzo-AA-057",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-057",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_gsang skor bla ma'i sgrub thabs ",
-        "filenr": 44
+        "filenr": 44,
+        "alt_filename": "TZ62-AA-057"
     },
     {
         "category": "K09",
@@ -566,7 +569,8 @@
         "filename": "TDZ-Terdzo-AA-047",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-047",
         "displayName": "sde gsum nang skor yi dam khro bo'i dzapa? dmigs bsdus pa mchog gi thig le ",
-        "filenr": 66
+        "filenr": 66,
+        "alt_filename": "TZ62-AA-047"
     },
     {
         "category": "T02",
@@ -726,7 +730,8 @@
         "filename": "TDZ-Terdzo-AA-062",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-062",
         "displayName": "zab mo rdzogs chen sde gsum las:_gsang skor yi dam zhi sgrub ",
-        "filenr": 85
+        "filenr": 85,
+        "alt_filename": "TZ62-AA-062"
     },
     {
         "category": "T02",
@@ -952,7 +957,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-029",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-029",
         "displayName": "zab chos zhi khro dgongs pa rang grol las:_brgya phyag sdig sgrib rang grol ",
-        "filenr": 112
+        "filenr": 112,
+        "alt_filename": "TZ67-SIDDHAM-029"
     },
     {
         "category": "NK041",
@@ -1283,7 +1289,8 @@
         "filename": "TDZ-Terdzo-AA-068",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-068",
         "displayName": "gsang skor bka' brgyad kyi bzlas dmigs cung zad spros pa'i ngag 'don ",
-        "filenr": 151
+        "filenr": 151,
+        "alt_filename": "TZ62-AA-068"
     },
     {
         "category": "T06",
@@ -1431,7 +1438,8 @@
         "filename": "TDZ-Terdzo-AA-030",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-030",
         "displayName": "rdzogs pa chen po sde gsum las:_phyi skor khrid kyi byin rlabs ",
-        "filenr": 168
+        "filenr": 168,
+        "alt_filename": "TZ62-AA-030"
     },
     {
         "category": "TZ38",
@@ -2000,7 +2008,8 @@
         "filename": "TDZ-Terdzo-MANGALAM-006",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MANGALAM-006",
         "displayName": "gsang chen snga 'gyur rdo rje theg pa'i gsung rab zab mo nye brgyud kyi chos sde rin chen gter mdzod chen po'i bzhugs byang dkar chag gsal bar bkod pa 'od gsal rdo rje snying po'i gru gzings ",
-        "filenr": 236
+        "filenr": 236,
+        "alt_filename": "TZ66-MANGALAM-006"
     },
     {
         "category": "TZ51",
@@ -2450,7 +2459,8 @@
         "filename": "TDZ-Terdzo-AA-007",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-007",
         "displayName": "rdzogs chen sde gsum gyi brgyud 'debs bsdus pa ",
-        "filenr": 289
+        "filenr": 289,
+        "alt_filename": "TZ62-AA-007"
     },
     {
         "category": "TZ16",
@@ -3196,7 +3206,8 @@
         "filename": "TDZ-Terdzo-AA-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-002",
         "displayName": "rdzogs pa chen po sde gsum las:_mdo byang rab tu gsal ba ",
-        "filenr": 377
+        "filenr": 377,
+        "alt_filename": "TZ62-AA-002"
     },
     {
         "category": "T02",
@@ -3496,7 +3507,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-027",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-027",
         "displayName": "zab chos zhi khro dgongs pa rang grol gyi bla ma brgyud pa'i gsol 'debs thugs dam gnad bskul ",
-        "filenr": 411
+        "filenr": 411,
+        "alt_filename": "TZ67-SIDDHAM-027"
     },
     {
         "category": "T11",
@@ -3577,7 +3589,8 @@
         "filename": "TDZ-Terdzo-AA-079",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-079",
         "displayName": "sde gsum spyi skor rab gnas cho ga ",
-        "filenr": 421
+        "filenr": 421,
+        "alt_filename": "TZ62-AA-079"
     },
     {
         "category": "K12",
@@ -3782,7 +3795,8 @@
         "filename": "TDZ-Terdzo-OM-054",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-054",
         "displayName": "skyes mchog rdo rje legs pa'i sgrub thabs dbang dang bcas pa",
-        "filenr": 446
+        "filenr": 446,
+        "alt_filename": "TZ61-OM-054"
     },
     {
         "category": "NG",
@@ -3868,7 +3882,8 @@
         "filename": "TDZ-Terdzo-AA-035",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-035",
         "displayName": "nang skor rig 'dzin bco lnga yi:_bskyed rim bsgom pa'i byang bu ",
-        "filenr": 457
+        "filenr": 457,
+        "alt_filename": "TZ62-AA-035"
     },
     {
         "category": "NY",
@@ -4191,7 +4206,8 @@
         "filename": "TDZ-Terdzo-OM-015",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-015",
         "displayName": "pad gling tshe sgrub rdo rje phreng ba'i tshe sgrub dang tshe dbang gsung rgyun bzhin bkod pa ",
-        "filenr": 495
+        "filenr": 495,
+        "alt_filename": "TZ61-OM-015"
     },
     {
         "category": "NK016",
@@ -4761,7 +4777,8 @@
         "filename": "TDZ-Terdzo-AA-023",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-023",
         "displayName": "rdzogs pa chen po sde gsum las:_phyi skor bla ma'i sgrub thabs ",
-        "filenr": 563
+        "filenr": 563,
+        "alt_filename": "TZ62-AA-023"
     },
     {
         "category": "NK103",
@@ -5133,7 +5150,8 @@
         "filename": "TDZ-Terdzo-LA-026",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-026",
         "displayName": "rta mchog rol pa'i snying tig ",
-        "filenr": 606
+        "filenr": 606,
+        "alt_filename": "TZ26-LA-026"
     },
     {
         "category": "T02",
@@ -5228,7 +5246,8 @@
         "filename": "TDZ-Terdzo-AA-017",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-017",
         "displayName": "rdzogs chen sde gsum gyi phrin las byang bu khrigs sdeb kyi tshogs mchod la nye bar mkho ba'i skong bshags kun bzang mchod sprin ",
-        "filenr": 617
+        "filenr": 617,
+        "alt_filename": "TZ62-AA-017"
     },
     {
         "category": "T02",
@@ -5569,7 +5588,8 @@
         "filename": "TDZ-Terdzo-LA-041",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-041",
         "displayName": "dpal rta mgrin nag po lcags ral can gyi chos skor las:_lo rgyus rin chen phreng ba ",
-        "filenr": 658
+        "filenr": 658,
+        "alt_filename": "TZ26-LA-041"
     },
     {
         "category": "TZ3",
@@ -5950,7 +5970,8 @@
         "filename": "TDZ-Terdzo-OM-033",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-033",
         "displayName": "dam pa sangs rgyas kyi lugs 'jam dpal smra seng gi sgrub rjes ",
-        "filenr": 702
+        "filenr": 702,
+        "alt_filename": "TZ61-OM-033"
     },
     {
         "category": "TZ23",
@@ -6050,7 +6071,8 @@
         "filename": "TDZ-Terdzo-AA-037",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-037",
         "displayName": "rdzogs pa chen po sde gsum las:_nang skor yi dam zhi ba'i sgrub dbang ",
-        "filenr": 714
+        "filenr": 714,
+        "alt_filename": "TZ62-AA-037"
     },
     {
         "category": "K10",
@@ -6177,7 +6199,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-002",
         "displayName": "rtsa gsum dgongs 'dus bla ma rig 'dzin rgya mtsho'i dkyil 'khor gyi 'khor lo sgrub cing mchod pa'i cho ga dngos grub 'dod 'jo'i dga' ston ",
-        "filenr": 729
+        "filenr": 729,
+        "alt_filename": "TZ67-SIDDHAM-002"
     },
     {
         "category": "T04",
@@ -6759,7 +6782,8 @@
         "filename": "TDZ-Terdzo-OM-058",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-058",
         "displayName": "nyang gter rgyal chen pe ha ra'i sgrub thabs srog gtad dang bcas pa",
-        "filenr": 797
+        "filenr": 797,
+        "alt_filename": "TZ61-OM-058"
     },
     {
         "category": "T16",
@@ -7149,7 +7173,8 @@
         "filename": "TDZ-Terdzo-AA-044",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-044",
         "displayName": "nang skor khro bo'i sngags byang 'don 'grigs ",
-        "filenr": 843
+        "filenr": 843,
+        "alt_filename": "TZ62-AA-044"
     },
     {
         "category": "T02",
@@ -7270,7 +7295,8 @@
         "filename": "TDZ-Terdzo-LA-006",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-006",
         "displayName": "rta mgrin gsang ba 'dus pa'i las byang rin po che'i phreng ba ",
-        "filenr": 857
+        "filenr": 857,
+        "alt_filename": "TZ26-LA-006"
     },
     {
         "category": "T02",
@@ -7312,7 +7338,8 @@
         "filename": "TDZ-Terdzo-OM-055",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-055",
         "displayName": "bdud mgon seng gdong can gyi sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 862
+        "filenr": 862,
+        "alt_filename": "TZ61-OM-055"
     },
     {
         "category": "TZ13",
@@ -7381,7 +7408,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-023",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-023",
         "displayName": "zab gsang rdo rje theg pa'i sngags kyi gso sbyong ye shes chu rgyun ",
-        "filenr": 870
+        "filenr": 870,
+        "alt_filename": "TZ67-SIDDHAM-023"
     },
     {
         "category": "NY",
@@ -7488,7 +7516,8 @@
         "filename": "TDZ-Terdzo-HUNG-034",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-034",
         "displayName": "pad+ma gsang ba'i thig le las/_rgyun gyi rnal 'byor phyag rgya lam rdzogs ",
-        "filenr": 883
+        "filenr": 883,
+        "alt_filename": "TZ63-HUNG-034"
     },
     {
         "category": "TZ23",
@@ -7738,7 +7767,8 @@
         "filename": "TDZ-Terdzo-OM-028",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-028",
         "displayName": "nyang gter mkha' 'gro chen mor grags pa phag mo zhal gnyis ma'i sgrub thabs dang dbang chog ",
-        "filenr": 912
+        "filenr": 912,
+        "alt_filename": "TZ61-OM-028"
     },
     {
         "category": "T02",
@@ -7861,7 +7891,8 @@
         "filename": "TDZ-Terdzo-TSI-029",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-TSI-029",
         "displayName": "dam grib nyes pa kun sel ",
-        "filenr": 926
+        "filenr": 926,
+        "alt_filename": "TZ47-TSI-029"
     },
     {
         "category": "TZ22",
@@ -8385,7 +8416,8 @@
         "filename": "TDZ-Terdzo-AA-076",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-076",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_gsang skor khrid kyi byin rlabs ",
-        "filenr": 987
+        "filenr": 987,
+        "alt_filename": "TZ62-AA-076"
     },
     {
         "category": "NK033",
@@ -8554,7 +8586,8 @@
         "filename": "TDZ-Terdzo-AA-087",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-087",
         "displayName": "mchog gter rdzogs chen sde gsum gyi/_nang skor yi dam khro bo yi/_dkyil 'khor bslang thabs dpe'u ris ",
-        "filenr": 1007
+        "filenr": 1007,
+        "alt_filename": "TZ62-AA-087"
     },
     {
         "category": "TZ21",
@@ -9105,7 +9138,8 @@
         "filename": "TDZ-Terdzo-AA-092",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-092",
         "displayName": "rdzogs pa chen po sde gsum las/_phyi skor sems sde'i rig 'dzin nyer brgyad lus dkyil lha yi gsal byed ",
-        "filenr": 1072
+        "filenr": 1072,
+        "alt_filename": "TZ62-AA-092"
     },
     {
         "category": "NY",
@@ -9273,7 +9307,8 @@
         "filename": "TDZ-Terdzo-OM-042",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-042",
         "displayName": "nyang gter dpal mgon phyag bzhi pa'i sgrub thabs dang dbang chog ",
-        "filenr": 1092
+        "filenr": 1092,
+        "alt_filename": "TZ61-OM-042"
     },
     {
         "category": "TZ67",
@@ -9281,7 +9316,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-022",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-022",
         "displayName": "bla ma'i thugs sgrub nor bu rgya mtsho'i las byang pad+ma'i ljon shing khrigs su bsdebs pa rig 'dzin dgongs rgyan ",
-        "filenr": 1093
+        "filenr": 1093,
+        "alt_filename": "TZ67-SIDDHAM-022"
     },
     {
         "category": "TZ1",
@@ -9289,7 +9325,8 @@
         "filename": "TDZ-Terdzo-KA-010",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-KA-010",
         "displayName": "sprul pa'i gter chen mchog gyur bde chen gling pa'i rnam thar gsol 'debs bkra shis 'khyil ba'i dbyangs snyan ",
-        "filenr": 1094
+        "filenr": 1094,
+        "alt_filename": "TZ1-KA-010"
     },
     {
         "category": "T08",
@@ -9469,7 +9506,8 @@
         "filename": "TDZ-Terdzo-LA-034",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-034",
         "displayName": "dbang chen 'dus pa rta mgrin yang phyung dmar po'i skong ba dben rtsa ma  ",
-        "filenr": 1115
+        "filenr": 1115,
+        "alt_filename": "TZ26-LA-034"
     },
     {
         "category": "TZ22",
@@ -10448,7 +10486,8 @@
         "filename": "TDZ-Terdzo-OM-044",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-044",
         "displayName": "chos dbang dang pad gling lugs kyi dpal mgon ma ning gi sgrub thabs dang srog dbang ",
-        "filenr": 1231
+        "filenr": 1231,
+        "alt_filename": "TZ61-OM-044"
     },
     {
         "category": "T02",
@@ -11157,7 +11196,8 @@
         "filename": "TDZ-Terdzo-AA-025",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-025",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:[ \\u0f88\\u0f88 ]spyi la gces pa rig 'dzin bla ma'i zab dbang ",
-        "filenr": 1314
+        "filenr": 1314,
+        "alt_filename": "TZ62-AA-025"
     },
     {
         "category": "T02",
@@ -11679,7 +11719,8 @@
         "filename": "TDZ-Terdzo-DZA-027",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-DZA-027",
         "displayName": "dam chos dgongs pa yang zab las:_'chi med tshe yi skor gyi phyi dbang gnad zab tshe'i dbang bskur ",
-        "filenr": 1375
+        "filenr": 1375,
+        "alt_filename": "TZ19-DZA-027"
     },
     {
         "category": "NK016",
@@ -11721,7 +11762,8 @@
         "filename": "TDZ-Terdzo-YAA-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-YAA-002",
         "displayName": "rin chen gter mdzod chen po'i smin grol 'bogs pa'i skabs kyi phyag len nyer mkho'i zur 'debs mtshams sbyor rigs bcas nyung gsal du bkod pa 'dod rgu 'jo ba'i gter bum gyi/_mtha' rten shis smon rigs dang /_sa bcad drug pa 'phros don spangs blang gi bslab bya bcas ",
-        "filenr": 1380
+        "filenr": 1380,
+        "alt_filename": "TZ71-YAA-002"
     },
     {
         "category": "TZ16",
@@ -11780,7 +11822,8 @@
         "filename": "TDZ-Terdzo-LA-017",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-017",
         "displayName": "dbang chen dregs pa kun 'dus las:_bsnyen dbang zab mo ",
-        "filenr": 1387
+        "filenr": 1387,
+        "alt_filename": "TZ26-LA-017"
     },
     {
         "category": "TZ41",
@@ -11998,7 +12041,8 @@
         "filename": "TDZ-Terdzo-AA-042",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-042",
         "displayName": "mngon rtogs gter gzhung dgongs pa phyogs gcig ",
-        "filenr": 1413
+        "filenr": 1413,
+        "alt_filename": "TZ62-AA-042"
     },
     {
         "category": "T04",
@@ -12142,7 +12186,8 @@
         "filename": "TDZ-Terdzo-OM-018",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-018",
         "displayName": "rgyal po lugs kyi bcu gcig zhal nam mkha' rgyal po'i sgrub thabs dang dbang bskur bya tshul dang sgom lung bcas ",
-        "filenr": 1430
+        "filenr": 1430,
+        "alt_filename": "TZ61-OM-018"
     },
     {
         "category": "TZ5",
@@ -12285,7 +12330,8 @@
         "filename": "TDZ-Terdzo-HUNG-024",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-024",
         "displayName": "rtsa gsum tshe lha'i dkyil 'khor pad+ma gsang ba'i thig le'i bdag nyid 'jug cing dbang blang ba'i cho ga ye shes chu bo ",
-        "filenr": 1447
+        "filenr": 1447,
+        "alt_filename": "TZ63-HUNG-024"
     },
     {
         "category": "T02",
@@ -12476,7 +12522,8 @@
         "filename": "TDZ-Terdzo-AA-082",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-082",
         "displayName": "rdzogs chen sde gsum cha lag gnas lung gi cho ga thugs rje'i lcags kyu ",
-        "filenr": 1470
+        "filenr": 1470,
+        "alt_filename": "TZ62-AA-082"
     },
     {
         "category": "TZ21",
@@ -12623,7 +12670,8 @@
         "filename": "TDZ-Terdzo-AA-048",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-048",
         "displayName": "rdzogs chen sde gsum cha lag bdud rtsi sman gyi sgrub pa'i ngag 'don dge",
-        "filenr": 1487
+        "filenr": 1487,
+        "alt_filename": "TZ62-AA-048"
     },
     {
         "category": "T16",
@@ -12683,7 +12731,8 @@
         "filename": "TDZ-Terdzo-SO-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SO-002",
         "displayName": "bla ma'i thugs sgrub rdo rje drag rtsal las/_zhal gdams lam rim ye shes snying po'i 'grel pa ye shes snang ba rab tu rgyas pa ",
-        "filenr": 1494
+        "filenr": 1494,
+        "alt_filename": "TZ64-SO-002"
     },
     {
         "category": "NY",
@@ -12792,7 +12841,8 @@
         "filename": "TDZ-Terdzo-OM-039",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-039",
         "displayName": "rin chen gling pa'i nA ga rak+sha'i sgrub thabs dang rjes gnang ",
-        "filenr": 1507
+        "filenr": 1507,
+        "alt_filename": "TZ61-OM-039"
     },
     {
         "category": "T02",
@@ -12859,7 +12909,8 @@
         "filename": "TDZ-Terdzo-LA-039",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-039",
         "displayName": "byang chub sems dpa' zla ba rgyal mtshan nas brgyud pa'i dpal rta mgrin nag po'i sgrub thabs rjes gnang las tshogs dang bcas pa ",
-        "filenr": 1515
+        "filenr": 1515,
+        "alt_filename": "TZ26-LA-039"
     },
     {
         "category": "TZ25",
@@ -13280,7 +13331,8 @@
         "filename": "TDZ-Terdzo-OM-049",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-049",
         "displayName": "'dod khams dbang phyug re ma tI rang byung rgyal mo bka' gter gnyis ldan gyi sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 1564
+        "filenr": 1564,
+        "alt_filename": "TZ61-OM-049"
     },
     {
         "category": "T01",
@@ -13587,7 +13639,8 @@
         "filename": "TDZ-Terdzo-AA-056",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-056",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_nang skor mkha' 'gro'i sgrub thabs ",
-        "filenr": 1601
+        "filenr": 1601,
+        "alt_filename": "TZ62-AA-056"
     },
     {
         "category": "TZ24",
@@ -13604,7 +13657,8 @@
         "filename": "TDZ-Terdzo-AA-049",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-049",
         "displayName": "rdzogs pa chen po sde gsum las:_myong grol rdzas kyi sgrub pa ",
-        "filenr": 1603
+        "filenr": 1603,
+        "alt_filename": "TZ62-AA-049"
     },
     {
         "category": "T02",
@@ -14041,7 +14095,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-017",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-017",
         "displayName": "gso sbyong bdud rtsi'i rol mtsho yi/_reg zig the tshom kun sel yod/_sngags kyi gso sbyong bsdus 'bring rgyas gsum bya tshul gyi zin bris ",
-        "filenr": 1654
+        "filenr": 1654,
+        "alt_filename": "TZ67-SIDDHAM-017"
     },
     {
         "category": "NG",
@@ -14120,7 +14175,8 @@
         "filename": "TDZ-Terdzo-LA-015",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-015",
         "displayName": "dbang chen dregs pa kun 'dul las:_bskyed rdzogs 'khrul med tsit+ta dmar po'i skor las:_srung ba'i 'khor lo gud du phyung ba ",
-        "filenr": 1664
+        "filenr": 1664,
+        "alt_filename": "TZ26-LA-015"
     },
     {
         "category": "K10",
@@ -14228,7 +14284,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-012",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-012",
         "displayName": "bla ma dgongs pa 'dus pa'i skong chog dang 'brel bar gshin po rjes 'dzin gnas lung gi cho ga thugs rje'i lcags kyu ",
-        "filenr": 1677
+        "filenr": 1677,
+        "alt_filename": "TZ67-SIDDHAM-012"
     },
     {
         "category": "NY",
@@ -14579,7 +14636,8 @@
         "filename": "TDZ-Terdzo-OM-053",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-053",
         "displayName": "gnod sbyin bshan pa dmar nag gi sgrub thabs rjes gnang dang bcas pa gter kha gnyis ldan gyi lugs bzhin bkod pa",
-        "filenr": 1718
+        "filenr": 1718,
+        "alt_filename": "TZ61-OM-053"
     },
     {
         "category": "T02",
@@ -14623,7 +14681,8 @@
         "filename": "TDZ-Terdzo-OM-047",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-047",
         "displayName": "dpal ldan sngags kyi srung ma sde bdun dang sde lnga'i sgrub thabs dbang dang bcas pa",
-        "filenr": 1723
+        "filenr": 1723,
+        "alt_filename": "TZ61-OM-047"
     },
     {
         "category": "T02",
@@ -15605,7 +15664,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-021",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-021",
         "displayName": "bla sgrub nor rgyam brgyud 'debs ",
-        "filenr": 1836
+        "filenr": 1836,
+        "alt_filename": "TZ67-SIDDHAM-021"
     },
     {
         "category": "T02",
@@ -15663,7 +15723,8 @@
         "filename": "TDZ-Terdzo-LA-012",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-012",
         "displayName": "rta mgrin snying po don sbyor gyi dbang chen zur 'debs ",
-        "filenr": 1843
+        "filenr": 1843,
+        "alt_filename": "TZ26-LA-012"
     },
     {
         "category": "T02",
@@ -15724,7 +15785,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-011",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-011",
         "displayName": "thugs rje bskul ba'i skyabs gsol ",
-        "filenr": 1850
+        "filenr": 1850,
+        "alt_filename": "TZ67-SIDDHAM-011"
     },
     {
         "category": "NG",
@@ -15867,7 +15929,8 @@
         "filename": "TDZ-Terdzo-HA-022-2",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HA-022-2",
         "displayName": "bshags skong 'dzud byang ",
-        "filenr": 1867
+        "filenr": 1867,
+        "alt_filename": "TZ29-HA-022-2"
     },
     {
         "category": "T02",
@@ -16069,7 +16132,8 @@
         "filename": "TDZ-Terdzo-AA-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-001",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_dbang gi gnas mchog pad+ma shel phug gi dkar chag ",
-        "filenr": 1891
+        "filenr": 1891,
+        "alt_filename": "TZ62-AA-001"
     },
     {
         "category": "T02",
@@ -16103,7 +16167,8 @@
         "filename": "TDZ-Terdzo-AA-100",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-100",
         "displayName": "dam chos rdzogs chen sde gsum gyi dbang bskur zin bris 'od gsal snying po'i mdzes rgyan ",
-        "filenr": 1895
+        "filenr": 1895,
+        "alt_filename": "TZ62-AA-100"
     },
     {
         "category": "TZ47",
@@ -16344,7 +16409,8 @@
         "filename": "TDZ-Terdzo-OM-066",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-066",
         "displayName": "lha chen dbang phyug chen po'i sgrub thabs rjes gnang dang bcas pa las 'brel rtsal gyi gter ma'i lugs bzhin brjod pa",
-        "filenr": 1923
+        "filenr": 1923,
+        "alt_filename": "TZ61-OM-066"
     },
     {
         "category": "TZ54",
@@ -16454,7 +16520,8 @@
         "filename": "TDZ-Terdzo-OM-025",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-025",
         "displayName": "las 'brel rtsal gyi phyag rdor dregs 'dul nang sgrub dang rjes 'brel bum pa dang gtor ma'i las tshogs la brten pa'i dbang byin tshan",
-        "filenr": 1936
+        "filenr": 1936,
+        "alt_filename": "TZ61-OM-025"
     },
     {
         "category": "TZ25",
@@ -16522,7 +16589,8 @@
         "filename": "TDZ-Terdzo-KA-011",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-KA-011",
         "displayName": "dpal ldan bla ma la gsol ba 'debs pa kun tu bzang po'i sgra dbyangs ",
-        "filenr": 1944
+        "filenr": 1944,
+        "alt_filename": "TZ1-KA-011"
     },
     {
         "category": "TZ47",
@@ -16655,7 +16723,8 @@
         "filename": "TDZ-Terdzo-LA-028",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-028",
         "displayName": "snyan brgyud rta mchog rol pa'i brgyud 'debs ",
-        "filenr": 1960
+        "filenr": 1960,
+        "alt_filename": "TZ26-LA-028"
     },
     {
         "category": "NK010",
@@ -16826,7 +16895,8 @@
         "filename": "TDZ-Terdzo-AA-018",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-018",
         "displayName": "rdzogs pa chen po sde gsum gyi rtsa gsum kun bzang don gyi phrin las kyi byang bu spyi'i bskang ba rin chen snang ba bkod pa'i sprin chen ",
-        "filenr": 1980
+        "filenr": 1980,
+        "alt_filename": "TZ62-AA-018"
     },
     {
         "category": "NK041",
@@ -17421,7 +17491,8 @@
         "filename": "TDZ-Terdzo-HUNG-030",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-030",
         "displayName": "pad+ma gsang ba'i thig le las/_bla blu bya tshul srog 'tsho'i ljon shing ",
-        "filenr": 2050
+        "filenr": 2050,
+        "alt_filename": "TZ63-HUNG-030"
     },
     {
         "category": "TZ10",
@@ -17495,7 +17566,8 @@
         "filename": "TDZ-Terdzo-AA-070",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-070",
         "displayName": "zlog pa'i 'gres byang ",
-        "filenr": 2059
+        "filenr": 2059,
+        "alt_filename": "TZ62-AA-070"
     },
     {
         "category": "T02",
@@ -17893,7 +17965,8 @@
         "filename": "TDZ-Terdzo-AA-069",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-069",
         "displayName": "dam chos rdzogs pa chen po sde gsum las/_gsang skor yi dam bka' brgyad kyi phrin las dang rjes su 'brel ba'i mngon spyod kyi gzer ka bya tshul shin tu bsdus pa ",
-        "filenr": 2105
+        "filenr": 2105,
+        "alt_filename": "TZ62-AA-069"
     },
     {
         "category": "NK010",
@@ -18097,7 +18170,8 @@
         "filename": "TDZ-Terdzo-OM-027",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-027",
         "displayName": "grwa pa'i gter ma phyag rdor khang brtsegs kyi sgrub thabs dang dbang chog ",
-        "filenr": 2129
+        "filenr": 2129,
+        "alt_filename": "TZ61-OM-027"
     },
     {
         "category": "K12",
@@ -18611,7 +18685,8 @@
         "filename": "TDZ-Terdzo-OM-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-001",
         "displayName": "sgrub thabs 'dod 'jo'i bum bzang gi brgyud pa'i rim pa phyogs gcig tu bsdebs pa ",
-        "filenr": 2189
+        "filenr": 2189,
+        "alt_filename": "TZ61-OM-001"
     },
     {
         "category": "T02",
@@ -18747,7 +18822,8 @@
         "filename": "TDZ-Terdzo-HUNG-007",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-007",
         "displayName": "rtsa gsum 'od gsal snying tig las/_bka' srung gsol mchod rdo rje'i drwa ba'i phrin las rgyas par spros pa rdo rje'i sgra dbyangs ",
-        "filenr": 2205
+        "filenr": 2205,
+        "alt_filename": "TZ63-HUNG-007"
     },
     {
         "category": "T02",
@@ -18900,7 +18976,8 @@
         "filename": "TDZ-Terdzo-LA-023",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-023",
         "displayName": "yi dam dgongs 'dus rta mchog rol pa las/_spyi sdom rtsa ba'i dbang skur chen mo bklag chog tu bkod pa pad+ma rA ga'i bum bzang ",
-        "filenr": 2223
+        "filenr": 2223,
+        "alt_filename": "TZ26-LA-023"
     },
     {
         "category": "T02",
@@ -18942,7 +19019,8 @@
         "filename": "TDZ-Terdzo-OM-059",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-059",
         "displayName": "rnam sras ser chen sprin gseb ma'i sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 2228
+        "filenr": 2228,
+        "alt_filename": "TZ61-OM-059"
     },
     {
         "category": "K12",
@@ -19707,7 +19785,8 @@
         "filename": "TDZ-Terdzo-HA-022-1",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HA-022-1",
         "displayName": "'chi med 'phags ma'i snying thig las/_bla sgrub byin rlabs snying po'i bshags skong gi lag len dang 'don 'grigs khrigs su bkod pa ",
-        "filenr": 2318
+        "filenr": 2318,
+        "alt_filename": "TZ29-HA-022-1"
     },
     {
         "category": "TZ11",
@@ -19986,7 +20065,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-001",
         "displayName": "brgyud gsum rtsa gsum dam can rgya mtsho'i tshogs la gsol ba 'debs pa byin rlabs 'dod 'jo ",
-        "filenr": 2351
+        "filenr": 2351,
+        "alt_filename": "TZ67-SIDDHAM-001"
     },
     {
         "category": "TZ28",
@@ -20478,7 +20558,8 @@
         "filename": "TDZ-Terdzo-OM-034",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-034",
         "displayName": "'phags ma dbyangs can ma'i sgrub thabs dang rjes gnang ",
-        "filenr": 2409
+        "filenr": 2409,
+        "alt_filename": "TZ61-OM-034"
     },
     {
         "category": "NK036",
@@ -21049,7 +21130,8 @@
         "filename": "TDZ-Terdzo-AA-088",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-088",
         "displayName": "mchog gter sde gsum nang skor yi dam khro bo mngon rdzogs rgyal po'i dkyil 'khor bsdus pa'i lha gnas bkod tshul gyi dpe tho ",
-        "filenr": 2476
+        "filenr": 2476,
+        "alt_filename": "TZ62-AA-088"
     },
     {
         "category": "K12",
@@ -21084,7 +21166,8 @@
         "filename": "TDZ-Terdzo-AA-039",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-039",
         "displayName": "dgongs brgyud rdzogs chen ston pa bcu gsum gyi 'das rjes rdor gling gter byon pha rgyud lta ba klong yangs las khol du phyung ba ",
-        "filenr": 2480
+        "filenr": 2480,
+        "alt_filename": "TZ62-AA-039"
     },
     {
         "category": "K10",
@@ -21147,7 +21230,8 @@
         "filename": "TDZ-Terdzo-OM-017",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-017",
         "displayName": "thugs rje chen po rgyal po lugs 'gro 'dul phyag bzhi pa'i sgrub thabs dang dbang chog ",
-        "filenr": 2488
+        "filenr": 2488,
+        "alt_filename": "TZ61-OM-017"
     },
     {
         "category": "T02",
@@ -21317,7 +21401,8 @@
         "filename": "TDZ-Terdzo-LA-044",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-044",
         "displayName": "nyang gter rta nag yang phyung gi bsnyen yig khrag 'thung dpa' bo'i mgul rgyan ",
-        "filenr": 2508
+        "filenr": 2508,
+        "alt_filename": "TZ26-LA-044"
     },
     {
         "category": "NG",
@@ -21509,7 +21594,8 @@
         "filename": "TDZ-Terdzo-OM-070",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-070",
         "displayName": "sgrub thabs 'dod 'jo'i bum bzang gi dbang gi gtor ma bca' thabs ",
-        "filenr": 2531
+        "filenr": 2531,
+        "alt_filename": "TZ61-OM-070"
     },
     {
         "category": "NY",
@@ -21601,7 +21687,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-016",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-016",
         "displayName": "sngags kyi gso sbyong dngos gzhi'i nyams chag sbyong ba'i skabs su/_rigs drug gnas sbyong bsdus pa ",
-        "filenr": 2542
+        "filenr": 2542,
+        "alt_filename": "TZ67-SIDDHAM-016"
     },
     {
         "category": "T02",
@@ -21757,7 +21844,8 @@
         "filename": "TDZ-Terdzo-AA-065",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-065",
         "displayName": "dam chos rdzogs pa chen po sde gsum las/_gsang skor bka' brgyad rdzong 'phrang gi brgyud pa'i gsol 'debs snang ba rang grol ",
-        "filenr": 2560
+        "filenr": 2560,
+        "alt_filename": "TZ62-AA-065"
     },
     {
         "category": "TZ9",
@@ -21871,7 +21959,8 @@
         "filename": "TDZ-Terdzo-AA-063",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-063",
         "displayName": "rdzogs pa chen po sde gsum las:_gsang skor yi dam zhi ba'i sgrub thabs drag po gnas 'gyur bcas ",
-        "filenr": 2573
+        "filenr": 2573,
+        "alt_filename": "TZ62-AA-063"
     },
     {
         "category": "NK040",
@@ -22198,7 +22287,8 @@
         "filename": "TDZ-Terdzo-KI-004-2",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-KI-004-2",
         "displayName": "zab chos 'ja' lus 'od phung rang grol las_bla ma brgyud pa'i rnam thar nor bu'i do shal ",
-        "filenr": 2611
+        "filenr": 2611,
+        "alt_filename": "TZ31-KI-004-2"
     },
     {
         "category": "TZ47",
@@ -22266,7 +22356,8 @@
         "filename": "TDZ-Terdzo-HAA-007",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HAA-007",
         "displayName": "phyogs med ris med kyi bstan pa la 'dun zhing dge sbyong gi gzugs brnyan 'chang ba blo gros mtha' yas pa'i sde'i byung ba brjod pa nor bu sna tshogs mdog can ",
-        "filenr": 2619
+        "filenr": 2619,
+        "alt_filename": "TZ65-HAA-007"
     },
     {
         "category": "TZ55",
@@ -22319,7 +22410,8 @@
         "filename": "TDZ-Terdzo-HAA-009",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HAA-009",
         "displayName": "rje kun gzigs 'jam mgon ngag gi dbang phyug yon tan rgya mtsho'i zhabs kyi 'das rjes kyi rnam par thar pa ngo mtshar nor bu'i snang ba ",
-        "filenr": 2625
+        "filenr": 2625,
+        "alt_filename": "TZ65-HAA-009"
     },
     {
         "category": "T02",
@@ -22595,7 +22687,8 @@
         "filename": "TDZ-Terdzo-AA-003",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-003",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_lo rgyus snying gi ti ka ",
-        "filenr": 2657
+        "filenr": 2657,
+        "alt_filename": "TZ62-AA-003"
     },
     {
         "category": "TZ10",
@@ -22748,7 +22841,8 @@
         "filename": "TDZ-Terdzo-OM-005",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-005",
         "displayName": "nyang gter bla ma yongs rdzogs kyi sgrub thabs dang gtor dbang ",
-        "filenr": 2675
+        "filenr": 2675,
+        "alt_filename": "TZ61-OM-005"
     },
     {
         "category": "NK045",
@@ -22929,7 +23023,8 @@
         "filename": "TDZ-Terdzo-LA-036",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-036",
         "displayName": "zab bdun dbang dang dngos grub kyi zab pa rta mgrin dbang chen gyi gtor zlog gi rim pa gnam lcags thog mda' ",
-        "filenr": 2697
+        "filenr": 2697,
+        "alt_filename": "TZ26-LA-036"
     },
     {
         "category": "NK018",
@@ -23085,7 +23180,8 @@
         "filename": "TDZ-Terdzo-HUNG-013",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-013",
         "displayName": "rtsa gsum 'od gsal snying tig gi bsnyen sgrub la nyer mkho'i zur rgyan rig 'dzin grub pa'i 'jug ngogs ",
-        "filenr": 2716
+        "filenr": 2716,
+        "alt_filename": "TZ63-HUNG-013"
     },
     {
         "category": "NY",
@@ -23515,7 +23611,8 @@
         "filename": "TDZ-Terdzo-OM-069",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-069",
         "displayName": "sgrub thabs 'dod 'jo'i bum bzang gi dka' gnad zin bris lo chen d+harma shrIs mchog sprul kun bzang pad+ma legs grub kyi dris lan du bstsal pa'i skor yid bzhin nor bu'i rgyun bzang ",
-        "filenr": 2766
+        "filenr": 2766,
+        "alt_filename": "TZ61-OM-069"
     },
     {
         "category": "NG",
@@ -23821,7 +23918,8 @@
         "filename": "TDZ-Terdzo-AA-053",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-053",
         "displayName": "klong sde rdo rje zam pa'i tshul shing la bri rgyu ",
-        "filenr": 2803
+        "filenr": 2803,
+        "alt_filename": "TZ62-AA-053"
     },
     {
         "category": "NG",
@@ -23870,7 +23968,8 @@
         "filename": "TDZ-Terdzo-OM-011",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-011",
         "displayName": "byang gter thugs sgrub drag po rtsal gyi sgrub thabs dang byin rlabs thugs rje'i dbang bskur ",
-        "filenr": 2809
+        "filenr": 2809,
+        "alt_filename": "TZ61-OM-011"
     },
     {
         "category": "T02",
@@ -24014,7 +24113,8 @@
         "filename": "TDZ-Terdzo-OM-023",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-023",
         "displayName": "nyang gter rta nag lcags ral can gyi sgrub thabs dang dbang chog ",
-        "filenr": 2826
+        "filenr": 2826,
+        "alt_filename": "TZ61-OM-023"
     },
     {
         "category": "TZ45",
@@ -24171,7 +24271,8 @@
         "filename": "TDZ-Terdzo-HUNG-006",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-006",
         "displayName": "rtsa gsum 'od gsal snying tig las/_rdo rje rnam par 'joms pa'i rgyun khyer 'od gsal snang ba ",
-        "filenr": 2845
+        "filenr": 2845,
+        "alt_filename": "TZ63-HUNG-006"
     },
     {
         "category": "TZ31",
@@ -24422,7 +24523,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-028",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-028",
         "displayName": "gsang chen sngags kyi theg pa'i dam tshig gso sbyong gi cho ga kun tu bzang po'i dgongs rgyan ",
-        "filenr": 2874
+        "filenr": 2874,
+        "alt_filename": "TZ67-SIDDHAM-028"
     },
     {
         "category": "NK111",
@@ -24562,7 +24664,8 @@
         "filename": "TDZ-Terdzo-OM-062",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-062",
         "displayName": "mdung dmar can yang gsang phyag mtshan bzhi pa'i sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 2891
+        "filenr": 2891,
+        "alt_filename": "TZ61-OM-062"
     },
     {
         "category": "T02",
@@ -25167,7 +25270,8 @@
         "filename": "TDZ-Terdzo-AA-072",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-072",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_gsang skor yi dam khro bo'i dbang chog ",
-        "filenr": 2961
+        "filenr": 2961,
+        "alt_filename": "TZ62-AA-072"
     },
     {
         "category": "NY",
@@ -25745,7 +25849,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-026",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-026",
         "displayName": "zab chos zhi khro dgongs pa rang grol las:_sku gsum bla ma'i rnal 'byor gyi gsol 'debs dug gsum ma spang rang grol ",
-        "filenr": 3029
+        "filenr": 3029,
+        "alt_filename": "TZ67-SIDDHAM-026"
     },
     {
         "category": "TZ26",
@@ -25753,7 +25858,8 @@
         "filename": "TDZ-Terdzo-LA-042",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-042",
         "displayName": "khro rgyal rta mgrin nag po'i las byang dregs pa tshar gcod ",
-        "filenr": 3030
+        "filenr": 3030,
+        "alt_filename": "TZ26-LA-042"
     },
     {
         "category": "T02",
@@ -25845,7 +25951,8 @@
         "filename": "TDZ-Terdzo-HUNG-015",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-015",
         "displayName": "pad+ma gsang ba'i thig le'i rtsa rgyud pad+ma zab pa'i bsdus 'grel pad+mo'i drwa ba ",
-        "filenr": 3041
+        "filenr": 3041,
+        "alt_filename": "TZ63-HUNG-015"
     },
     {
         "category": "NK016",
@@ -25912,7 +26019,8 @@
         "filename": "TDZ-Terdzo-HUNG-014",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-014",
         "displayName": "pad+ma gsang ba'i thig le las:_rtsa rgyud pad+ma zab pa ",
-        "filenr": 3049
+        "filenr": 3049,
+        "alt_filename": "TZ63-HUNG-014"
     },
     {
         "category": "TZ15",
@@ -25937,7 +26045,8 @@
         "filename": "TDZ-Terdzo-PHA-034",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-PHA-034",
         "displayName": "bka' brgyad bde gshegs 'dus pa las/_rtsa ba'i dkyil 'khor dang 'brel ba'i tshe'i sgrub pa phrin las dbang bskur bcas nyams su len bder bkod pa 'chi med bcud sbyin ",
-        "filenr": 3052
+        "filenr": 3052,
+        "alt_filename": "TZ14-PHA-034"
     },
     {
         "category": "NG",
@@ -26153,7 +26262,8 @@
         "filename": "TDZ-Terdzo-AA-004",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-004",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_lung bstan gces pa'i lde'u mig ",
-        "filenr": 3078
+        "filenr": 3078,
+        "alt_filename": "TZ62-AA-004"
     },
     {
         "category": "T02",
@@ -26577,7 +26687,8 @@
         "filename": "TDZ-Terdzo-HUNG-012",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-012",
         "displayName": "rtsa gsum 'od gsal snying tig las/_rgyud lung man ngag gi dgongs don 'dus gsal du bshad pa 'od gsal ye shes nyin byed ",
-        "filenr": 3129
+        "filenr": 3129,
+        "alt_filename": "TZ63-HUNG-012"
     },
     {
         "category": "TZ49",
@@ -26709,7 +26820,8 @@
         "filename": "TDZ-Terdzo-AA-029",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-029",
         "displayName": "rdzogs pa chen po sde gsum las:_phyi skor yi dam zhi ba'i dbang bskur ",
-        "filenr": 3144
+        "filenr": 3144,
+        "alt_filename": "TZ62-AA-029"
     },
     {
         "category": "NG",
@@ -27190,7 +27302,8 @@
         "filename": "TDZ-Terdzo-LA-013",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-013",
         "displayName": "rta mgrin snying thig snying po don sbyor las/_smin byed bsdus pa gtor ma'i dbang bskur gyi cho ga dbang chen grub pa'i sgra dbyangs ",
-        "filenr": 3201
+        "filenr": 3201,
+        "alt_filename": "TZ26-LA-013"
     },
     {
         "category": "NG",
@@ -27411,7 +27524,8 @@
         "filename": "TDZ-Terdzo-OM-016",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-016",
         "displayName": "grub thob thang stong pa'i gdams pa 'chi med dpal ster gyi tshe sgrub dang dbang chog ",
-        "filenr": 3227
+        "filenr": 3227,
+        "alt_filename": "TZ61-OM-016"
     },
     {
         "category": "TZ3",
@@ -27435,7 +27549,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-033",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-033",
         "displayName": "zhi khro dgongs pa rang grol gyi bka' srung sde bdun gsol mchod mdor bsdus ",
-        "filenr": 3230
+        "filenr": 3230,
+        "alt_filename": "TZ67-SIDDHAM-033"
     },
     {
         "category": "T02",
@@ -27553,7 +27668,8 @@
         "filename": "TDZ-Terdzo-AA-033",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-033",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_nang skor rig 'dzin bla ma'i sgrub thabs ",
-        "filenr": 3244
+        "filenr": 3244,
+        "alt_filename": "TZ62-AA-033"
     },
     {
         "category": "NK080",
@@ -28125,7 +28241,8 @@
         "filename": "TDZ-Terdzo-OM-035",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-035",
         "displayName": "rnam 'joms sangs rgyas gsang ba'i lugs kyi sgrub thabs dang khrus kyi cho ga ",
-        "filenr": 3311
+        "filenr": 3311,
+        "alt_filename": "TZ61-OM-035"
     },
     {
         "category": "K10",
@@ -28319,7 +28436,8 @@
         "filename": "TDZ-Terdzo-HUNG-023",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-023",
         "displayName": "tshogs bsdus bde chen 'khor lo ",
-        "filenr": 3334
+        "filenr": 3334,
+        "alt_filename": "TZ63-HUNG-023"
     },
     {
         "category": "T08",
@@ -28606,7 +28724,8 @@
         "filename": "TDZ-Terdzo-OM-045",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-045",
         "displayName": "gnubs lugs kyi dpal mgon stag zhon gyi sgrub thabs dang dbang chog ",
-        "filenr": 3367
+        "filenr": 3367,
+        "alt_filename": "TZ61-OM-045"
     },
     {
         "category": "T06",
@@ -28838,7 +28957,8 @@
         "filename": "TDZ-Terdzo-DA-065",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-DA-065",
         "displayName": "sku gsum rigs 'dus zab tig las:_dbang chog bde chen bum bzang ",
-        "filenr": 3395
+        "filenr": 3395,
+        "alt_filename": "TZ11-DA-065"
     },
     {
         "category": "NG",
@@ -28862,7 +28982,8 @@
         "filename": "TDZ-Terdzo-HAA-005",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HAA-005",
         "displayName": "gter chen rnam thar las 'phros pa'i dris lan bkra shis dbyangs snyan bskul ba'i dri bzhon ",
-        "filenr": 3398
+        "filenr": 3398,
+        "alt_filename": "TZ65-HAA-005"
     },
     {
         "category": "NY",
@@ -29071,7 +29192,8 @@
         "filename": "TDZ-Terdzo-AA-054",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-054",
         "displayName": "rdzogs pa chen po sde gsum las:_nang skor khrid kyi byin rlabs bzhugs ",
-        "filenr": 3423
+        "filenr": 3423,
+        "alt_filename": "TZ62-AA-054"
     },
     {
         "category": "TZ3",
@@ -29553,7 +29675,8 @@
         "filename": "TDZ-Terdzo-OM-019",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-019",
         "displayName": "spyan ras gzigs rgyal ba rgya mtsho bde gshegs bzhi sgril gyi sgrub thabs dang byin rlabs ",
-        "filenr": 3479
+        "filenr": 3479,
+        "alt_filename": "TZ61-OM-019"
     },
     {
         "category": "NK099",
@@ -29663,7 +29786,8 @@
         "filename": "TDZ-Terdzo-OM-038",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-038",
         "displayName": "chos dbang lugs kyi drang srong lok+t+ri pA la'i sgrub thabs dang rig pa gtad pa ",
-        "filenr": 3492
+        "filenr": 3492,
+        "alt_filename": "TZ61-OM-038"
     },
     {
         "category": "NK089",
@@ -29811,7 +29935,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-005",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-005",
         "displayName": "tshogs bsdus ",
-        "filenr": 3510
+        "filenr": 3510,
+        "alt_filename": "TZ67-SIDDHAM-005"
     },
     {
         "category": "NK001",
@@ -30131,7 +30256,8 @@
         "filename": "TDZ-Terdzo-LA-048",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-048",
         "displayName": "rta mgrin gsang ba 'dus pa las/_rta mgrin nag po'i dbang chog dregs pa srog gi rgya can skur ba'i cho ga dbang chen thugs kyi tshal pa ",
-        "filenr": 3548
+        "filenr": 3548,
+        "alt_filename": "TZ26-LA-048"
     },
     {
         "category": "NG",
@@ -30595,7 +30721,8 @@
         "filename": "TDZ-Terdzo-AA-043",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-043",
         "displayName": "dam chos rdzogs pa chen po sde gsum las/_nang skor yi dam khro bo'i bskyed rim dang byang bu khrigs su bsdebs pa ",
-        "filenr": 3603
+        "filenr": 3603,
+        "alt_filename": "TZ62-AA-043"
     },
     {
         "category": "K12",
@@ -32022,7 +32149,8 @@
         "filename": "TDZ-Terdzo-AA-045",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-045",
         "displayName": "mchog gter rdzogs chen sde gsum gyi nang skor khro bo'i dzapa? dmigs 'bring po bde chen 'bar ba'i thig le ",
-        "filenr": 3771
+        "filenr": 3771,
+        "alt_filename": "TZ62-AA-045"
     },
     {
         "category": "TZ62",
@@ -32030,7 +32158,8 @@
         "filename": "TDZ-Terdzo-AA-015",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-015",
         "displayName": "rdzogs chen sde gsum gyi gter srung mchod thabs ngag 'don dge",
-        "filenr": 3772
+        "filenr": 3772,
+        "alt_filename": "TZ62-AA-015"
     },
     {
         "category": "NY",
@@ -32046,7 +32175,8 @@
         "filename": "TDZ-Terdzo-DA-067",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-DA-067",
         "displayName": "gu ru drag po bde gshegs 'dus pa'i phrin las khyer bder bkod pa mi mthun phyogs las rnam rgyal ",
-        "filenr": 3774
+        "filenr": 3774,
+        "alt_filename": "TZ11-DA-067"
     },
     {
         "category": "T02",
@@ -32158,7 +32288,8 @@
         "filename": "TDZ-Terdzo-LA-027",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-027",
         "displayName": "rta mchog rol pa'i snying tig las/_dbang chen tshe sgrub zab mo'i rgyun gyi rnal 'byor snying po ",
-        "filenr": 3787
+        "filenr": 3787,
+        "alt_filename": "TZ26-LA-027"
     },
     {
         "category": "T02",
@@ -32226,7 +32357,8 @@
         "filename": "TDZ-Terdzo-AA-032",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-032",
         "displayName": "rdzogs pa chen po sde gsum las:_phyi skor dngos gzhi'i khrid rim ",
-        "filenr": 3795
+        "filenr": 3795,
+        "alt_filename": "TZ62-AA-032"
     },
     {
         "category": "NK081",
@@ -32326,7 +32458,8 @@
         "filename": "TDZ-Terdzo-MANGALAM-003",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MANGALAM-003",
         "displayName": "rin chen gter mdzod chen po'i kha skong dkar chag rin chen phreng ba ",
-        "filenr": 3807
+        "filenr": 3807,
+        "alt_filename": "TZ66-MANGALAM-003"
     },
     {
         "category": "K12",
@@ -32429,7 +32562,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-014",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-014",
         "displayName": "rdo rje theg pa'i dam tshig gi nyes ltung phyir bcos pa'i cho ga rig 'dzin dbugs dbyung gi theg le ",
-        "filenr": 3819
+        "filenr": 3819,
+        "alt_filename": "TZ67-SIDDHAM-014"
     },
     {
         "category": "T02",
@@ -32521,7 +32655,8 @@
         "filename": "TDZ-Terdzo-HUNG-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-002",
         "displayName": "rtsa gsum 'od gsal snying tig las/_sngon 'gro'i ngag 'don byang chub myur lam gyi zur 'debs bla ma'i rnal 'byor zab lam snying po ",
-        "filenr": 3830
+        "filenr": 3830,
+        "alt_filename": "TZ63-HUNG-002"
     },
     {
         "category": "TZ51",
@@ -32810,7 +32945,8 @@
         "filename": "TDZ-Terdzo-MAA-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MAA-001",
         "displayName": "rin chen gter mdzod chen po'i smin grol 'bogs pa'i skabs kyi phyag len nyer mkho'i zur 'debs mtshams sbyor rigs bcas nyung gsal du bkod pa 'dod rgu 'jo ba'i gter bum pod gsum pa ",
-        "filenr": 3864
+        "filenr": 3864,
+        "alt_filename": "TZ70-MAA-001"
     },
     {
         "category": "TZ32",
@@ -32931,7 +33067,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-019",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-019",
         "displayName": "rdo rje theg pa'i sngags kyi gso sbyong bdud rtsi'i rol mtsho'i smin byed 'bogs pa'i mtshams sbyor lag len ",
-        "filenr": 3878
+        "filenr": 3878,
+        "alt_filename": "TZ67-SIDDHAM-019"
     },
     {
         "category": "TZ29",
@@ -33186,7 +33323,8 @@
         "filename": "TDZ-Terdzo-AA-036",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-036",
         "displayName": "rdzogs pa chen po sde gsum las:_nang skor yi dam zhi sgrub ",
-        "filenr": 3908
+        "filenr": 3908,
+        "alt_filename": "TZ62-AA-036"
     },
     {
         "category": "K12",
@@ -33212,7 +33350,8 @@
         "filename": "TDZ-Terdzo-LA-004",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-004",
         "displayName": "rta mgrin dregs pa dbang sdud kyi phrin las dgos 'dod kun 'byung ",
-        "filenr": 3911
+        "filenr": 3911,
+        "alt_filename": "TZ26-LA-004"
     },
     {
         "category": "NK100",
@@ -33332,7 +33471,8 @@
         "filename": "TDZ-Terdzo-OM-043",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-043",
         "displayName": "nyang gter mgon dkar tshe yi bdag po'i sgrub thabs dang tshe dbang ",
-        "filenr": 3925
+        "filenr": 3925,
+        "alt_filename": "TZ61-OM-043"
     },
     {
         "category": "K10",
@@ -33790,7 +33930,8 @@
         "filename": "TDZ-Terdzo-HUNG-009",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-009",
         "displayName": "dgongs gter 'od gsal snying tig las/_bla ma rtsa gsum spyi dang bye brag gi smin lam dbang gi phreng ba 'jug bde dkyus gcig tu bkod pa smin grol ye shes bdud rtsi'i gsang mdzod ",
-        "filenr": 3978
+        "filenr": 3978,
+        "alt_filename": "TZ63-HUNG-009"
     },
     {
         "category": "TZ37",
@@ -34064,7 +34205,8 @@
         "filename": "TDZ-Terdzo-OM-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-002",
         "displayName": "rtsa ba gsum chos skyong nor gyi lhag pa'i lha rab 'byams kyi sgrub thabs 'dod 'jo'i bum bzang ",
-        "filenr": 4010
+        "filenr": 4010,
+        "alt_filename": "TZ61-OM-002"
     },
     {
         "category": "T02",
@@ -34116,7 +34258,8 @@
         "filename": "TDZ-Terdzo-LA-033",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-033",
         "displayName": "sman mchod ",
-        "filenr": 4016
+        "filenr": 4016,
+        "alt_filename": "TZ26-LA-033"
     },
     {
         "category": "TZ8",
@@ -34207,7 +34350,8 @@
         "filename": "TDZ-Terdzo-AA-008",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-008",
         "displayName": "bsang chu sgrub pa dang dkar bgegs bsngo ba bskrad srung 'beb byang bcas ",
-        "filenr": 4027
+        "filenr": 4027,
+        "alt_filename": "TZ62-AA-008"
     },
     {
         "category": "T04",
@@ -34267,7 +34411,8 @@
         "filename": "TDZ-Terdzo-AA-031",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-031",
         "displayName": "phyi skor khrid kyi byin rlabs dgongs nyams glu'i skabs bod kyi bka' babs bcu las ma tshang ba btsal dgos gsungs pa btsal nas go chod rgyus zur byang du bkod pa ",
-        "filenr": 4034
+        "filenr": 4034,
+        "alt_filename": "TZ62-AA-031"
     },
     {
         "category": "T02",
@@ -34330,7 +34475,8 @@
         "filename": "TDZ-Terdzo-HUNG-020",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-020",
         "displayName": "tshe 'gugs bskul byang ",
-        "filenr": 4042
+        "filenr": 4042,
+        "alt_filename": "TZ63-HUNG-020"
     },
     {
         "category": "T02",
@@ -34680,7 +34826,8 @@
         "filename": "TDZ-Terdzo-AA-101",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-101",
         "displayName": "mchog gter rdzogs chen sde gsum gyi dbang bskur yongs rdzogs khrigs su bsdebs pa kun bzang rig 'dzin bla ma'i dgongs rgyan ",
-        "filenr": 4083
+        "filenr": 4083,
+        "alt_filename": "TZ62-AA-101"
     },
     {
         "category": "K12",
@@ -34784,7 +34931,8 @@
         "filename": "TDZ-Terdzo-OM-021",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-021",
         "displayName": "dbang la phyag len rgyas pa'i skabs tshe bdag rnon po nang gcod gzhung gi bstod ring sbyor lugs",
-        "filenr": 4095
+        "filenr": 4095,
+        "alt_filename": "TZ61-OM-021"
     },
     {
         "category": "TZ4",
@@ -34819,7 +34967,8 @@
         "filename": "TDZ-Terdzo-HAA-003",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HAA-003",
         "displayName": "sprul pa'i gter chen mchog gyur gling pa'i rnam thar gsol 'debs bkra shis 'khyil pa'i dbyangs snyan ",
-        "filenr": 4099
+        "filenr": 4099,
+        "alt_filename": "TZ65-HAA-003"
     },
     {
         "category": "T02",
@@ -35000,7 +35149,8 @@
         "filename": "TDZ-Terdzo-WAM-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-WAM-001",
         "displayName": "rin chen gter mdzod chen po'i smin grol 'bogs pa'i skabs kyi phyag len nyer mkho'i zur 'debs mtshams sbyor rigs bcas nyung gsal du bkod pa 'dod rgu 'jo ba'i gter bum pod gnyis pa ",
-        "filenr": 4120
+        "filenr": 4120,
+        "alt_filename": "TZ69-WAM-001"
     },
     {
         "category": "K10",
@@ -35713,7 +35863,8 @@
         "filename": "TDZ-Terdzo-OM-050",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-050",
         "displayName": "dpal ldan rdo rje gshog rgod ma'i sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 4204
+        "filenr": 4204,
+        "alt_filename": "TZ61-OM-050"
     },
     {
         "category": "K10",
@@ -35935,7 +36086,8 @@
         "filename": "TDZ-Terdzo-HUNG-029",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-029",
         "displayName": "dam pa rigs brgya rig 'dzin dang bcas pa'i lha dbang gi bkol byang ",
-        "filenr": 4230
+        "filenr": 4230,
+        "alt_filename": "TZ63-HUNG-029"
     },
     {
         "category": "T11",
@@ -37106,7 +37258,8 @@
         "filename": "TDZ-Terdzo-AA-010",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-010",
         "displayName": "rdzogs chen sde gsum gyi byang bu khrigs sdeb la sbyar rgyu'i sman mchod ",
-        "filenr": 4368
+        "filenr": 4368,
+        "alt_filename": "TZ62-AA-010"
     },
     {
         "category": "K10",
@@ -37241,7 +37394,8 @@
         "filename": "TDZ-Terdzo-AA-086",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-086",
         "displayName": "sems sde'i rig 'dzin nyer brgyad rtsa 'dab la sgom tshul gyi dpe ris ",
-        "filenr": 4384
+        "filenr": 4384,
+        "alt_filename": "TZ62-AA-086"
     },
     {
         "category": "NG",
@@ -37351,7 +37505,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-030",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-030",
         "displayName": "dri med bshags rgyud nas khol phyung phyag gi bkol byang rgyas bsdus gnyis ka ",
-        "filenr": 4397
+        "filenr": 4397,
+        "alt_filename": "TZ67-SIDDHAM-030"
     },
     {
         "category": "TZ41",
@@ -37386,7 +37541,8 @@
         "filename": "TDZ-Terdzo-AA-080",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-080",
         "displayName": "rdzogs chen sde gsum gyi zhi rgyas sbyin sreg shin tu bsdus pa'i ngag 'don dge:",
-        "filenr": 4401
+        "filenr": 4401,
+        "alt_filename": "TZ62-AA-080"
     },
     {
         "category": "NY",
@@ -37960,7 +38116,8 @@
         "filename": "TDZ-Terdzo-OM-020",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-020",
         "displayName": "tshe bdag yang zlog me'i spu gri'i rnon po nang gcod kyi sgrub thabs dbang bka' bcas ",
-        "filenr": 4468
+        "filenr": 4468,
+        "alt_filename": "TZ61-OM-020"
     },
     {
         "category": "K12",
@@ -38334,7 +38491,8 @@
         "filename": "TDZ-Terdzo-AA-052",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-052",
         "displayName": "rdzogs pa chen po sde gsum las:_rtsa ba mngon rdzogs rgyal po dang:_yan lag dgu bsgril dbang rnams ",
-        "filenr": 4512
+        "filenr": 4512,
+        "alt_filename": "TZ62-AA-052"
     },
     {
         "category": "T02",
@@ -38739,7 +38897,8 @@
         "filename": "TDZ-Terdzo-HUNG-010",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-010",
         "displayName": "rtsa gsum 'od gsal snying tig gi kha skong phur pa 'dus pa'i dril sgrub kyi dbang bskur bklag chog tu bkod pa rdo rje bdud rtsi'i bum bzang ",
-        "filenr": 4559
+        "filenr": 4559,
+        "alt_filename": "TZ63-HUNG-010"
     },
     {
         "category": "K10",
@@ -38814,7 +38973,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-024",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-024",
         "displayName": "pad gling mgon po sde brgyad kyi rgyun gsol ",
-        "filenr": 4568
+        "filenr": 4568,
+        "alt_filename": "TZ67-SIDDHAM-024"
     },
     {
         "category": "NY",
@@ -38874,7 +39034,8 @@
         "filename": "TDZ-Terdzo-AA-085",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-085",
         "displayName": "phyi skor bla ma'i blos bslang chos 'khor tshul dang lte ba'i lha gnas bcas kyi dpe ris ",
-        "filenr": 4575
+        "filenr": 4575,
+        "alt_filename": "TZ62-AA-085"
     },
     {
         "category": "TZ29",
@@ -39075,7 +39236,8 @@
         "filename": "TDZ-Terdzo-AA-041",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-041",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_nang skor yi dam khro bo'i sngags kyi byang bu ",
-        "filenr": 4598
+        "filenr": 4598,
+        "alt_filename": "TZ62-AA-041"
     },
     {
         "category": "NY",
@@ -39626,7 +39788,8 @@
         "filename": "TDZ-Terdzo-AA-055",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-055",
         "displayName": "rdzogs pa chen po sde gsum las:_nang skor khrid kyi dang po dngos gzhi ",
-        "filenr": 4661
+        "filenr": 4661,
+        "alt_filename": "TZ62-AA-055"
     },
     {
         "category": "T02",
@@ -39791,7 +39954,8 @@
         "filename": "TDZ-Terdzo-HUNG-021",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-021",
         "displayName": "pad+ma gsang ba'i thig le las/_rdo rje'i chos srung rnams kyi rgyun gsol bstan dgra tshar gcod ",
-        "filenr": 4681
+        "filenr": 4681,
+        "alt_filename": "TZ63-HUNG-021"
     },
     {
         "category": "TZ54",
@@ -39817,7 +39981,8 @@
         "filename": "TDZ-Terdzo-AA-091",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-091",
         "displayName": "sems sde'i nyams len a don rab gsal dang /_klong sde brda bzhi'i nyams len bde gsal mi rtog rab 'bar/_man ngag sde'i nyams len snying po sgron ma rab gsal/_bogs 'don nyams dbyangs byin rlabs char 'beb/_bla ma chos sku'i don khrid snying po sangs rgyas mdzub tshugs/_shrI siM zhal gdams kyi dris lan bcas dkyus bkod ",
-        "filenr": 4684
+        "filenr": 4684,
+        "alt_filename": "TZ62-AA-091"
     },
     {
         "category": "TZ15",
@@ -40421,7 +40586,8 @@
         "filename": "TDZ-Terdzo-AA-011",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-011",
         "displayName": "dzapa? bskul ",
-        "filenr": 4755
+        "filenr": 4755,
+        "alt_filename": "TZ62-AA-011"
     },
     {
         "category": "NY",
@@ -40446,7 +40612,8 @@
         "filename": "TDZ-Terdzo-OM-026",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-026",
         "displayName": "byang chub gling pa'i phyag rdor gtum po drag po'i sgrub thabs dang dbang chog ",
-        "filenr": 4758
+        "filenr": 4758,
+        "alt_filename": "TZ61-OM-026"
     },
     {
         "category": "T02",
@@ -40590,7 +40757,8 @@
         "filename": "TDZ-Terdzo-AA-073",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-073",
         "displayName": "rdzogs pa chen po sde gsum las/_gsang skor yi dam khro bo'i dbang bskur bltas chog tu bkod pa ye shes klong yangs ",
-        "filenr": 4775
+        "filenr": 4775,
+        "alt_filename": "TZ62-AA-073"
     },
     {
         "category": "TZ58",
@@ -40825,7 +40993,8 @@
         "filename": "TDZ-Terdzo-CHI-025",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-CHI-025",
         "displayName": "'chi med 'phags ma snying tig gi gtor ma'i dpe ris ",
-        "filenr": 4802
+        "filenr": 4802,
+        "alt_filename": "TZ36-CHI-025"
     },
     {
         "category": "NY",
@@ -41627,7 +41796,8 @@
         "filename": "TDZ-Terdzo-LA-011",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-011",
         "displayName": "rta mgrin snying thig snying po don sbyor las/_zab lam smin byed rnam bzhi ji ltar bskur ba'i cho ga bklag chog tu bkod pa dbang chen rol pa'i sgra dbyangs ",
-        "filenr": 4896
+        "filenr": 4896,
+        "alt_filename": "TZ26-LA-011"
     },
     {
         "category": "T02",
@@ -42165,7 +42335,8 @@
         "filename": "TDZ-Terdzo-HUNG-003",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-003",
         "displayName": "rtsa gsum 'od gsal snying tig las/_phyi sgrub sgyu 'phrul drwa ba gsang 'dus thod phreng rtsal gyi rgyun gyi rnal 'byor ",
-        "filenr": 4959
+        "filenr": 4959,
+        "alt_filename": "TZ63-HUNG-003"
     },
     {
         "category": "K12",
@@ -42283,7 +42454,8 @@
         "filename": "TDZ-Terdzo-AA-096",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-096",
         "displayName": "mchog gter rdzogs pa chen po sde gsum gyi smin byed dbang gi go rim ",
-        "filenr": 4974
+        "filenr": 4974,
+        "alt_filename": "TZ62-AA-096"
     },
     {
         "category": "T02",
@@ -43243,7 +43415,8 @@
         "filename": "TDZ-Terdzo-HAA-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HAA-002",
         "displayName": "sprul pa'i gter ston chen mo'i rnam thar gyi sa bon zhal gsung ma dang /_gter 'byung 'ga' zhig 'bel gtam sna tshogs bcas phyogs bsdoms rgyal bstan nyin byed 'od snang ",
-        "filenr": 5087
+        "filenr": 5087,
+        "alt_filename": "TZ65-HAA-002"
     },
     {
         "category": "NG",
@@ -43315,7 +43488,8 @@
         "filename": "TDZ-Terdzo-OM-068",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-068",
         "displayName": "bla ma zhi drag dang rta phyag sogs yi dam chos skyong rnams kyi dbang dang byin rlabs rjes gnang gi bka' bsgo lo chen rin po che'i dris lan las zur bton dkyus bkod ",
-        "filenr": 5096
+        "filenr": 5096,
+        "alt_filename": "TZ61-OM-068"
     },
     {
         "category": "T02",
@@ -43387,7 +43561,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-034",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-034",
         "displayName": "zhi khro sngags kyi gso sbyong gi cho ga dang 'brel ba'i gnas lung mdor bsdus ",
-        "filenr": 5105
+        "filenr": 5105,
+        "alt_filename": "TZ67-SIDDHAM-034"
     },
     {
         "category": "TZ44",
@@ -43594,7 +43769,8 @@
         "filename": "TDZ-Terdzo-AA-075",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-075",
         "displayName": "gsang skor khrid kyi byin rlabs kyi bum pa'i brda don ",
-        "filenr": 5129
+        "filenr": 5129,
+        "alt_filename": "TZ62-AA-075"
     },
     {
         "category": "NY",
@@ -44120,7 +44296,8 @@
         "filename": "TDZ-Terdzo-GA-044",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-GA-044",
         "displayName": "grub thob chen po'i thugs tig las/_sgrub thabs snying po skor lnga'i gdams pa'i sa bcad zin thor bkod pa ngo mtshar snying po ",
-        "filenr": 5190
+        "filenr": 5190,
+        "alt_filename": "TZ3-GA-044"
     },
     {
         "category": "T02",
@@ -44314,7 +44491,8 @@
         "filename": "TDZ-Terdzo-AA-099",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-099",
         "displayName": "bgegs bskrad dang srung 'khor ",
-        "filenr": 5213
+        "filenr": 5213,
+        "alt_filename": "TZ62-AA-099"
     },
     {
         "category": "NY",
@@ -44456,7 +44634,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-007",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-007",
         "displayName": "bla ma dgongs pa 'dus pa'i skong chog las byang khrigs su bsdebs pa rig pa 'dzin pa'i lam bzang ",
-        "filenr": 5230
+        "filenr": 5230,
+        "alt_filename": "TZ67-SIDDHAM-007"
     },
     {
         "category": "NG",
@@ -44480,7 +44659,8 @@
         "filename": "TDZ-Terdzo-OM-041",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-041",
         "displayName": "ye shes kyi mgon po legs ldan nag po'i drag po'i rjes gnang ",
-        "filenr": 5233
+        "filenr": 5233,
+        "alt_filename": "TZ61-OM-041"
     },
     {
         "category": "TZ28",
@@ -44742,7 +44922,8 @@
         "filename": "TDZ-Terdzo-OM-012",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-012",
         "displayName": "tshe dpag med lung lugs sangs rgyas gsang ba'i man ngag gi sgrub thabs dang dbang chog ",
-        "filenr": 5263
+        "filenr": 5263,
+        "alt_filename": "TZ61-OM-012"
     },
     {
         "category": "NY",
@@ -44924,7 +45105,8 @@
         "filename": "TDZ-Terdzo-AA-098",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-098",
         "displayName": "rig pa'i me tog dor ba ",
-        "filenr": 5284
+        "filenr": 5284,
+        "alt_filename": "TZ62-AA-098"
     },
     {
         "category": "T02",
@@ -45050,7 +45232,8 @@
         "filename": "TDZ-Terdzo-OM-057",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-057",
         "displayName": "bod kyi yul bdag chen mo dam can brtan ma bcu gnyis kyi sgrub thabs srog gtad dang bcas pa",
-        "filenr": 5299
+        "filenr": 5299,
+        "alt_filename": "TZ61-OM-057"
     },
     {
         "category": "K12",
@@ -45246,7 +45429,8 @@
         "filename": "TDZ-Terdzo-LA-045",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-045",
         "displayName": "rta nag lcags ral can gyi sgrub thabs ",
-        "filenr": 5322
+        "filenr": 5322,
+        "alt_filename": "TZ26-LA-045"
     },
     {
         "category": "T02",
@@ -45854,7 +46038,8 @@
         "filename": "TDZ-Terdzo-HUNG-011",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-011",
         "displayName": "rtsa gsum 'od gsal snying tig gi bka' srung gi srog dbang chog sgrig tu bkod pa mi 'gyur rdo rje'i mdud rgya ",
-        "filenr": 5394
+        "filenr": 5394,
+        "alt_filename": "TZ63-HUNG-011"
     },
     {
         "category": "TZ9",
@@ -46343,7 +46528,8 @@
         "filename": "TDZ-Terdzo-AA-021",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-021",
         "displayName": "zab mo rdzogs chen sde gsum las:_man ngag gdams pa ma bu ",
-        "filenr": 5451
+        "filenr": 5451,
+        "alt_filename": "TZ62-AA-021"
     },
     {
         "category": "T02",
@@ -46484,7 +46670,8 @@
         "filename": "TDZ-Terdzo-AA-051",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-051",
         "displayName": "rdzogs pa chen po sde gsum las:_bdud rtsi sman gyi tshe lung ",
-        "filenr": 5467
+        "filenr": 5467,
+        "alt_filename": "TZ62-AA-051"
     },
     {
         "category": "NY",
@@ -47674,7 +47861,8 @@
         "filename": "TDZ-Terdzo-LA-020",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-020",
         "displayName": "zab chos rta phag yid bzhin nor bu'i dbang bskur gyi las rim khyer bder bkod pa ye shes mchog sbyor ",
-        "filenr": 5606
+        "filenr": 5606,
+        "alt_filename": "TZ26-LA-020"
     },
     {
         "category": "T02",
@@ -47691,7 +47879,8 @@
         "filename": "TDZ-Terdzo-LA-005",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-005",
         "displayName": "byang gter rta mgrin dregs pa dbang sdud kyi smin byed chog khrigs rgyud gsum dbang byed",
-        "filenr": 5608
+        "filenr": 5608,
+        "alt_filename": "TZ26-LA-005"
     },
     {
         "category": "T02",
@@ -47850,7 +48039,8 @@
         "filename": "TDZ-Terdzo-OM-024",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-024",
         "displayName": "chos dbang lugs rta nag gi sgrub thabs dang rjes gnang ",
-        "filenr": 5627
+        "filenr": 5627,
+        "alt_filename": "TZ61-OM-024"
     },
     {
         "category": "K12",
@@ -47867,7 +48057,8 @@
         "filename": "TDZ-Terdzo-LA-022",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-022",
         "displayName": "yi dam dgongs 'dus rta mchog rol pa las:_phrin las rgyun khyer las byang bsdus pa nor bu pad+ma'i phreng ba ",
-        "filenr": 5629
+        "filenr": 5629,
+        "alt_filename": "TZ26-LA-022"
     },
     {
         "category": "TZ42",
@@ -47927,7 +48118,8 @@
         "filename": "TDZ-Terdzo-LA-025",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-025",
         "displayName": "yi dam dgongs 'dus rta mchog rol pa las/_rtsa gsum spyi'i rjes gnang gcig shes kun grol ",
-        "filenr": 5636
+        "filenr": 5636,
+        "alt_filename": "TZ26-LA-025"
     },
     {
         "category": "T02",
@@ -47944,7 +48136,8 @@
         "filename": "TDZ-Terdzo-LA-009",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-009",
         "displayName": "rta mgrin snying po don sbyor gyi brgyud pa'i gsol 'debs ",
-        "filenr": 5638
+        "filenr": 5638,
+        "alt_filename": "TZ26-LA-009"
     },
     {
         "category": "TZ16",
@@ -48015,7 +48208,8 @@
         "filename": "TDZ-Terdzo-MANGALAM-007",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MANGALAM-007",
         "displayName": "gsang chen snga 'gyur rdo rje theg pa'i gsung rab zab mo nye brgyud kyi chos sde rin chen gter mdzod chen po'i bzhugs byang dkar chag gsal bar bkod pa 'od gsal rdo rje snying po'i gru gzings ",
-        "filenr": 5646
+        "filenr": 5646,
+        "alt_filename": "TZ66-MANGALAM-007"
     },
     {
         "category": "T02",
@@ -48032,7 +48226,8 @@
         "filename": "TDZ-Terdzo-HAA-006",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HAA-006",
         "displayName": "gter chen mchog gyur gling pa'i thun mong phyi yi rnam thar bkra shis skye ba lnga pa'i dbyangs snyan ",
-        "filenr": 5648
+        "filenr": 5648,
+        "alt_filename": "TZ65-HAA-006"
     },
     {
         "category": "T02",
@@ -48367,7 +48562,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-015",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-015",
         "displayName": "rdo rje theg pa sngags kyi gso sbyong bdud rtsi'i rol mtsho ",
-        "filenr": 5688
+        "filenr": 5688,
+        "alt_filename": "TZ67-SIDDHAM-015"
     },
     {
         "category": "TZ48",
@@ -48423,7 +48619,8 @@
         "filename": "TDZ-Terdzo-LA-021",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-021",
         "displayName": "gnas chos thugs gter las rta mgrin bar chad kun sel sgrub thabs ",
-        "filenr": 5695
+        "filenr": 5695,
+        "alt_filename": "TZ26-LA-021"
     },
     {
         "category": "T02",
@@ -48525,7 +48722,8 @@
         "filename": "TDZ-Terdzo-DZI-073",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-DZI-073",
         "displayName": "rtsa gsum 'od gsal snying thig las:_phag mo dkar mo'i tshe sgrub ",
-        "filenr": 5707
+        "filenr": 5707,
+        "alt_filename": "TZ49-DZI-073"
     },
     {
         "category": "TZ55",
@@ -48649,7 +48847,8 @@
         "filename": "TDZ-Terdzo-OM-032",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-032",
         "displayName": "ma ti lugs kyi 'jam dpal dkar po'i sgrub thabs dang rjes gnang ",
-        "filenr": 5722
+        "filenr": 5722,
+        "alt_filename": "TZ61-OM-032"
     },
     {
         "category": "T02",
@@ -49537,7 +49736,8 @@
         "filename": "TDZ-Terdzo-HUNG-017",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-017",
         "displayName": "pad+ma gsang ba'i thig le'i sngon 'gro'i ngag 'don nyung ngur bsdus pa rnam mkhyen shing rta ",
-        "filenr": 5827
+        "filenr": 5827,
+        "alt_filename": "TZ63-HUNG-017"
     },
     {
         "category": "NY",
@@ -50016,7 +50216,8 @@
         "filename": "TDZ-Terdzo-LA-035",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-035",
         "displayName": "zab pa skor bdun las:_dbang chen 'dus pa'i dbang gi phreng ba ",
-        "filenr": 5883
+        "filenr": 5883,
+        "alt_filename": "TZ26-LA-035"
     },
     {
         "category": "NK037",
@@ -50571,7 +50772,8 @@
         "filename": "TDZ-Terdzo-OM-004",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-004",
         "displayName": "gsang 'dus gtor dbang gnad kyi shog gcig mar grags pa ",
-        "filenr": 5948
+        "filenr": 5948,
+        "alt_filename": "TZ61-OM-004"
     },
     {
         "category": "T11",
@@ -50641,7 +50843,8 @@
         "filename": "TDZ-Terdzo-HUNG-005",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-005",
         "displayName": "rtsa gsum 'od gsal snying tig las/_yang gsang bla ma drag po yi dam dgongs 'dus rgyun khyer ",
-        "filenr": 5956
+        "filenr": 5956,
+        "alt_filename": "TZ63-HUNG-005"
     },
     {
         "category": "NK041",
@@ -50835,7 +51038,8 @@
         "filename": "TDZ-Terdzo-OM-052",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-052",
         "displayName": "gza' bdud rA hu la'i sgrub thabs dbang dang bcas pa",
-        "filenr": 5979
+        "filenr": 5979,
+        "alt_filename": "TZ61-OM-052"
     },
     {
         "category": "T02",
@@ -51528,7 +51732,8 @@
         "filename": "TDZ-Terdzo-OM-009",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-009",
         "displayName": "che 'bring gnyis ka dang 'brel ba'i byin rlabs lu gu rgyud ",
-        "filenr": 6061
+        "filenr": 6061,
+        "alt_filename": "TZ61-OM-009"
     },
     {
         "category": "TZ9",
@@ -51706,7 +51911,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-009",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-009",
         "displayName": "gsol 'debs dang maN+Dal bsdus pa ",
-        "filenr": 6082
+        "filenr": 6082,
+        "alt_filename": "TZ67-SIDDHAM-009"
     },
     {
         "category": "NK015",
@@ -51739,7 +51945,8 @@
         "filename": "TDZ-Terdzo-LA-046",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-046",
         "displayName": "rta mgrin gsang ba 'dus pa las rta mgrin nag po lcags ral can gyi sgrub skor me yi phreng ba ",
-        "filenr": 6086
+        "filenr": 6086,
+        "alt_filename": "TZ26-LA-046"
     },
     {
         "category": "K10",
@@ -51792,7 +51999,8 @@
         "filename": "TDZ-Terdzo-AA-024",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-024",
         "displayName": "dam chos rdzogs pa chen po sde gsum las/_phyi skor bla ma'i bskyed rim dang byang bu khrigs su bsdebs pa ",
-        "filenr": 6092
+        "filenr": 6092,
+        "alt_filename": "TZ62-AA-024"
     },
     {
         "category": "NG",
@@ -51816,7 +52024,8 @@
         "filename": "TDZ-Terdzo-DZA-003",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-DZA-003",
         "displayName": "nA ga rak+sha'i khyung nag me'i 'khor lo'i srung ba'i dpe'u ris ",
-        "filenr": 6095
+        "filenr": 6095,
+        "alt_filename": "TZ19-DZA-003"
     },
     {
         "category": "K10",
@@ -51949,7 +52158,8 @@
         "filename": "TDZ-Terdzo-AA-050",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-050",
         "displayName": "rdzogs chen sde gsum nang skor yi dam khro bo'i bdag 'jug gi ngag 'don dge",
-        "filenr": 6111
+        "filenr": 6111,
+        "alt_filename": "TZ62-AA-050"
     },
     {
         "category": "NK006",
@@ -52472,7 +52682,8 @@
         "filename": "TDZ-Terdzo-OM-007",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-007",
         "displayName": "thugs dam rgyud nas bskul zhing 'phrin las bcol ba",
-        "filenr": 6172
+        "filenr": 6172,
+        "alt_filename": "TZ61-OM-007"
     },
     {
         "category": "T16",
@@ -52567,7 +52778,8 @@
         "filename": "TDZ-Terdzo-HAA-004",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HAA-004",
         "displayName": "gter chen mchog gyur gling pa'i rnam thar gsol 'debs kyi bsdus don bkra shis dbyangs kyi yan lag ",
-        "filenr": 6183
+        "filenr": 6183,
+        "alt_filename": "TZ65-HAA-004"
     },
     {
         "category": "NG",
@@ -52714,7 +52926,8 @@
         "filename": "TDZ-Terdzo-AA-019",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-019",
         "displayName": "sde gsum rtsa gsum spyi yi bskang bshags ye shes rol mo ",
-        "filenr": 6201
+        "filenr": 6201,
+        "alt_filename": "TZ62-AA-019"
     },
     {
         "category": "NK029",
@@ -53347,7 +53560,8 @@
         "filename": "TDZ-Terdzo-OM-037",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-037",
         "displayName": "rnam 'joms ba ri dang sangs rgyas gsang ba'i lugs gnyis so so'i rjes gnang bya tshul zung ",
-        "filenr": 6275
+        "filenr": 6275,
+        "alt_filename": "TZ61-OM-037"
     },
     {
         "category": "TZ58",
@@ -54284,7 +54498,8 @@
         "filename": "TDZ-Terdzo-AA-022",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-022",
         "displayName": "sde gsum spyi skor/_shrI siM ha'i bla sgrub",
-        "filenr": 6386
+        "filenr": 6386,
+        "alt_filename": "TZ62-AA-022"
     },
     {
         "category": "T02",
@@ -54403,7 +54618,8 @@
         "filename": "TDZ-Terdzo-AA-040",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-040",
         "displayName": "rdzogs pa chen po sde gsum las:_nang skor yi dam khro bo'i sgrub pa ",
-        "filenr": 6400
+        "filenr": 6400,
+        "alt_filename": "TZ62-AA-040"
     },
     {
         "category": "T02",
@@ -54496,7 +54712,8 @@
         "filename": "TDZ-Terdzo-OM-022",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-022",
         "displayName": "rta mgrin gsang sgrub shangs lugs kyi sgrub thabs dang dbang chog ",
-        "filenr": 6411
+        "filenr": 6411,
+        "alt_filename": "TZ61-OM-022"
     },
     {
         "category": "T02",
@@ -54586,7 +54803,8 @@
         "filename": "TDZ-Terdzo-AA-005",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-005",
         "displayName": "rdzogs chen sde gsum gyi mdo byang las/_zhib par seng brag kha byang chen mo",
-        "filenr": 6422
+        "filenr": 6422,
+        "alt_filename": "TZ62-AA-005"
     },
     {
         "category": "TZ53",
@@ -54594,7 +54812,8 @@
         "filename": "TDZ-Terdzo-'I-037",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-%27I-037",
         "displayName": "steng 'og bar gsum gyi 'khor lo'i dpe'u ris ",
-        "filenr": 6423
+        "filenr": 6423,
+        "alt_filename": "TZ53-'I-037"
     },
     {
         "category": "NY",
@@ -54890,7 +55109,8 @@
         "filename": "TDZ-Terdzo-LA-051",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-051",
         "displayName": "rta mgrin nag po yang gsang thugs kyi sgrub pa'i dbang bzhi bklag chog tu bkod pa dbang chen thugs kyi yang zhun ",
-        "filenr": 6458
+        "filenr": 6458,
+        "alt_filename": "TZ26-LA-051"
     },
     {
         "category": "T02",
@@ -55149,7 +55369,8 @@
         "filename": "TDZ-Terdzo-LA-031",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-031",
         "displayName": "rta mgrin dbang gi zab pa las/_brgyud pa'i gsol 'debs bde chen rang 'bar ",
-        "filenr": 6488
+        "filenr": 6488,
+        "alt_filename": "TZ26-LA-031"
     },
     {
         "category": "TZ40",
@@ -56041,7 +56262,8 @@
         "filename": "TDZ-Terdzo-AA-009",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-009",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_phrin las gsal 'debs byang bu'i skor rnams ",
-        "filenr": 6592
+        "filenr": 6592,
+        "alt_filename": "TZ62-AA-009"
     },
     {
         "category": "TZ53",
@@ -56418,7 +56640,8 @@
         "filename": "TDZ-Terdzo-AA-027",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-027",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_phyi skor bla ma rnams kyi rdo rje'i glu ",
-        "filenr": 6637
+        "filenr": 6637,
+        "alt_filename": "TZ62-AA-027"
     },
     {
         "category": "T01",
@@ -56776,7 +56999,8 @@
         "filename": "TDZ-Terdzo-HUNG-027",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-027",
         "displayName": "pad+ma gsang ba'i thig le las/_tshe 'das gnas 'dren thugs rje'i lcags kyu ",
-        "filenr": 6679
+        "filenr": 6679,
+        "alt_filename": "TZ63-HUNG-027"
     },
     {
         "category": "NY",
@@ -56887,7 +57111,8 @@
         "filename": "TDZ-Terdzo-AA-094",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-094",
         "displayName": "rdzogs chen sde gsum srung ma'i bka' gtad grub gnyis skal ldan shing rta ",
-        "filenr": 6692
+        "filenr": 6692,
+        "alt_filename": "TZ62-AA-094"
     },
     {
         "category": "TZ47",
@@ -57238,7 +57463,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-035",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-035",
         "displayName": "snga 'gyur bstan pa rgyas pa'i smon lam chos rgyal dgyes pa'i zhal lung gi don rnam par bshad pa bstan pa mi nub pa'i rgyal mtshan ",
-        "filenr": 6734
+        "filenr": 6734,
+        "alt_filename": "TZ67-SIDDHAM-035"
     },
     {
         "category": "NY",
@@ -58077,7 +58303,8 @@
         "filename": "TDZ-Terdzo-AA-093",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-093",
         "displayName": "rdzogs pa chen po sde gsum gyi bka' srung ye shes pa'i dbang bskur byin rlabs ye shes yongs su grub pa'i thig le ",
-        "filenr": 6832
+        "filenr": 6832,
+        "alt_filename": "TZ62-AA-093"
     },
     {
         "category": "T04",
@@ -58281,7 +58508,8 @@
         "filename": "TDZ-Terdzo-HUNG-008",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-008",
         "displayName": "rtsa gsum 'od gsal snying tig gi bka' srung spyi yi gsol mchod phrin las 'dod dgu'i rgyan ",
-        "filenr": 6856
+        "filenr": 6856,
+        "alt_filename": "TZ63-HUNG-008"
     },
     {
         "category": "TZ10",
@@ -58432,7 +58660,8 @@
         "filename": "TDZ-Terdzo-MANGALAM-005",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MANGALAM-005",
         "displayName": "gsang chen snga 'gyur rdo rje theg pa'i gsung rab zab mo nye brgyud kyi chos sde rin chen gter mdzod chen po'i bzhugs byang dkar chag gsal bar bkod pa 'od gsal rdo rje snying po'i gru gzings ",
-        "filenr": 6874
+        "filenr": 6874,
+        "alt_filename": "TZ66-MANGALAM-005"
     },
     {
         "category": "TZ42",
@@ -59148,7 +59377,8 @@
         "filename": "TDZ-Terdzo-OM-065",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-065",
         "displayName": "dzam+b+ha la dmar po grwa ston chen po'i gter ma'i lugs kyi sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 6958
+        "filenr": 6958,
+        "alt_filename": "TZ61-OM-065"
     },
     {
         "category": "TZ8",
@@ -59208,7 +59438,8 @@
         "filename": "TDZ-Terdzo-AE-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AE-001",
         "displayName": "rin chen gter mdzod chen po'i smin grol 'bogs pa'i skabs kyi phyag len nyer mkho'i zur 'debs mtshams sbyor rigs bcas nyung gsal du bkod pa 'dod rgu 'jo ba'i gter bum ",
-        "filenr": 6965
+        "filenr": 6965,
+        "alt_filename": "TZ68-AE-001"
     },
     {
         "category": "NY",
@@ -59743,7 +59974,8 @@
         "filename": "TDZ-Terdzo-HUNG-025",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-025",
         "displayName": "gu ru'i thugs sgrub bder gshegs 'dus pa dang pad+ma gsang ba'i thig le gang la'ang sbyar du rung ba'i/_zhi khro'i skong bshags kyi cho ga kun bzang khrus chab ",
-        "filenr": 7027
+        "filenr": 7027,
+        "alt_filename": "TZ63-HUNG-025"
     },
     {
         "category": "T02",
@@ -59900,7 +60132,8 @@
         "filename": "TDZ-Terdzo-MANGALAM-008",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MANGALAM-008",
         "displayName": "gsang chen snga 'gyur rdo rje theg pa'i gsung rab zab mo nye brgyud kyi chos sde rin chen gter mdzod chen po'i bzhugs byang dkar chag gsal bar bkod pa 'od gsal rdo rje snying po'i gru gzings ",
-        "filenr": 7045
+        "filenr": 7045,
+        "alt_filename": "TZ66-MANGALAM-008"
     },
     {
         "category": "TZ43",
@@ -59917,7 +60150,8 @@
         "filename": "TDZ-Terdzo-AA-014",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-014",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_bka' srung dregs pa pho mo'i sgrub thabs ",
-        "filenr": 7047
+        "filenr": 7047,
+        "alt_filename": "TZ62-AA-014"
     },
     {
         "category": "NY",
@@ -60763,7 +60997,8 @@
         "filename": "TDZ-Terdzo-OM-060",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-060",
         "displayName": "rgyal chen nang sgrub mdung dmar can rtsa sgrub rta sngon ma'i sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 7146
+        "filenr": 7146,
+        "alt_filename": "TZ61-OM-060"
     },
     {
         "category": "TZ22",
@@ -61057,7 +61292,8 @@
         "filename": "TDZ-Terdzo-OM-063",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-063",
         "displayName": "zhang blon rdo rje bdud 'dul gyi sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 7180
+        "filenr": 7180,
+        "alt_filename": "TZ61-OM-063"
     },
     {
         "category": "TZ7",
@@ -61497,7 +61733,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-018",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-018",
         "displayName": "rdo rje theg pa'i sngags kyi gso sbyong dang 'brel ba'i sgrub chen bya tshul 'don zin reg zig mthong bas khong chud ",
-        "filenr": 7233
+        "filenr": 7233,
+        "alt_filename": "TZ67-SIDDHAM-018"
     },
     {
         "category": "K10",
@@ -61761,7 +61998,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-032",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-032",
         "displayName": "klong chen snying gi thig le lasaH_skong bshags rdo rje'i thol glu ",
-        "filenr": 7264
+        "filenr": 7264,
+        "alt_filename": "TZ67-SIDDHAM-032"
     },
     {
         "category": "TZ5",
@@ -61929,7 +62167,8 @@
         "filename": "TDZ-Terdzo-AA-061",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-061",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_gsang skor bla ma rnams kyi rdo rje'i glu ",
-        "filenr": 7284
+        "filenr": 7284,
+        "alt_filename": "TZ62-AA-061"
     },
     {
         "category": "T02",
@@ -61946,7 +62185,8 @@
         "filename": "TDZ-Terdzo-LA-050",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-050",
         "displayName": "rta mgrin nag po yang gsang thugs kyi sgrub pa'i lo rgyus zab mo ",
-        "filenr": 7286
+        "filenr": 7286,
+        "alt_filename": "TZ26-LA-050"
     },
     {
         "category": "TZ48",
@@ -62087,7 +62327,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-025",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-025",
         "displayName": "rtsa gsum bskang ba ",
-        "filenr": 7302
+        "filenr": 7302,
+        "alt_filename": "TZ67-SIDDHAM-025"
     },
     {
         "category": "T02",
@@ -62594,7 +62835,8 @@
         "filename": "TDZ-Terdzo-AA-059",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-059",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_gsang skor bla ma rig 'dzin yongs rdzogs dbang chog ",
-        "filenr": 7361
+        "filenr": 7361,
+        "alt_filename": "TZ62-AA-059"
     },
     {
         "category": "T02",
@@ -62805,7 +63047,8 @@
         "filename": "TDZ-Terdzo-HUNG-032",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-032",
         "displayName": "bla ma'i thugs sgrub pad+ma gsang ba'i thig le las/_rtsa ba'i dbang bskur rgyas pa'i cho ga bklag chog tu bsdebs pa ye shes chu rgyun ",
-        "filenr": 7386
+        "filenr": 7386,
+        "alt_filename": "TZ63-HUNG-032"
     },
     {
         "category": "T02",
@@ -63028,7 +63271,8 @@
         "filename": "TDZ-Terdzo-AE-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AE-002",
         "displayName": "mnyam med rje btsun sgam po pa rin po che'i zhal gdams gsang lam bla ma sgrub pa'i man ngag gi sgrub thabs phrin las kyi byang bu bklag chog tu bkod pa nyi ma'i snying po ye shes rgyan gyi bla bre ",
-        "filenr": 7413
+        "filenr": 7413,
+        "alt_filename": "TZ68-AE-002"
     },
     {
         "category": "T02",
@@ -63392,7 +63636,8 @@
         "filename": "TDZ-Terdzo-OM-030",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-030",
         "displayName": "phag mo dbu bcad ma'i sgrub byin ",
-        "filenr": 7456
+        "filenr": 7456,
+        "alt_filename": "TZ61-OM-030"
     },
     {
         "category": "T02",
@@ -63576,7 +63821,8 @@
         "filename": "TDZ-Terdzo-AA-016",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-016",
         "displayName": "bai ro tsa na'i thugs thig rdzogs chen sde gsum gter srung gtor 'bul rgyun khyer ",
-        "filenr": 7477
+        "filenr": 7477,
+        "alt_filename": "TZ62-AA-016"
     },
     {
         "category": "NK082",
@@ -63645,7 +63891,8 @@
         "filename": "TDZ-Terdzo-HAA-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HAA-001",
         "displayName": "rje btsun bla ma thams cad mkhyen cing gzigs pa 'jam dbyangs mkhyen brtse'i dbang po kun dga' bstan pa'i rgyal mtshan dpal bzang po'i rnam thar mdor bsdus pa ngo mtshar u dum+ba ra'i dga' tshal ",
-        "filenr": 7485
+        "filenr": 7485,
+        "alt_filename": "TZ65-HAA-001"
     },
     {
         "category": "NG",
@@ -64319,7 +64566,8 @@
         "filename": "TDZ-Terdzo-OM-010",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-010",
         "displayName": "drag dmar bka' ma 'o bran lugs sgrub thabs dang dbang chog ",
-        "filenr": 7565
+        "filenr": 7565,
+        "alt_filename": "TZ61-OM-010"
     },
     {
         "category": "TZ61",
@@ -64327,7 +64575,8 @@
         "filename": "TDZ-Terdzo-OM-056",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-056",
         "displayName": "zhing skyong dbang mo dur khrod bdag mo'i sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 7566
+        "filenr": 7566,
+        "alt_filename": "TZ61-OM-056"
     },
     {
         "category": "T02",
@@ -64528,7 +64777,8 @@
         "filename": "TDZ-Terdzo-AA-034",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-034",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_bod kyi rig 'dzin rnams kyi rdo rje'i glu ",
-        "filenr": 7590
+        "filenr": 7590,
+        "alt_filename": "TZ62-AA-034"
     },
     {
         "category": "T14",
@@ -64879,7 +65129,8 @@
         "filename": "TDZ-Terdzo-LA-019",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-019",
         "displayName": "rta phag yid bzhin nor bu las:_las byang tshig don dbyer med ",
-        "filenr": 7631
+        "filenr": 7631,
+        "alt_filename": "TZ26-LA-019"
     },
     {
         "category": "T04",
@@ -64952,7 +65203,8 @@
         "filename": "TDZ-Terdzo-LA-007",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-007",
         "displayName": "rta mgrin gsang ba 'dus pa'i dbang rgyas pa mchog dbang gud sbas dang sbrel nas bskur ba'i cho ga dbang chen gsang ba'i srog tig ",
-        "filenr": 7640
+        "filenr": 7640,
+        "alt_filename": "TZ26-LA-007"
     },
     {
         "category": "T02",
@@ -65204,7 +65456,8 @@
         "filename": "TDZ-Terdzo-LA-024",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-024",
         "displayName": "yi dam dgongs 'dus rta mchog rol pa las:_yi ge drug pa'i las byang gsang ba gcig 'grub ces Ar+ya sA le'i thugs dam dril ba'i snying chos ",
-        "filenr": 7670
+        "filenr": 7670,
+        "alt_filename": "TZ26-LA-024"
     },
     {
         "category": "NK037",
@@ -65849,7 +66102,8 @@
         "filename": "TDZ-Terdzo-LA-030",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-030",
         "displayName": "snyan brgyud rta mgrin skong ba dngos grub char 'beb ",
-        "filenr": 7747
+        "filenr": 7747,
+        "alt_filename": "TZ26-LA-030"
     },
     {
         "category": "NY",
@@ -65926,7 +66180,8 @@
         "filename": "TDZ-Terdzo-AA-012",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-012",
         "displayName": "dam chos rdzogs pa chen po sde gsum gyi bka' srung ye shes pa'i gsol mchod phrin las kun khyab bkra shis char 'beb ",
-        "filenr": 7756
+        "filenr": 7756,
+        "alt_filename": "TZ62-AA-012"
     },
     {
         "category": "TZ32",
@@ -65959,7 +66214,8 @@
         "filename": "TDZ-Terdzo-AA-077",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-077",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_gsang skor khrid kyi rim pa ",
-        "filenr": 7760
+        "filenr": 7760,
+        "alt_filename": "TZ62-AA-077"
     },
     {
         "category": "K08",
@@ -66248,7 +66504,8 @@
         "filename": "TDZ-Terdzo-HUNG-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-001",
         "displayName": "'od gsal sprul pa'i rdo rje'i dgongs gter rtsa gsum 'od gsal snying tig ",
-        "filenr": 7794
+        "filenr": 7794,
+        "alt_filename": "TZ63-HUNG-001"
     },
     {
         "category": "NY",
@@ -66341,7 +66598,8 @@
         "filename": "TDZ-Terdzo-AA-084",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-084",
         "displayName": "mchog gter rdzogs chen sde gsum gyi/_/bka' gter srung ma'i gtor ma'i dpe'u ris ",
-        "filenr": 7805
+        "filenr": 7805,
+        "alt_filename": "TZ62-AA-084"
     },
     {
         "category": "TZ51",
@@ -66499,7 +66757,8 @@
         "filename": "TDZ-Terdzo-AA-046",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-046",
         "displayName": "nang skor yi dam khro bo'i bzlas dmigs sgrub thabs nang gi dngos bstan ltar bsdus pa zur phyung ",
-        "filenr": 7824
+        "filenr": 7824,
+        "alt_filename": "TZ62-AA-046"
     },
     {
         "category": "TZ20",
@@ -66647,7 +66906,8 @@
         "filename": "TDZ-Terdzo-HUNG-031",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-031",
         "displayName": "pad+ma gsang ba'i thig le las/_phrin las rnam pa bzhi myur du sgrub pa'i sreg blug gi cho ga sna tshogs nor bu'i bang mdzod ",
-        "filenr": 7841
+        "filenr": 7841,
+        "alt_filename": "TZ63-HUNG-031"
     },
     {
         "category": "T04",
@@ -67440,7 +67700,8 @@
         "filename": "TDZ-Terdzo-OM-048",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-048",
         "displayName": "sngags srung e ka dzA Ti'i sgrub thabs rjes gnang dang bcas pa kun mkhyen chen po'i phyag bzhes snyan brgyud bzhin bshad pa",
-        "filenr": 7934
+        "filenr": 7934,
+        "alt_filename": "TZ61-OM-048"
     },
     {
         "category": "T02",
@@ -67558,7 +67819,8 @@
         "filename": "TDZ-Terdzo-LA-029",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-029",
         "displayName": "snyan brgyud rta mchog rol pa'i snying thig gi phrin las dang dbang bskur bklag chog tu bsdebs pa rta mchog dgyes pa'i bzhad sgra ",
-        "filenr": 7948
+        "filenr": 7948,
+        "alt_filename": "TZ26-LA-029"
     },
     {
         "category": "T02",
@@ -67860,7 +68122,8 @@
         "filename": "TDZ-Terdzo-OM-040",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-040",
         "displayName": "ye shes kyi mgon po legs ldan nag po'i sgrub thabs rjes gnang dang bcas pa",
-        "filenr": 7983
+        "filenr": 7983,
+        "alt_filename": "TZ61-OM-040"
     },
     {
         "category": "TZ4",
@@ -68018,7 +68281,8 @@
         "filename": "TDZ-Terdzo-HI-032",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HI-032",
         "displayName": "bla ma dgongs pa 'dus pa las:_pusti'i lung dbang bskur ba'i cho ga ",
-        "filenr": 8002
+        "filenr": 8002,
+        "alt_filename": "TZ59-HI-032"
     },
     {
         "category": "K12",
@@ -68489,7 +68753,8 @@
         "filename": "TDZ-Terdzo-AA-078",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-078",
         "displayName": "rdzogs pa chen po sde gsum las:_bka' srung ye shes pa'i sgrub thabs ",
-        "filenr": 8057
+        "filenr": 8057,
+        "alt_filename": "TZ62-AA-078"
     },
     {
         "category": "K06",
@@ -68780,7 +69045,8 @@
         "filename": "TDZ-Terdzo-AA-066",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-066",
         "displayName": "dam chos rdzogs pa chen po sde gsum las/_gsang skor yi dam bskyed rim dang byang bu khrigs su bsdebs pa ",
-        "filenr": 8091
+        "filenr": 8091,
+        "alt_filename": "TZ62-AA-066"
     },
     {
         "category": "NY",
@@ -69333,7 +69599,8 @@
         "filename": "TDZ-Terdzo-AA-074",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-074",
         "displayName": "rdzogs pa chen po sde gsum las:_shrI siM ha'i man ngag gnad gdams ",
-        "filenr": 8157
+        "filenr": 8157,
+        "alt_filename": "TZ62-AA-074"
     },
     {
         "category": "TZ44",
@@ -69741,7 +70008,8 @@
         "filename": "TDZ-Terdzo-OM-064",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-064",
         "displayName": "gra mngon zhang blon nang sgrub mngon rtog gab dkrugs nag 'gros su bris pa",
-        "filenr": 8205
+        "filenr": 8205,
+        "alt_filename": "TZ61-OM-064"
     },
     {
         "category": "T02",
@@ -70543,7 +70811,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-010",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-010",
         "displayName": "bka' srung gsol byang ",
-        "filenr": 8300
+        "filenr": 8300,
+        "alt_filename": "TZ67-SIDDHAM-010"
     },
     {
         "category": "NG",
@@ -70594,7 +70863,8 @@
         "filename": "TDZ-Terdzo-OM-006",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-006",
         "displayName": "nyang gter drag dmar bde 'dus kyi sgrub thabs dang dbang bka' rdo rje spyi blugs",
-        "filenr": 8306
+        "filenr": 8306,
+        "alt_filename": "TZ61-OM-006"
     },
     {
         "category": "T02",
@@ -70775,7 +71045,8 @@
         "filename": "TDZ-Terdzo-MANGALAM-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MANGALAM-001",
         "displayName": "rin chen gter mdzod chen mo spar du ji ltar bsgrubs pa'i tshul dpag bsam gsar pa'i 'khri shing ",
-        "filenr": 8328
+        "filenr": 8328,
+        "alt_filename": "TZ66-MANGALAM-001"
     },
     {
         "category": "TZ60",
@@ -70958,7 +71229,8 @@
         "filename": "TDZ-Terdzo-LA-043",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-043",
         "displayName": "rta mgrin yang phyung nag po'i srog dbang bskur ba'i cho ga gnam lcags 'bar ba'i ral gri ",
-        "filenr": 8349
+        "filenr": 8349,
+        "alt_filename": "TZ26-LA-043"
     },
     {
         "category": "T02",
@@ -71231,7 +71503,8 @@
         "filename": "TDZ-Terdzo-OM-036",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-036",
         "displayName": "rnam 'joms ba ri lugs kyi sgrub thabs dang khrus chog ",
-        "filenr": 8381
+        "filenr": 8381,
+        "alt_filename": "TZ61-OM-036"
     },
     {
         "category": "TZ5",
@@ -71257,7 +71530,8 @@
         "filename": "TDZ-Terdzo-LA-003",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-003",
         "displayName": "rta mgrin dregs pa dbang sdud kyi sgrub thabs ",
-        "filenr": 8384
+        "filenr": 8384,
+        "alt_filename": "TZ26-LA-003"
     },
     {
         "category": "TZ48",
@@ -71349,7 +71623,8 @@
         "filename": "TDZ-Terdzo-AA-013",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-013",
         "displayName": "rdzogs pa chen po sde gsum gyi/_bka' gter srung ma'i zur rgyan ",
-        "filenr": 8395
+        "filenr": 8395,
+        "alt_filename": "TZ62-AA-013"
     },
     {
         "category": "T02",
@@ -71849,7 +72124,8 @@
         "filename": "TDZ-Terdzo-AA-020",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-020",
         "displayName": "sde gsum smon lam grub gnyis rin chen gru char ",
-        "filenr": 8455
+        "filenr": 8455,
+        "alt_filename": "TZ62-AA-020"
     },
     {
         "category": "T02",
@@ -71883,7 +72159,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-003",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-003",
         "displayName": "sman mchod cung zad ",
-        "filenr": 8459
+        "filenr": 8459,
+        "alt_filename": "TZ67-SIDDHAM-003"
     },
     {
         "category": "TZ30",
@@ -72059,7 +72336,8 @@
         "filename": "TDZ-Terdzo-HUNG-016",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-016",
         "displayName": "pad+ma gsang ba'i thig le las:_smin byed dbang gi byang bu ",
-        "filenr": 8480
+        "filenr": 8480,
+        "alt_filename": "TZ63-HUNG-016"
     },
     {
         "category": "NY",
@@ -72328,7 +72606,8 @@
         "filename": "TDZ-Terdzo-AA-058",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-058",
         "displayName": "gsang skor bla ma'i skyed byang bsdus pa dang mtshan sngags ",
-        "filenr": 8511
+        "filenr": 8511,
+        "alt_filename": "TZ62-AA-058"
     },
     {
         "category": "T02",
@@ -72352,7 +72631,8 @@
         "filename": "TDZ-Terdzo-HUNG-022",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-022",
         "displayName": "dpal ldan stag lung pa'i zab chos gter gyi srung ma badzra ka sha'i mchod sprin ",
-        "filenr": 8514
+        "filenr": 8514,
+        "alt_filename": "TZ63-HUNG-022"
     },
     {
         "category": "NY",
@@ -72436,7 +72716,8 @@
         "filename": "TDZ-Terdzo-AA-006",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-006",
         "displayName": "rdzogs chen sde gsum bka' gter spyi'i brgyud 'debs ",
-        "filenr": 8524
+        "filenr": 8524,
+        "alt_filename": "TZ62-AA-006"
     },
     {
         "category": "TZ50",
@@ -72614,7 +72895,8 @@
         "filename": "TDZ-Terdzo-LA-040",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-040",
         "displayName": "byang sems zla ba rgyal mtshan lugs kyi rta mgrin nag po'i sgrub thabs rjes gnang dang bcas pa bgegs 'dul gnam lcags ral gri ",
-        "filenr": 8545
+        "filenr": 8545,
+        "alt_filename": "TZ26-LA-040"
     },
     {
         "category": "TZ42",
@@ -72891,7 +73173,8 @@
         "filename": "TDZ-Terdzo-HAA-008",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HAA-008",
         "displayName": "'du shes gsum ldan spong ba pa'i gzugs brnyan pad+ma gar gyi dbang phyug phrin las 'gro 'dul rtsal gyi rtogs pa brjod pa'i dum bu smig rgyu'i bdud rtsi ",
-        "filenr": 8577
+        "filenr": 8577,
+        "alt_filename": "TZ65-HAA-008"
     },
     {
         "category": "T02",
@@ -73293,7 +73576,8 @@
         "filename": "TDZ-Terdzo-SO-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SO-001",
         "displayName": "bla ma'i thugs sgrub rdo rje drag rtsal las:_zhal gdams lam rim ye shes snying po ",
-        "filenr": 8623
+        "filenr": 8623,
+        "alt_filename": "TZ64-SO-001"
     },
     {
         "category": "NY",
@@ -73475,7 +73759,8 @@
         "filename": "TDZ-Terdzo-OM-029",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-029",
         "displayName": "rdo rje phag mo don grub ma'i sgrub thabs dang byin rlabs ",
-        "filenr": 8644
+        "filenr": 8644,
+        "alt_filename": "TZ61-OM-029"
     },
     {
         "category": "TZ54",
@@ -73694,7 +73979,8 @@
         "filename": "TDZ-Terdzo-OM-013",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-013",
         "displayName": "bla ma longs sku'i rdzong chen tshe'i sgrub thabs dang tshe dbang ",
-        "filenr": 8670
+        "filenr": 8670,
+        "alt_filename": "TZ61-OM-013"
     },
     {
         "category": "NK040",
@@ -73709,7 +73995,8 @@
         "filename": "TDZ-Terdzo-OM-008",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-008",
         "displayName": "'bring po me'i spu gri'i sgrub thabs dang dbang chog ",
-        "filenr": 8672
+        "filenr": 8672,
+        "alt_filename": "TZ61-OM-008"
     },
     {
         "category": "NY",
@@ -74011,7 +74298,8 @@
         "filename": "TDZ-Terdzo-LA-037",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-037",
         "displayName": "'chi med dbang gi tshe sgrub kyi phrin las bdud rtsi'i bum bzang",
-        "filenr": 8708
+        "filenr": 8708,
+        "alt_filename": "TZ26-LA-037"
     },
     {
         "category": "NG",
@@ -74311,7 +74599,8 @@
         "filename": "TDZ-Terdzo-HUNG-019",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-019",
         "displayName": "pad+ma gsang ba'i thig le las:_'chi med tshe yi phrin las ",
-        "filenr": 8745
+        "filenr": 8745,
+        "alt_filename": "TZ63-HUNG-019"
     },
     {
         "category": "K12",
@@ -74398,7 +74687,8 @@
         "filename": "TDZ-Terdzo-OM-067",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-067",
         "displayName": "sgrub thabs 'dod bum mjug gi sbyar byang bcas ",
-        "filenr": 8755
+        "filenr": 8755,
+        "alt_filename": "TZ61-OM-067"
     },
     {
         "category": "T02",
@@ -74433,7 +74723,8 @@
         "filename": "TDZ-Terdzo-AA-067",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-067",
         "displayName": "sman mchod ",
-        "filenr": 8759
+        "filenr": 8759,
+        "alt_filename": "TZ62-AA-067"
     },
     {
         "category": "NK106",
@@ -74689,7 +74980,8 @@
         "filename": "TDZ-Terdzo-HUNG-035",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-035",
         "displayName": "'chi med rtsa gsum kun 'dus pad+ma gsang ba'i thig le'i bsnyen sgrub ji ltar bya ba'i tshul cung zad bkod pa rim gnyis grub pa'i shing rta ",
-        "filenr": 8789
+        "filenr": 8789,
+        "alt_filename": "TZ63-HUNG-035"
     },
     {
         "category": "TZ45",
@@ -74962,7 +75254,8 @@
         "filename": "TDZ-Terdzo-HUNG-018",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-018",
         "displayName": "pad+ma gsang ba'i thig le las/_brgyud pa'i gsol 'debs bdud rtsi'i zil dngar ",
-        "filenr": 8821
+        "filenr": 8821,
+        "alt_filename": "TZ63-HUNG-018"
     },
     {
         "category": "T11",
@@ -75351,7 +75644,8 @@
         "filename": "TDZ-Terdzo-LA-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-001",
         "displayName": "dpal rta mgrin dpa' bo gcig pa'i man ngag gnam lcags me'i 'khor lo",
-        "filenr": 8866
+        "filenr": 8866,
+        "alt_filename": "TZ26-LA-001"
     },
     {
         "category": "NY",
@@ -75557,7 +75851,8 @@
         "filename": "TDZ-Terdzo-MANGALAM-004",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MANGALAM-004",
         "displayName": "rin chen gter mdzod chen po spar du bskrun pa'i rtogs brjod 'jig rten gsum khyab lha yi rnga sgra ",
-        "filenr": 8890
+        "filenr": 8890,
+        "alt_filename": "TZ66-MANGALAM-004"
     },
     {
         "category": "K10",
@@ -75598,7 +75893,8 @@
         "filename": "TDZ-Terdzo-AA-095",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-095",
         "displayName": "sde gsum gter gyi srung ma'i bka' gtad rnam gsum srog gi thig le ",
-        "filenr": 8895
+        "filenr": 8895,
+        "alt_filename": "TZ62-AA-095"
     },
     {
         "category": "TZ29",
@@ -75966,7 +76262,8 @@
         "filename": "TDZ-Terdzo-LA-008",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-008",
         "displayName": "rta mgrin gsang ba 'dus pa'i dbang bskur bsdus pa gtor ma la brten pa'i byin rlabs kyi cho ga dbang chen thugs kyi snying po ",
-        "filenr": 8938
+        "filenr": 8938,
+        "alt_filename": "TZ26-LA-008"
     },
     {
         "category": "T02",
@@ -76241,7 +76538,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-006",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-006",
         "displayName": "bla ma dgongs pa 'dus pa'i brgyud 'debs dbang byin char 'beb ",
-        "filenr": 8970
+        "filenr": 8970,
+        "alt_filename": "TZ67-SIDDHAM-006"
     },
     {
         "category": "T02",
@@ -76596,7 +76894,8 @@
         "filename": "TDZ-Terdzo-YAA-001",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-YAA-001",
         "displayName": "rin chen gter mdzod chen po'i smin grol 'bogs pa'i skabs kyi phyag len nyer mkho'i zur 'debs mtshams sbyor rigs bcas nyung gsal du bkod pa 'dod rgu 'jo ba'i gter bum pod bzhi pa ",
-        "filenr": 9012
+        "filenr": 9012,
+        "alt_filename": "TZ71-YAA-001"
     },
     {
         "category": "K10",
@@ -77624,7 +77923,8 @@
         "filename": "TDZ-Terdzo-HUNG-026",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-026",
         "displayName": "rigs drug gnas sbyong gi sreg gtor sbyong ba'i dmigs bzlas zur byang ",
-        "filenr": 9133
+        "filenr": 9133,
+        "alt_filename": "TZ63-HUNG-026"
     },
     {
         "category": "TZ46",
@@ -77942,7 +78242,8 @@
         "filename": "TDZ-Terdzo-HUNG-033",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-033",
         "displayName": "pad+ma gsang ba'i thig le las/_thun mong tshe yi dbang bskur 'chi med grub pa'i bcud len ",
-        "filenr": 9170
+        "filenr": 9170,
+        "alt_filename": "TZ63-HUNG-033"
     },
     {
         "category": "T11",
@@ -78043,7 +78344,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-013",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-013",
         "displayName": "gshin bsngo ",
-        "filenr": 9182
+        "filenr": 9182,
+        "alt_filename": "TZ67-SIDDHAM-013"
     },
     {
         "category": "NK032",
@@ -78058,7 +78360,8 @@
         "filename": "TDZ-Terdzo-LA-047",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-047",
         "displayName": "dpal chen rta mgrin nag po'i sgrub thabs rgyun khyer de nyid snying po ",
-        "filenr": 9184
+        "filenr": 9184,
+        "alt_filename": "TZ26-LA-047"
     },
     {
         "category": "TZ45",
@@ -78373,7 +78676,8 @@
         "filename": "TDZ-Terdzo-AA-090",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-090",
         "displayName": "nang skor klong sde'i mkha' 'gro'i sgrub rten nang dkyil lus la bkod pa'i tsakra'i dpe'u ris/",
-        "filenr": 9221
+        "filenr": 9221,
+        "alt_filename": "TZ62-AA-090"
     },
     {
         "category": "T02",
@@ -78416,7 +78720,8 @@
         "filename": "TDZ-Terdzo-LA-014",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-014",
         "displayName": "grol tig dgongs pa rang grol las/_rta mgrin dregs pa kun 'dul 'don cha zur bkol ",
-        "filenr": 9226
+        "filenr": 9226,
+        "alt_filename": "TZ26-LA-014"
     },
     {
         "category": "TZ62",
@@ -78424,7 +78729,8 @@
         "filename": "TDZ-Terdzo-AA-038",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-038",
         "displayName": "rdzogs chen ston pa bcu gsum gyi dbang bskur zur rgyan",
-        "filenr": 9227
+        "filenr": 9227,
+        "alt_filename": "TZ62-AA-038"
     },
     {
         "category": "T02",
@@ -78582,7 +78888,8 @@
         "filename": "TDZ-Terdzo-HUNG-028",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-028",
         "displayName": "pad+ma gsang thig gnas 'dren skabs bdag 'jug gi dbang nang nang gses sku gsung thugs dbang sogs sbyor dgos pa'i zur byang dkyus bkod ",
-        "filenr": 9245
+        "filenr": 9245,
+        "alt_filename": "TZ63-HUNG-028"
     },
     {
         "category": "T02",
@@ -78762,7 +79069,8 @@
         "filename": "TDZ-Terdzo-AA-071",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-071",
         "displayName": "zlog byang skabs kyi nyer mkho'i 'gugs bsgral stob pa'i zur byang ",
-        "filenr": 9266
+        "filenr": 9266,
+        "alt_filename": "TZ62-AA-071"
     },
     {
         "category": "K02",
@@ -79070,7 +79378,8 @@
         "filename": "TDZ-Terdzo-LA-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-002",
         "displayName": "rta mgrin dpa' bo gcig pa gnam lcags me'i 'khor lo'i sgrub thabs rjes gnang dang bcas pa gdon bgegs kun 'joms ",
-        "filenr": 9303
+        "filenr": 9303,
+        "alt_filename": "TZ26-LA-002"
     },
     {
         "category": "T02",
@@ -79153,7 +79462,8 @@
         "filename": "TDZ-Terdzo-OM-061",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-061",
         "displayName": "rnam sras drag po rta sngon ma'i sgrub thabs ",
-        "filenr": 9313
+        "filenr": 9313,
+        "alt_filename": "TZ61-OM-061"
     },
     {
         "category": "K12",
@@ -79677,7 +79987,8 @@
         "filename": "TDZ-Terdzo-LA-038",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-038",
         "displayName": "gsang thig snying po'i skor las byung ba'i 'chi med dbang gi tshe sgrub kyi dbang bskur ba'i rim pa rin chen gter bum",
-        "filenr": 9375
+        "filenr": 9375,
+        "alt_filename": "TZ26-LA-038"
     },
     {
         "category": "TZ28",
@@ -80170,7 +80481,8 @@
         "filename": "TDZ-Terdzo-LA-018",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-018",
         "displayName": "zab chos rta phag yid bzhin nor bu'i brgyud pa'i gsol 'debs zung 'jug rol mo ",
-        "filenr": 9434
+        "filenr": 9434,
+        "alt_filename": "TZ26-LA-018"
     },
     {
         "category": "TZ15",
@@ -80248,7 +80560,8 @@
         "filename": "TDZ-Terdzo-HUNG-004",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-HUNG-004",
         "displayName": "rtsa gsum 'od gsal snying tig las/_nang sgrub pad+ma'i drwa ba thugs rje chen po'i rgyun khyer ",
-        "filenr": 9443
+        "filenr": 9443,
+        "alt_filename": "TZ63-HUNG-004"
     },
     {
         "category": "NY",
@@ -80445,7 +80758,8 @@
         "filename": "TDZ-Terdzo-AA-060",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-060",
         "displayName": "sangs gling bka' thang gi shrI siM ha'i zhal gdams kyi dris lan nyung ngu rnam gsal ",
-        "filenr": 9466
+        "filenr": 9466,
+        "alt_filename": "TZ62-AA-060"
     },
     {
         "category": "T02",
@@ -80796,7 +81110,8 @@
         "filename": "TDZ-Terdzo-LA-016",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-016",
         "displayName": "grol tig dgongs pa rang grol las/_dbang chen dregs pa kun 'dul gyi smin byed gsang ba gcig grub mtshams sbyor gyis brgyan pa ",
-        "filenr": 9507
+        "filenr": 9507,
+        "alt_filename": "TZ26-LA-016"
     },
     {
         "category": "NY",
@@ -80826,7 +81141,8 @@
         "filename": "TDZ-Terdzo-MANGALAM-009",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MANGALAM-009",
         "displayName": "kha skong nyer mkho 'thor bu mang tsam gsar du bsdebs pa'i mtshan byang gsal 'khod rab gsal me long ",
-        "filenr": 9511
+        "filenr": 9511,
+        "alt_filename": "TZ66-MANGALAM-009"
     },
     {
         "category": "T02",
@@ -80959,7 +81275,8 @@
         "filename": "TDZ-Terdzo-LA-049",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-049",
         "displayName": "rta mgrin nag po lcags kyi ral pa can gyi gsol 'debs gter ston gyis mdzad pa ",
-        "filenr": 9527
+        "filenr": 9527,
+        "alt_filename": "TZ26-LA-049"
     },
     {
         "category": "TZ21",
@@ -81515,7 +81832,8 @@
         "filename": "TDZ-Terdzo-AA-081",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-081",
         "displayName": "gshin po rjes 'dzin cho ga ",
-        "filenr": 9592
+        "filenr": 9592,
+        "alt_filename": "TZ62-AA-081"
     },
     {
         "category": "NG",
@@ -81530,7 +81848,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-031",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-031",
         "displayName": "spros pa'i tshe lhan thabs gter gzhung klong bshags sogs nas zur bkod ",
-        "filenr": 9594
+        "filenr": 9594,
+        "alt_filename": "TZ67-SIDDHAM-031"
     },
     {
         "category": "T02",
@@ -81989,7 +82308,8 @@
         "filename": "TDZ-Terdzo-OM-046",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-046",
         "displayName": "mgon po beng ma'i sgrub thabs bka' gter gnyis ldan gyi lugs su bkod pa",
-        "filenr": 9647
+        "filenr": 9647,
+        "alt_filename": "TZ61-OM-046"
     },
     {
         "category": "K12",
@@ -82696,7 +83016,8 @@
         "filename": "TDZ-Terdzo-OM-014",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-014",
         "displayName": "byang gter tshe sgrub lcags sdong ma'i sgrub thabs dang tshe dbang ",
-        "filenr": 9730
+        "filenr": 9730,
+        "alt_filename": "TZ61-OM-014"
     },
     {
         "category": "K12",
@@ -83201,7 +83522,8 @@
         "filename": "TDZ-Terdzo-LA-010",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-010",
         "displayName": "rta mgrin snying thig snying po don sbyor gyi phrin las byang bu khyer bder bsdus pa dbang chen dgyes pa'i sgra dbyangs ",
-        "filenr": 9790
+        "filenr": 9790,
+        "alt_filename": "TZ26-LA-010"
     },
     {
         "category": "NK012",
@@ -83349,7 +83671,8 @@
         "filename": "TDZ-Terdzo-AA-097",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-097",
         "displayName": "sems sde'i mkhas pa bco brgyad kyi glu rdor gling lta ba klong yangs dang bka' ma las btus nas phyung ba dang dbang zin lta bu rje chos blo'i phyag bris dngos las byung ba ",
-        "filenr": 9807
+        "filenr": 9807,
+        "alt_filename": "TZ62-AA-097"
     },
     {
         "category": "TZ5",
@@ -83375,7 +83698,8 @@
         "filename": "TDZ-Terdzo-OM-031",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-031",
         "displayName": "khros nag gi sgrub thabs dang byin rlabs ",
-        "filenr": 9810
+        "filenr": 9810,
+        "alt_filename": "TZ61-OM-031"
     },
     {
         "category": "NG",
@@ -84121,7 +84445,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-020",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-020",
         "displayName": "klong gsal zhi khro'i gsol 'debs gter gzhung ",
-        "filenr": 9897
+        "filenr": 9897,
+        "alt_filename": "TZ67-SIDDHAM-020"
     },
     {
         "category": "T02",
@@ -84154,7 +84479,8 @@
         "filename": "TDZ-Terdzo-OM-003",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-003",
         "displayName": "gsang 'dus thod phreng rtsal gyi sgos sgrub dang 'brel ba zlum po bzhi dbang ",
-        "filenr": 9901
+        "filenr": 9901,
+        "alt_filename": "TZ61-OM-003"
     },
     {
         "category": "TZ61",
@@ -84162,7 +84488,8 @@
         "filename": "TDZ-Terdzo-OM-051",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-OM-051",
         "displayName": "mkha' 'gro snying thig gi bka' srung ma mo srog sgrub ma'i sgrub thabs dbang dang bcas pa",
-        "filenr": 9902
+        "filenr": 9902,
+        "alt_filename": "TZ61-OM-051"
     },
     {
         "category": "K12",
@@ -84231,7 +84558,8 @@
         "filename": "TDZ-Terdzo-MANGALAM-002",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-MANGALAM-002",
         "displayName": "bde bar gshegs pa'i bstan pa'i yang snying rig 'dzin gyi sde snod snga 'gyur zab mo rin chen gter gyi mdzod chen po'i chos sde spar du bsgrubs pa'i rtogs brjod lha'i rnga bo che'i sgra dbyangs rgya mtsho'i sprin gyi bla bre ",
-        "filenr": 9910
+        "filenr": 9910,
+        "alt_filename": "TZ66-MANGALAM-002"
     },
     {
         "category": "NY",
@@ -85010,7 +85338,8 @@
         "filename": "TDZ-Terdzo-AA-028",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-028",
         "displayName": "rdzogs pa chen po sde gsum las:_phyi skor yi dam zhi ba'i sgrub pa ",
-        "filenr": 10001
+        "filenr": 10001,
+        "alt_filename": "TZ62-AA-028"
     },
     {
         "category": "K12",
@@ -85181,7 +85510,8 @@
         "filename": "TDZ-Terdzo-LA-032",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-LA-032",
         "displayName": "zab pa skor bdun las:_dbang chen rta mgrin yang phyung dmar po ",
-        "filenr": 10021
+        "filenr": 10021,
+        "alt_filename": "TZ26-LA-032"
     },
     {
         "category": "NY",
@@ -85513,7 +85843,8 @@
         "filename": "TDZ-Terdzo-SIDDHAM-008",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-SIDDHAM-008",
         "displayName": "dzapa? bskul bsdus pa dang dzapa? kyi sngags byang ",
-        "filenr": 10061
+        "filenr": 10061,
+        "alt_filename": "TZ67-SIDDHAM-008"
     },
     {
         "category": "TZ39",
@@ -85590,7 +85921,8 @@
         "filename": "TDZ-Terdzo-AA-089",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-089",
         "displayName": "nang skor khro bo'i bsnyen dmigs skabs thugs srog dang sngags phreng lug rgyud kyi dpe ris ",
-        "filenr": 10070
+        "filenr": 10070,
+        "alt_filename": "TZ62-AA-089"
     },
     {
         "category": "NY",
@@ -85840,7 +86172,8 @@
         "filename": "TDZ-Terdzo-AA-064",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-064",
         "displayName": "dam chos rdzogs pa chen po sde gsum las:_gsang skor yi dam zhi ba'i dbang bskur ",
-        "filenr": 10100
+        "filenr": 10100,
+        "alt_filename": "TZ62-AA-064"
     },
     {
         "category": "T02",
@@ -85991,7 +86324,8 @@
         "filename": "TDZ-Terdzo-AA-026",
         "link": "https://rtz.tsadra.org/index.php/Terdzo-AA-026",
         "displayName": "rdzogs pa chen po sde gsum las:_phyi skor bla ma'i sgrub dbang ",
-        "filenr": 10118
+        "filenr": 10118,
+        "alt_filename": "TZ62-AA-026"
     },
     {
         "category": "T02",
