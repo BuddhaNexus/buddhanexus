@@ -56,6 +56,7 @@ for d0 in old_files_dict_list:
                     new_files_dict_list.append(d1)
         else:
             d0["textname"] = true_name
+            # d0["filename"] = d0["category"] + "-" + true_name
             new_files_dict_list.append(d0)
     else:
         # it has to be textname not filename!!!!!!!!!!!!!!!!!
