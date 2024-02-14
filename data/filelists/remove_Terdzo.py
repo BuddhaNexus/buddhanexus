@@ -76,7 +76,7 @@ assert len(new_dedup_list) == len(new_files_dict_list)
 # make sure the final count of entries is less by the number of pairs
 assert len(new_files_dict_list) == len(old_files_dict_list) - len(terdzo_pairs)
 
-sorted(new_files_dict_list, key=lambda d: d["filename"])
+new_files_dict_list = sorted(new_files_dict_list, key=lambda d: d["filename"])
 for i, d0 in enumerate(new_files_dict_list):
     d0["filenr"] = i
     
