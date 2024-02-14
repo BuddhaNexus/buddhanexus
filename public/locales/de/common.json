@@ -46,9 +46,5 @@
     "genericErrorDescription": "Bitte kontaktieren Sie uns, wenn das Problem weiterhin besteht.",
     "loading": "Wird geladen...",
     "noResults": "Keine Ergebnisse gefunden."
-  },
-  "search": {
-    "pageTitle": "Suchergebnisse",
-    "placeholder": "Suche..."
   }
 }

@@ -16,7 +16,7 @@ import {
 } from "./GlobalSearchStyledMuiComponents";
 
 const GlobalSearchDesktop = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("search");
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,8 +42,7 @@ const GlobalSearchDesktop = () => {
     >
       <IconButton
         color="inherit"
-        // TODO: i18n
-        aria-label={isOpen ? "close search box" : "open search box"}
+        aria-label={isOpen ? t("closeSearch") : t("openSearch")}
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? (
@@ -58,14 +57,13 @@ const GlobalSearchDesktop = () => {
           <SearchBoxInput
             inputRef={inputRef}
             role="searchbox"
-            aria-label="Search"
-            placeholder={t("search.placeholder")}
+            aria-label={t("search")}
+            placeholder={t("inputPlaceholder")}
             variant="outlined"
             InputProps={{
               endAdornment: (
                 <IconButton
-                  // TODO: i18n
-                  aria-label="Run search"
+                  aria-label={t("runSearch")}
                   onClick={() =>
                     handleSearchAction({
                       searchTerm: inputRef.current?.value ?? "",

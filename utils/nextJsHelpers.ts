@@ -33,6 +33,7 @@ export const getI18NextStaticProps: (
     props: {
       ...(await serverSideTranslations(locale ?? "en", [
         "common",
+        "search",
         ...extraNamespaces,
       ])),
     },

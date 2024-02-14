@@ -46,9 +46,5 @@
     "genericErrorDescription": "Please contact us if the issue persists.",
     "loading": "Loading...",
     "noResults": "No results found."
-  },
-  "search": {
-    "pageTitle": "Search Results",
-    "placeholder": "Search..."
   }
 }

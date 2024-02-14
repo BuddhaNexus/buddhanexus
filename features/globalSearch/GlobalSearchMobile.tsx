@@ -20,7 +20,7 @@ import {
 
 const GlobalSearchMobile = () => {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t } = useTranslation("search");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isHomePage = router.asPath === "/";
@@ -76,14 +76,13 @@ const GlobalSearchMobile = () => {
             <SearchBoxInput
               inputRef={inputRef}
               role="searchbox"
-              aria-label="Search"
-              placeholder={t("search.placeholder")}
+              aria-label={t("search")}
+              placeholder={t("inputPlaceholder")}
               variant="outlined"
               InputProps={{
                 startAdornment: (
                   <IconButton
-                    // TODO: i18n
-                    aria-label="Run search"
+                    aria-label={t("runSearch")}
                     onClick={() =>
                       handleSearchAction({
                         searchTerm: inputRef.current?.value ?? "",
@@ -95,8 +94,7 @@ const GlobalSearchMobile = () => {
                 ),
                 endAdornment: !isEmpty && (
                   <IconButton
-                    // TODO: i18n
-                    aria-label="Clear search field"
+                    aria-label={t("clearSearch")}
                     onClick={handleClear}
                   >
                     <CloseIcon fontSize="inherit" />

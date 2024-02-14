@@ -36,7 +36,7 @@
       "selector": "Sortiermethode",
       "position": "Standard – Position im Anfragetext",
       "quoted-text": "Position in passenden Texten",
-      "length2": "Länge des übereinstimmenden Zeichens (>)",
+      "length2": "Länge des übereinstimmenden Zeichens (>)"
     },
     "wylie": "Wylie",
     "unicode": "Unicode",

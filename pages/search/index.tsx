@@ -18,6 +18,7 @@ import {
   SearchBoxInput,
   SearchBoxWrapper,
 } from "features/globalSearch/GlobalSearchStyledMuiComponents";
+import NoSearchResultsFound from "features/globalSearch/NoSearchResultsFound";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import { DbApi } from "utils/api/dbApi";
 import { type SearchPageResults } from "utils/api/search";
@@ -32,11 +33,9 @@ function chunkArray(array: SearchPageResults, chunkSize: number) {
 }
 
 export default function SearchPage() {
-  // IN DEVELOPMENT
-  const { t } = useTranslation();
+  const { t } = useTranslation(["search", "common"]);
   const { isReady } = useRouter();
 
-  // TODO: fix server error if no search term
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
   const { handleSearchAction, searchParam } = useGlobalSearch();
@@ -50,7 +49,6 @@ export default function SearchPage() {
     }
   }, [isReady, setSearchTerm, searchParam]);
 
-  // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
   const { data: rawData, isLoading } = useQuery<SearchPageResults>({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
       searchTerm: searchParam,
@@ -75,11 +73,11 @@ export default function SearchPage() {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
         <Typography variant="h2" component="h1" mb={1}>
-          {t("search.pageTitle")}
+          {t("pageTitle")}
         </Typography>
         <div>
           <CircularProgress
-            aria-label="loading"
+            aria-label={t("common:prompts.loading")}
             color="inherit"
             sx={{ flex: 1 }}
           />
@@ -95,19 +93,18 @@ export default function SearchPage() {
       isQueryResultsPage
     >
       <Typography variant="h2" component="h1" mb={1}>
-        {t("search.pageTitle")}
+        {t("pageTitle")}
       </Typography>
 
       <SearchBoxWrapper sx={{ mb: 5 }}>
-        {/* TODO: fix search OR add notification of search limitations (whole word only) */}
         <SearchBoxInput
-          placeholder="Enter search term"
+          placeholder={t("inputPlaceholder")}
           value={searchTerm ?? ""}
           variant="outlined"
           InputProps={{
             startAdornment: (
               <IconButton
-                aria-label="Run search"
+                aria-label={t("runSearch")}
                 onClick={() => handleSearchAction({ searchTerm })}
               >
                 <Search />
@@ -115,7 +112,7 @@ export default function SearchPage() {
             ),
             endAdornment: (
               <IconButton
-                aria-label="Clear search field"
+                aria-label={t("clearSearch")}
                 onClick={() => setSearchTerm("")}
               >
                 <Close />
@@ -134,9 +131,8 @@ export default function SearchPage() {
 
       {isLoading ? (
         <div>
-          {/* TODO: i18n */}
           <CircularProgress
-            aria-label="loading"
+            aria-label={t("common:prompts.loading")}
             color="inherit"
             sx={{ flex: 1 }}
           />
@@ -146,10 +142,7 @@ export default function SearchPage() {
           {data.length > 0 ? (
             <SearchResults data={data} />
           ) : (
-            <>
-              {/* TODO: i18n */}
-              <Typography>No results found. Try search for…</Typography>
-            </>
+            <NoSearchResultsFound />
           )}
         </>
       )}

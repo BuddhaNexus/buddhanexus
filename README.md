@@ -28,6 +28,23 @@ yarn openapi-ts
 
 `openapi-fetch`'s api client (instantiated in `utils/api/client.ts`) can then be used to fetch typed data ([see docs](https://openapi-ts.pages.dev/openapi-fetch/)).
 
+
+## I18n
+
+- Supported locales are defined in `next-i18next.config.js`.
+- Namespaces are defined in `types/i18next.d.ts`.
+
+### `tsx` pages
+
+- Namespace files (with localized content) are created in `public/locales/`
+- Namesspaces are imported with `getI18NextStaticProps` at page level.
+
+### `mdx` pages
+
+- Pages for each supported local are created in `content/pages` (or a dedicated content directory for nested routes eg. `news`). See: [MDX page i18n](#mdx-page-i18n-draft) for more.
+
+Note: the project uses the term `locale` to refer to the user's language and the term `language` to refer to database languages (Pali, Sanskrit, Chinese and Tibetan).
+
 ## MDX page i18n (Draft)
 
 Static pages built from mdx files are held in `/content/`. Each page has a dedicated directory containing localized mdx files for supported locals:
