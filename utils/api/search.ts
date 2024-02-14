@@ -57,6 +57,9 @@ export async function getGlobalSearchData({
   searchTerm,
   queryParams,
 }: SerachApiQuery): Promise<SearchPageResults> {
+  if (!searchTerm) {
+    return [];
+  }
   //  TODO: remove type casting once response model is added to api
   const { data } = await apiClient.POST("/search/", {
     body: {

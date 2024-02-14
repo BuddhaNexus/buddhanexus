@@ -46,6 +46,10 @@ export async function getSourceTextCollections(language: SourceLanguage) {
 export async function getSourceTextMenuData(
   language: SourceLanguage,
 ): Promise<DatabaseText[]> {
+  if (!language) {
+    return [];
+  }
+
   const { data } = await apiClient.GET("/menus/files/", {
     params: { query: { language } },
   });
@@ -73,6 +77,10 @@ export async function getSourceTextMenuData(
 export async function getCategoryMenuData(
   language: SourceLanguage,
 ): Promise<Map<string, CategoryMenuItem>> {
+  if (!language) {
+    return new Map();
+  }
+
   const { data } = await apiClient.GET("/menus/category/", {
     params: { query: { language } },
   });
