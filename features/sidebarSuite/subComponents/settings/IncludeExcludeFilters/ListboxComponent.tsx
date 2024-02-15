@@ -3,9 +3,8 @@ import { type ListChildComponentProps, VariableSizeList } from "react-window";
 import { Tooltip, Typography } from "@mui/material";
 
 import {
-  ListLabel,
-  ListLabelId,
-  ListLabelWapper,
+  ListItemLabel,
+  ListItemLabelWapper,
   RowItem,
 } from "./muiStyledComponents";
 
@@ -31,7 +30,8 @@ function useResetCache(data: any) {
 const LISTBOX_PADDING = 8; // px
 const maxLines = 3;
 const defaultItemHeight = 56;
-const lineHeight = 36;
+const lineHeight = 37;
+const charsPerLine = 30;
 
 const trimName = (name: string) => {
   return name.replaceAll(/^•\s/g, "");
@@ -40,7 +40,6 @@ const createMenuItemLable = (id: string, name: string) =>
   `${id}: ${trimName(name)}`;
 
 const getNumberOfLines = (lable: string) => {
-  const charsPerLine = 38;
   const lines = Math.ceil(lable.length / charsPerLine);
   return lines;
 };
@@ -56,28 +55,32 @@ const Rows = (props: ListChildComponentProps) => {
   const [dataSetProps, { name, id }] = dataSet;
 
   const lable = createMenuItemLable(id, name);
-  const lines = getNumberOfLines(lable);
+  const isTruncated = lable.length > charsPerLine * maxLines + 12;
 
   return (
     <RowItem inheretedstyles={inlineStyle} {...dataSetProps} component="li">
-      <ListLabelWapper>
+      <ListItemLabelWapper maxLines={maxLines}>
         <Tooltip
-          title={<Typography>{name}</Typography>}
-          disableHoverListener={lines < maxLines}
+          title={<Typography>{lable}</Typography>}
+          disableHoverListener={!isTruncated}
+          enterDelay={1500}
         >
-          <ListLabel>
-            <ListLabelId component="span">{id}:</ListLabelId> {trimName(name)}
-          </ListLabel>
+          <ListItemLabel>
+            <Typography fontWeight={600} component="span">
+              {id}:
+            </Typography>{" "}
+            {trimName(name)}
+          </ListItemLabel>
         </Tooltip>
-      </ListLabelWapper>
+      </ListItemLabelWapper>
     </RowItem>
   );
 };
 
 const getChildSize = (child: React.ReactNode) => {
   // @ts-expect-error type issue
-  const [itemProps] = child;
-  const { id, key: name } = itemProps;
+  const [, itemData] = child;
+  const { id, name } = itemData;
   const lines = getNumberOfLines(createMenuItemLable(id, name));
   const itemHeight = lines * lineHeight;
 
@@ -125,7 +128,7 @@ const ListboxComponent = React.forwardRef<
           outerElementType={OuterElementType}
           innerElementType="ul"
           itemSize={(index: number) => getChildSize(itemData[index] ?? 0)}
-          overscanCount={5}
+          overscanCount={20}
           itemCount={itemCount}
         >
           {Rows}
