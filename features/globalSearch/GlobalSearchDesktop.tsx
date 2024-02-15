@@ -16,7 +16,7 @@ import {
 } from "./GlobalSearchStyledMuiComponents";
 
 const GlobalSearchDesktop = () => {
-  const { t } = useTranslation("search");
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
