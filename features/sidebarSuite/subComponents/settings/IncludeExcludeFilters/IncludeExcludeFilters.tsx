@@ -87,7 +87,6 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
     texts,
     categories,
     limitsParam,
-    limitsValue,
     setLimitsParam,
   ]);
 
