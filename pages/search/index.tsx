@@ -33,7 +33,7 @@ function chunkArray(array: SearchPageResults, chunkSize: number) {
 }
 
 export default function SearchPage() {
-  const { t } = useTranslation(["search", "common"]);
+  const { t } = useTranslation();
   const { isReady } = useRouter();
 
   const { sourceLanguage, queryParams } = useDbQueryParams();
@@ -73,11 +73,11 @@ export default function SearchPage() {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
         <Typography variant="h2" component="h1" mb={1}>
-          {t("pageTitle")}
+          {t("search.pageTitle")}
         </Typography>
         <div>
           <CircularProgress
-            aria-label={t("common:prompts.loading")}
+            aria-label={t("prompts.loading")}
             color="inherit"
             sx={{ flex: 1 }}
           />
@@ -93,18 +93,18 @@ export default function SearchPage() {
       isQueryResultsPage
     >
       <Typography variant="h2" component="h1" mb={1}>
-        {t("pageTitle")}
+        {t("search.pageTitle")}
       </Typography>
 
       <SearchBoxWrapper sx={{ mb: 5 }}>
         <SearchBoxInput
-          placeholder={t("inputPlaceholder")}
+          placeholder={t("search.inputPlaceholder")}
           value={searchTerm ?? ""}
           variant="outlined"
           InputProps={{
             startAdornment: (
               <IconButton
-                aria-label={t("runSearch")}
+                aria-label={t("search.runSearch")}
                 onClick={() => handleSearchAction({ searchTerm })}
               >
                 <Search />
@@ -112,7 +112,7 @@ export default function SearchPage() {
             ),
             endAdornment: (
               <IconButton
-                aria-label={t("clearSearch")}
+                aria-label={t("search.clearSearch")}
                 onClick={() => setSearchTerm("")}
               >
                 <Close />
@@ -132,7 +132,7 @@ export default function SearchPage() {
       {isLoading ? (
         <div>
           <CircularProgress
-            aria-label={t("common:prompts.loading")}
+            aria-label={t("prompts.loading")}
             color="inherit"
             sx={{ flex: 1 }}
           />

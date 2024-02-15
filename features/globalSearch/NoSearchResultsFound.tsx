@@ -3,14 +3,14 @@ import { Cancel, CheckCircle } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 
 export default function NoSearchResultsFound() {
-  const { t } = useTranslation("search");
+  const { t } = useTranslation();
 
   return (
     <>
       <Typography variant="h4" component="h2" mb={2}>
-        {t("noResultsHeading")}
+        {t("search.noResultsHeading")}
       </Typography>
-      <Typography>{t("noResultsTip")}</Typography>
+      <Typography>{t("search.noResultsTip")}</Typography>
       <Box sx={{ mt: 2, ml: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
           <CheckCircle color="success" />

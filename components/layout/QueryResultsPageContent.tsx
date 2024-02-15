@@ -22,7 +22,7 @@ export const QueryResultsPageContent: FC<Props> = ({
   maxWidth,
   containerStyles,
 }) => {
-  const { t } = useTranslation("search");
+  const { t } = useTranslation();
   const { fileName } = useDbQueryParams();
 
   const lgWidth = useMaterialTheme().breakpoints.values.lg;
@@ -49,7 +49,7 @@ export const QueryResultsPageContent: FC<Props> = ({
       ) : (
         <main style={{ height: "100%" }}>
           <Typography component="h1" sx={visuallyHidden}>
-            {fileName ?? t("pageTitle")}
+            {fileName ?? t("search.pageTitle")}
           </Typography>
         </main>
       )}

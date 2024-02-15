@@ -1,4 +1,5 @@
 {
+  "NOTE": "FILE CURRENTLY UNUSED DUE TO HYDRATION ISSUE. CONTENTS MOVED TO ‘common.json’.",
   "pageTitle": "Search Results",
   "inputPlaceholder": "Enter exact search term (whole words only)",
   "search": "Search",

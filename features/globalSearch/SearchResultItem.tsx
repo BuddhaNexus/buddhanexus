@@ -39,8 +39,7 @@ export const SearchResultItem = ({ result }: Props) => {
 
   const [file] = segmentNumber.split(":");
   // TODO: intergrate with text view
-  // const path = `/db/${language}/${file}/text?selectedSegment=${segmentNumber}`;
-  const path = `/db/${language}/${file}/table`;
+  const path = `/db/${language}/${file}/text?selectedSegment=${segmentNumber}`;
 
   return (
     <SearchResultCard>

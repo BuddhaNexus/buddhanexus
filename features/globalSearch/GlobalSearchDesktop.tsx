@@ -42,7 +42,7 @@ const GlobalSearchDesktop = () => {
     >
       <IconButton
         color="inherit"
-        aria-label={isOpen ? t("closeSearch") : t("openSearch")}
+        aria-label={isOpen ? t("search.closeSearch") : t("search.openSearch")}
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? (
@@ -57,13 +57,13 @@ const GlobalSearchDesktop = () => {
           <SearchBoxInput
             inputRef={inputRef}
             role="searchbox"
-            aria-label={t("search")}
-            placeholder={t("inputPlaceholder")}
+            aria-label={t("search.search")}
+            placeholder={t("search.inputPlaceholder")}
             variant="outlined"
             InputProps={{
               endAdornment: (
                 <IconButton
-                  aria-label={t("runSearch")}
+                  aria-label={t("search.runSearch")}
                   onClick={() =>
                     handleSearchAction({
                       searchTerm: inputRef.current?.value ?? "",
