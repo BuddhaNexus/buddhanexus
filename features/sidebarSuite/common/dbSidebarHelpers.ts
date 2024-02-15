@@ -132,6 +132,7 @@ export const onEmailQueryLink = ({
 
   const encodedURL = encodeURIComponent(href);
 
+  // TODO: i18n
   const subject = fileName
     ? `BuddhaNexus serach results - ${fileName.toUpperCase()}`
     : `BuddhaNexus serach results`;
