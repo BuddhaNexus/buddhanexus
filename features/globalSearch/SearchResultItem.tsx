@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
+import { Link } from "@components/common/Link";
 import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";
@@ -10,7 +11,6 @@ import {
   SearchResultCard,
   SearchResultHeaderChips,
   SearchResultHeaderTitleRow,
-  SearchResultLink,
 } from "./GlobalSearchStyledMuiComponents";
 import { SearchResultItemText } from "./SearchResultItemText";
 
@@ -37,7 +37,10 @@ export const SearchResultItem = ({ result }: Props) => {
   const roundedSimilarity =
     similarity % 1 === 0 ? similarity : similarity.toFixed(2);
 
-  const path = `/db/${language}/${id}/text?selectedSegment=${segmentNumber}`;
+  const [file] = segmentNumber.split(":");
+  // TODO: intergrate with text view
+  // const path = `/db/${language}/${file}/text?selectedSegment=${segmentNumber}`;
+  const path = `/db/${language}/${file}/table`;
 
   return (
     <SearchResultCard>
@@ -69,7 +72,16 @@ export const SearchResultItem = ({ result }: Props) => {
 
         <SearchResultHeaderTitleRow>
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
-            <SearchResultLink href={path}>{segmentNumber}</SearchResultLink>
+            <Link
+              href={path}
+              sx={{
+                display: "inline-block",
+                wordBreak: "break-word",
+                m: 0.5,
+              }}
+            >
+              {segmentNumber}
+            </Link>
           </Tooltip>
           <IconButton
             aria-label="copy"

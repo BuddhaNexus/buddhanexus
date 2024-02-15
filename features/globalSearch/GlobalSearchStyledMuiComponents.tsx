@@ -2,7 +2,6 @@ import {
   Box,
   type BoxProps,
   Card,
-  Link,
   type OutlinedTextFieldProps,
   TextField,
 } from "@mui/material";
@@ -83,9 +82,4 @@ export const SearchResultHeaderTitleRow = styled(Box)({
   alignItems: "center",
   display: "flex",
   flexWrap: "wrap",
-});
-export const SearchResultLink = styled(Link)({
-  display: "inline-block",
-  wordBreak: "break-word",
-  m: 0.5,
 });

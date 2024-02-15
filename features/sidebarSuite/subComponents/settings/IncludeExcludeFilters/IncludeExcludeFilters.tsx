@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useDbMenus } from "@components/hooks/useDbMenus";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
@@ -79,7 +79,17 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
     if (Object.keys(limitsValue).length > 0 && !limitsParam) {
       setLimitsValue({});
     }
-  }, [lanuguage, isInitiated, texts, categories, limitsParam, setLimitsParam]);
+  }, [
+    lanuguage,
+    isInitiated,
+    isLoadingTexts,
+    isLoadingCategories,
+    texts,
+    categories,
+    limitsParam,
+    limitsValue,
+    setLimitsParam,
+  ]);
 
   if (!lanuguage) return null;
 

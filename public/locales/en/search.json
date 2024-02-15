@@ -1,6 +1,6 @@
 {
   "pageTitle": "Search Results",
-  "inputPlaceholder": "Enter exact search term (whole words only, diacritics sensitive)",
+  "inputPlaceholder": "Enter exact search term (whole words only)",
   "search": "Search",
   "runSearch": "Run search",
   "clearSearch": "Clear search term",
