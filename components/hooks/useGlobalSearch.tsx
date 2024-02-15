@@ -1,7 +1,7 @@
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { searchPageFilter } from "features/sidebarSuite/config/settings";
+import { pageSettings } from "features/sidebarSuite/config/settings";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
 
@@ -36,7 +36,7 @@ export function useGlobalSearch(): GlobalSearchProps {
 
       Object.entries(router.query).forEach(([key, value]) => {
         // This resets query values if the search has been initiated from a source text results page. The source language setting.persists.
-        if (value && Object.keys(searchPageFilter).includes(key)) {
+        if (value && Object.keys(pageSettings.search.filters).includes(key)) {
           query[key] = value.toString();
         }
       });

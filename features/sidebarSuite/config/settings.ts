@@ -9,20 +9,6 @@ export const filters = {
 } as const;
 export type PageFilter = (typeof filters)[keyof typeof filters];
 
-export const searchPageFilter = {
-  language: "language",
-  search: "search_string",
-  limits: "limits",
-} as const;
-
-export const dbPageFilter = {
-  score: "score",
-  parLength: "par_length",
-  multiLingual: "multi_lingual",
-  limits: "limits",
-  targetCollection: "target_collection",
-} as const;
-
 export const queriedDisplayOption = {
   folio: "folio",
   sortMethod: "sort_method",
