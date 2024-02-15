@@ -9,14 +9,12 @@ export const filters = {
 } as const;
 export type PageFilter = (typeof filters)[keyof typeof filters];
 
-// --------
 export const searchPageFilter = {
   language: "language",
   search: "search_string",
   limits: "limits",
 } as const;
 
-// order sets appearance in sidebar
 export const dbPageFilter = {
   score: "score",
   parLength: "par_length",
@@ -24,7 +22,6 @@ export const dbPageFilter = {
   limits: "limits",
   targetCollection: "target_collection",
 } as const;
-// --------
 
 export const queriedDisplayOption = {
   folio: "folio",
