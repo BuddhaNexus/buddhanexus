@@ -7,7 +7,7 @@ urlfetch==1.1.3
 tqdm==4.42.0
 joblib==0.14.1
 pre-commit==1.21.0
-unidecode
+unidecode==1.3.8
 fastapi
 pandas
 natsort

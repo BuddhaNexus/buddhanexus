@@ -242,12 +242,19 @@ def get_file_text(file_name):
 
 def get_cat_from_segmentnr(segmentnr):
     """
-    when the segmentnr is not Pali:
+    retrieves the category code from the segmentnumber
     """
     cat = ""
+    pali_check = [x for x in ["anya", "atk", "tika"] if segmentnr.startswith(x)]
+    pali_vinaya_check = [x for x in ["pli-tv-bi-vb", "pli-tv-bu-vb"] if segmentnr.startswith(x)]
     search = re.search("^[A-Z]+[0-9]+", segmentnr)
     if search:
         cat = search[0]
+    elif pali_check:
+        search = re.search("^[a-z]+-[a-z]+[0-9][0-9]", segmentnr)
+        cat = search[0]
+    elif pali_vinaya_check:
+        cat = pali_vinaya_check[0]
     else:
         search = re.search("^[a-z-]+", segmentnr)
         if search:
