@@ -43,6 +43,7 @@ export const ParallelSegment = ({
   const sourceLanguageName = t(`language.${language}`);
 
   // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [textName, segmentName] = textSegmentNumbers[0].split(":");
   const infoToCopy = `${textSegmentNumbers.join("-")}: ${displayName}`;
 
@@ -50,6 +51,8 @@ export const ParallelSegment = ({
   const copyTextInfoToClipboard = useCallback(async () => {
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
+
+  const urlEncodedSegmentNumber = encodeURIComponent(textSegmentNumbers[0]);
 
   return (
     <Card sx={{ flex: 1, wordBreak: "break-all", my: 1 }} elevation={1}>
@@ -69,7 +72,7 @@ export const ParallelSegment = ({
           {/* File Name */}
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
             <Link
-              href={`/db/${language}/${textName}/text?selectedSegment=${segmentName}`}
+              href={`/db/${language}/${textName}/text?selectedSegment=${urlEncodedSegmentNumber}&selectedSegmentIndex=0`}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
             >
               {textSegmentNumbers}

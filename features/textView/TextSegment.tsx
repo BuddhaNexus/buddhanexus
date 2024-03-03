@@ -54,7 +54,7 @@ export const TextSegment = ({
 
   // find matches for the selected segment when the page is first rendered
   useLayoutEffect(() => {
-    if (!isSegmentSelected || !selectedSegmentIndex) return;
+    if (!isSegmentSelected || typeof selectedSegmentIndex !== "number") return;
     const locationFromQueryParams = segmentText[selectedSegmentIndex];
     if (!locationFromQueryParams) return;
     setSelectedSegmentMatches(locationFromQueryParams.matches);
