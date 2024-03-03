@@ -45,6 +45,7 @@ export default function TextView({
   }, [data, isDarkTheme]);
 
   const hasData = data.length > 0;
+  const shouldShowMiddlePane = Boolean(selectedSegmentId);
 
   return (
     <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
@@ -68,7 +69,7 @@ export default function TextView({
         </Allotment.Pane>
 
         {/* Middle pane - parallels for selected segment */}
-        <Allotment.Pane visible={Boolean(selectedSegmentId)}>
+        <Allotment.Pane visible={shouldShowMiddlePane}>
           <TextViewMiddleParallels />
         </Allotment.Pane>
       </Allotment>

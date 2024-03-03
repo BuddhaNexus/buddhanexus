@@ -1,8 +1,7 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Numbers } from "@mui/icons-material";
-import { Chip, CircularProgress } from "@mui/material";
+import { Chip, CircularProgress, Paper } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { ParallelSegment } from "features/tableView/ParallelSegment";
@@ -13,10 +12,6 @@ import { DbApi } from "utils/api/dbApi";
 import { ClearSelectedSegmentButton } from "./ClearSelectedSegmentButton";
 
 export default function TextViewMiddleParallels() {
-  // eslint-disable-next-line no-empty-pattern
-  const {
-    // sourceLanguage, fileName, queryParams
-  } = useDbQueryParams();
   const { t } = useTranslation();
 
   const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
@@ -57,8 +52,9 @@ export default function TextViewMiddleParallels() {
   return (
     <div
       style={{
-        overflow: "scroll",
+        overflow: "auto",
         height: "100%",
+        flex: 1,
         paddingRight: 8,
         paddingLeft: 8,
       }}
@@ -72,12 +68,16 @@ export default function TextViewMiddleParallels() {
           transform: "translate(-50%, -50%)",
         }}
       />
-      <div
+      <Paper
         data-testid="middle-view-header"
+        elevation={2}
         style={{
           display: "flex",
           justifyContent: "flex-end",
           alignItems: "center",
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
         }}
       >
         <Chip
@@ -89,7 +89,7 @@ export default function TextViewMiddleParallels() {
         <div>
           <ClearSelectedSegmentButton />
         </div>
-      </div>
+      </Paper>
 
       <div>{parallelsToDisplay}</div>
     </div>
