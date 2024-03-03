@@ -46,7 +46,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^13.3.1",
     "react-use-downloader": "^1.2.4",
-    "react-virtuoso": "^4.6.2",
+    "react-virtuoso": "^4.7.1",
     "react-window": "^1.8.9",
     "sharp": "^0.32.6",
     "tibetan-ewts-converter": "^1.0.1",

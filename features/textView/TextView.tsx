@@ -47,6 +47,16 @@ export default function TextView({
   const hasData = data.length > 0;
   const shouldShowMiddlePane = Boolean(selectedSegmentId);
 
+  // make sure the selected segment is at the top when the page is opened
+  const selectedSegmentIndexInData = useMemo(() => {
+    if (!hasData) return 0;
+    const index = data.findIndex(
+      (element) => element.segmentNumber === selectedSegmentId,
+    );
+    if (index === -1) return 0;
+    return index;
+  }, [data, hasData, selectedSegmentId]);
+
   return (
     <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
       <Allotment defaultSizes={[4, 3]}>
@@ -58,6 +68,7 @@ export default function TextView({
             itemContent={(_, dataSegment) => (
               <TextSegment data={dataSegment} colorScale={colorScale} />
             )}
+            initialTopMostItemIndex={selectedSegmentIndexInData}
             endReached={onEndReached}
             startReached={onStartReached}
             overscan={20}

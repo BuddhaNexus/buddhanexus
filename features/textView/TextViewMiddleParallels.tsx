@@ -78,12 +78,12 @@ export default function TextViewMiddleParallels() {
           position: "sticky",
           top: 0,
           zIndex: 1,
+          padding: 4,
         }}
       >
         <Chip
           label={`${selectedSegmentMatches.length} ${t("db.matches")}`}
           variant="outlined"
-          size="small"
           icon={<Numbers />}
         />
         <div>
