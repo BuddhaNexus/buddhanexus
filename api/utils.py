@@ -14,18 +14,22 @@ from .db_connection import get_db
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 def prettify_score(score):
-    # if score is a floating point number <= 1, return it as an int scaled by 100
+    """
+    if score is a floating point number <= 1, return it as an int scaled by 100
+    """
     if isinstance(score, float) and score <= 1:
         return int(score * 100)
     return score
 
 def shorten_segment_names(segments):
-    first_segment = segments[0]
-    last_segment = segments[-1]
-    first_segment = re.sub("-[0-9]+", "", first_segment)
-    last_segment = re.sub("-[0-9]+", "", last_segment)
-    last_segment_shortened = last_segment.split(":")[1]
-    shortened_segment = first_segment + "-" + last_segment_shortened
+    """
+    Returns a shortened version of a range of segments
+    """
+    first_segment = re.sub("-[0-9]+", "", segments[0])
+    last_segment = re.sub("-[0-9]+", "", segments[-1])
+    shortened_segment = first_segment
+    if not first_segment == last_segment:
+        shortened_segment += "-" + last_segment.split(":")[1]
     return [shortened_segment]
 
 def get_sort_key(sort_method) -> str:
