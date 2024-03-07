@@ -126,6 +126,18 @@ RETURN (
 )
 """
 
+QUERY_COLLECTION_NAMES_PER_LANGUAGE = """
+RETURN (
+    FOR category IN menu_categories
+        FILTER category.language == @language
+        SORT category.categorynr
+        RETURN {
+            id: category["category"],
+            displayName: category.categoryname
+        }
+)
+"""
+
 QUERY_FILES_PER_CATEGORY = """
 FOR file IN files_parallel_count
     FILTER file.category == @category
