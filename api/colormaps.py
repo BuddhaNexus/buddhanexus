@@ -126,8 +126,7 @@ def calculate_color_maps_table_view(data):
             root_end = len(root_fulltext) - (
                 len(entry["root_seg_text"][-1]) - entry["root_offset_end"]
             )
-            if root_end > len(root_fulltext):
-                root_end = len(root_fulltext)
+            root_end = min(root_end, len(root_fulltext))
             root_start = entry["root_offset_beg"]
             root_colormap[root_start:root_end] = [1] * (root_end - root_start)
             root_fulltext = create_segmented_text_color_only(
@@ -140,8 +139,7 @@ def calculate_color_maps_table_view(data):
             par_end = len(par_fulltext) - (
                 len(entry["par_segment"][-1]) - entry["par_offset_end"]
             )
-            if par_end > len(par_fulltext):
-                par_end = len(par_fulltext)
+            par_end = min(par_end, len(par_fulltext))
             par_start = entry["par_offset_beg"]
             par_colormap[par_start:par_end] = [1] * (par_end - par_start)
             par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
@@ -173,8 +171,7 @@ def calculate_color_maps_middle_view(data):
             par_end = len(par_fulltext) - (
                 len(entry["par_segtext"][-1]) - entry["par_offset_end"]
             )
-            if par_end > len(par_fulltext):
-                par_end = len(par_fulltext)
+            par_end = min(par_end, len(par_fulltext))
             par_start = entry["par_offset_beg"]
             par_colormap[par_start:par_end] = [1] * (par_end - par_start)
             par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
