@@ -1,10 +1,10 @@
 QUERY_FILES_FOR_LANGUAGE = """
 FOR file IN files
     FILTER file.language == @language
+    FILTER file.displayName != null
     SORT file.filenr
     RETURN {
-        displayName: file.displayName,
-        search_field: file.search_field,
+        displayName: file.displayName,        
         textname: file.textname,
         filename: file.filename,
         category: file.category,
@@ -36,7 +36,6 @@ FOR file IN files
             categoryname: file.textname,
             displayname: file.displayName,
             search_field: file.search_field
-
         }
 """
 
@@ -74,7 +73,7 @@ FOR collection IN 1..1 OUTBOUND concat("languages/", @language) GRAPH 'collectio
                     FILTER file.category == category.category
                     SORT file.filenr
                     FILTER file
-                    RETURN { filename: file.filename, textname: file.textname, displayname: file.displayName, available_lang : file.available_lang}
+                    RETURN { file_name: file.filename, textname: file.textname, displayname: file.displayName, available_lang : file.available_lang}
             )
             RETURN {
                 categoryname: category.category,
@@ -131,12 +130,12 @@ QUERY_FILES_PER_CATEGORY = """
 FOR file IN files_parallel_count
     FILTER file.category == @category
     FILTER file.language == @language
-    FOR filename in files
-        FILTER filename._key == file._key
+    FOR file_name in files
+        FILTER file_name._key == file._key
         SORT file.filenr
         RETURN {
-            filename: file._key,
-            displayName: filename.displayName,
+            file_name: file._key,
+            displayName: file_name.displayName,
             totallengthcount: file.totallengthcount
         }
 """

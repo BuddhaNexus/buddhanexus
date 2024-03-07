@@ -1,34 +1,29 @@
 from fastapi import APIRouter, Query
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
-from ..utils import get_language_from_filename
+from ..utils import get_language_from_file_name
 from typing import List
 import re
+from .models.shared import GraphInput
 
 router = APIRouter()
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
-@router.get("/graph-view/")
+@router.post("/graph-view/")
 # pylint: disable=too-many-locals
-async def get_graph_for_file(
-    file_name: str,
-    score: int = 0,
-    par_length: int = 0,
-    target_collection: List[str] = Query([]),
-):
+async def get_graph_for_file(input: GraphInput):
     """
     Endpoint for graph view
     """
-
     query_graph_result = execute_query(
         main_queries.QUERY_GRAPH_VIEW,
         bind_vars={
-            "filename": file_name,
-            "score": score,
-            "parlength": par_length,
-            "targetcollection": target_collection,
+            "file_name": input.file_name,
+            "score": input.score,
+            "parlength": input.par_length,
+            "targetcollection": input.target_collection,
         },
     )
 
@@ -39,13 +34,13 @@ async def get_graph_for_file(
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
-        target_filename = re.sub("_[0-9][0-9][0-9]", "", parallel["textname"])
-        if target_filename in total_histogram_dict:
-            total_histogram_dict[target_filename] += count_this_parallel
+        target_file_name = re.sub("_[0-9][0-9][0-9]", "", parallel["textname"])
+        if target_file_name in total_histogram_dict:
+            total_histogram_dict[target_file_name] += count_this_parallel
         else:
-            total_histogram_dict[target_filename] = count_this_parallel
+            total_histogram_dict[target_file_name] = count_this_parallel
 
-        collection_key = re.search(COLLECTION_PATTERN, target_filename)
+        collection_key = re.search(COLLECTION_PATTERN, target_file_name)
 
         if not collection_key:
             continue
@@ -63,7 +58,7 @@ async def get_graph_for_file(
         menu_queries.QUERY_COLLECTION_NAMES,
         bind_vars={
             "collections": collection_keys,
-            "language": get_language_from_filename(file_name),
+            "language": get_language_from_file_name(input.file_name),
         },
     )
     collections_with_full_name = {}
@@ -83,7 +78,7 @@ async def get_graph_for_file(
         displayname = name
         query_displayname = execute_query(
             main_queries.QUERY_DISPLAYNAME,
-            bind_vars={"filename": name},
+            bind_vars={"file_name": name},
             raw_results=True,
         )
         displayname_results = query_displayname.result

@@ -28,7 +28,7 @@ def run_table_download(query, file_values):
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
     worksheet.hide_gridlines(2)
 
-    spreadsheet_fields = get_spreadsheet_fields(file_values[7], file_values)
+    spreadsheet_fields = get_spreadsheet_fields(file_values[6], file_values)
 
     # Defining formats
     worksheet.set_row(0, 30)
@@ -44,7 +44,7 @@ def run_table_download(query, file_values):
 
     workbook_formats = add_formatting_workbook(workbook)
 
-    full_root_filename = get_displayname(file_values[0], file_values[7])
+    full_root_file_name = get_displayname(file_values[0], file_values[6])
     # Writing header
     worksheet.insert_image("D4", "buddhanexus_smaller.jpg")
     worksheet.merge_range(
@@ -52,10 +52,10 @@ def run_table_download(query, file_values):
         0,
         0,
         5,
-        "Matches table download for " + full_root_filename[1],
+        "Matches table download for " + full_root_file_name[1],
         workbook_formats[0],
     )
-    worksheet.merge_range(1, 0, 1, 5, full_root_filename[0], workbook_formats[1])
+    worksheet.merge_range(1, 0, 1, 5, full_root_file_name[0], workbook_formats[1])
 
     row = 3
     for item in spreadsheet_fields[1]:
@@ -72,11 +72,11 @@ def run_table_download(query, file_values):
     # Iterate over the data and write it out row by row.
     for parallel in query.result:
 
-        spreadsheet_values = get_spreadsheet_values(parallel, file_values[7])
+        spreadsheet_values = get_spreadsheet_values(parallel, file_values[6])
 
         worksheet.write(row, 0, "Inquiry", workbook_formats[5])
-        worksheet.write(row, 1, full_root_filename[1], workbook_formats[5])
-        worksheet.write(row, 2, full_root_filename[0], workbook_formats[5])
+        worksheet.write(row, 1, full_root_file_name[1], workbook_formats[5])
+        worksheet.write(row, 2, full_root_file_name[0], workbook_formats[5])
         worksheet.write(row, 3, spreadsheet_values[0], workbook_formats[5])
         worksheet.write(row, 4, parallel["root_length"], workbook_formats[6])
         worksheet.write(row, 5, parallel["score"], workbook_formats[6])
@@ -286,21 +286,25 @@ def get_spreadsheet_values(parallel, lang):
 
 
 def get_displayname(segmentnr, lang):
+
     """
     Downloads the displaynames for the worksheet
     """
-    filename = segmentnr.split(":")[0]
+    file_name = segmentnr.split(":")[0]
     if lang == "chn":
-        filename = re.sub(r"_[0-9]+", "", filename)
+        file_name = re.sub(r"_[0-9]+", "", file_name)
     full_name = ""
-    database = get_db()
-    query_displayname = database.AQLQuery(
+    query_displayname = get_db().AQLQuery(
         query=main_queries.QUERY_DISPLAYNAME,
-        bind_vars={"filename": filename},
+        bind_vars={"file_name": file_name},
     )
 
-    if query_displayname.result:
+    if query_displayname.error:
+        # Print the error message for debugging
+        print(query_displayname.errorMsg)
+    elif query_displayname.result:
         full_name = query_displayname.result[0]
+
     return full_name
 
 
@@ -330,7 +334,7 @@ def run_numbers_download(collections, segments, file_values):
 
     workbook_formats = add_formatting_workbook(workbook)
 
-    full_root_filename = get_displayname(file_values[0], file_values[7])
+    full_root_file_name = get_displayname(file_values[0], file_values[7])
     # Writing header
     worksheet.insert_image("A4", "buddhanexus_smaller.jpg")
     worksheet.merge_range(
@@ -338,10 +342,10 @@ def run_numbers_download(collections, segments, file_values):
         1,
         0,
         4,
-        "Matches numbers download for " + full_root_filename[1],
+        "Matches numbers download for " + full_root_file_name[1],
         workbook_formats[0],
     )
-    worksheet.merge_range(1, 1, 1, 4, full_root_filename[0], workbook_formats[1])
+    worksheet.merge_range(1, 1, 1, 4, full_root_file_name[0], workbook_formats[1])
 
     row = 3
     for item in spreadsheet_fields[1]:

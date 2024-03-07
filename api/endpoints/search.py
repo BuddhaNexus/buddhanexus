@@ -1,46 +1,47 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter
 from ..db_connection import get_db
-from ..utils import get_collection_files_regex
+from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
 from ..queries import search_queries
-from typing import List, AnyStr
-
+from .models.shared import SearchInput
+from .endpoint_utils import execute_query
+from ..colormaps import calculate_color_maps_search
 router = APIRouter()
 
 
-@router.get("/search/")
-async def get_search_results(
-    search_string: str, limit_collection: List[str] = Query([])
-):
+@router.post("/search/")
+async def get_search_results(input: SearchInput):
     """
     Returns search results for given search string.
     :return: List of search results
     """
-    limitcollection_positive, limit_collection_negative = get_collection_files_regex(
-        limit_collection
+    limitcollection_include = create_cleaned_limit_collection(
+        input.limits.category_include + input.limits.file_include
     )
-
-    database = get_db()
+    limit_collection_exclude = create_cleaned_limit_collection(
+        input.limits.category_exclude + input.limits.file_exclude
+    )
     result = []
-    search_string = search_string.lower()
-    search_strings = search_utils.preprocess_search_string(search_string[:150])
-    query_search = database.AQLQuery(
-        query=search_queries.QUERY_SEARCH,
+    search_string = input.search_string.lower()
+    search_strings = search_utils.preprocess_search_string(search_string[:300], input.language)
+    print("LIMIT COLLECTION INCLUDE", limitcollection_include)
+    print("LIMIT COLLECTION EXCLUDE", limit_collection_exclude)
+    query_search = execute_query(
+        search_queries.QUERY_SEARCH,
         bind_vars={
             "search_string_tib": search_strings["tib"],
             "search_string_chn": search_strings["chn"],
             "search_string_skt": search_strings["skt"],
             "search_string_pli": search_strings["pli"],
             "search_string_skt_fuzzy": search_strings["skt_fuzzy"],
-            "limitcollection_positive": limitcollection_positive,
-            "limitcollection_negative": limit_collection_negative,
+            "limitcollection_include": limitcollection_include,
+            "limitcollection_exclude": limit_collection_exclude,
         },
-        batchSize=300,
-        rawResults=True,
     )
     query_result = query_search.result[0]
     result = search_utils.postprocess_results(
         search_strings,
         query_result,
     )
+    results = calculate_color_maps_search(result)
     return {"searchResults": result}

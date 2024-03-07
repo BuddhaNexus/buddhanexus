@@ -11,7 +11,7 @@ let filelist = (
         )
         return {
             category: file.category,
-            filename: file.filename,
+            file_name: file.file_name,
             total_length: SUM(segment_lengths)
             }
 )
@@ -23,12 +23,12 @@ let parallel_list = (
     for p IN parallels
         LET root_author = (
             for file in files
-            FILTER file.filename == p.filename
+            FILTER file.file_name == p.file_name
             RETURN file.@role
         )
         LET par_author = (
             for file in files
-                FILTER file.filename == p.par_filename
+                FILTER file.file_name == p.par_file_name
                 RETURN file.@role
             )
         return {
@@ -36,8 +36,8 @@ let parallel_list = (
             par_author: par_author,
             length: p.par_length,
             par_category: p.par_category,
-            root_filename: p.root_filename,
-            par_filename: p.par_filename,
+            root_file_name: p.root_file_name,
+            par_file_name: p.par_file_name,
         }
 )
 return parallel_list

@@ -14,3 +14,7 @@ tramp
 # Environments
 .env
 json
+*.tsv
+*.zip
+*.ipynb
+*.error

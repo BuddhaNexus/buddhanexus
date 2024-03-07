@@ -2,21 +2,23 @@
 This file holds the functions for creating the colormaps.
 """
 
+from .utils import shorten_segment_names, prettify_score
+
 
 def create_segmented_text(text, colormap, matchmap):
-    """create segmented text"""
+    """Create segmented text based on the given colormap and matchmap."""
+
+    def filter_and_sort(matches):
+        """Filter out None values and sort the matches."""
+        return sorted([x for x in matches if x is not None])
+
     result_segments = []
     current_segment = ""
-    last_matches = matchmap[0]
-    last_matches = [x for x in last_matches if x is not None]
-    last_matches.sort()
+    last_matches = filter_and_sort(matchmap[0])
     last_color = colormap[0]
-    # consider using: for i, _ in enumerate(text):
-    for i in range(len(text)):
+    for i, char in enumerate(text):
         current_color = colormap[i]
-        current_matches = matchmap[i]
-        current_matches = [x for x in current_matches if x is not None]
-        current_matches.sort()
+        current_matches = filter_and_sort(matchmap[i])
         if current_matches != last_matches:
             result_segments.append(
                 {
@@ -26,10 +28,10 @@ def create_segmented_text(text, colormap, matchmap):
                 }
             )
             current_segment = ""
-        current_segment += text[i]
-        last_matches = current_matches
-        last_matches.sort()
-        last_color = current_color
+
+        current_segment += char
+        last_matches, last_color = current_matches, current_color
+    # Add the last segment
     result_segments.append(
         {"text": current_segment, "highlightColor": last_color, "matches": last_matches}
     )
@@ -59,14 +61,13 @@ def calculate_color_maps_text_view(data):
     """calculates the color maps for the text view"""
     textleft = data["textleft"]
     parallels_dict = dict(zip(data["parallel_ids"], data["parallels"]))
-    print("parallels_dict", len(parallels_dict))
     for entry in textleft:
         # initialize with zeros
         segtext_len = len(entry["segtext"])
         current_colormap = [
             0
         ] * segtext_len  # this variable holds the ints for the colors of each character
-        current_matchmap = [[None]] * segtext_len
+        current_matchmap = [[] for _ in range(segtext_len)]
         # this variable holds the ids of the parallels that are present at each character
         # now add the color layer
         for parallel_id in entry["parallel_ids"]:
@@ -83,11 +84,11 @@ def calculate_color_maps_text_view(data):
             # it is embarassing that we need to do this,
             # this should be dealt with at data-loader level
             end = min(end, segtext_len)
+            print("START", start, "END", end)
             for item in range(start, end):
                 current_colormap[item] += 1
-                if id not in current_matchmap[item]:
-                    current_matchmap[item].append(id)
-
+                if parallel_id not in current_matchmap[item]:
+                    current_matchmap[item].append(parallel_id)
         entry["segtext"] = create_segmented_text(
             entry["segtext"], current_colormap, current_matchmap
         )
@@ -106,9 +107,17 @@ def calculate_color_maps_table_view(data):
         if len(entry["root_seg_text"]) > 0 and len(entry["par_segment"]) > 0:
             join_element_root = ""
             join_element_par = ""
-            if entry["src_lang"] == "tib":
+            if (
+                entry["src_lang"] == "tib"
+                or entry["src_lang"] == "skt"
+                or entry["src_lang"] == "pli"
+            ):
                 join_element_root = " "
-            if entry["tgt_lang"] == "tib":
+            if (
+                entry["tgt_lang"] == "tib"
+                or entry["tgt_lang"] == "skt"
+                or entry["tgt_lang"] == "pli"
+            ):
                 join_element_par = " "
 
             root_fulltext = join_element_root.join(entry["root_seg_text"])
@@ -117,8 +126,7 @@ def calculate_color_maps_table_view(data):
             root_end = len(root_fulltext) - (
                 len(entry["root_seg_text"][-1]) - entry["root_offset_end"]
             )
-            if root_end > len(root_fulltext):
-                root_end = len(root_fulltext)
+            root_end = min(root_end, len(root_fulltext))
             root_start = entry["root_offset_beg"]
             root_colormap[root_start:root_end] = [1] * (root_end - root_start)
             root_fulltext = create_segmented_text_color_only(
@@ -131,12 +139,14 @@ def calculate_color_maps_table_view(data):
             par_end = len(par_fulltext) - (
                 len(entry["par_segment"][-1]) - entry["par_offset_end"]
             )
-            if par_end > len(par_fulltext):
-                par_end = len(par_fulltext)
+            par_end = min(par_end, len(par_fulltext))
             par_start = entry["par_offset_beg"]
             par_colormap[par_start:par_end] = [1] * (par_end - par_start)
             par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
             entry["par_fulltext"] = par_fulltext
+            entry["par_segnr"] = shorten_segment_names(entry["par_segnr"])
+            entry["root_segnr"] = shorten_segment_names(entry["root_segnr"])
+            entry["score"] = prettify_score(entry["score"])
             del entry["par_segment"]
             del entry["root_seg_text"]
             del entry["root_offset_beg"]
@@ -150,7 +160,6 @@ def calculate_color_maps_table_view(data):
 def calculate_color_maps_middle_view(data):
     """same procdeure as table-view but we ommit the inquiry text data"""
     for entry in data:
-        print("entry", entry)
         # it is _not_ nice that we need to test for the length of these elements;
         # it should be dealt with at data-loader level...
         if len(entry["par_segtext"]) > 0:
@@ -162,12 +171,31 @@ def calculate_color_maps_middle_view(data):
             par_end = len(par_fulltext) - (
                 len(entry["par_segtext"][-1]) - entry["par_offset_end"]
             )
-            if par_end > len(par_fulltext):
-                par_end = len(par_fulltext)
+            par_end = min(par_end, len(par_fulltext))
             par_start = entry["par_offset_beg"]
             par_colormap[par_start:par_end] = [1] * (par_end - par_start)
             par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
             entry["par_fulltext"] = par_fulltext
+            entry["score"] = prettify_score(entry["score"])
             del entry["par_offset_beg"]
             del entry["par_offset_end"]
+    return data
+
+
+def calculate_color_maps_search(data):
+    """takes the search results and calculates the color maps for the search"""
+    for entry in data:
+        text = entry["original"]
+        colormap = [0] * len(text)
+        beg = entry["offset_beg"]
+        end = entry["offset_end"]
+        colormap[beg:end] = [1] * (end - beg)
+        entry["segtext"] = create_segmented_text_color_only(text, colormap)
+        entry["segment_nr"] = shorten_segment_names(entry["segment_nr"])[0]
+        del entry["offset_beg"]
+        del entry["offset_end"]
+        del entry["original"]
+        del entry["stemmed"]
+        del entry["centeredness"]
+        del entry["distance"]
     return data

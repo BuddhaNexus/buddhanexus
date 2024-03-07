@@ -1,69 +1,60 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Depends
 from ..queries import main_queries
 from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_middle_view
 from .endpoint_utils import execute_query
 from typing import List, Dict
 from ..utils import (
-    get_collection_files_regex,
+    create_cleaned_limit_collection,
     get_start_integer,
 )
+from .models.shared import MiddleInput, TextParallelsInput
 
 router = APIRouter()
 
 
-@router.get("/middle/")
-async def get_parallels_for_middle(parallel_ids: List[str]):
+@router.post("/middle/")
+async def get_parallels_for_middle(input: MiddleInput):
     """
     :return: List of parallels for text view (middle)
     """
     query_result = execute_query(
         main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
-        bind_vars={"parallel_ids": parallel_ids},
+        bind_vars={"parallel_ids": input.parallel_ids},
     )
-    print(query_result[0])
     return calculate_color_maps_middle_view(query_result.result[0])
 
 
-@router.get("/text-parallels/")
-async def get_file_text_segments_and_parallels(
-    file_name: str,
-    active_segment: str = "none",
-    score: int = 0,
-    par_length: int = 0,
-    limit_collection: List[str] = Query([]),
-    multi_lingual: List[str] = Query([]),
-):
+@router.post("/text-parallels/")
+async def get_file_text_segments_and_parallels(input: TextParallelsInput):
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
     """
     parallel_ids_type = "parallel_ids"
-    if len(limit_collection) > 0:
-        parallel_ids_type = "parallel_ids"
-
     start_int = 0
-    if active_segment != "none":
-        start_int = get_start_integer(active_segment)
+    if input.active_segment != "none":
+        start_int = get_start_integer(input.active_segment)
 
-    limitcollection_positive, limitcollection_negative = get_collection_files_regex(
-        limit_collection
+    limitcollection_include = create_cleaned_limit_collection(
+        input.limits.category_include + input.limits.file_include
+    )
+    limitcollection_exclude = create_cleaned_limit_collection(
+        input.limits.category_exclude + input.limits.file_exclude
     )
     current_bind_vars = {
-        "parallel_ids_type": parallel_ids_type,
-        "filename": file_name,
+        "file_name": input.file_name,
         "limit": 800,
         "startint": start_int,
-        "score": score,
-        "parlength": par_length,
-        "multi_lingual": multi_lingual,
-        "limitcollection_positive": limitcollection_positive,
-        "limitcollection_negative": limitcollection_negative,
+        "score": input.score,
+        "parlength": input.par_length,
+        "multi_lingual": input.multi_lingual,
+        "limitcollection_include": limitcollection_include,
+        "limitcollection_exclude": limitcollection_exclude,
     }
-    print("CBV", current_bind_vars)
+
     text_segments_query_result = execute_query(
         main_queries.QUERY_TEXT_AND_PARALLELS,
         bind_vars=current_bind_vars,
     )
-    print("text_segments_query_result", text_segments_query_result)
     data_with_colormaps = calculate_color_maps_text_view(
         text_segments_query_result.result[0]
     )

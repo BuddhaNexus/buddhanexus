@@ -12,6 +12,8 @@ from arango.database import StandardDatabase
 import urlfetch
 from tqdm import trange
 from joblib import Parallel as ParallelJobRunner, delayed
+import os
+import sys
 
 from dataloader_constants import (
     DB_NAME,
@@ -20,12 +22,23 @@ from dataloader_constants import (
     LANG_SANSKRIT,
     LANG_CHINESE,
     LANG_ENGLISH,
-    LANG_AI,
     ARANGO_USER,
     ARANGO_PASSWORD,
     ARANGO_HOST,
     LANG_SANSKRIT,
 )
+
+PACKAGE_PARENT = ".."
+SCRIPT_DIR = os.path.dirname(
+    os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
+)
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
+from api.utils import get_cat_from_segmentnr, get_language_from_file_name
+
+
+def get_filename_from_segmentnr(segmentnr):
+    return segmentnr.split(":")[0]
 
 
 def get_arango_client() -> ArangoClient:
@@ -81,25 +94,13 @@ def execute_in_parallel(task, items, threads) -> None:
         )
 
 
-def should_download_file(file_lang: str, file_name: str) -> bool:
+def should_download_file(file_name: str) -> bool:
     """
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    if file_lang == LANG_CHINESE:
-        return True
-    if file_lang == LANG_PALI:
-        return True
-    if file_lang == LANG_SANSKRIT:
-        return True
-    if file_lang == LANG_TIBETAN:
-        return True
-    if file_lang == LANG_ENGLISH:
-        return True
-    if file_lang == LANG_AI:
-        return True
-    else:
-        return False
+    #if "T06" in file_name:
+    return True
 
 
 def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
@@ -134,6 +135,20 @@ def get_collection_list_for_language(language, all_cols):
     return total_collection_list
 
 
+def check_if_collection_exists(db, collection_name):
+    collections = db.collections()
+    for collection in collections:
+        if collection["name"] == collection_name:
+            return True
+
+
+def check_if_view_exists(db, view_name):
+    views = db.views()
+    for view in views:
+        if view["name"] == view_name:
+            return True
+
+
 def get_categories_for_language_collection(
     language_collection, query_collection_cursor
 ):
@@ -157,8 +172,6 @@ def get_language_name(language_key):
         return "Sanskrit"
     elif language_key == LANG_ENGLISH:
         return "English"
-    elif language_key == LANG_AI:
-        return "Artificial"
     else:
         return "Unknown"
 
@@ -174,18 +187,3 @@ def natural_keys(text):
     (See Toothy's implementation in the comments)
     """
     return [atoi(c) for c in re.split(r"(\d+)", text)]
-
-
-def get_cat_from_segmentnr(segmentnr):
-    # when the segmentnr is not Pali:
-    cat = ""
-    search = re.search("^[A-Z]+[0-9]+", segmentnr)
-    if search:
-        cat = search[0]
-    else:
-        search = re.search("^[a-z-]+", segmentnr)
-        if search:
-            cat = search[0]
-        else:
-            cat = segmentnr[0:2]
-    return cat

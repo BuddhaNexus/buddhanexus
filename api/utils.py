@@ -13,6 +13,24 @@ from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
+def prettify_score(score):
+    """
+    if score is a floating point number <= 1, return it as an int scaled by 100
+    """
+    if isinstance(score, float) and score <= 1:
+        return int(score * 100)
+    return score
+
+def shorten_segment_names(segments):
+    """
+    Returns a shortened version of a range of segments
+    """
+    first_segment = re.sub("-[0-9]+", "", segments[0])
+    last_segment = re.sub("-[0-9]+", "", segments[-1])
+    shortened_segment = first_segment
+    if not first_segment == last_segment:
+        shortened_segment += "-" + last_segment.split(":")[1]
+    return [shortened_segment]
 
 def get_sort_key(sort_method) -> str:
     """
@@ -30,18 +48,18 @@ def get_sort_key(sort_method) -> str:
     return sort_key
 
 
-def get_language_from_filename(filename) -> str:
+def get_language_from_file_name(file_name) -> str:
     """
     Given the file ID, returns its language.
-    :param filename: The key of the file
+    :param file_name: The key of the file
     :return: Language of the file
     """
     lang = "pli"
-    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG", filename):
+    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG|NY|TZ", file_name):
         lang = "tib"
-    elif re.search(r"(u$|u:|^Y|^XX|sc$|sc:)", filename):
+    elif re.search(r"(u$|u:|^Y|^XX|sc$|sc:)", file_name):
         lang = "skt"
-    elif re.search(r"[TX][0-9][0-9]n[0-9]", filename):
+    elif re.search(r"[TX][0-9][0-9]n[0-9]", file_name):
         lang = "chn"
     return lang
 
@@ -61,40 +79,15 @@ def create_cleaned_limit_collection(limit_collection) -> List:
                 bind_vars={"collectionkey": file.replace("!", "")},
             )
             for item in query.result:
-                if "!" not in file:
-                    new_limit_collection.append(item)
-                else:
-                    new_limit_collection.append("!" + item)
+                new_limit_collection.append(item)
         else:
             if (
                 "tib_NyGB" in file
             ):  # this is a collection-specific hack and things like this should never be done
                 new_limit_collection.append("NG")
-            elif "!tib_NyGB" in file:
-                new_limit_collection.append("!NG")
             else:
                 new_limit_collection.append(file)
     return new_limit_collection
-
-
-def get_collection_files_regex(limit_collection) -> List:
-    """
-    Returns a regular expression list for use in arangodb queries
-    :param limit_collection: The list of collections to limit to
-    :param language: The desired language
-    :return: The regular expressions to test if resource belongs to a given collection
-    if a collection is prefixed with !, we exclude it from the results!
-    """
-    new_limit_collection = create_cleaned_limit_collection(limit_collection)
-
-    teststring_positive = []
-    teststring_negative = []
-    for file in new_limit_collection:
-        if "!" not in file:
-            teststring_positive.append(file)
-        else:
-            teststring_negative.append(file.replace("!", ""))
-    return [teststring_positive, teststring_negative]
 
 
 def number_exists(input_string) -> bool:
@@ -126,25 +119,6 @@ def collect_segment_results(segments) -> List:
     return segments_result, collection_keys
 
 
-def create_numbers_view_data(table_results, folio_regex):
-    """
-    This function converts the table-view output into a format that is usable for the numbers-view.
-    """
-    result_dic = {}
-    for table_result in table_results:
-        for segment_nr in table_result["root_segnr"]:
-            if re.search(folio_regex, segment_nr):
-                if segment_nr in result_dic:
-                    result_dic[segment_nr].append(table_result["par_segnr"])
-                else:
-                    result_dic[segment_nr] = [table_result["par_segnr"]]
-    result = []
-    for segment_nr, value in result_dic.items():
-        entry = {"segmentnr": segment_nr, "parallels": value}
-        result.append(entry)
-    return result
-
-
 def get_folio_regex(language, file_name, folio) -> str:
     """
     Creates a regular expression for use in the AD Queries based on the language and
@@ -173,18 +147,18 @@ def get_folio_regex(language, file_name, folio) -> str:
     return start_folio
 
 
-def add_source_information(filename, query_result):
+def add_source_information(file_name, query_result):
     """
     Checks if a special source string is stored in the database.
     If not, it will return a generic message based on a regex pattern.
     Currently only works for SKT.
     TODO: We might want to add this to Pali/Chn/Tib as well in the future!
     """
-    lang = get_language_from_filename(filename)
+    lang = get_language_from_file_name(file_name)
     if lang == "skt":
         query_source_information = get_db().AQLQuery(
             query=main_queries.QUERY_SOURCE,
-            bind_vars={"filename": filename},
+            bind_vars={"file_name": file_name},
             rawResults=True,
         )
         source_id = query_source_information.result[0]["source_id"]
@@ -249,7 +223,7 @@ def get_file_text(file_name):
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_FILE_TEXT,
-            bind_vars={"filename": file_name},
+            bind_vars={"file_name": file_name},
         )
 
         if text_segments_query_result.result:
@@ -268,3 +242,27 @@ def get_file_text(file_name):
     except KeyError as error:
         print("KeyError: ", error)
         raise HTTPException(status_code=400) from error
+
+
+def get_cat_from_segmentnr(segmentnr):
+    """
+    retrieves the category code from the segmentnumber
+    """
+    cat = ""
+    pali_check = [x for x in ["anya", "atk", "tika"] if segmentnr.startswith(x)]
+    pali_vinaya_check = [x for x in ["pli-tv-bi-vb", "pli-tv-bu-vb"] if segmentnr.startswith(x)]
+    search = re.search("^[A-Z]+[0-9]+", segmentnr)
+    if search:
+        cat = search[0]
+    elif pali_check:
+        search = re.search("^[a-z]+-[a-z]+[0-9][0-9]", segmentnr)
+        cat = search[0]
+    elif pali_vinaya_check:
+        cat = pali_vinaya_check[0]
+    else:
+        search = re.search("^[a-z-]+", segmentnr)
+        if search:
+            cat = search[0]
+        else:
+            cat = segmentnr[0:2]
+    return cat
