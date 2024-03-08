@@ -78,7 +78,7 @@ FOR f IN parallels_sorted_file
                 root_offset_beg: p.root_offset_beg,
                 root_offset_end: p.root_offset_end,
                 par_segment: par_segment,
-                par_full_names: par_full_names[0],
+                par_full_names: par_full_names[0] || {},
                 root_full_names: root_full_names[0],
                 file_name: p.id,
                 root_segnr: p.root_segnr,
@@ -164,7 +164,7 @@ FOR f IN parallels_sorted_file
             RETURN {
                 root_segnr: p.root_segnr,
                 par_segnr: p.par_segnr,
-                par_full_names: par_full_names[0]
+                par_full_names: par_full_names[0] || {}
             }
 """
 
