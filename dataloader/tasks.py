@@ -286,16 +286,6 @@ def clean_pali(c):
 
 
 @task
-def clean_english(c):
-    """
-    Clear english segments collections completely.
-
-    :param c: invoke.py context object
-    """
-    clean_all_lang_db(LANG_ENGLISH)
-
-
-@task
 def clean_chinese(c):
     """
     Clear chinese segments collections completely.
