@@ -143,7 +143,11 @@ export const getDesignTokens = ({
     h4: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.5rem" },
     h5: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.25rem" },
     h6: { fontFamily: sourceSans.style.fontFamily, fontSize: "1.15rem" },
-    body1: { fontFamily: sourceSans.style.fontFamily },
+    body1: {
+      fontSize: "1.15rem",
+      lineHeight: 1.65,
+      fontFamily: sourceSans.style.fontFamily,
+    },
     body2: { fontFamily: sourceSans.style.fontFamily },
     body3: { fontFamily: sourceSans.style.fontFamily },
     subtitle1: { fontFamily: sourceSerif.style.fontFamily },
