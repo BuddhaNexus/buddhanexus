@@ -26,8 +26,8 @@ def create_numbers_view_data(table_results):
         for segnr in result["root_segnr"]:
             if not segnr in result_dic:
                 result_dic[segnr] = [match]
-            else:
-                result_dic[segnr] += [match]
+            elif not match in result_dic[segnr]:
+                    result_dic[segnr] += [match]
 
     return(result_dic)
 

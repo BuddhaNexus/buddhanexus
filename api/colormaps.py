@@ -43,8 +43,7 @@ def create_segmented_text_color_only(text, colormap):
     result_segments = []
     current_segment = ""
     last_color = colormap[0]
-    # consider using: for i, _ in enumerate(text):
-    for i in range(len(text)):
+    for i, _ in enumerate(text):
         current_color = colormap[i]
         if current_color != last_color:
             result_segments.append(
