@@ -1,12 +1,8 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import {
-  currentViewAtom,
-  shouldHideSegmentNumbersAtom,
-  shouldUseOldSegmentColorsAtom,
-} from "@components/hooks/useDbView";
-import { Box, FormControlLabel, FormGroup, Switch } from "@mui/material";
+import { currentViewAtom } from "@components/hooks/useDbView";
+import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import {
@@ -15,20 +11,14 @@ import {
   TextScriptOption,
 } from "features/sidebarSuite/subComponents/settings";
 import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
-import { useAtom, useAtomValue } from "jotai";
+import { SegmentOptions } from "features/sidebarSuite/subComponents/settings/SegmentOptions";
+import { useAtomValue } from "jotai";
 
 // Exclusively used in DB file selection results pages and has not been refactored for options in multiple contexts (i.e. global search results page).
 export const DisplayOptionsSection = () => {
   const { t } = useTranslation("settings");
 
   const currentView = useAtomValue(currentViewAtom);
-
-  const [shouldHideSegmentNumbers, setShouldHideSegmentNumbers] = useAtom(
-    shouldHideSegmentNumbersAtom,
-  );
-  const [shouldUseOldSegmentColors, setShouldUseOldSegmentColors] = useAtom(
-    shouldUseOldSegmentColorsAtom,
-  );
 
   const {
     sourceLanguage,
@@ -87,32 +77,7 @@ export const DisplayOptionsSection = () => {
             return <TextScriptOption key={key} />;
           }
           case uniqueSettings.local.showSegmentNrs: {
-            return (
-              <FormGroup key={key}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={shouldHideSegmentNumbers}
-                      onChange={(event) =>
-                        setShouldHideSegmentNumbers(event.target.checked)
-                      }
-                    />
-                  }
-                  label={t("optionsLabels.hideSegmentNumbers")}
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={shouldUseOldSegmentColors}
-                      onChange={(event) =>
-                        setShouldUseOldSegmentColors(event.target.checked)
-                      }
-                    />
-                  }
-                  label={t("optionsLabels.usePreviousSegmentColors")}
-                />
-              </FormGroup>
-            );
+            return <SegmentOptions key={key} />;
           }
           default: {
             return null;

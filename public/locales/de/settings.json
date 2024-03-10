@@ -44,7 +44,7 @@
     "copyQueryTitle": "Texttitel kopieren",
     "copyQueryLink": "Link der Ergebnisseite kopieren",
     "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden",
-    "hideSegmentNumbers": "Segmentnummern ausblenden",
+    "hideSegmentNumbers": "Segmentnummern anzeigen",
     "usePreviousSegmentColors": "Verwenden Sie Segmentfarben der vorherigen Website"
   },
   "optionsPopperMsgs": {

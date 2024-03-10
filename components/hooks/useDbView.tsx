@@ -12,9 +12,9 @@ export enum DbViewEnum {
 }
 
 export const currentViewAtom = atom<DbViewEnum>(DbViewEnum.TABLE);
-export const shouldHideSegmentNumbersAtom = atomWithStorage<boolean>(
-  "shouldHideSegmentNumbers",
-  false,
+export const shouldShowSegmentNumbersAtom = atomWithStorage<boolean>(
+  "shouldShowSegmentNumbers",
+  true,
 );
 export const shouldUseOldSegmentColorsAtom = atomWithStorage<boolean>(
   "shouldUseOldSegmentColors",

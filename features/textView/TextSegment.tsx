@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
-  shouldHideSegmentNumbersAtom,
+  shouldShowSegmentNumbersAtom,
   shouldUseOldSegmentColorsAtom,
 } from "@components/hooks/useDbView";
 import { sourceSans } from "@components/theme";
@@ -38,7 +38,7 @@ export const TextSegment = ({
   const { sourceLanguage } = useDbQueryParams();
 
   const shouldUseOldSegmentColors = useAtomValue(shouldUseOldSegmentColorsAtom);
-  const shouldHideSegmentNumbers = useAtomValue(shouldHideSegmentNumbersAtom);
+  const shouldShowSegmentNumbers = useAtomValue(shouldShowSegmentNumbersAtom);
   const scriptSelection = useAtomValue(scriptSelectionAtom);
   const setSelectedSegmentMatches = useSetAtom(selectedSegmentMatchesAtom);
 
@@ -71,7 +71,7 @@ export const TextSegment = ({
       <span
         className={`${styles.segmentNumber} ${
           isSegmentSelected && styles["segmentNumber--selected"]
-        } ${shouldHideSegmentNumbers && styles["segmentNumber--hidden"]}`}
+        } ${!shouldShowSegmentNumbers && styles["segmentNumber--hidden"]}`}
         data-segmentnumber={segmentNumber}
       />
 

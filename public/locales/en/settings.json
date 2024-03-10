@@ -44,7 +44,7 @@
     "copyQueryTitle": "Copy text title",
     "copyQueryLink": "Copy results page link",
     "emailQueryLink": "Email results page link",
-    "hideSegmentNumbers": "Hide segment numbers",
+    "showSegmentNumbers": "Show segment numbers",
     "usePreviousSegmentColors": "Use segment colors from the previous website"
   },
   "optionsPopperMsgs": {
