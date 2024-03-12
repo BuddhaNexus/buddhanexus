@@ -22,12 +22,13 @@ def create_numbers_view_data(table_results):
     for result in table_results:
         par_segnr = shorten_segment_names(result["par_segnr"])[0]
         match = result["par_full_names"]
-        match["segmentnr"] = par_segnr
-        for segnr in result["root_segnr"]:
-            if not segnr in result_dic:
-                result_dic[segnr] = [match]
-            elif not match in result_dic[segnr]:
-                    result_dic[segnr] += [match]
+        if match:
+            match["segmentnr"] = par_segnr
+            for segnr in result["root_segnr"]:
+                if not segnr in result_dic:
+                    result_dic[segnr] = [match]
+                elif not match in result_dic[segnr]:
+                        result_dic[segnr] += [match]
 
     return(result_dic)
 
