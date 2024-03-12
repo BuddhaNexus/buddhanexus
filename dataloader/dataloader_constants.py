@@ -11,14 +11,12 @@ LANG_TIBETAN = "tib"
 LANG_SANSKRIT = "skt"
 LANG_CHINESE = "chn"
 LANG_PALI = "pli"
-LANG_ENGLISH = "en"
 
 DEFAULT_LANGS = (
     LANG_CHINESE,
     LANG_SANSKRIT,
     LANG_TIBETAN,
     LANG_PALI,
-    LANG_ENGLISH,
 )
 
 COLLECTION_PARALLELS = "parallels"
@@ -31,7 +29,6 @@ COLLECTION_MENU_COLLECTIONS = "menu_collections"
 COLLECTION_MENU_CATEGORIES = "menu_categories"
 COLLECTION_FILES_PARALLEL_COUNT = "files_parallel_count"
 COLLECTION_CATEGORIES_PARALLEL_COUNT = "categories_parallel_count"
-
 
 COLLECTION_SEARCH_INDEX_TIB = "search_index_tib"
 COLLECTION_SEARCH_INDEX_SKT = "search_index_skt"
@@ -112,7 +109,5 @@ EDGE_COLLECTION_NAMES = (
 )
 
 GRAPH_COLLECTIONS_CATEGORIES = "collections_categories"
-
-COLLECTION_REGEX = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 MATCH_LIMIT = 1000000
