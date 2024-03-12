@@ -164,7 +164,9 @@ FOR f IN parallels_sorted_file
             RETURN {
                 root_segnr: p.root_segnr,
                 par_segnr: p.par_segnr,
-                par_full_names: par_full_names[0] || {}
+                par_full_names: par_full_names[0] || {"displayname": "",
+                    "filename": "",
+                    "category": ""}
             }
 """
 
