@@ -12,7 +12,6 @@ class Lang(str, Enum):
     sanskrit = "skt"
     chinese = "chn"
     pali = "pli"
-    english = "en"
 
 
 class Match(BaseModel):
@@ -39,7 +38,6 @@ class Match(BaseModel):
     par_offset_end: int
     src_lang: Lang
     tgt_lang: Lang
-
 
 
 class Segment(BaseModel):
