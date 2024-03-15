@@ -30,7 +30,11 @@ def create_numbers_view_data(table_results):
                 elif not match in result_dic[segnr]:
                         result_dic[segnr] += [match]
 
-    return(result_dic)
+    result_list = []
+    for key, value in result_dic.items():
+        result_list.append({"segmentnr": key, "parallels": value})
+
+    return(result_list)
 
 
 @router.post("/numbers")
@@ -65,16 +69,16 @@ async def get_numbers_view(input: GeneralInput):
     return segments_result
 
 
-@router.get("/collections/")
-async def get_collections_for_numbers_view(
+@router.get("/categories/")
+async def get_categories_for_numbers_view(
     file_name: str = Query(..., description="Filename to be used")
 ):
     """
-    Endpoint that returns list of collections for the given language
+    Endpoint that returns list of categories for the given language
     """
     language = get_language_from_file_name(file_name)
     query_result = execute_query(
-        menu_queries.QUERY_COLLECTIONS_PER_LANGUAGE,
+        menu_queries.QUERY_CATEGORIES_PER_LANGUAGE,
         bind_vars = {"language": language},
     )
     return query_result.result

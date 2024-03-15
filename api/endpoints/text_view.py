@@ -17,6 +17,7 @@ async def get_parallels_for_middle(input: MiddleInput):
     """
     :return: List of parallels for text view (middle)
     """
+    print(input.parallel_ids)
     query_result = execute_query(
         main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
         bind_vars={"parallel_ids": input.parallel_ids},

@@ -126,7 +126,7 @@ RETURN (
 )
 """
 
-QUERY_COLLECTIONS_PER_LANGUAGE = """
+QUERY_CATEGORIES_PER_LANGUAGE = """
 FOR category IN menu_categories
     FILTER category.language == @language
     SORT category.categorynr
