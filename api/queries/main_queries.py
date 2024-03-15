@@ -156,8 +156,8 @@ FOR f IN parallels_sorted_file
             LET par_full_names = (
                 FOR file in files
                     FILTER file._key == p.par_filename
-                    RETURN {"displayname": file.displayName,
-                    "filename": file.filename,
+                    RETURN {"displayName": file.displayName,
+                    "fileName": file.filename,
                     "category": file.category}
                 )
             LIMIT 500 * @page,500
