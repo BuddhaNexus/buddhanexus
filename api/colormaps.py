@@ -176,6 +176,7 @@ def calculate_color_maps_middle_view(data):
             par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
             entry["par_fulltext"] = par_fulltext
             entry["score"] = prettify_score(entry["score"])
+            entry["par_segnr"] = shorten_segment_names(entry["par_segnr"])
             del entry["par_offset_beg"]
             del entry["par_offset_end"]
     return data
