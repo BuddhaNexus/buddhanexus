@@ -18,21 +18,20 @@ def create_numbers_view_data(table_results):
     This function converts the table-view output into a format 
     that is usable for the numbers-view.
     """
-    result_dic = {}
-    for result in table_results:
-        par_segnr = shorten_segment_names(result["par_segnr"])[0]
-        match = result["par_full_names"]
-        if match:
-            match["segmentnr"] = par_segnr
-            for segnr in result["root_segnr"]:
-                if not segnr in result_dic:
-                    result_dic[segnr] = [match]
-                elif not match in result_dic[segnr]:
-                        result_dic[segnr] += [match]
-
     result_list = []
-    for key, value in result_dic.items():
-        result_list.append({"segmentnr": key, "parallels": value})
+    for result in table_results[0]:
+        parallels_list = []
+        if result["parallels"]:
+          for parallel in result["parallels"]:
+            if parallel["par_full_names"]:
+              parallel_dic = {}
+              parallel_dic["segmentnr"] = shorten_segment_names(parallel["par_segnr"])[0]
+              parallel_dic["displayName"] = parallel["par_full_names"]["displayName"]
+              parallel_dic["fileName"] = parallel["par_full_names"]["fileName"]
+              parallel_dic["category"] = parallel["par_full_names"]["category"]
+              parallels_list.append(parallel_dic)
+
+          result_list.append({"segmentnr": result["segmentnr"],"parallels": parallels_list})
 
     return(result_list)
 
@@ -60,7 +59,6 @@ async def get_numbers_view(input: GeneralInput):
             "limitcollection_exclude": limitcollection_exclude,
             "page": input.page,
             "folio": input.folio,
-            "sortkey": "parallels_sorted_by_src_pos",
         },
     )
 

@@ -143,29 +143,48 @@ FOR f IN parallels_sorted_file
 """
 
 QUERY_NUMBERS_VIEW = """
-FOR f IN parallels_sorted_file
-    FILTER f._key == @file_name
-    FOR current_parallel in f.@sortkey
-        FOR p in parallels
-            FILTER p._key == current_parallel
-            FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
-            FILTER p.score * 100 >= @score
-            FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
-            LET par_full_names = (
-                FOR file in files
-                    FILTER file._key == p.par_filename
-                    RETURN {"displayName": file.displayName,
-                    "fileName": file.filename,
-                    "category": file.category}
-                )
+FOR file IN files
+    FILTER file._key == @file_name
+    LET current_segments = (
+        FOR segmentnr IN file.segment_keys
             LIMIT 500 * @page,500
-            RETURN {
-                root_segnr: p.root_segnr,
-                par_segnr: p.par_segnr,
-                par_full_names: par_full_names[0] || {}
-            }
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                LET parallel_ids = (
+                    FOR p IN parallels
+                        FILTER segmentnr IN p.root_segnr
+                        RETURN p._key
+                        )
+
+                LET parallels = (
+                    FOR parallel_id IN parallel_ids
+                        FOR p IN parallels
+                            FILTER p._key == parallel_id
+                            FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
+                            FILTER p.score * 100 >= @score
+                            FILTER p.par_length >= @parlength
+                            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
+                            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
+
+                            LET par_full_names = (
+                                FOR f in files
+                                    FILTER f._key == p.par_filename
+                                    RETURN {"displayName": f.displayName,
+                                    "fileName": f.filename,
+                                    "category": f.category}
+                                )
+                            RETURN {
+                                par_segnr: p.par_segnr,
+                                par_full_names: par_full_names[0] || {}
+                            }
+                )
+                RETURN {
+                    segmentnr: segment.segnr,
+                    parallels: parallels
+                }
+        )
+
+RETURN current_segments
 """
 
 
