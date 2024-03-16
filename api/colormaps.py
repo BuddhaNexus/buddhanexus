@@ -163,7 +163,11 @@ def calculate_color_maps_middle_view(data):
         # it should be dealt with at data-loader level...
         if len(entry["par_segtext"]) > 0:
             join_element_par = ""
-            if entry["tgt_lang"] == "tib":
+            if (
+                entry["tgt_lang"] == "tib"
+                or entry["tgt_lang"] == "skt"
+                or entry["tgt_lang"] == "pli"
+            ):
                 join_element_par = " "
             par_fulltext = join_element_par.join(entry["par_segtext"])
             par_colormap = [0] * len(par_fulltext)

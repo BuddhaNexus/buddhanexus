@@ -31,7 +31,8 @@ def create_numbers_view_data(table_results):
               parallel_dic["category"] = parallel["par_full_names"]["category"]
               parallels_list.append(parallel_dic)
 
-          result_list.append({"segmentnr": result["segmentnr"],"parallels": parallels_list})
+          if parallels_list:
+            result_list.append({"segmentnr": result["segmentnr"],"parallels": parallels_list})
 
     return(result_list)
 
