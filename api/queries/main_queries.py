@@ -145,9 +145,13 @@ FOR f IN parallels_sorted_file
 QUERY_NUMBERS_VIEW = """
 FOR file IN files
     FILTER file._key == @file_name
+    LET selected_folio_segmentnr = (
+        RETURN file.folios[@folio].segment_nr
+    )
     LET current_segments = (
-        FOR segmentnr IN file.segment_keys
-            LIMIT 500 * @page,500
+        LET startIndex = POSITION(file.segment_keys, selected_folio_segmentnr[0], true)
+        LET subArray = SLICE(file.segment_keys, startIndex)
+        FOR segmentnr IN subArray
             FOR segment in segments
                 FILTER segment._key == segmentnr
                 LET parallel_ids = (
@@ -155,12 +159,11 @@ FOR file IN files
                         FILTER segmentnr IN p.root_segnr
                         RETURN p._key
                         )
-
+                FILTER LENGTH(parallel_ids) > 0
                 LET parallels = (
                     FOR parallel_id IN parallel_ids
                         FOR p IN parallels
                             FILTER p._key == parallel_id
-                            FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
                             FILTER p.score * 100 >= @score
                             FILTER p.par_length >= @parlength
                             FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
@@ -178,12 +181,13 @@ FOR file IN files
                                 par_full_names: par_full_names[0] || {}
                             }
                 )
+                FILTER LENGTH(parallels) > 0
+                LIMIT 100 * @page,100
                 RETURN {
                     segmentnr: segment.segnr,
                     parallels: parallels
                 }
         )
-
 RETURN current_segments
 """
 
