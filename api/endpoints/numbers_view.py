@@ -50,6 +50,7 @@ async def get_numbers_view(input: GeneralInput):
         input.limits.category_exclude + input.limits.file_exclude
     )
 
+    folio = input.folio
     if not input.folio:
         folio = 0
 
