@@ -50,6 +50,9 @@ async def get_numbers_view(input: GeneralInput):
         input.limits.category_exclude + input.limits.file_exclude
     )
 
+    if not input.folio:
+        folio = 0
+
     query_result = execute_query(
         main_queries.QUERY_NUMBERS_VIEW,
         bind_vars={
@@ -59,7 +62,7 @@ async def get_numbers_view(input: GeneralInput):
             "limitcollection_include": limitcollection_include,
             "limitcollection_exclude": limitcollection_exclude,
             "page": input.page,
-            "folio": input.folio,
+            "folio": folio,
         },
     )
 
