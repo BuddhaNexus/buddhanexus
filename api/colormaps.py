@@ -58,6 +58,7 @@ def create_segmented_text_color_only(text, colormap):
 
 def calculate_color_maps_text_view(data):
     """calculates the color maps for the text view"""
+    print(data)
     textleft = data["textleft"]
     parallels_dict = dict(zip(data["parallel_ids"], data["parallels"]))
     for entry in textleft:
@@ -83,7 +84,7 @@ def calculate_color_maps_text_view(data):
             # it is embarassing that we need to do this,
             # this should be dealt with at data-loader level
             end = min(end, segtext_len)
-            print("START", start, "END", end)
+            # print("START", start, "END", end)
             for item in range(start, end):
                 current_colormap[item] += 1
                 if parallel_id not in current_matchmap[item]:
