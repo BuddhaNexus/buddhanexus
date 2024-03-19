@@ -2,7 +2,7 @@
 This file holds the functions for creating the colormaps.
 """
 
-from .utils import shorten_segment_names, prettify_score, get_language_from_file_name
+from .utils import shorten_segment_names, prettify_score
 
 
 def create_segmented_text(text, colormap, matchmap):
@@ -59,12 +59,8 @@ def create_segmented_text_color_only(text, colormap):
 def calculate_color_maps_text_view(data):
     """calculates the color maps for the text view"""
     textleft = data["textleft"]
-    join_element_root = ""
-    if not get_language_from_file_name(textleft[0]["segnr"]) == "chn":
-        join_element_root = " "
     parallels_dict = dict(zip(data["parallel_ids"], data["parallels"]))
     for entry in textleft:
-        entry["segtext"] += join_element_root
         # initialize with zeros
         segtext_len = len(entry["segtext"])
         current_colormap = [
