@@ -83,7 +83,6 @@ def calculate_color_maps_text_view(data):
             # it is embarassing that we need to do this,
             # this should be dealt with at data-loader level
             end = min(end, segtext_len)
-            # print("START", start, "END", end)
             for item in range(start, end):
                 current_colormap[item] += 1
                 if parallel_id not in current_matchmap[item]:
@@ -94,8 +93,6 @@ def calculate_color_maps_text_view(data):
 
     for entry in textleft:
         del entry["parallel_ids"]
-
-    print(textleft)
 
     return textleft
 
