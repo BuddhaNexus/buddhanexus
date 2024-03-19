@@ -58,7 +58,6 @@ def create_segmented_text_color_only(text, colormap):
 
 def calculate_color_maps_text_view(data):
     """calculates the color maps for the text view"""
-    print(data)
     textleft = data["textleft"]
     parallels_dict = dict(zip(data["parallel_ids"], data["parallels"]))
     for entry in textleft:
@@ -95,6 +94,8 @@ def calculate_color_maps_text_view(data):
 
     for entry in textleft:
         del entry["parallel_ids"]
+
+    print(textleft)
 
     return textleft
 
