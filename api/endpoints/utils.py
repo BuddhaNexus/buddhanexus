@@ -48,7 +48,6 @@ async def get_folios_for_file(
         main_queries.QUERY_FOLIOS,
         bind_vars={"file_name": file_name},
     )
-    print(query_graph_result.result)
     folios = query_graph_result.result[0]
     return {"folios": folios}
 
@@ -66,7 +65,6 @@ async def get_displayname_for_segmentnr(
         main_queries.QUERY_DISPLAYNAME,
         bind_vars={"filename": filename},
     )
-    print(query_graph_result.result)
     displayname = query_graph_result.result[0]
     return {"displayname": displayname}
 
