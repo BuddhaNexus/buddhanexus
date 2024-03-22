@@ -37,6 +37,7 @@ class MultiLangInput(BaseModel):
 
 class SearchInput(BaseModel):
     search_string: str
+    language: str = ""
     limits: Optional[Limits]
 
 

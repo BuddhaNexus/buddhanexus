@@ -137,7 +137,7 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
     print("Segment data loading completed.")
     print("Creating analyzers and search views...")
     create_analyzers(db)
-    create_search_views(db)
+    create_search_views(db, lang)
     print("Analyzers and search views created.")
 
 

@@ -91,11 +91,11 @@ class LoadSegmentsBase:
         stems = sliding_window(file_df["stemmed"].tolist(), 3)
         search_index_entries = []
         for segnr, original, stem in zip(segmentnrs, originals, stems):
-            
             if self.LANG == "chn":
                 original = "".join(original)
                 stem = "".join(stem)
-            else:
+            else:                
+                
                 original = " ".join(original)
                 stem = " ".join(stem)
             category = get_cat_from_segmentnr(segnr[1])
@@ -107,6 +107,7 @@ class LoadSegmentsBase:
                     "stemmed": stem,
                     "category": category,
                     "language": self.LANG,
+                    "file_name": get_filename_from_segmentnr(segnr[1]),
                 }
             )
         db.collection(self.SEARCH_COLLECTION_NAME).delete_many({"language": self.LANG})
@@ -120,11 +121,13 @@ class LoadSegmentsBase:
     def _process_file(self, file):
         print(f"Processing file: { file }")
         db = get_database()
-        file_df = pd.read_csv(os.path.join(self.DATA_PATH, file), sep="\t")
-        if validate_df(self.DATA_PATH, Segment, file_df):
+        try:
+            file_df = pd.read_csv(os.path.join(self.DATA_PATH, file), sep="\t")
             self._load_segments(file_df, db)
             self._load_segments_to_search_index(file_df, db)
-
+        except Exception as e:
+            print(f"Error while processing file {file}: {e}")
+            
     def load(self, number_of_threads: int = 1) -> None:
         # only create collection if it does not exist
         db = get_database()

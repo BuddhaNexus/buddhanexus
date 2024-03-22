@@ -1,9 +1,14 @@
 from fastapi import APIRouter, Query
 from .endpoint_utils import execute_query
 from ..queries import menu_queries
-
+import unidecode
 router = APIRouter()
 
+
+def add_searchfield(results):
+    for result in results:
+        result["search_field"] = result['displayName'] + " " + unidecode.unidecode(result["displayName"]).lower() + " " + result['textname']
+    return results
 
 @router.get("/files/")
 async def get_files_for_menu(
@@ -20,7 +25,8 @@ async def get_files_for_menu(
         menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
         bind_vars = {"language": language}
     query_result = execute_query(menu_query, bind_vars)
-    return {"results": query_result.result}
+    query_result = add_searchfield(query_result.result)
+    return {"results": query_result}
 
 
 @router.get("/filter/")

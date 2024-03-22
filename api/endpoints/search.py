@@ -5,7 +5,7 @@ from ..search import search_utils
 from ..queries import search_queries
 from .models.shared import SearchInput
 from .endpoint_utils import execute_query
-
+from ..colormaps import calculate_color_maps_search
 router = APIRouter()
 
 
@@ -23,7 +23,7 @@ async def get_search_results(input: SearchInput):
     )
     result = []
     search_string = input.search_string.lower()
-    search_strings = search_utils.preprocess_search_string(search_string[:300])
+    search_strings = search_utils.preprocess_search_string(search_string[:300], input.language)
     print("LIMIT COLLECTION INCLUDE", limitcollection_include)
     print("LIMIT COLLECTION EXCLUDE", limit_collection_exclude)
     query_search = execute_query(
@@ -43,4 +43,5 @@ async def get_search_results(input: SearchInput):
         search_strings,
         query_result,
     )
+    results = calculate_color_maps_search(result)
     return {"searchResults": result}
