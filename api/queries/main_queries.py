@@ -310,8 +310,15 @@ LET parallels = (
                         RETURN segment.segtext
                )
 
+            LET par_full_name = (
+                FOR file in files
+                    FILTER file._key == p.par_filename
+                    RETURN file.displayName
+                )
+
             RETURN {
                 par_segnr: p.par_segnr,
+                display_name: par_full_name[0],
                 tgt_lang: p.tgt_lang,
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
@@ -332,8 +339,16 @@ LET parallels_multi = (
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
+
+            LET par_full_name = (
+                FOR file in files
+                    FILTER file._key == p.par_filename
+                    RETURN file.displayName
+                )
+
             RETURN {
                 par_segnr: p.par_segnr,
+                display_name: par_full_name[0],
                 tgt_lang: p.tgt_lang,
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
