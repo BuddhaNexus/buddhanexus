@@ -7,6 +7,9 @@ ARANGO_HOST = f"http://{os.environ['ARANGO_HOST']}:{os.environ['ARANGO_PORT']}"
 DEFAULT_SOURCE_URL = os.environ["SOURCE_FILES_URL"]
 DEFAULT_TSV_URL = os.environ["TSV_FILES_URL"]
 
+METADATA_DIR = "../metadata/"
+METADATA_SCHEMAS = METADATA_DIR + "schemas/"
+
 LANG_TIBETAN = "tib"
 LANG_SANSKRIT = "skt"
 LANG_CHINESE = "chn"

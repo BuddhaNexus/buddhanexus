@@ -5,6 +5,7 @@ Here we create the search index and analyzers for the global search in the text 
 from arango.database import StandardDatabase
 from tqdm import tqdm as tqdm
 from dataloader_constants import (
+    METADATA_DIR,
     VIEW_SEARCH_INDEX_TIB,
     VIEW_SEARCH_INDEX_TIB_FUZZY,
     VIEW_SEARCH_INDEX_PLI,
@@ -36,9 +37,9 @@ def get_stopwords_list(path):
     return stopwords
 
 
-tib_stopwords_list = get_stopwords_list("../data/tib_stopwords.txt")
-skt_stopwords_list = get_stopwords_list("../data/skt_stopwords.txt")
-pli_stopwords_list = get_stopwords_list("../data/pli_stopwords.txt")
+tib_stopwords_list = get_stopwords_list(METADATA_DIR + "tib_stopwords.txt")
+skt_stopwords_list = get_stopwords_list(METADATA_DIR + "skt_stopwords.txt")
+pli_stopwords_list = get_stopwords_list(METADATA_DIR + "pli_stopwords.txt")
 
 
 class AnalyzerBase:

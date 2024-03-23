@@ -9,9 +9,8 @@ import json
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from argparse import ArgumentParser
-import os
-METADATA_ROOT = "../data/"
-METADATA_SCHEMAS = METADATA_ROOT + "schemas/"
+
+from dataloader_constants import METADATA_DIR, METADATA_SCHEMAS
 
 def validate_json(schema_path, doc_path):
     with open(Path(schema_path)) as f:
@@ -31,7 +30,7 @@ def validate_json(schema_path, doc_path):
 
 
 def main(args):
-    data_path = args.metadatapath if args.metadatapath else METADATA_ROOT
+    data_path = args.metadatapath if args.metadatapath else METADATA_DIR
     data_path = Path(data_path)
     schemas_path = Path(METADATA_SCHEMAS)
 
