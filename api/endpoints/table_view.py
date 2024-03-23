@@ -22,8 +22,6 @@ async def get_table_view(input: GeneralInput):
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
-
-    print(input)
     limitcollection_include = create_cleaned_limit_collection(
         input.limits.category_include + input.limits.file_include
     )
@@ -31,7 +29,6 @@ async def get_table_view(input: GeneralInput):
         input.limits.category_exclude + input.limits.file_exclude
     )
 
-    print(limitcollection_include, limitcollection_exclude)
     sortkey = get_sort_key(input.sort_method)
     query_result = execute_query(
         main_queries.QUERY_TABLE_VIEW,
