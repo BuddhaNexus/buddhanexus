@@ -74,6 +74,7 @@ export const ParallelSegment = ({
             <Link
               href={`/db/${language}/${textName}/text?selectedSegment=${urlEncodedSegmentNumber}&selectedSegmentIndex=0`}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
+              target="_blank"
             >
               {textSegmentNumbers}
             </Link>
