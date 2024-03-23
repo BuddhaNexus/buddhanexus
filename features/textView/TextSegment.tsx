@@ -93,6 +93,11 @@ export const TextSegment = ({
           );
         }
 
+        const color = shouldUseOldSegmentColors
+          ? OLD_WEBSITE_SEGMENT_COLORS[highlightColor] ??
+            OLD_WEBSITE_SEGMENT_COLORS.at(-1)
+          : colorScale(highlightColor).hex();
+
         return (
           <button
             key={segmentKey}
@@ -103,9 +108,7 @@ export const TextSegment = ({
             } ${isSegmentPartSelected && styles["segment--selected"]}`}
             style={{
               fontFamily: sourceSans.style.fontFamily,
-              color: shouldUseOldSegmentColors
-                ? OLD_WEBSITE_SEGMENT_COLORS[highlightColor]
-                : colorScale(highlightColor).hex(),
+              color,
             }}
             onClick={() => {
               updateSelectedLocationInGlobalState({
