@@ -98,7 +98,7 @@ export const ParallelSegment = ({
         >
           {score && (
             <Tooltip
-              title={`${t("db.score")}: ${score}`}
+              title={`${t("db.score")}: ${Math.round(score * 100) / 100}`}
               PopperProps={{ disablePortal: true }}
             >
               <Chip

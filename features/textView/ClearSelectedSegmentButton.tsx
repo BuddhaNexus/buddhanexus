@@ -1,20 +1,21 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { IconButton, Tooltip } from "@mui/material";
 import { useQueryParam } from "use-query-params";
 
 export function ClearSelectedSegmentButton() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, setSelectedSegmentId] = useQueryParam<string>("selectedSegment");
+
+  const { t } = useTranslation();
 
   return (
     <Tooltip
-      title="Clear selected segment"
+      title={t("common:db.clearSelectedSegment")}
       PopperProps={{ disablePortal: true }}
     >
       <IconButton color="inherit" onClick={() => setSelectedSegmentId("")}>
-        {/* todo: add i18n */}
-        <HighlightOffIcon aria-label="clear selected segment" />
+        <HighlightOffIcon aria-label={t("common:db.clearSelectedSegment")} />
       </IconButton>
     </Tooltip>
   );

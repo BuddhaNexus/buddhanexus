@@ -5,7 +5,7 @@
     "default": "Standard"
   },
   "resultsHead": {
-    "matches": "Streichhölzer:",
+    "matches": "Übereinstimmungen:",
     "filters": "Benutzerdefinierte Filter: {{value}}",
     "options": "Benutzerdefinierte Optionen: {{value}}",
     "settings": "Einstellungen",

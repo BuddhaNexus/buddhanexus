@@ -86,7 +86,7 @@ export default function TextViewMiddleParallels() {
         }}
       >
         <Chip
-          label={`${selectedSegmentMatches.length} ${t("db.matches")}`}
+          label={`${selectedSegmentMatches.length} ${t("db.segmentMatches")}`}
           variant="outlined"
           icon={<Numbers />}
         />
