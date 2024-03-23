@@ -92,17 +92,15 @@ export const TextSegment = ({
             </span>
           );
         }
+
         return (
           <button
             key={segmentKey}
             type="button"
             tabIndex={0}
-            className={`${styles.segment} ${styles["segment--button"]} ${
-              isSegmentPartSelected &&
-              (isDarkTheme
-                ? styles["segment--selected-dark"]
-                : styles["segment--selected-light"])
-            }`}
+            className={`${styles.segment} ${styles.segment__button} ${
+              isDarkTheme && styles["segment--dark"]
+            } ${isSegmentPartSelected && styles["segment--selected"]}`}
             style={{
               fontFamily: sourceSans.style.fontFamily,
               color: shouldUseOldSegmentColors

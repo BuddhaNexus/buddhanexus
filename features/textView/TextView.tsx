@@ -4,7 +4,6 @@ import React, { useMemo } from "react";
 import { Virtuoso } from "react-virtuoso";
 import { EmptyPlaceholder, Footer } from "@components/db/ListComponents";
 import { Paper } from "@mui/material";
-import { useColorScheme } from "@mui/material/styles";
 import { Allotment } from "allotment";
 import chroma from "chroma-js";
 import type { TextPageData } from "types/api/text";
@@ -25,24 +24,18 @@ export default function TextView({
   onEndReached,
   onStartReached,
 }: Props) {
-  const { mode } = useColorScheme();
-  const isDarkTheme = mode === "dark";
-
   const [selectedSegmentId] = useQueryParam("selectedSegment");
 
   const colorScale = useMemo(() => {
     const colors = data.map((item) => item.segmentText[0]?.highlightColor ?? 0);
     const [minColor, maxColor] = [Math.min(...colors), Math.max(...colors)];
 
-    return (
-      chroma
-        .scale("Reds")
-        .correctLightness(true)
-        .padding(isDarkTheme ? [0, 0.3] : [0.3, 0])
-        // small trick to make it readable in both color schemes
-        .domain(isDarkTheme ? [minColor, maxColor] : [maxColor, minColor])
-    );
-  }, [data, isDarkTheme]);
+    return chroma
+      .scale("Reds")
+      .correctLightness(true)
+      .padding([0.3, 0])
+      .domain([maxColor, minColor]);
+  }, [data]);
 
   const hasData = data.length > 0;
   const shouldShowMiddlePane = Boolean(selectedSegmentId);

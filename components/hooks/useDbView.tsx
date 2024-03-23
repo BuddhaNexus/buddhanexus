@@ -18,7 +18,7 @@ export const shouldShowSegmentNumbersAtom = atomWithStorage<boolean>(
 );
 export const shouldUseOldSegmentColorsAtom = atomWithStorage<boolean>(
   "shouldUseOldSegmentColors",
-  false,
+  true,
 );
 
 const initiateView = (view: DbViewEnum | string): DbViewEnum => {
