@@ -22,7 +22,8 @@ import { QueryParamProvider } from "use-query-params";
 import { queryCacheTimeDefaults } from "utils/api/apiQueryUtils";
 import { ThemeProvider } from "utils/ThemeProvider";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp(props: AppProps) {
+  const { Component, pageProps } = props;
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -33,7 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 
   return (
-    <AppCacheProvider>
+    <AppCacheProvider {...props}>
       <QueryParamProvider
         adapter={NextAdapter}
         options={{

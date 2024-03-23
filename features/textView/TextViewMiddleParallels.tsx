@@ -1,7 +1,9 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { Numbers } from "@mui/icons-material";
-import { Chip, CircularProgress, Paper } from "@mui/material";
+import { Chip, CircularProgress } from "@mui/material";
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { ParallelSegment } from "features/tableView/ParallelSegment";
@@ -15,6 +17,8 @@ export default function TextViewMiddleParallels() {
   const { t } = useTranslation();
 
   const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
+
+  const theme = useTheme();
 
   const { data, isLoading } = useQuery<TextViewMiddleParallelsData>({
     queryKey: DbApi.TextViewMiddle.makeQueryKey(selectedSegmentMatches),
@@ -68,14 +72,14 @@ export default function TextViewMiddleParallels() {
           transform: "translate(-50%, -50%)",
         }}
       />
-      <Paper
+      <Box
         data-testid="middle-view-header"
-        elevation={2}
         style={{
           display: "flex",
           justifyContent: "flex-end",
           alignItems: "center",
           position: "sticky",
+          backgroundColor: theme.palette.background.paper,
           top: 0,
           zIndex: 1,
           padding: 4,
@@ -89,7 +93,7 @@ export default function TextViewMiddleParallels() {
         <div>
           <ClearSelectedSegmentButton />
         </div>
-      </Paper>
+      </Box>
 
       <div>{parallelsToDisplay}</div>
     </div>

@@ -30,7 +30,11 @@ export default function TextView({
     const colors = data.map((item) => item.segmentText[0]?.highlightColor ?? 0);
     const [minColor, maxColor] = [Math.min(...colors), Math.max(...colors)];
 
-    return chroma.scale("Reds").padding([0.6, 0]).domain([maxColor, minColor]);
+    return chroma
+      .scale("Reds")
+      .padding([0.6, 0])
+      .domain([maxColor, minColor])
+      .correctLightness(true);
   }, [data]);
 
   const hasData = data.length > 0;
