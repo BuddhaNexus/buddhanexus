@@ -60,11 +60,10 @@ export async function getSourceTextMenuData(
       return {
         id: filename,
         name: displayName,
-        label: displayName,
+        label: search_field,
         fileName: filename,
         textName: textname,
         category,
-        searchMatter: search_field,
       };
     }) ?? []
   );
