@@ -6,6 +6,8 @@ import { EmptyPlaceholder, Footer } from "@components/db/ListComponents";
 import { Paper } from "@mui/material";
 import { Allotment } from "allotment";
 import chroma from "chroma-js";
+import { selectedSegmentMatchesAtom } from "features/atoms/textView";
+import { useAtomValue } from "jotai/index";
 import type { TextPageData } from "types/api/text";
 import { useQueryParam } from "use-query-params";
 
@@ -26,6 +28,8 @@ export default function TextView({
 }: Props) {
   const [selectedSegmentId] = useQueryParam("selectedSegment");
 
+  const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
+
   const colorScale = useMemo(() => {
     const colors = data.map((item) => item.segmentText[0]?.highlightColor ?? 0);
     const [minColor, maxColor] = [Math.min(...colors), Math.max(...colors)];
@@ -38,7 +42,8 @@ export default function TextView({
   }, [data]);
 
   const hasData = data.length > 0;
-  const shouldShowMiddlePane = Boolean(selectedSegmentId);
+  const shouldShowMiddlePane =
+    Boolean(selectedSegmentId) && selectedSegmentMatches.length > 0;
 
   // make sure the selected segment is at the top when the page is opened
   const selectedSegmentIndexInData = useMemo(() => {
