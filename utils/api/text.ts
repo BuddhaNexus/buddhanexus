@@ -20,6 +20,7 @@ function parseAPITextViewMiddleParallelsData(
   apiData: ApiTextPageMiddleParallelsData,
 ): TextViewMiddleParallelsData {
   return apiData.map((p) => ({
+    displayName: p.display_name,
     targetLanguage: p.tgt_lang,
     fileName: p.file_name,
     score: p.score,

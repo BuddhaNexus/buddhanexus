@@ -17,6 +17,7 @@ export interface ApiTextPageDataSegment {
 export type ApiTextPageData = ApiTextPageDataSegment[];
 
 export type TextViewMiddleParallel = {
+  displayName: string;
   fileName: string;
   parallelLength: number;
   parallelFullText: ApiTextSegment[];
@@ -29,6 +30,7 @@ export type TextViewMiddleParallelsData = TextViewMiddleParallel[];
 
 export type ApiTextViewMiddleParallel = {
   file_name: string;
+  display_name: string;
   length: number;
   par_fulltext: ApiTextSegment[];
   par_segnr: [start: string, end: string];

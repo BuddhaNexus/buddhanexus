@@ -23,6 +23,7 @@ export default function TextViewMiddleParallels() {
   const { data, isLoading } = useQuery<TextViewMiddleParallelsData>({
     queryKey: DbApi.TextViewMiddle.makeQueryKey(selectedSegmentMatches),
     queryFn: () => DbApi.TextViewMiddle.call(selectedSegmentMatches),
+    enabled: selectedSegmentMatches.length > 0,
   });
 
   const parallelsToDisplay = useMemo(
@@ -33,6 +34,7 @@ export default function TextViewMiddleParallels() {
         .map(
           ({
             fileName,
+            displayName,
             parallelLength,
             parallelFullText,
             parallelSegmentNumbers,
@@ -41,7 +43,7 @@ export default function TextViewMiddleParallels() {
           }) => (
             <ParallelSegment
               key={fileName + score + parallelLength}
-              displayName={fileName}
+              displayName={displayName}
               language={targetLanguage}
               length={parallelLength}
               text={parallelFullText}
