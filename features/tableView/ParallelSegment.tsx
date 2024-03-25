@@ -70,16 +70,13 @@ export const ParallelSegment = ({
           <SourceLanguageChip label={sourceLanguageName} language={language} />
 
           {/* File Name */}
-          <Tooltip
-            title={textSegmentNumbers}
-            PopperProps={{ disablePortal: true }}
-          >
+          <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
             <Link
               href={`/db/${language}/${textName}/text?selectedSegment=${urlEncodedSegmentNumber}&selectedSegmentIndex=0`}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
               target="_blank"
             >
-              {displayName}
+              {textSegmentNumbers}
             </Link>
           </Tooltip>
           <IconButton
