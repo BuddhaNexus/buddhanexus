@@ -60,7 +60,7 @@ from clean_database import (
     clean_all_lang_db,
 )
 
-from load_texts import load_text_data_from_menu_files
+from dataloader.load_text_metadata import load_text_metadata_from_menu_files
 
 
 @task
@@ -127,7 +127,7 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
         f"Loading source files from {root_url} using {f'{number_of_threads} threads' if threaded else '1 thread'}."
     )
 
-    load_text_data_from_menu_files(lang, db)
+    load_text_metadata_from_menu_files(lang, db)
     for l in lang:
         print("LANG: ", l)
         SegmentLoaderClass = SEGMENT_LOADERS.get(l)

@@ -10,8 +10,6 @@ import pandas as pd
 from tqdm import tqdm as tqdm
 from arango.database import StandardDatabase
 
-from dataloader_models import Segment, validate_df
-
 from dataloader_constants import (
     COLLECTION_SEARCH_INDEX_TIB,
     COLLECTION_SEARCH_INDEX_SKT,
