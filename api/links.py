@@ -5,7 +5,6 @@ from .utils import get_language_from_file_name
 
 def get_links(file_name, links_query):
     """get links for each file name"""
-    print("get_links", file_name, links_query)
     if len(links_query.result) < 1:
         return {
             "bdrc": False,

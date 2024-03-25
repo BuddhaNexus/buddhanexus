@@ -40,8 +40,8 @@ FOR f IN parallels_sorted_file
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
@@ -78,7 +78,7 @@ FOR f IN parallels_sorted_file
                 root_offset_beg: p.root_offset_beg,
                 root_offset_end: p.root_offset_end,
                 par_segment: par_segment,
-                par_full_names: par_full_names[0],
+                par_full_names: par_full_names[0] || {},
                 root_full_names: root_full_names[0],
                 file_name: p.id,
                 root_segnr: p.root_segnr,
@@ -101,8 +101,8 @@ FOR f IN parallels_sorted_file
             FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
 
 
             LET root_seg_text = (
@@ -141,6 +141,56 @@ FOR f IN parallels_sorted_file
                 src_lang: p.src_lang
             }
 """
+
+QUERY_NUMBERS_VIEW = """
+FOR file IN files
+    FILTER file._key == @file_name
+    LET selected_folio_segmentnr = (
+        RETURN file.folios[@folio].segment_nr
+    )
+    LET current_segments = (
+        LET startIndex = POSITION(file.segment_keys, selected_folio_segmentnr[0], true)
+        LET subArray = SLICE(file.segment_keys, startIndex)
+        FOR segmentnr IN subArray
+            FOR segment in segments
+                FILTER segment._key == segmentnr
+                LET parallel_ids = (
+                    FOR p IN parallels
+                        FILTER segmentnr IN p.root_segnr
+                        RETURN p._key
+                        )
+                FILTER LENGTH(parallel_ids) > 0
+                LET parallels = (
+                    FOR parallel_id IN parallel_ids
+                        FOR p IN parallels
+                            FILTER p._key == parallel_id
+                            FILTER p.score * 100 >= @score
+                            FILTER p.par_length >= @parlength
+                            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+                            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+
+                            LET par_full_names = (
+                                FOR f in files
+                                    FILTER f._key == p.par_filename
+                                    RETURN {"displayName": f.displayName,
+                                    "fileName": f.filename,
+                                    "category": f.category}
+                                )
+                            RETURN {
+                                par_segnr: p.par_segnr,
+                                par_full_names: par_full_names[0] || {}
+                            }
+                )
+                FILTER LENGTH(parallels) > 0
+                LIMIT 100 * @page,100
+                RETURN {
+                    segmentnr: segment.segnr,
+                    parallels: parallels
+                }
+        )
+RETURN current_segments
+"""
+
 
 QUERY_MULTILINGUAL = """
 LET parallel_ids = (
@@ -226,8 +276,8 @@ LET parallels =  (
             FILTER p._key == parallel_id
             FILTER p.score >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
 
             FILTER POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
@@ -260,8 +310,15 @@ LET parallels = (
                         RETURN segment.segtext
                )
 
+            LET par_full_name = (
+                FOR file in files
+                    FILTER file._key == p.par_filename
+                    RETURN file.displayName
+                )
+
             RETURN {
                 par_segnr: p.par_segnr,
+                display_name: par_full_name[0],
                 tgt_lang: p.tgt_lang,
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
@@ -282,8 +339,16 @@ LET parallels_multi = (
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
+
+            LET par_full_name = (
+                FOR file in files
+                    FILTER file._key == p.par_filename
+                    RETURN file.displayName
+                )
+
             RETURN {
                 par_segnr: p.par_segnr,
+                display_name: par_full_name[0],
                 tgt_lang: p.tgt_lang,
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
@@ -336,8 +401,8 @@ FOR p IN current_parallels
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels
     FILTER p.root_filename == @file_name
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_file_name IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_file_name NOT IN @limitcollection_exclude)
+            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
     FILTER p.score >= @score
     FILTER p.par_length >= @parlength
     LIMIT 15000
