@@ -125,7 +125,7 @@ class LoadSegmentsBase:
         )
 
     def _process_file(self, file):
-        if file.split(".tsv")[0] not in self.metadata_file_list:
+        if file.split(".tsv")[0].split("$")[0] not in self.metadata_file_list:
             print(f"ERROR: file not in metadata: { file }")
             return
         print(f"Processing file: { file }")
