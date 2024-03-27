@@ -148,7 +148,6 @@
             "K10bsu024_u",
             "K10bsu025_u",
             "K10bsu026_u",
-            "K10bsu027_u",
             "K10bsu031_u",
             "K10bsu032_u",
             "K10bsu034_u",
@@ -195,7 +194,30 @@
             "K10srajsgiu",
             "K10sukhvysu",
             "K10tbimbk_u",
-            "K10vimkn_u"
+            "K10udanav_u",
+            "K10uvs_sc",
+            "K10vimkn_u",
+            "K10sf18_sc",
+            "K10sf68_sc",
+            "K10sf73_sc",
+            "K10sf74_sc",
+            "K10sf75_sc",
+            "K10sf89_sc",
+            "K10sf90_sc",
+            "K10sf101_sc",
+            "K10sf107_sc",
+            "K10sf137_sc",
+            "K10sf140_sc",
+            "K10sf241_sc",
+            "K10sf253_sc",
+            "K10sf258_sc",
+            "K10sf264_sc",
+            "K10sf265_sc",
+            "K10sf276_sc",
+            "K10sf277_sc",
+            "K10sf279_sc",
+            "K10sf280_sc",
+            "K10sf284_sc"
         ]
     },
     {
@@ -261,10 +283,12 @@
             "K14mavadsuu",
             "K14mhvastuu",
             "K14mpsu_w_u",
+            "K14sf273_sc",
             "K14msudarsu",
             "K14n191u",
             "K14n192u",
             "K14n285u",
+            "K14sf259_sc",
             "K14n445u",
             "K14n2947u",
             "K14n3013u",
@@ -551,6 +575,7 @@
         "categoryname": "Sūtra Commentaries",
         "files": [
             "T05bsa062_u",
+            "T05bsu027_u",
             "T05n1110u",
             "T05nagsaliu"
         ]
@@ -596,7 +621,6 @@
             "T07n772u",
             "T07n797u",
             "T07nagdhdbu",
-            "T07udanav_u",
             "T07vabhdicu",
             "T07vabhdiku",
             "T07vabhdilu",
@@ -784,7 +808,8 @@
         "files": [
             "GV00avs___u",
             "GV00maitrs_pu",
-            "GV00samavedu"
+            "GV00samavedu",
+            "GV00sa_paippalAdasaMhitA"
         ]
     },
     {
@@ -1474,6 +1499,8 @@
             "GSP30partrvpu",
             "GSP30parypanu",
             "GSP30pratyabu",
+            "GSP30sa_avadhUtasiddha-bhagavadbhaktistotra",
+            "GSP30sa_kSemarAja-bhairavAnukaraNastotra",
             "GSP30spandkau",
             "GSP30tantralu",
             "GSP30timudghu",
@@ -1587,6 +1614,14 @@
         ]
     },
     {
+        "category": "GSP35",
+        "categoryname": "GSP35 (Śāstra 3)",
+        "files": [
+            "GSP35sa_bhAskarakaNTha-mokSopAyaTIkA",
+            "GSP35sa_mokSopAya"
+        ]
+    },
+    {
         "category": "GSD36",
         "categoryname": "GSD36 Dharmaśāstra Smṛti (Śāstra 4)",
         "files": [
@@ -1600,6 +1635,7 @@
             "GSD36nars2_pu",
             "GSD36pars1__u",
             "GSD36pars2_pu",
+            "GSD36sa_vijJAnezvara-mitAkSarA",
             "GSD36visnu_pu",
             "GSD36yajn2_pu",
             "GSD36ys182_pu",

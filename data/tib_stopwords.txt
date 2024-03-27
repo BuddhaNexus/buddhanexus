@@ -43,7 +43,7 @@ am
 ngo
 'ngo
 nas
-las 
+las
 ni
 'di
 bar
@@ -65,4 +65,4 @@ bzhin
 yas
 ge
 dis
-su 
+su

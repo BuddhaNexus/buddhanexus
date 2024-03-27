@@ -5,54 +5,41 @@ from arango import (
     CollectionDeleteError,
     GraphDeleteError,
 )
+
 from arango.database import StandardDatabase
+
 from invoke import task
 
 from dataloader_constants import (
     DB_NAME,
     COLLECTION_NAMES,
-    INDEX_COLLECTION_NAMES,
-    INDEX_VIEW_NAMES,
     DEFAULT_SOURCE_URL,
-    COLLECTION_SEGMENTS,
-    COLLECTION_PARALLELS,
-    COLLECTION_FILES,
-    COLLECTION_MENU_COLLECTIONS,
-    COLLECTION_MENU_CATEGORIES,
-    COLLECTION_FILES_PARALLEL_COUNT,
+    DEFAULT_TSV_URL,
     EDGE_COLLECTION_NAMES,
-    COLLECTION_CATEGORIES_PARALLEL_COUNT,
-    EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
     GRAPH_COLLECTIONS_CATEGORIES,
-    COLLECTION_LANGUAGES,
-    EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
-    EDGE_COLLECTION_CATEGORY_HAS_FILES,
     LANG_TIBETAN,
     LANG_PALI,
     LANG_CHINESE,
     LANG_SANSKRIT,
-    DEFAULT_LANGS
-)
-from tasks_segments_parallels import (
-    load_segment_data_from_menu_files,
-    create_indices,
-    calculate_parallel_totals,
-    load_sources,
+    DEFAULT_LANGS,
 )
 
-from tasks_multilingual import (
-    load_multilingual_parallels,
-    clean_multi
+from load_segments import (
+    LoadSegmentsSanskrit,
+    LoadSegmentsPali,
+    LoadSegmentsTibetan,
+    LoadSegmentsChinese,
 )
 
-from global_search_function import (
-    load_search_index_skt,
-    load_search_index_pli,
-    load_search_index_tib,
-    load_search_index_chn,
+from global_search import (
     create_analyzers,
     clean_analyzers,
-    create_search_views
+    create_search_views,
+)
+
+from load_parallels import (
+    load_parallels_for_language,
+    load_sorted_parallels_for_language,
 )
 
 from tasks_menu import (
@@ -60,7 +47,8 @@ from tasks_menu import (
     load_all_menu_categories,
     create_collections_categories_graph,
 )
-from dataloader_utils import get_database, get_system_database
+
+from utils import get_database, get_system_database
 
 from clean_database import (
     clean_search_index_db,
@@ -68,9 +56,10 @@ from clean_database import (
     clean_totals_collection_db,
     clean_segment_collections_db,
     clean_menu_collections_db,
-    clean_all_lang_db
+    clean_all_lang_db,
 )
-    
+
+from load_texts import load_text_data_from_menu_files
 
 
 @task
@@ -78,7 +67,7 @@ def create_db(c):
     """
     Create empty database with name specified in the .env file
 
-    :param c: invoke.py context object
+    am c: invoke.py context object
     """
     try:
         sys_db = get_system_database()
@@ -114,24 +103,59 @@ def create_collections(
 
 
 @task
-def load_segment_files(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=False):
+def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded=True):
     """
-    Download, parse and load source data into database collections.
+    Load texts and their segments into the database
 
     :param c: invoke.py context object
     :param root_url: URL to the server where source files are stored
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
-    thread_count = 10#os.cpu_count() - 1
+    db = get_database()
+    SEGMENT_LOADERS = {
+        "skt": LoadSegmentsSanskrit,
+        "pli": LoadSegmentsPali,
+        "tib": LoadSegmentsTibetan,
+        "zh": LoadSegmentsChinese,
+    }
+    number_of_threads = os.cpu_count()
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
-        lang = [''.join(lang)]
+        lang = ["".join(lang)]
     print(
-        f"Loading source files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
+        f"Loading source files from {root_url} using {f'{number_of_threads} threads' if threaded else '1 thread'}."
     )
-    load_segment_data_from_menu_files(root_url, thread_count if threaded else 1, lang)
-    
+
+    load_text_data_from_menu_files(lang, db)
+    for l in lang:
+        print("LANG: ", l)
+        SegmentLoaderClass = SEGMENT_LOADERS.get(l)
+        if SegmentLoaderClass:
+            loader = SegmentLoaderClass()
+            loader.load(number_of_threads=number_of_threads)
     print("Segment data loading completed.")
+    print("Creating analyzers and search views...")
+    create_analyzers(db)
+    create_search_views(db, lang)
+    print("Analyzers and search views created.")
+
+
+@task
+def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=True):
+    thread_count = os.cpu_count()
+    if lang != DEFAULT_LANGS:
+        lang = ["".join(lang)]
+    print(
+        f"Loading parallel files from {root_url} using {f'{thread_count} threads' if threaded else '1 thread'}."
+    )
+    db = get_database()
+    for clang in lang:
+        print("LANG: ", clang)
+        load_parallels_for_language(
+            root_url, clang, db, thread_count if threaded else 1
+        )
+        load_sorted_parallels_for_language(root_url, clang, db)
+
 
 @task
 def load_multi_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
@@ -142,9 +166,9 @@ def load_multi_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
     :param root_url: URL to the server where source files are stored
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
-    thread_count = 10#os.cpu_count() - 1
+    thread_count = 1  # os.cpu_count() - 1
     # this is a hack to work around the way parameters are passed via invoke
-    load_multilingual_parallels(root_url, thread_count if threaded else 1)    
+    load_multilingual_parallels(root_url, thread_count if threaded else 1)
     print("Multi-lingual data loading completed.")
 
 
@@ -157,30 +181,6 @@ def clean_multi_data(c):
     """
     clean_multi()
 
-    
-@task
-def create_search_index(
-    c,
-    index_url_skt=DEFAULT_SOURCE_URL + "/search_index_sanskrit.json.gz",
-    index_url_pli=DEFAULT_SOURCE_URL + "/search_index_pali.json.gz",
-    index_url_tib=DEFAULT_SOURCE_URL + "/search_index_tibetan.json.gz",
-    index_url_chn=DEFAULT_SOURCE_URL + "/search_index_chn.json.gz",
-):
-    """
-    Load index data for search index from path defined in .env.
-    """
-    db = get_database()
-    create_analyzers(db)
-    collections = INDEX_COLLECTION_NAMES
-    for name in collections:
-        db.create_collection(name)
-    load_search_index_skt(index_url_skt, db)
-    load_search_index_pli(index_url_pli, db)
-    load_search_index_chn(index_url_chn, db)
-    load_search_index_tib(index_url_tib, db)
-    create_search_views(db)
-    print("Search index data loading completed.")
-
 
 @task
 def clean_search_index(c):
@@ -190,7 +190,7 @@ def clean_search_index(c):
     """
     clean_search_index_db()
 
-    
+
 @task
 def clean_all_collections(c):
     """
@@ -199,6 +199,7 @@ def clean_all_collections(c):
     :param c: invoke.py context object
     """
     clean_all_collections_db()
+
 
 def clean_pali(c):
     """
@@ -223,9 +224,6 @@ def clean_pali(c):
     print("all collections cleaned.")
 
 
-
-    
-
 @task
 def clean_totals_collection(c):
     """
@@ -235,7 +233,7 @@ def clean_totals_collection(c):
     """
     clean_totals_collection_db()
 
-    
+
 @task
 def clean_segment_collections(c):
     """
@@ -245,7 +243,7 @@ def clean_segment_collections(c):
     """
     clean_segment_collections_db()
 
-    
+
 @task
 def clean_menu_collections(c):
     """
@@ -255,42 +253,47 @@ def clean_menu_collections(c):
     """
     clean_menu_collections_db()
 
+
 @task
 def clean_tibetan(c):
     """
-    Clear the menu database collections completely.
+    Clear tibetan segments collections completely.
 
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_TIBETAN)
+
+
 @task
 def clean_sanskrit(c):
     """
-    Clear the menu database collections completely.
+    Clear sanskrit segments collections completely.
 
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_SANSKRIT)
 
+
 @task
 def clean_pali(c):
     """
-    Clear the menu database collections completely.
+    Clear pali segments collections completely.
 
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_PALI)
 
+
 @task
 def clean_chinese(c):
     """
-    Clear the menu database collections completely.
+    Clear chinese segments collections completely.
 
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_CHINESE)
 
-    
+
 @task()
 def load_menu_files(c):
     print("Loading menu collections...")
@@ -303,17 +306,11 @@ def load_menu_files(c):
 
 
 @task
-def add_indices(c):
-    db = get_database()
-    print("Creating Indices")
-    create_indices(db)
-    print("Creation of indices done.")
-
-@task
 def add_sources(c):
     db = get_database()
     print("adding source information")
-    load_sources(db,DEFAULT_SOURCE_URL)
+    load_sources(db, DEFAULT_SOURCE_URL)
+
 
 @task
 def calculate_collection_totals(c):
