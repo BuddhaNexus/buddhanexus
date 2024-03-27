@@ -47,13 +47,22 @@ def create_segmented_text_color_only(text, colormap):
         current_color = colormap[i]
         if current_color != last_color:
             result_segments.append(
-                {"text": current_segment, "highlightColor": last_color}
+                {"text": abbreviate(current_segment), "highlightColor": last_color}
             )
             current_segment = ""
         current_segment += text[i]
         last_color = current_color
-    result_segments.append({"text": current_segment, "highlightColor": last_color})
+    result_segments.append({"text": abbreviate(current_segment), "highlightColor": last_color})
     return result_segments
+
+
+def abbreviate(text):
+    newtext = ""
+    if len(text) > 300:
+        newtext = text[:50] + " … " + text[-50:]
+    else:
+        newtext = text
+    return newtext
 
 
 def calculate_color_maps_text_view(data):
