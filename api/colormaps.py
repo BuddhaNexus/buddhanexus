@@ -57,6 +57,7 @@ def create_segmented_text_color_only(text, colormap):
 
 
 def abbreviate(text):
+    """ Abbreviates long matches with an ellipsis """
     newtext = ""
     if len(text) > 300:
         newtext = text[:50] + " … " + text[-50:]
