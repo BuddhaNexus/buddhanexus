@@ -3,6 +3,7 @@ import { useTranslation } from "next-i18next";
 import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import PercentIcon from "@mui/icons-material/Percent";
+import StraightenIcon from "@mui/icons-material/Straighten";
 import {
   Box,
   Card,
@@ -42,6 +43,7 @@ export const ParallelSegment = ({
   const sourceLanguageName = t(`language.${language}`);
 
   // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [textName, segmentName] = textSegmentNumbers[0].split(":");
   const infoToCopy = `${textSegmentNumbers.join("-")}: ${displayName}`;
 
@@ -50,8 +52,10 @@ export const ParallelSegment = ({
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
 
+  const urlEncodedSegmentNumber = encodeURIComponent(textSegmentNumbers[0]);
+
   return (
-    <Card sx={{ flex: 1, wordBreak: "break-all" }}>
+    <Card sx={{ flex: 1, wordBreak: "break-all", my: 1 }} elevation={1}>
       <CardContent
         sx={{
           display: "flex",
@@ -68,8 +72,9 @@ export const ParallelSegment = ({
           {/* File Name */}
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
             <Link
-              href={`/db/${language}/${textName}/text?selectedSegment=${segmentName}`}
+              href={`/db/${language}/${textName}/text?selectedSegment=${urlEncodedSegmentNumber}&selectedSegmentIndex=0`}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
+              target="_blank"
             >
               {textSegmentNumbers}
             </Link>
@@ -92,23 +97,32 @@ export const ParallelSegment = ({
           }}
         >
           {score && (
-            <Tooltip title="Score" PopperProps={{ disablePortal: true }}>
+            <Tooltip
+              title={`${t("db.score")}: ${Math.round(score * 100) / 100}`}
+              PopperProps={{ disablePortal: true }}
+            >
               <Chip
                 size="small"
                 color="primary"
                 variant="outlined"
                 icon={<PercentIcon />}
                 label={score}
-                sx={{ mr: 0.5, my: 0.5, p: 0.5 }}
+                sx={{ m: 0.5, p: 0.5 }}
               />
             </Tooltip>
           )}
 
-          <Chip
-            size="small"
-            label={`Length: ${length}`}
-            sx={{ m: 0.5, p: 0.5 }}
-          />
+          <Tooltip
+            title={`${t("db.length")}: ${length}`}
+            PopperProps={{ disablePortal: true }}
+          >
+            <Chip
+              size="small"
+              label={length}
+              icon={<StraightenIcon />}
+              sx={{ m: 0.5, p: 0.5 }}
+            />
+          </Tooltip>
         </Box>
       </CardContent>
 

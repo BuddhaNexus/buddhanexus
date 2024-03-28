@@ -130,9 +130,9 @@ export const onEmailQueryLink = ({
 }: UtilityClickHandlerProps) => {
   const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
-  const encodedURL = encodeURIComponent(href);
+  const encodedURL = encodeURI(href);
 
-  const subject = `BuddhaNexus serach results - ${fileName.toUpperCase()}`;
+  const subject = `BuddhaNexus search results - ${fileName.toUpperCase()}`;
   const body = `Here is a link to search results for ${fileName.toUpperCase()}: ${encodedURL}`;
 
   const link = document.createElement("a");

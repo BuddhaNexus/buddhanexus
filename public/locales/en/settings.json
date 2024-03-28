@@ -35,7 +35,7 @@
     "sort": {
       "selector": "Sorting Method",
       "position": "Default – Position in inquiry text",
-      "quoted-text":"Position in match texts",
+      "quoted-text": "Position in match texts",
       "length2": "Length of character match (>)"
     },
     "download": "Download results as xmlx file",
@@ -43,7 +43,9 @@
     "unicode": "Unicode",
     "copyQueryTitle": "Copy text title",
     "copyQueryLink": "Copy results page link",
-    "emailQueryLink": "Email results page link"
+    "emailQueryLink": "Email results page link",
+    "showSegmentNumbers": "Show segment numbers",
+    "usePreviousSegmentColors": "Use segment colors from the previous website"
   },
   "optionsPopperMsgs": {
     "download": "Ooops! Something went wrong!",

@@ -1,46 +1,103 @@
-import React from "react";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { IconButton, Tooltip } from "@mui/material";
+import React, { useMemo } from "react";
+import { useTranslation } from "next-i18next";
+import { Numbers } from "@mui/icons-material";
+import { Chip, CircularProgress } from "@mui/material";
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
-import type { TextPageData } from "types/api/text";
-import { useQueryParam } from "use-query-params";
+import { selectedSegmentMatchesAtom } from "features/atoms/textView";
+import { ParallelSegment } from "features/tableView/ParallelSegment";
+import { useAtomValue } from "jotai";
+import { TextViewMiddleParallelsData } from "types/api/text";
 import { DbApi } from "utils/api/dbApi";
 
-interface Props {
-  parallelIds: string[];
-}
+import { ClearSelectedSegmentButton } from "./ClearSelectedSegmentButton";
 
-export default function TextViewMiddleParallels({ parallelIds }: Props) {
-  // eslint-disable-next-line no-empty-pattern
-  const {
-    // sourceLanguage, fileName, queryParams
-  } = useDbQueryParams();
+export default function TextViewMiddleParallels() {
+  const { t } = useTranslation();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedSegmentId, setSelectedSegmentId] =
-    useQueryParam<string>("selectedSegment");
+  const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
 
-  // eslint-disable-next-line no-empty-pattern
-  const {
-    // data, isInitialLoading, isError
-  } = useQuery<TextPageData>({
-    queryKey: DbApi.TextViewMiddle.makeQueryKey(parallelIds),
-    queryFn: () =>
-      DbApi.TextViewMiddle.call(["K01n742u:13423", "K01n742u:24812"]),
+  const theme = useTheme();
+
+  const { data, isLoading } = useQuery<TextViewMiddleParallelsData>({
+    queryKey: DbApi.TextViewMiddle.makeQueryKey(selectedSegmentMatches),
+    queryFn: () => DbApi.TextViewMiddle.call(selectedSegmentMatches),
+    enabled: selectedSegmentMatches.length > 0,
   });
 
+  const parallelsToDisplay = useMemo(
+    () =>
+      data
+        // hide empty parallels
+        ?.filter((parallel) => parallel.parallelFullText)
+        .map(
+          ({
+            fileName,
+            displayName,
+            parallelLength,
+            parallelFullText,
+            parallelSegmentNumbers,
+            score,
+            targetLanguage,
+          }) => (
+            <ParallelSegment
+              key={fileName + score + parallelLength}
+              displayName={displayName}
+              language={targetLanguage}
+              length={parallelLength}
+              text={parallelFullText}
+              score={score}
+              textSegmentNumbers={parallelSegmentNumbers}
+            />
+          ),
+        ),
+    [data],
+  );
+
   return (
-    <div>
-      <Tooltip
-        title="Clear selected segment"
-        PopperProps={{ disablePortal: true }}
+    <div
+      style={{
+        overflow: "auto",
+        height: "100%",
+        flex: 1,
+        paddingRight: 8,
+        paddingLeft: 8,
+      }}
+    >
+      <CircularProgress
+        style={{
+          display: isLoading ? "block" : "none",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      />
+      <Box
+        data-testid="middle-view-header"
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          position: "sticky",
+          backgroundColor: theme.palette.background.paper,
+          top: 0,
+          zIndex: 1,
+          padding: 4,
+        }}
       >
-        <IconButton color="inherit" onClick={() => setSelectedSegmentId("")}>
-          {/* todo: add i18n */}
-          <HighlightOffIcon aria-label="clear selected segment" />
-        </IconButton>
-      </Tooltip>
+        <Chip
+          label={`${selectedSegmentMatches.length} ${t("db.segmentMatches")}`}
+          variant="outlined"
+          icon={<Numbers />}
+        />
+        <div>
+          <ClearSelectedSegmentButton />
+        </div>
+      </Box>
+
+      <div>{parallelsToDisplay}</div>
     </div>
   );
 }

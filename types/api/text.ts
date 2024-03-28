@@ -1,3 +1,5 @@
+import { SourceLanguage } from "utils/constants";
+
 import type { ApiTextSegment } from "./common";
 
 export interface TextPageDataSegment {
@@ -12,9 +14,28 @@ export interface ApiTextPageDataSegment {
   segtext: ApiTextSegment[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ApiTextViewMiddleParallels {}
-
 export type ApiTextPageData = ApiTextPageDataSegment[];
 
-export type ApiTextPageMiddleParallelsData = ApiTextViewMiddleParallels[];
+export type TextViewMiddleParallel = {
+  displayName: string;
+  fileName: string;
+  parallelLength: number;
+  parallelFullText: ApiTextSegment[];
+  parallelSegmentNumbers: [start: string, end: string];
+  score: number;
+  targetLanguage: SourceLanguage;
+};
+
+export type TextViewMiddleParallelsData = TextViewMiddleParallel[];
+
+export type ApiTextViewMiddleParallel = {
+  file_name: string;
+  display_name: string;
+  length: number;
+  par_fulltext: ApiTextSegment[];
+  par_segnr: [start: string, end: string];
+  score: number;
+  tgt_lang: SourceLanguage;
+};
+
+export type ApiTextPageMiddleParallelsData = ApiTextViewMiddleParallel[];

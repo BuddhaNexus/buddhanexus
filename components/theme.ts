@@ -126,8 +126,8 @@ export const getDesignTokens = ({
           card: "#29262d",
         },
         text: {
-          primary: "#d2cfcf",
-          secondary: "#a8a5a5",
+          primary: grey[100],
+          secondary: grey[300],
           inverted: grey[900],
         },
         divider: "rgba(54,31,13,0.12)",
@@ -148,9 +148,9 @@ export const getDesignTokens = ({
     h5: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.25rem" },
     h6: { fontFamily: sourceSans.style.fontFamily, fontSize: "1.15rem" },
     body1: {
-      fontFamily: sourceSans.style.fontFamily,
       fontSize: "1.15rem",
       lineHeight: 1.65,
+      fontFamily: sourceSans.style.fontFamily,
     },
     body2: { fontFamily: sourceSans.style.fontFamily },
     body3: { fontFamily: sourceSans.style.fontFamily },
