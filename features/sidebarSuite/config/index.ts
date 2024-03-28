@@ -61,7 +61,7 @@ const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptio
       ],
     },
     [local.showSegmentNrs]: {
-      [DbViewEnum.GRAPH]: ["all"],
+     [DbViewEnum.GRAPH]: ["all"],
       [DbViewEnum.NUMBERS]: ["all"],
       [DbViewEnum.TABLE]: ["all"],
     },

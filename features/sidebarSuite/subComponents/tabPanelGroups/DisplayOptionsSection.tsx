@@ -10,7 +10,6 @@ import {
   SortOption,
   TextScriptOption,
 } from "features/sidebarSuite/subComponents/settings";
-import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
 import { SegmentOptions } from "features/sidebarSuite/subComponents/settings/SegmentOptions";
 import { useAtomValue } from "jotai";
 
@@ -45,12 +44,7 @@ export const DisplayOptionsSection = () => {
   ]);
 
   if (options.length === 0) {
-    return (
-      <Box>
-        <PanelHeading heading={t("headings.display")} />
-        <DbViewSelector />
-      </Box>
-    );
+    return null
   }
 
   return (
