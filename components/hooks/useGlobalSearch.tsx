@@ -27,9 +27,10 @@ export function useGlobalSearch(): GlobalSearchProps {
         [uniqueSettings.queryParams.searchString]: searchTerm,
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(router.query).forEach(([key, value]) => {
         // This resets query values if the search has been initiated from a source text results page. The source language setting.persists.
-        // TODO: enable when `global-search` is merged
+        // TODO: enable when `global-search` is merged and remove eslint-disable-next-line
         // if (value && Object.keys(searchPageFilter).includes(key)) {
         //   query[key] = value.toString();
         // }
