@@ -1,11 +1,11 @@
-import type { DbViewEnum } from "@components/hooks/useDbView";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import type { UtilityOption } from "features/sidebarSuite/config/settings";
 import type {
   MenuOmission,
   MenuSetting,
   QueryParams,
-  UtilityOption,
+  SettingOmissionContext,
 } from "features/sidebarSuite/config/types";
 import type { Script } from "features/sidebarSuite/subComponents/settings/TextScriptOption";
 import { EwtsConverter } from "tibetan-ewts-converter";
@@ -16,16 +16,16 @@ export const isSettingOmitted = ({
   omissions,
   settingName,
   language,
-  view,
+  pageContext,
 }: {
   omissions: MenuOmission;
   settingName: MenuSetting;
   language: SourceLanguage;
-  view: DbViewEnum;
+  pageContext: SettingOmissionContext;
 }) => {
   return Boolean(
-    omissions?.[settingName]?.[view]?.some((omittedLang) =>
-      ["allLangs", language].includes(omittedLang),
+    omissions?.[settingName]?.[pageContext]?.some((omittedLang) =>
+      ["all", language].includes(omittedLang),
     ),
   );
 };
@@ -132,8 +132,13 @@ export const onEmailQueryLink = ({
 
   const encodedURL = encodeURI(href);
 
-  const subject = `BuddhaNexus search results - ${fileName.toUpperCase()}`;
-  const body = `Here is a link to search results for ${fileName.toUpperCase()}: ${encodedURL}`;
+  // TODO: i18n
+  const subject = fileName
+    ? `BuddhaNexus search results - ${fileName.toUpperCase()}`
+    : `BuddhaNexus search results`;
+  const body = fileName
+    ? `Here is a link to search results for ${fileName.toUpperCase()}: ${encodedURL}`
+    : `Here is a link to your search results: ${encodedURL}`;
 
   const link = document.createElement("a");
   link.href = `mailto:?subject=${subject}&body=${body}`;

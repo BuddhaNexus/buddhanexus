@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useDownloader from "react-use-downloader";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
@@ -58,7 +59,7 @@ export const UtilityOptionsSection = () => {
     fileName,
     sourceLanguage,
     queryParams,
-    settingRenderGroups,
+    pageSettings,
     settingsOmissionsConfig,
   } = useDbQueryParams();
   let href: string;
@@ -67,6 +68,9 @@ export const UtilityOptionsSection = () => {
     href = window.location.toString();
   }
 
+  const { route } = useRouter();
+
+  const isSearchRoute = route.startsWith("/search");
   const { download, error } = useDownloader();
 
   const [popperAnchorEl, setPopperAnchorEl] =
@@ -77,7 +81,9 @@ export const UtilityOptionsSection = () => {
       <PanelHeading heading={t("headings.tools")} sx={{ mt: 3 }} />
 
       <List sx={{ m: 0 }}>
-        {Object.values(settingRenderGroups.utilityOption).map((utilityKey) => {
+        {Object.values(
+          pageSettings[isSearchRoute ? "search" : "dbResult"].utilityOptions,
+        ).map((utilityKey) => {
           const Icon = utilityComponents[utilityKey].icon;
 
           if (
@@ -85,7 +91,7 @@ export const UtilityOptionsSection = () => {
               omissions: settingsOmissionsConfig.utilityOptions,
               settingName: utilityKey,
               language: sourceLanguage,
-              view: currentView,
+              pageContext: isSearchRoute ? "search" : currentView,
             })
           ) {
             return null;
@@ -93,7 +99,7 @@ export const UtilityOptionsSection = () => {
 
           const isPopperOpen = Boolean(popperAnchorEl[utilityKey]);
           const showPopper =
-            utilityKey === settingRenderGroups.utilityOption.download
+            utilityKey === pageSettings.dbResult.utilityOptions.download
               ? Boolean(error)
               : true;
           const popperId = isPopperOpen ? `${utilityKey}-popper` : undefined;

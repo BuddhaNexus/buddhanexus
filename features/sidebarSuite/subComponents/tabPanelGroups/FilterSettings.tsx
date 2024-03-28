@@ -13,10 +13,9 @@ import {
   SearchLanguageSelector,
 } from "features/sidebarSuite/subComponents/settings";
 import { useAtomValue } from "jotai";
-import { StringParam, useQueryParam } from "use-query-params";
 
 export const FilterSettings = ({
-  pageType = "db",
+  pageType = "dbResult",
 }: {
   pageType: SidebarSuitePageContext;
 }) => {
@@ -24,32 +23,13 @@ export const FilterSettings = ({
 
   const {
     sourceLanguage,
-    settingRenderGroups,
+    pageSettings,
     uniqueSettings,
     settingsOmissionsConfig,
   } = useDbQueryParams();
 
-  const [currentLang] = useQueryParam(
-    settingRenderGroups.searchPageFilter.language,
-    StringParam,
-  );
-
   const filters = useMemo(() => {
-    const filterList = Object.values(
-      pageType === "search"
-        ? settingRenderGroups.searchPageFilter
-        : settingRenderGroups.dbPageFilter,
-    );
-
-    if (pageType === "search") {
-      if (!currentLang || currentLang === "all") {
-        return filterList.filter(
-          // This value is linked to the "include exclude" param switch statement case below and is used to identify the whole block of filters
-          (value) => value !== uniqueSettings.queryParams.limits,
-        );
-      }
-      return filterList;
-    }
+    const filterList = Object.values(pageSettings[pageType].filters);
 
     return filterList.filter(
       (filter) =>
@@ -57,17 +37,15 @@ export const FilterSettings = ({
           omissions: settingsOmissionsConfig.filters,
           settingName: filter,
           language: sourceLanguage,
-          view: currentView,
+          pageContext: pageType === "search" ? "search" : currentView,
         }),
     );
   }, [
     pageType,
-    currentLang,
     sourceLanguage,
     currentView,
     settingsOmissionsConfig,
-    settingRenderGroups,
-    uniqueSettings,
+    pageSettings,
   ]);
 
   return filters.length > 0 ? (
@@ -89,7 +67,9 @@ export const FilterSettings = ({
             return <MultiLingualSelector key={key} />;
           }
           case uniqueSettings.queryParams.limits: {
-            return <IncludeExcludeFilters key={key} />;
+            return (
+              <IncludeExcludeFilters key={key} lanuguage={sourceLanguage} />
+            );
           }
           case uniqueSettings.queryParams.targetCollection: {
             return (

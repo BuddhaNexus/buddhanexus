@@ -22,26 +22,23 @@ export const DisplayOptionsSection = () => {
 
   const {
     sourceLanguage,
-    settingRenderGroups,
+    pageSettings,
     uniqueSettings,
     settingsOmissionsConfig,
   } = useDbQueryParams();
 
   const options = useMemo(() => {
-    return [
-      ...Object.values(settingRenderGroups.queriedDisplayOption),
-      ...Object.values(settingRenderGroups.localDisplayOption),
-    ].filter(
+    return Object.values(pageSettings.dbResult.displayOptions).filter(
       (option) =>
         !isSettingOmitted({
           omissions: settingsOmissionsConfig.displayOptions,
           settingName: option,
           language: sourceLanguage,
-          view: currentView,
+          pageContext: currentView,
         }),
     );
   }, [
-    settingRenderGroups,
+    pageSettings,
     settingsOmissionsConfig.displayOptions,
     sourceLanguage,
     currentView,

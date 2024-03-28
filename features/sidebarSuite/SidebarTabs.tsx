@@ -2,6 +2,7 @@ import { useTranslation } from "next-i18next";
 import { TabList, TabPanel } from "@mui/lab/";
 import { Tab } from "@mui/material";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
+import isFeatureEnabled from "utils/featureControls";
 
 import { Info } from "./subComponents/Info";
 import { DisplayOptionsSection } from "./subComponents/tabPanelGroups/DisplayOptionsSection";
@@ -19,17 +20,23 @@ export const SidebarTabList = ({
 }: SettingTabListProps) => {
   const { t } = useTranslation("settings");
 
-  /* TODO: defined what's needed for search page results */
   const searchPageTabList = [
     <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />,
-    <Tab key="settings-tab-1" value="1" label={t("tabs.info")} />,
   ];
 
   const dbFilePageTabList = [
-    <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />,
-    <Tab key="settings-tab-1" value="1" label={t("tabs.filters")} />,
-    <Tab key="settings-tab-2" value="2" label={t("tabs.info")} />,
+    <Tab key="settings-tab-0" value="0" label={t("tabs.filters")} />,
+    <Tab key="settings-tab-1" value="1" label={t("tabs.options")} />,
   ];
+
+  if (isFeatureEnabled.infoTabs) {
+    [searchPageTabList, dbFilePageTabList].forEach((tabList) => {
+      const tab = String(tabList.length);
+      tabList.push(
+        <Tab key={`settings-tab-${tab}`} value={tab} label={t("tabs.info")} />,
+      );
+    });
+  }
 
   return (
     <TabList onChange={onTabChange}>
@@ -48,10 +55,12 @@ export const SearchPageSidebarTabPanels = () => {
         <FilterSettings pageType="search" />
         <UtilityOptionsSection />
       </TabPanel>
-      {/* TODO: defined what's needed for search page results */}
-      <TabPanel value="1">
-        <Info />
-      </TabPanel>
+
+      {isFeatureEnabled.infoTabs ? (
+        <TabPanel value="1">
+          <Info />
+        </TabPanel>
+      ) : null}
     </>
   );
 };
@@ -60,18 +69,20 @@ export const DbFilePageSidebarTabPanels = () => {
   return (
     <>
       <TabPanel value="0" sx={{ px: 2 }}>
+        <FilterSettings pageType="dbResult" />
+      </TabPanel>
+
+      <TabPanel value="1" sx={{ px: 2 }}>
         <DisplayOptionsSection />
-
         <UtilityOptionsSection />
-
         <ExternalLinksSection />
       </TabPanel>
-      <TabPanel value="1" sx={{ px: 2 }}>
-        <FilterSettings pageType="db" />
-      </TabPanel>
-      <TabPanel value="2">
-        <Info />
-      </TabPanel>
+
+      {isFeatureEnabled.infoTabs ? (
+        <TabPanel value="2">
+          <Info />
+        </TabPanel>
+      ) : null}
     </>
   );
 };
