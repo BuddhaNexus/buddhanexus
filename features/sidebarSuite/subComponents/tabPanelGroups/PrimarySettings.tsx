@@ -1,8 +1,10 @@
 import { Fragment, useMemo } from "react";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
+import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import type { SidebarSuitePageContext } from "features/sidebarSuite/config/types";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
@@ -12,13 +14,15 @@ import {
   ScoreFilter,
   SearchLanguageSelector,
 } from "features/sidebarSuite/subComponents/settings";
+import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
 import { useAtomValue } from "jotai";
 
-export const FilterSettings = ({
+export const PrimarySettings = ({
   pageType = "dbResult",
 }: {
   pageType: SidebarSuitePageContext;
 }) => {
+  const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentViewAtom);
 
   const {
@@ -50,6 +54,9 @@ export const FilterSettings = ({
 
   return filters.length > 0 ? (
     <Box>
+      <DbViewSelector />
+
+      <PanelHeading heading={t("headings.filters")} sx={{ mt: 1 }} />
       {filters.map((filter) => {
         const key = `filter-setting-${filter}`;
 

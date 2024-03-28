@@ -7,7 +7,7 @@ import isFeatureEnabled from "utils/featureControls";
 import { Info } from "./subComponents/Info";
 import { DisplayOptionsSection } from "./subComponents/tabPanelGroups/DisplayOptionsSection";
 import { ExternalLinksSection } from "./subComponents/tabPanelGroups/ExternalLinksSection";
-import { FilterSettings } from "./subComponents/tabPanelGroups/FilterSettings";
+import { PrimarySettings } from "./subComponents/tabPanelGroups/PrimarySettings";
 import { UtilityOptionsSection } from "./subComponents/tabPanelGroups/UtilityOptionsSection";
 
 interface SettingTabListProps {
@@ -25,7 +25,7 @@ export const SidebarTabList = ({
   ];
 
   const dbFilePageTabList = [
-    <Tab key="settings-tab-0" value="0" label={t("tabs.filters")} />,
+    <Tab key="settings-tab-0" value="0" label={t("tabs.settings")} />,
     <Tab key="settings-tab-1" value="1" label={t("tabs.options")} />,
   ];
 
@@ -51,8 +51,8 @@ export const SearchPageSidebarTabPanels = () => {
   return (
     <>
       <TabPanel value="0" sx={{ px: 2 }}>
-        <PanelHeading heading={t("tabs.filters")} />
-        <FilterSettings pageType="search" />
+        <PanelHeading heading={t("tabs.settings")} />
+        <PrimarySettings pageType="search" />
         <UtilityOptionsSection />
       </TabPanel>
 
@@ -69,10 +69,10 @@ export const DbFilePageSidebarTabPanels = () => {
   return (
     <>
       <TabPanel value="0" sx={{ px: 2 }}>
-        <FilterSettings pageType="dbResult" />
+        <PrimarySettings pageType="dbResult" />
       </TabPanel>
 
-      <TabPanel value="1" sx={{ px: 2 }}>
+      <TabPanel value="1" sx={{ px: 2, pt: 2 }}>
         <DisplayOptionsSection />
         <UtilityOptionsSection />
         <ExternalLinksSection />

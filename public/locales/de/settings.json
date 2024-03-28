@@ -16,11 +16,12 @@
     "textSelectTip": "Wählen Sie einen neuen Anfragetext"
   },
   "tabs": {
+    "settings": "Einstellungen",
     "options": "Optionen",
-    "filters": "Filter",
     "info": "Info"
   },
   "headings": {
+    "filters": "Filter",
     "display": "Anzeigen",
     "tools": "Werkzeuge",
     "links": "Links"

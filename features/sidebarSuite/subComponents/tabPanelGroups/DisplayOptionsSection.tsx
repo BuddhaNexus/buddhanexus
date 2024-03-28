@@ -56,9 +56,6 @@ export const DisplayOptionsSection = () => {
   return (
     <Box>
       <PanelHeading heading={t("headings.display")} sx={{ mb: 2 }} />
-
-      <DbViewSelector />
-
       {options.map((option) => {
         const key = `display-option-${option}`;
 

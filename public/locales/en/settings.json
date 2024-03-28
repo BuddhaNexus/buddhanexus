@@ -16,11 +16,12 @@
     "textSelectTip": "Select a new inquiry text"
   },
   "tabs": {
+    "settings": "Settings",
     "options": "Options",
-    "filters": "Filters",
     "info": "Info"
   },
   "headings": {
+    "filters": "Filters",
     "display": "Display",
     "tools": "Tools",
     "links": "Links"
