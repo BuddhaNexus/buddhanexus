@@ -7,7 +7,7 @@ from ..utils import (
     create_cleaned_limit_collection,
     get_start_integer,
 )
-from .models.shared import MiddleInput, TextParallelsInput
+from .models.input_models import MiddleInput, TextParallelsInput
 
 router = APIRouter()
 

@@ -4,7 +4,7 @@ from ..queries import main_queries, menu_queries
 from ..utils import get_language_from_file_name
 from typing import List
 import re
-from .models.shared import GraphInput
+from .models.input_models import GraphInput
 
 router = APIRouter()
 

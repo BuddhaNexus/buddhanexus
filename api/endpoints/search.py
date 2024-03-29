@@ -3,7 +3,7 @@ from ..db_connection import get_db
 from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
 from ..queries import search_queries
-from .models.shared import SearchInput
+from .models.input_models import SearchInput
 from .endpoint_utils import execute_query
 from ..colormaps import calculate_color_maps_search
 router = APIRouter()

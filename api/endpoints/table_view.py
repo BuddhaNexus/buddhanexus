@@ -10,7 +10,7 @@ from ..utils import (
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
 from ..table_download import run_table_download, run_numbers_download
-from .models.shared import GeneralInput, MultiLangInput, TableDownloadInput
+from .models.input_models import GeneralInput, MultiLangInput, TableDownloadInput
 from .numbers_view import create_numbers_view_data
 
 router = APIRouter()

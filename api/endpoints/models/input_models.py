@@ -6,7 +6,6 @@ class Limits(BaseModel):
     """
     Limits for parallels
     """
-
     category_include: list = []
     category_exclude: list = []
     file_include: list = []
@@ -19,7 +18,7 @@ class GeneralInput(BaseModel):
     par_length: int = 0
     limits: Optional[Limits]
     page: int = 0
-    sort_method: str = "parallels_sorted_by_src_pos"
+    sort_method: str = "position"
     folio: str = ""
 
 
@@ -42,12 +41,7 @@ class SearchInput(BaseModel):
 
 
 class MenuInput(BaseModel):
-    language: str
-
-
-class LinksInput(BaseModel):
-    file_name: str = ""
-    segmentnr: str = ""
+    file_name: str
 
 
 class GraphInput(BaseModel):
@@ -76,15 +70,3 @@ class CountMatchesInput(BaseModel):
     par_length = 0
     limits: Optional[Limits]
 
-
-class FoliosInput(BaseModel):
-    file_name: str = ""
-    folio: str = ""
-
-
-class TaggerInput(BaseModel):
-    sanskrit_string: str
-
-
-class AvailableLanguesInput(BaseModel):
-    file_name: str

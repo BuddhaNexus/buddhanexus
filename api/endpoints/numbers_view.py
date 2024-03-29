@@ -7,8 +7,8 @@ from ..utils import (
 )
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
-from .models.shared import GeneralInput
-
+from .models.input_models import GeneralInput, MenuInput
+from .models.numbers_view_models import MenuOutput, NumbersViewOutput
 
 router = APIRouter()
 
@@ -37,8 +37,8 @@ def create_numbers_view_data(table_results):
     return(result_list)
 
 
-@router.post("/numbers")
-async def get_numbers_view(input: GeneralInput):
+@router.post("/numbers/")
+async def get_numbers_view(input: GeneralInput) -> NumbersViewOutput:
     """
     Endpoint for numbers view.
     """
@@ -73,13 +73,11 @@ async def get_numbers_view(input: GeneralInput):
 
 
 @router.get("/categories/")
-async def get_categories_for_numbers_view(
-    file_name: str = Query(..., description="Filename to be used")
-):
+async def get_categories_for_numbers_view(input: MenuInput) -> MenuOutput:
     """
     Endpoint that returns list of categories for the given language
     """
-    language = get_language_from_file_name(file_name)
+    language = get_language_from_file_name(input.file_name)
     query_result = execute_query(
         menu_queries.QUERY_CATEGORIES_PER_LANGUAGE,
         bind_vars = {"language": language},
