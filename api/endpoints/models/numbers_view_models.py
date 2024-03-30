@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class Parallel(BaseModel):
@@ -9,14 +10,14 @@ class Parallel(BaseModel):
 
 class Segment(BaseModel):
     segmentnr: str
-    parallels: list = [Parallel]
+    parallels: List[Parallel]
 
 class NumbersViewOutput(BaseModel):
-    list = [Segment]
+     __root__: List[Segment]
 
 class MenuItem(BaseModel):
     id: str
     displayName: str
 
 class MenuOutput(BaseModel):
-    list = [MenuItem]
+     __root__: List[MenuItem]

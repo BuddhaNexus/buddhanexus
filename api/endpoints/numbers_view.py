@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query
 import re
+from typing import Any
 from ..utils import (
     get_language_from_file_name,
     create_cleaned_limit_collection,
@@ -37,8 +38,8 @@ def create_numbers_view_data(table_results):
     return(result_list)
 
 
-@router.post("/numbers/")
-async def get_numbers_view(input: GeneralInput) -> NumbersViewOutput:
+@router.post("/numbers/", response_model=NumbersViewOutput)
+async def get_numbers_view(input: GeneralInput) -> Any:
     """
     Endpoint for numbers view.
     """
@@ -72,12 +73,13 @@ async def get_numbers_view(input: GeneralInput) -> NumbersViewOutput:
     return segments_result
 
 
-@router.get("/categories/")
-async def get_categories_for_numbers_view(input: MenuInput) -> MenuOutput:
+@router.get("/categories/", response_model=MenuOutput)
+async def get_categories_for_numbers_view(
+    file_name: str = Query(..., description="Filename to be used")) -> Any:
     """
     Endpoint that returns list of categories for the given language
     """
-    language = get_language_from_file_name(input.file_name)
+    language = get_language_from_file_name(file_name)
     query_result = execute_query(
         menu_queries.QUERY_CATEGORIES_PER_LANGUAGE,
         bind_vars = {"language": language},
