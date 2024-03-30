@@ -6,6 +6,7 @@ class Limits(BaseModel):
     """
     Limits for parallels
     """
+
     category_include: list = []
     category_exclude: list = []
     file_include: list = []
@@ -40,10 +41,6 @@ class SearchInput(BaseModel):
     limits: Optional[Limits]
 
 
-class MenuInput(BaseModel):
-    file_name: str
-
-
 class GraphInput(BaseModel):
     file_name: str = ""
     score: int = 0
@@ -51,7 +48,7 @@ class GraphInput(BaseModel):
     target_collection: list = []
 
 
-class MiddleInput(BaseModel):
+class TextViewMiddleInput(BaseModel):
     parallel_ids: list
 
 
@@ -69,4 +66,3 @@ class CountMatchesInput(BaseModel):
     score = 0
     par_length = 0
     limits: Optional[Limits]
-

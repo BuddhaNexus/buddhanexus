@@ -6,6 +6,10 @@ import re
 
 router = APIRouter()
 
+"""
+This view might be discontinued.
+"""
+
 
 @router.get("/visual-view/")
 async def get_visual_view_for_file(

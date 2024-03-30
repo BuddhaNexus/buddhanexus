@@ -1,13 +1,17 @@
 from fastapi import APIRouter, Query
+from typing import Any
 from .endpoint_utils import execute_query
 from ..queries import main_queries
 from ..links import get_links
+from .models.links_models import LinksOutput
 
 router = APIRouter()
 
 
-@router.get("/external/")
-async def get_external_links(file_name: str = Query(...), segmentnr: str = Query(None)):
+@router.get("/external/", response_model=LinksOutput)
+async def get_external_links(
+    file_name: str = Query(...), segmentnr: str = Query(None)
+) -> Any:
     """
     Returns the external links for a given file_name or segmentnr.
     """

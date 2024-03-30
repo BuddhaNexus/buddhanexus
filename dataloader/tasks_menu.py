@@ -132,8 +132,12 @@ def load_all_menu_collections(db: StandardDatabase):
         collections_filepath = (
             f"{METADATA_ROOT}{language}-collections.json"  # TODO: no hardcoding
         )
-        collections_schema = f"{METADATA_ROOT}/schemas/collections.json"  # TODO: no hardcoding
-        if not validate_json(collections_schema, collections_filepath):  # TODO: no hardcoding
+        collections_schema = (
+            f"{METADATA_ROOT}/schemas/collections.json"  # TODO: no hardcoding
+        )
+        if not validate_json(
+            collections_schema, collections_filepath
+        ):  # TODO: no hardcoding
             return
 
         with open(collections_filepath) as file:
@@ -198,8 +202,12 @@ def load_all_menu_categories(db: StandardDatabase):
         EDGE_COLLECTION_CATEGORY_HAS_FILES
     )
     for language in DEFAULT_LANGS:
-        categories_filepath = f"{METADATA_ROOT}{language}-categories.json"   # TODO: no hardcoding
-        categories_schema = f"{METADATA_ROOT}/schemas/categories.json"   # TODO: no hardcoding
+        categories_filepath = (
+            f"{METADATA_ROOT}{language}-categories.json"  # TODO: no hardcoding
+        )
+        categories_schema = (
+            f"{METADATA_ROOT}/schemas/categories.json"  # TODO: no hardcoding
+        )
         if not validate_json(categories_schema, categories_filepath):
             return
         with open(categories_filepath) as f:

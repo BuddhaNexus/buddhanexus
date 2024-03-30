@@ -13,6 +13,7 @@ from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
+
 def prettify_score(score):
     """
     if score is a floating point number <= 1, return it as an int scaled by 100
@@ -20,6 +21,7 @@ def prettify_score(score):
     if isinstance(score, float) and score <= 1:
         return int(score * 100)
     return score
+
 
 def shorten_segment_names(segments):
     """
@@ -31,6 +33,7 @@ def shorten_segment_names(segments):
     if not first_segment == last_segment:
         shortened_segment += "-" + last_segment.split(":")[1]
     return [shortened_segment]
+
 
 def get_sort_key(sort_method) -> str:
     """
@@ -252,7 +255,9 @@ def get_cat_from_segmentnr(segmentnr):
     """
     cat = ""
     pali_check = [x for x in ["anya", "atk", "tika"] if segmentnr.startswith(x)]
-    pali_vinaya_check = [x for x in ["pli-tv-bi-vb", "pli-tv-bu-vb"] if segmentnr.startswith(x)]
+    pali_vinaya_check = [
+        x for x in ["pli-tv-bi-vb", "pli-tv-bu-vb"] if segmentnr.startswith(x)
+    ]
     search = re.search("^[A-Z]+[0-9]+", segmentnr)
     if search:
         cat = search[0]

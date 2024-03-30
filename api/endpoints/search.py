@@ -1,16 +1,19 @@
 from fastapi import APIRouter
+from typing import Any
 from ..db_connection import get_db
 from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
 from ..queries import search_queries
+from .models.search_models import SearchOutput
 from .models.input_models import SearchInput
 from .endpoint_utils import execute_query
 from ..colormaps import calculate_color_maps_search
+
 router = APIRouter()
 
 
-@router.post("/search/")
-async def get_search_results(input: SearchInput):
+@router.post("/search/", response_model=SearchOutput)
+async def get_search_results(input: SearchInput) -> Any:
     """
     Returns search results for given search string.
     :return: List of search results
@@ -23,7 +26,9 @@ async def get_search_results(input: SearchInput):
     )
     result = []
     search_string = input.search_string.lower()
-    search_strings = search_utils.preprocess_search_string(search_string[:300], input.language)
+    search_strings = search_utils.preprocess_search_string(
+        search_string[:300], input.language
+    )
 
     query_search = execute_query(
         search_queries.QUERY_SEARCH,

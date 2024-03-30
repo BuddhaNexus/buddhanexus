@@ -13,8 +13,8 @@ file_df = pd.read_csv(tsv_path, sep="\t")
 
 # ta = TypeAdapter(List[Match])
 
-if (validate_df(json_path, Segment, file_df)):
+if validate_df(json_path, Segment, file_df):
     print("TSV SUCCESS!!!")
-    
-if (validate_dict_list(json_path, Match, parallels)):
+
+if validate_dict_list(json_path, Match, parallels):
     print("JSON SUCCESS!!!")

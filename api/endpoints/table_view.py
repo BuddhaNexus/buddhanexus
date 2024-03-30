@@ -7,17 +7,19 @@ from ..utils import (
     get_folio_regex,
     get_language_from_file_name,
 )
+from typing import Any
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
 from ..table_download import run_table_download, run_numbers_download
 from .models.input_models import GeneralInput, MultiLangInput, TableDownloadInput
+from .models.table_view_models import TableViewOutput
 from .numbers_view import create_numbers_view_data
 
 router = APIRouter()
 
 
-@router.post("/table")
-async def get_table_view(input: GeneralInput):
+@router.post("/table/", response_model=TableViewOutput)
+async def get_table_view(input: GeneralInput) -> Any:
     """
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
@@ -46,8 +48,8 @@ async def get_table_view(input: GeneralInput):
     return calculate_color_maps_table_view(query_result.result)
 
 
-@router.post("/download")
-async def get_table_download(input: TableDownloadInput):
+@router.post("/download/")
+async def get_table_download(input: TableDownloadInput) -> Any:
     """
     Endpoint for the download table. Accepts filters.
     :return: List of segments and parallels for the downloaded table view.
@@ -116,8 +118,8 @@ async def get_table_download(input: TableDownloadInput):
     )
 
 
-@router.post("/multilang")
-async def get_multilang(input: MultiLangInput):
+@router.post("/multilang/", response_model=TableViewOutput)
+async def get_multilang(input: MultiLangInput) -> Any:
     """
     Endpoint for the multilingual table view. Accepts Parallel languages
     :return: List of segments and parallels for the table view.
