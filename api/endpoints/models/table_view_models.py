@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Union
+from .general_models import GeneralInput
 
 
 class FullNames(BaseModel):
@@ -33,8 +34,12 @@ class TableViewOutput(BaseModel):
     __root__: List[Segment]
 
 
-class TableDownloadInput(BaseModel):
+class TableDownloadInput(GeneralInput):
     download_data: str
+
+
+class TableDownloadOutput(BaseModel):
+    __root__: str
 
 
 class MultiLangInput(BaseModel):
