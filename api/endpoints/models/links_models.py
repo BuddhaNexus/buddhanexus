@@ -2,11 +2,11 @@ from pydantic import BaseModel
 
 
 class LinksOutput(BaseModel):
-    bdrc: bool
-    rkts: bool
-    gretil: bool
-    dsbc: bool
-    cbeta: bool
-    suttacentral: bool
-    cbc: bool
-    vri: bool
+    bdrc: str
+    rkts: str
+    gretil: str
+    dsbc: str
+    cbeta: str
+    suttacentral: str
+    cbc: str
+    vri: str

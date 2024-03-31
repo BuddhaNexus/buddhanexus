@@ -4,8 +4,7 @@ from ..db_connection import get_db
 from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
 from ..queries import search_queries
-from .models.search_models import SearchOutput
-from .models.input_models import SearchInput
+from .models.search_models import SearchOutput, SearchInput
 from .endpoint_utils import execute_query
 from ..colormaps import calculate_color_maps_search
 

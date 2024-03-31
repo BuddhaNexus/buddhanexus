@@ -4,7 +4,6 @@ from .endpoint_utils import execute_query
 from ..queries import main_queries
 from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
-from .models.input_models import CountMatchesInput
 from .models.utils_models import *
 
 router = APIRouter()

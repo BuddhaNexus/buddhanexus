@@ -7,8 +7,7 @@ from ..utils import (
     create_cleaned_limit_collection,
     get_start_integer,
 )
-from .models.input_models import TextViewMiddleInput, TextParallelsInput
-from .models.text_view_models import TextViewLeftOutput, TextViewMiddleOutput
+from .models.text_view_models import *
 
 router = APIRouter()
 

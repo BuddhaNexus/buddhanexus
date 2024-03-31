@@ -8,7 +8,7 @@ from ..utils import (
 )
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
-from .models.input_models import GeneralInput
+from .models.general_models import GeneralInput
 from .models.numbers_view_models import MenuOutput, NumbersViewOutput
 
 router = APIRouter()

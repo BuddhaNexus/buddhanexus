@@ -31,3 +31,15 @@ class Segment(BaseModel):
 
 class TableViewOutput(BaseModel):
     __root__: List[Segment]
+
+
+class TableDownloadInput(BaseModel):
+    download_data: str
+
+
+class MultiLangInput(BaseModel):
+    file_name: str
+    score: int = 0
+    multi_lingual: list = []
+    page: int = 0
+    folio: str = ""

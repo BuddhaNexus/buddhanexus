@@ -11,8 +11,12 @@ from typing import Any
 from .endpoint_utils import execute_query
 from ..queries import main_queries, menu_queries
 from ..table_download import run_table_download, run_numbers_download
-from .models.input_models import GeneralInput, MultiLangInput, TableDownloadInput
-from .models.table_view_models import TableViewOutput
+from .models.general_models import GeneralInput
+from .models.table_view_models import (
+    TableViewOutput,
+    MultiLangInput,
+    TableDownloadInput,
+)
 from .numbers_view import create_numbers_view_data
 
 router = APIRouter()

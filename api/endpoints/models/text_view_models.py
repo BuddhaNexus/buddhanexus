@@ -1,5 +1,15 @@
 from pydantic import BaseModel
 from typing import List, Union, Optional
+from .general_models import Limits
+
+
+class TextParallelsInput(BaseModel):
+    file_name: str = ""
+    active_segment: str = "none"
+    score: int = 0
+    par_length: int = 0
+    limits: Optional[Limits]
+    multi_lingual: list = []
 
 
 class FullText(BaseModel):
@@ -15,6 +25,10 @@ class TextItem(BaseModel):
 
 class TextViewLeftOutput(BaseModel):
     __root__: List[TextItem]
+
+
+class TextViewMiddleInput(BaseModel):
+    parallel_ids: list
 
 
 class MiddleViewFullText(BaseModel):
