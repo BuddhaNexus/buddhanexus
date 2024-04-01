@@ -97,7 +97,7 @@ async def get_table_download(input: TableDownloadInput) -> Any:
                 "score": input.score,
                 "parlength": input.par_length,
                 "limitcollection_include": limitcollection_include,
-                "limitcollection_exclude": limitcollection_exclude
+                "limitcollection_exclude": limitcollection_exclude,
             },
         )
 

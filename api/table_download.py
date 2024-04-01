@@ -5,8 +5,6 @@ worksheets for download
 
 import re
 import xlsxwriter
-from .queries import main_queries
-from .db_connection import get_db
 from .utils import shorten_segment_names
 from .endpoints.utils import get_displayname
 
@@ -356,17 +354,15 @@ def get_category_dict(segment_parallels, categories_list):
     category_dict = {}
     for parallel in segment_parallels:
         if parallel["category"]:
-            category_index = (
-                categories_list.index(parallel["category"])
-                + 1
-            )
+            category_index = categories_list.index(parallel["category"]) + 1
         else:
             continue
 
         if not category_index in category_dict:
             category_dict[category_index] = []
 
-
-        category_dict[category_index].append(shorten_segment_names(parallel["par_segnr"])[0])
+        category_dict[category_index].append(
+            shorten_segment_names(parallel["par_segnr"])[0]
+        )
 
     return category_dict
