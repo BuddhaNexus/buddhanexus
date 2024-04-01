@@ -27,7 +27,7 @@ function useResetCache(data: any) {
   return ref;
 }
 
-const LISTBOX_PADDING = 8; // px
+const LISTBOX_PADDING_PX = 8;
 const maxLines = 3;
 const defaultItemHeight = 56;
 const lineHeight = 37;
