@@ -115,7 +115,7 @@ async def get_table_download(input: TableDownloadInput) -> Any:
                 input.par_length,
                 input.sort_method,
                 input.limits,
-                input.folio,
+                "All",
                 language,
             ],
         )

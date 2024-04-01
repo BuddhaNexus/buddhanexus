@@ -31,7 +31,7 @@ def shorten_segment_names(segments):
     last_segment = re.sub("-[0-9]+", "", segments[-1])
     shortened_segment = first_segment
     if not first_segment == last_segment:
-        shortened_segment += "-" + last_segment.split(":")[1]
+        shortened_segment += "–" + last_segment.split(":")[1]
     return [shortened_segment]
 
 

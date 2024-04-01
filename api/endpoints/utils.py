@@ -53,6 +53,20 @@ async def get_folios_for_file(
     return {"folios": folios}
 
 
+def get_displayname(segmentnr):
+
+    """
+    Downloads the displaynames for the worksheet
+    """
+    file_name = segmentnr.split(":")[0]
+    query_graph_result = execute_query(
+        main_queries.QUERY_DISPLAYNAME,
+        bind_vars={"filename": file_name},
+    )
+    displayname = query_graph_result.result[0]
+    return displayname
+
+
 @router.get("/displayname/", response_model=DisplayNameOutput)
 async def get_displayname_for_segmentnr(
     segmentnr: str = Query(
@@ -62,13 +76,7 @@ async def get_displayname_for_segmentnr(
     """
     Returns the displayname for a given segmentnr
     """
-    filename = segmentnr.split(":")[0]
-    query_graph_result = execute_query(
-        main_queries.QUERY_DISPLAYNAME,
-        bind_vars={"filename": filename},
-    )
-    displayname = query_graph_result.result[0]
-    return {"displayname": displayname}
+    return {"displayname": get_displayname(segmentnr)}
 
 
 """

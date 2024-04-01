@@ -86,7 +86,7 @@ FOR f IN parallels_sorted_file
                 par_length: p.par_length,
                 root_length: p.root_length,
                 par_pos_beg: p.par_pos_beg,
-                score: p.score,
+                score: p.score * 100,
                 src_lang: p.src_lang,
                 tgt_lang: p.tgt_lang
             }
@@ -137,7 +137,7 @@ FOR f IN parallels_sorted_file
                 par_offset_end: p.par_offset_end,
                 par_length: p.par_length,
                 root_length: p.root_length,
-                score: p.score,
+                score: p.score * 100,
                 src_lang: p.src_lang
             }
 """
@@ -249,7 +249,7 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
         FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
         FILTER LIKE(p.root_string, @search_string, true) || LIKE(p.par_string, @search_string, true)
         FILTER POSITION(@multi_lingual, p.tgt_lang)
-        FILTER p.score >= @score
+        FILTER p.score * 100 >= @score
         LIMIT 100 * @page,100
         RETURN {
             par_segnr: [p.par_segnr[0]],
@@ -264,7 +264,7 @@ FOR parallel_id IN UNIQUE(FLATTEN(parallel_ids))
             par_length: p.par_length,
             root_length: p.root_length,
             par_pos_beg: p.par_pos_beg,
-            score: p.score
+            score: p.score * 100
         }
 """
 
@@ -315,7 +315,7 @@ LET parallels =  (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels
             FILTER p._key == parallel_id
-            FILTER p.score >= @score
+            FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
             FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
             FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
@@ -365,7 +365,7 @@ LET parallels = (
                 par_offset_end: p.par_offset_end,
                 par_segtext: par_segtext,
                 file_name: p.id,
-                score: p.score,
+                score: p.score * 100,
                 length: p.par_length
             }
 )
@@ -395,7 +395,7 @@ LET parallels_multi = (
                 par_offset_end: p.par_offset_end,
                 par_segtext: par_segtext,
                 file_name: p.id,
-                score: p.score,
+                score: p.score * 100,
                 length: p.par_length
             }
 )
@@ -426,7 +426,7 @@ FOR f in parallels_sorted_file
     )
 
 FOR p IN current_parallels
-    FILTER p.score >= @score
+    FILTER p.score * 100 >= @score
     FILTER p.par_length >= @parlength
     LET filtertest = (
         FOR item IN filter_target
@@ -444,7 +444,7 @@ FOR p IN parallels
     FILTER p.root_filename == @file_name
             FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
             FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
-    FILTER p.score >= @score
+    FILTER p.score * 100 >= @score
     FILTER p.par_length >= @parlength
     LIMIT 15000
     COLLECT WITH COUNT INTO length
