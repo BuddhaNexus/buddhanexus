@@ -41,7 +41,7 @@ yarn openapi-ts
 
 ### `mdx` pages
 
-- Pages for each supported local are created in `content/pages` (or a dedicated content directory for nested routes eg. `news`). See: [MDX page i18n](#mdx-page-i18n-draft) for more.
+- Pages for each supported locale are created in `content/pages` (or a dedicated content directory for nested routes eg. `news`). See: [MDX page i18n](#mdx-page-i18n-draft) for more.
 
 Note: the project uses the term `locale` to refer to the user's language and the term `language` to refer to database languages (Pali, Sanskrit, Chinese and Tibetan).
 
