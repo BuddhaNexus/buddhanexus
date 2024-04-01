@@ -37,7 +37,7 @@ yarn openapi-ts
 ### `tsx` pages
 
 - Namespace files (with localized content) are created in `public/locales/`
-- Namesspaces are imported with `getI18NextStaticProps` at page level.
+- Namespaces are imported with `getI18NextStaticProps` at page level.
 
 ### `mdx` pages
 
