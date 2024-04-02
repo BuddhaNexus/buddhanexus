@@ -6,10 +6,6 @@ import re
 
 router = APIRouter()
 
-"""
-This view might be discontinued.
-"""
-
 
 @router.get("/visual-view/")
 async def get_visual_view_for_file(
@@ -19,6 +15,7 @@ async def get_visual_view_for_file(
     selected: List[str] = Query([]),
 ):
     """
+    This view might be discontinued.
     Endpoint for visual view
     """
 

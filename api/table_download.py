@@ -354,7 +354,11 @@ def get_category_dict(segment_parallels, categories_list):
     category_dict = {}
     for parallel in segment_parallels:
         if parallel["category"]:
-            category_index = categories_list.index(parallel["category"]) + 1
+            try:
+                category_index = categories_list.index(parallel["category"]) + 1
+            except:
+                print("cannot find in categories list: ", parallel["category"])
+                continue
         else:
             continue
 
