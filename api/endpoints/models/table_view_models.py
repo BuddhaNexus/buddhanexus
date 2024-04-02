@@ -14,8 +14,8 @@ class Segment(BaseModel):
     score: int
     src_lang: str
     tgt_lang: str
-    root_fulltext: List[FullText]
-    par_fulltext: List[FullText]
+    root_fulltext: List[FullText] = []
+    par_fulltext: List[FullText] = []
 
 
 class TableViewOutput(BaseModel):
