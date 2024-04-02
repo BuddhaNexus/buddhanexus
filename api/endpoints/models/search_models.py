@@ -1,12 +1,11 @@
 from pydantic import BaseModel
 from typing import List, Optional
-from .general_models import Limits
+from .general_models import Limits, FullNames, FullText
 
 """
 Search results are not yet working so the below needs to 
 be updated accordingly
 """
-
 
 class SearchInput(BaseModel):
     search_string: str
@@ -15,12 +14,12 @@ class SearchInput(BaseModel):
 
 
 class SearchResults(BaseModel):
-    original: str
-    stemmed: str
     category: str
     language: str
     segment_nr: str
-    full_names: str
+    full_names: FullNames
+    similarity: int
+    segtext: List[FullText]
 
 
 class SearchOutput(BaseModel):

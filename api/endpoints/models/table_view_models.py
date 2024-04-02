@@ -1,18 +1,6 @@
 from pydantic import BaseModel
-from typing import List, Union
-from .general_models import GeneralInput
-
-
-class FullNames(BaseModel):
-    display_name: str
-    text_name: str
-    link1: Union[str, None] = None
-    link2: Union[str, None] = None
-
-
-class FullText(BaseModel):
-    text: str
-    highlightColor: int
+from typing import List
+from .general_models import GeneralInput, FullNames, FullText
 
 
 class Segment(BaseModel):

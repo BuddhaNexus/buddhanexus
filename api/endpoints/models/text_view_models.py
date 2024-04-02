@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Union, Optional
-from .general_models import Limits
+from .general_models import Limits, FullText
 
 
 class TextParallelsInput(BaseModel):
@@ -12,15 +12,13 @@ class TextParallelsInput(BaseModel):
     multi_lingual: list = []
 
 
-class FullText(BaseModel):
-    text: str
-    highlightColor: int
+class FullMatchText(FullText):
     matches: list = []
 
 
 class TextItem(BaseModel):
     segnr: str
-    segtext: List[FullText]
+    segtext: List[FullMatchText]
 
 
 class TextViewLeftOutput(BaseModel):
@@ -29,11 +27,6 @@ class TextViewLeftOutput(BaseModel):
 
 class TextViewMiddleInput(BaseModel):
     parallel_ids: list
-
-
-class MiddleViewFullText(BaseModel):
-    text: str
-    highlightColor: int
 
 
 """
@@ -54,7 +47,7 @@ class Segment(BaseModel):
     file_name: str
     score: int
     length: int
-    par_fulltext: Optional[List[MiddleViewFullText]]
+    par_fulltext: Optional[List[FullText]]
 
 
 class TextViewMiddleOutput(BaseModel):
