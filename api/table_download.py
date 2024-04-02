@@ -356,7 +356,7 @@ def get_category_dict(segment_parallels, categories_list):
         if parallel["category"]:
             try:
                 category_index = categories_list.index(parallel["category"]) + 1
-            except:
+            except: # pylint: disable=bare-except
                 print("cannot find in categories list: ", parallel["category"])
                 continue
         else:
