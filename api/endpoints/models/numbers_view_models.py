@@ -3,10 +3,10 @@ from typing import List
 
 
 class Parallel(BaseModel):
-    segmentnr: str
-    displayName: str
-    fileName: str
-    category: str
+    segmentnr: Union[str, None] = None
+    displayName: Union[str, None] = None
+    fileName: Union[str, None] = None
+    category: Union[str, None] = None
 
 
 class Segment(BaseModel):
