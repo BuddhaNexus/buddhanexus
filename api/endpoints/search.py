@@ -17,7 +17,6 @@ async def get_search_results(input: SearchInput) -> Any:
     Returns search results for given search string.
     :return: List of search results
     """
-    print("search received")
     limitcollection_include = create_cleaned_limit_collection(
         input.limits.category_include + input.limits.file_include
     )
