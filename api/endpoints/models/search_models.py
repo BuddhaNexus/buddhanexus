@@ -23,4 +23,4 @@ class SearchResults(BaseModel):
 
 
 class SearchOutput(BaseModel):
-    __root__: List[SearchResults]
+    __root__: Optional[List[SearchResults]] = None
