@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, Union
+from typing import Optional
 
 
 class Limits(BaseModel):
@@ -24,12 +24,12 @@ class GeneralInput(BaseModel):
 
 
 class FullText(BaseModel):
-    text: Union[str, None] = None
-    highlightColor: Union[int, None] = 0
+    text: str = ""
+    highlightColor: int = 0
     
 
 class FullNames(BaseModel):
-    display_name: Union[str, None] = None
-    text_name: Union[str, None] = None
-    link1: Union[str, None] = None
-    link2: Union[str, None] = None
+    display_name: str = ""
+    text_name: str = ""
+    link1: str = ""
+    link2: str = ""
