@@ -24,8 +24,8 @@ class GeneralInput(BaseModel):
 
 
 class FullText(BaseModel):
-    text: str
-    highlightColor: int
+    text: Union[str, None] = None
+    highlightColor: Union[int, None] = 0
     
 
 class FullNames(BaseModel):
