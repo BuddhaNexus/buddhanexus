@@ -127,6 +127,13 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     pool.close()
     pool.join()
 
+def clean_parallels_for_language(lang, db):
+    db_collection = db.collection(COLLECTION_PARALLELS)
+    db_collection.delete_many({"src_lang": lang})
+    print(f"Deleted all parallels for language {lang}")
+    
+
+
 
 def load_sorted_parallels_file(path, lang, db_collection):
     print("Loading sorted parallels for file: ", path)

@@ -6,6 +6,7 @@ from collections import defaultdict
 import os
 import natsort
 import multiprocessing
+import re
 import pandas as pd
 from tqdm import tqdm as tqdm
 from arango.database import StandardDatabase
@@ -43,7 +44,9 @@ def sliding_window(data_list, window_size=3):
     ]
 
 
-def get_filename_from_segmentnr(segmentnr):
+def get_filename_from_segmentnr(segmentnr, lang):
+    if lang == "chn":
+        segmentnr = re.sub("_[0-9][0-9][0-9]", "", segmentnr)
     return segmentnr.split(":")[0]
 
 
@@ -68,7 +71,7 @@ class LoadSegmentsBase:
         db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr", "language"])
 
         segnrs = [segment["segnr"] for segment in segments]
-        filename = get_filename_from_segmentnr(segnrs[0])
+        filename = get_filename_from_segmentnr(segnrs[0], self.LANG)        
         # hack as this filename breaks the DB
         if "K12D0505B" in filename:
             return
@@ -107,7 +110,7 @@ class LoadSegmentsBase:
                     "stemmed": stem,
                     "category": category,
                     "language": self.LANG,
-                    "file_name": get_filename_from_segmentnr(segnr[1]),
+                    "file_name": get_filename_from_segmentnr(segnr[1], self.LANG),
                 }
             )
         db.collection(self.SEARCH_COLLECTION_NAME).delete_many({"language": self.LANG})
@@ -171,7 +174,7 @@ class LoadSegmentsBase:
         files = {}
         segments = collection_segments.find({"language": self.LANG})
         for segment in tqdm(segments):
-            filename = get_filename_from_segmentnr(segment["segnr"])
+            filename = get_filename_from_segmentnr(segment["segnr"], self.LANG)
             if filename not in files:
                 files[filename] = []
             files[filename].append(segment["segnr"])
@@ -199,6 +202,12 @@ class LoadSegmentsBase:
                     }
                     collection_files.insert(file)
         print("Done sorting segment numbers.")
+    
+    def clean(self):
+        db = get_database()        
+        print(f"Cleaning segments for language: {self.LANG}.")
+        db.collection(COLLECTION_SEGMENTS).delete_many({"language": self.LANG})
+        
 
 
 class LoadSegmentsSanskrit(LoadSegmentsBase):
