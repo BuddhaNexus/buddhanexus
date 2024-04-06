@@ -1,3 +1,4 @@
+import React from "react";
 import { useTranslation } from "next-i18next";
 import { TabList, TabPanel } from "@mui/lab/";
 import { Tab } from "@mui/material";
@@ -20,27 +21,24 @@ export const SidebarTabList = ({
 }: SettingTabListProps) => {
   const { t } = useTranslation("settings");
 
-  const searchPageTabList = [
-    <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />,
-  ];
-
-  const dbFilePageTabList = [
-    <Tab key="settings-tab-0" value="0" label={t("tabs.settings")} />,
-    <Tab key="settings-tab-1" value="1" label={t("tabs.options")} />,
-  ];
-
-  if (isFeatureEnabled.infoTabs) {
-    [searchPageTabList, dbFilePageTabList].forEach((tabList) => {
-      const tab = String(tabList.length);
-      tabList.push(
-        <Tab key={`settings-tab-${tab}`} value={tab} label={t("tabs.info")} />,
-      );
-    });
-  }
-
   return (
     <TabList onChange={onTabChange}>
-      {isSearchRoute ? searchPageTabList : dbFilePageTabList}
+      {isSearchRoute ? (
+        <>
+          <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />
+          {isFeatureEnabled.infoTabs ? (
+            <Tab key="settings-tab-1" value="1" label={t("tabs.info")} />
+          ) : null}
+        </>
+      ) : (
+        <>
+          <Tab key="settings-tab-0" value="0" label={t("tabs.settings")} />
+          <Tab key="settings-tab-1" value="1" label={t("tabs.options")} />
+          {isFeatureEnabled.infoTabs ? (
+            <Tab key="settings-tab-2" value="2" label={t("tabs.info")} />
+          ) : null}
+        </>
+      )}
     </TabList>
   );
 };
