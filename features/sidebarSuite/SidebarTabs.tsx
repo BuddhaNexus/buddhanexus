@@ -12,33 +12,30 @@ import { PrimarySettings } from "./subComponents/tabPanelGroups/PrimarySettings"
 import { UtilityOptionsSection } from "./subComponents/tabPanelGroups/UtilityOptionsSection";
 
 interface SettingTabListProps {
-  isSearchRoute: boolean | undefined;
   onTabChange: (event: React.SyntheticEvent, newValue: string) => void;
 }
-export const SidebarTabList = ({
-  isSearchRoute,
-  onTabChange,
-}: SettingTabListProps) => {
-  const { t } = useTranslation("settings");
 
+export const SidebarTabListSearch = ({ onTabChange }: SettingTabListProps) => {
+  const { t } = useTranslation("settings");
   return (
     <TabList onChange={onTabChange}>
-      {isSearchRoute ? (
-        <>
-          <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />
-          {isFeatureEnabled.infoTabs ? (
-            <Tab key="settings-tab-1" value="1" label={t("tabs.info")} />
-          ) : null}
-        </>
-      ) : (
-        <>
-          <Tab key="settings-tab-0" value="0" label={t("tabs.settings")} />
-          <Tab key="settings-tab-1" value="1" label={t("tabs.options")} />
-          {isFeatureEnabled.infoTabs ? (
-            <Tab key="settings-tab-2" value="2" label={t("tabs.info")} />
-          ) : null}
-        </>
-      )}
+      <Tab key="settings-tab-0" value="0" label={t("tabs.options")} />
+      {isFeatureEnabled.infoTabs ? (
+        <Tab key="settings-tab-1" value="1" label={t("tabs.info")} />
+      ) : null}
+    </TabList>
+  );
+};
+
+export const SidebarTabList = ({ onTabChange }: SettingTabListProps) => {
+  const { t } = useTranslation("settings");
+  return (
+    <TabList onChange={onTabChange}>
+      <Tab key="settings-tab-0" value="0" label={t("tabs.settings")} />
+      <Tab key="settings-tab-1" value="1" label={t("tabs.options")} />
+      {isFeatureEnabled.infoTabs ? (
+        <Tab key="settings-tab-2" value="2" label={t("tabs.info")} />
+      ) : null}
     </TabList>
   );
 };
