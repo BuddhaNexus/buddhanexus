@@ -14,18 +14,22 @@ from .db_connection import get_db
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 def prettify_score(score):
-    # if score is a floating point number <= 1, return it as an int scaled by 100
+    """
+    if score is a floating point number <= 1, return it as an int scaled by 100
+    """
     if isinstance(score, float) and score <= 1:
         return int(score * 100)
     return score
 
 def shorten_segment_names(segments):
-    first_segment = segments[0]
-    last_segment = segments[-1]
-    first_segment = re.sub("-[0-9]+", "", first_segment)
-    last_segment = re.sub("-[0-9]+", "", last_segment)
-    last_segment_shortened = last_segment.split(":")[1]
-    shortened_segment = first_segment + "-" + last_segment_shortened
+    """
+    Returns a shortened version of a range of segments
+    """
+    first_segment = re.sub("-[0-9]+", "", segments[0])
+    last_segment = re.sub("-[0-9]+", "", segments[-1])
+    shortened_segment = first_segment
+    if not first_segment == last_segment:
+        shortened_segment += "-" + last_segment.split(":")[1]
     return [shortened_segment]
 
 def get_sort_key(sort_method) -> str:
@@ -72,7 +76,9 @@ def create_cleaned_limit_collection(limit_collection) -> List:
             query = get_db().AQLQuery(
                 query=menu_queries.QUERY_ONE_COLLECTION,
                 batchSize=1000,
-                bind_vars={"collectionkey": file.replace("!", "")},
+                bindVars={
+                    "collectionkey": file.replace("!", ""),
+                },
             )
             for item in query.result:
                 new_limit_collection.append(item)
@@ -154,7 +160,7 @@ def add_source_information(file_name, query_result):
     if lang == "skt":
         query_source_information = get_db().AQLQuery(
             query=main_queries.QUERY_SOURCE,
-            bind_vars={"file_name": file_name},
+            bindVars={"file_name": file_name},
             rawResults=True,
         )
         source_id = query_source_information.result[0]["source_id"]
@@ -190,7 +196,7 @@ def get_start_integer(active_segment):
     try:
         text_segment_count_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_SEGMENT_COUNT,
-            bind_vars={"segmentnr": active_segment},
+            bindVars={"segmentnr": active_segment},
         )
         if text_segment_count_query_result.result:
             start_int = text_segment_count_query_result.result[0] - 400
@@ -219,7 +225,7 @@ def get_file_text(file_name):
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=main_queries.QUERY_FILE_TEXT,
-            bind_vars={"file_name": file_name},
+            bindVars={"file_name": file_name},
         )
 
         if text_segments_query_result.result:
@@ -242,12 +248,19 @@ def get_file_text(file_name):
 
 def get_cat_from_segmentnr(segmentnr):
     """
-    when the segmentnr is not Pali:
+    retrieves the category code from the segmentnumber
     """
     cat = ""
+    pali_check = [x for x in ["anya", "atk", "tika"] if segmentnr.startswith(x)]
+    pali_vinaya_check = [x for x in ["pli-tv-bi-vb", "pli-tv-bu-vb"] if segmentnr.startswith(x)]
     search = re.search("^[A-Z]+[0-9]+", segmentnr)
     if search:
         cat = search[0]
+    elif pali_check:
+        search = re.search("^[a-z]+-[a-z]+[0-9][0-9]", segmentnr)
+        cat = search[0]
+    elif pali_vinaya_check:
+        cat = pali_vinaya_check[0]
     else:
         search = re.search("^[a-z-]+", segmentnr)
         if search:

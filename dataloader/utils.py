@@ -21,7 +21,6 @@ from dataloader_constants import (
     LANG_TIBETAN,
     LANG_SANSKRIT,
     LANG_CHINESE,
-    LANG_ENGLISH,
     ARANGO_USER,
     ARANGO_PASSWORD,
     ARANGO_HOST,
@@ -170,8 +169,6 @@ def get_language_name(language_key):
         return "Pali"
     elif language_key == LANG_SANSKRIT:
         return "Sanskrit"
-    elif language_key == LANG_ENGLISH:
-        return "English"
     else:
         return "Unknown"
 

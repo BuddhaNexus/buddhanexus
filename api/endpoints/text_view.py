@@ -29,6 +29,7 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput):
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
     """
+    print(input)
     parallel_ids_type = "parallel_ids"
     start_int = 0
     if input.active_segment != "none":

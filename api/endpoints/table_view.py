@@ -28,9 +28,8 @@ async def get_table_view(input: GeneralInput):
     limitcollection_exclude = create_cleaned_limit_collection(
         input.limits.category_exclude + input.limits.file_exclude
     )
-    print("input.sort_method", input.sort_method)
+
     sortkey = get_sort_key(input.sort_method)
-    print("sortkey", sortkey)
     query_result = execute_query(
         main_queries.QUERY_TABLE_VIEW,
         bind_vars={
