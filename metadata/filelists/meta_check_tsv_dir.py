@@ -8,6 +8,9 @@ def path_to_filename(path: Path) -> str:
     return (path.stem).split("$")[0]
 
 def meta_filter_tsv_dir(metadir, lang, target):
+    """this funtion check a directory containing TSV files in accordance with the metadata list
+    the files that are not in the metadata are moved to another folder with a suffix fro  variable NOT_IN_META_DIR_NAME
+    """
     target_dir = Path(target)
     if not target_dir.exists():
         print(f"{target_dir} does not exist")
