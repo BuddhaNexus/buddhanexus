@@ -4,8 +4,10 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from argparse import ArgumentParser
 import os
+
 METADATA_ROOT = "../data/"
 METADATA_SCHEMAS = METADATA_ROOT + "schemas/"
+
 
 def validate_json(schema_path, doc_path):
     with open(Path(schema_path)) as f:
@@ -13,7 +15,7 @@ def validate_json(schema_path, doc_path):
 
     with open(Path(doc_path)) as f:
         doc = json.load(f)
-        
+
     try:
         validate(instance=doc, schema=schema)
         print(f"Validating {doc_path}: OK")
@@ -41,6 +43,8 @@ def main(args):
 if __name__ == "__main__":
 
     parser = ArgumentParser()
-    parser.add_argument("--metadatapath",)
+    parser.add_argument(
+        "--metadatapath",
+    )
     args = parser.parse_args()
     main(args)

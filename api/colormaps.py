@@ -52,12 +52,14 @@ def create_segmented_text_color_only(text, colormap):
             current_segment = ""
         current_segment += text[i]
         last_color = current_color
-    result_segments.append({"text": abbreviate(current_segment), "highlightColor": last_color})
+    result_segments.append(
+        {"text": abbreviate(current_segment), "highlightColor": last_color}
+    )
     return result_segments
 
 
 def abbreviate(text):
-    """ Abbreviates long matches with an ellipsis """
+    """Abbreviates long matches with an ellipsis"""
     newtext = ""
     if len(text) > 300:
         newtext = text[:50] + " … " + text[-50:]

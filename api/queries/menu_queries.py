@@ -84,7 +84,8 @@ FOR collection IN 1..1 OUTBOUND concat("languages/", @language) GRAPH 'collectio
     RETURN {
         collection: collection.collection,
         categories: categories
-    }"""
+    }
+"""
 
 
 QUERY_ALL_COLLECTIONS = """

@@ -94,8 +94,8 @@ class LoadSegmentsBase:
             if self.LANG == "chn":
                 original = "".join(original)
                 stem = "".join(stem)
-            else:                
-                
+            else:
+
                 original = " ".join(original)
                 stem = " ".join(stem)
             category = get_cat_from_segmentnr(segnr[1])
@@ -127,7 +127,7 @@ class LoadSegmentsBase:
             self._load_segments_to_search_index(file_df, db)
         except Exception as e:
             print(f"Error while processing file {file}: {e}")
-            
+
     def load(self, number_of_threads: int = 1) -> None:
         # only create collection if it does not exist
         db = get_database()
