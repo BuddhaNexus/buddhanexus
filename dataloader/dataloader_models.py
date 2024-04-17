@@ -18,6 +18,7 @@ class Match(BaseModel):
     """
     The base model of a Parallel object
     """
+
     id: str = Field(..., min_length=1)
     score: float
     par_length: int

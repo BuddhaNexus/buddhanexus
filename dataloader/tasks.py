@@ -21,7 +21,6 @@ from dataloader_constants import (
     LANG_PALI,
     LANG_CHINESE,
     LANG_SANSKRIT,
-    LANG_ENGLISH,
     DEFAULT_LANGS,
 )
 

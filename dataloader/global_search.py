@@ -120,7 +120,7 @@ def create_search_view(
 ):
     """Helper function to create a search view for a specified language."""
     print(f"\nCreating {language} search views...")
-    if check_if_view_exists(db, view_name):        
+    if check_if_view_exists(db, view_name):
         db.delete_view(view_name)
     db.create_arangosearch_view(name=view_name, properties=view_properties)
 
@@ -137,11 +137,14 @@ def create_search_views(db: StandardDatabase, langs=[]):
             "Tibetan Fuzzy",
         )
     if "skt" in langs:
-        create_search_view(db, VIEW_SEARCH_INDEX_SKT, PROPERTIES_SEARCH_INDEX_SKT, "Sanskrit")
+        create_search_view(
+            db, VIEW_SEARCH_INDEX_SKT, PROPERTIES_SEARCH_INDEX_SKT, "Sanskrit"
+        )
     if "pli" in langs:
-        create_search_view(db, VIEW_SEARCH_INDEX_PLI, PROPERTIES_SEARCH_INDEX_PLI, "Pali")
+        create_search_view(
+            db, VIEW_SEARCH_INDEX_PLI, PROPERTIES_SEARCH_INDEX_PLI, "Pali"
+        )
     if "chn" in langs:
-        create_search_view(db, VIEW_SEARCH_INDEX_CHN, PROPERTIES_SEARCH_INDEX_CHN, "Chinese")
-    
-    
-    
+        create_search_view(
+            db, VIEW_SEARCH_INDEX_CHN, PROPERTIES_SEARCH_INDEX_CHN, "Chinese"
+        )

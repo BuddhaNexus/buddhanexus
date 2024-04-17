@@ -5,10 +5,8 @@ worksheets for download
 
 import re
 import xlsxwriter
-from .queries import main_queries
-from .db_connection import get_db
-
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
+from .utils import shorten_segment_names
+from .endpoints.utils import get_displayname
 
 
 def run_table_download(query, file_values):
@@ -35,7 +33,7 @@ def run_table_download(query, file_values):
     worksheet.set_row(1, 25)
     worksheet.set_row(12, 50)
     worksheet.set_column("A:A", 8)
-    worksheet.set_column("B:B", 13)
+    worksheet.set_column("B:B", 25)
     worksheet.set_column("C:C", 30)
     worksheet.set_column("D:D", 6)
     worksheet.set_column("E:E", 7)
@@ -44,7 +42,7 @@ def run_table_download(query, file_values):
 
     workbook_formats = add_formatting_workbook(workbook)
 
-    full_root_file_name = get_displayname(file_values[0], file_values[6])
+    full_root_file_name = get_displayname(file_values[0])
     # Writing header
     worksheet.insert_image("D4", "buddhanexus_smaller.jpg")
     worksheet.merge_range(
@@ -71,15 +69,13 @@ def run_table_download(query, file_values):
     row = 13
     # Iterate over the data and write it out row by row.
     for parallel in query.result:
-
-        spreadsheet_values = get_spreadsheet_values(parallel, file_values[6])
+        spreadsheet_values = get_spreadsheet_values(parallel)
 
         worksheet.write(row, 0, "Inquiry", workbook_formats[5])
         worksheet.write(row, 1, full_root_file_name[1], workbook_formats[5])
         worksheet.write(row, 2, full_root_file_name[0], workbook_formats[5])
         worksheet.write(row, 3, spreadsheet_values[0], workbook_formats[5])
         worksheet.write(row, 4, parallel["root_length"], workbook_formats[6])
-        worksheet.write(row, 5, parallel["score"], workbook_formats[6])
         worksheet.write(row, 6, spreadsheet_values[1], workbook_formats[5])
 
         worksheet.write(row + 1, 0, "Hit", workbook_formats[7])
@@ -115,11 +111,11 @@ def get_spreadsheet_fields(lang, file_values):
     ]
 
     filters_fields = (
-        [segment_field, file_values[6]],
+        [segment_field, file_values[5]],
         ["Similarity Score", file_values[1]],
         ["Min. Match Length", file_values[2]],
         ["Sorting Method", file_values[3]],
-        ["Filters", " ".join(map(str, file_values[4]))],
+        ["Filters", file_values[4]],
         ["Max. number of results", "20,000"],
     )
 
@@ -230,17 +226,11 @@ def get_segment_field(lang, file_name):
     return segment_field
 
 
-def get_spreadsheet_values(parallel, lang):
+def get_spreadsheet_values(parallel):
     """
     Calculate correct values for spreadsheet from the parallel given
     """
-    root_segment_nr = parallel["root_segnr"][0].split(":")[1]
-    if lang == "tib":
-        root_segment_nr = root_segment_nr.split("-")[0]
-    elif len(parallel["root_segnr"]) > 1:
-        root_segment_nr += (
-            "–" + parallel["root_segnr"][len(parallel["root_segnr"]) - 1].split(":")[1]
-        )
+    root_segment_nr = shorten_segment_names(parallel["root_segnr"])[0].split(":")[1]
     root_segment_text_joined = " ".join(parallel["root_seg_text"])
     root_offset_beg = parallel["root_offset_beg"]
     try:
@@ -251,13 +241,7 @@ def get_spreadsheet_values(parallel, lang):
     except IndexError:
         root_segment_text = root_segment_text_joined
 
-    par_segment_nr = parallel["par_segnr"][0].split(":")[1]
-    if lang == "tib":
-        par_segment_nr = par_segment_nr.split("-")[0]
-    elif len(parallel["par_segnr"]) > 1:
-        par_segment_nr += (
-            "–" + parallel["par_segnr"][len(parallel["par_segnr"]) - 1].split(":")[1]
-        )
+    par_segment_nr = shorten_segment_names(parallel["par_segnr"])[0].split(":")[1]
 
     par_segment_text_joined = " ".join(parallel["par_segment"])
     par_offset_beg = parallel["par_offset_beg"]
@@ -270,45 +254,22 @@ def get_spreadsheet_values(parallel, lang):
         par_segment_text = par_segment_text_joined
 
     par_text_name = parallel["par_displayname"]
-    par_text_number = parallel["par_segnr"][0].split(":")[0]
     if len(par_text_name) > 0:
         par_text_name = par_text_name[0]
     else:
         par_text_name = "NA"
+
     return (
         root_segment_nr,
         root_segment_text,
-        par_text_number,
+        parallel["par_segnr"][0].split(":")[0],
         par_text_name,
         par_segment_nr,
         par_segment_text,
     )
 
 
-def get_displayname(segmentnr, lang):
-
-    """
-    Downloads the displaynames for the worksheet
-    """
-    file_name = segmentnr.split(":")[0]
-    if lang == "chn":
-        file_name = re.sub(r"_[0-9]+", "", file_name)
-    full_name = ""
-    query_displayname = get_db().AQLQuery(
-        query=main_queries.QUERY_DISPLAYNAME,
-        bind_vars={"file_name": file_name},
-    )
-
-    if query_displayname.error:
-        # Print the error message for debugging
-        print(query_displayname.errorMsg)
-    elif query_displayname.result:
-        full_name = query_displayname.result[0]
-
-    return full_name
-
-
-def run_numbers_download(collections, segments, file_values):
+def run_numbers_download(categories, segments, file_values):
     """
     Creates an Excel workbook with data given for the numbers view
     """
@@ -322,7 +283,7 @@ def run_numbers_download(collections, segments, file_values):
     worksheet.center_horizontally()
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
 
-    spreadsheet_fields = get_spreadsheet_fields(file_values[7], file_values)
+    spreadsheet_fields = get_spreadsheet_fields(file_values[6], file_values)
 
     # Defining formats
     worksheet.set_row(0, 30)
@@ -334,7 +295,7 @@ def run_numbers_download(collections, segments, file_values):
 
     workbook_formats = add_formatting_workbook(workbook)
 
-    full_root_file_name = get_displayname(file_values[0], file_values[7])
+    full_root_file_name = get_displayname(file_values[0])
     # Writing header
     worksheet.insert_image("A4", "buddhanexus_smaller.jpg")
     worksheet.merge_range(
@@ -354,32 +315,30 @@ def run_numbers_download(collections, segments, file_values):
         row += 1
 
     worksheet.write(
-        12, 0, get_segment_field(file_values[7], file_values[0]), workbook_formats[3]
+        12, 0, get_segment_field(file_values[6], file_values[0]), workbook_formats[3]
     )
 
-    collections_list = []
+    categories_list = []
     col = 1
-    for item in collections:
-        for key in item.keys():
-            worksheet.write(12, col, key, workbook_formats[3])
-            collections_list.append(key)
-            col += 1
+    for item in categories:
+        worksheet.write(12, col, item["id"], workbook_formats[3])
+        categories_list.append(item["id"])
+        col += 1
 
     worksheet.write(13, 0, "", workbook_formats[10])
     col = 1
-    for item in collections:
-        for value in item.values():
-            worksheet.write(13, col, value, workbook_formats[10])
-            col += 1
+    for item in categories:
+        worksheet.write(13, col, item["displayName"], workbook_formats[10])
+        col += 1
 
     row = 14
     # Iterate over the data and write it out row by row.
     for item in segments:
         worksheet.write(row, 0, item["segmentnr"], workbook_formats[11])
 
-        collection_dict = get_collection_dict(item["parallels"], collections_list)
+        category_dict = get_category_dict(item["parallels"], categories_list)
 
-        for key, value in collection_dict.items():
+        for key, value in category_dict.items():
             worksheet.write(row, key, "\n".join(sorted(value)), workbook_formats[12])
 
         row += 1
@@ -388,25 +347,26 @@ def run_numbers_download(collections, segments, file_values):
     return "download/" + file_values[0] + "_download.xlsx"
 
 
-def get_collection_dict(segment_parallels, collections_list):
+def get_category_dict(segment_parallels, categories_list):
     """
     Calculates which items go in which column of the spreadsheet
     """
-    collection_dict = {}
+    category_dict = {}
     for parallel in segment_parallels:
-        collection_index = (
-            collections_list.index(re.search(COLLECTION_PATTERN, parallel[0]).group())
-            + 1
+        if parallel["category"]:
+            try:
+                category_index = categories_list.index(parallel["category"]) + 1
+            except: # pylint: disable=bare-except
+                print("cannot find in categories list: ", parallel["category"])
+                continue
+        else:
+            continue
+
+        if not category_index in category_dict:
+            category_dict[category_index] = []
+
+        category_dict[category_index].append(
+            shorten_segment_names(parallel["par_segnr"])[0]
         )
 
-        if not collection_index in collection_dict:
-            collection_dict[collection_index] = []
-
-        if len(parallel) > 1:
-            collection_dict[collection_index].append(
-                parallel[0] + "–" + parallel[len(parallel) - 1]
-            )
-        else:
-            collection_dict[collection_index].append(parallel[0])
-
-    return collection_dict
+    return category_dict

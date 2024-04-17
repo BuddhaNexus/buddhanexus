@@ -1,19 +1,29 @@
 from fastapi import APIRouter, Query
+from typing import Any
 from .endpoint_utils import execute_query
 from ..queries import menu_queries
 import unidecode
+from .models.menus_models import *
+
 router = APIRouter()
 
 
 def add_searchfield(results):
     for result in results:
-        result["search_field"] = result['displayName'] + " " + unidecode.unidecode(result["displayName"]).lower() + " " + result['textname']
+        result["search_field"] = (
+            result["displayName"]
+            + " "
+            + unidecode.unidecode(result["displayName"]).lower()
+            + " "
+            + result["textname"]
+        )
     return results
 
-@router.get("/files/")
+
+@router.get("/files/", response_model=FilesOutput)
 async def get_files_for_menu(
     language: str = Query(..., description="language to be used")
-):
+) -> Any:
     """
     Endpoint that returns list of file IDs in a given language or
     all files available in multilang if the language is multi.
@@ -29,10 +39,10 @@ async def get_files_for_menu(
     return {"results": query_result}
 
 
-@router.get("/filter/")
+@router.get("/filter/", response_model=FilterOutput)
 async def get_files_for_filter_menu(
     language: str = Query(..., description="language to be used")
-):
+) -> Any:
     """
     Given a language, return list of files for the category menu
     """
@@ -42,10 +52,10 @@ async def get_files_for_filter_menu(
     return {"filteritems": query_result.result}
 
 
-@router.get("/category/")
+@router.get("/category/", response_model=CategoryOutput)
 async def get_categories_for_filter_menu(
     language: str = Query(..., description="language to be used")
-):
+) -> Any:
     """
     Given a language, return list of categories for the filter menu
     """
@@ -54,11 +64,11 @@ async def get_categories_for_filter_menu(
         {"language": language},
     )
 
-    return {"categoryitems": query_result.result}
+    return {"categoryitems": query_result.result[0]}
 
 
-@router.get("/collections/")
-async def get_all_collections():
+@router.get("/collections/", response_model=CollectionsOutput)
+async def get_all_collections() -> Any:
     """
     Returns list of all available collections.
     """
@@ -66,14 +76,13 @@ async def get_all_collections():
     return {"result": collections_query_result.result}
 
 
-@router.get("/sidebar/")
+@router.get("/sidebar/", response_model=SideBarOutput)
 async def get_data_for_sidebar_menu(
     language: str = Query(..., description="language to be used")
-):
+) -> Any:
     """
     Endpoint for sidebar menu
     """
-
     if language == "multi":
         menu_query = menu_queries.QUERY_FILES_FOR_MULTILANG
         current_bind_vars = {}

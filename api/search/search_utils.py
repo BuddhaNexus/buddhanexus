@@ -53,7 +53,7 @@ def preprocess_search_string(search_string, language):
     if language == "tib":
         chn = pli = ""
     if language == "chn":
-        tib = pli = ""    
+        tib = pli = ""
     if language == "pli":
         tib = chn = ""
     return {"skt": skt, "skt_fuzzy": skt_fuzzy, "tib": tib, "pli": pli, "chn": chn}
@@ -112,19 +112,19 @@ def remove_duplicate_results(results):
     return return_results
 
 
-def process_result(result, search_string):    
+def process_result(result, search_string):
     try:
         beg, end, centeredness, distance = get_offsets(
             search_string, result["original"]
         )
         result["offset_beg"] = beg
         result["offset_end"] = end
-        result['distance'] = distance
+        result["distance"] = distance
         result["centeredness"] = centeredness
-        result['similarity'] = 100 
-        if distance != 0 :
-            result['similarity'] = 100 - distance / len(search_string)
-        result['segment_nr'] = shorten_segment_names(result['segment_nr'])
+        result["similarity"] = 100
+        if distance != 0:
+            result["similarity"] = 100 - distance / len(search_string)
+        result["segment_nr"] = shorten_segment_names(result["segment_nr"])
         return result
     except (RuntimeError, TypeError, NameError):
         pass

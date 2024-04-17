@@ -12,13 +12,14 @@ from argparse import ArgumentParser
 
 from dataloader_constants import METADATA_DIR, METADATA_SCHEMAS
 
+
 def validate_json(schema_path, doc_path):
     with open(Path(schema_path)) as f:
         schema = json.load(f)
 
     with open(Path(doc_path)) as f:
         doc = json.load(f)
-        
+
     try:
         validate(instance=doc, schema=schema)
         print(f"Validating {doc_path}: OK")
@@ -48,6 +49,8 @@ def main(args):
 if __name__ == "__main__":
 
     parser = ArgumentParser()
-    parser.add_argument("--metadatapath",)
+    parser.add_argument(
+        "--metadatapath",
+    )
     args = parser.parse_args()
     main(args)
