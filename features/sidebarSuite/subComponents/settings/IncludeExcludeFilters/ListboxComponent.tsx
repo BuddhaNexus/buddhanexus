@@ -66,8 +66,12 @@ const Rows = (props: ListChildComponentProps) => {
           enterDelay={1500}
         >
           <ListItemLabel>
-            <Typography fontWeight={600} component="span">
-              {id}:
+            <Typography
+              fontWeight={600}
+              component="span"
+              textTransform="uppercase"
+            >
+              ({id})
             </Typography>{" "}
             {trimName(name)}
           </ListItemLabel>

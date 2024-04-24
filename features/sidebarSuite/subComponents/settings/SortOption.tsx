@@ -19,7 +19,6 @@ export default function SortOption() {
   const router = useRouter();
   const { uniqueSettings, sortMethodSelectValue } = useDbQueryParams();
 
-  // TODO: review handling!
   const handleSelectChange = async (sortMethod: SortMethod) => {
     await router.push({
       pathname: router.pathname,

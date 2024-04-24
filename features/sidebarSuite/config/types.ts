@@ -66,9 +66,9 @@ export type Limit = keyof LimitsFilterValue;
 // Technically "limits" is not a type but TS is limited in it's ability to enforce the contents of arrays based on types, so this is being defined here as a pseduo type.
 export const limits: Limit[] = [
   "category_exclude",
+  "file_exclude",
   "category_include",
   "file_include",
-  "file_exclude",
 ];
 
 export const sortMethods = ["position", "quoted-text", "length2"] as const;

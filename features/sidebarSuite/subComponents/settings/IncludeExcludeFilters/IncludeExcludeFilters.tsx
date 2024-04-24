@@ -34,6 +34,7 @@ function getValuesFromParams(
     return { ...values, [filter]: filterItems };
   }, {});
 }
+
 function getParamsFromValues(
   updatedLimit: Limit,
   updatedvalue: (CategoryMenuItem | DatabaseText)[],
@@ -65,29 +66,51 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
   );
 
   const [limitsValue, setLimitsValue] = useState<LimitsFilterValue>({});
+  const isInitilized = React.useRef(false);
+  const isValueSet = React.useRef(false);
 
-  const isInitiated = React.useRef(false);
-  useEffect(() => {
-    if (!lanuguage) return;
-
-    if (!isInitiated.current && !isLoadingTexts && !isLoadingCategories) {
+  const updateLimitsValue = React.useCallback(() => {
+    if (!isInitilized.current && !isLoadingTexts && !isLoadingCategories) {
       const values = getValuesFromParams(limitsParam ?? {}, texts, categories);
       setLimitsValue(values);
-      isInitiated.current = true;
-    }
-
-    if (Object.keys(limitsValue).length > 0 && !limitsParam) {
-      setLimitsValue({});
+      isInitilized.current = true;
     }
   }, [
-    lanuguage,
-    isInitiated,
     isLoadingTexts,
     isLoadingCategories,
     texts,
     categories,
     limitsParam,
-    setLimitsParam,
+    setLimitsValue,
+  ]);
+
+  const handleGlobalParamReset = React.useCallback(() => {
+    // `isValueSet` deals with param-value setting cycle
+    // and avoids selection flicker & update lag
+    isValueSet.current = false;
+    setLimitsValue({});
+  }, [isValueSet, setLimitsValue]);
+
+  useEffect(() => {
+    if (!lanuguage) return;
+
+    if (!isValueSet.current && limitsParam) {
+      isValueSet.current = true;
+      return;
+    }
+
+    if (isValueSet.current && !limitsParam) {
+      handleGlobalParamReset();
+      return;
+    }
+
+    updateLimitsValue();
+  }, [
+    lanuguage,
+    updateLimitsValue,
+    limitsParam,
+    isValueSet,
+    handleGlobalParamReset,
   ]);
 
   if (!lanuguage) return null;
@@ -142,11 +165,14 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
               sx={{ mt: 1, mb: 2 }}
               multiple={true}
               value={filterValue ?? []}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               PopperComponent={StyledPopper}
               // sets the rendered option label
               ListboxComponent={ListboxComponent}
               options={options}
-              getOptionLabel={(option) => `${option.id} ${option.name}`}
+              getOptionLabel={(option) =>
+                `${option.id.toUpperCase()} ${option.name}`
+              }
               renderInput={(params) => (
                 <TextField
                   {...params}
