@@ -44,29 +44,30 @@ export default function ParallelsChip() {
   const isMatchesCapped =
     parallelCount && parallelCount >= PARALLELS_RESULTS_LIMIT;
 
+  if (isMatchesCapped) {
+    return (
+      <CappedMatchesChip
+        label={t("resultsHead.matches")}
+        message={t("resultsHead.cappedMessage", {
+          max: PARALLELS_RESULTS_LIMIT,
+        })}
+        matches={parallelCount}
+      />
+    );
+  }
+
   return (
-    <>
-      {isMatchesCapped ? (
-        // TODO: i18n
-        <CappedMatchesChip
-          label={t("resultsHead.matches")}
-          message={`More than ${parallelCount} matches found. Results limited to maximum ${PARALLELS_RESULTS_LIMIT} matches.`}
-          matches={parallelCount}
-        />
-      ) : (
-        <Chip
-          size="small"
-          label={
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box>{t("resultsHead.matches")}</Box>
-              <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
-                {parallelCount}
-              </Box>
-            </Box>
-          }
-          sx={{ mx: 0.5, p: 0.5 }}
-        />
-      )}
-    </>
+    <Chip
+      size="small"
+      label={
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box>{t("resultsHead.matches")}</Box>
+          <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
+            {parallelCount}
+          </Box>
+        </Box>
+      }
+      sx={{ mx: 0.5, p: 0.5 }}
+    />
   );
 }

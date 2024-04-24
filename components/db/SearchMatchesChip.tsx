@@ -15,30 +15,29 @@ export default function SearchMatchesChip({
   const { t } = useTranslation("settings");
   const isMatchesCapped = isSearchRoute && matches >= SEARCH_RESULTS_LIMIT;
 
+  if (isMatchesCapped) {
+    return (
+      <CappedMatchesChip
+        label={t("resultsHead.matches")}
+        message={t("resultsHead.cappedMessage", { max: SEARCH_RESULTS_LIMIT })}
+        matches={matches}
+      />
+    );
+  }
+
   return (
-    <>
-      {isMatchesCapped ? (
-        // TODO: i18n
-        <CappedMatchesChip
-          label={t("resultsHead.matches")}
-          message={`More than ${matches} matches found. Search results limited to maximum ${SEARCH_RESULTS_LIMIT} matches.`}
-          matches={matches}
-        />
-      ) : (
-        <Chip
-          size="small"
-          label={
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box>{t("resultsHead.matches")}</Box>
-              <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
-                {matches}
-              </Box>
-            </Box>
-          }
-          sx={{ mx: 0.5, p: 0.5 }}
-          aria-label={`${t("resultsHead.matches")} ${matches}`}
-        />
-      )}
-    </>
+    <Chip
+      size="small"
+      label={
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box>{t("resultsHead.matches")}</Box>
+          <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
+            {matches}
+          </Box>
+        </Box>
+      }
+      sx={{ mx: 0.5, p: 0.5 }}
+      aria-label={`${t("resultsHead.matches")} ${matches}`}
+    />
   );
 }

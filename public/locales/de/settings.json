@@ -13,7 +13,8 @@
     "reset": "Zurücksetzen",
     "resetTip": "Standardeinstellungen des Resorts",
     "textSelect": "Text ändern",
-    "textSelectTip": "Wählen Sie einen neuen Anfragetext"
+    "textSelectTip": "Wählen Sie einen neuen Anfragetext",
+    "cappedMessage": "Übereinstimmungen: {{max}} oder mehr."
   },
   "tabs": {
     "settings": "Einstellungen",

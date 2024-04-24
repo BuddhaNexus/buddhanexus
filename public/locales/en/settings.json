@@ -13,7 +13,8 @@
     "reset": "Reset",
     "resetTip": "Resort default settings",
     "textSelect": "Change text",
-    "textSelectTip": "Select a new inquiry text"
+    "textSelectTip": "Select a new inquiry text",
+    "cappedMessage": "Results exceeded maximum of {{max}} matches."
   },
   "tabs": {
     "settings": "Settings",
