@@ -28,7 +28,7 @@ export default function TextScriptOption() {
 
   React.useEffect(() => {
     const storedSelection = window.localStorage.getItem(
-      "tibetan-script-selection",
+      "text-script-selection",
     );
 
     if (storedSelection && storedSelection !== "undefined") {
@@ -38,19 +38,19 @@ export default function TextScriptOption() {
 
   React.useEffect(() => {
     window.localStorage.setItem(
-      "tibetan-script-selection",
+      "text-script-selection",
       JSON.stringify(scriptSelection),
     );
   }, [scriptSelection]);
 
   return (
     <FormControl sx={{ width: 1, mb: 1 }}>
-      <InputLabel id="tibetan-script-selection-label">
+      <InputLabel id="text-script-selection-label">
         {t("optionsLabels.script")}
       </InputLabel>
 
       <Select
-        labelId="tibetan-script-selection-label"
+        labelId="text-script-selection-label"
         aria-labelledby="sort-option-selector-label"
         defaultValue="position"
         inputProps={{
