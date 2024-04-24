@@ -79,7 +79,10 @@ type PageSettings = {
   dbResult: {
     filters: Pick<
       typeof filters,
-      "score" | "parLength" | "multiLingual" | "limits" | "targetCollection"
+      "score" | "parLength" | "limits" | "targetCollection"
+      // TODO: multiLingual awaiting spec for completion
+      // needs to uncommented in `features/sidebarSuite/subComponents/tabPanelGroups/PrimarySettings.tsx` after
+      // "score" | "parLength" | "multiLingual" | "limits" | "targetCollection"
     >;
     displayOptions: Record<keyof typeof displayOptions, DisplayOption>;
     utilityOptions: Record<keyof typeof utilityOption, UtilityOption>;
@@ -104,7 +107,7 @@ export const pageSettings: PageSettings = {
     filters: {
       score: "score",
       parLength: "par_length",
-      multiLingual: "multi_lingual",
+      // multiLingual: "multi_lingual",
       limits: "limits",
       targetCollection: "target_collection",
     },
