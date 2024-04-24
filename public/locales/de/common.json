@@ -31,7 +31,12 @@
     "contact": "Kontakt"
   },
   "db": {
-    "searchInputPlaceholder": "Quelltext auswählen"
+    "searchInputPlaceholder": "Quelltext auswählen",
+    "length": "Länge",
+    "score": "Punktzahl",
+    "matches": "Übereinstimmungen",
+    "clearSelectedSegment": "Ausgewähltes Segment löschen",
+    "segmentMatches": "Segmentübereinstimmungen"
   },
   "news": {
     "title": "Nachrichten",

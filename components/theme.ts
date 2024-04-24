@@ -1,10 +1,10 @@
-import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
+import { Noto_Serif, Source_Sans_3 } from "next/font/google";
 import { grey } from "@mui/material/colors";
 // eslint-disable-next-line no-restricted-imports
 import type { CssVarsThemeOptions } from "@mui/material/styles/experimental_extendTheme";
 import { SourceLanguage } from "utils/constants";
 
-export const sourceSerif = Source_Serif_4({ subsets: ["latin", "latin-ext"] });
+export const sourceSerif = Noto_Serif({ subsets: ["latin", "latin-ext"] });
 export const sourceSans = Source_Sans_3({ subsets: ["latin", "latin-ext"] });
 
 declare module "@mui/material/styles" {
@@ -126,8 +126,8 @@ export const getDesignTokens = ({
           card: "#29262d",
         },
         text: {
-          primary: "#d2cfcf",
-          secondary: "#a8a5a5",
+          primary: grey[100],
+          secondary: grey[300],
           inverted: grey[900],
         },
         divider: "rgba(54,31,13,0.12)",
@@ -137,16 +137,20 @@ export const getDesignTokens = ({
 
   typography: {
     button: { fontFamily: sourceSans.style.fontFamily },
-    h1: { fontFamily: sourceSerif.style.fontFamily, fontSize: "5rem" },
+    h1: {
+      fontFamily: sourceSerif.style.fontFamily,
+      fontSize: "4.5rem",
+      color: grey[800],
+    },
     h2: { fontFamily: sourceSerif.style.fontFamily, fontSize: "2.5rem" },
     h3: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.75rem" },
     h4: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.5rem" },
     h5: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.25rem" },
     h6: { fontFamily: sourceSans.style.fontFamily, fontSize: "1.15rem" },
     body1: {
-      fontFamily: sourceSans.style.fontFamily,
       fontSize: "1.15rem",
       lineHeight: 1.65,
+      fontFamily: sourceSans.style.fontFamily,
     },
     body2: { fontFamily: sourceSans.style.fontFamily },
     body3: { fontFamily: sourceSans.style.fontFamily },

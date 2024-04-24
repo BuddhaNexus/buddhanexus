@@ -1,6 +1,7 @@
 .segment {
   display: inline;
   text-align: start;
+  white-space: pre;
 
   //make button appear like span
   background: none !important;
@@ -8,17 +9,16 @@
   padding: 0 !important;
   font-size: 1rem;
 
-  &:hover {
+  &__button:hover {
     cursor: pointer;
     text-decoration: underline;
   }
 
-  &__selected__dark {
-    background-color: #616161 !important;
-    text-decoration: underline;
+  &--dark {
+    filter: invert(1);
   }
 
-  &__selected__light {
+  &--selected {
     background: #eeeeee !important;
     text-decoration: underline;
   }
@@ -38,7 +38,11 @@
     margin-right: 1em;
   }
 
-  &__selected {
+  &--selected {
     text-decoration: underline;
+  }
+
+  &--hidden {
+    display: none;
   }
 }

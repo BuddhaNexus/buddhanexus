@@ -10,6 +10,7 @@ import {
   DbFilePageSidebarTabPanels,
   SearchPageSidebarTabPanels,
   SidebarTabList,
+  SidebarTabListSearch,
 } from "./SidebarTabs";
 
 // TODO: remove once full settings suit is complete
@@ -55,10 +56,11 @@ export function SidebarSuite() {
           <TabContext value={activeTab}>
             <DrawerHeader>
               <Box sx={{ width: 1, borderBottom: 1, borderColor: "divider" }}>
-                <SidebarTabList
-                  isSearchRoute={isSearchRoute}
-                  onTabChange={handleTabChange}
-                />
+                {isSearchRoute ? (
+                  <SidebarTabListSearch onTabChange={handleTabChange} />
+                ) : (
+                  <SidebarTabList onTabChange={handleTabChange} />
+                )}
               </Box>
 
               <IconButton

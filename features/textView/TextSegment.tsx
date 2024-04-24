@@ -1,85 +1,137 @@
-// import { useRouter } from "next/router";
+import { useCallback, useLayoutEffect } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import {
+  shouldShowSegmentNumbersAtom,
+  shouldUseOldSegmentColorsAtom,
+} from "@components/hooks/useDbView";
 import { sourceSans } from "@components/theme";
 import { useColorScheme } from "@mui/material/styles";
 import type { Scale } from "chroma-js";
 import { scriptSelectionAtom } from "features/atoms";
+import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import type { TextPageDataSegment } from "types/api/text";
-import { useQueryParam } from "use-query-params";
+import { NumberParam, StringParam, useQueryParam } from "use-query-params";
 
+import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
 import styles from "./textSegment.module.scss";
 
 export const TextSegment = ({
   data: { segmentText, segmentNumber },
-  // index,
   colorScale,
 }: {
   data: TextPageDataSegment;
-  index: number;
   colorScale: Scale;
 }) => {
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
 
-  // const router = useRouter();
+  const [selectedSegmentId, setSelectedSegmentId] = useQueryParam(
+    "selectedSegment",
+    StringParam,
+  );
+  const [selectedSegmentIndex, setSelectedSegmentIndex] = useQueryParam(
+    "selectedSegmentIndex",
+    NumberParam,
+  );
   const { sourceLanguage } = useDbQueryParams();
-  const script = useAtomValue(scriptSelectionAtom);
-  const [selectedSegmentId, setSelectedSegmentId] =
-    useQueryParam("selectedSegment");
 
-  const isSelected = selectedSegmentId === segmentNumber;
+  const shouldUseOldSegmentColors = useAtomValue(shouldUseOldSegmentColorsAtom);
+  const shouldShowSegmentNumbers = useAtomValue(shouldShowSegmentNumbersAtom);
+  const scriptSelection = useAtomValue(scriptSelectionAtom);
+  const setSelectedSegmentMatches = useSetAtom(selectedSegmentMatchesAtom);
+
+  const isSegmentSelected = selectedSegmentId === segmentNumber;
+
+  const updateSelectedLocationInGlobalState = useCallback(
+    (location: { id: string; index: number; matches: string[] }) => {
+      setSelectedSegmentId(location.id);
+      setSelectedSegmentIndex(location.index);
+    },
+    [setSelectedSegmentId, setSelectedSegmentIndex],
+  );
+
+  // find matches for the selected segment when the page is first rendered
+  useLayoutEffect(() => {
+    if (!isSegmentSelected || typeof selectedSegmentIndex !== "number") return;
+    const locationFromQueryParams = segmentText[selectedSegmentIndex];
+    if (!locationFromQueryParams) return;
+    setSelectedSegmentMatches(locationFromQueryParams.matches);
+  }, [
+    isSegmentSelected,
+    segmentText,
+    selectedSegmentId,
+    selectedSegmentIndex,
+    setSelectedSegmentMatches,
+  ]);
 
   return (
     <>
       <span
         className={`${styles.segmentNumber} ${
-          isSelected && styles.segmentNumber__selected
-        }`}
+          isSegmentSelected && styles["segmentNumber--selected"]
+        } ${!shouldShowSegmentNumbers && styles["segmentNumber--hidden"]}`}
         data-segmentnumber={segmentNumber}
       />
 
-      {segmentText.map(
-        ({
+      {segmentText.map(({ text, highlightColor, matches }, i) => {
+        const segmentKey = segmentNumber + i;
+        const textContent = enscriptText({
           text,
-          highlightColor,
-          // matches
-        }) => (
+          script: scriptSelection,
+          language: sourceLanguage,
+        });
+        const isSegmentPartSelected =
+          isSegmentSelected && selectedSegmentIndex === i;
+
+        if (matches.length === 0) {
+          return (
+            <span key={segmentKey} className={styles.segment}>
+              {textContent}
+            </span>
+          );
+        }
+
+        const color = shouldUseOldSegmentColors
+          ? OLD_WEBSITE_SEGMENT_COLORS[highlightColor] ??
+            OLD_WEBSITE_SEGMENT_COLORS.at(-1)
+          : colorScale(highlightColor).hex();
+
+        return (
           <button
-            key={text}
+            key={segmentKey}
             type="button"
             tabIndex={0}
-            // href={{
-            //   pathname: "/db/[language]/[file]/text",
-            //   query: {
-            //     ...router.query,
-            //     matches: matches.join(","),
-            //     sort_method: "position",
-            //   },
-            // }}
-            className={`${styles.segment} ${
-              isSelected &&
-              (isDarkTheme
-                ? styles.segment__selected__dark
-                : styles.segment__selected__light)
-            }`}
+            className={`${styles.segment} ${styles.segment__button} ${
+              isDarkTheme && styles["segment--dark"]
+            } ${isSegmentPartSelected && styles["segment--selected"]}`}
             style={{
               fontFamily: sourceSans.style.fontFamily,
-              color: colorScale(highlightColor).hex(),
+              color,
             }}
-            onClick={() => setSelectedSegmentId(segmentNumber)}
+            onClick={() => {
+              updateSelectedLocationInGlobalState({
+                id: segmentNumber,
+                matches,
+                index: i,
+              });
+            }}
             onKeyDown={(event) => {
               // allow selecting the segments by pressing space or enter
               if (event.key !== " " && event.key !== "Enter") return;
               event.preventDefault();
-              setSelectedSegmentId(segmentNumber);
+              updateSelectedLocationInGlobalState({
+                id: segmentNumber,
+                matches,
+                index: i,
+              });
             }}
           >
-            {enscriptText({ text, script, language: sourceLanguage })}
+            {textContent}
           </button>
-        ),
-      )}
+        );
+      })}
     </>
   );
 };

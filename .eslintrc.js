@@ -106,6 +106,7 @@ const rules = {
   ],
   "unicorn/filename-case": "off",
   "unicorn/no-array-callback-reference": "off",
+  "unicorn/number-literal-case": "off",
   "unicorn/no-array-reduce": "off",
   "unicorn/no-null": "off",
   "unicorn/no-thenable": "off",

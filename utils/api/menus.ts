@@ -64,11 +64,10 @@ export async function getSourceTextMenuData(
       return {
         id: filename,
         name: displayName,
-        label: displayName,
+        label: search_field,
         fileName: filename,
         textName: textname,
         category,
-        searchMatter: search_field,
       };
     }) ?? []
   );
@@ -98,7 +97,7 @@ export async function getCategoryMenuData(
         map.set(category, {
           id: category,
           name: categoryname,
-          searchMatter: `${category} ${categoryname}`,
+          label: `${category} ${categoryname}`,
         });
         return map;
       },

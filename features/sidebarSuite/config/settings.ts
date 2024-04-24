@@ -18,8 +18,7 @@ export type QueriedDisplayOption =
 
 export const localDisplayOption = {
   script: "script",
-  // TODO: disabled pending review. Reinstate in features/sidebarSuite/subComponents/tabPanelGroups/DisplayOptionsSection.tsx case when showAndPositionSegmentNrs is supported
-  // showAndPositionSegmentNrs: "showAndPositionSegmentNrs",
+  showSegmentNrs: "showSegmentNrs",
 } as const;
 export type LocalDisplayOption =
   (typeof localDisplayOption)[keyof typeof localDisplayOption];
@@ -62,7 +61,7 @@ const remote = {
  */
 const local = {
   script: localDisplayOption.script,
-  // showAndPositionSegmentNrs: localDisplayOption.showAndPositionSegmentNrs,
+  showSegmentNrs: localDisplayOption.showSegmentNrs,
   copyQueryTitle: utilityOption.copyQueryTitle,
   copyQueryLink: utilityOption.copyQueryLink,
   emailQueryLink: utilityOption.emailQueryLink,
@@ -113,6 +112,7 @@ export const pageSettings: PageSettings = {
       script: "script",
       folio: "folio",
       sortMethod: "sort_method",
+      showSegmentNrs: "showSegmentNrs",
     },
     utilityOptions: {
       download: "download",

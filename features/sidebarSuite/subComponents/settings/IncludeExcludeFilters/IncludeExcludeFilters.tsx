@@ -123,7 +123,13 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
         const filter = limit.startsWith("file")
           ? { options: [...texts.values()], isLoading: isLoadingTexts }
           : {
-              options: [...categories.values()],
+              options: [...categories.values()].map((category) => ({
+                // gets common properties with `DatabaseText`
+                // to ensure type alaignment
+                id: category.id,
+                name: category.name,
+                label: category.label,
+              })),
               isLoading: isLoadingCategories,
             };
 
@@ -140,7 +146,7 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
               // sets the rendered option label
               ListboxComponent={ListboxComponent}
               options={options}
-              getOptionLabel={(option) => `${option.id} ${option.searchMatter}`}
+              getOptionLabel={(option) => `${option.id} ${option.name}`}
               renderInput={(params) => (
                 <TextField
                   {...params}

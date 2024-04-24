@@ -60,11 +60,11 @@ const LOCAL_DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<LocalDisplayOptio
         SourceLanguage.SANSKRIT,
       ],
     },
-    // [local.showAndPositionSegmentNrs]: {
-    //   [DbViewEnum.GRAPH]: ["all"],
-    //   [DbViewEnum.NUMBERS]: ["all"],
-    //   [DbViewEnum.TABLE]: ["all"],
-    // },
+    [local.showSegmentNrs]: {
+      [DbViewEnum.GRAPH]: ["all"],
+      [DbViewEnum.NUMBERS]: ["all"],
+      [DbViewEnum.TABLE]: ["all"],
+    },
   };
 
 export const DISPLAY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<DisplayOption> =

@@ -56,12 +56,11 @@ export interface DatabaseText {
   fileName: string;
   textName: string;
   category: string;
-  searchMatter: string;
   label: string;
 }
 
 export interface CategoryMenuItem {
   id: string;
   name: string;
-  searchMatter: string;
+  label: string;
 }

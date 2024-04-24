@@ -10,7 +10,7 @@ import {
   SortOption,
   TextScriptOption,
 } from "features/sidebarSuite/subComponents/settings";
-import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
+import { SegmentOptions } from "features/sidebarSuite/subComponents/settings/SegmentOptions";
 import { useAtomValue } from "jotai";
 
 // Exclusively used in DB file selection results pages and has not been refactored for options in multiple contexts (i.e. global search results page).
@@ -44,19 +44,12 @@ export const DisplayOptionsSection = () => {
   ]);
 
   if (options.length === 0) {
-    return (
-      <Box>
-        <PanelHeading heading={t("headings.display")} />
-        <DbViewSelector />
-      </Box>
-    );
+    return null;
   }
 
   return (
     <Box>
       <PanelHeading heading={t("headings.display")} sx={{ mb: 2 }} />
-
-      <DbViewSelector />
       {options.map((option) => {
         const key = `display-option-${option}`;
 
@@ -71,13 +64,9 @@ export const DisplayOptionsSection = () => {
           case uniqueSettings.local.script: {
             return <TextScriptOption key={key} />;
           }
-          // case uniqueSettings.local.showAndPositionSegmentNrs: {
-          //   return (
-          //     <React.Fragment key={key}>
-          //       {StandinSetting("showAndPositionSegmentNrs")}
-          //     </React.Fragment>
-          //   );
-          // }
+          case uniqueSettings.local.showSegmentNrs: {
+            return <SegmentOptions key={key} />;
+          }
           default: {
             return null;
           }

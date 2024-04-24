@@ -78,8 +78,8 @@ function getSettingCounts({
 
   return { display, filter };
 }
-
 export default function CurrentResultChips({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   matches = 0,
 }: {
   matches?: number;

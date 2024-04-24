@@ -7,9 +7,6 @@ const nextConfig = {
   i18n,
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    swcPlugins: [["@swc/plugin-emotion", {}]],
-  },
   compiler: { emotion: true },
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
   webpack(config, { isServer }) {

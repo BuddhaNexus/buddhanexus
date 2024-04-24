@@ -5,7 +5,7 @@
     "default": "Standard"
   },
   "resultsHead": {
-    "matches": "Streichhölzer:",
+    "matches": "Übereinstimmungen:",
     "filters": "Benutzerdefinierte Filter: {{value}}",
     "options": "Benutzerdefinierte Optionen: {{value}}",
     "settings": "Einstellungen",
@@ -16,11 +16,12 @@
     "textSelectTip": "Wählen Sie einen neuen Anfragetext"
   },
   "tabs": {
+    "settings": "Einstellungen",
     "options": "Optionen",
-    "filters": "Filter",
     "info": "Info"
   },
   "headings": {
+    "filters": "Filter",
     "display": "Anzeigen",
     "tools": "Werkzeuge",
     "links": "Links"
@@ -43,7 +44,9 @@
     "download": "Ergebnisse als xmlx-Datei herunterladen",
     "copyQueryTitle": "Texttitel kopieren",
     "copyQueryLink": "Link der Ergebnisseite kopieren",
-    "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden"
+    "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden",
+    "hideSegmentNumbers": "Segmentnummern anzeigen",
+    "usePreviousSegmentColors": "Verwenden Sie Segmentfarben der vorherigen Website"
   },
   "optionsPopperMsgs": {
     "download": "Hoppla! Etwas ist schief gelaufen!",

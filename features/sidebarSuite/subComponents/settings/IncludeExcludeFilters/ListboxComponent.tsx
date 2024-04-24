@@ -49,7 +49,7 @@ const Rows = (props: ListChildComponentProps) => {
   const dataSet = data[index];
   const inlineStyle = {
     ...style,
-    top: (style.top as number) + LISTBOX_PADDING,
+    top: (style.top as number) + LISTBOX_PADDING_PX,
     fontWeight: 700,
   };
   const [dataSetProps, { name, id }] = dataSet;
@@ -122,7 +122,7 @@ const ListboxComponent = React.forwardRef<
         <VariableSizeList
           ref={gridRef}
           itemData={itemData}
-          height={getListHeight(itemData) + 2 * LISTBOX_PADDING}
+          height={getListHeight(itemData) + 2 * LISTBOX_PADDING_PX}
           width="100%"
           // @ts-expect-error type issue
           outerElementType={OuterElementType}
