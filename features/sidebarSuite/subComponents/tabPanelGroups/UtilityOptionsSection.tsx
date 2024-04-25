@@ -124,6 +124,9 @@ export const UtilityOptionsSection = () => {
                     ],
                     download: { call: download, fileName, queryParams },
                     href,
+                    messages: {
+                      subject: t("generic.resutsSubject"),
+                    },
                   })
                 }
               >

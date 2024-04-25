@@ -42,11 +42,11 @@ export const SearchResultsRow = ({ row, rowItems }: Props) => {
           result={result}
         />
       ))}
-      {rowFillerCount
-        ? [...String(rowFillerCount)].map((dummyItem) => (
+      {rowFillerCount === 0
+        ? null
+        : [...String(rowFillerCount)].map((dummyItem) => (
             <DummyFillerItem key={dummyItem} aria-hidden />
-          ))
-        : null}
+          ))}
     </ListContainer>
   );
 };

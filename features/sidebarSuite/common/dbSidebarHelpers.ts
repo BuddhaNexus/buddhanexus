@@ -48,6 +48,9 @@ interface UtilityClickHandlerProps {
   };
   href: string;
   popperAnchorStateHandler: PopperAnchorStateHandler;
+  messages: {
+    subject: string;
+  };
 }
 
 type UtilityOptionProps = {
@@ -127,26 +130,25 @@ export const onEmailQueryLink = ({
   fileName,
   popperAnchorStateHandler,
   href,
+  messages,
 }: UtilityClickHandlerProps) => {
   const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
   const encodedURL = encodeURI(href);
 
-  // TODO: i18n
   const subject = fileName
-    ? `BuddhaNexus search results - ${fileName.toUpperCase()}`
-    : `BuddhaNexus search results`;
-  const body = fileName
-    ? `Here is a link to search results for ${fileName.toUpperCase()}: ${encodedURL}`
-    : `Here is a link to your search results: ${encodedURL}`;
+    ? `${messages.subject} - ${fileName.toUpperCase()}`
+    : messages.subject;
 
   const link = document.createElement("a");
-  link.href = `mailto:?subject=${subject}&body=${body}`;
+  link.href = `mailto:?subject=${subject}&body=${encodedURL}`;
   link.click();
   setAnchorEl({
     ...defaultAnchorEls,
     emailQueryLink: anchorEl.emailQueryLink ? null : event.currentTarget,
   });
+
+  link.remove();
 };
 
 const ewts = new EwtsConverter();

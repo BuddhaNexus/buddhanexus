@@ -2,7 +2,8 @@
   "generic": {
     "selectLanguage": "Sprache auswählen",
     "noSelection": "Nichts ausgewählt",
-    "default": "Standard"
+    "default": "Standard",
+    "resutsSubject": "BuddhaNexus Suchergebnisse-Link"
   },
   "resultsHead": {
     "matches": "Übereinstimmungen:",
