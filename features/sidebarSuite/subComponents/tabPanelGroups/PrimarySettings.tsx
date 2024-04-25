@@ -76,7 +76,7 @@ export const PrimarySettings = ({
           // }
           case uniqueSettings.queryParams.limits: {
             return (
-              <IncludeExcludeFilters key={key} lanuguage={sourceLanguage} />
+              <IncludeExcludeFilters key={key} language={sourceLanguage} />
             );
           }
           case uniqueSettings.queryParams.targetCollection: {

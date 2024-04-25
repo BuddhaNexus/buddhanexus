@@ -52,7 +52,7 @@ function getParamsFromValues(
   };
 }
 
-const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
+const IncludeExcludeFilters = ({ language }: { language: string }) => {
   const { t } = useTranslation("settings");
 
   const { defaultParamConfig, uniqueSettings } = useDbQueryParams();
@@ -92,7 +92,7 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
   }, [isValueSet, setLimitsValue]);
 
   useEffect(() => {
-    if (!lanuguage) return;
+    if (!language) return;
 
     if (!isValueSet.current && limitsParam) {
       isValueSet.current = true;
@@ -106,14 +106,14 @@ const IncludeExcludeFilters = ({ lanuguage }: { lanuguage: string }) => {
 
     updateLimitsValue();
   }, [
-    lanuguage,
+    language,
     updateLimitsValue,
     limitsParam,
     isValueSet,
     handleGlobalParamReset,
   ]);
 
-  if (!lanuguage) return null;
+  if (!language) return null;
 
   const handleInputChange = (
     limit: Limit,

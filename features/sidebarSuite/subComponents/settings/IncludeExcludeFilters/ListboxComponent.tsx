@@ -36,7 +36,7 @@ const charsPerLine = 30;
 const trimName = (name: string) => {
   return name.replaceAll(/^•\s/g, "");
 };
-const createMenuItemLable = (id: string, name: string) =>
+const createMenuItemLabel = (id: string, name: string) =>
   `${id}: ${trimName(name)}`;
 
 const getNumberOfLines = (lable: string) => {
@@ -54,7 +54,7 @@ const Rows = (props: ListChildComponentProps) => {
   };
   const [dataSetProps, { name, id }] = dataSet;
 
-  const lable = createMenuItemLable(id, name);
+  const lable = createMenuItemLabel(id, name);
   const isTruncated = lable.length > charsPerLine * maxLines + 12;
 
   return (
@@ -85,7 +85,7 @@ const getChildSize = (child: React.ReactNode) => {
   // @ts-expect-error type issue
   const [, itemData] = child;
   const { id, name } = itemData;
-  const lines = getNumberOfLines(createMenuItemLable(id, name));
+  const lines = getNumberOfLines(createMenuItemLabel(id, name));
   const itemHeight = lines * lineHeight;
 
   return lines <= maxLines ? itemHeight : lineHeight * maxLines;
