@@ -113,8 +113,6 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
     handleGlobalParamReset,
   ]);
 
-  if (!language) return null;
-
   const handleInputChange = (
     limit: Limit,
     value: (CategoryMenuItem | DatabaseText)[],
@@ -136,32 +134,47 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
     );
   };
 
+  const limitFilters = React.useMemo(() => {
+    return limits.map((limit) => {
+      const filter = limit.startsWith("file")
+        ? { options: [...texts.values()], isLoading: isLoadingTexts }
+        : {
+            options: [...categories.values()].map((category) => ({
+              // gets common properties with `DatabaseText`
+              // to ensure type alaignment
+              id: category.id,
+              name: category.name,
+              label: category.label,
+            })),
+            isLoading: isLoadingCategories,
+          };
+
+      return {
+        filertName: limit,
+        filter,
+      };
+    });
+  }, [limits, categories, texts, isLoadingTexts, isLoadingCategories]);
+
+  if (!language) return null;
+
   return (
     <>
       <FormLabel id="exclude-include-filters-label">
         {t("filtersLabels.includeExcludeFilters")}
       </FormLabel>
-      {limits.map((limit) => {
-        const filterValue = limitsValue[limit];
-        const filter = limit.startsWith("file")
-          ? { options: [...texts.values()], isLoading: isLoadingTexts }
-          : {
-              options: [...categories.values()].map((category) => ({
-                // gets common properties with `DatabaseText`
-                // to ensure type alaignment
-                id: category.id,
-                name: category.name,
-                label: category.label,
-              })),
-              isLoading: isLoadingCategories,
-            };
+      {limitFilters.map((limit) => {
+        const {
+          filertName,
+          filter: { options, isLoading },
+        } = limit;
 
-        const { options, isLoading } = filter;
+        const filterValue = limitsValue[filertName];
 
         return (
-          <Box key={limit} sx={{ my: 1, width: 1 }}>
+          <Box key={filertName} sx={{ my: 1, width: 1 }}>
             <Autocomplete
-              id={limit}
+              id={filertName}
               sx={{ mt: 1, mb: 2 }}
               multiple={true}
               value={filterValue ?? []}
@@ -176,7 +189,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={t([`filtersLabels.${limit}`])}
+                  label={t([`filtersLabels.${filertName}`])}
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
@@ -197,7 +210,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
               loading={isLoading}
               filterSelectedOptions
               disablePortal
-              onChange={(event, value) => handleInputChange(limit, value)}
+              onChange={(event, value) => handleInputChange(filertName, value)}
             />
           </Box>
         );
