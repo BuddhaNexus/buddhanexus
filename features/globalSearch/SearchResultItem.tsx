@@ -5,6 +5,7 @@ import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";
 import { CardContent, Chip, Divider, IconButton, Tooltip } from "@mui/material";
+import { makeTextViewSegmentPath } from "features/tableView/ParallelSegment";
 import type { SearchResult } from "utils/api/search";
 
 import {
@@ -37,10 +38,6 @@ export const SearchResultItem = ({ result }: Props) => {
   const roundedSimilarity =
     similarity % 1 === 0 ? similarity : similarity.toFixed(2);
 
-  const [file] = segmentNumber.split(":");
-  // TODO: intergrate with text view
-  const path = `/db/${language}/${file}/text?selectedSegment=${segmentNumber}`;
-
   return (
     <SearchResultCard>
       <CardContent
@@ -72,12 +69,17 @@ export const SearchResultItem = ({ result }: Props) => {
         <SearchResultHeaderTitleRow>
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
             <Link
-              href={path}
+              href={makeTextViewSegmentPath({
+                language,
+                segmentNumber,
+              })}
               sx={{
                 display: "inline-block",
                 wordBreak: "break-word",
                 m: 0.5,
               }}
+              target="_blank"
+              rel="noreferrer noopenner"
             >
               {segmentNumber}
             </Link>
