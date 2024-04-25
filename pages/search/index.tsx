@@ -20,17 +20,10 @@ import {
 } from "features/globalSearch/GlobalSearchStyledMuiComponents";
 import NoSearchResultsFound from "features/globalSearch/NoSearchResultsFound";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import _ from "lodash";
 import { DbApi } from "utils/api/dbApi";
 import { type SearchPageResults } from "utils/api/search";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
-
-function chunkArray(array: SearchPageResults, chunkSize: number) {
-  const chunks = [];
-  for (let i = 0; i < array.length; i += chunkSize) {
-    chunks.push(array.slice(i, i + chunkSize));
-  }
-  return chunks;
-}
 
 export default function SearchPage() {
   const { t } = useTranslation();
@@ -66,7 +59,7 @@ export default function SearchPage() {
       ? rawData.sort((a, b) => b.similarity - a.similarity)
       : [];
     // see SearchResultsRow.tsx for explanation of workaround needing chunked data
-    return chunkArray(sortedData, 3);
+    return _.chunk(sortedData, 3);
   }, [rawData]);
 
   if (isFallback) {

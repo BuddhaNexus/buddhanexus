@@ -21,7 +21,6 @@ export type SearchResult = {
 };
 
 export type SearchPageResults = SearchResult[];
-// export type SearchPageData = { data: SearchPageResults };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function parseAPISearchData(apiData: any): SearchPageResults {

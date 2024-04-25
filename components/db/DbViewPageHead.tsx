@@ -22,7 +22,7 @@ export const DbViewPageHead = () => {
     <>
       <NextSeo
         title={`BuddhaNexus — ${fileName} :: ${
-          displayName && `${displayName} ::`
+          displayName ? `${displayName} ::` : ""
         } ${startCase(dbView)} View`}
       />
       <QueryPageTopStack />
@@ -33,7 +33,7 @@ export const DbViewPageHead = () => {
       ) : (
         <Typography variant="h2" component="h1" mb={1}>
           {fileName?.toUpperCase()}
-          {displayName && `: ${displayName}`}
+          {displayName ? `: ${displayName}` : ""}
         </Typography>
       )}
     </>

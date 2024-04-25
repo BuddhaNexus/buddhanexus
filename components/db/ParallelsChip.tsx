@@ -4,7 +4,7 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
-import { PARALLELS_RESULTS_LIMIT } from "utils/api/constants";
+import { BD_RESULTS_LIMIT } from "utils/api/constants";
 import { DbApi } from "utils/api/dbApi";
 
 import CappedMatchesChip from "./CappedMatchesChip";
@@ -41,15 +41,14 @@ export default function ParallelsChip() {
     }
   }, [data]);
 
-  const isMatchesCapped =
-    parallelCount && parallelCount >= PARALLELS_RESULTS_LIMIT;
+  const isMatchesCapped = parallelCount && parallelCount >= BD_RESULTS_LIMIT;
 
   if (isMatchesCapped) {
     return (
       <CappedMatchesChip
         label={t("resultsHead.matches")}
         message={t("resultsHead.cappedMessage", {
-          max: PARALLELS_RESULTS_LIMIT,
+          max: BD_RESULTS_LIMIT,
         })}
         matches={parallelCount}
       />
