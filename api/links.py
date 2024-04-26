@@ -61,9 +61,8 @@ def get_links(file_name, links_query):
         cbc = "https://dazangthings.nz/cbc/text/" + cbc_file_name
 
     if lang == "pli":
-        if re.search("^tika|^anya|^atk", file_name):
-            vri = "https://www.tipitaka.org/romn/" + file_name
-        else:
+        vri = link1 or "https://tipitaka.org/romn/"
+        if not re.search("^tika|^anya|^atk", file_name):
             sc_link = "https://suttacentral.net/" + file_name
 
     return {
