@@ -59,7 +59,7 @@
   "filtersLabels": {
     "score": "Similarity Score:",
     "minMatch": "Minimum character/syllable matches length",
-    "includeExcludeFilters": "Includes and Exclude items",
+    "includeExcludeFilters": "Include and exclude items",
     "category_exclude": "Exclude collections",
     "category_include": "Only include collections",
     "file_exclude": "Exclude texts",
