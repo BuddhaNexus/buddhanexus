@@ -9,7 +9,7 @@ import { DrawerHeader } from "./common/MuiStyledSidebarComponents";
 import {
   DbFilePageSidebarTabPanels,
   SearchPageSidebarTabPanels,
-  SidebarTabList,
+  SidebarTabListDbPage,
   SidebarTabListSearch,
 } from "./SidebarTabs";
 
@@ -59,7 +59,7 @@ export function SidebarSuite() {
                 {isSearchRoute ? (
                   <SidebarTabListSearch onTabChange={handleTabChange} />
                 ) : (
-                  <SidebarTabList onTabChange={handleTabChange} />
+                  <SidebarTabListDbPage onTabChange={handleTabChange} />
                 )}
               </Box>
 

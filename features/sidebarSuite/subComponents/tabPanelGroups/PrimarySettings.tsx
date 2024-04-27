@@ -1,4 +1,5 @@
 import { Fragment, useMemo } from "react";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
@@ -24,6 +25,8 @@ export const PrimarySettings = ({
 }) => {
   const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentViewAtom);
+  const router = useRouter();
+  const isDbRoute = router.route.startsWith("/db");
 
   const {
     sourceLanguage,
@@ -54,7 +57,12 @@ export const PrimarySettings = ({
 
   return filters.length > 0 ? (
     <Box>
-      <DbViewSelector />
+      {isDbRoute ? (
+        <>
+          <PanelHeading heading={t("tabs.settings")} />
+          <DbViewSelector />
+        </>
+      ) : null}
 
       <PanelHeading heading={t("headings.filters")} sx={{ mt: 1 }} />
       {filters.map((filter) => {

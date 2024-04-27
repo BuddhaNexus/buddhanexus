@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "next-i18next";
 import { TabList, TabPanel } from "@mui/lab/";
 import { Tab } from "@mui/material";
-import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import isFeatureEnabled from "utils/featureControls";
 
 import { Info } from "./subComponents/Info";
@@ -27,7 +26,7 @@ export const SidebarTabListSearch = ({ onTabChange }: SettingTabListProps) => {
   );
 };
 
-export const SidebarTabList = ({ onTabChange }: SettingTabListProps) => {
+export const SidebarTabListDbPage = ({ onTabChange }: SettingTabListProps) => {
   const { t } = useTranslation("settings");
   return (
     <TabList onChange={onTabChange}>
@@ -41,12 +40,9 @@ export const SidebarTabList = ({ onTabChange }: SettingTabListProps) => {
 };
 
 export const SearchPageSidebarTabPanels = () => {
-  const { t } = useTranslation("settings");
-
   return (
     <>
       <TabPanel value="0" sx={{ px: 2 }}>
-        <PanelHeading heading={t("tabs.settings")} />
         <PrimarySettings pageType="search" />
         <UtilityOptionsSection />
       </TabPanel>
