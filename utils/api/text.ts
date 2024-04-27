@@ -42,7 +42,6 @@ export async function getTextData({
       file_name: fileName,
       ...parseDbPageQueryParams(queryParams),
       multi_lingual: ["skt", "pli", "chn", "tib"],
-      limits: {},
     },
   });
 
