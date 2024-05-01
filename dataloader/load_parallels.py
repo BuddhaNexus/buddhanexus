@@ -107,10 +107,13 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     folder = os.path.join(folder, lang)
     files = os.listdir(folder)
     files = list(filter(lambda f: f.endswith(".json.gz"), files))
-    pool = multiprocessing.Pool(number_of_threads)
-    for file in files:
-        pool.apply_async(process_file, args=(os.path.join(folder, file), db))
-        # process_file(os.path.join(folder, file), db)
+    if number_of_threads > 1:
+        pool = multiprocessing.Pool(number_of_threads)
+        for file in files:
+            pool.apply_async(process_file, args=(os.path.join(folder, file), db))
+    else:
+        for file in files:
+            process_file(os.path.join(folder, file), db)
     db_collection.add_hash_index(
         fields=[
             "root_filename",

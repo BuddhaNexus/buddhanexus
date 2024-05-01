@@ -103,7 +103,7 @@ def create_collections(
 
 
 @task
-def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded=True):
+def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded=True): #  use --no-threaded otherwise
     """
     Load texts and their segments into the database
 
@@ -118,7 +118,7 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
         "tib": LoadSegmentsTibetan,
         "zh": LoadSegmentsChinese,
     }
-    number_of_threads = os.cpu_count()
+    number_of_threads = os.cpu_count() if threaded else 1
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
@@ -141,7 +141,7 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
 
 
 @task
-def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=True):
+def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=True): #  use --no-threaded otherwise
     thread_count = os.cpu_count()
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
@@ -152,7 +152,7 @@ def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=
     for clang in lang:
         print("LANG: ", clang)
         load_parallels_for_language(
-            root_url, clang, db, thread_count if threaded else 1
+            root_url, clang, db, thread_count if not threaded else 1
         )
         load_sorted_parallels_for_language(root_url, clang, db)
 
