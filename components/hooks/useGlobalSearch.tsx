@@ -1,14 +1,19 @@
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { searchPageFilter } from "features/sidebarSuite/config/settings";
+import { pageSettings } from "features/sidebarSuite/config/settings";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
 
-type HandleOnSearch = (searchTerm: string, e?: InputKeyDown) => void;
+type HandleSearchActionProps = {
+  searchTerm: string;
+  event?: InputKeyDown;
+  setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+};
+type HandleSearchAction = (props: HandleSearchActionProps) => void;
 
 interface GlobalSearchProps {
-  handleOnSearch: HandleOnSearch;
+  handleSearchAction: HandleSearchAction;
   searchParam: string;
 }
 
@@ -19,17 +24,20 @@ export function useGlobalSearch(): GlobalSearchProps {
 
   const params = new URLSearchParams(searchParams);
 
-  const handleOnSearch: HandleOnSearch = async (searchTerm, e?) => {
-    if (!e || e.key === "Enter") {
-      e?.preventDefault();
+  const handleSearchAction: HandleSearchAction = async (props) => {
+    const { searchTerm, event, setIsOpen } = props;
+
+    if (!event || event.key === "Enter") {
+      event?.preventDefault();
 
       const query: Record<string, string> = {
         [uniqueSettings.queryParams.searchString]: searchTerm,
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(router.query).forEach(([key, value]) => {
         // This resets query values if the search has been initiated from a source text results page. The source language setting.persists.
-        if (value && Object.keys(searchPageFilter).includes(key)) {
+        if (value && Object.keys(pageSettings.search.filters).includes(key)) {
           query[key] = value.toString();
         }
       });
@@ -39,10 +47,14 @@ export function useGlobalSearch(): GlobalSearchProps {
         query,
       });
     }
+
+    if (event?.key === "Escape" && setIsOpen) {
+      setIsOpen((prev) => !prev);
+    }
   };
 
   return {
-    handleOnSearch,
+    handleSearchAction,
     searchParam: params.get(uniqueSettings.queryParams.searchString) ?? "",
   };
 }

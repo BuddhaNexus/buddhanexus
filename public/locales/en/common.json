@@ -54,6 +54,13 @@
   },
   "search": {
     "pageTitle": "Search Results",
-    "placeholder": "Search..."
+    "inputPlaceholder": "Enter exact search term (whole words only)",
+    "search": "Search",
+    "runSearch": "Run search",
+    "clearSearch": "Clear search term",
+    "openSearch": "Open search box",
+    "closeSearch": "Close search box",
+    "noResultsHeading": "No results found",
+    "noResultsTip": "Try search for an exact term with whole words, correct punctuation and diacretical marks where relevant:"
   }
 }

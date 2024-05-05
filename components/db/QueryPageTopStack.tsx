@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { getTextPath } from "@components/common/utils";
@@ -32,7 +33,7 @@ const modalBoxstyles = {
  * - search page
  *
  */
-export const QueryPageTopStack = () => {
+export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   const { t } = useTranslation("settings");
   const router = useRouter();
   const isSearchRoute = router.route.startsWith("/search");
@@ -46,20 +47,21 @@ export const QueryPageTopStack = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const searchParams = useSearchParams();
+  const searchTerm = searchParams.get("search_string");
+
   const handleReset = async () => {
-    const pathname = isSearchRoute
-      ? "/search"
-      : getTextPath({ sourceLanguage, fileName, dbView });
-    await router.push(
-      {
-        pathname,
-        query: {},
-      },
-      undefined,
-      {
-        shallow: true,
-      },
-    );
+    const url = isSearchRoute
+      ? {
+          pathname: "/search",
+          query: { search_string: searchTerm },
+        }
+      : {
+          pathname: getTextPath({ sourceLanguage, fileName, dbView }),
+          query: {},
+        };
+
+    await router.push(url, undefined, { shallow: true });
   };
 
   return (
@@ -132,7 +134,7 @@ export const QueryPageTopStack = () => {
           gap: 1,
         }}
       >
-        <CurrentResultChips />
+        <CurrentResultChips matches={matches} />
       </Box>
     </Stack>
   );

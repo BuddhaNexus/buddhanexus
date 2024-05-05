@@ -105,7 +105,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["common", "home"],
+    ["home"],
   );
 
   const queryClient = new QueryClient();

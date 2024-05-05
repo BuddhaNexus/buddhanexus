@@ -30,10 +30,9 @@ export interface InfiniteFilePropApiQuery {
   pageNumber: number;
 }
 
-export interface InfiniteSerachApiQuery {
+export interface SerachApiQuery {
   searchTerm: string;
   queryParams: Params;
-  pageNumber: number;
 }
 
 export interface ViewPropApiQuery extends FilePropApiQuery {

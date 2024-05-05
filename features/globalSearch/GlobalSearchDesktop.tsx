@@ -20,7 +20,7 @@ const GlobalSearchDesktop = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { handleOnSearch } = useGlobalSearch();
+  const { handleSearchAction } = useGlobalSearch();
 
   useEffect(() => {
     if (isOpen) {
@@ -42,8 +42,7 @@ const GlobalSearchDesktop = () => {
     >
       <IconButton
         color="inherit"
-        // TODO: i18n
-        aria-label={isOpen ? "close search box" : "open search box"}
+        aria-label={isOpen ? t("search.closeSearch") : t("search.openSearch")}
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? (
@@ -58,24 +57,31 @@ const GlobalSearchDesktop = () => {
           <SearchBoxInput
             inputRef={inputRef}
             role="searchbox"
-            aria-label="Search"
-            placeholder={t("search.placeholder")}
+            aria-label={t("search.search")}
+            placeholder={t("search.inputPlaceholder")}
             variant="outlined"
-            isNarrow={true}
             InputProps={{
               endAdornment: (
                 <IconButton
-                  // TODO: i18n
-                  aria-label="Run search"
-                  onClick={() => handleOnSearch(inputRef.current?.value ?? "")}
+                  aria-label={t("search.runSearch")}
+                  onClick={() =>
+                    handleSearchAction({
+                      searchTerm: inputRef.current?.value ?? "",
+                    })
+                  }
                 >
                   <KeyboardReturnIcon />
                 </IconButton>
               ),
             }}
+            isNarrow
             fullWidth
             onKeyDown={(e: InputKeyDown) =>
-              handleOnSearch(inputRef.current?.value ?? "", e)
+              handleSearchAction({
+                searchTerm: inputRef.current?.value ?? "",
+                event: e,
+                setIsOpen,
+              })
             }
           />
         )}

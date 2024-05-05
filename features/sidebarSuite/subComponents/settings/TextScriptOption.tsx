@@ -1,7 +1,13 @@
 import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { FormControl, FormLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from "@mui/material";
 import { scriptSelectionAtom } from "features/atoms";
 import { useAtom } from "jotai";
 import type { SourceLanguage } from "utils/constants";
@@ -22,7 +28,7 @@ export default function TextScriptOption() {
 
   React.useEffect(() => {
     const storedSelection = window.localStorage.getItem(
-      "tibetan-script-selection",
+      "text-script-selection",
     );
 
     if (storedSelection && storedSelection !== "undefined") {
@@ -32,21 +38,25 @@ export default function TextScriptOption() {
 
   React.useEffect(() => {
     window.localStorage.setItem(
-      "tibetan-script-selection",
+      "text-script-selection",
       JSON.stringify(scriptSelection),
     );
   }, [scriptSelection]);
 
   return (
-    <FormControl sx={{ width: 1 }}>
-      <FormLabel id="tibetan-script-selection-label">
+    <FormControl sx={{ width: 1, mb: 1 }}>
+      <InputLabel id="text-script-selection-label">
         {t("optionsLabels.script")}
-      </FormLabel>
+      </InputLabel>
 
       <Select
-        id="sort-option-selector"
+        labelId="text-script-selection-label"
         aria-labelledby="sort-option-selector-label"
         defaultValue="position"
+        inputProps={{
+          id: "sort-option-selector",
+        }}
+        input={<OutlinedInput label={t("optionsLabels.script")} />}
         value={scriptSelection ?? DEFAULT_SCRIPT}
         onChange={(e) => setScriptSelection(e.target.value as Script)}
       >

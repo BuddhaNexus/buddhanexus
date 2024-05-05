@@ -62,7 +62,7 @@ export const getDesignTokens = ({
           main: "#C23211",
         },
         error: {
-          main: "#CC0202",
+          main: "#972222",
         },
         warning: {
           main: "#FE8027",
@@ -71,7 +71,7 @@ export const getDesignTokens = ({
           main: "#0DC0E8",
         },
         success: {
-          main: "#02CC3B",
+          main: "#10A60B",
         },
         background: {
           default: "#efe0c2",
@@ -105,7 +105,7 @@ export const getDesignTokens = ({
           main: "#C23211",
         },
         error: {
-          main: "#CC0202",
+          main: "#972222",
         },
         warning: {
           main: "#FE8027",
@@ -114,7 +114,7 @@ export const getDesignTokens = ({
           main: "#0DC0E8",
         },
         success: {
-          main: "#02CC3B",
+          main: "#10A60B",
         },
         background: {
           default: "#201c22",

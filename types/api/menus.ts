@@ -62,4 +62,5 @@ export interface DatabaseText {
 export interface CategoryMenuItem {
   id: string;
   name: string;
+  label: string;
 }

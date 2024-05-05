@@ -28,7 +28,7 @@ const GlobalSearchMobile = () => {
   // TODO: review uniformity of page margins. For now, the handling matches differences in current page margins across the site.
   const isPageMargin = isHomePage || isQueryResultsPage;
 
-  const { handleOnSearch } = useGlobalSearch();
+  const { handleSearchAction } = useGlobalSearch();
 
   const handleClear = () => {
     if (inputRef.current) {
@@ -76,16 +76,17 @@ const GlobalSearchMobile = () => {
             <SearchBoxInput
               inputRef={inputRef}
               role="searchbox"
-              aria-label="Search"
-              placeholder={t("search.placeholder")}
+              aria-label={t("search.search")}
+              placeholder={t("search.inputPlaceholder")}
               variant="outlined"
               InputProps={{
                 startAdornment: (
                   <IconButton
-                    // TODO: i18n
-                    aria-label="Run search"
+                    aria-label={t("search.runSearch")}
                     onClick={() =>
-                      handleOnSearch(inputRef.current?.value ?? "")
+                      handleSearchAction({
+                        searchTerm: inputRef.current?.value ?? "",
+                      })
                     }
                   >
                     <SearchIcon fontSize="inherit" />
@@ -93,8 +94,7 @@ const GlobalSearchMobile = () => {
                 ),
                 endAdornment: !isEmpty && (
                   <IconButton
-                    // TODO: i18n
-                    aria-label="Clear search field"
+                    aria-label={t("search.clearSearch")}
                     onClick={handleClear}
                   >
                     <CloseIcon fontSize="inherit" />
@@ -103,7 +103,10 @@ const GlobalSearchMobile = () => {
               }}
               fullWidth
               onKeyDown={(e: InputKeyDown) =>
-                handleOnSearch(inputRef.current?.value ?? "", e)
+                handleSearchAction({
+                  searchTerm: inputRef.current?.value ?? "",
+                  event: e,
+                })
               }
             />
           </SearchBoxWrapper>

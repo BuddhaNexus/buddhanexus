@@ -19,6 +19,21 @@ import type { SourceLanguage } from "utils/constants";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
 
+export const makeTextViewSegmentPath = ({
+  segmentNumber,
+  language,
+}: {
+  segmentNumber: string;
+  language: SourceLanguage;
+}) => {
+  // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
+  const [fileName] = segmentNumber.split(":");
+
+  const urlEncodedSegmentNumber = encodeURIComponent(segmentNumber);
+
+  return `/db/${language}/${fileName}/text?selectedSegment=${urlEncodedSegmentNumber}&selectedSegmentIndex=0`;
+};
+
 interface ParallelSegmentProps {
   language: SourceLanguage;
   displayName: string;
@@ -42,17 +57,12 @@ export const ParallelSegment = ({
 
   const sourceLanguageName = t(`language.${language}`);
 
-  // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [textName, segmentName] = textSegmentNumbers[0].split(":");
   const infoToCopy = `${textSegmentNumbers.join("-")}: ${displayName}`;
 
   // Example of copied data: dn1:1.1.1_0–1.1.2_0: Brahmajāla Sutta
   const copyTextInfoToClipboard = useCallback(async () => {
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
-
-  const urlEncodedSegmentNumber = encodeURIComponent(textSegmentNumbers[0]);
 
   return (
     <Card sx={{ flex: 1, wordBreak: "break-all", my: 1 }} elevation={1}>
@@ -72,9 +82,13 @@ export const ParallelSegment = ({
           {/* File Name */}
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
             <Link
-              href={`/db/${language}/${textName}/text?selectedSegment=${urlEncodedSegmentNumber}&selectedSegmentIndex=0`}
+              href={makeTextViewSegmentPath({
+                language,
+                segmentNumber: textSegmentNumbers[0],
+              })}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
               target="_blank"
+              rel="noreferrer noopenner"
             >
               {textSegmentNumbers}
             </Link>

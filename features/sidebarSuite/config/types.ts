@@ -2,36 +2,20 @@ import type { DbViewEnum } from "@components/hooks/useDbView";
 import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
 import type { SourceLanguage } from "utils/constants";
 
-import type {
-  dbPageFilter,
-  localDisplayOption,
-  queriedDisplayOption,
-  searchPageFilter,
+import {
+  DisplayOption,
+  PageFilter,
   uniqueSettings,
-  utilityOption,
+  UtilityOption,
 } from "./settings";
 
-export type SearchPageFilter =
-  (typeof searchPageFilter)[keyof typeof searchPageFilter];
-export type DbPageFilter = (typeof dbPageFilter)[keyof typeof dbPageFilter];
-export type LocalDisplayOption =
-  (typeof localDisplayOption)[keyof typeof localDisplayOption];
-export type QueriedDisplayOption =
-  (typeof queriedDisplayOption)[keyof typeof queriedDisplayOption];
-export type UtilityOption = (typeof utilityOption)[keyof typeof utilityOption];
+export type SidebarSuitePageContext = "dbResult" | "search";
+export type SettingOmissionContext = DbViewEnum | "search";
 
-export type SidebarSuitePageContext = "db" | "search";
+export type MenuSetting = PageFilter | DisplayOption | UtilityOption;
 
-export type DisplayOption = LocalDisplayOption | QueriedDisplayOption;
-
-export type MenuSetting =
-  | DbPageFilter
-  | DisplayOption
-  | SearchPageFilter
-  | UtilityOption;
-
-export type ViewOmission = (SourceLanguage | "allLangs")[];
-export type SettingContext = Partial<Record<DbViewEnum, ViewOmission>>;
+export type Omission = (SourceLanguage | "all")[];
+export type SettingContext = Partial<Record<SettingOmissionContext, Omission>>;
 
 export type SettingOmissions<K extends string, T = SettingContext> = Partial<
   Record<K, T>
@@ -63,21 +47,28 @@ type QueryStringParam =
 
 export type MultiLingalParam = SourceLanguage[] | undefined;
 
-export type LimitsParam = {
+export type LimitsFilterValue = {
   category_exclude?: CategoryMenuItem[];
   category_include?: CategoryMenuItem[];
   file_exclude?: DatabaseText[];
   file_include?: DatabaseText[];
 };
 
-export type Limit = keyof LimitsParam;
+export type LimitsParam = {
+  category_exclude?: string[];
+  category_include?: string[];
+  file_exclude?: string[];
+  file_include?: string[];
+};
+
+export type Limit = keyof LimitsFilterValue;
 
 // Technically "limits" is not a type but TS is limited in it's ability to enforce the contents of arrays based on types, so this is being defined here as a pseduo type.
 export const limits: Limit[] = [
   "category_exclude",
+  "file_exclude",
   "category_include",
   "file_include",
-  "file_exclude",
 ];
 
 export const sortMethods = ["position", "quoted-text", "length2"] as const;
@@ -113,7 +104,7 @@ export type QueryParams = {
     : Key extends "sort_method"
     ? SortMethod | (Key extends UndefinedParams ? undefined : never)
     : Key extends "limits"
-    ? LimitsParam | (Key extends UndefinedParams ? undefined : never)
+    ? LimitsFilterValue | (Key extends UndefinedParams ? undefined : never)
     : Key extends "target_collection"
     ? string[] | (Key extends UndefinedParams ? undefined : never)
     : Key extends "multi_lingual"

@@ -2,7 +2,8 @@
   "generic": {
     "selectLanguage": "Select language",
     "noSelection": "None selected",
-    "default": "Default"
+    "default": "Default",
+    "resutsSubject": "BuddhaNexus search results link"
   },
   "resultsHead": {
     "matches": "Matches: ",
@@ -13,14 +14,16 @@
     "reset": "Reset",
     "resetTip": "Resort default settings",
     "textSelect": "Change text",
-    "textSelectTip": "Select a new inquiry text"
+    "textSelectTip": "Select a new inquiry text",
+    "cappedMessage": "Results exceeded maximum of {{max}} matches."
   },
   "tabs": {
+    "settings": "Settings",
     "options": "Options",
-    "filters": "Filters",
     "info": "Info"
   },
   "headings": {
+    "filters": "Filters",
     "display": "Display",
     "tools": "Tools",
     "links": "Links"
@@ -56,7 +59,7 @@
   "filtersLabels": {
     "score": "Similarity Score:",
     "minMatch": "Minimum character/syllable matches length",
-    "includeExcludeFilters": "Includes and Exclude items",
+    "includeExcludeFilters": "Include and exclude items",
     "category_exclude": "Exclude collections",
     "category_include": "Only include collections",
     "file_exclude": "Exclude texts",

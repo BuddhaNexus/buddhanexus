@@ -54,6 +54,13 @@
   },
   "search": {
     "pageTitle": "Suchergebnisse",
-    "placeholder": "Suche..."
+    "inputPlaceholder": "Geben Sie den genauen Suchbegriff ein (nur ganze Wörter)",
+    "search": "Suchen",
+    "runSearch": "Suche ausführen",
+    "clearSearch": "Suchbegriff löschen",
+    "openSearch": "Suchfeld öffnen",
+    "closeSearch": "Suchfeld schließen",
+    "noResultsHeading": "keine Ergebnisse gefunden",
+    "noResultsTip": "Versuchen Sie, nach einem exakten Begriff mit ganzen Wörtern, korrekten Interpunktionen und diakretischen Markierungen zu suchen, wo relevant:"
   }
 }

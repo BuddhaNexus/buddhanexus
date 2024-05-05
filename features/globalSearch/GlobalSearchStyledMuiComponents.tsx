@@ -1,5 +1,7 @@
 import {
+  Box,
   type BoxProps,
+  Card,
   type OutlinedTextFieldProps,
   TextField,
 } from "@mui/material";
@@ -8,11 +10,6 @@ import { styled } from "@mui/material/styles";
 interface AppTopBarSearchBoxWrapperProps extends BoxProps {
   isOpen: boolean;
 }
-
-interface SearchBoxInputProps extends OutlinedTextFieldProps {
-  isNarrow?: boolean;
-}
-
 export const AppTopBarSearchBoxWrapper = styled(
   "form",
 )<AppTopBarSearchBoxWrapperProps>(({ theme, isOpen }) => ({
@@ -38,10 +35,14 @@ export const SearchBoxWrapper = styled("form")(({ theme }) => ({
   border: `${theme.palette.primary.main} 1px solid`,
 }));
 
+interface SearchBoxInputProps extends OutlinedTextFieldProps {
+  isNarrow?: boolean;
+}
 export const SearchBoxInput = styled(TextField, {
   shouldForwardProp: (prop) => prop !== "isNarrow",
 })<SearchBoxInputProps>(({ isNarrow }) => ({
   "& .MuiOutlinedInput-root": {
+    maxHeight: "48px",
     padding: "0px",
     ...(isNarrow && {
       "& input": {
@@ -60,3 +61,25 @@ export const SearchBoxInput = styled(TextField, {
     },
   },
 }));
+
+export const SearchResultCard = styled(Card)(({ theme }) => ({
+  flexGrow: 1,
+  width: "100%",
+  [theme.breakpoints.up("lg")]: {
+    width: "31%",
+  },
+  wordBreak: "break-all",
+}));
+
+export const SearchResultHeaderChips = styled(Box)({
+  display: "flex",
+  justifyContent: "space-between",
+  flexWrap: "wrap",
+  alignItems: "center",
+});
+
+export const SearchResultHeaderTitleRow = styled(Box)({
+  alignItems: "center",
+  display: "flex",
+  flexWrap: "wrap",
+});

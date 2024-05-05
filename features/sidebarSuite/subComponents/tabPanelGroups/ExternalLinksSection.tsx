@@ -67,13 +67,20 @@ export const ExternalLinksSection = () => {
   });
 
   // TODO: sort out dark theme icons, http://localhost:3000/db/tib/K01D0003_H0003/table
+  // const isDarkTheme = materialTheme.palette.mode === "dark"
 
   if (data && Object.keys(data).length > 0) {
     return (
       <>
         <PanelHeading heading={t("headings.links")} sx={{ mt: 1 }} />
 
-        <List sx={{ display: "flex", justifyContent: "flex-start" }}>
+        <List
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            flexWrap: "wrap",
+          }}
+        >
           {Object.entries(data).map(
             ([key, value]) =>
               value && (

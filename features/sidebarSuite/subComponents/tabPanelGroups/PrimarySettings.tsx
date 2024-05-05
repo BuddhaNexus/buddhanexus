@@ -1,55 +1,42 @@
 import { Fragment, useMemo } from "react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom } from "@components/hooks/useDbView";
 import { Box } from "@mui/material";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
+import PanelHeading from "features/sidebarSuite/common/PanelHeading";
 import type { SidebarSuitePageContext } from "features/sidebarSuite/config/types";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   IncludeExcludeFilters,
-  MultiLingualSelector,
+  // MultiLingualSelector,
   ParLengthFilter,
   ScoreFilter,
   SearchLanguageSelector,
 } from "features/sidebarSuite/subComponents/settings";
+import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
 import { useAtomValue } from "jotai";
-import { StringParam, useQueryParam } from "use-query-params";
 
-export const FilterSettings = ({
-  pageType = "db",
+export const PrimarySettings = ({
+  pageType = "dbResult",
 }: {
   pageType: SidebarSuitePageContext;
 }) => {
+  const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentViewAtom);
+  const router = useRouter();
+  const isDbRoute = router.route.startsWith("/db");
 
   const {
     sourceLanguage,
-    settingRenderGroups,
+    pageSettings,
     uniqueSettings,
     settingsOmissionsConfig,
   } = useDbQueryParams();
 
-  const [currentLang] = useQueryParam(
-    settingRenderGroups.searchPageFilter.language,
-    StringParam,
-  );
-
   const filters = useMemo(() => {
-    const filterList = Object.values(
-      pageType === "search"
-        ? settingRenderGroups.searchPageFilter
-        : settingRenderGroups.dbPageFilter,
-    );
-
-    if (pageType === "search") {
-      if (!currentLang || currentLang === "all") {
-        return filterList.filter(
-          // This value is linked to the "include exclude" param switch statement case below and is used to identify the whole block of filters
-          (value) => value !== uniqueSettings.queryParams.limits,
-        );
-      }
-      return filterList;
-    }
+    const filterList = Object.values(pageSettings[pageType].filters);
 
     return filterList.filter(
       (filter) =>
@@ -57,21 +44,27 @@ export const FilterSettings = ({
           omissions: settingsOmissionsConfig.filters,
           settingName: filter,
           language: sourceLanguage,
-          view: currentView,
+          pageContext: pageType === "search" ? "search" : currentView,
         }),
     );
   }, [
     pageType,
-    currentLang,
     sourceLanguage,
     currentView,
     settingsOmissionsConfig,
-    settingRenderGroups,
-    uniqueSettings,
+    pageSettings,
   ]);
 
   return filters.length > 0 ? (
     <Box>
+      {isDbRoute ? (
+        <>
+          <PanelHeading heading={t("tabs.settings")} />
+          <DbViewSelector />
+        </>
+      ) : null}
+
+      <PanelHeading heading={t("headings.filters")} sx={{ mt: 1 }} />
       {filters.map((filter) => {
         const key = `filter-setting-${filter}`;
 
@@ -85,11 +78,14 @@ export const FilterSettings = ({
           case uniqueSettings.queryParams.parLength: {
             return <ParLengthFilter key={key} />;
           }
-          case uniqueSettings.queryParams.multiLingual: {
-            return <MultiLingualSelector key={key} />;
-          }
+          // disabled in features/sidebarSuite/config/settings.ts
+          // case uniqueSettings.queryParams.multiLingual: {
+          //   return <MultiLingualSelector key={key} />;
+          // }
           case uniqueSettings.queryParams.limits: {
-            return <IncludeExcludeFilters key={key} />;
+            return (
+              <IncludeExcludeFilters key={key} language={sourceLanguage} />
+            );
           }
           case uniqueSettings.queryParams.targetCollection: {
             return (

@@ -11,26 +11,27 @@ import {
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Close, Search } from "@mui/icons-material";
-import { CircularProgress, Grid, IconButton, Typography } from "@mui/material";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { CircularProgress, IconButton, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { SearchResults } from "features/globalSearch";
 import {
   SearchBoxInput,
   SearchBoxWrapper,
 } from "features/globalSearch/GlobalSearchStyledMuiComponents";
+import NoSearchResultsFound from "features/globalSearch/NoSearchResultsFound";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-import type { PagedResponse } from "types/api/common";
+import _ from "lodash";
 import { DbApi } from "utils/api/dbApi";
+import { type SearchPageResults } from "utils/api/search";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function SearchPage() {
-  // IN DEVELOPMENT
   const { t } = useTranslation();
   const { isReady } = useRouter();
 
-  // TODO: fix server error if no search term
   const { sourceLanguage, queryParams } = useDbQueryParams();
   const { isFallback } = useSourceFile();
-  const { handleOnSearch, searchParam } = useGlobalSearch();
+  const { handleSearchAction, searchParam } = useGlobalSearch();
 
   const [searchTerm, setSearchTerm] = useState(searchParam);
 
@@ -41,41 +42,35 @@ export default function SearchPage() {
     }
   }, [isReady, setSearchTerm, searchParam]);
 
-  // TODO: data / query handling (awaiting endpoints update & codegen types to be impletmented)
-  const {
-    data,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    fetchNextPage,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    fetchPreviousPage,
-    isLoading,
-  } = useInfiniteQuery<PagedResponse<any>>({
-    initialPageParam: 0,
+  const { data: rawData, isLoading } = useQuery<SearchPageResults>({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
       searchTerm: searchParam,
       queryParams,
     }),
-    queryFn: ({ pageParam }) =>
+    queryFn: () =>
       DbApi.GlobalSearchData.call({
         searchTerm: searchParam,
-        pageNumber: pageParam as number,
         queryParams,
       }),
-    getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
-    getPreviousPageParam: (lastPage) =>
-      lastPage.pageNumber === 0 ? lastPage.pageNumber : lastPage.pageNumber - 1,
   });
+
+  const data = React.useMemo(() => {
+    const sortedData = rawData
+      ? rawData.sort((a, b) => b.similarity - a.similarity)
+      : [];
+    // see SearchResultsRow.tsx for explanation of workaround needing chunked data
+    return _.chunk(sortedData, 3);
+  }, [rawData]);
 
   if (isFallback) {
     return (
       <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
-        {/* TODO: align other results pages to match this. To avoide CLS and for logical flow, it makes sense for this to be the first element. */}
         <Typography variant="h2" component="h1" mb={1}>
           {t("search.pageTitle")}
         </Typography>
         <div>
           <CircularProgress
-            aria-label="loading"
+            aria-label={t("prompts.loading")}
             color="inherit"
             sx={{ flex: 1 }}
           />
@@ -95,81 +90,52 @@ export default function SearchPage() {
       </Typography>
 
       <SearchBoxWrapper sx={{ mb: 5 }}>
-        {/* TODO: fix search OR add notification of search limitations (whole word only) */}
         <SearchBoxInput
-          placeholder="Enter search term"
+          placeholder={t("search.inputPlaceholder")}
           value={searchTerm ?? ""}
           variant="outlined"
           InputProps={{
             startAdornment: (
               <IconButton
-                aria-label="Run search"
-                onClick={() => handleOnSearch(searchTerm)}
+                aria-label={t("search.runSearch")}
+                onClick={() => handleSearchAction({ searchTerm })}
               >
                 <Search />
               </IconButton>
             ),
             endAdornment: (
               <IconButton
-                aria-label="Clear search field"
+                aria-label={t("search.clearSearch")}
                 onClick={() => setSearchTerm("")}
               >
                 <Close />
               </IconButton>
             ),
           }}
-          autoFocus
           fullWidth
           onChange={(event) => setSearchTerm(event.target.value)}
-          onKeyDown={(e: InputKeyDown) => handleOnSearch(searchTerm, e)}
+          onKeyDown={(e: InputKeyDown) =>
+            handleSearchAction({ searchTerm, event: e })
+          }
         />
       </SearchBoxWrapper>
 
-      <QueryPageTopStack />
+      <QueryPageTopStack matches={rawData?.length ?? 0} />
 
-      {/* TODO: componentize search results */}
       {isLoading ? (
         <div>
-          {/* TODO: i18n */}
           <CircularProgress
-            aria-label="loading"
+            aria-label={t("prompts.loading")}
             color="inherit"
             sx={{ flex: 1 }}
           />
         </div>
       ) : (
         <>
-          {data ? (
-            <>
-              {data.pages.flatMap((page) => (
-                <React.Fragment key={page.pageNumber}>
-                  <Typography>{page.data.total} Results</Typography>
-                  <Grid
-                    rowSpacing={1}
-                    columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                    container
-                  >
-                    <ul>
-                      {[...(page.data.results.values() ?? [])].map((result) => (
-                        <li key={result.id}>
-                          <Typography variant="h3" component="h2">
-                            {result.id}
-                          </Typography>
-                          <Typography component="p">
-                            {result.fileName}
-                          </Typography>
-                        </li>
-                      ))}
-                    </ul>
-                  </Grid>
-                </React.Fragment>
-              ))}
-            </>
+          {data.length > 0 ? (
+            <SearchResults data={data} />
           ) : (
-            <>
-              {/* TODO: i18n */}
-              <Typography>No results.</Typography>
-            </>
+            <NoSearchResultsFound />
           )}
         </>
       )}
@@ -184,7 +150,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["settings", "common"],
+    ["settings"],
   );
 
   return {

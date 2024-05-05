@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import MatchesChip from "@components/db/MatchesChip";
 import ParallelsChip from "@components/db/ParallelsChip";
+import SearchMatchesChip from "@components/db/SearchMatchesChip";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
@@ -13,13 +13,13 @@ import {
 import { uniqueSettings } from "features/sidebarSuite/config/settings";
 import type {
   DefaultQueryParams,
-  LimitsParam,
+  LimitsFilterValue,
   MultiLingalParam,
   QueryParams,
 } from "features/sidebarSuite/config/types";
 import { DbApi } from "utils/api/dbApi";
 
-type ParamValues = string | number | LimitsParam | MultiLingalParam;
+type ParamValues = string | number | LimitsFilterValue | MultiLingalParam;
 
 function getFilterCount(key: string) {
   return customFiltersChipQueryExclusions.includes(key) ? 0 : 1;
@@ -78,8 +78,8 @@ function getSettingCounts({
 
   return { display, filter };
 }
-
 export default function CurrentResultChips({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   matches = 0,
 }: {
   matches?: number;
@@ -105,7 +105,11 @@ export default function CurrentResultChips({
 
   return (
     <>
-      {isSearchRoute ? <MatchesChip matches={matches} /> : <ParallelsChip />}
+      {isSearchRoute ? (
+        <SearchMatchesChip matches={matches} isSearchRoute />
+      ) : (
+        <ParallelsChip />
+      )}
 
       {count.filter > 0 && (
         <Chip

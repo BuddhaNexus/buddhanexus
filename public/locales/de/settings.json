@@ -2,7 +2,8 @@
   "generic": {
     "selectLanguage": "Sprache auswählen",
     "noSelection": "Nichts ausgewählt",
-    "default": "Standard"
+    "default": "Standard",
+    "resutsSubject": "BuddhaNexus Suchergebnisse-Link"
   },
   "resultsHead": {
     "matches": "Übereinstimmungen:",
@@ -13,14 +14,16 @@
     "reset": "Zurücksetzen",
     "resetTip": "Standardeinstellungen des Resorts",
     "textSelect": "Text ändern",
-    "textSelectTip": "Wählen Sie einen neuen Anfragetext"
+    "textSelectTip": "Wählen Sie einen neuen Anfragetext",
+    "cappedMessage": "Übereinstimmungen: {{max}} oder mehr."
   },
   "tabs": {
+    "settings": "Einstellungen",
     "options": "Optionen",
-    "filters": "Filter",
     "info": "Info"
   },
   "headings": {
+    "filters": "Filter",
     "display": "Anzeigen",
     "tools": "Werkzeuge",
     "links": "Links"

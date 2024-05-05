@@ -5,11 +5,13 @@ const HMRPlugin =
     ? require("i18next-hmr/plugin").HMRPlugin
     : undefined;
 
+const supportedLocales = ["en", "de"];
+
 // https://github.com/felixmosh/i18next-hmr/blob/master/examples/next-with-next-i18next-v13/next-i18next.config.js
 module.exports = {
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "de"],
+    locales: supportedLocales,
   },
   ...(typeof window !== "undefined"
     ? {
