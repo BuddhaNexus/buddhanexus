@@ -99,7 +99,7 @@ def load_menu_collection(
             categories,
             doc["_key"],
             collection_has_categories_edge_db_collection,
-        )
+        )        
         create_edges_for_language_has_collections(
             language, doc["_key"], language_has_collections_edge_db_collection
         )
