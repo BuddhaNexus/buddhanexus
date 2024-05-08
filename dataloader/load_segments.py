@@ -10,7 +10,7 @@ import re
 import pandas as pd
 from tqdm import tqdm as tqdm
 from arango.database import StandardDatabase
-
+from utils import get_filename_from_segmentnr
 from dataloader_models import Segment, validate_df
 
 from dataloader_constants import (
@@ -44,10 +44,6 @@ def sliding_window(data_list, window_size=3):
     ]
 
 
-def get_filename_from_segmentnr(segmentnr, lang):
-    if lang == "chn":
-        segmentnr = re.sub("_[0-9][0-9][0-9]", "", segmentnr)
-    return segmentnr.split(":")[0]
 
 
 def process_file_group_helper(args):

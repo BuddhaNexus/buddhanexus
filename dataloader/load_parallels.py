@@ -9,9 +9,9 @@ from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 import multiprocessing
 import natsort
+from utils import get_filename_from_segmentnr
 
 from dataloader_models import Match, validate_dict_list
-
 from dataloader_constants import (
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
@@ -19,7 +19,7 @@ from dataloader_constants import (
 )
 from folios import get_folios_from_segment_keys
 
-from utils import get_cat_from_segmentnr, should_download_file
+from utils import get_cat_from_segmentnr, should_download_file, get_language_from_file_name
 
 # allow importing from api directory
 PACKAGE_PARENT = ".."
@@ -55,9 +55,8 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         for folio in folios_list:
             folios.append(folio["num"])
 
-        root_filename = parallel["root_segnr"][0].split(":")[0]
-        root_filename = re.sub("_[0-9][0-9][0-9]", "", root_filename)
-        par_filename = parallel["par_segnr"][0].split(":")[0]
+        root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0], parallel["src_lang"])        
+        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0], parallel["par_lang"])
         par_filename = re.sub("_[0-9][0-9][0-9]", "", par_filename)
         id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]
         parallel["_id"] = id
@@ -141,7 +140,8 @@ def load_sorted_parallels_file(path, lang, db_collection):
     for file in tqdm(current_files):
         if not should_download_file(file["filename"]):
             continue
-        file["_key"] = file["filename"]
+        filename = get_filename_from_segmentnr(file["filename"], lang)
+        file["_key"] = filename
         file["lang"] = lang
         # print all keys of file
         file["parallels_sorted_by_src_pos"] = file["ids_sorted_by_root_segnr"][
@@ -157,6 +157,7 @@ def load_sorted_parallels_file(path, lang, db_collection):
             :MATCH_LIMIT
         ]
         file["parallels_randomized"] = file["ids_shuffled"][:MATCH_LIMIT]
+        print("KEY", file["_key"])
         db_collection.insert(file, overwrite=True)
 
 
