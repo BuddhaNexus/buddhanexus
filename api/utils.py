@@ -75,7 +75,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
     """
     new_limit_collection = []
     for file in limit_collection:
-        if re.search("([a-z]+_[A-Z][a-z]+[a-z1-2EL-]+$)|tib_NyKM", file):
+        if re.search("([a-z]+_[A-Z][a-z]+[a-zA-Z1-2EL-]+$)|tib_NyKM", file):
             query = get_db().AQLQuery(
                 query=menu_queries.QUERY_ONE_COLLECTION,
                 batchSize=1000,
