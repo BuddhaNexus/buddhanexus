@@ -156,8 +156,7 @@ def load_sorted_parallels_file(path, lang, db_collection):
         file["parallels_sorted_by_length_tgt"] = file["ids_sorted_by_par_length"][
             :MATCH_LIMIT
         ]
-        file["parallels_randomized"] = file["ids_shuffled"][:MATCH_LIMIT]
-        print("KEY", file["_key"])
+        file["parallels_randomized"] = file["ids_shuffled"][:MATCH_LIMIT]        
         db_collection.insert(file, overwrite=True)
 
 

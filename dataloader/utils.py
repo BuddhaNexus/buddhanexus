@@ -40,8 +40,6 @@ def get_filename_from_segmentnr(segmentnr, lang):
         segmentnr = re.sub("_[0-9][0-9][0-9]", "", segmentnr)
     return segmentnr.split(":")[0]
 
-
-
 def get_arango_client() -> ArangoClient:
     """Get Arango Client instance"""
     return ArangoClient(hosts=ARANGO_HOST)

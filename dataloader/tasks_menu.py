@@ -84,7 +84,7 @@ def load_menu_collection(
         "_key": f"{language}_{menu_collection['collection']}",
         "language": language,
         "collectionnr": collection_count,
-    }    
+    }
     # we won't need the categories array in the db, so let's store it away
     categories = menu_collection["categories"]
     del menu_collection["categories"]
@@ -99,8 +99,7 @@ def load_menu_collection(
             categories,
             doc["_key"],
             collection_has_categories_edge_db_collection,
-        )
-        print("LD: ", language, doc["_key"])
+        )        
         create_edges_for_language_has_collections(
             language, doc["_key"], language_has_collections_edge_db_collection
         )
