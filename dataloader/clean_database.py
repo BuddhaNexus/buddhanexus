@@ -20,14 +20,14 @@ from dataloader_constants import (
     COLLECTION_FILES,
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
-    COLLECTION_FILES_PARALLEL_COUNT,
     EDGE_COLLECTION_NAMES,
-    COLLECTION_CATEGORIES_PARALLEL_COUNT,
     EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
     GRAPH_COLLECTIONS_CATEGORIES,
     COLLECTION_LANGUAGES,
     EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
     EDGE_COLLECTION_CATEGORY_HAS_FILES,
+    GLOBAL_STATS_CATEGORIES,
+    GLOBAL_STATS_FILES,
 )
 
 from utils import get_database, get_system_database
@@ -72,15 +72,16 @@ def clean_all_collections_db():
 
     print("all collections cleaned.")
 
-
-def clean_totals_collection_db():
+def clean_global_stats_db():
     """
-    Clear the categories_parallel_count collection
+    Clear global stats data
     """
     db = get_database()
-    db.delete_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
-    db.create_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
-    print("totals collection cleaned.")
+    db.delete_collection(GLOBAL_STATS_CATEGORIES)
+    db.create_collection(GLOBAL_STATS_CATEGORIES)
+    db.delete_collection(GLOBAL_STATS_FILES)
+    db.create_collection(GLOBAL_STATS_FILES)
+    print("global stats data cleaned.")
 
 
 def empty_collection(collection_name: str, db: StandardDatabase, edge: bool = False):

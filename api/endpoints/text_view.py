@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query, Depends
-from ..queries import main_queries
+from ..queries import text_view_queries
 from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_middle_view
 from .endpoint_utils import execute_query
 from typing import List, Dict
@@ -18,7 +18,7 @@ async def get_parallels_for_middle(input: MiddleInput):
     :return: List of parallels for text view (middle)
     """
     query_result = execute_query(
-        main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
+        text_view_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
         bind_vars={"parallel_ids": input.parallel_ids},
     )
     return calculate_color_maps_middle_view(query_result.result[0])
@@ -53,7 +53,7 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput):
     }
 
     text_segments_query_result = execute_query(
-        main_queries.QUERY_TEXT_AND_PARALLELS,
+        text_view_queries.QUERY_TEXT_AND_PARALLELS,
         bind_vars=current_bind_vars,
     )
     data_with_colormaps = calculate_color_maps_text_view(

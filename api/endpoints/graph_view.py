@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
 from .endpoint_utils import execute_query
-from ..queries import main_queries, menu_queries
+from ..queries import graph_view_queries, menu_queries, utils_queries
 from ..utils import get_language_from_file_name
 from typing import List
 import re
@@ -8,7 +8,7 @@ from .models.shared import GraphInput
 
 router = APIRouter()
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
+COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|NY|TZ|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 @router.post("/graph-view/")
@@ -18,7 +18,7 @@ async def get_graph_for_file(input: GraphInput):
     Endpoint for graph view
     """
     query_graph_result = execute_query(
-        main_queries.QUERY_GRAPH_VIEW,
+        graph_view_queries.QUERY_GRAPH_VIEW,
         bind_vars={
             "file_name": input.file_name,
             "score": input.score,
@@ -77,7 +77,7 @@ async def get_graph_for_file(input: GraphInput):
     for name, count in total_histogram_dict.items():
         displayname = name
         query_displayname = execute_query(
-            main_queries.QUERY_DISPLAYNAME,
+            utils_queries.QUERY_DISPLAYNAME,
             bind_vars={"file_name": name},
             raw_results=True,
         )

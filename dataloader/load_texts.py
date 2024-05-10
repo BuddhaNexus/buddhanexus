@@ -4,18 +4,12 @@ This file contains the code to load the text metadata from the menu files into t
 
 from arango.database import StandardDatabase
 import json
-from dataloader_constants import COLLECTION_FILES, COLLECTION_SEGMENTS
+from dataloader_constants import COLLECTION_FILES
 from utils import (
-    should_download_file,
-    get_filename_from_segmentnr,
+    should_download_file,    
     get_cat_from_segmentnr,
 )
-from tqdm import tqdm
-import os
-import re
-import sys
-
-from utils import get_language_from_file_name, get_cat_from_segmentnr
+from utils import get_cat_from_segmentnr
 
 
 def load_text_data_from_menu_files(langs: list, db: StandardDatabase):
@@ -48,5 +42,6 @@ def load_text_data_from_menu_files(langs: list, db: StandardDatabase):
 
             collection.insert_many(filtered_file_data)
             print(f"Loaded {len(filtered_file_data)} meta data from {language}.")
+    
     collection.add_hash_index(fields=["filename"], unique=True)
     collection.add_hash_index(fields=["category"], unique=False)

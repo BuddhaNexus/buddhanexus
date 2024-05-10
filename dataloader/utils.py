@@ -35,9 +35,11 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.utils import get_cat_from_segmentnr, get_language_from_file_name
 
-def get_filename_from_segmentnr(segmentnr, lang):
+def get_filename_from_segmentnr(segmentnr, lang):    
+    segmentnr = segmentnr.replace(".json", "")
     if lang == "chn":
         segmentnr = re.sub("_[0-9][0-9][0-9]", "", segmentnr)
+    segmentnr = re.sub("\$[0-9]+", "", segmentnr)    
     return segmentnr.split(":")[0]
 
 def get_arango_client() -> ArangoClient:
@@ -98,7 +100,7 @@ def should_download_file(file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    #if "T06" in file_name:
+    #if "NK" in file_name:
     return True
 
 

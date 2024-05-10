@@ -5,7 +5,7 @@ worksheets for download
 
 import re
 import xlsxwriter
-from .queries import main_queries
+from .queries import utils_queries
 from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
@@ -295,7 +295,7 @@ def get_displayname(segmentnr, lang):
         file_name = re.sub(r"_[0-9]+", "", file_name)
     full_name = ""
     query_displayname = get_db().AQLQuery(
-        query=main_queries.QUERY_DISPLAYNAME,
+        query=utils_queries.QUERY_DISPLAYNAME,
         bind_vars={"file_name": file_name},
     )
 

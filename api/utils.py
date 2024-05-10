@@ -8,7 +8,7 @@ from urllib.parse import unquote
 from fastapi import HTTPException
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 
-from .queries import menu_queries, main_queries
+from .queries import menu_queries, utils_queries
 from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
@@ -159,7 +159,7 @@ def add_source_information(file_name, query_result):
     lang = get_language_from_file_name(file_name)
     if lang == "skt":
         query_source_information = get_db().AQLQuery(
-            query=main_queries.QUERY_SOURCE,
+            query=utils_queries.QUERY_SOURCE,
             bindVars={"file_name": file_name},
             rawResults=True,
         )
@@ -254,6 +254,8 @@ def get_cat_from_segmentnr(segmentnr):
     pali_check = [x for x in ["anya", "atk", "tika"] if segmentnr.startswith(x)]
     pali_vinaya_check = [x for x in ["pli-tv-bi-vb", "pli-tv-bu-vb"] if segmentnr.startswith(x)]
     search = re.search("^[A-Z]+[0-9]+", segmentnr)
+    if "NG" in segmentnr:
+        return "NG"    
     if search:
         cat = search[0]
     elif pali_check:

@@ -54,9 +54,8 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         folios = []
         for folio in folios_list:
             folios.append(folio["num"])
-
         root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0], parallel["src_lang"])        
-        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0], parallel["par_lang"])
+        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0], parallel['tgt_lang'])
         par_filename = re.sub("_[0-9][0-9][0-9]", "", par_filename)
         id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]
         parallel["_id"] = id
@@ -73,6 +72,7 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         # todo: delete the root_filename key after it's not needed anymore
         parallel["root_filename"] = root_filename
         parallels_to_be_inserted.append(parallel)
+            
     chunksize = 10000
     for i in range(0, len(parallels_to_be_inserted), chunksize):
         try:
@@ -88,6 +88,8 @@ def process_file(path, db):
     if (validate_dict_list(path, Match, parallels)):
         print(f"Loading {path}")
         load_parallels(parallels, db)
+    else:
+        print(f"Validation failed for {path}")
 
 
 def load_parallels_for_language(folder, lang, db, number_of_threads):
@@ -107,7 +109,7 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     pool = multiprocessing.Pool(number_of_threads)
     for file in files:
         pool.apply_async(process_file, args=(os.path.join(folder, file), db))
-        # process_file(os.path.join(folder, file), db)
+        #process_file(os.path.join(folder, file), db)
     db_collection.add_hash_index(
         fields=[
             "root_filename",
@@ -115,7 +117,7 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
             "root_category",
             "par_category",
             "src_lang",
-            "par_lang",
+            "tgt_lang",
         ],
         unique=False,
     )
@@ -139,8 +141,8 @@ def load_sorted_parallels_file(path, lang, db_collection):
     current_files = json.load(gzip.open(path, "rt", encoding="utf-8")) # returns a list of dicts???
     for file in tqdm(current_files):
         if not should_download_file(file["filename"]):
-            continue
-        filename = get_filename_from_segmentnr(file["filename"], lang)
+            continue        
+        filename = get_filename_from_segmentnr(file["filename"], lang)        
         file["_key"] = filename
         file["lang"] = lang
         # print all keys of file
@@ -157,6 +159,13 @@ def load_sorted_parallels_file(path, lang, db_collection):
             :MATCH_LIMIT
         ]
         file["parallels_randomized"] = file["ids_shuffled"][:MATCH_LIMIT]        
+        
+        del file["ids_sorted_by_root_segnr"]
+        del file["ids_sorted_by_par_segnr"]
+        del file["ids_sorted_by_root_length"]
+        del file["ids_sorted_by_par_length"]
+        del file["ids_shuffled"]
+
         db_collection.insert(file, overwrite=True)
 
 
@@ -173,10 +182,13 @@ def load_sorted_parallels_for_language(folder, lang, db):
     db_collection = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
     # delete all parallels for this language
     db_collection.delete_many({"lang": lang})
+
     folder = os.path.join(folder, lang, "stats")
+    
     files = os.listdir(folder)
     files = list(filter(lambda f: f.endswith("_stats.json.gz"), files))
     files = list(filter(lambda f: not "global" in f, files))
+    
     for file in tqdm(files):
         load_sorted_parallels_file(os.path.join(folder, file), lang, db_collection)
     db_collection.add_hash_index(fields=["filename", "lang"])

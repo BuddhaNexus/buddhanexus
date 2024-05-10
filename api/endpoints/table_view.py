@@ -8,7 +8,7 @@ from ..utils import (
     get_language_from_file_name,
 )
 from .endpoint_utils import execute_query
-from ..queries import main_queries, menu_queries
+from ..queries import table_view_queries, menu_queries
 from ..table_download import run_table_download, run_numbers_download
 from .models.shared import GeneralInput, MultiLangInput, TableDownloadInput
 from .numbers_view import create_numbers_view_data
@@ -31,7 +31,7 @@ async def get_table_view(input: GeneralInput):
 
     sortkey = get_sort_key(input.sort_method)
     query_result = execute_query(
-        main_queries.QUERY_TABLE_VIEW,
+        table_view_queries.QUERY_TABLE_VIEW,
         bind_vars={
             "file_name": input.file_name,
             "score": input.score,
@@ -61,7 +61,7 @@ async def get_table_download(input: TableDownloadInput):
     )
 
     query_result = execute_query(
-        main_queries.QUERY_TABLE_DOWNLOAD,
+        table_view_queries.QUERY_TABLE_DOWNLOAD,
         bind_vars={
             "file_name": input.file_name,
             "score": input.score,
@@ -123,7 +123,7 @@ async def get_multilang(input: MultiLangInput):
     :return: List of segments and parallels for the table view.
     """
     query_result = execute_query(
-        main_queries.QUERY_MULTILINGUAL,
+        table_view_queries.QUERY_MULTILINGUAL,
         bind_vars={
             "file_name": input.file_name,
             "multi_lingual": input.multi_lingual,

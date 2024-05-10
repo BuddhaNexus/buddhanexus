@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
 from .endpoint_utils import execute_query
-from ..queries import main_queries
+from ..queries import utils_queries
 from typing import List
 import re
 
@@ -20,7 +20,7 @@ async def get_visual_view_for_file(
 
     language_search_term = language + "_" + searchterm
     query_collection_list = execute_query(
-        main_queries.QUERY_COLLECTION_LIST,
+        utils_queries.QUERY_COLLECTION_LIST,
         bind_vars={"sourcecollection": language_search_term, "selected": selected},
     )
     graph_data = []

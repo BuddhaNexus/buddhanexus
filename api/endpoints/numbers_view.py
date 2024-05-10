@@ -6,7 +6,7 @@ from ..utils import (
     shorten_segment_names,
 )
 from .endpoint_utils import execute_query
-from ..queries import main_queries, menu_queries
+from ..queries import table_view_queries, menu_queries
 from .models.shared import GeneralInput
 
 
@@ -55,7 +55,7 @@ async def get_numbers_view(input: GeneralInput):
         folio = 0
 
     query_result = execute_query(
-        main_queries.QUERY_NUMBERS_VIEW,
+        table_view_queries.QUERY_NUMBERS_VIEW,
         bind_vars={
             "file_name": input.file_name,
             "score": input.score,
