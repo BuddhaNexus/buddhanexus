@@ -19,3 +19,5 @@ data
 *.zip
 *.ipynb
 *.error
+*.gz
+venv

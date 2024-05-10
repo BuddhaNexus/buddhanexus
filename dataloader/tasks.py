@@ -40,6 +40,7 @@ from global_search import (
 from load_parallels import (
     load_parallels_for_language,
     load_sorted_parallels_for_language,
+    clean_parallels_for_language
 )
 
 from tasks_menu import (
@@ -59,7 +60,14 @@ from clean_database import (
     clean_all_lang_db,
 )
 
-from load_texts import load_text_data_from_menu_files
+from dataloader.load_text_metadata import load_text_metadata_from_menu_files
+
+SEGMENT_LOADERS = {
+        "skt": LoadSegmentsSanskrit,
+        "pli": LoadSegmentsPali,
+        "tib": LoadSegmentsTibetan,
+        "chn": LoadSegmentsChinese,
+    }
 
 
 @task
@@ -112,12 +120,6 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
     db = get_database()
-    SEGMENT_LOADERS = {
-        "skt": LoadSegmentsSanskrit,
-        "pli": LoadSegmentsPali,
-        "tib": LoadSegmentsTibetan,
-        "zh": LoadSegmentsChinese,
-    }
     number_of_threads = os.cpu_count()
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
@@ -126,7 +128,7 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
         f"Loading source files from {root_url} using {f'{number_of_threads} threads' if threaded else '1 thread'}."
     )
 
-    load_text_data_from_menu_files(lang, db)
+    load_text_metadata_from_menu_files(lang, db)
     for l in lang:
         print("LANG: ", l)
         SegmentLoaderClass = SEGMENT_LOADERS.get(l)
@@ -138,6 +140,24 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
     create_analyzers(db)
     create_search_views(db, lang)
     print("Analyzers and search views created.")
+
+@task 
+def clean_text_segments(c, lang=DEFAULT_LANGS):
+    """
+    Clear the text segments from the database
+
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    if lang != DEFAULT_LANGS:
+        lang = ["".join(lang)]
+    for l in lang:
+        print("CLeaning segments for language: ", l)
+        SegmentLoaderClass = SEGMENT_LOADERS.get(l)
+        if SegmentLoaderClass:
+            loader = SegmentLoaderClass()
+            loader.clean()
+            print("Text segment data cleaned for language ", l)
 
 
 @task
@@ -155,6 +175,15 @@ def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=
             root_url, clang, db, thread_count if threaded else 1
         )
         load_sorted_parallels_for_language(root_url, clang, db)
+
+@task
+def clean_parallels(c, lang=DEFAULT_LANGS):
+    db = get_database()
+    if lang != DEFAULT_LANGS:
+        lang = ["".join(lang)]
+    for l in lang:
+        clean_parallels_for_language(l, db)
+        print("Parallel data cleaned for language ", l)
 
 
 @task

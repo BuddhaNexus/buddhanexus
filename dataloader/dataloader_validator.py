@@ -1,12 +1,16 @@
+"""
+This script checks if all metadata in /data follows the schemas
+It does NOT require any arguments and takes the default ones if none are provided
+The path to metadata for validation can be customized
+"""
+
 from pathlib import Path
 import json
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from argparse import ArgumentParser
-import os
 
-METADATA_ROOT = "../data/"
-METADATA_SCHEMAS = METADATA_ROOT + "schemas/"
+from dataloader_constants import METADATA_DIR, METADATA_SCHEMAS
 
 
 def validate_json(schema_path, doc_path):
@@ -27,12 +31,14 @@ def validate_json(schema_path, doc_path):
 
 
 def main(args):
-    data_path = args.metadatapath if args.metadatapath else METADATA_ROOT
+    data_path = args.metadatapath if args.metadatapath else METADATA_DIR
     data_path = Path(data_path)
-    print(os.getcwd())
     schemas_path = Path(METADATA_SCHEMAS)
 
-    schemas = schemas_path.glob("*")
+    schemas = list(schemas_path.glob("*"))
+    if not len(schemas):
+        print("No schemas found. Make sure you run the script from the directory the script is placed")
+        return
     for schema in schemas:
         suffix = schema.name
         docs = data_path.glob(f"*-{suffix}")

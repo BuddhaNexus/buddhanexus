@@ -5,7 +5,7 @@ from arango.collection import StandardCollection, EdgeCollection
 from arango.database import StandardDatabase
 
 from utils import get_language_name
-from dataloader_validator import validate_json, METADATA_ROOT
+from dataloader_validator import validate_json, METADATA_DIR
 
 from dataloader_constants import (
     COLLECTION_MENU_COLLECTIONS,
@@ -99,7 +99,7 @@ def load_menu_collection(
             categories,
             doc["_key"],
             collection_has_categories_edge_db_collection,
-        )
+        )        
         create_edges_for_language_has_collections(
             language, doc["_key"], language_has_collections_edge_db_collection
         )
@@ -130,10 +130,10 @@ def load_all_menu_collections(db: StandardDatabase):
             )
 
         collections_filepath = (
-            f"{METADATA_ROOT}{language}-collections.json"  # TODO: no hardcoding
+            f"{METADATA_DIR}{language}-collections.json"  # TODO: no hardcoding
         )
         collections_schema = (
-            f"{METADATA_ROOT}/schemas/collections.json"  # TODO: no hardcoding
+            f"{METADATA_DIR}/schemas/collections.json"  # TODO: no hardcoding
         )
         if not validate_json(
             collections_schema, collections_filepath
@@ -203,10 +203,10 @@ def load_all_menu_categories(db: StandardDatabase):
     )
     for language in DEFAULT_LANGS:
         categories_filepath = (
-            f"{METADATA_ROOT}{language}-categories.json"  # TODO: no hardcoding
+            f"{METADATA_DIR}{language}-categories.json"  # TODO: no hardcoding
         )
         categories_schema = (
-            f"{METADATA_ROOT}/schemas/categories.json"  # TODO: no hardcoding
+            f"{METADATA_DIR}/schemas/categories.json"  # TODO: no hardcoding
         )
         if not validate_json(categories_schema, categories_filepath):
             return
