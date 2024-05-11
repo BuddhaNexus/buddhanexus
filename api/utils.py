@@ -7,7 +7,7 @@ from typing import List
 from urllib.parse import unquote
 from fastapi import HTTPException
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
-
+import time
 from .queries import menu_queries, utils_queries
 from .db_connection import get_db
 
@@ -20,6 +20,14 @@ def prettify_score(score):
     if isinstance(score, float) and score <= 1:
         return int(score * 100)
     return score
+
+def get_filename_from_segmentnr(segnr):
+    segnr = segnr.replace(".json", "")
+    if re.search("n[0-9aAbBcCdD]+_[0-9]+", segnr):       
+        segnr = re.sub("_[0-9]+", "", segnr)
+    segnr = re.sub("\$[0-9]+", "", segnr)
+    return segnr.split(":")[0]
+
 
 def shorten_segment_names(segments):
     """
@@ -187,35 +195,16 @@ def add_source_information(file_name, query_result):
     return query_result
 
 
-def get_start_integer(active_segment):
+def get_page_for_segment(active_segment):
     """
-    Gets start integer for the folio segment that is called for.
-    """
-    start_int = 0
-    active_segment = unquote(active_segment)
-    try:
-        text_segment_count_query_result = get_db().AQLQuery(
-            query=main_queries.QUERY_SEGMENT_COUNT,
-            bindVars={"segmentnr": active_segment},
-        )
-        if text_segment_count_query_result.result:
-            start_int = text_segment_count_query_result.result[0] - 400
-
-    except DocumentNotFoundError as error:
-        print(error)
-        raise HTTPException(
-            status_code=404, detail="Active Segment Item not found"
-        ) from error
-    except AQLQueryError as error:
-        print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors) from error
-    except KeyError as error:
-        print("KeyError: ", error)
-        raise HTTPException(status_code=400) from error
-
-    start_int = max(start_int, 0)
-
-    return start_int
+    Gets the page number for a given segment.
+    """        
+    active_segment = unquote(active_segment)    
+    page_for_segment = get_db().AQLQuery(
+        query=utils_queries.QUERY_PAGE_FOR_SEGMENT,
+        bindVars={"segmentnr": active_segment},
+    )        
+    return page_for_segment.result[0]
 
 
 def get_file_text(file_name):
@@ -224,7 +213,7 @@ def get_file_text(file_name):
     """
     try:
         text_segments_query_result = get_db().AQLQuery(
-            query=main_queries.QUERY_FILE_TEXT,
+            query=utils_queries.QUERY_FILE_TEXT,
             bindVars={"file_name": file_name},
         )
 

@@ -21,32 +21,41 @@ RETURN {
 }
 """
 
+QUERY_GET_NUMBER_OF_PAGES = """
+FOR file IN files
+    FILTER file._key == @file_name
+    RETURN LENGTH(file.segment_pages)
+"""
+
+
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file._key == @file_name
-    LET current_segments = (
-        FOR segmentnr IN file.segment_keys
-            LIMIT @startint, @limit
-            FOR segment in segments
-                FILTER segment._key == segmentnr
-                LET parallel_ids = (
-                    FOR p IN parallels
-                        FILTER segmentnr IN p.root_segnr
-                        RETURN p._key
-                        )
-                RETURN {
-                    segnr: segment.segnr,
-                    segtext: segment.segtext,
-                    parallel_ids: parallel_ids
-                }
-        )
+    LET page_segments = (        
+        LENGTH(file.segment_pages[@page_number] ? file.segment_pages[@page_number] : []) > 0 ?
+        (
+            FOR segmentnr IN file.segment_pages[@page_number]
+                FOR segment IN segments
+                    FILTER segment._key == segmentnr
+                    LET parallel_ids = (
+                        FOR p IN parallels
+                            FILTER segmentnr IN p.root_segnr
+                            RETURN p._key
+                    )
+                    RETURN {
+                        segnr: segment.segnr,
+                        segtext: segment.segtext,
+                        parallel_ids: parallel_ids
+                    }
+        ) : []
+    )
 
 LET parallel_ids = UNIQUE(FLATTEN(
-    FOR segment in current_segments
+    FOR segment IN page_segments
         RETURN segment.parallel_ids
 ))
 
-LET parallels =  (
+LET parallels = (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels
             FILTER p._key == parallel_id
@@ -54,7 +63,6 @@ LET parallels =  (
             FILTER p.par_length >= @parlength
             FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
             FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
-
             FILTER POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
             RETURN {
@@ -63,13 +71,12 @@ LET parallels =  (
                 root_segnr : p.root_segnr,
                 id: p._key
             }
-    )
+)
 
 RETURN {
-    textleft: current_segments,
+    textleft: page_segments,
     parallel_ids: parallel_ids,
     parallels: parallels
-
 }
 """
 

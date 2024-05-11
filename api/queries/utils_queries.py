@@ -9,10 +9,10 @@ FOR file IN files
     RETURN file.folios
 """
 
-QUERY_SEGMENT_COUNT = """
-FOR segment IN segments
-    FILTER segment._key == @segmentnr
-    RETURN segment.count
+QUERY_PAGE_FOR_SEGMENT = """
+FOR segment IN segments_pages
+    FILTER segment.segnr == @segmentnr
+    return segment.page
 """
 
 # TODO: what is "selected"? Find better name

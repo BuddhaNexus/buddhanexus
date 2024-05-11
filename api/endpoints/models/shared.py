@@ -64,6 +64,7 @@ class MiddleInput(BaseModel):
 class TextParallelsInput(BaseModel):
     file_name: str = ""
     active_segment: str = "none"
+    page_number: int = 0
     score: int = 0
     par_length: int = 0
     limits: Optional[Limits]
