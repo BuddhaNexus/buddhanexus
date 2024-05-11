@@ -100,8 +100,8 @@ def should_download_file(file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    if "T06" in file_name:
-        return True
+    # if "T06" in file_name:
+    return True
 
 
 def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:

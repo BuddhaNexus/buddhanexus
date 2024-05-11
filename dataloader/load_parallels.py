@@ -83,9 +83,11 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
 
 def process_file(path, db):
     print("Processing file: ", path)
-    parallels = json.load(gzip.open(path, "rt", encoding="utf-8")) # returns a list of dicts
+    parallels = json.load(
+        gzip.open(path, "rt", encoding="utf-8")
+    )  # returns a list of dicts
     print(f"Validating {path}")
-    if (validate_dict_list(path, Match, parallels)):
+    if validate_dict_list(path, Match, parallels):
         print(f"Loading {path}")
         load_parallels(parallels, db)
     else:
@@ -138,7 +140,9 @@ def clean_parallels_for_language(lang, db):
 
 def load_sorted_parallels_file(path, lang, db_collection):
     print("Loading sorted parallels for file: ", path)
-    current_files = json.load(gzip.open(path, "rt", encoding="utf-8")) # returns a list of dicts???
+    current_files = json.load(
+        gzip.open(path, "rt", encoding="utf-8")
+    )  # returns a list of dicts???
     for file in tqdm(current_files):
         if not should_download_file(file["filename"]):
             continue        

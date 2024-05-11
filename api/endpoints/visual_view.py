@@ -15,6 +15,7 @@ async def get_visual_view_for_file(
     selected: List[str] = Query([]),
 ):
     """
+    This view might be discontinued.
     Endpoint for visual view
     """
 

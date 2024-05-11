@@ -15,6 +15,7 @@ from utils import get_filename_from_segmentnr
 from dataloader_models import Segment, validate_df
 
 from dataloader_constants import (
+    METADATA_DIR,
     COLLECTION_SEARCH_INDEX_TIB,
     COLLECTION_SEARCH_INDEX_SKT,
     COLLECTION_SEARCH_INDEX_PLI,
@@ -57,6 +58,13 @@ def process_file_group_helper(args):
 class LoadSegmentsBase:
     SEARCH_COLLECTION_NAME: str
     DATA_PATH: str
+
+    def __init__(self) -> None:
+        self.metadata_file_list = self._init_metadata_file_list()
+
+    def _init_metadata_file_list(self):
+        df = pd.read_json(f"{METADATA_DIR}{self.LANG}-files.json")
+        return df["filename"].to_list()
 
     def _load_segments(self, file_df, db) -> None:
         segments = [
@@ -101,8 +109,8 @@ class LoadSegmentsBase:
             if self.LANG == "chn":
                 original = "".join(original)
                 stem = "".join(stem)
-            else:                
-                
+            else:
+
                 original = " ".join(original)
                 stem = " ".join(stem)
             category = get_cat_from_segmentnr(segnr[1])
@@ -126,6 +134,9 @@ class LoadSegmentsBase:
         )
 
     def _process_file(self, file):
+        if file.split(".tsv")[0].split("$")[0] not in self.metadata_file_list:
+            print(f"ERROR: file not in metadata: { file }")
+            return
         print(f"Processing file: { file }")
         db = get_database()
         try:
@@ -134,7 +145,7 @@ class LoadSegmentsBase:
             self._load_segments_to_search_index(file_df, db)
         except Exception as e:
             print(f"Error while processing file {file}: {e}")
-            
+
     def load(self, number_of_threads: int = 1) -> None:
         # only create collection if it does not exist
         db = get_database()
@@ -147,12 +158,16 @@ class LoadSegmentsBase:
         category_files = defaultdict(list)
         print(f"Loading Segments from: {self.DATA_PATH}")
         if os.path.isdir(self.DATA_PATH):
-            for file in os.listdir(self.DATA_PATH):
+            all_files = sorted([f for f in os.listdir(self.DATA_PATH) if f.endswith(".tsv")])
+            print(f"Found {len(all_files)} with .tsv extention")
+            for file in all_files:
                 if file.endswith(".tsv") and should_download_file(file):
                     category = get_cat_from_segmentnr(file)
                     category_files[category].append(file)
                     if number_of_threads == 1:
                         self._process_file(file)
+        else:
+            print(f"Could not find {self.DATA_PATH}")
 
         # Process the grouped files
         if number_of_threads > 1:

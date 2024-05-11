@@ -1,15 +1,16 @@
 from fastapi import APIRouter, Query
+from typing import Any
 from .endpoint_utils import execute_query
 from ..queries import utils_queries
 from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
-from .models.shared import CountMatchesInput
+from .models.utils_models import *
 
 router = APIRouter()
 
 
-@router.post("/count-matches/")
-async def get_counts_for_file(input: CountMatchesInput):
+@router.post("/count-matches/", response_model=CountMatchesOutput)
+async def get_counts_for_file(input: CountMatchesInput) -> Any:
 
     """
     Returns number of filtered parallels
@@ -34,12 +35,12 @@ async def get_counts_for_file(input: CountMatchesInput):
     return {"parallel_count": query_graph_result.result[0]}
 
 
-@router.get("/folios/")
+@router.get("/folios/", response_model=FolioOutput)
 async def get_folios_for_file(
     file_name: str = Query(
         ..., description="File name of the text for which folios should be fetched."
     ),
-):
+) -> Any:
     """
     Returns number of folios (TIB) / facsimiles (CHN) /
     suttas/PTS nrs/segments (PLI) / segments (SKT)
@@ -51,22 +52,36 @@ async def get_folios_for_file(
     folios = query_graph_result.result[0]
     return {"folios": folios}
 
-@router.get("/displayname/")
+
+def get_displayname(segmentnr):
+
+    """
+    Downloads the displaynames for the worksheet
+    """
+    file_name = segmentnr.split(":")[0]
+    query_graph_result = execute_query(
+        utils_queries.QUERY_DISPLAYNAME,
+        bind_vars={"filename": file_name},
+    )
+    displayname = query_graph_result.result[0]
+    return displayname
+
+
+@router.get("/displayname/", response_model=DisplayNameOutput)
 async def get_displayname_for_segmentnr(
     segmentnr: str = Query(
         ..., description="Segmentnr for which the displayname should be fetched."
     ),
-):
+) -> Any:
     """
     Returns the displayname for a given segmentnr
     """
-    filename = segmentnr.split(":")[0]
-    query_graph_result = execute_query(
-        utils_queries.QUERY_DISPLAYNAME,
-        bind_vars={"filename": filename},
-    )
-    displayname = query_graph_result.result[0]
-    return {"displayname": displayname}
+    return {"displayname": get_displayname(segmentnr)}
+
+
+"""
+Tagger is not used on the new site?
+"""
 
 
 @router.get("/sanskrittagger/")
@@ -74,6 +89,7 @@ async def tag_sanskrit(
     sanskrit_string: str = Query(..., description="Sanskrit string to be tagged.")
 ):
     """
+    IS THIS FUNCTION BEING USED?
     Stemming + Tagging for Sanskrit
     :return: String with tagged Sanskrit
     """
@@ -81,13 +97,13 @@ async def tag_sanskrit(
     return {"tagged": result}
 
 
-@router.get("/available-languages/")
+@router.get("/available-languages/", response_model=LanguageOutput)
 async def get_multilingual(
     file_name: str = Query(
         ...,
         description="File name of the text for which the available languages should be fetched.",
     )
-):
+) -> Any:
     """
     Returns a list of the available languages of matches for the given file.
     """

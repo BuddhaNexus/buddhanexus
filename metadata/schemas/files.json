@@ -8,7 +8,8 @@
         "required": [
             "category",
             "textname",
-            "filenr"
+            "filenr",
+            "displayName"
         ],
         "properties": {
             "category": { "type": "string" },

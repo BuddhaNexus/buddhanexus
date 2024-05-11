@@ -2,19 +2,19 @@ from fastapi import APIRouter, Query, Depends
 from ..queries import text_view_queries
 from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_middle_view
 from .endpoint_utils import execute_query
-from typing import List, Dict
+from typing import Any
 from ..utils import (
     create_cleaned_limit_collection,
     get_page_for_segment, 
     get_filename_from_segmentnr
 )
-from .models.shared import MiddleInput, TextParallelsInput
+from .models.text_view_models import *
 
 router = APIRouter()
 
 
-@router.post("/middle/")
-async def get_parallels_for_middle(input: MiddleInput):
+@router.post("/middle/", response_model=TextViewMiddleOutput)
+async def get_parallels_for_middle(input: TextViewMiddleInput) -> Any:
     """
     :return: List of parallels for text view (middle)
     """
@@ -25,12 +25,11 @@ async def get_parallels_for_middle(input: MiddleInput):
     return calculate_color_maps_middle_view(query_result.result[0])
 
 
-@router.post("/text-parallels/")
-async def get_file_text_segments_and_parallels(input: TextParallelsInput):
+@router.post("/text-parallels/", response_model=TextViewLeftOutput)
+async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any:
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
     """
-    print(input)
     filename = input.file_name
     parallel_ids_type = "parallel_ids"
     page_number = input.page_number    

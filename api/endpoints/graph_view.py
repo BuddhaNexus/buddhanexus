@@ -2,19 +2,20 @@ from fastapi import APIRouter, Query
 from .endpoint_utils import execute_query
 from ..queries import graph_view_queries, menu_queries, utils_queries
 from ..utils import get_language_from_file_name
-from typing import List
 import re
-from .models.shared import GraphInput
+from typing import Any
+from .models.graph_view_models import *
 
 router = APIRouter()
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|NY|TZ|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
-@router.post("/graph-view/")
+@router.post("/graph-view/", response_model=GraphViewOutput)
 # pylint: disable=too-many-locals
-async def get_graph_for_file(input: GraphInput):
+async def get_graph_for_file(input: GraphInput) -> Any:
     """
+    THE GRAPH VIEW IS NOT WORKING. NEEDS TOTAL REVAMP!
     Endpoint for graph view
     """
     query_graph_result = execute_query(

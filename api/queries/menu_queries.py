@@ -91,7 +91,8 @@ FOR collection IN menu_collections
     RETURN {
         collection: collection.collection,
         categories: categories
-    }"""
+    }
+"""
 
 
 QUERY_ALL_COLLECTIONS = """
