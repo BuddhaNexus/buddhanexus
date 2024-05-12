@@ -9,7 +9,7 @@ import {
   getSourceTextCollections,
   getSourceTextMenuData,
 } from "./menus";
-import { getNumbersData } from "./numbers";
+import { getNumbersData, getNumbersViewCategories } from "./numbers";
 import { getGlobalSearchData } from "./search";
 import { getTableData } from "./table";
 import { getTextData, getTextViewMiddleParallelsData } from "./text";
@@ -45,6 +45,14 @@ export const DbApi = {
       queryParams,
     ],
     call: getNumbersData,
+  },
+  NumbersViewCollections: {
+    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
+      "numbersViewCollections",
+      fileName,
+      queryParams,
+    ],
+    call: getNumbersViewCategories,
   },
   TextView: {
     makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [

@@ -31,7 +31,7 @@ const BgImageBgSize: Record<BackgroundName, Property.BackgroundSize> = {
 
 interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;
-  maxWidth?: Breakpoint;
+  maxWidth?: Breakpoint | false;
   isQueryResultsPage?: boolean;
 }
 

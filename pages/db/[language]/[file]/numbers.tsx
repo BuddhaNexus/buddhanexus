@@ -7,17 +7,19 @@ import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import { Typography } from "@mui/material";
 import {
-  // dehydrate,
+  dehydrate,
+  keepPreviousData,
+  useInfiniteQuery,
   useQuery,
 } from "@tanstack/react-query";
+import NumbersTable from "features/numbersView/NumbersTable";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
-import type { ApiNumbersPageData } from "types/api/common";
-// import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
+import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
-// import type { SourceLanguage } from "utils/constants";
+import { PagedAPINumbersData } from "utils/api/numbers";
+import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
@@ -27,21 +29,61 @@ export default function NumbersPage() {
   const { isFallback } = useSourceFile();
   useDbView();
 
-  // const { data, isLoading, isError } = useQuery<ApiNumbersPageData>({
-  const { isLoading, isError } = useQuery<ApiNumbersPageData>({
+  const {
+    data: headerCollections,
+    isLoading: areHeadersLoading,
+    isError: isHeadersError,
+  } = useQuery({
+    queryKey: DbApi.NumbersViewCollections.makeQueryKey({
+      fileName,
+      queryParams,
+    }),
+    queryFn: () => DbApi.NumbersViewCollections.call({ fileName, queryParams }),
+  });
+
+  const {
+    data,
+    fetchNextPage,
+    isLoading: isTableContentLoading,
+    isFetching,
+    isError: isTableContentError,
+  } = useInfiniteQuery<PagedAPINumbersData>({
+    initialPageParam: 0,
     queryKey: DbApi.NumbersView.makeQueryKey({ fileName, queryParams }),
-    queryFn: () =>
+    queryFn: ({ pageParam = 0 }) =>
       DbApi.NumbersView.call({
         fileName,
         queryParams,
+        pageNumber: Number(pageParam),
       }),
+    getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
+    getPreviousPageParam: (lastPage) =>
+      lastPage.pageNumber === 0 ? undefined : lastPage.pageNumber - 1,
+    placeholderData: keepPreviousData,
   });
+
+  const allFetchedPages = React.useMemo(() => {
+    const { pages = [] } = data ?? {};
+
+    let nextPage = true;
+    const flatData = pages.flatMap((page) => {
+      const { data: pageData = [], hasNextPage } = page ?? {};
+      nextPage = Boolean(hasNextPage);
+      return pageData;
+    });
+
+    return { data: flatData ?? {}, hasNextPage: nextPage };
+  }, [data]);
+
+  const isError = isHeadersError || isTableContentError;
 
   if (isError) {
     return <ErrorPage backgroundName={sourceLanguage} />;
   }
 
-  if (isFallback) {
+  const isLoading = isTableContentLoading || areHeadersLoading;
+
+  if (isFallback || isLoading || !data) {
     return (
       <PageContainer backgroundName={sourceLanguage}>
         <CenteredProgress />
@@ -51,53 +93,40 @@ export default function NumbersPage() {
 
   return (
     <PageContainer
-      maxWidth="xl"
+      maxWidth={false}
       backgroundName={sourceLanguage}
       isQueryResultsPage
     >
       <DbViewPageHead />
 
-      {/* Just printing some example data: */}
-      {/* The deta should probably be transformed according to our needs before using it here. */}
-
-      {isLoading ? (
-        <CenteredProgress />
-      ) : (
-        <>
-          <Typography variant="h1">TODO</Typography>
-          {/* {data?.collections &&
-            data.collections[0].map((collection) => {
-              const [[collectionId, collectionName]] =
-                Object.entries(collection);
-              return (
-                <Typography key={collectionId}>
-                  {collectionId}: {collectionName}
-                </Typography>
-              );
-            })} */}
-        </>
-      )}
+      <NumbersTable
+        categories={headerCollections ?? []}
+        data={allFetchedPages.data}
+        hasNextPage={allFetchedPages.hasNextPage}
+        fetchNextPage={fetchNextPage}
+        isFetching={isFetching}
+        isLoading={isLoading}
+        language={sourceLanguage}
+        fileName={fileName}
+      />
       <SourceTextBrowserDrawer />
     </PageContainer>
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({
-  locale,
-  // params
-}) => {
+export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
   const i18nProps = await getI18NextStaticProps({ locale }, [
     "common",
     "settings",
   ]);
 
-  // const queryClient = await prefetchDbResultsPageData(
-  //   params?.language as SourceLanguage,
-  //   params?.file as string,
-  // );
+  const queryClient = await prefetchDbResultsPageData(
+    params?.language as SourceLanguage,
+    params?.file as string,
+  );
 
   return merge(
-    // { props: { dehydratedState: dehydrate(queryClient) } },
+    { props: { dehydratedState: dehydrate(queryClient) } },
     i18nProps,
   );
 };

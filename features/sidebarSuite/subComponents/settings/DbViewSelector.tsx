@@ -42,9 +42,7 @@ export const DbViewSelector = () => {
         value={currentView}
         onChange={(e: SelectChangeEvent) => handleChange(e)}
       >
-        {/* Temporarily disabling the graph and numbers views. When ready, replace with views filtered by context (eg. exclude `numbers` for SKT & TIB) */}
-        {/* {Object.values(DbViewEnum).map((view) => ( */}
-        {(["table", "text", "graph"] as const).map((view) => (
+        {Object.values(DbViewEnum).map((view) => (
           <MenuItem key={view} value={view}>
             {t(`dbViewLabels.${view}`)}
           </MenuItem>

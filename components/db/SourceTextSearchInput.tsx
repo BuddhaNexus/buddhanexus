@@ -69,11 +69,12 @@ const Row = (props: ListChildComponentProps) => {
     );
   }
 
-  const [dataSetProps, { name, textName }] = dataSet;
+  const [{ key, ...dataSetProps }, { name, textName }] = dataSet;
 
   return (
     <Box
       {...dataSetProps}
+      key={key}
       style={inlineStyle}
       sx={{
         display: "flex",
@@ -85,6 +86,7 @@ const Row = (props: ListChildComponentProps) => {
       component="li"
     >
       <Typography
+        key={String(Math.random())}
         component="option"
         sx={{
           flex: 1,
@@ -94,9 +96,10 @@ const Row = (props: ListChildComponentProps) => {
         {name}
       </Typography>
       <Typography
+        {...dataSetProps}
+        key={`${key}_text`}
         component="small"
         variant="subtitle2"
-        {...dataSetProps}
         sx={{ textTransform: "uppercase", fontSize: 12, whiteSpace: "normal" }}
       >
         {textName}

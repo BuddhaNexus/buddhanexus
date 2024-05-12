@@ -29,6 +29,7 @@
     "@mui/styles": "^5.15.17",
     "@next/mdx": "^14.2.3",
     "@tanstack/react-query": "^5.34.2",
+    "@tanstack/react-table": "^8.17.0",
     "add": "^2.0.6",
     "allotment": "^1.20.0",
     "chroma-js": "^2.4.2",

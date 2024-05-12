@@ -13,6 +13,10 @@ export const ParallelSegmentText = ({ text }: Props) => {
   const { sourceLanguage } = useDbQueryParams();
   const script = useAtomValue(scriptSelectionAtom);
 
+  if (!text) {
+    return null;
+  }
+
   return (
     <>
       {text?.map(({ text: segmentText, highlightColor }) => {

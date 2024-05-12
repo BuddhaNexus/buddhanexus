@@ -64,12 +64,19 @@ export interface paths {
      */
     post: operations["get_file_text_segments_and_parallels_text_view_text_parallels__post"];
   };
-  "/numbers-view/numbers": {
+  "/numbers-view/numbers/": {
     /**
      * Get Numbers View
-     * @description Endpoint for numbers view. Input parameters are the same as for table view.
+     * @description Endpoint for numbers view.
      */
     post: operations["get_numbers_view_numbers_view_numbers_post"];
+  };
+  "/numbers-view/categories/": {
+    /**
+     * Get Categories For Numbers View
+     * @description Endpoint that returns list of categories for the given language
+     */
+    get: operations["get_categories_for_numbers_view_numbers_view_categories__get"];
   };
   "/links/external/": {
     /**
@@ -303,6 +310,11 @@ export interface components {
     SearchInput: {
       /** Search String */
       search_string: string;
+      /**
+       * Language
+       * @default
+       */
+      language?: string;
       limits?: components["schemas"]["Limits"];
     };
     /** TableDownloadInput */
@@ -597,12 +609,38 @@ export interface operations {
   };
   /**
    * Get Numbers View
-   * @description Endpoint for numbers view. Input parameters are the same as for table view.
+   * @description Endpoint for numbers view.
    */
   get_numbers_view_numbers_view_numbers_post: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["GeneralInput"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": unknown;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get Categories For Numbers View
+   * @description Endpoint that returns list of categories for the given language
+   */
+  get_categories_for_numbers_view_numbers_view_categories__get: {
+    parameters: {
+      query: {
+        /** @description Filename to be used */
+        file_name: string;
       };
     };
     responses: {

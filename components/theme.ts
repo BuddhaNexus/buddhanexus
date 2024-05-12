@@ -145,8 +145,8 @@ export const getDesignTokens = ({
     h2: { fontFamily: sourceSerif.style.fontFamily, fontSize: "2.5rem" },
     h3: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.75rem" },
     h4: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.5rem" },
-    h5: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.25rem" },
-    h6: { fontFamily: sourceSans.style.fontFamily, fontSize: "1.15rem" },
+    h5: { fontFamily: sourceSerif.style.fontFamily, fontSize: "1.3rem" },
+    h6: { fontFamily: sourceSans.style.fontFamily, fontSize: "1.25rem" },
     body1: {
       fontSize: "1.15rem",
       lineHeight: 1.65,
@@ -163,7 +163,7 @@ export const getDesignTokens = ({
         {
           props: { variant: "body3" },
           style: {
-            fontSize: "1rem",
+            fontSize: "1.1rem",
           },
         },
       ],

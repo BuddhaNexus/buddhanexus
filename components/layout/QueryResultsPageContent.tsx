@@ -14,7 +14,7 @@ import { Main } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
 import { SidebarSuite } from "features/sidebarSuite/SidebarSuite";
 
 interface Props extends PropsWithChildren {
-  maxWidth: Breakpoint;
+  maxWidth: Breakpoint | false;
   containerStyles: SxProps;
 }
 export const QueryResultsPageContent: FC<Props> = ({
