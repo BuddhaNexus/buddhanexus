@@ -59,8 +59,8 @@ load-tibetan-data:
 	@docker exec -t dataloader bash -c "invoke load-parallels --lang=tib"
 
 load-pali-data:
-	#@docker exec -t dataloader bash -c "invoke create-collections"
-	#@docker exec -t dataloader bash -c "invoke load-menu-files"
+	@docker exec -t dataloader bash -c "invoke create-collections"
+	@docker exec -t dataloader bash -c "invoke load-menu-files"
 	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=pli"
 	@docker exec -t dataloader bash -c "invoke load-parallels --lang=pli"
 
@@ -69,7 +69,12 @@ load-chinese-data:
 	@docker exec -t dataloader bash -c "invoke load-menu-files"
 	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=chn"
 	@docker exec -t dataloader bash -c "invoke load-parallels --lang=chn"
-# List available commands for the dataloader
+
+load-sanskrit-data:
+	@docker exec -t dataloader bash -c "invoke create-collections"
+	@docker exec -t dataloader bash -c "invoke load-menu-files"
+	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=skt"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=skt"
 
 clean-tibetan-data:
 	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=tib"
@@ -79,7 +84,13 @@ clean-chinese-data:
 	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=chn"
 	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=chn"
 
+clean-pali-data:
+	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=pli"
+	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=pli"
 
+clean-sanskrit-data:
+	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=skt"
+	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=skt"
 
 list-tasks:
 	@docker exec -t dataloader bash -c "invoke --list"
