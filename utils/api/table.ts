@@ -39,7 +39,8 @@ export async function getTableData({
   queryParams,
   pageNumber,
 }: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
-  const { data } = await apiClient.POST("/table-view/table", {
+  // @ts-expect-error types are out of sync, TODO: update
+  const { data } = await apiClient.POST("/table-view/table/", {
     // body: {
     //   file_name: fileName,
     //   ...queryParams,

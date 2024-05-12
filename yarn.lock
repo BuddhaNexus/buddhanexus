@@ -1466,10 +1466,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/core-downloads-tracker@npm:^5.15.16":
-  version: 5.15.16
-  resolution: "@mui/core-downloads-tracker@npm:5.15.16"
-  checksum: 10c0/74e89bdc1ef103be01338792aeef3b916549f34b6816fa51ab8bdfbc8b96504ead36d98bd3b3585818362fb55274297cb69994bd1717ff0ec4e87b172859e369
+"@mui/core-downloads-tracker@npm:^5.15.17":
+  version: 5.15.17
+  resolution: "@mui/core-downloads-tracker@npm:5.15.17"
+  checksum: 10c0/cd409e35b2d07fe08ef886b66f0d39d2441226ccc93446958cb2aa6253a99180712c73704e6eeea74467b857a3d28dab1d8d21efaf34b2f3538d632544b9c6fd
   languageName: node
   linkType: hard
 
@@ -1541,13 +1541,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.15.16":
-  version: 5.15.16
-  resolution: "@mui/material@npm:5.15.16"
+"@mui/material@npm:^5.15.17":
+  version: 5.15.17
+  resolution: "@mui/material@npm:5.15.17"
   dependencies:
     "@babel/runtime": "npm:^7.23.9"
     "@mui/base": "npm:5.0.0-beta.40"
-    "@mui/core-downloads-tracker": "npm:^5.15.16"
+    "@mui/core-downloads-tracker": "npm:^5.15.17"
     "@mui/system": "npm:^5.15.15"
     "@mui/types": "npm:^7.2.14"
     "@mui/utils": "npm:^5.15.14"
@@ -1570,7 +1570,7 @@ __metadata:
       optional: true
     "@types/react":
       optional: true
-  checksum: 10c0/0ca3a4b40b57577528b548b4d16569d01ae5c498c84e6508f18c76d278d896480ce4a88603e3d7230a18ef6be85cb29abfbf44e9ec1d094c5220c89be1c5b1c9
+  checksum: 10c0/0213695c7aab8542cc069a03908d584814c0a4d6c33618afa0e691774583f33979b1424a290626b723165b450eea5277bc9291b778e9827d8bf8ebf2fdfe7bf7
   languageName: node
   linkType: hard
 
@@ -1612,9 +1612,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/styles@npm:^5.15.16":
-  version: 5.15.16
-  resolution: "@mui/styles@npm:5.15.16"
+"@mui/styles@npm:^5.15.17":
+  version: 5.15.17
+  resolution: "@mui/styles@npm:5.15.17"
   dependencies:
     "@babel/runtime": "npm:^7.23.9"
     "@emotion/hash": "npm:^0.9.1"
@@ -1639,7 +1639,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10c0/b92020b7dea2dd09db1f10e9560c36e5614895267c44e72b53b3a4cd001680214ab157a230aaeeef8c01702fd2b3ffb2e2ef6b373752dc3276ab0ae498e90915
+  checksum: 10c0/cc567335f30175f5f1d887aff9fcc0e84de2e2d6e5d45077d4f059ae7913990b0cdbb6785040257b6ea9892f5a78c3b01e72733d16b05e70d2d65db06f6003a5
   languageName: node
   linkType: hard
 
@@ -3122,9 +3122,9 @@ __metadata:
     "@mdx-js/react": "npm:^3.0.1"
     "@mui/icons-material": "npm:^5.15.16"
     "@mui/lab": "npm:^5.0.0-alpha.170"
-    "@mui/material": "npm:^5.15.16"
+    "@mui/material": "npm:^5.15.17"
     "@mui/material-nextjs": "npm:^5.15.11"
-    "@mui/styles": "npm:^5.15.16"
+    "@mui/styles": "npm:^5.15.17"
     "@next/mdx": "npm:^14.2.3"
     "@tanstack/react-query": "npm:^5.34.2"
     "@tanstack/react-query-devtools": "npm:^5.34.2"
@@ -3170,11 +3170,12 @@ __metadata:
     react-arborist: "npm:^3.4.0"
     react-cool-dimensions: "npm:^3.0.1"
     react-dom: "npm:^18.3.1"
+    react-google-charts: "npm:^4.0.1"
     react-i18next: "npm:^14.1.1"
     react-use-downloader: "npm:^1.2.8"
     react-virtuoso: "npm:^4.7.10"
     react-window: "npm:^1.8.10"
-    sass: "npm:^1.76.0"
+    sass: "npm:^1.77.1"
     sharp: "npm:^0.33.3"
     tibetan-ewts-converter: "npm:^1.0.1"
     typescript: "npm:^5.4.5"
@@ -9154,6 +9155,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-google-charts@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "react-google-charts@npm:4.0.1"
+  peerDependencies:
+    react: ">=16.3.0"
+    react-dom: ">=16.3.0"
+  checksum: 10c0/9869ea6006be87ed2bc14a886628f0a611e56d76e62783606b2c0dec0eabbb06954019c05a5e4e507ede9db14d0a52733623bbd4b5f5330c7fb7c63e6f1ca8ee
+  languageName: node
+  linkType: hard
+
 "react-i18next@npm:^14.1.1":
   version: 14.1.1
   resolution: "react-i18next@npm:14.1.1"
@@ -9681,16 +9692,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.76.0":
-  version: 1.76.0
-  resolution: "sass@npm:1.76.0"
+"sass@npm:^1.77.1":
+  version: 1.77.1
+  resolution: "sass@npm:1.77.1"
   dependencies:
     chokidar: "npm:>=3.0.0 <4.0.0"
     immutable: "npm:^4.0.0"
     source-map-js: "npm:>=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 10c0/976baf2c378e104f8d4ffca5375c8aa6f3d24f59d5c0a5db8d68a51f89edce45dedc25cfcd304b309fc8568d146de9e2c6cd189395e97bb2840d39feb13932ff
+  checksum: 10c0/edcfc7d038234b1198c3ddcac5963fcd1e17a9c1ee0f9bd09784ab5353b60ff50b189b4c9154b34f5da9ca0eaab8b189fd3e83a4b43a494151ad4735f8e5f364
   languageName: node
   linkType: hard
 

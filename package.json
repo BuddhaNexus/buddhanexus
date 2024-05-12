@@ -24,9 +24,9 @@
     "@mdx-js/react": "^3.0.1",
     "@mui/icons-material": "^5.15.16",
     "@mui/lab": "^5.0.0-alpha.170",
-    "@mui/material": "^5.15.16",
+    "@mui/material": "^5.15.17",
     "@mui/material-nextjs": "^5.15.11",
-    "@mui/styles": "^5.15.16",
+    "@mui/styles": "^5.15.17",
     "@next/mdx": "^14.2.3",
     "@tanstack/react-query": "^5.34.2",
     "add": "^2.0.6",
@@ -49,6 +49,7 @@
     "react-arborist": "^3.4.0",
     "react-cool-dimensions": "^3.0.1",
     "react-dom": "^18.3.1",
+    "react-google-charts": "^4.0.1",
     "react-i18next": "^14.1.1",
     "react-use-downloader": "^1.2.8",
     "react-virtuoso": "^4.7.10",
@@ -82,7 +83,7 @@
     "lint-staged": "^15.2.2",
     "openapi-typescript": "^6.7.5",
     "prettier": "^3.2.5",
-    "sass": "^1.76.0",
+    "sass": "^1.77.1",
     "typescript": "^5.4.5"
   },
   "lint-staged": {
