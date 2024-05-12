@@ -7,7 +7,7 @@ from typing import List
 from urllib.parse import unquote
 from fastapi import HTTPException
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
-from .queries import menu_queries, utils_queries
+from .queries import menu_queries, utils_queries, text_view_queries
 from .db_connection import get_db
 
 COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
@@ -23,10 +23,13 @@ def prettify_score(score):
 
 
 def get_filename_from_segmentnr(segnr):
+    """
+    Get the filename from a segment number.
+    """
     segnr = segnr.replace(".json", "")
     if re.search("n[0-9aAbBcCdD]+_[0-9]+", segnr):
         segnr = re.sub("_[0-9]+", "", segnr)
-    segnr = re.sub("$[0-9]+", "", segnr)
+    segnr = re.sub("\$[0-9]+", "", segnr)
     return segnr.split(":")[0]
 
 

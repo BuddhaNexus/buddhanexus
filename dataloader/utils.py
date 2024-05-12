@@ -37,6 +37,7 @@ from api.utils import get_cat_from_segmentnr, get_language_from_file_name
 
 
 def get_filename_from_segmentnr(segmentnr, lang):
+    """ Get filename from segmentnr """
     segmentnr = segmentnr.replace(".json", "")
     if lang == "chn":
         segmentnr = re.sub("_[0-9][0-9][0-9]", "", segmentnr)
