@@ -154,7 +154,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
         filter,
       };
     });
-  }, [limits, categories, texts, isLoadingTexts, isLoadingCategories]);
+  }, [categories, texts, isLoadingTexts, isLoadingCategories]);
 
   if (!language) return null;
 

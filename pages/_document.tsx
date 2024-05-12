@@ -21,13 +21,7 @@ export default function MyDocument(
     <Html lang={currentLocale}>
       <Head nonce={process.env.nonce} data-color-scheme="light">
         <DocumentHeadTags {...props} />
-        <script
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: `window.__webpack_nonce__ = '${process.env.nonce}'`,
-          }}
-          nonce={process.env.nonce}
-        />
+        <script nonce={process.env.nonce} />
         <meta property="csp-nonce" content={process.env.nonce} />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link

@@ -26,7 +26,7 @@ export async function getParallelDownloadData({
   // const url = `${RESULTS_DOWNLOAD_ROOT_URL}/${path}`;
 
   // Creates a unique, timestamped file name to avoid overwriting existing files on the user's computer.
-  const name = `BuddhaNexus_${fileName}_${new Date()!
+  const name = `BuddhaNexus_${fileName}_${new Date()
     .toISOString()
     .replace(/\.\w+$/, "")
     .replace(/T/, "_")
