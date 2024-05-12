@@ -38,7 +38,7 @@ from global_search import (
 from load_parallels import (
     load_parallels_for_language,
     load_sorted_parallels_for_language,
-    clean_parallels_for_language
+    clean_parallels_for_language,
 )
 
 from load_stats import load_global_stats_for_language
@@ -62,11 +62,11 @@ from clean_database import (
 from dataloader.load_text_metadata import load_text_metadata_from_menu_files
 
 SEGMENT_LOADERS = {
-        "skt": LoadSegmentsSanskrit,
-        "pli": LoadSegmentsPali,
-        "tib": LoadSegmentsTibetan,
-        "chn": LoadSegmentsChinese,
-    }
+    "skt": LoadSegmentsSanskrit,
+    "pli": LoadSegmentsPali,
+    "tib": LoadSegmentsTibetan,
+    "chn": LoadSegmentsChinese,
+}
 
 
 @task
@@ -85,9 +85,7 @@ def create_db(c):
 
 
 @task(help={"collections": "Array of collections you'd like to create"})
-def create_collections(
-    c, collections=COLLECTION_NAMES
-):
+def create_collections(c, collections=COLLECTION_NAMES):
     """
     Create empty collections in database
 
@@ -135,7 +133,8 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
     create_search_views(db, lang)
     print("Analyzers and search views created.")
 
-@task 
+
+@task
 def clean_text_segments(c, lang=DEFAULT_LANGS):
     """
     Clear the text segments from the database
@@ -170,6 +169,7 @@ def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=
         )
         load_sorted_parallels_for_language(root_url, clang, db)
 
+
 @task
 def clean_parallels(c, lang=DEFAULT_LANGS):
     db = get_database()
@@ -190,10 +190,10 @@ def load_global_stats(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS):
         load_global_stats_for_language(root_url, l, db)
         print("Global stats loaded for language ", l)
 
+
 @task
 def clean_global_stats(c):
     clean_global_stats_db()
-
 
 
 @task
@@ -333,7 +333,6 @@ def load_menu_files(c):
     db = get_database()
     load_all_menu_categories(db)
     load_all_menu_collections(db)
-    
 
     print("Menu data loading completed!")
 

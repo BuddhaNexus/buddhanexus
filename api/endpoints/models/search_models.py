@@ -7,6 +7,7 @@ Search results are not yet working so the below needs to
 be updated accordingly
 """
 
+
 class SearchInput(BaseModel):
     search_string: str
     language: str = ""

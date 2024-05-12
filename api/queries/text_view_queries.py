@@ -150,4 +150,3 @@ LET return_parallels = (
 
 RETURN APPEND(parallels_multi,return_parallels)
 """
-

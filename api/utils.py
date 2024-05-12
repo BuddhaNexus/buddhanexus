@@ -7,7 +7,6 @@ from typing import List
 from urllib.parse import unquote
 from fastapi import HTTPException
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
-import time
 from .queries import menu_queries, utils_queries
 from .db_connection import get_db
 
@@ -22,11 +21,12 @@ def prettify_score(score):
         return int(score * 100)
     return score
 
+
 def get_filename_from_segmentnr(segnr):
     segnr = segnr.replace(".json", "")
-    if re.search("n[0-9aAbBcCdD]+_[0-9]+", segnr):       
+    if re.search("n[0-9aAbBcCdD]+_[0-9]+", segnr):
         segnr = re.sub("_[0-9]+", "", segnr)
-    segnr = re.sub("\$[0-9]+", "", segnr)
+    segnr = re.sub("$[0-9]+", "", segnr)
     return segnr.split(":")[0]
 
 
@@ -200,12 +200,12 @@ def add_source_information(file_name, query_result):
 def get_page_for_segment(active_segment):
     """
     Gets the page number for a given segment.
-    """        
-    active_segment = unquote(active_segment)    
+    """
+    active_segment = unquote(active_segment)
     page_for_segment = get_db().AQLQuery(
         query=utils_queries.QUERY_PAGE_FOR_SEGMENT,
         bindVars={"segmentnr": active_segment},
-    )        
+    )
     return page_for_segment.result[0]
 
 
@@ -248,7 +248,7 @@ def get_cat_from_segmentnr(segmentnr):
     ]
     search = re.search("^[A-Z]+[0-9]+", segmentnr)
     if "NG" in segmentnr:
-        return "NG"    
+        return "NG"
     if search:
         cat = search[0]
     elif pali_check:

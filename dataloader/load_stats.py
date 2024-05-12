@@ -10,6 +10,7 @@ from dataloader_constants import (
     GLOBAL_STATS_FILES,
 )
 
+
 def load_global_stats_for_language(folder, lang, db):
     """
     global stats are precalculated and fount at json/{lang}/stats/global_stats.json
@@ -27,19 +28,13 @@ def load_global_stats_for_language(folder, lang, db):
         # insert global stats into the database based on the keys in categories and files
         for key in tqdm(global_stats["collections"]):
             db_collection_categories.insert(
-                {"_key": key, 
-                 "lang": lang,
-                 "stats": global_stats["collections"][key]}
+                {"_key": key, "lang": lang, "stats": global_stats["collections"][key]}
             )
         for key in tqdm(global_stats["files"]):
             db_collection_files.insert(
-                {"_key": key, 
-                 "lang": lang,
-                 "stats": global_stats["files"][key]}
+                {"_key": key, "lang": lang, "stats": global_stats["files"][key]}
             )
     except DocumentInsertError as e:
         print(f"Error inserting global stats for {lang}: {e}")
         return False
     return True
-
-

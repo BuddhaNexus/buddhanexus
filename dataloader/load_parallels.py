@@ -19,7 +19,11 @@ from dataloader_constants import (
 )
 from folios import get_folios_from_segment_keys
 
-from utils import get_cat_from_segmentnr, should_download_file, get_language_from_file_name
+from utils import (
+    get_cat_from_segmentnr,
+    should_download_file,
+    get_language_from_file_name,
+)
 
 # allow importing from api directory
 PACKAGE_PARENT = ".."
@@ -54,8 +58,12 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         folios = []
         for folio in folios_list:
             folios.append(folio["num"])
-        root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0], parallel["src_lang"])        
-        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0], parallel['tgt_lang'])
+        root_filename = get_filename_from_segmentnr(
+            parallel["root_segnr"][0], parallel["src_lang"]
+        )
+        par_filename = get_filename_from_segmentnr(
+            parallel["par_segnr"][0], parallel["tgt_lang"]
+        )
         par_filename = re.sub("_[0-9][0-9][0-9]", "", par_filename)
         id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]
         parallel["_id"] = id
@@ -72,7 +80,7 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         # todo: delete the root_filename key after it's not needed anymore
         parallel["root_filename"] = root_filename
         parallels_to_be_inserted.append(parallel)
-            
+
     chunksize = 10000
     for i in range(0, len(parallels_to_be_inserted), chunksize):
         try:
@@ -111,7 +119,7 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     pool = multiprocessing.Pool(number_of_threads)
     for file in files:
         pool.apply_async(process_file, args=(os.path.join(folder, file), db))
-        #process_file(os.path.join(folder, file), db)
+        # process_file(os.path.join(folder, file), db)
     db_collection.add_hash_index(
         fields=[
             "root_filename",
@@ -130,12 +138,11 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     pool.close()
     pool.join()
 
+
 def clean_parallels_for_language(lang, db):
     db_collection = db.collection(COLLECTION_PARALLELS)
     db_collection.delete_many({"src_lang": lang})
     print(f"Deleted all parallels for language {lang}")
-    
-
 
 
 def load_sorted_parallels_file(path, lang, db_collection):
@@ -145,8 +152,8 @@ def load_sorted_parallels_file(path, lang, db_collection):
     )  # returns a list of dicts???
     for file in tqdm(current_files):
         if not should_download_file(file["filename"]):
-            continue        
-        filename = get_filename_from_segmentnr(file["filename"], lang)        
+            continue
+        filename = get_filename_from_segmentnr(file["filename"], lang)
         file["_key"] = filename
         file["lang"] = lang
         # print all keys of file
@@ -162,8 +169,8 @@ def load_sorted_parallels_file(path, lang, db_collection):
         file["parallels_sorted_by_length_tgt"] = file["ids_sorted_by_par_length"][
             :MATCH_LIMIT
         ]
-        file["parallels_randomized"] = file["ids_shuffled"][:MATCH_LIMIT]        
-        
+        file["parallels_randomized"] = file["ids_shuffled"][:MATCH_LIMIT]
+
         del file["ids_sorted_by_root_segnr"]
         del file["ids_sorted_by_par_segnr"]
         del file["ids_sorted_by_root_length"]
@@ -188,11 +195,11 @@ def load_sorted_parallels_for_language(folder, lang, db):
     db_collection.delete_many({"lang": lang})
 
     folder = os.path.join(folder, lang, "stats")
-    
+
     files = os.listdir(folder)
     files = list(filter(lambda f: f.endswith("_stats.json.gz"), files))
     files = list(filter(lambda f: not "global" in f, files))
-    
+
     for file in tqdm(files):
         load_sorted_parallels_file(os.path.join(folder, file), lang, db_collection)
     db_collection.add_hash_index(fields=["filename", "lang"])

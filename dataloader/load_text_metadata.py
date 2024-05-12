@@ -6,7 +6,7 @@ from arango.database import StandardDatabase
 import json
 from dataloader_constants import COLLECTION_FILES, METADATA_DIR
 from utils import (
-    should_download_file,    
+    should_download_file,
     get_cat_from_segmentnr,
 )
 from utils import get_cat_from_segmentnr
@@ -42,6 +42,6 @@ def load_text_metadata_from_menu_files(langs: list, db: StandardDatabase):
 
             collection.insert_many(filtered_file_data)
             print(f"Loaded {len(filtered_file_data)} meta data from {language}.")
-    
+
     collection.add_hash_index(fields=["filename"], unique=True)
     collection.add_hash_index(fields=["category"], unique=False)

@@ -37,7 +37,9 @@ def main(args):
 
     schemas = list(schemas_path.glob("*"))
     if not len(schemas):
-        print("No schemas found. Make sure you run the script from the directory the script is placed")
+        print(
+            "No schemas found. Make sure you run the script from the directory the script is placed"
+        )
         return
     for schema in schemas:
         suffix = schema.name

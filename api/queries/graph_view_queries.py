@@ -33,4 +33,3 @@ FOR p IN current_parallels
         "parlength": p.par_length,
         "filtertest":filtertest
     }"""
-

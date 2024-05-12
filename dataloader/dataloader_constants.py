@@ -37,7 +37,6 @@ GLOBAL_STATS_CATEGORIES = "global_stats_categories"
 GLOBAL_STATS_FILES = "global_stats_files"
 
 
-
 COLLECTION_SEARCH_INDEX_TIB = "search_index_tib"
 COLLECTION_SEARCH_INDEX_SKT = "search_index_skt"
 COLLECTION_SEARCH_INDEX_PLI = "search_index_pli"

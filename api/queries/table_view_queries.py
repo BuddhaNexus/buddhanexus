@@ -161,5 +161,3 @@ FOR file IN files
         )
 RETURN current_segments
 """
-
-

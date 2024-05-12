@@ -60,19 +60,6 @@ async def get_table_download(input: TableDownloadInput) -> Any:
         input.limits.category_exclude + input.limits.file_exclude
     )
 
-    query_result = execute_query(
-        table_view_queries.QUERY_TABLE_DOWNLOAD,
-        bind_vars={
-            "file_name": input.file_name,
-            "score": input.score,
-            "parlength": input.par_length,
-            "sortkey": get_sort_key(input.sort_method),
-            "limitcollection_include": limitcollection_include,
-            "limitcollection_exclude": limitcollection_exclude,
-            "folio": input.folio,
-        },
-    )
-
     if input.download_data == "table":
         query_result = execute_query(
             table_view_queries.QUERY_TABLE_DOWNLOAD,

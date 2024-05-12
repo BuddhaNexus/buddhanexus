@@ -10,7 +10,7 @@ from dataloader_validator import validate_json, METADATA_DIR
 from dataloader_constants import (
     COLLECTION_MENU_COLLECTIONS,
     DEFAULT_LANGS,
-    COLLECTION_MENU_CATEGORIES,    
+    COLLECTION_MENU_CATEGORIES,
     COLLECTION_LANGUAGES,
 )
 
@@ -29,7 +29,7 @@ def load_menu_collection(
         "categories": menu_collection["categories"],
         "collection": menu_collection["collection"],
     }
-    
+
     try:
         # Create vertex documents..
         collections_db_collection.insert(doc)
@@ -81,15 +81,12 @@ def load_all_menu_collections(db: StandardDatabase):
 
 
 def load_menu_category(
-    menu_category,
-    category_count,
-    language,
-    categories_db_collection
+    menu_category, category_count, language, categories_db_collection
 ):
     doc = {
         "_key": f'{language}_{menu_category["category"]}',
         "language": language,
-        "categorynr": category_count,        
+        "categorynr": category_count,
     }
     files = menu_category["files"]
     del menu_category["files"]

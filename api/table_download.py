@@ -5,10 +5,6 @@ worksheets for download
 
 import re
 import xlsxwriter
-from .queries import utils_queries
-from .db_connection import get_db
-
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 from .utils import shorten_segment_names
 from .endpoints.utils import get_displayname
 
@@ -273,34 +269,7 @@ def get_spreadsheet_values(parallel):
     )
 
 
-<<<<<<< HEAD
-def get_displayname(segmentnr, lang):
-
-    """
-    Downloads the displaynames for the worksheet
-    """
-    file_name = segmentnr.split(":")[0]
-    if lang == "chn":
-        file_name = re.sub(r"_[0-9]+", "", file_name)
-    full_name = ""
-    query_displayname = get_db().AQLQuery(
-        query=utils_queries.QUERY_DISPLAYNAME,
-        bind_vars={"file_name": file_name},
-    )
-
-    if query_displayname.error:
-        # Print the error message for debugging
-        print(query_displayname.errorMsg)
-    elif query_displayname.result:
-        full_name = query_displayname.result[0]
-
-    return full_name
-
-
-def run_numbers_download(collections, segments, file_values):
-=======
 def run_numbers_download(categories, segments, file_values):
->>>>>>> development
     """
     Creates an Excel workbook with data given for the numbers view
     """
@@ -387,7 +356,7 @@ def get_category_dict(segment_parallels, categories_list):
         if parallel["category"]:
             try:
                 category_index = categories_list.index(parallel["category"]) + 1
-            except: # pylint: disable=bare-except
+            except:  # pylint: disable=bare-except
                 print("cannot find in categories list: ", parallel["category"])
                 continue
         else:

@@ -63,6 +63,7 @@ def clean_all_collections_db():
 
     print("all collections cleaned.")
 
+
 def clean_global_stats_db():
     """
     Clear global stats data
@@ -111,8 +112,8 @@ def clean_menu_collections_db():
     for name in (
         COLLECTION_MENU_COLLECTIONS,
         COLLECTION_MENU_CATEGORIES,
-        COLLECTION_LANGUAGES
-    ):            
+        COLLECTION_LANGUAGES,
+    ):
         empty_collection(name, db)
     print("menu data collections cleaned.")
 
