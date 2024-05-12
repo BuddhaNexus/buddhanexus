@@ -29,7 +29,7 @@ def get_filename_from_segmentnr(segnr):
     segnr = segnr.replace(".json", "")
     if re.search("n[0-9aAbBcCdD]+_[0-9]+", segnr):
         segnr = re.sub("_[0-9]+", "", segnr)
-    segnr = re.sub("\$[0-9]+", "", segnr)
+    segnr = re.sub(r"\$[0-9]+", "", segnr)
     return segnr.split(":")[0]
 
 
@@ -218,7 +218,7 @@ def get_file_text(file_name):
     """
     try:
         text_segments_query_result = get_db().AQLQuery(
-            query=utils_queries.QUERY_FILE_TEXT,
+            query=text_view_queries.QUERY_FILE_TEXT,
             bindVars={"file_name": file_name},
         )
 

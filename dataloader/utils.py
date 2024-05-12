@@ -41,7 +41,7 @@ def get_filename_from_segmentnr(segmentnr, lang):
     segmentnr = segmentnr.replace(".json", "")
     if lang == "chn":
         segmentnr = re.sub("_[0-9][0-9][0-9]", "", segmentnr)
-    segmentnr = re.sub("\$[0-9]+", "", segmentnr)
+    segmentnr = re.sub(r"\$[0-9]+", "", segmentnr)
     return segmentnr.split(":")[0]
 
 
