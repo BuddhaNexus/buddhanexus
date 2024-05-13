@@ -76,7 +76,7 @@ def run_table_download(query, file_values):
         worksheet.write(row, 2, full_root_file_name[0], workbook_formats[5])
         worksheet.write(row, 3, spreadsheet_values[0], workbook_formats[5])
         worksheet.write(row, 4, parallel["root_length"], workbook_formats[6])
-        worksheet.write(row, 5, spreadsheet_values[1], workbook_formats[5])
+        worksheet.write(row, 6, spreadsheet_values[1], workbook_formats[5])
 
         worksheet.write(row + 1, 0, "Hit", workbook_formats[7])
         worksheet.write(row + 1, 1, spreadsheet_values[2], workbook_formats[7])
