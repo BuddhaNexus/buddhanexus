@@ -59,7 +59,7 @@ LET parallels = (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels
             FILTER p._key == parallel_id
-            FILTER p.score >= @score
+            FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
             FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
             FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)

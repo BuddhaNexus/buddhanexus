@@ -41,20 +41,20 @@ FOR file IN files
 
 QUERY_CATEGORIES_FOR_LANGUAGE = """
 LET total_collection = (
-    FOR collection menu_collections
+    FOR collection IN menu_collections
         FILTER collection.language == @language
         SORT collection.collectionnr
         LET categories = (
             for collection_category in collection.categories
                 FOR category IN menu_categories
-                    FILTER category.category == collection_category                                
+                    FILTER category.category == collection_category
+                    SORT category.categorynr
                     LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
                     LET categoryname = CONCAT_SEPARATOR(" ",categorynamepart,CONCAT("(",UPPER(category.category),")"))
                     RETURN {
                         category: category.category,
                         categoryname: CONCAT("• ",categoryname)
-                }
-            SORT category.categorynr
+                    }
         )
         RETURN APPEND(
             [{ category: collection._key, categoryname: CONCAT(UPPER(collection.collection), " (ALL)") }],

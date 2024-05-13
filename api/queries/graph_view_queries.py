@@ -21,7 +21,7 @@ FOR f in parallels_sorted_file
     )
 
 FOR p IN current_parallels
-    FILTER p.score >= @score
+    FILTER p.score * 100 >= @score
     FILTER p.par_length >= @parlength
     LET filtertest = (
         FOR item IN filter_target

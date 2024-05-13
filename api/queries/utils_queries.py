@@ -31,7 +31,7 @@ FOR p IN parallels
     FILTER p.root_filename == @file_name
             FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
             FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
-    FILTER p.score >= @score
+    FILTER p.score * 100 >= @score
     FILTER p.par_length >= @parlength
     LIMIT 15000
     COLLECT WITH COUNT INTO length
