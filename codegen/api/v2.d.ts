@@ -3,6 +3,7 @@
  * Do not make direct changes to the file.
  */
 
+
 export interface paths {
   "/search/": {
     /**
@@ -15,40 +16,42 @@ export interface paths {
   "/graph-view/": {
     /**
      * Get Graph For File
-     * @description Endpoint for graph view
+     * @description THE GRAPH VIEW IS NOT WORKING. NEEDS TOTAL REVAMP!
+     * Endpoint for graph view
      */
     post: operations["get_graph_for_file_graph_view__post"];
   };
   "/visual-view/": {
     /**
      * Get Visual View For File
-     * @description Endpoint for visual view
+     * @description This view might be discontinued.
+     * Endpoint for visual view
      */
     get: operations["get_visual_view_for_file_visual_view__get"];
   };
-  "/table-view/table": {
+  "/table-view/table/": {
     /**
      * Get Table View
      * @description Endpoint for the table view. Accepts filters.
      * :return: List of segments and parallels for the table view.
      */
-    post: operations["get_table_view_table_view_table_post"];
+    post: operations["get_table_view_table_view_table__post"];
   };
-  "/table-view/download": {
+  "/table-view/download/": {
     /**
      * Get Table Download
      * @description Endpoint for the download table. Accepts filters.
      * :return: List of segments and parallels for the downloaded table view.
      */
-    post: operations["get_table_download_table_view_download_post"];
+    post: operations["get_table_download_table_view_download__post"];
   };
-  "/table-view/multilang": {
+  "/table-view/multilang/": {
     /**
      * Get Multilang
      * @description Endpoint for the multilingual table view. Accepts Parallel languages
      * :return: List of segments and parallels for the table view.
      */
-    post: operations["get_multilang_table_view_multilang_post"];
+    post: operations["get_multilang_table_view_multilang__post"];
   };
   "/text-view/middle/": {
     /**
@@ -69,7 +72,7 @@ export interface paths {
      * Get Numbers View
      * @description Endpoint for numbers view.
      */
-    post: operations["get_numbers_view_numbers_view_numbers_post"];
+    post: operations["get_numbers_view_numbers_view_numbers__post"];
   };
   "/numbers-view/categories/": {
     /**
@@ -110,7 +113,8 @@ export interface paths {
   "/utils/sanskrittagger/": {
     /**
      * Tag Sanskrit
-     * @description Stemming + Tagging for Sanskrit
+     * @description IS THIS FUNCTION BEING USED?
+     * Stemming + Tagging for Sanskrit
      * :return: String with tagged Sanskrit
      */
     get: operations["tag_sanskrit_utils_sanskrittagger__get"];
@@ -172,6 +176,63 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    /** AllCategories */
+    AllCategories: {
+      /** Categoryname */
+      categoryname: string;
+      /** Categorydisplayname */
+      categorydisplayname: string;
+      /** Files */
+      files: components["schemas"]["AllFilesForCategory"][];
+    };
+    /** AllFilesForCategory */
+    AllFilesForCategory: {
+      /** File Name */
+      file_name: string;
+      /** Textname */
+      textname: string;
+      /** Displayname */
+      displayname: string;
+      /** Available Lang */
+      available_lang?: string;
+    };
+    /** Category */
+    Category: {
+      /** Category */
+      category?: string;
+      /** Categoryname */
+      categoryname?: string;
+    };
+    /** CategoryFiles */
+    CategoryFiles: {
+      /** Filename */
+      filename: string;
+      /** Categoryname */
+      categoryname?: string;
+      /** Displayname */
+      displayname?: string;
+      /** Search Field */
+      search_field?: string;
+    };
+    /** CategoryOutput */
+    CategoryOutput: {
+      /** Categoryitems */
+      categoryitems: components["schemas"]["Category"][];
+    };
+    /** Collection */
+    Collection: {
+      /** Collectionname */
+      collectionname: string;
+      /** Collectionlanguage */
+      collectionlanguage: string;
+      /** Collectionkey */
+      collectionkey: string;
+    };
+    /** CollectionsOutput */
+    CollectionsOutput: {
+      /** Result */
+      result: components["schemas"]["Collection"][];
+    };
     /** CountMatchesInput */
     CountMatchesInput: {
       /**
@@ -190,6 +251,82 @@ export interface components {
        * @default 0
        */
       par_length?: number;
+    };
+    /** CountMatchesOutput */
+    CountMatchesOutput: {
+      /** Parallel Count */
+      parallel_count: number;
+    };
+    /** DisplayNameOutput */
+    DisplayNameOutput: {
+      /** Displayname */
+      displayname: unknown[];
+    };
+    /** Files */
+    Files: {
+      /** Displayname */
+      displayName: string;
+      /** Textname */
+      textname: string;
+      /** Filename */
+      filename: string;
+      /** Category */
+      category: string;
+      /** Available Lang */
+      available_lang?: string;
+      /** Search Field */
+      search_field: string;
+    };
+    /** FilesOutput */
+    FilesOutput: {
+      /** Results */
+      results: components["schemas"]["Files"][];
+    };
+    /** FilterOutput */
+    FilterOutput: {
+      /** Filteritems */
+      filteritems: components["schemas"]["CategoryFiles"][];
+    };
+    /** FolioOutput */
+    FolioOutput: {
+      /** Folios */
+      folios: components["schemas"]["api__endpoints__models__utils_models__Segment"][];
+    };
+    /** FullMatchText */
+    FullMatchText: {
+      /** Text */
+      text?: string;
+      /**
+       * Highlightcolor
+       * @default 0
+       */
+      highlightColor?: number;
+      /**
+       * Matches
+       * @default []
+       */
+      matches?: unknown[];
+    };
+    /** FullNames */
+    FullNames: {
+      /** Display Name */
+      display_name?: string;
+      /** Text Name */
+      text_name?: string;
+      /** Link1 */
+      link1?: string;
+      /** Link2 */
+      link2?: string;
+    };
+    /** FullText */
+    FullText: {
+      /** Text */
+      text?: string;
+      /**
+       * Highlightcolor
+       * @default 0
+       */
+      highlightColor?: number;
     };
     /** GeneralInput */
     GeneralInput: {
@@ -213,7 +350,7 @@ export interface components {
       page?: number;
       /**
        * Sort Method
-       * @default parallels_sorted_by_src_pos
+       * @default position
        */
       sort_method?: string;
       /**
@@ -245,10 +382,17 @@ export interface components {
        */
       target_collection?: unknown[];
     };
+    /** GraphViewOutput */
+    GraphViewOutput: components["schemas"]["api__endpoints__models__graph_view_models__Segment"][];
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
       detail?: components["schemas"]["ValidationError"][];
+    };
+    /** LanguageOutput */
+    LanguageOutput: {
+      /** Langlist */
+      langList: unknown[];
     };
     /**
      * Limits
@@ -276,11 +420,34 @@ export interface components {
        */
       file_exclude?: unknown[];
     };
-    /** MiddleInput */
-    MiddleInput: {
-      /** Parallel Ids */
-      parallel_ids: unknown[];
+    /** LinksOutput */
+    LinksOutput: {
+      /** Bdrc */
+      bdrc: string;
+      /** Rkts */
+      rkts: string;
+      /** Gretil */
+      gretil: string;
+      /** Dsbc */
+      dsbc: string;
+      /** Cbeta */
+      cbeta: string;
+      /** Suttacentral */
+      suttacentral: string;
+      /** Cbc */
+      cbc: string;
+      /** Vri */
+      vri: string;
     };
+    /** MenuItem */
+    MenuItem: {
+      /** Id */
+      id: string;
+      /** Displayname */
+      displayName: string;
+    };
+    /** MenuOutput */
+    MenuOutput: components["schemas"]["MenuItem"][];
     /** MultiLangInput */
     MultiLangInput: {
       /** File Name */
@@ -306,6 +473,19 @@ export interface components {
        */
       folio?: string;
     };
+    /** NumbersViewOutput */
+    NumbersViewOutput: components["schemas"]["api__endpoints__models__numbers_view_models__Segment"][];
+    /** Parallel */
+    Parallel: {
+      /** Segmentnr */
+      segmentnr?: string;
+      /** Displayname */
+      displayName?: string;
+      /** Filename */
+      fileName?: string;
+      /** Category */
+      category?: string;
+    };
     /** SearchInput */
     SearchInput: {
       /** Search String */
@@ -316,6 +496,37 @@ export interface components {
        */
       language?: string;
       limits?: components["schemas"]["Limits"];
+    };
+    /** SearchOutput */
+    SearchOutput: {
+      /** Searchresults */
+      searchResults: components["schemas"]["SearchResults"][];
+    };
+    /** SearchResults */
+    SearchResults: {
+      /** Category */
+      category: string;
+      /** Language */
+      language: string;
+      /** Segment Nr */
+      segment_nr: string;
+      full_names: components["schemas"]["FullNames"];
+      /** Similarity */
+      similarity: number;
+      /** Segtext */
+      segtext: components["schemas"]["FullText"][];
+    };
+    /** SideBar */
+    SideBar: {
+      /** Collection */
+      collection: string;
+      /** Categories */
+      categories: components["schemas"]["AllCategories"][];
+    };
+    /** SideBarOutput */
+    SideBarOutput: {
+      /** Navigationmenudata */
+      navigationmenudata: components["schemas"]["SideBar"][];
     };
     /** TableDownloadInput */
     TableDownloadInput: {
@@ -339,7 +550,7 @@ export interface components {
       page?: number;
       /**
        * Sort Method
-       * @default parallels_sorted_by_src_pos
+       * @default position
        */
       sort_method?: string;
       /**
@@ -350,13 +561,21 @@ export interface components {
       /** Download Data */
       download_data: string;
     };
+    /** TableDownloadOutput */
+    TableDownloadOutput: string;
+    /** TableViewOutput */
+    TableViewOutput: components["schemas"]["api__endpoints__models__table_view_models__Segment"][];
+    /** TextItem */
+    TextItem: {
+      /** Segnr */
+      segnr: string;
+      /** Segtext */
+      segtext: components["schemas"]["FullMatchText"][];
+    };
     /** TextParallelsInput */
     TextParallelsInput: {
-      /**
-       * File Name
-       * @default
-       */
-      file_name?: string;
+      /** File Name */
+      file_name: string;
       /**
        * Active Segment
        * @default none
@@ -379,6 +598,15 @@ export interface components {
        */
       multi_lingual?: unknown[];
     };
+    /** TextViewLeftOutput */
+    TextViewLeftOutput: components["schemas"]["TextItem"][];
+    /** TextViewMiddleInput */
+    TextViewMiddleInput: {
+      /** Parallel Ids */
+      parallel_ids: unknown[];
+    };
+    /** TextViewMiddleOutput */
+    TextViewMiddleOutput: components["schemas"]["api__endpoints__models__text_view_models__Segment"][];
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -387,6 +615,84 @@ export interface components {
       msg: string;
       /** Error Type */
       type: string;
+    };
+    /** Segment */
+    api__endpoints__models__graph_view_models__Segment: {
+      /** Segmentnr */
+      segmentnr: string;
+      /** Weight */
+      weight: number;
+    };
+    /** Segment */
+    api__endpoints__models__numbers_view_models__Segment: {
+      /** Segmentnr */
+      segmentnr: string;
+      /** Parallels */
+      parallels: components["schemas"]["Parallel"][];
+    };
+    /** Segment */
+    api__endpoints__models__table_view_models__Segment: {
+      /** Par Segnr */
+      par_segnr: unknown[];
+      par_full_names: components["schemas"]["FullNames"];
+      root_full_names: components["schemas"]["FullNames"];
+      /** File Name */
+      file_name: string;
+      /** Root Segnr */
+      root_segnr: unknown[];
+      /** Par Length */
+      par_length: number;
+      /** Root Length */
+      root_length: number;
+      /** Score */
+      score: number;
+      /** Src Lang */
+      src_lang: string;
+      /** Tgt Lang */
+      tgt_lang: string;
+      /**
+       * Root Fulltext
+       * @default []
+       */
+      root_fulltext?: components["schemas"]["FullText"][];
+      /**
+       * Par Fulltext
+       * @default []
+       */
+      par_fulltext?: components["schemas"]["FullText"][];
+    };
+    /** Segment */
+    api__endpoints__models__text_view_models__Segment: {
+      /** Par Segnr */
+      par_segnr: unknown[];
+      /** Display Name */
+      display_name?: string;
+      /** Tgt Lang */
+      tgt_lang: string;
+      /** Par Offset Beg */
+      par_offset_beg?: number;
+      /** Par Offset End */
+      par_offset_end?: number;
+      /**
+       * Par Segtext
+       * @default []
+       */
+      par_segtext?: unknown[];
+      /** File Name */
+      file_name: string;
+      /** Score */
+      score: number;
+      /** Length */
+      length: number;
+      /** Par Fulltext */
+      par_fulltext?: components["schemas"]["FullText"][];
+    };
+    /** Segment */
+    api__endpoints__models__utils_models__Segment: {
+      /** Num */
+      num: string;
+      /** Segment Nr */
+      segment_nr: string;
     };
   };
   responses: never;
@@ -401,6 +707,7 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
+
   /**
    * Get Search Results
    * @description Returns search results for given search string.
@@ -416,7 +723,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["SearchOutput"];
         };
       };
       /** @description Validation Error */
@@ -429,7 +736,8 @@ export interface operations {
   };
   /**
    * Get Graph For File
-   * @description Endpoint for graph view
+   * @description THE GRAPH VIEW IS NOT WORKING. NEEDS TOTAL REVAMP!
+   * Endpoint for graph view
    */
   get_graph_for_file_graph_view__post: {
     requestBody: {
@@ -441,7 +749,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["GraphViewOutput"];
         };
       };
       /** @description Validation Error */
@@ -454,7 +762,8 @@ export interface operations {
   };
   /**
    * Get Visual View For File
-   * @description Endpoint for visual view
+   * @description This view might be discontinued.
+   * Endpoint for visual view
    */
   get_visual_view_for_file_visual_view__get: {
     parameters: {
@@ -484,7 +793,7 @@ export interface operations {
    * @description Endpoint for the table view. Accepts filters.
    * :return: List of segments and parallels for the table view.
    */
-  get_table_view_table_view_table_post: {
+  get_table_view_table_view_table__post: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["GeneralInput"];
@@ -494,7 +803,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["TableViewOutput"];
         };
       };
       /** @description Validation Error */
@@ -510,7 +819,7 @@ export interface operations {
    * @description Endpoint for the download table. Accepts filters.
    * :return: List of segments and parallels for the downloaded table view.
    */
-  get_table_download_table_view_download_post: {
+  get_table_download_table_view_download__post: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["TableDownloadInput"];
@@ -520,7 +829,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["TableDownloadOutput"];
         };
       };
       /** @description Validation Error */
@@ -536,7 +845,7 @@ export interface operations {
    * @description Endpoint for the multilingual table view. Accepts Parallel languages
    * :return: List of segments and parallels for the table view.
    */
-  get_multilang_table_view_multilang_post: {
+  get_multilang_table_view_multilang__post: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["MultiLangInput"];
@@ -546,7 +855,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["TableViewOutput"];
         };
       };
       /** @description Validation Error */
@@ -564,14 +873,14 @@ export interface operations {
   get_parallels_for_middle_text_view_middle__post: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["MiddleInput"];
+        "application/json": components["schemas"]["TextViewMiddleInput"];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["TextViewMiddleOutput"];
         };
       };
       /** @description Validation Error */
@@ -596,7 +905,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["TextViewLeftOutput"];
         };
       };
       /** @description Validation Error */
@@ -611,7 +920,7 @@ export interface operations {
    * Get Numbers View
    * @description Endpoint for numbers view.
    */
-  get_numbers_view_numbers_view_numbers_post: {
+  get_numbers_view_numbers_view_numbers__post: {
     requestBody: {
       content: {
         "application/json": components["schemas"]["GeneralInput"];
@@ -621,7 +930,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["NumbersViewOutput"];
         };
       };
       /** @description Validation Error */
@@ -647,7 +956,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["MenuOutput"];
         };
       };
       /** @description Validation Error */
@@ -673,7 +982,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["LinksOutput"];
         };
       };
       /** @description Validation Error */
@@ -698,7 +1007,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["CountMatchesOutput"];
         };
       };
       /** @description Validation Error */
@@ -725,7 +1034,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["FolioOutput"];
         };
       };
       /** @description Validation Error */
@@ -751,7 +1060,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["DisplayNameOutput"];
         };
       };
       /** @description Validation Error */
@@ -764,7 +1073,8 @@ export interface operations {
   };
   /**
    * Tag Sanskrit
-   * @description Stemming + Tagging for Sanskrit
+   * @description IS THIS FUNCTION BEING USED?
+   * Stemming + Tagging for Sanskrit
    * :return: String with tagged Sanskrit
    */
   tag_sanskrit_utils_sanskrittagger__get: {
@@ -804,7 +1114,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["LanguageOutput"];
         };
       };
       /** @description Validation Error */
@@ -831,7 +1141,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["FilesOutput"];
         };
       };
       /** @description Validation Error */
@@ -857,7 +1167,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["FilterOutput"];
         };
       };
       /** @description Validation Error */
@@ -883,7 +1193,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["CategoryOutput"];
         };
       };
       /** @description Validation Error */
@@ -903,7 +1213,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["CollectionsOutput"];
         };
       };
     };
@@ -923,7 +1233,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["SideBarOutput"];
         };
       };
       /** @description Validation Error */

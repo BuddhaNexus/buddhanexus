@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test:ts": "tsc --noEmit",
     "prepare": "husky install",
     "openapi-ts": "openapi-typescript https://buddhanexus2.kc-tbts.uni-hamburg.de/openapi.json -o codegen/api/v2.d.ts"
   },

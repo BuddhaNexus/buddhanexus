@@ -1,7 +1,6 @@
 import apiClient from "@api";
 import { transformDataForTreeView } from "@components/treeView/utils";
 import type {
-  ApiLanguageMenuData,
   ApiSourceTextBrowserData,
   CategoryMenuItem,
   DatabaseText,
@@ -54,12 +53,8 @@ export async function getSourceTextMenuData(
     params: { query: { language } },
   });
 
-  // TODO: Add pagination on BE
-  //  - remove type casting once response model is added to api
-  //  - review parsed prop nams.
-  const srcTextData = data as { results: ApiLanguageMenuData[] };
   return (
-    srcTextData?.results?.map((text: ApiLanguageMenuData) => {
+    data?.results?.map((text) => {
       const { displayName, search_field, textname, filename, category } = text;
       return {
         id: filename,
