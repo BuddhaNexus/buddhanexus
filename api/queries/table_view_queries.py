@@ -57,7 +57,7 @@ FOR f IN parallels_sorted_file
                 par_length: p.par_length,
                 root_length: p.root_length,
                 par_pos_beg: p.par_pos_beg,
-                score: p.score,
+                score: p.score * 100,
                 src_lang: p.src_lang,
                 tgt_lang: p.tgt_lang
             }

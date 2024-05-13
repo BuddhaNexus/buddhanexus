@@ -15,17 +15,6 @@ FOR segment IN segments_pages
     return segment.page
 """
 
-# TODO: what is "selected"? Find better name
-QUERY_COLLECTION_TOTALS = """
-RETURN FLATTEN(
-    FOR target in @selected
-        FOR col IN global_stats
-            FILTER col.sourcecollection == @sourcecollection
-            FILTER col.targetcollection == target
-            RETURN col.totallengthcount
-        )
-"""
-
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels
     FILTER p.root_filename == @file_name
@@ -36,18 +25,6 @@ FOR p IN parallels
     LIMIT 15000
     COLLECT WITH COUNT INTO length
     RETURN length
-"""
-
-QUERY_TEXT_SEARCH = """
-FOR file IN files
-    FILTER file._key == @file_name
-    FOR segment_key IN file.segment_keys
-        FOR segment in segments
-            FILTER segment._key == segment_key
-            FILTER LIKE(segment.segtext, @search_string, true)
-            RETURN { segnr: segment.segnr,
-                     segtext: segment.segtext,
-                     parallel_ids: segment.parallel_ids }
 """
 
 QUERY_DISPLAYNAME = """

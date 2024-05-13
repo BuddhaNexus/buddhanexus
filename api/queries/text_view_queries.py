@@ -15,7 +15,6 @@ FOR file IN files
                     segtext: segment.segtext
                 }
         )
-
 RETURN {
     filetext: segments
 }
@@ -40,6 +39,11 @@ FOR file IN files
                     LET parallel_ids = (
                         FOR p IN parallels
                             FILTER segmentnr IN p.root_segnr
+                            FILTER p.score * 100 >= @score
+                            FILTER p.par_length >= @parlength
+                            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
+                            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+                            FILTER POSITION(@multi_lingual, p.tgt_lang)
                             RETURN p._key
                     )
                     RETURN {
@@ -107,7 +111,7 @@ LET parallels = (
                 par_offset_end: p.par_offset_end,
                 par_segtext: par_segtext,
                 file_name: p.id,
-                score: p.score,
+                score: p.score * 100,
                 length: p.par_length
             }
 )
@@ -137,7 +141,7 @@ LET parallels_multi = (
                 par_offset_end: p.par_offset_end,
                 par_segtext: par_segtext,
                 file_name: p.id,
-                score: p.score,
+                score: p.score * 100,
                 length: p.par_length
             }
 )

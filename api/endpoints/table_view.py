@@ -120,21 +120,22 @@ async def get_table_download(input: TableDownloadInput) -> Any:
 
     return
 
+#  The below function doesn't seem to be used any more!
 
-@router.post("/multilang/", response_model=TableViewOutput)
-async def get_multilang(input: MultiLangInput) -> Any:
-    """
-    Endpoint for the multilingual table view. Accepts Parallel languages
-    :return: List of segments and parallels for the table view.
-    """
-    query_result = execute_query(
-        table_view_queries.QUERY_MULTILINGUAL,
-        bind_vars={
-            "file_name": input.file_name,
-            "multi_lingual": input.multi_lingual,
-            "page": input.page,
-            "score": input.score,
-            "folio": input.folio,
-        },
-    )
-    return query_result.result
+# @router.post("/multilang/", response_model=TableViewOutput)
+# async def get_multilang(input: MultiLangInput) -> Any:
+#     """
+#     Endpoint for the multilingual table view. Accepts Parallel languages
+#     :return: List of segments and parallels for the table view.
+#     """
+#     query_result = execute_query(
+#         table_view_queries.QUERY_MULTILINGUAL,
+#         bind_vars={
+#             "file_name": input.file_name,
+#             "multi_lingual": input.multi_lingual,
+#             "page": input.page,
+#             "score": input.score,
+#             "folio": input.folio,
+#         },
+#     )
+#     return query_result.result
