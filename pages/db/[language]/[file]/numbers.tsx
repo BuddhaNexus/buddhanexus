@@ -18,14 +18,14 @@ import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/source
 import merge from "lodash/merge";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
-import { PagedAPINumbersData } from "utils/api/numbers";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 export default function NumbersPage() {
-  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
+  const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
+    useDbQueryParams();
   const { isFallback } = useSourceFile();
   useDbView();
 
@@ -47,14 +47,15 @@ export default function NumbersPage() {
     isLoading: isTableContentLoading,
     isFetching,
     isError: isTableContentError,
-  } = useInfiniteQuery<PagedAPINumbersData>({
+  } = useInfiniteQuery({
     initialPageParam: 0,
     queryKey: DbApi.NumbersView.makeQueryKey({ fileName, queryParams }),
     queryFn: ({ pageParam = 0 }) =>
       DbApi.NumbersView.call({
-        fileName,
-        queryParams,
-        pageNumber: Number(pageParam),
+        file_name: fileName,
+        ...defaultQueryParams,
+        ...queryParams,
+        page: Number(pageParam),
       }),
     getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
     getPreviousPageParam: (lastPage) =>

@@ -15,11 +15,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import type {
-  APINumbersCategoriesData,
-  APINumbersData,
+  APIMenuData,
+  APINumbersViewResponseData,
   NumbersSegment,
-} from "utils/api/numbers";
-import { PagedAPINumbersData } from "utils/api/numbers";
+} from "types/api";
+import type { PagedAPINumbersData } from "utils/api/numbers";
 import { SourceLanguage } from "utils/constants";
 
 import {
@@ -29,8 +29,8 @@ import {
 } from "./numbresViewTableContent";
 
 interface NumbersTableProps {
-  categories: APINumbersCategoriesData;
-  data: APINumbersData;
+  categories: APIMenuData;
+  data: APINumbersViewResponseData;
   hasNextPage: boolean;
   fetchNextPage: (
     options?: FetchNextPageOptions | undefined,

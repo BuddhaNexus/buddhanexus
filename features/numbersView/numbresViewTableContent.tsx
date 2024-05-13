@@ -15,18 +15,21 @@ import {
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { Link } from "components/common/Link";
 import type {
-  APINumbersCategoriesData,
-  APINumbersData,
+  APIMenuData,
+  APINumbersViewResponseData,
   NumbersParallel,
   NumbersSegment,
-} from "utils/api/numbers";
+} from "types/api";
 import { SourceLanguage } from "utils/constants";
 
-export const createTableRows = (rowData: APINumbersData) =>
+export const createTableRows = (rowData: APINumbersViewResponseData) =>
   rowData.map((item) => {
     const row: any = { segment: item.segmentnr };
 
     item.parallels.forEach((parallel) => {
+      // TODO: - clear undefined check onee Pali data is updated to BE.
+      if (!parallel.category) return;
+
       const prevCategoryValue = row[parallel.category] || [];
       Object.assign(row, {
         [parallel.category]: [...prevCategoryValue, parallel],
@@ -37,7 +40,7 @@ export const createTableRows = (rowData: APINumbersData) =>
   });
 
 interface CreateTableColumnProps {
-  categories: APINumbersCategoriesData;
+  categories: APIMenuData;
   language: SourceLanguage;
   fileName: string;
 }

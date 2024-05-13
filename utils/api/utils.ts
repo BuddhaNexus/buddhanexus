@@ -1,5 +1,6 @@
 import apiClient from "@api";
 import type { QueryParams } from "features/sidebarSuite/config/types";
+import type { APISchemas } from "types/api";
 import type { FilePropApiQuery } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
@@ -11,6 +12,12 @@ export function parseDbPageQueryParams(
   const limits = params?.limits ? JSON.parse(params.limits as string) : {};
 
   return { ...params, limits };
+}
+
+export function parseAPIRequestLimitsParam(
+  limits: APISchemas["GeneralInput"]["limits"],
+) {
+  return limits ? JSON.parse(limits as string) : {};
 }
 
 export async function getParallelCount({
