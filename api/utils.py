@@ -93,7 +93,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
                     "collectionkey": file.replace("!", ""),
                 },
             )
-            for item in query.result:
+            for item in query.result[0]:
                 new_limit_collection.append(item)
         else:
             if (
