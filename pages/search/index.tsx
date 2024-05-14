@@ -22,7 +22,6 @@ import NoSearchResultsFound from "features/globalSearch/NoSearchResultsFound";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import _ from "lodash";
 import { DbApi } from "utils/api/dbApi";
-import { type SearchPageResults } from "utils/api/search";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function SearchPage() {
@@ -42,15 +41,15 @@ export default function SearchPage() {
     }
   }, [isReady, setSearchTerm, searchParam]);
 
-  const { data: rawData, isLoading } = useQuery<SearchPageResults>({
+  const { data: rawData, isLoading } = useQuery({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
-      searchTerm: searchParam,
+      searchString: searchParam,
       queryParams,
     }),
     queryFn: () =>
       DbApi.GlobalSearchData.call({
-        searchTerm: searchParam,
-        queryParams,
+        search_string: searchParam,
+        ...queryParams,
       }),
   });
 
@@ -58,7 +57,7 @@ export default function SearchPage() {
     const sortedData = rawData
       ? rawData.sort((a, b) => b.similarity - a.similarity)
       : [];
-    // see SearchResultsRow.tsx for explanation of workaround needing chunked data
+    // see SearchResultsRow.tsx for explanation of workaround requiring chunked data
     return _.chunk(sortedData, 3);
   }, [rawData]);
 

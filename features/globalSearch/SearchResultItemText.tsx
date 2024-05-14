@@ -3,11 +3,11 @@ import { Typography } from "@mui/material";
 import { scriptSelectionAtom } from "features/atoms";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
 import { useAtomValue } from "jotai";
-import type { MatchTextPart } from "utils/api/search";
+import type { FullText } from "types/api";
 
 interface Props {
   id: string;
-  textParts: MatchTextPart[];
+  textParts: FullText[];
 }
 
 export const SearchResultItemText = ({ id, textParts }: Props) => {
@@ -26,7 +26,7 @@ export const SearchResultItemText = ({ id, textParts }: Props) => {
             color={highlighted === 1 ? "text.primary" : "text.secondary"}
           >
             {enscriptText({
-              text,
+              text: text ?? "",
               script,
               language: sourceLanguage,
             })}

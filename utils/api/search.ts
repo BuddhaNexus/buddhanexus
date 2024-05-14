@@ -1,15 +1,14 @@
 import apiClient from "@api";
-import type { SerachApiQuery } from "types/api/common";
+import type {
+  APISearchRequestBody,
+  APISearchResponseData,
+  FullText,
+} from "types/api";
 import type { SourceLanguage } from "utils/constants";
 
-import { parseDbPageQueryParams } from "./utils";
+import { parseAPIRequestBody } from "./utils";
 
-export type MatchTextPart = {
-  text: string;
-  highlightColor: 0 | 1;
-};
-
-export type SearchResult = {
+export type ParsedSearchResult = {
   id: string;
   category: string;
   language: SourceLanguage;
@@ -17,15 +16,13 @@ export type SearchResult = {
   displayName: string;
   links: string[];
   similarity: number;
-  matchTextParts: MatchTextPart[];
+  matchTextParts: FullText[];
 };
 
-export type SearchPageResults = SearchResult[];
+function parseAPISearchData(data: APISearchResponseData): ParsedSearchResult[] {
+  const searchResults: ParsedSearchResult[] = [];
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function parseAPISearchData(apiData: any): SearchPageResults {
-  const searchResults: SearchPageResults = [];
-  for (const result of apiData) {
+  for (const result of data.searchResults) {
     const {
       category,
       language,
@@ -34,13 +31,14 @@ function parseAPISearchData(apiData: any): SearchPageResults {
       similarity,
       segtext,
     } = result;
+
     searchResults.push({
-      id: text_name,
+      id: text_name ?? "",
       category,
-      language,
+      language: language as SourceLanguage,
       segmentNumber: segment_nr,
-      displayName: display_name,
-      links: [link1, link2],
+      displayName: display_name ?? "",
+      links: [`${link1}`, `${link2}`],
       similarity,
       matchTextParts: segtext,
     });
@@ -52,22 +50,16 @@ function parseAPISearchData(apiData: any): SearchPageResults {
  * Return has a hard limit of 200 matches.
  * @see https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/122#issuecomment-1925895599
  */
-export async function getGlobalSearchData({
-  searchTerm,
-  queryParams,
-}: SerachApiQuery): Promise<SearchPageResults> {
-  if (!searchTerm) {
+export async function getGlobalSearchData(
+  body: APISearchRequestBody,
+): Promise<ParsedSearchResult[]> {
+  if (!body.search_string) {
     return [];
   }
-  //  TODO: remove type casting once response model is added to api
+
   const { data } = await apiClient.POST("/search/", {
-    body: {
-      search_string: searchTerm,
-      ...parseDbPageQueryParams(queryParams),
-    },
+    body: parseAPIRequestBody(body),
   });
 
-  const castData = data as { searchResults: any[] };
-
-  return parseAPISearchData(castData.searchResults);
+  return data ? parseAPISearchData(data) : [];
 }

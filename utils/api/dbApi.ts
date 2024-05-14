@@ -116,12 +116,12 @@ export const DbApi = {
   },
   GlobalSearchData: {
     makeQueryKey: ({
-      searchTerm,
+      searchString,
       queryParams,
     }: {
-      searchTerm: string;
+      searchString: string;
       queryParams: Params;
-    }) => ["globalSearchData", searchTerm, queryParams],
+    }) => ["globalSearchData", searchString, queryParams],
     call: getGlobalSearchData,
   },
   TextDisplayName: {

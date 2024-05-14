@@ -6,7 +6,7 @@ import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";
 import { CardContent, Chip, Divider, IconButton, Tooltip } from "@mui/material";
 import { makeTextViewSegmentPath } from "features/tableView/ParallelSegment";
-import type { SearchResult } from "utils/api/search";
+import type { ParsedSearchResult } from "utils/api/search";
 
 import {
   SearchResultCard,
@@ -16,7 +16,7 @@ import {
 import { SearchResultItemText } from "./SearchResultItemText";
 
 interface Props {
-  result: SearchResult;
+  result: ParsedSearchResult;
 }
 
 export const SearchResultItem = ({ result }: Props) => {

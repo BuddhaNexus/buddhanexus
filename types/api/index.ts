@@ -18,7 +18,17 @@ import type { components } from "codegen/api/v2.d.ts";
 
 export type APISchemas = components["schemas"];
 
-/** Numbers view */
+/** COMMON */
+
+export type Limits = APISchemas["Limits"];
+export type FullText = APISchemas["FullText"];
+
+/** SEARCH */
+
+export type APISearchRequestBody = APISchemas["SearchInput"];
+export type APISearchResponseData = APISchemas["SearchOutput"];
+
+/** NUMBERS VIEW */
 
 export type NumbersParallel = APISchemas["Parallel"];
 export type NumbersSegment =
@@ -28,5 +38,6 @@ export type APINumbersViewRequestBody = APISchemas["GeneralInput"];
 export type APINumbersViewResponseData =
   components["schemas"]["NumbersViewOutput"];
 
-/** Menus */
+/** MENUS */
+
 export type APIMenuData = components["schemas"]["MenuOutput"];
