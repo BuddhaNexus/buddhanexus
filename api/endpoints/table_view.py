@@ -120,6 +120,7 @@ async def get_table_download(input: TableDownloadInput) -> Any:
 
     return
 
+
 #  The below function doesn't seem to be used any more!
 
 # @router.post("/multilang/", response_model=TableViewOutput)

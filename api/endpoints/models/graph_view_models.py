@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict, Tuple, Union
 
 """
 THE GRAPH VIEW IS NOT WORKING. NEEDS TOTAL REVAMP!
@@ -13,10 +13,6 @@ class GraphInput(BaseModel):
     target_collection: list = []
 
 
-class Segment(BaseModel):
-    segmentnr: str
-    weight: int
-
-
 class GraphViewOutput(BaseModel):
-    __root__: List[Segment]
+    piegraphdata: List[List[Union[str, int]]]
+    histogramgraphdata: List[List[Union[str, int]]]
