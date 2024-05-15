@@ -10,6 +10,7 @@ class TextParallelsInput(BaseModel):
     par_length: int = 0
     limits: Optional[Limits]
     multi_lingual: list = []
+    page_number: int = 0
 
 
 class FullMatchText(FullText):
@@ -38,7 +39,7 @@ par_fulltext can then be made un-optional
 
 
 class Segment(BaseModel):
-    par_segnr: list
+    par_segnr: str
     display_name: Union[str, None] = None
     tgt_lang: str
     par_offset_beg: Optional[int]

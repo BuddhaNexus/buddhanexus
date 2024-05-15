@@ -1,30 +1,35 @@
 from fastapi import APIRouter, Query
 from .endpoint_utils import execute_query
-from ..queries import main_queries, menu_queries
-from ..utils import get_language_from_file_name
+from ..queries import graph_view_queries, menu_queries, utils_queries
+from ..utils import (
+    get_language_from_file_name,
+    create_cleaned_limit_collection,
+    get_cat_from_segmentnr,
+)
 import re
 from typing import Any
 from .models.graph_view_models import *
 
 router = APIRouter()
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
-
 
 @router.post("/graph-view/", response_model=GraphViewOutput)
-# pylint: disable=too-many-locals
 async def get_graph_for_file(input: GraphInput) -> Any:
     """
-    THE GRAPH VIEW IS NOT WORKING. NEEDS TOTAL REVAMP!
     Endpoint for graph view
     """
+
+    target_collection = create_cleaned_limit_collection(input.target_collection)
+
+    print(target_collection)
+
     query_graph_result = execute_query(
-        main_queries.QUERY_GRAPH_VIEW,
+        graph_view_queries.QUERY_GRAPH_VIEW,
         bind_vars={
             "file_name": input.file_name,
             "score": input.score,
             "parlength": input.par_length,
-            "targetcollection": input.target_collection,
+            "targetcollection": target_collection,
         },
     )
 
@@ -41,12 +46,12 @@ async def get_graph_for_file(input: GraphInput) -> Any:
         else:
             total_histogram_dict[target_file_name] = count_this_parallel
 
-        collection_key = re.search(COLLECTION_PATTERN, target_file_name)
+        collection_key = get_cat_from_segmentnr(target_file_name)
 
         if not collection_key:
             continue
 
-        collection = collection_key.group()
+        collection = collection_key
         if collection not in total_collection_dict:
             total_collection_dict[collection] = count_this_parallel
         else:
@@ -78,8 +83,8 @@ async def get_graph_for_file(input: GraphInput) -> Any:
     for name, count in total_histogram_dict.items():
         displayname = name
         query_displayname = execute_query(
-            main_queries.QUERY_DISPLAYNAME,
-            bind_vars={"file_name": name},
+            utils_queries.QUERY_DISPLAYNAME,
+            bind_vars={"filename": name},
             raw_results=True,
         )
         displayname_results = query_displayname.result
@@ -91,9 +96,12 @@ async def get_graph_for_file(input: GraphInput) -> Any:
         histogram_data.append([displayname, count])
 
     # returns a list of the data as needed by Google Graphs
+
     return {
         "piegraphdata": sorted(
             unsorted_graphdata_list, reverse=True, key=lambda x: x[1]
         ),
-        "histogramgraphdata": sorted(histogram_data, reverse=True, key=lambda x: x[1]),
+        "histogramgraphdata": sorted(histogram_data, reverse=True, key=lambda x: x[1])[
+            0:50
+        ],
     }

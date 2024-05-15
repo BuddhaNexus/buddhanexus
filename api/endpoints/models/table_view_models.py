@@ -4,11 +4,11 @@ from .general_models import GeneralInput, FullNames, FullText
 
 
 class Segment(BaseModel):
-    par_segnr: list
+    par_segnr: str
     par_full_names: FullNames
     root_full_names: FullNames
     file_name: str
-    root_segnr: list
+    root_segnr: str
     par_length: int
     root_length: int
     score: int
@@ -30,9 +30,11 @@ class TableDownloadOutput(BaseModel):
     __root__: str
 
 
-class MultiLangInput(BaseModel):
-    file_name: str
-    score: int = 0
-    multi_lingual: list = []
-    page: int = 0
-    folio: str = ""
+#  Is this still needed as the function doesn't seem to exist any more?
+
+# class MultiLangInput(BaseModel):
+#     file_name: str
+#     score: int = 0
+#     multi_lingual: list = []
+#     page: int = 0
+#     folio: str = ""

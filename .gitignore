@@ -15,6 +15,7 @@ tramp
 .env
 json
 data
+download
 *.tsv
 *.zip
 *.ipynb

@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Query, Depends
-from ..queries import main_queries
+from ..queries import text_view_queries
 from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_middle_view
 from .endpoint_utils import execute_query
 from typing import Any
 from ..utils import (
     create_cleaned_limit_collection,
-    get_start_integer,
+    get_page_for_segment,
+    get_filename_from_segmentnr,
 )
 from .models.text_view_models import *
 
@@ -18,7 +19,7 @@ async def get_parallels_for_middle(input: TextViewMiddleInput) -> Any:
     :return: List of parallels for text view (middle)
     """
     query_result = execute_query(
-        main_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
+        text_view_queries.QUERY_PARALLELS_FOR_MIDDLE_TEXT,
         bind_vars={"parallel_ids": input.parallel_ids},
     )
     return calculate_color_maps_middle_view(query_result.result[0])
@@ -29,10 +30,12 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
     """
+    filename = input.file_name
     parallel_ids_type = "parallel_ids"
-    start_int = 0
+    page_number = input.page_number
     if input.active_segment != "none":
-        start_int = get_start_integer(input.active_segment)
+        page_number = get_page_for_segment(input.active_segment)
+        filename = get_filename_from_segmentnr(input.active_segment)
 
     limitcollection_include = create_cleaned_limit_collection(
         input.limits.category_include + input.limits.file_include
@@ -40,10 +43,18 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     limitcollection_exclude = create_cleaned_limit_collection(
         input.limits.category_exclude + input.limits.file_exclude
     )
+    number_of_total_pages = execute_query(
+        text_view_queries.QUERY_GET_NUMBER_OF_PAGES,
+        bind_vars={
+            "file_name": filename,
+        },
+    ).result[0]
+    if page_number > number_of_total_pages:
+        return []
+
     current_bind_vars = {
-        "file_name": input.file_name,
-        "limit": 800,
-        "startint": start_int,
+        "file_name": filename,
+        "page_number": page_number,
         "score": input.score,
         "parlength": input.par_length,
         "multi_lingual": input.multi_lingual,
@@ -52,10 +63,12 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     }
 
     text_segments_query_result = execute_query(
-        main_queries.QUERY_TEXT_AND_PARALLELS,
+        text_view_queries.QUERY_TEXT_AND_PARALLELS,
         bind_vars=current_bind_vars,
     )
     data_with_colormaps = calculate_color_maps_text_view(
         text_segments_query_result.result[0]
     )
+    for entry in data_with_colormaps:
+        entry["page"] = page_number
     return data_with_colormaps

@@ -20,14 +20,9 @@ from dataloader_constants import (
     COLLECTION_FILES,
     COLLECTION_MENU_COLLECTIONS,
     COLLECTION_MENU_CATEGORIES,
-    COLLECTION_FILES_PARALLEL_COUNT,
-    EDGE_COLLECTION_NAMES,
-    COLLECTION_CATEGORIES_PARALLEL_COUNT,
-    EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
-    GRAPH_COLLECTIONS_CATEGORIES,
     COLLECTION_LANGUAGES,
-    EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
-    EDGE_COLLECTION_CATEGORY_HAS_FILES,
+    GLOBAL_STATS_CATEGORIES,
+    GLOBAL_STATS_FILES,
 )
 
 from utils import get_database, get_system_database
@@ -61,10 +56,6 @@ def clean_all_collections_db():
         for name in COLLECTION_NAMES:
             current_name = name
             db.delete_collection(name)
-        for name in EDGE_COLLECTION_NAMES:
-            current_name = name
-            db.delete_collection(name)
-        db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % current_name, e)
     except GraphDeleteError as e:
@@ -73,14 +64,16 @@ def clean_all_collections_db():
     print("all collections cleaned.")
 
 
-def clean_totals_collection_db():
+def clean_global_stats_db():
     """
-    Clear the categories_parallel_count collection
+    Clear global stats data
     """
     db = get_database()
-    db.delete_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
-    db.create_collection(COLLECTION_CATEGORIES_PARALLEL_COUNT)
-    print("totals collection cleaned.")
+    db.delete_collection(GLOBAL_STATS_CATEGORIES)
+    db.create_collection(GLOBAL_STATS_CATEGORIES)
+    db.delete_collection(GLOBAL_STATS_FILES)
+    db.create_collection(GLOBAL_STATS_FILES)
+    print("global stats data cleaned.")
 
 
 def empty_collection(collection_name: str, db: StandardDatabase, edge: bool = False):
@@ -100,19 +93,13 @@ def clean_segment_collections_db():
     Clear the segment database collections completely.
     """
     db = get_database()
-
-    try:
-        for name in (
-            COLLECTION_SEGMENTS,
-            COLLECTION_PARALLELS,
-            COLLECTION_FILES,
-            COLLECTION_FILES_PARALLEL_COUNT,
-        ):
-            empty_collection(name, db)
-    except (GraphDeleteError, CollectionDeleteError):
-        print(
-            f"couldn't remove graph: {GRAPH_FILES_SEGMENTS}. It probably doesn't exist."
-        )
+    for name in (
+        COLLECTION_SEGMENTS,
+        COLLECTION_PARALLELS,
+        COLLECTION_FILES,
+        COLLECTION_FILES_PARALLEL_COUNT,
+    ):
+        empty_collection(name, db)
     print("segment collections cleaned.")
 
 
@@ -121,24 +108,13 @@ def clean_menu_collections_db():
     Clear the menu database collections completely.
     """
     db = get_database()
-    try:
-        db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
-        for name in (
-            COLLECTION_MENU_COLLECTIONS,
-            COLLECTION_MENU_CATEGORIES,
-            COLLECTION_LANGUAGES,
-        ):
-            empty_collection(name, db)
-        for name in (
-            EDGE_COLLECTION_LANGUAGE_HAS_COLLECTIONS,
-            EDGE_COLLECTION_COLLECTION_HAS_CATEGORIES,
-            EDGE_COLLECTION_CATEGORY_HAS_FILES,
-        ):
-            empty_collection(name, db, edge=True)
-    except (GraphDeleteError, CollectionDeleteError):
-        print(
-            f"couldn't remove object {GRAPH_COLLECTIONS_CATEGORIES}. It probably doesn't exist."
-        )
+    db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
+    for name in (
+        COLLECTION_MENU_COLLECTIONS,
+        COLLECTION_MENU_CATEGORIES,
+        COLLECTION_LANGUAGES,
+    ):
+        empty_collection(name, db)
     print("menu data collections cleaned.")
 
 

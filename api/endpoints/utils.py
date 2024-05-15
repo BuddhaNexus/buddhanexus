@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query
 from typing import Any
 from .endpoint_utils import execute_query
-from ..queries import main_queries
+from ..queries import utils_queries
 from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
 from .models.utils_models import *
@@ -23,7 +23,7 @@ async def get_counts_for_file(input: CountMatchesInput) -> Any:
     )
 
     query_graph_result = execute_query(
-        main_queries.QUERY_COUNT_MATCHES,
+        utils_queries.QUERY_COUNT_MATCHES,
         bind_vars={
             "file_name": input.file_name,
             "score": input.score,
@@ -46,7 +46,7 @@ async def get_folios_for_file(
     suttas/PTS nrs/segments (PLI) / segments (SKT)
     """
     query_graph_result = execute_query(
-        main_queries.QUERY_FOLIOS,
+        utils_queries.QUERY_FOLIOS,
         bind_vars={"file_name": file_name},
     )
     folios = query_graph_result.result[0]
@@ -60,7 +60,7 @@ def get_displayname(segmentnr):
     """
     file_name = segmentnr.split(":")[0]
     query_graph_result = execute_query(
-        main_queries.QUERY_DISPLAYNAME,
+        utils_queries.QUERY_DISPLAYNAME,
         bind_vars={"filename": file_name},
     )
     displayname = query_graph_result.result[0]
@@ -109,7 +109,7 @@ async def get_multilingual(
     """
     query_result = {"langList": []}
     query_displayname = execute_query(
-        main_queries.QUERY_MULTILINGUAL_LANGS,
+        utils_queries.QUERY_MULTILINGUAL_LANGS,
         bind_vars={"file_name": file_name},
         raw_results=True,
     )

@@ -7,7 +7,9 @@ from ..utils import (
     shorten_segment_names,
 )
 from .endpoint_utils import execute_query
-from ..queries import main_queries, menu_queries
+
+from ..queries import table_view_queries, menu_queries
+
 from .models.general_models import GeneralInput
 from .models.numbers_view_models import MenuOutput, NumbersViewOutput
 
@@ -28,7 +30,7 @@ def create_numbers_view_data(table_results):
                     parallel_dic = {}
                     parallel_dic["segmentnr"] = shorten_segment_names(
                         parallel["par_segnr"]
-                    )[0]
+                    )
                     parallel_dic["displayName"] = parallel["par_full_names"][
                         "displayName"
                     ]
@@ -49,7 +51,6 @@ async def get_numbers_view(input: GeneralInput) -> Any:
     """
     Endpoint for numbers view.
     """
-
     limitcollection_include = create_cleaned_limit_collection(
         input.limits.category_include + input.limits.file_include
     )
@@ -62,7 +63,7 @@ async def get_numbers_view(input: GeneralInput) -> Any:
         folio = 0
 
     query_result = execute_query(
-        main_queries.QUERY_NUMBERS_VIEW,
+        table_view_queries.QUERY_NUMBERS_VIEW,
         bind_vars={
             "file_name": input.file_name,
             "score": input.score,

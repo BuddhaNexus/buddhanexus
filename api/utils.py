@@ -7,11 +7,10 @@ from typing import List
 from urllib.parse import unquote
 from fastapi import HTTPException
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
-
-from .queries import menu_queries, main_queries
+from .queries import menu_queries, utils_queries, text_view_queries
 from .db_connection import get_db
 
-COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
+# COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
 
 
 def prettify_score(score):
@@ -23,6 +22,17 @@ def prettify_score(score):
     return score
 
 
+def get_filename_from_segmentnr(segnr):
+    """
+    Get the filename from a segment number.
+    """
+    segnr = segnr.replace(".json", "")
+    if re.search("n[0-9aAbBcCdD]+_[0-9]+", segnr):
+        segnr = re.sub("_[0-9]+", "", segnr)
+    segnr = re.sub(r"\$[0-9]+", "", segnr)
+    return segnr.split(":")[0]
+
+
 def shorten_segment_names(segments):
     """
     Returns a shortened version of a range of segments
@@ -32,7 +42,7 @@ def shorten_segment_names(segments):
     shortened_segment = first_segment
     if not first_segment == last_segment:
         shortened_segment += "–" + last_segment.split(":")[1]
-    return [shortened_segment]
+    return shortened_segment
 
 
 def get_sort_key(sort_method) -> str:
@@ -83,7 +93,7 @@ def create_cleaned_limit_collection(limit_collection) -> List:
                     "collectionkey": file.replace("!", ""),
                 },
             )
-            for item in query.result:
+            for item in query.result[0]:
                 new_limit_collection.append(item)
         else:
             if (
@@ -104,24 +114,24 @@ def number_exists(input_string) -> bool:
     return any(char.isdigit() for char in input_string)
 
 
-def collect_segment_results(segments) -> List:
-    """
-    Query results are analyzed based on what collection they are part of and put in the
-    relevant category thereof. Returns the results and the keys to the collections.
-    """
-    collection_keys = []
-    segments_result = []
-    for segment in segments:
-        if "parallels" not in segment or segment["parallels"] is None:
-            continue
-        for parallel in segment["parallels"]:
-            for seg_nr in parallel:
-                collection_key = re.search(COLLECTION_PATTERN, seg_nr)
-                if collection_key and collection_key.group() not in collection_keys:
-                    collection_keys.append(collection_key.group())
-        segments_result.append(segment)
+# def collect_segment_results(segments) -> List:
+#     """
+#     Query results are analyzed based on what collection they are part of and put in the
+#     relevant category thereof. Returns the results and the keys to the collections.
+#     """
+#     collection_keys = []
+#     segments_result = []
+#     for segment in segments:
+#         if "parallels" not in segment or segment["parallels"] is None:
+#             continue
+#         for parallel in segment["parallels"]:
+#             for seg_nr in parallel:
+#                 collection_key = re.search(COLLECTION_PATTERN, seg_nr)
+#                 if collection_key and collection_key.group() not in collection_keys:
+#                     collection_keys.append(collection_key.group())
+#         segments_result.append(segment)
 
-    return segments_result, collection_keys
+#     return segments_result, collection_keys
 
 
 def get_folio_regex(language, file_name, folio) -> str:
@@ -162,7 +172,7 @@ def add_source_information(file_name, query_result):
     lang = get_language_from_file_name(file_name)
     if lang == "skt":
         query_source_information = get_db().AQLQuery(
-            query=main_queries.QUERY_SOURCE,
+            query=utils_queries.QUERY_SOURCE,
             bindVars={"file_name": file_name},
             rawResults=True,
         )
@@ -190,35 +200,16 @@ def add_source_information(file_name, query_result):
     return query_result
 
 
-def get_start_integer(active_segment):
+def get_page_for_segment(active_segment):
     """
-    Gets start integer for the folio segment that is called for.
+    Gets the page number for a given segment.
     """
-    start_int = 0
     active_segment = unquote(active_segment)
-    try:
-        text_segment_count_query_result = get_db().AQLQuery(
-            query=main_queries.QUERY_SEGMENT_COUNT,
-            bindVars={"segmentnr": active_segment},
-        )
-        if text_segment_count_query_result.result:
-            start_int = text_segment_count_query_result.result[0] - 400
-
-    except DocumentNotFoundError as error:
-        print(error)
-        raise HTTPException(
-            status_code=404, detail="Active Segment Item not found"
-        ) from error
-    except AQLQueryError as error:
-        print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors) from error
-    except KeyError as error:
-        print("KeyError: ", error)
-        raise HTTPException(status_code=400) from error
-
-    start_int = max(start_int, 0)
-
-    return start_int
+    page_for_segment = get_db().AQLQuery(
+        query=utils_queries.QUERY_PAGE_FOR_SEGMENT,
+        bindVars={"segmentnr": active_segment},
+    )
+    return page_for_segment.result[0]
 
 
 def get_file_text(file_name):
@@ -227,7 +218,7 @@ def get_file_text(file_name):
     """
     try:
         text_segments_query_result = get_db().AQLQuery(
-            query=main_queries.QUERY_FILE_TEXT,
+            query=text_view_queries.QUERY_FILE_TEXT,
             bindVars={"file_name": file_name},
         )
 
@@ -259,6 +250,8 @@ def get_cat_from_segmentnr(segmentnr):
         x for x in ["pli-tv-bi-vb", "pli-tv-bu-vb"] if segmentnr.startswith(x)
     ]
     search = re.search("^[A-Z]+[0-9]+", segmentnr)
+    if "NG" in segmentnr:
+        return "NG"
     if search:
         cat = search[0]
     elif pali_check:

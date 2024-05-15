@@ -3,13 +3,11 @@ from ..colormaps import calculate_color_maps_table_view
 from ..utils import (
     create_cleaned_limit_collection,
     get_sort_key,
-    collect_segment_results,
-    get_folio_regex,
     get_language_from_file_name,
 )
 from typing import Any
 from .endpoint_utils import execute_query
-from ..queries import main_queries, menu_queries
+from ..queries import table_view_queries, menu_queries
 from ..table_download import run_table_download, run_numbers_download
 from .models.general_models import GeneralInput
 from .models.table_view_models import *
@@ -33,7 +31,7 @@ async def get_table_view(input: GeneralInput) -> Any:
 
     sortkey = get_sort_key(input.sort_method)
     query_result = execute_query(
-        main_queries.QUERY_TABLE_VIEW,
+        table_view_queries.QUERY_TABLE_VIEW,
         bind_vars={
             "file_name": input.file_name,
             "score": input.score,
@@ -64,7 +62,7 @@ async def get_table_download(input: TableDownloadInput) -> Any:
 
     if input.download_data == "table":
         query_result = execute_query(
-            main_queries.QUERY_TABLE_DOWNLOAD,
+            table_view_queries.QUERY_TABLE_DOWNLOAD,
             bind_vars={
                 "file_name": input.file_name,
                 "score": input.score,
@@ -91,7 +89,7 @@ async def get_table_download(input: TableDownloadInput) -> Any:
 
     else:
         query_result = execute_query(
-            main_queries.QUERY_NUMBERS_DOWNLOAD,
+            table_view_queries.QUERY_NUMBERS_DOWNLOAD,
             bind_vars={
                 "file_name": input.file_name,
                 "score": input.score,
@@ -123,20 +121,22 @@ async def get_table_download(input: TableDownloadInput) -> Any:
     return
 
 
-@router.post("/multilang/", response_model=TableViewOutput)
-async def get_multilang(input: MultiLangInput) -> Any:
-    """
-    Endpoint for the multilingual table view. Accepts Parallel languages
-    :return: List of segments and parallels for the table view.
-    """
-    query_result = execute_query(
-        main_queries.QUERY_MULTILINGUAL,
-        bind_vars={
-            "file_name": input.file_name,
-            "multi_lingual": input.multi_lingual,
-            "page": input.page,
-            "score": input.score,
-            "folio": input.folio,
-        },
-    )
-    return query_result.result
+#  The below function doesn't seem to be used any more!
+
+# @router.post("/multilang/", response_model=TableViewOutput)
+# async def get_multilang(input: MultiLangInput) -> Any:
+#     """
+#     Endpoint for the multilingual table view. Accepts Parallel languages
+#     :return: List of segments and parallels for the table view.
+#     """
+#     query_result = execute_query(
+#         table_view_queries.QUERY_MULTILINGUAL,
+#         bind_vars={
+#             "file_name": input.file_name,
+#             "multi_lingual": input.multi_lingual,
+#             "page": input.page,
+#             "score": input.score,
+#             "folio": input.folio,
+#         },
+#     )
+#     return query_result.result

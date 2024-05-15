@@ -15,8 +15,6 @@ from dataloader_constants import (
     COLLECTION_NAMES,
     DEFAULT_SOURCE_URL,
     DEFAULT_TSV_URL,
-    EDGE_COLLECTION_NAMES,
-    GRAPH_COLLECTIONS_CATEGORIES,
     LANG_TIBETAN,
     LANG_PALI,
     LANG_CHINESE,
@@ -40,13 +38,14 @@ from global_search import (
 from load_parallels import (
     load_parallels_for_language,
     load_sorted_parallels_for_language,
-    clean_parallels_for_language
+    clean_parallels_for_language,
 )
+
+from load_stats import load_global_stats_for_language
 
 from tasks_menu import (
     load_all_menu_collections,
     load_all_menu_categories,
-    create_collections_categories_graph,
 )
 
 from utils import get_database, get_system_database
@@ -54,7 +53,7 @@ from utils import get_database, get_system_database
 from clean_database import (
     clean_search_index_db,
     clean_all_collections_db,
-    clean_totals_collection_db,
+    clean_global_stats_db,
     clean_segment_collections_db,
     clean_menu_collections_db,
     clean_all_lang_db,
@@ -63,11 +62,11 @@ from clean_database import (
 from dataloader.load_text_metadata import load_text_metadata_from_menu_files
 
 SEGMENT_LOADERS = {
-        "skt": LoadSegmentsSanskrit,
-        "pli": LoadSegmentsPali,
-        "tib": LoadSegmentsTibetan,
-        "chn": LoadSegmentsChinese,
-    }
+    "skt": LoadSegmentsSanskrit,
+    "pli": LoadSegmentsPali,
+    "tib": LoadSegmentsTibetan,
+    "chn": LoadSegmentsChinese,
+}
 
 
 @task
@@ -86,9 +85,7 @@ def create_db(c):
 
 
 @task(help={"collections": "Array of collections you'd like to create"})
-def create_collections(
-    c, collections=COLLECTION_NAMES, edge_collections=EDGE_COLLECTION_NAMES
-):
+def create_collections(c, collections=COLLECTION_NAMES):
     """
     Create empty collections in database
 
@@ -102,11 +99,6 @@ def create_collections(
             db.create_collection(name)
         except CollectionCreateError as e:
             print(f"Error creating collection {name}: ", e)
-    for name in edge_collections:
-        try:
-            db.create_collection(name, edge=True)
-        except CollectionCreateError as e:
-            print("Error creating edge collection: ", e)
     print(f"created {collections} collections")
 
 
@@ -141,7 +133,8 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
     create_search_views(db, lang)
     print("Analyzers and search views created.")
 
-@task 
+
+@task
 def clean_text_segments(c, lang=DEFAULT_LANGS):
     """
     Clear the text segments from the database
@@ -176,6 +169,7 @@ def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=
         )
         load_sorted_parallels_for_language(root_url, clang, db)
 
+
 @task
 def clean_parallels(c, lang=DEFAULT_LANGS):
     db = get_database()
@@ -184,6 +178,22 @@ def clean_parallels(c, lang=DEFAULT_LANGS):
     for l in lang:
         clean_parallels_for_language(l, db)
         print("Parallel data cleaned for language ", l)
+
+
+@task
+def load_global_stats(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS):
+    db = get_database()
+    if lang != DEFAULT_LANGS:
+        lang = ["".join(lang)]
+    for l in lang:
+        print("Loading global stats for language: ", l)
+        load_global_stats_for_language(root_url, l, db)
+        print("Global stats loaded for language ", l)
+
+
+@task
+def clean_global_stats(c):
+    clean_global_stats_db()
 
 
 @task
@@ -241,14 +251,8 @@ def clean_pali(c):
         for name in COLLECTION_NAMES:
             current_name = name
             db.delete_collection(name)
-        for name in EDGE_COLLECTION_NAMES:
-            current_name = name
-            db.delete_collection(name)
-        db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % current_name, e)
-    except GraphDeleteError as e:
-        print("couldn't remove graph. It probably doesn't exist.", e)
 
     print("all collections cleaned.")
 
@@ -329,7 +333,6 @@ def load_menu_files(c):
     db = get_database()
     load_all_menu_categories(db)
     load_all_menu_collections(db)
-    create_collections_categories_graph(db)
 
     print("Menu data loading completed!")
 
@@ -341,9 +344,11 @@ def add_sources(c):
     load_sources(db, DEFAULT_SOURCE_URL)
 
 
-@task
-def calculate_collection_totals(c):
-    print("Calculating collection totals from loaded data")
-    calculate_parallel_totals()
+# IS this function still used?
 
-    print("Parallel totals calculation completed.")
+# @task
+# def calculate_collection_totals(c):
+#     print("Calculating collection totals from loaded data")
+#     calculate_parallel_totals()
+
+#     print("Parallel totals calculation completed.")
