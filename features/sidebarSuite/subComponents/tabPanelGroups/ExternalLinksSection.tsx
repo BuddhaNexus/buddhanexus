@@ -63,7 +63,7 @@ export const ExternalLinksSection = () => {
 
   const { data } = useQuery({
     queryKey: [DbApi.ExternalLinksData.makeQueryKey(fileName)],
-    queryFn: () => DbApi.ExternalLinksData.call({ fileName }),
+    queryFn: () => DbApi.ExternalLinksData.call({ file_name: fileName }),
   });
 
   // TODO: sort out dark theme icons, http://localhost:3000/db/tib/K01D0003_H0003/table
