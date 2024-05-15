@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
 import { StringParam, useQueryParam } from "use-query-params";
 import { DbApi } from "utils/api/dbApi";
-import type { DatabaseFolio } from "utils/api/utils";
+import type { DatabaseFolio } from "utils/api/endpoints/utils/utils";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {

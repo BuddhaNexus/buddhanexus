@@ -1,10 +1,10 @@
 import apiClient from "@api";
+import { parseAPIRequestBody } from "utils/api/apiQueryUtils";
 import { RESULTS_DOWNLOAD_ROOT_URL } from "utils/api/constants";
 import type {
   APITableViewDownloadRequestBody,
   APITableViewDownloadResponseData,
 } from "utils/api/types";
-import { parseAPIRequestBody } from "utils/api/utils";
 
 const parseAPITableDownloadData = (
   filePath: APITableViewDownloadResponseData,

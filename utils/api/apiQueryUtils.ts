@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
+import type { APILimits } from "utils/api/types";
 import type { SourceLanguage } from "utils/constants";
 
 export const queryCacheTimeDefaults = {
@@ -60,4 +61,10 @@ export async function prefetchDbResultsPageData(
   // });
 
   return queryClient;
+}
+
+export function parseAPIRequestBody<T extends { limits?: APILimits }>(body: T) {
+  const limits = body?.limits ? JSON.parse(body.limits as string) : {};
+
+  return { ...body, limits };
 }

@@ -1,29 +1,14 @@
 import apiClient from "@api";
-import type { QueryParams } from "features/sidebarSuite/config/types";
-import type { APILimits } from "utils/api/types";
+import { parseAPIRequestBody } from "utils/api/apiQueryUtils";
 import type { FilePropApiQuery } from "utils/api/types/common";
 import type { SourceLanguage } from "utils/constants";
-
-export function parseDbPageQueryParams(
-  params: Partial<QueryParams>,
-): Partial<QueryParams> {
-  const limits = params?.limits ? JSON.parse(params.limits as string) : {};
-
-  return { ...params, limits };
-}
-
-export function parseAPIRequestBody<T extends { limits?: APILimits }>(body: T) {
-  const limits = body?.limits ? JSON.parse(body.limits as string) : {};
-
-  return { ...body, limits };
-}
 
 export async function getParallelCount({
   fileName,
   queryParams,
 }: FilePropApiQuery): Promise<Record<string, number>> {
   const { data } = await apiClient.POST("/utils/count-matches/", {
-    body: { file_name: fileName, ...parseDbPageQueryParams(queryParams) },
+    body: { file_name: fileName, ...parseAPIRequestBody(queryParams) },
   });
 
   return data as Record<string, number>;

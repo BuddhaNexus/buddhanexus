@@ -2,6 +2,7 @@ import type { FilePropApiQuery, Params } from "utils/api/types/common";
 import type { SourceLanguage } from "utils/constants";
 
 import { getGraphData } from "./endpoints/graph-view/graph";
+import { getExternalLinksData } from "./endpoints/links";
 import { getCategoryMenuData } from "./endpoints/menus/category";
 import { getSourceTextMenuData } from "./endpoints/menus/files";
 import { getSourceTextCollections } from "./endpoints/menus/sidebar";
@@ -12,13 +13,12 @@ import { getParallelDownloadData } from "./endpoints/tabel-view/downloads";
 import { getTableData } from "./endpoints/tabel-view/table";
 import { getTextViewMiddleParallelsData } from "./endpoints/text-view/middle";
 import { getTextViewParallelsData } from "./endpoints/text-view/text-parallels";
-import { getExternalLinksData } from "./links";
 import {
   getAvailableLanguages,
   getFolios,
   getParallelCount,
   getTextDisplayName,
-} from "./utils";
+} from "./endpoints/utils/utils";
 
 export const DbApi = {
   //* VIEWS

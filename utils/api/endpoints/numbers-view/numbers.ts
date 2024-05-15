@@ -1,9 +1,9 @@
 import apiClient from "@api";
+import { parseAPIRequestBody } from "utils/api/apiQueryUtils";
 import type {
   APINumbersViewRequestBody,
   APINumbersViewResponseData,
 } from "utils/api/types";
-import { parseAPIRequestBody } from "utils/api/utils";
 
 export type NumbersViewData = {
   data: APINumbersViewResponseData;

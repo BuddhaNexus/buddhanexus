@@ -4,7 +4,6 @@ import type { components, operations } from "codegen/api/v2.d.ts";
 
 /** TODO: hit list
  * InfiniteFilePropApiQuery,
- * parseDbPageQueryParams
  * ApiTextSegment
  * FilePropApiQuery
  */

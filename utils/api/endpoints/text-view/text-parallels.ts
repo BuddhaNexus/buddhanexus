@@ -1,9 +1,9 @@
 import apiClient from "@api";
+import { parseAPIRequestBody } from "utils/api/apiQueryUtils";
 import type {
   APITextViewParallelsRequestBody,
   APITextViewParallelsResponseData,
 } from "utils/api/types";
-import { parseAPIRequestBody } from "utils/api/utils";
 
 function parseTextViewParallelsData(data: APITextViewParallelsResponseData) {
   return data.map((segment) => ({

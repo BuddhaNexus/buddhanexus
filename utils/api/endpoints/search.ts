@@ -1,9 +1,9 @@
 import apiClient from "@api";
+import { parseAPIRequestBody } from "utils/api/apiQueryUtils";
 import type {
   APISearchRequestBody,
   APISearchResponseData,
 } from "utils/api/types";
-import { parseAPIRequestBody } from "utils/api/utils";
 import type { SourceLanguage } from "utils/constants";
 
 function parseAPISearchData(data: APISearchResponseData) {
