@@ -1,12 +1,14 @@
 import apiClient from "@api";
-import type { APIMenuData } from "utils/api/types";
-import type { FilePropApiQuery } from "utils/api/types/common";
+import type {
+  APINumbersViewCategoryRequestQuery,
+  APINumbersViewCategoryResponseData,
+} from "utils/api/types";
 
-export async function getNumbersViewCategories({
-  fileName,
-}: FilePropApiQuery): Promise<APIMenuData> {
+export async function getNumbersViewCategories(
+  query: APINumbersViewCategoryRequestQuery,
+): Promise<APINumbersViewCategoryResponseData> {
   const { data } = await apiClient.GET("/numbers-view/categories/", {
-    params: { query: { file_name: fileName } },
+    params: { query },
   });
 
   return data ?? [];

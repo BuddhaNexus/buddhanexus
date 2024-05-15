@@ -34,11 +34,11 @@ export default function NumbersPage() {
     isLoading: areHeadersLoading,
     isError: isHeadersError,
   } = useQuery({
-    queryKey: DbApi.NumbersViewCollections.makeQueryKey({
+    queryKey: DbApi.NumbersViewCategories.makeQueryKey({
       fileName,
       queryParams,
     }),
-    queryFn: () => DbApi.NumbersViewCollections.call({ fileName, queryParams }),
+    queryFn: () => DbApi.NumbersViewCategories.call({ file_name: fileName }),
   });
 
   const {

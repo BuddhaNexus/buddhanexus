@@ -46,11 +46,10 @@ export const DbApi = {
     ],
     call: getNumbersData,
   },
-  NumbersViewCollections: {
-    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
-      "numbersViewCollections",
+  NumbersViewCategories: {
+    makeQueryKey: ({ fileName }: FilePropApiQuery) => [
+      "numbersViewCategories",
       fileName,
-      queryParams,
     ],
     call: getNumbersViewCategories,
   },

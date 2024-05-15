@@ -16,8 +16,8 @@ import {
 } from "@tanstack/react-table";
 import type { PagedAPINumbersData } from "utils/api/endpoints/numbers-view/numbers";
 import type {
-  APIMenuData,
   APINumbersSegment,
+  APINumbersViewCategoryResponseData,
   APINumbersViewResponseData,
 } from "utils/api/types";
 import { SourceLanguage } from "utils/constants";
@@ -29,7 +29,7 @@ import {
 } from "./numbresViewTableContent";
 
 interface NumbersTableProps {
-  categories: APIMenuData;
+  categories: APINumbersViewCategoryResponseData;
   data: APINumbersViewResponseData;
   hasNextPage: boolean;
   fetchNextPage: (

@@ -58,7 +58,7 @@ yarn openapi-ts
 
 - `types/api/index.ts`: codegen derivate types **only**
   - all types begin with `API`
-  - all endpoints should have corresponding `API<endpoint-name>RequestBody` and `API<endpoint-name>ResponseData` types
+  - all endpoints should have corresponding  `API<endpoint-name>RequestQuery` (for `GET` requests), or `API<endpoint-name>RequestBody` (for `POST` requests), and `API<endpoint-name>ResponseData` types
 - `types/api/<endpoint-name>.ts`: co-locates endpoint fetch function and the **top-level** parsed return type specific to the endpoint, **if** required.
   - parsed return type names use the convention `Parsed<endpoint-name>Data`
 - `types/api/common.ts`: general api types & types for parsed return type sub-properties

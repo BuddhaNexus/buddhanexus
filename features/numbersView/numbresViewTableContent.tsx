@@ -15,10 +15,10 @@ import {
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { Link } from "components/common/Link";
 import type {
-  APIMenuData,
-  APINumbersParallel,
   APINumbersSegment,
+  APINumbersViewCategoryResponseData,
   APINumbersViewResponseData,
+  APIParallel,
 } from "utils/api/types";
 import { SourceLanguage } from "utils/constants";
 
@@ -40,7 +40,7 @@ export const createTableRows = (rowData: APINumbersViewResponseData) =>
   });
 
 interface CreateTableColumnProps {
-  categories: APIMenuData;
+  categories: APINumbersViewCategoryResponseData;
   language: SourceLanguage;
   fileName: string;
 }
@@ -89,7 +89,7 @@ export const createTableColumns = ({
       </div>
     ),
     cell: (info: CellContext<APINumbersSegment, unknown>) => {
-      const parallels = info?.getValue<APINumbersParallel[]>() || [];
+      const parallels = info?.getValue<APIParallel[]>() || [];
       return (
         <div
           style={{
