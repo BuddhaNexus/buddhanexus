@@ -33,7 +33,7 @@ function parseAPISearchData(data: APISearchResponseData) {
   return searchResults;
 }
 
-export type ParsedSearchResult = ReturnType<typeof parseAPISearchData>[0];
+export type ParsedSearchResult = ReturnType<typeof parseAPISearchData>[number];
 
 /**
  * Return has a hard limit of 200 matches.

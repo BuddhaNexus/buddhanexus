@@ -43,7 +43,7 @@ const MultiLingualSelector = () => {
 
   const { data: availableLanguages } = useQuery({
     queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
-    queryFn: () => DbApi.AvailableLanguagesData.call(fileName),
+    queryFn: () => DbApi.AvailableLanguagesData.call({ file_name: fileName }),
   });
 
   const [paramValue, setParamValue] = React.useState([

@@ -13,12 +13,10 @@ import { getParallelDownloadData } from "./endpoints/tabel-view/downloads";
 import { getTableData } from "./endpoints/tabel-view/table";
 import { getTextViewMiddleParallelsData } from "./endpoints/text-view/middle";
 import { getTextViewParallelsData } from "./endpoints/text-view/text-parallels";
-import {
-  getAvailableLanguages,
-  getFolios,
-  getParallelCount,
-  getTextDisplayName,
-} from "./endpoints/utils/utils";
+import { getAvailableLanguages } from "./endpoints/utils/available-languages";
+import { getCountMatches } from "./endpoints/utils/count-matches";
+import { getTextDisplayName } from "./endpoints/utils/displayname";
+import { getFolios } from "./endpoints/utils/folios";
 
 export const DbApi = {
   //* VIEWS
@@ -91,7 +89,7 @@ export const DbApi = {
       fileName,
       queryParams,
     ],
-    call: getParallelCount,
+    call: getCountMatches,
   },
   FolioData: {
     makeQueryKey: (fileName: string) => ["foliosData", fileName],

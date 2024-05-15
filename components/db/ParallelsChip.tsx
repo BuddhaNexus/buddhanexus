@@ -26,8 +26,8 @@ export default function ParallelsChip() {
     }),
     queryFn: () =>
       DbApi.ParallelCount.call({
-        fileName,
-        queryParams,
+        file_name: fileName,
+        ...queryParams,
       }),
   });
 

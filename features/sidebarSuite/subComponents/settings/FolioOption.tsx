@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
 import { StringParam, useQueryParam } from "use-query-params";
 import { DbApi } from "utils/api/dbApi";
-import type { DatabaseFolio } from "utils/api/endpoints/utils/utils";
+import type { ParsedFolio } from "utils/api/endpoints/utils/folios";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
@@ -21,7 +21,7 @@ export default function FolioOption() {
   const { fileName, defaultParamConfig, uniqueSettings } = useDbQueryParams();
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
-    queryFn: () => DbApi.FolioData.call(fileName),
+    queryFn: () => DbApi.FolioData.call({ file_name: fileName }),
   });
 
   const [folioParam, setFolioParam] = useQueryParam(
@@ -80,7 +80,7 @@ export default function FolioOption() {
             </MenuItem>
             {data &&
               data.length > 1 &&
-              data.map((folio: DatabaseFolio) => {
+              data.map((folio: ParsedFolio) => {
                 return (
                   <MenuItem key={folio.id} value={folio.id}>
                     {folio.segmentNr}

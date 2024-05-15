@@ -37,7 +37,9 @@ function parseAPITableData(data: APITableViewResponseData) {
     : [];
 }
 
-export type ParsedTableViewParallel = ReturnType<typeof parseAPITableData>[0];
+export type ParsedTableViewParallel = ReturnType<
+  typeof parseAPITableData
+>[number];
 export type ParsedTableViewData = ParsedTableViewParallel[];
 
 export async function getTableData(body: APITableViewRequestBody) {

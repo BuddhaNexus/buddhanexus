@@ -45,7 +45,7 @@ export async function prefetchDbResultsPageData(
 
   await queryClient.prefetchQuery({
     queryKey: DbApi.TextDisplayName.makeQueryKey(fileName),
-    queryFn: () => DbApi.TextDisplayName.call(fileName),
+    queryFn: () => DbApi.TextDisplayName.call({ segmentnr: fileName }),
   });
 
   // TODO: review. disabled for now to lighten build burden.
