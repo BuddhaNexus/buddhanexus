@@ -6,7 +6,7 @@ import { getCategoryMenuData } from "./endpoints/menus/category";
 import { getSourceTextMenuData } from "./endpoints/menus/files";
 import { getSourceTextCollections } from "./endpoints/menus/sidebar";
 import { getNumbersViewCategories } from "./endpoints/numbers-view/categories";
-import { getNumbersData } from "./endpoints/numbers-view/numbers";
+import { getNumbersViewData } from "./endpoints/numbers-view/numbers";
 import { getGlobalSearchData } from "./endpoints/search";
 import { getParallelDownloadData } from "./endpoints/tabel-view/downloads";
 import { getTableData } from "./endpoints/tabel-view/table";
@@ -44,7 +44,7 @@ export const DbApi = {
       fileName,
       queryParams,
     ],
-    call: getNumbersData,
+    call: getNumbersViewData,
   },
   NumbersViewCategories: {
     makeQueryKey: ({ fileName }: FilePropApiQuery) => [

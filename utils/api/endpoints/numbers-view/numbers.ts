@@ -3,17 +3,17 @@ import type {
   APINumbersViewRequestBody,
   APINumbersViewResponseData,
 } from "utils/api/types";
-import type { PagedResponse } from "utils/api/types/common";
 import { parseAPIRequestBody } from "utils/api/utils";
 
-type ExtendedPagedResponse<T> = PagedResponse<T> & {
+export type NumbersViewData = {
+  data: APINumbersViewResponseData;
   hasNextPage: boolean;
+  pageNumber: number;
 };
 
-export type PagedAPINumbersData =
-  ExtendedPagedResponse<APINumbersViewResponseData>;
-
-export async function getNumbersData(body: APINumbersViewRequestBody) {
+export async function getNumbersViewData(
+  body: APINumbersViewRequestBody,
+): Promise<NumbersViewData> {
   const { data } = await apiClient.POST("/numbers-view/numbers/", {
     body: parseAPIRequestBody(body),
   });

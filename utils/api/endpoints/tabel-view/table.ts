@@ -1,38 +1,12 @@
 import apiClient from "@api";
 import type {
-  APIFullText,
   APITableViewRequestBody,
   APITableViewResponseData,
 } from "utils/api/types";
-import type { PagedResponse, ParsedFullNames } from "utils/api/types/common";
 import { parseAPIRequestBody } from "utils/api/utils";
 import type { SourceLanguage } from "utils/constants";
 
-export type ParsedTableViewParallel = {
-  // coOccurrences: number;
-  sourceLanguage: SourceLanguage;
-  targetLanguage: SourceLanguage;
-  fileName: string;
-  score: number;
-
-  // Parallel text
-  parallelFullNames: ParsedFullNames;
-  parallelFullText: APIFullText[];
-  parallelLength: number;
-  parallelSegmentNumberRange: string;
-
-  // Root text
-  rootFullNames: ParsedFullNames;
-  rootFullText: APIFullText[];
-  rootLength: number;
-  rootSegmentNumberRange: string;
-};
-
-export type ParsedTableViewData = ParsedTableViewParallel[];
-
-function parseAPITableData(
-  data: APITableViewResponseData,
-): ParsedTableViewData {
+function parseAPITableData(data: APITableViewResponseData) {
   return data
     ? data.map((p) => ({
         sourceLanguage: p.src_lang as SourceLanguage,
@@ -63,9 +37,10 @@ function parseAPITableData(
     : [];
 }
 
-export async function getTableData(
-  body: APITableViewRequestBody,
-): Promise<PagedResponse<ParsedTableViewData>> {
+export type ParsedTableViewParallel = ReturnType<typeof parseAPITableData>[0];
+export type ParsedTableViewData = ParsedTableViewParallel[];
+
+export async function getTableData(body: APITableViewRequestBody) {
   const { data } = await apiClient.POST("/table-view/table/", {
     body: parseAPIRequestBody(body),
   });

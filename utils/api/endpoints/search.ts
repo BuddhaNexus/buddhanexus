@@ -1,25 +1,13 @@
 import apiClient from "@api";
 import type {
-  APIFullText,
   APISearchRequestBody,
   APISearchResponseData,
 } from "utils/api/types";
 import { parseAPIRequestBody } from "utils/api/utils";
 import type { SourceLanguage } from "utils/constants";
 
-export type ParsedSearchResult = {
-  id: string;
-  category: string;
-  language: SourceLanguage;
-  segmentNumber: string;
-  displayName: string;
-  links: string[];
-  similarity: number;
-  matchTextParts: APIFullText[];
-};
-
-function parseAPISearchData(data: APISearchResponseData): ParsedSearchResult[] {
-  const searchResults: ParsedSearchResult[] = [];
+function parseAPISearchData(data: APISearchResponseData) {
+  const searchResults = [];
 
   for (const result of data.searchResults) {
     const {
@@ -45,13 +33,13 @@ function parseAPISearchData(data: APISearchResponseData): ParsedSearchResult[] {
   return searchResults;
 }
 
+export type ParsedSearchResult = ReturnType<typeof parseAPISearchData>[0];
+
 /**
  * Return has a hard limit of 200 matches.
  * @see https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/122#issuecomment-1925895599
  */
-export async function getGlobalSearchData(
-  body: APISearchRequestBody,
-): Promise<ParsedSearchResult[]> {
+export async function getGlobalSearchData(body: APISearchRequestBody) {
   if (!body.search_string) {
     return [];
   }

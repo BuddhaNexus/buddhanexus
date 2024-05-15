@@ -59,13 +59,17 @@ yarn openapi-ts
 - `types/api/index.ts`: codegen derivate types **only**
   - all types begin with `API`
   - all endpoints should have corresponding  `API<endpoint-name>RequestQuery` (for `GET` requests), or `API<endpoint-name>RequestBody` (for `POST` requests), and `API<endpoint-name>ResponseData` types
-- `types/api/<endpoint-name>.ts`: co-locates endpoint fetch function and the **top-level** parsed return type specific to the endpoint, **if** required.
-  - parsed return type names use the convention `Parsed<endpoint-name>Data`
+- `types/api/<endpoint-name>.ts`: co-locates endpoint fetch function and the **top-level** its return type, **if** required.
+  - [inferred return types are favoured](https://www.youtube.com/watch?v=I6V2FkW1ozQ)
+    - in most cases this should be possible, but if using eg. the `fetchNextPage` prop from `useInfiniteQuery` it might be necessary to give a `Promise<DataType>` return type. 
+  - if needed, parsed return types should
+    - be created from the parser's `ReturnType`
+    - follow the `Parsed<endpoint-name>Data` naming convention (parsed return consituent item types should begin with `Parsed`, eg. `ParsedSearchResult`)
 - `types/api/common.ts`: general api types & types for parsed return type sub-properties
   - all parsed return sub-properties types
     - begin with `Parsed`
     - mirror or contain the corresponding api property type names (**if** relevant) eg. `APIFullNames` and `ParsedFullNames`
-- [inferred return types are favoured](https://www.youtube.com/watch?v=I6V2FkW1ozQ)
+
 
 ## I18n
 

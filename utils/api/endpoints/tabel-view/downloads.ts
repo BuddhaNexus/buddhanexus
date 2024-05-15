@@ -6,17 +6,10 @@ import type {
 } from "utils/api/types";
 import { parseAPIRequestBody } from "utils/api/utils";
 
-export type ParsedTableDownloadData =
-  | {
-      url: string;
-      name: string;
-    }
-  | undefined;
-
 const parseAPITableDownloadData = (
   filePath: APITableViewDownloadResponseData,
   fileName: string,
-): ParsedTableDownloadData => {
+) => {
   return {
     // example filePath: download/dn2_download.xlsx
     url: `${RESULTS_DOWNLOAD_ROOT_URL}/${filePath}`,
@@ -29,9 +22,13 @@ const parseAPITableDownloadData = (
   };
 };
 
+export type ParsedTableDownloadData = ReturnType<
+  typeof parseAPITableDownloadData
+>;
+
 export async function getParallelDownloadData(
   body: APITableViewDownloadRequestBody,
-): Promise<ParsedTableDownloadData> {
+) {
   // this triggers the creation of an excel sheet of the data for the current view (table & number only) for the user to download. The sheet is generated on the backend and lives in a folder on the HDD of the server for a while and gets removed after a few days.
   const { data: filePath } = await apiClient.POST("/table-view/download/", {
     body: parseAPIRequestBody(body),

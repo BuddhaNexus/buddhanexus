@@ -14,7 +14,7 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table";
-import type { PagedAPINumbersData } from "utils/api/endpoints/numbers-view/numbers";
+import type { NumbersViewData } from "utils/api/endpoints/numbers-view/numbers";
 import type {
   APINumbersSegment,
   APINumbersViewCategoryResponseData,
@@ -35,10 +35,7 @@ interface NumbersTableProps {
   fetchNextPage: (
     options?: FetchNextPageOptions | undefined,
   ) => Promise<
-    InfiniteQueryObserverResult<
-      InfiniteData<PagedAPINumbersData, unknown>,
-      Error
-    >
+    InfiniteQueryObserverResult<InfiniteData<NumbersViewData, unknown>, Error>
   >;
   isFetching: boolean;
   isLoading: boolean;
