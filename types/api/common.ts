@@ -1,6 +1,17 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
 import type { QueryParams } from "features/sidebarSuite/config/types";
 
+export type ParsedFullNames = {
+  displayName: string;
+  textName: string;
+  link1?: string;
+  link2?: string;
+};
+
+/**
+ * TODO: review types below for deletion
+ */
+
 export type GraphPageGraphData = [name: string, count: number][];
 
 export interface ApiGraphPageData {

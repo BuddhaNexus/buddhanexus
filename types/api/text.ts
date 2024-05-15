@@ -21,7 +21,8 @@ export type TextViewMiddleParallel = {
   fileName: string;
   parallelLength: number;
   parallelFullText: ApiTextSegment[];
-  parallelSegmentNumbers: [start: string, end: string];
+  // TODO: confirm `parallelSegmentNumbers` is aligned with api
+  parallelSegmentNumbers: string;
   score: number;
   targetLanguage: SourceLanguage;
 };
@@ -33,7 +34,8 @@ export type ApiTextViewMiddleParallel = {
   display_name: string;
   length: number;
   par_fulltext: ApiTextSegment[];
-  par_segnr: [start: string, end: string];
+  // TODO: confirm `par_segnr` is aligned with api
+  par_segnr_range: string;
   score: number;
   tgt_lang: SourceLanguage;
 };

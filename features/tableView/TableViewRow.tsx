@@ -1,7 +1,7 @@
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Divider, Stack } from "@mui/material";
-import type { TablePageParallel } from "types/api/table";
+import type { ParsedTableViewParallel } from "utils/api/table";
 
 import { ParallelSegment } from "./ParallelSegment";
 
@@ -10,8 +10,8 @@ export const TableViewRow = ({
     parallelLength,
     parallelFullNames,
     parallelFullText,
-    parallelSegmentNumbers,
-    rootSegmentNumbers,
+    parallelSegmentNumberRange,
+    rootSegmentNumberRange,
     rootFullNames,
     rootFullText,
     rootLength,
@@ -20,7 +20,7 @@ export const TableViewRow = ({
     score,
   },
 }: {
-  parallel: TablePageParallel;
+  parallel: ParsedTableViewParallel;
 }) => {
   const { parallelStackDirection, parallelArrowTransform } =
     useSettingsDrawer();
@@ -37,7 +37,7 @@ export const TableViewRow = ({
           language={targetLanguage}
           length={rootLength}
           text={rootFullText}
-          textSegmentNumbers={rootSegmentNumbers}
+          textSegmentNumberRange={rootSegmentNumberRange}
         />
 
         <ArrowDownwardIcon sx={{ transform: parallelArrowTransform }} />
@@ -49,7 +49,7 @@ export const TableViewRow = ({
           length={parallelLength}
           text={parallelFullText}
           score={score}
-          textSegmentNumbers={parallelSegmentNumbers}
+          textSegmentNumberRange={parallelSegmentNumberRange}
         />
       </Stack>
       <Divider />

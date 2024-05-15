@@ -48,7 +48,7 @@ export default function TextViewMiddleParallels() {
               length={parallelLength}
               text={parallelFullText}
               score={score}
-              textSegmentNumbers={parallelSegmentNumbers}
+              textSegmentNumberRange={parallelSegmentNumbers}
             />
           ),
         ),

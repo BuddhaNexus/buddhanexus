@@ -1,8 +1,8 @@
 import apiClient from "@api";
 import type {
+  APIFullText,
   APISearchRequestBody,
   APISearchResponseData,
-  FullText,
 } from "types/api";
 import type { SourceLanguage } from "utils/constants";
 
@@ -16,7 +16,7 @@ export type ParsedSearchResult = {
   displayName: string;
   links: string[];
   similarity: number;
-  matchTextParts: FullText[];
+  matchTextParts: APIFullText[];
 };
 
 function parseAPISearchData(data: APISearchResponseData): ParsedSearchResult[] {

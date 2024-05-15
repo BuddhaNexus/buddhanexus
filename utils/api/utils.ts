@@ -1,6 +1,6 @@
 import apiClient from "@api";
 import type { QueryParams } from "features/sidebarSuite/config/types";
-import type { Limits } from "types/api";
+import type { APILimits } from "types/api";
 import type { FilePropApiQuery } from "types/api/common";
 import type { SourceLanguage } from "utils/constants";
 
@@ -12,7 +12,7 @@ export function parseDbPageQueryParams(
   return { ...params, limits };
 }
 
-export function parseAPIRequestBody<T extends { limits?: Limits }>(body: T) {
+export function parseAPIRequestBody<T extends { limits?: APILimits }>(body: T) {
   const limits = body?.limits ? JSON.parse(body.limits as string) : {};
 
   return { ...body, limits };

@@ -16,7 +16,11 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## API type code generation & API Client
+## API BE<>FE intergration
+
+The `utils/api/endpoints` directory mirrors the BE api endpoint structure
+
+### API type code generation & API Client
 
 The project uses `[openapi-typescript](https://openapi-ts.pages.dev/introduction)` and `[openapi-fetch](https://openapi-ts.pages.dev/openapi-fetch/)` to interface between the backend.
 
@@ -27,6 +31,22 @@ yarn openapi-ts
 ```
 
 `openapi-fetch`'s api client (instantiated in `utils/api/client.ts`) can then be used to fetch typed data ([see docs](https://openapi-ts.pages.dev/openapi-fetch/)).
+
+
+### API type files & conventions
+
+**note:** at the time of writing, there is still some inconsistency in BE naming conventions. Some FE parsing needs may be eliminated with BE consistency. Review an update accordingly. 
+
+- `types/api/index.ts`: codegen derivate types **only**
+    - all types begin with `API`
+    - all endpoints should have corresponding `API<endpoint-name>RequestBody` and `API<endpoint-name>ResponseData` types
+- `types/api/<endpoint-name>.ts`: co-locates endpoint fetch function and the **top-level** parsed return type specific to the endpoint, **if** required.
+    - parsed return type names use the convention `Parsed<endpoint-name>Data`
+- `types/api/common.ts`: general api types & types for parsed return type sub-properties
+    - all parsed return sub-properties types
+        - begin with `Parsed`
+        - mirror or contain the corresponding api property type names (**if** relevant) eg. `APIFullNames` and `ParsedFullNames`
+
 
 
 ## I18n

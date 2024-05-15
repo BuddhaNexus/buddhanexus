@@ -1,61 +1,78 @@
 import apiClient from "@api";
-import type { InfiniteFilePropApiQuery, PagedResponse } from "types/api/common";
-import type { ApiTablePageData, TablePageData } from "types/api/table";
+import type {
+  APIFullText,
+  APITableViewRequestBody,
+  APITableViewResponseData,
+} from "types/api";
+import type { PagedResponse, ParsedFullNames } from "types/api/common";
+import type { SourceLanguage } from "utils/constants";
 
-import { parseDbPageQueryParams } from "./utils";
+import { parseAPIRequestBody } from "./utils";
 
-function parseAPITableData(apiData: ApiTablePageData): TablePageData {
-  return apiData.map((p) => ({
-    sourceLanguage: p.src_lang,
-    targetLanguage: p.tgt_lang,
-    fileName: p.file_name,
-    score: p.score,
+export type ParsedTableViewParallel = {
+  // coOccurrences: number;
+  sourceLanguage: SourceLanguage;
+  targetLanguage: SourceLanguage;
+  fileName: string;
+  score: number;
 
-    parallelFullNames: {
-      displayName: p.par_full_names.display_name,
-      textName: p.par_full_names.text_name,
-      link1: p.par_full_names.link1,
-      link2: p.par_full_names.link2,
-    },
-    parallelFullText: p.par_fulltext,
-    parallelLength: p.par_length,
-    parallelPositionFromStart: p.par_pos_beg,
-    parallelSegmentNumbers: p.par_segnr,
+  // Parallel text
+  parallelFullNames: ParsedFullNames;
+  parallelFullText: APIFullText[];
+  parallelLength: number;
+  parallelSegmentNumberRange: string;
 
-    rootLength: p.root_length,
-    rootSegmentNumbers: p.root_segnr,
-    rootFullNames: {
-      displayName: p.root_full_names.display_name,
-      textName: p.root_full_names.text_name,
-      link1: p.root_full_names.link1,
-      link2: p.root_full_names.link2,
-    },
-    rootFullText: p.root_fulltext,
-  }));
+  // Root text
+  rootFullNames: ParsedFullNames;
+  rootFullText: APIFullText[];
+  rootLength: number;
+  rootSegmentNumberRange: string;
+};
+
+export type ParsedTableViewData = ParsedTableViewParallel[];
+
+function parseAPITableData(
+  data: APITableViewResponseData,
+): ParsedTableViewData {
+  return data
+    ? data.map((p) => ({
+        sourceLanguage: p.src_lang as SourceLanguage,
+        targetLanguage: p.tgt_lang as SourceLanguage,
+        fileName: p.file_name,
+        score: p.score,
+
+        parallelFullNames: {
+          displayName: p.par_full_names.display_name ?? "",
+          textName: p.par_full_names.text_name ?? "",
+          link1: p.par_full_names.link1,
+          link2: p.par_full_names.link2,
+        },
+        parallelFullText: p.par_fulltext ?? [],
+        parallelLength: p.par_length,
+        parallelSegmentNumberRange: p.par_segnr_range,
+
+        rootFullNames: {
+          displayName: p.root_full_names.display_name ?? "",
+          textName: p.root_full_names.text_name ?? "",
+          link1: p.root_full_names.link1,
+          link2: p.root_full_names.link2,
+        },
+        rootFullText: p.root_fulltext ?? [],
+        rootLength: p.root_length,
+        rootSegmentNumberRange: p.root_segnr_range,
+      }))
+    : [];
 }
 
-export async function getTableData({
-  fileName,
-  queryParams,
-  pageNumber,
-}: InfiniteFilePropApiQuery): Promise<PagedResponse<TablePageData>> {
+export async function getTableData(
+  body: APITableViewRequestBody,
+): Promise<PagedResponse<ParsedTableViewData>> {
+  // TODO: - This is a temporary fix to enable work elsehwere. Check `getStaticPaths` functionality post BE update
   const { data } = await apiClient.POST("/table-view/table/", {
-    // body: {
-    //   file_name: fileName,
-    //   ...queryParams,
-    //   limits,
-    //   page: pageNumber,
-    // },
-    // TODO: - This is a temporary fix to enable work elsehwere. Check `getStaticPaths` functionality post BE update
-    body: {
-      file_name: fileName,
-      score: 30,
-      par_length: 30,
-      sort_method: "position",
-      ...parseDbPageQueryParams(queryParams),
-      page: pageNumber,
-    },
+    body: parseAPIRequestBody(body),
   });
-  // TODO: - remove type casting once response model is added to api
-  return { data: parseAPITableData(data as ApiTablePageData), pageNumber };
+  return {
+    data: data ? parseAPITableData(data) : [],
+    pageNumber: body.page!,
+  };
 }

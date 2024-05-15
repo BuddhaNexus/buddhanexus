@@ -3,11 +3,11 @@ import { Typography } from "@mui/material";
 import { scriptSelectionAtom } from "features/atoms";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
 import { useAtomValue } from "jotai";
-import type { FullText } from "types/api";
+import type { APIFullText } from "types/api";
 
 interface Props {
   id: string;
-  textParts: FullText[];
+  textParts: APIFullText[];
 }
 
 export const SearchResultItemText = ({ id, textParts }: Props) => {

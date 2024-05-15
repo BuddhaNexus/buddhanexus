@@ -16,8 +16,7 @@ export interface paths {
   "/graph-view/": {
     /**
      * Get Graph For File
-     * @description THE GRAPH VIEW IS NOT WORKING. NEEDS TOTAL REVAMP!
-     * Endpoint for graph view
+     * @description Endpoint for graph view
      */
     post: operations["get_graph_for_file_graph_view__post"];
   };
@@ -44,14 +43,6 @@ export interface paths {
      * :return: List of segments and parallels for the downloaded table view.
      */
     post: operations["get_table_download_table_view_download__post"];
-  };
-  "/table-view/multilang/": {
-    /**
-     * Get Multilang
-     * @description Endpoint for the multilingual table view. Accepts Parallel languages
-     * :return: List of segments and parallels for the table view.
-     */
-    post: operations["get_multilang_table_view_multilang__post"];
   };
   "/text-view/middle/": {
     /**
@@ -383,7 +374,12 @@ export interface components {
       target_collection?: unknown[];
     };
     /** GraphViewOutput */
-    GraphViewOutput: components["schemas"]["api__endpoints__models__graph_view_models__Segment"][];
+    GraphViewOutput: {
+      /** Piegraphdata */
+      piegraphdata: ((string | number)[])[];
+      /** Histogramgraphdata */
+      histogramgraphdata: ((string | number)[])[];
+    };
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
@@ -448,31 +444,6 @@ export interface components {
     };
     /** MenuOutput */
     MenuOutput: components["schemas"]["MenuItem"][];
-    /** MultiLangInput */
-    MultiLangInput: {
-      /** File Name */
-      file_name: string;
-      /**
-       * Score
-       * @default 0
-       */
-      score?: number;
-      /**
-       * Multi Lingual
-       * @default []
-       */
-      multi_lingual?: unknown[];
-      /**
-       * Page
-       * @default 0
-       */
-      page?: number;
-      /**
-       * Folio
-       * @default
-       */
-      folio?: string;
-    };
     /** NumbersViewOutput */
     NumbersViewOutput: components["schemas"]["api__endpoints__models__numbers_view_models__Segment"][];
     /** Parallel */
@@ -597,6 +568,11 @@ export interface components {
        * @default []
        */
       multi_lingual?: unknown[];
+      /**
+       * Page Number
+       * @default 0
+       */
+      page_number?: number;
     };
     /** TextViewLeftOutput */
     TextViewLeftOutput: components["schemas"]["TextItem"][];
@@ -617,13 +593,6 @@ export interface components {
       type: string;
     };
     /** Segment */
-    api__endpoints__models__graph_view_models__Segment: {
-      /** Segmentnr */
-      segmentnr: string;
-      /** Weight */
-      weight: number;
-    };
-    /** Segment */
     api__endpoints__models__numbers_view_models__Segment: {
       /** Segmentnr */
       segmentnr: string;
@@ -632,14 +601,14 @@ export interface components {
     };
     /** Segment */
     api__endpoints__models__table_view_models__Segment: {
-      /** Par Segnr */
-      par_segnr: unknown[];
+      /** Par Segnr Range */
+      par_segnr_range: string;
       par_full_names: components["schemas"]["FullNames"];
       root_full_names: components["schemas"]["FullNames"];
       /** File Name */
       file_name: string;
-      /** Root Segnr */
-      root_segnr: unknown[];
+      /** Root Segnr Range */
+      root_segnr_range: string;
       /** Par Length */
       par_length: number;
       /** Root Length */
@@ -663,8 +632,8 @@ export interface components {
     };
     /** Segment */
     api__endpoints__models__text_view_models__Segment: {
-      /** Par Segnr */
-      par_segnr: unknown[];
+      /** Par Segnr Range */
+      par_segnr_range: string;
       /** Display Name */
       display_name?: string;
       /** Tgt Lang */
@@ -736,8 +705,7 @@ export interface operations {
   };
   /**
    * Get Graph For File
-   * @description THE GRAPH VIEW IS NOT WORKING. NEEDS TOTAL REVAMP!
-   * Endpoint for graph view
+   * @description Endpoint for graph view
    */
   get_graph_for_file_graph_view__post: {
     requestBody: {
@@ -830,32 +798,6 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["TableDownloadOutput"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get Multilang
-   * @description Endpoint for the multilingual table view. Accepts Parallel languages
-   * :return: List of segments and parallels for the table view.
-   */
-  get_multilang_table_view_multilang__post: {
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["MultiLangInput"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TableViewOutput"];
         };
       };
       /** @description Validation Error */

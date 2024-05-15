@@ -3,10 +3,10 @@ import { Typography } from "@mui/material";
 import { scriptSelectionAtom } from "features/atoms";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
 import { useAtomValue } from "jotai";
-import type { ApiTextSegment } from "types/api/common";
+import type { APIFullText } from "types/api";
 
 interface Props {
-  text: ApiTextSegment[];
+  text: APIFullText[];
 }
 
 export const ParallelSegmentText = ({ text }: Props) => {
@@ -28,7 +28,7 @@ export const ParallelSegmentText = ({ text }: Props) => {
             color={highlightColor === 1 ? "text.primary" : "text.secondary"}
           >
             {enscriptText({
-              text: segmentText,
+              text: segmentText ?? "",
               script,
               language: sourceLanguage,
             })}

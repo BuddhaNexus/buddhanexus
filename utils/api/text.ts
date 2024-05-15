@@ -25,7 +25,7 @@ function parseAPITextViewMiddleParallelsData(
     fileName: p.file_name,
     score: p.score,
     parallelFullText: p.par_fulltext,
-    parallelSegmentNumbers: p.par_segnr,
+    parallelSegmentNumbers: p.par_segnr_range,
     parallelLength: p.length,
   }));
 }

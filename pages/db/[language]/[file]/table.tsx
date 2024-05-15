@@ -10,8 +10,6 @@ import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "features/tableView/TableView";
 import merge from "lodash/merge";
-import type { PagedResponse } from "types/api/common";
-import type { TablePageData } from "types/api/table";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
@@ -26,7 +24,7 @@ export default function TablePage() {
   useDbView();
 
   const { data, fetchNextPage, fetchPreviousPage, isLoading } =
-    useInfiniteQuery<PagedResponse<TablePageData>>({
+    useInfiniteQuery({
       initialPageParam: 0,
       queryKey: DbApi.TableView.makeQueryKey({
         fileName,
@@ -34,9 +32,9 @@ export default function TablePage() {
       }),
       queryFn: ({ pageParam }) =>
         DbApi.TableView.call({
-          fileName,
-          queryParams,
-          pageNumber: pageParam as number,
+          file_name: fileName,
+          ...queryParams,
+          page: pageParam,
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>
