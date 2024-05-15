@@ -129,6 +129,7 @@ FOR file IN files
                         RETURN p._key
                         )
                 FILTER LENGTH(parallel_ids) > 0
+                LIMIT 100 * @page,100
                 LET parallels = (
                     FOR parallel_id IN parallel_ids
                         FOR p IN parallels
@@ -151,7 +152,6 @@ FOR file IN files
                             }
                 )
                 FILTER LENGTH(parallels) > 0
-                LIMIT 100 * @page,100
                 RETURN {
                     segmentnr: segment.segnr,
                     parallels: parallels

@@ -4,11 +4,11 @@ from .general_models import GeneralInput, FullNames, FullText
 
 
 class Segment(BaseModel):
-    par_segnr: str
+    par_segnr_range: str
     par_full_names: FullNames
     root_full_names: FullNames
     file_name: str
-    root_segnr: str
+    root_segnr_range: str
     par_length: int
     root_length: int
     score: int
