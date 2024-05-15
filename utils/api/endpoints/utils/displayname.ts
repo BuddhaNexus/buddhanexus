@@ -4,7 +4,7 @@ import type {
   APIDisplayNameResponseData,
 } from "utils/api/types";
 
-const parseATextDisplayNameData = (data: APIDisplayNameResponseData) => {
+const parseTextDisplayNameData = (data: APIDisplayNameResponseData) => {
   const [textName] = data.displayname;
   return textName as string;
 };
@@ -12,7 +12,7 @@ const parseATextDisplayNameData = (data: APIDisplayNameResponseData) => {
 export async function getTextDisplayName(
   query: APIDisplayNameRequestQuery,
 ): Promise<string> {
-  if (!query) {
+  if (!query.segmentnr) {
     return "";
   }
 
@@ -20,5 +20,5 @@ export async function getTextDisplayName(
     params: { query },
   });
 
-  return data ? parseATextDisplayNameData(data) : "";
+  return data ? parseTextDisplayNameData(data) : "";
 }

@@ -19,21 +19,27 @@ export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers"
 
 // TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
-  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
+  const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
+    useDbQueryParams();
   const { isFallback } = useSourceFile();
   useDbView();
+
+  const requestBody = React.useMemo(
+    () => ({
+      file_name: fileName,
+      ...defaultQueryParams,
+      ...queryParams,
+    }),
+    [fileName, defaultQueryParams, queryParams],
+  );
 
   const { data, fetchNextPage, fetchPreviousPage, isLoading } =
     useInfiniteQuery({
       initialPageParam: 0,
-      queryKey: DbApi.TableView.makeQueryKey({
-        fileName,
-        queryParams,
-      }),
+      queryKey: DbApi.TableView.makeQueryKey(requestBody),
       queryFn: ({ pageParam }) =>
         DbApi.TableView.call({
-          file_name: fileName,
-          ...queryParams,
+          ...requestBody,
           page: pageParam,
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,

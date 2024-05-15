@@ -59,7 +59,7 @@ export interface DatabaseText {
   label: string;
 }
 
-export interface CategoryMenuItem {
+export interface ParsedCategoryMenuItem {
   id: string;
   name: string;
   label: string;

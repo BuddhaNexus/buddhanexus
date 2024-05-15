@@ -1,35 +1,41 @@
 import apiClient from "@api";
-import type { CategoryMenuItem } from "utils/api/types/menus";
-import type { SourceLanguage } from "utils/constants";
+import type {
+  APIMenuFilterCategoriesRequestQuery,
+  APIMenuFilterCategoriesResponseData,
+} from "utils/api/types";
+
+import { ParsedCategoryMenuItem } from "./types";
+
+const parseCategoryMenuData = (data: APIMenuFilterCategoriesResponseData) => {
+  return data.categoryitems.reduce(
+    (map: Map<string, ParsedCategoryMenuItem>, currentCategory) => {
+      const { category, categoryname } = currentCategory;
+
+      const value: ParsedCategoryMenuItem = {
+        id: category!,
+        name: categoryname!,
+        label: `${category} ${categoryname}`,
+      };
+
+      map.set(category!, value);
+      return map;
+    },
+    new Map(),
+  );
+};
+
+export type ParsedCategoryMenuData = ReturnType<typeof parseCategoryMenuData>;
 
 export async function getCategoryMenuData(
-  language: SourceLanguage,
-): Promise<Map<string, CategoryMenuItem>> {
-  if (!language) {
+  query: APIMenuFilterCategoriesRequestQuery,
+) {
+  if (!query.language) {
     return new Map();
   }
 
   const { data } = await apiClient.GET("/menus/category/", {
-    params: { query: { language } },
+    params: { query },
   });
 
-  const categoryData = data as { categoryitems: any[] };
-
-  return categoryData.categoryitems
-    .flat()
-    .reduce(
-      (
-        map: Map<string, CategoryMenuItem>,
-        cat: { category: string; categoryname: string },
-      ) => {
-        const { category, categoryname } = cat;
-        map.set(category, {
-          id: category,
-          name: categoryname,
-          label: `${category} ${categoryname}`,
-        });
-        return map;
-      },
-      new Map(),
-    );
+  return data ? parseCategoryMenuData(data) : new Map();
 }

@@ -1,7 +1,10 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
-import type { CategoryMenuItem, DatabaseText } from "utils/api/types/menus";
+import type {
+  DatabaseText,
+  ParsedCategoryMenuItem,
+} from "utils/api/endpoints/menus/types";
 
 import { useDbQueryParams } from "./useDbQueryParams";
 
@@ -15,7 +18,7 @@ export const useDbMenus = () => {
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useQuery({
     queryKey: DbApi.CategoryMenu.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.CategoryMenu.call(sourceLanguage),
+    queryFn: () => DbApi.CategoryMenu.call({ language: sourceLanguage }),
   });
 
   const texts = React.useMemo(() => {
@@ -31,7 +34,8 @@ export const useDbMenus = () => {
       ) ?? new Map<string, DatabaseText>()
     );
   }, [textsData]);
-  const categories = categoriesData ?? new Map<string, CategoryMenuItem>();
+  const categories =
+    categoriesData ?? new Map<string, ParsedCategoryMenuItem>();
 
   return {
     texts,

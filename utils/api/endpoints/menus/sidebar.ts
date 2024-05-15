@@ -3,7 +3,7 @@ import { transformDataForTreeView } from "@components/treeView/utils";
 import type {
   ApiSourceTextBrowserData,
   SourceTextBrowserData,
-} from "utils/api/types/menus";
+} from "utils/api/endpoints/menus/types";
 import type { SourceLanguage } from "utils/constants";
 
 function parseSourceTextCollectionData(

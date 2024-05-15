@@ -13,7 +13,7 @@ import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/source
 import merge from "lodash/merge";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
-import type { ApiGraphPageData } from "utils/api/types/common";
+import type { ApiGraphPageData } from "utils/api/endpoints/graph-view/graph";
 import { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
@@ -44,7 +44,10 @@ export default function GraphPage() {
   const { t } = useTranslation();
 
   const { data, isLoading, isError } = useQuery<ApiGraphPageData>({
-    queryKey: DbApi.GraphView.makeQueryKey({ fileName, queryParams }),
+    queryKey: DbApi.GraphView.makeQueryKey({
+      file_name: fileName,
+      ...queryParams,
+    }),
     queryFn: () =>
       DbApi.GraphView.call({
         fileName,

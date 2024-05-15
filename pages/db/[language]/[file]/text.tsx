@@ -30,7 +30,8 @@ export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers"
  * @constructor
  */
 export default function TextPage() {
-  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
+  const { sourceLanguage, fileName, queryParams, defaultQueryParams } =
+    useDbQueryParams();
   const { isFallback } = useSourceFile();
 
   useDbView();
@@ -47,12 +48,13 @@ export default function TextPage() {
     useInfiniteQuery({
       initialPageParam: 0,
       queryKey: DbApi.TextView.makeQueryKey({
-        fileName,
-        queryParams: paramsThatShouldRefreshText,
+        file_name: fileName,
+        ...paramsThatShouldRefreshText,
       }),
       queryFn: ({ pageParam }) =>
         DbApi.TextView.call({
           file_name: fileName,
+          ...defaultQueryParams,
           ...queryParams,
           page_number: pageParam,
         }),

@@ -16,7 +16,7 @@ const parseAPIAvailableLanguagesData = (
 export async function getAvailableLanguages(
   query: APIAvailableLanguagesRequestQuery,
 ) {
-  if (!query) {
+  if (!query.file_name) {
     return [];
   }
 

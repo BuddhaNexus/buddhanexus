@@ -5,10 +5,18 @@
 //   APIGraphViewResponseData,
 // } from "utils/api/types";
 import createClient from "openapi-fetch";
-import type {
-  ApiGraphPageData,
-  FilePropApiQuery,
-} from "utils/api/types/common";
+
+export interface FilePropApiQuery {
+  fileName: string;
+  queryParams: any;
+}
+
+export type GraphPageGraphData = [name: string, count: number][];
+
+export interface ApiGraphPageData {
+  histogramgraphdata: GraphPageGraphData;
+  piegraphdata: GraphPageGraphData;
+}
 
 // TODO: move to new BE once the endpoint is ready there
 const OLD_BE_GRAPH_VIEW_ENDPOINT =

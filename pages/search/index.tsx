@@ -43,8 +43,8 @@ export default function SearchPage() {
 
   const { data: rawData, isLoading } = useQuery({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
-      searchString: searchParam,
-      queryParams,
+      search_string: searchParam,
+      ...queryParams,
     }),
     queryFn: () =>
       DbApi.GlobalSearchData.call({

@@ -1,5 +1,5 @@
 import apiClient from "@api";
-import type { DatabaseText } from "utils/api/types/menus";
+import type { DatabaseText } from "utils/api/endpoints/menus/types";
 import type { SourceLanguage } from "utils/constants";
 
 export async function getSourceTextMenuData(

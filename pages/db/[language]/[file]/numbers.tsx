@@ -35,11 +35,19 @@ export default function NumbersPage() {
     isError: isHeadersError,
   } = useQuery({
     queryKey: DbApi.NumbersViewCategories.makeQueryKey({
-      fileName,
-      queryParams,
+      file_name: fileName,
     }),
     queryFn: () => DbApi.NumbersViewCategories.call({ file_name: fileName }),
   });
+
+  const requestBody = React.useMemo(
+    () => ({
+      file_name: fileName,
+      ...defaultQueryParams,
+      ...queryParams,
+    }),
+    [fileName, defaultQueryParams, queryParams],
+  );
 
   const {
     data,
@@ -49,12 +57,10 @@ export default function NumbersPage() {
     isError: isTableContentError,
   } = useInfiniteQuery({
     initialPageParam: 0,
-    queryKey: DbApi.NumbersView.makeQueryKey({ fileName, queryParams }),
+    queryKey: DbApi.NumbersView.makeQueryKey(requestBody),
     queryFn: ({ pageParam = 0 }) =>
       DbApi.NumbersView.call({
-        file_name: fileName,
-        ...defaultQueryParams,
-        ...queryParams,
+        ...requestBody,
         page: Number(pageParam),
       }),
     getNextPageParam: (lastPage) => lastPage.pageNumber + 1,

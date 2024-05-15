@@ -1,5 +1,8 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
-import type { CategoryMenuItem, DatabaseText } from "utils/api/types/menus";
+import type {
+  DatabaseText,
+  ParsedCategoryMenuItem,
+} from "utils/api/endpoints/menus/types";
 import type { SourceLanguage } from "utils/constants";
 
 import {
@@ -48,8 +51,8 @@ type QueryStringParam =
 export type MultiLingalParam = SourceLanguage[] | undefined;
 
 export type LimitsFilterValue = {
-  category_exclude?: CategoryMenuItem[];
-  category_include?: CategoryMenuItem[];
+  category_exclude?: ParsedCategoryMenuItem[];
+  category_include?: ParsedCategoryMenuItem[];
   file_exclude?: DatabaseText[];
   file_include?: DatabaseText[];
 };

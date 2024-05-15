@@ -2,12 +2,6 @@ import type { components, operations } from "codegen/api/v2.d.ts";
 
 // TODO: most endpoint query functions have a `if undefined` check, this is to match a temp fix for BE data issues. The check should be cleared onee Pali data is updated on the BE.
 
-/** TODO: hit list
- * InfiniteFilePropApiQuery,
- * ApiTextSegment
- * FilePropApiQuery
- */
-
 /**
  * *********** !!! ***********
  * CODEGEN DERIVATE TYPES ONLY

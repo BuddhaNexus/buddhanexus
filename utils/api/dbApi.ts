@@ -1,4 +1,8 @@
-import type { FilePropApiQuery, Params } from "utils/api/types/common";
+import type {
+  APIGeneralInput,
+  APINumbersViewCategoryRequestQuery,
+  APISearchRequestBody,
+} from "utils/api/types";
 import type { SourceLanguage } from "utils/constants";
 
 import { getGraphData } from "./endpoints/graph-view/graph";
@@ -21,42 +25,26 @@ import { getFolios } from "./endpoints/utils/folios";
 export const DbApi = {
   //* VIEWS
   GraphView: {
-    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
-      "graphView",
-      fileName,
-      queryParams,
-    ],
+    makeQueryKey: (params: APIGeneralInput) => ["graphView", params],
     call: getGraphData,
   },
   TableView: {
-    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
-      "tableView",
-      fileName,
-      queryParams,
-    ],
+    makeQueryKey: (params: APIGeneralInput) => ["tableView", params],
     call: getTableData,
   },
   NumbersView: {
-    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
-      "numbersView",
-      fileName,
-      queryParams,
-    ],
+    makeQueryKey: (params: APIGeneralInput) => ["numbersView", params],
     call: getNumbersViewData,
   },
   NumbersViewCategories: {
-    makeQueryKey: ({ fileName }: FilePropApiQuery) => [
+    makeQueryKey: (query: APINumbersViewCategoryRequestQuery) => [
       "numbersViewCategories",
-      fileName,
+      query,
     ],
     call: getNumbersViewCategories,
   },
   TextView: {
-    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
-      "textView",
-      fileName,
-      queryParams,
-    ],
+    makeQueryKey: (params: APIGeneralInput) => ["textView", params],
     call: getTextViewParallelsData,
   },
   TextViewMiddle: {
@@ -84,11 +72,7 @@ export const DbApi = {
   },
   //* UTILS / SETTINGS
   ParallelCount: {
-    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
-      "parallelCountData",
-      fileName,
-      queryParams,
-    ],
+    makeQueryKey: (params: APIGeneralInput) => ["parallelCountData", params],
     call: getCountMatches,
   },
   FolioData: {
@@ -104,21 +88,11 @@ export const DbApi = {
     call: getExternalLinksData,
   },
   DownloadResults: {
-    makeQueryKey: ({ fileName, queryParams }: FilePropApiQuery) => [
-      "downloadData",
-      fileName,
-      queryParams,
-    ],
+    makeQueryKey: (params: APIGeneralInput) => ["downloadData", params],
     call: getParallelDownloadData,
   },
   GlobalSearchData: {
-    makeQueryKey: ({
-      searchString,
-      queryParams,
-    }: {
-      searchString: string;
-      queryParams: Params;
-    }) => ["globalSearchData", searchString, queryParams],
+    makeQueryKey: (query: APISearchRequestBody) => ["globalSearchData", query],
     call: getGlobalSearchData,
   },
   TextDisplayName: {

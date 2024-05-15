@@ -16,7 +16,10 @@ import {
   type LimitsParam,
 } from "features/sidebarSuite/config/types";
 import { JsonParam, useQueryParam } from "use-query-params";
-import type { CategoryMenuItem, DatabaseText } from "utils/api/types/menus";
+import type {
+  DatabaseText,
+  ParsedCategoryMenuItem,
+} from "utils/api/endpoints/menus/types";
 
 import ListboxComponent from "./ListboxComponent";
 import { StyledPopper } from "./muiStyledComponents";
@@ -24,7 +27,7 @@ import { StyledPopper } from "./muiStyledComponents";
 function getValuesFromParams(
   params: LimitsParam,
   texts: Map<string, DatabaseText>,
-  categories: Map<string, CategoryMenuItem>,
+  categories: Map<string, ParsedCategoryMenuItem>,
 ) {
   return Object.entries(params).reduce((values, [filter, selections]) => {
     const list = filter.startsWith("category") ? categories : texts;
@@ -37,7 +40,7 @@ function getValuesFromParams(
 
 function getParamsFromValues(
   updatedLimit: Limit,
-  updatedvalue: (CategoryMenuItem | DatabaseText)[],
+  updatedvalue: (ParsedCategoryMenuItem | DatabaseText)[],
   params: LimitsParam,
 ) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -115,7 +118,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
 
   const handleInputChange = (
     limit: Limit,
-    value: (CategoryMenuItem | DatabaseText)[],
+    value: (ParsedCategoryMenuItem | DatabaseText)[],
   ) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { [limit]: prevValue, ...otherLimitValues } = limitsValue;
