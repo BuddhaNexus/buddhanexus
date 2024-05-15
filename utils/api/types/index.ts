@@ -35,11 +35,19 @@ export type APIFullMatchText = APISchemas["FullMatchText"];
 export type APISearchRequestBody = APISchemas["SearchInput"];
 export type APISearchResponseData = APISchemas["SearchOutput"];
 
-/** GRAPH VIEW - not implemented */
+/** GRAPH VIEW  */
+
+export type APIGraphViewRequestBody = APIGeneralInput;
+export type APIGraphViewResponseData = components["schemas"]["GraphViewOutput"];
 
 /** VISUAL VIEW - not implemented */
 
 /** TABEL VIEW */
+
+export type APITableViewDownloadRequestBody = APISchemas["TableDownloadInput"];
+export type APITableViewDownloadResponseData =
+  APISchemas["TableDownloadOutput"];
+
 export type APITableViewRequestBody = APIGeneralInput;
 export type APITableViewResponseData = components["schemas"]["TableViewOutput"];
 

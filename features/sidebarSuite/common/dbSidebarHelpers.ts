@@ -76,9 +76,13 @@ export const onDownload = async ({
 }: UtilityClickHandlerProps) => {
   const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
+  const { fileName, queryParams } = download;
+
   const file = await getParallelDownloadData({
-    fileName: download.fileName,
-    queryParams: download.queryParams,
+    file_name: fileName,
+    ...queryParams,
+    // TODO: determine what is needed for this prop
+    download_data: "",
   });
 
   if (file) {

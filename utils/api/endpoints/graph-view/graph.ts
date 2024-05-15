@@ -1,5 +1,9 @@
 // graph view
 // import apiClient from "@api";
+// import type {
+//   APIGraphViewRequestBody,
+//   APIGraphViewResponseData,
+// } from "utils/api/types";
 import createClient from "openapi-fetch";
 import type {
   ApiGraphPageData,
