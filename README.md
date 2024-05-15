@@ -2,7 +2,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server (make sure to use [yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable) and not `npm`!):
+First, run the development server (make sure to use [yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable) and not `npm`\*!):
+
+**\*note:** the project doesn't use yarn classic (it's been deprecated), so install yarn if needed: https://yarnpkg.com/getting-started/install
+
+```sh
+corepack enable # if needed
+yarn install
+```
+
+### Dev mode:
 
 ```bash
 yarn dev
@@ -15,6 +24,17 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+### Building locally:
+
+The project generates many, many dynamic pages which in most cases will preclude the possibility of running a normal build locally.
+
+It is possible to use the [compile mode](https://github.com/vercel/next.js/blob/c0ae6f6ffdad865de660e897ecbeafda2bca78da/docs/02-app/02-api-reference/08-next-cli.mdx#L189) locally:
+
+```sh
+yarn build:compile
+yarn start
+```
 
 ## API BE<>FE intergration
 
@@ -32,22 +52,19 @@ yarn openapi-ts
 
 `openapi-fetch`'s api client (instantiated in `utils/api/client.ts`) can then be used to fetch typed data ([see docs](https://openapi-ts.pages.dev/openapi-fetch/)).
 
-
 ### API type files & conventions
 
-**note:** at the time of writing, there is still some inconsistency in BE naming conventions. Some FE parsing needs may be eliminated with BE consistency. Review an update accordingly. 
+**note:** at the time of writing, there is still some inconsistency in BE naming conventions. Some FE parsing needs may be eliminated with BE consistency. Review an update accordingly.
 
 - `types/api/index.ts`: codegen derivate types **only**
-    - all types begin with `API`
-    - all endpoints should have corresponding `API<endpoint-name>RequestBody` and `API<endpoint-name>ResponseData` types
+  - all types begin with `API`
+  - all endpoints should have corresponding `API<endpoint-name>RequestBody` and `API<endpoint-name>ResponseData` types
 - `types/api/<endpoint-name>.ts`: co-locates endpoint fetch function and the **top-level** parsed return type specific to the endpoint, **if** required.
-    - parsed return type names use the convention `Parsed<endpoint-name>Data`
+  - parsed return type names use the convention `Parsed<endpoint-name>Data`
 - `types/api/common.ts`: general api types & types for parsed return type sub-properties
-    - all parsed return sub-properties types
-        - begin with `Parsed`
-        - mirror or contain the corresponding api property type names (**if** relevant) eg. `APIFullNames` and `ParsedFullNames`
-
-
+  - all parsed return sub-properties types
+    - begin with `Parsed`
+    - mirror or contain the corresponding api property type names (**if** relevant) eg. `APIFullNames` and `ParsedFullNames`
 
 ## I18n
 
@@ -156,6 +173,3 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-```
-
-```
