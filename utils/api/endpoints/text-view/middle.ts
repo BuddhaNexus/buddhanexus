@@ -1,20 +1,8 @@
 import apiClient from "@api";
-import type { InfiniteFilePropApiQuery, PagedResponse } from "types/api/common";
 import type {
-  ApiTextPageData,
   ApiTextPageMiddleParallelsData,
-  TextPageData,
   TextViewMiddleParallelsData,
-} from "types/api/text";
-
-import { parseDbPageQueryParams } from "./utils";
-
-function parseAPITextData(responseJSON: ApiTextPageData): TextPageData {
-  return responseJSON.map((segment) => ({
-    segmentNumber: segment.segnr,
-    segmentText: segment.segtext,
-  }));
-}
+} from "utils/api/types/text";
 
 function parseAPITextViewMiddleParallelsData(
   apiData: ApiTextPageMiddleParallelsData,
@@ -28,24 +16,6 @@ function parseAPITextViewMiddleParallelsData(
     parallelSegmentNumbers: p.par_segnr_range,
     parallelLength: p.length,
   }));
-}
-
-export async function getTextData({
-  fileName,
-  queryParams,
-  pageNumber,
-}: InfiniteFilePropApiQuery): Promise<PagedResponse<TextPageData>> {
-  // TODO: use the multi_lingual value from query params
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data } = await apiClient.POST("/text-view/text-parallels/", {
-    body: {
-      file_name: fileName,
-      ...parseDbPageQueryParams(queryParams),
-      multi_lingual: ["skt", "pli", "chn", "tib"],
-    },
-  });
-
-  return { data: parseAPITextData(data as ApiTextPageData), pageNumber };
 }
 
 export async function getTextViewMiddleParallelsData(

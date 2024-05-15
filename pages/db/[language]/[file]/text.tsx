@@ -11,10 +11,10 @@ import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TextView from "features/textView/TextView";
 import merge from "lodash/merge";
-import type { PagedResponse } from "types/api/common";
-import type { TextPageData } from "types/api/text";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
+import type { PagedResponse } from "utils/api/types/common";
+import type { TextPageData } from "utils/api/types/text";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 

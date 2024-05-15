@@ -3,10 +3,9 @@ import type {
   APIFullText,
   APISearchRequestBody,
   APISearchResponseData,
-} from "types/api";
+} from "utils/api/types";
+import { parseAPIRequestBody } from "utils/api/utils";
 import type { SourceLanguage } from "utils/constants";
-
-import { parseAPIRequestBody } from "./utils";
 
 export type ParsedSearchResult = {
   id: string;

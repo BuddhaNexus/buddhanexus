@@ -16,10 +16,10 @@ import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { Link } from "components/common/Link";
 import type {
   APIMenuData,
+  APINumbersParallel,
+  APINumbersSegment,
   APINumbersViewResponseData,
-  NumbersParallel,
-  NumbersSegment,
-} from "types/api";
+} from "utils/api/types";
 import { SourceLanguage } from "utils/constants";
 
 export const createTableRows = (rowData: APINumbersViewResponseData) =>
@@ -48,7 +48,7 @@ export const createTableColumns = ({
   categories,
   language,
   fileName,
-}: CreateTableColumnProps): ColumnDef<NumbersSegment>[] => [
+}: CreateTableColumnProps): ColumnDef<APINumbersSegment>[] => [
   {
     accessorKey: "segment",
     header: () => (
@@ -88,8 +88,8 @@ export const createTableColumns = ({
         <Typography textTransform="uppercase">{header.id}</Typography>
       </div>
     ),
-    cell: (info: CellContext<NumbersSegment, unknown>) => {
-      const parallels = info?.getValue<NumbersParallel[]>() || [];
+    cell: (info: CellContext<APINumbersSegment, unknown>) => {
+      const parallels = info?.getValue<APINumbersParallel[]>() || [];
       return (
         <div
           style={{

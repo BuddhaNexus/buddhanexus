@@ -1,7 +1,7 @@
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { Divider, Stack } from "@mui/material";
-import type { ParsedTableViewParallel } from "utils/api/table";
+import type { ParsedTableViewParallel } from "utils/api/endpoints/tabel-view/table";
 
 import { ParallelSegment } from "./ParallelSegment";
 

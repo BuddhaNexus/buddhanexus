@@ -45,8 +45,8 @@ export type APITableViewResponseData = components["schemas"]["TableViewOutput"];
 
 /** NUMBERS VIEW */
 
-export type NumbersParallel = APISchemas["Parallel"];
-export type NumbersSegment =
+export type APINumbersParallel = APISchemas["Parallel"];
+export type APINumbersSegment =
   APISchemas["api__endpoints__models__numbers_view_models__Segment"];
 
 export type APINumbersViewRequestBody = APIGeneralInput;

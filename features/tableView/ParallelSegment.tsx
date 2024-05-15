@@ -14,7 +14,7 @@ import {
   Link,
   Tooltip,
 } from "@mui/material";
-import type { APIFullText } from "types/api";
+import type { APIFullText } from "utils/api/types";
 import type { SourceLanguage } from "utils/constants";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";

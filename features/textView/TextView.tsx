@@ -8,8 +8,8 @@ import { Allotment } from "allotment";
 import chroma from "chroma-js";
 import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { useAtomValue } from "jotai/index";
-import type { TextPageData } from "types/api/text";
 import { useQueryParam } from "use-query-params";
+import type { TextPageData } from "utils/api/types/text";
 
 import { TextSegment } from "./TextSegment";
 import TextViewMiddleParallels from "./TextViewMiddleParallels";

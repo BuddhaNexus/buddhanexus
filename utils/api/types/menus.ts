@@ -7,7 +7,7 @@ export interface ApiSourceTextBrowserData {
       categoryname: string;
       categorydisplayname: string;
       files: {
-        available_lang: SourceLanguage[] | null;
+        available_lang?: string[];
         displayname: string;
         file_name: string;
         textname: string;

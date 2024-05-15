@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import { scriptSelectionAtom } from "features/atoms";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
 import { useAtomValue } from "jotai";
-import type { APIFullText } from "types/api";
+import type { APIFullText } from "utils/api/types";
 
 interface Props {
   id: string;

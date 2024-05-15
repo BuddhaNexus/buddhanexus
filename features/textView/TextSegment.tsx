@@ -11,8 +11,8 @@ import { scriptSelectionAtom } from "features/atoms";
 import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
 import { useAtomValue, useSetAtom } from "jotai";
-import type { TextPageDataSegment } from "types/api/text";
 import { NumberParam, StringParam, useQueryParam } from "use-query-params";
+import type { TextPageDataSegment } from "utils/api/types/text";
 
 import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
 import styles from "./textSegment.module.scss";

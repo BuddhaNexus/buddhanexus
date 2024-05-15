@@ -26,8 +26,8 @@ import {
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import type { DatabaseText } from "types/api/menus";
 import { DbApi } from "utils/api/dbApi";
+import type { DatabaseText } from "utils/api/types/menus";
 
 const OuterElementContext = React.createContext({});
 

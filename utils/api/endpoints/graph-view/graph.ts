@@ -1,7 +1,10 @@
 // graph view
 // import apiClient from "@api";
 import createClient from "openapi-fetch";
-import type { ApiGraphPageData, FilePropApiQuery } from "types/api/common";
+import type {
+  ApiGraphPageData,
+  FilePropApiQuery,
+} from "utils/api/types/common";
 
 // TODO: move to new BE once the endpoint is ready there
 const OLD_BE_GRAPH_VIEW_ENDPOINT =

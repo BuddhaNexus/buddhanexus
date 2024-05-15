@@ -1,5 +1,5 @@
 import type { DbViewEnum } from "@components/hooks/useDbView";
-import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
+import type { CategoryMenuItem, DatabaseText } from "utils/api/types/menus";
 import type { SourceLanguage } from "utils/constants";
 
 import {

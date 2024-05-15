@@ -15,8 +15,8 @@ import {
   type LimitsFilterValue,
   type LimitsParam,
 } from "features/sidebarSuite/config/types";
-import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
 import { JsonParam, useQueryParam } from "use-query-params";
+import type { CategoryMenuItem, DatabaseText } from "utils/api/types/menus";
 
 import ListboxComponent from "./ListboxComponent";
 import { StyledPopper } from "./muiStyledComponents";

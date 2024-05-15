@@ -11,9 +11,9 @@ import { PageContainer } from "@components/layout/PageContainer";
 import { dehydrate, useQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
-import type { ApiGraphPageData } from "types/api/common";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
+import type { ApiGraphPageData } from "utils/api/types/common";
 import { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 

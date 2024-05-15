@@ -14,12 +14,12 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table";
+import type { PagedAPINumbersData } from "utils/api/endpoints/numbers-view/numbers";
 import type {
   APIMenuData,
+  APINumbersSegment,
   APINumbersViewResponseData,
-  NumbersSegment,
-} from "types/api";
-import type { PagedAPINumbersData } from "utils/api/numbers";
+} from "utils/api/types";
 import { SourceLanguage } from "utils/constants";
 
 import {
@@ -66,7 +66,7 @@ export default function NumbersTable({
 
   const rowData = React.useMemo(() => createTableRows(data), [data]);
 
-  const columns = React.useMemo<ColumnDef<NumbersSegment>[]>(
+  const columns = React.useMemo<ColumnDef<APINumbersSegment>[]>(
     () => createTableColumns({ categories, language, fileName }),
     [categories, language, fileName],
   );

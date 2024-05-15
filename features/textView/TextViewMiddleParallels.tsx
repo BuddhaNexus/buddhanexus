@@ -8,8 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { ParallelSegment } from "features/tableView/ParallelSegment";
 import { useAtomValue } from "jotai";
-import { TextViewMiddleParallelsData } from "types/api/text";
 import { DbApi } from "utils/api/dbApi";
+import { TextViewMiddleParallelsData } from "utils/api/types/text";
 
 import { ClearSelectedSegmentButton } from "./ClearSelectedSegmentButton";
 

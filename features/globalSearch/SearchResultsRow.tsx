@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import type { ParsedSearchResult } from "utils/api/search";
+import type { ParsedSearchResult } from "utils/api/endpoints/search";
 
 import { SearchResultItem } from "./SearchResultItem";
 

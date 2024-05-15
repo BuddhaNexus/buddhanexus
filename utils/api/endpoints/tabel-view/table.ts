@@ -3,11 +3,10 @@ import type {
   APIFullText,
   APITableViewRequestBody,
   APITableViewResponseData,
-} from "types/api";
-import type { PagedResponse, ParsedFullNames } from "types/api/common";
+} from "utils/api/types";
+import type { PagedResponse, ParsedFullNames } from "utils/api/types/common";
+import { parseAPIRequestBody } from "utils/api/utils";
 import type { SourceLanguage } from "utils/constants";
-
-import { parseAPIRequestBody } from "./utils";
 
 export type ParsedTableViewParallel = {
   // coOccurrences: number;

@@ -1,18 +1,18 @@
-import type { FilePropApiQuery, Params } from "types/api/common";
+import type { FilePropApiQuery, Params } from "utils/api/types/common";
 import type { SourceLanguage } from "utils/constants";
 
-import { getParallelDownloadData } from "./downloads";
-import { getGraphData } from "./graph";
+import { getGraphData } from "./endpoints/graph-view/graph";
+import { getCategoryMenuData } from "./endpoints/menus/category";
+import { getSourceTextMenuData } from "./endpoints/menus/files";
+import { getSourceTextCollections } from "./endpoints/menus/sidebar";
+import { getNumbersViewCategories } from "./endpoints/numbers-view/categories";
+import { getNumbersData } from "./endpoints/numbers-view/numbers";
+import { getGlobalSearchData } from "./endpoints/search";
+import { getParallelDownloadData } from "./endpoints/tabel-view/downloads";
+import { getTableData } from "./endpoints/tabel-view/table";
+import { getTextViewMiddleParallelsData } from "./endpoints/text-view/middle";
+import { getTextData } from "./endpoints/text-view/text-parallels";
 import { getExternalLinksData } from "./links";
-import {
-  getCategoryMenuData,
-  getSourceTextCollections,
-  getSourceTextMenuData,
-} from "./menus";
-import { getNumbersData, getNumbersViewCategories } from "./numbers";
-import { getGlobalSearchData } from "./search";
-import { getTableData } from "./table";
-import { getTextData, getTextViewMiddleParallelsData } from "./text";
 import {
   getAvailableLanguages,
   getFolios,

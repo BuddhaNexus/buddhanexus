@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { Chart, GoogleChartWrapperChartType } from "react-google-charts";
 import { useTranslation } from "next-i18next";
-import { GraphPageGraphData } from "types/api/common";
+import { GraphPageGraphData } from "utils/api/types/common";
 
 import { GRAPH_BG_COLOR } from "./constants";
 

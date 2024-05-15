@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { Chart } from "react-google-charts";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "@mui/material/styles";
-import { GraphPageGraphData } from "types/api/common";
+import { GraphPageGraphData } from "utils/api/types/common";
 
 interface Props {
   data?: GraphPageGraphData;

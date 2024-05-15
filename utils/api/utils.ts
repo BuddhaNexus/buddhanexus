@@ -1,7 +1,7 @@
 import apiClient from "@api";
 import type { QueryParams } from "features/sidebarSuite/config/types";
-import type { APILimits } from "types/api";
-import type { FilePropApiQuery } from "types/api/common";
+import type { APILimits } from "utils/api/types";
+import type { FilePropApiQuery } from "utils/api/types/common";
 import type { SourceLanguage } from "utils/constants";
 
 export function parseDbPageQueryParams(

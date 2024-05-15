@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
+    "build:gen": "next build --experimental-build-mode generate",
     "start": "next start",
     "lint": "next lint",
     "test:ts": "tsc --noEmit",

@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
 import { DbApi } from "utils/api/dbApi";
+import type { CategoryMenuItem, DatabaseText } from "utils/api/types/menus";
 
 import { useDbQueryParams } from "./useDbQueryParams";
 

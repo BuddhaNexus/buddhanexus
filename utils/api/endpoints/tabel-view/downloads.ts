@@ -1,8 +1,7 @@
 import apiClient from "@api";
-import type { FilePropApiQuery } from "types/api/common";
-
-import { RESULTS_DOWNLOAD_ROOT_URL } from "./constants";
-import { parseDbPageQueryParams } from "./utils";
+import { RESULTS_DOWNLOAD_ROOT_URL } from "utils/api/constants";
+import type { FilePropApiQuery } from "utils/api/types/common";
+import { parseDbPageQueryParams } from "utils/api/utils";
 
 // TODO: Awaiting api endpoint fix - remove eslint-disable-line on completion
 
