@@ -230,7 +230,7 @@ def get_spreadsheet_values(parallel):
     """
     Calculate correct values for spreadsheet from the parallel given
     """
-    root_segment_nr = shorten_segment_names(parallel["root_segnr"])[0].split(":")[1]
+    root_segment_nr = shorten_segment_names(parallel["root_segnr"]).split(":")[1]
     root_segment_text_joined = " ".join(parallel["root_seg_text"])
     root_offset_beg = parallel["root_offset_beg"]
     try:
@@ -241,7 +241,7 @@ def get_spreadsheet_values(parallel):
     except IndexError:
         root_segment_text = root_segment_text_joined
 
-    par_segment_nr = shorten_segment_names(parallel["par_segnr"])[0].split(":")[1]
+    par_segment_nr = shorten_segment_names(parallel["par_segnr"]).split(":")[1]
 
     par_segment_text_joined = " ".join(parallel["par_segment"])
     par_offset_beg = parallel["par_offset_beg"]
@@ -366,7 +366,7 @@ def get_category_dict(segment_parallels, categories_list):
             category_dict[category_index] = []
 
         category_dict[category_index].append(
-            shorten_segment_names(parallel["par_segnr"])[0]
+            shorten_segment_names(parallel["par_segnr"])
         )
 
     return category_dict

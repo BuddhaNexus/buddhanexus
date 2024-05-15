@@ -194,7 +194,7 @@ def calculate_color_maps_search(data):
         end = entry["offset_end"]
         colormap[beg:end] = [1] * (end - beg)
         entry["segtext"] = create_segmented_text_color_only(text, colormap)
-        entry["segment_nr"] = shorten_segment_names(entry["segment_nr"])[0]
+        entry["segment_nr"] = shorten_segment_names(entry["segment_nr"])
         del entry["offset_beg"]
         del entry["offset_end"]
         del entry["original"]

@@ -42,7 +42,7 @@ def shorten_segment_names(segments):
     shortened_segment = first_segment
     if not first_segment == last_segment:
         shortened_segment += "–" + last_segment.split(":")[1]
-    return [shortened_segment]
+    return shortened_segment
 
 
 def get_sort_key(sort_method) -> str:

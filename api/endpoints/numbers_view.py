@@ -30,7 +30,7 @@ def create_numbers_view_data(table_results):
                     parallel_dic = {}
                     parallel_dic["segmentnr"] = shorten_segment_names(
                         parallel["par_segnr"]
-                    )[0]
+                    )
                     parallel_dic["displayName"] = parallel["par_full_names"][
                         "displayName"
                     ]
@@ -51,7 +51,6 @@ async def get_numbers_view(input: GeneralInput) -> Any:
     """
     Endpoint for numbers view.
     """
-
     limitcollection_include = create_cleaned_limit_collection(
         input.limits.category_include + input.limits.file_include
     )
