@@ -1,34 +1,30 @@
 import apiClient from "@api";
 import type {
-  ApiTextPageMiddleParallelsData,
-  TextViewMiddleParallelsData,
-} from "utils/api/types/text";
+  APITextViewMiddleRequestBody,
+  APITextViewMiddleResponseData,
+} from "utils/api/types";
+import { SourceLanguage } from "utils/constants";
 
 function parseAPITextViewMiddleParallelsData(
-  apiData: ApiTextPageMiddleParallelsData,
-): TextViewMiddleParallelsData {
-  return apiData.map((p) => ({
-    displayName: p.display_name,
-    targetLanguage: p.tgt_lang,
-    fileName: p.file_name,
-    score: p.score,
-    parallelFullText: p.par_fulltext,
-    parallelSegmentNumbers: p.par_segnr_range,
+  data: APITextViewMiddleResponseData,
+) {
+  return data.map((p) => ({
+    displayName: p.display_name ?? "",
+    fileName: p.file_name ?? "",
     parallelLength: p.length,
+    parallelFullText: p.par_fulltext ?? [],
+    parallelSegmentNumberRange: p.par_segnr_range,
+    score: p.score,
+    targetLanguage: p.tgt_lang as SourceLanguage,
   }));
 }
 
 export async function getTextViewMiddleParallelsData(
-  parallelIds: string[],
-): Promise<TextViewMiddleParallelsData> {
-  // TODO: remove co_occ param after backend update
-  // TODO: use the multi_lingual value from query params
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  body: APITextViewMiddleRequestBody,
+) {
   const { data } = await apiClient.POST("/text-view/middle/", {
-    body: { parallel_ids: parallelIds },
+    body,
   });
 
-  return parseAPITextViewMiddleParallelsData(
-    data as ApiTextPageMiddleParallelsData,
-  );
+  return parseAPITextViewMiddleParallelsData(data ?? []);
 }

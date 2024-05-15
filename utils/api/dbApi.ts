@@ -11,7 +11,7 @@ import { getGlobalSearchData } from "./endpoints/search";
 import { getParallelDownloadData } from "./endpoints/tabel-view/downloads";
 import { getTableData } from "./endpoints/tabel-view/table";
 import { getTextViewMiddleParallelsData } from "./endpoints/text-view/middle";
-import { getTextData } from "./endpoints/text-view/text-parallels";
+import { getTextViewParallelsData } from "./endpoints/text-view/text-parallels";
 import { getExternalLinksData } from "./links";
 import {
   getAvailableLanguages,
@@ -59,7 +59,7 @@ export const DbApi = {
       fileName,
       queryParams,
     ],
-    call: getTextData,
+    call: getTextViewParallelsData,
   },
   TextViewMiddle: {
     makeQueryKey: (parallelIds: string[]) => parallelIds,

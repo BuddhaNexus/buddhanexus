@@ -9,7 +9,6 @@ import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { ParallelSegment } from "features/tableView/ParallelSegment";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
-import { TextViewMiddleParallelsData } from "utils/api/types/text";
 
 import { ClearSelectedSegmentButton } from "./ClearSelectedSegmentButton";
 
@@ -20,9 +19,10 @@ export default function TextViewMiddleParallels() {
 
   const theme = useTheme();
 
-  const { data, isLoading } = useQuery<TextViewMiddleParallelsData>({
+  const { data, isLoading } = useQuery({
     queryKey: DbApi.TextViewMiddle.makeQueryKey(selectedSegmentMatches),
-    queryFn: () => DbApi.TextViewMiddle.call(selectedSegmentMatches),
+    queryFn: () =>
+      DbApi.TextViewMiddle.call({ parallel_ids: selectedSegmentMatches }),
     enabled: selectedSegmentMatches.length > 0,
   });
 
@@ -37,7 +37,7 @@ export default function TextViewMiddleParallels() {
             displayName,
             parallelLength,
             parallelFullText,
-            parallelSegmentNumbers,
+            parallelSegmentNumberRange,
             score,
             targetLanguage,
           }) => (
@@ -48,7 +48,7 @@ export default function TextViewMiddleParallels() {
               length={parallelLength}
               text={parallelFullText}
               score={score}
-              textSegmentNumberRange={parallelSegmentNumbers}
+              textSegmentNumberRange={parallelSegmentNumberRange}
             />
           ),
         ),

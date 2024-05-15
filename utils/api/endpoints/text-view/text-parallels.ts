@@ -1,32 +1,51 @@
 import apiClient from "@api";
 import type {
-  InfiniteFilePropApiQuery,
-  PagedResponse,
-} from "utils/api/types/common";
-import type { ApiTextPageData, TextPageData } from "utils/api/types/text";
-import { parseDbPageQueryParams } from "utils/api/utils";
+  APITextViewParallelsRequestBody,
+  APITextViewParallelsResponseData,
+} from "utils/api/types";
+import { parseAPIRequestBody } from "utils/api/utils";
 
-function parseAPITextData(responseJSON: ApiTextPageData): TextPageData {
-  return responseJSON.map((segment) => ({
+function parseTextViewParallelsData(data: APITextViewParallelsResponseData) {
+  return data.map((segment) => ({
     segmentNumber: segment.segnr,
     segmentText: segment.segtext,
   }));
 }
 
-export async function getTextData({
-  fileName,
-  queryParams,
-  pageNumber,
-}: InfiniteFilePropApiQuery): Promise<PagedResponse<TextPageData>> {
-  // TODO: use the multi_lingual value from query params
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type ParsedTextViewParallel = ReturnType<
+  typeof parseTextViewParallelsData
+>[0];
+export type ParsedTextViewParallelsData = ParsedTextViewParallel[];
+
+// TODO: remove temporary types when backend is updated
+export type TemporaryParsedTextViewParallel = Omit<
+  ParsedTextViewParallel,
+  "segmentText"
+> & {
+  // undefined values will be cleared on backend with pending data update
+  segmentText: {
+    text: string;
+    highlightColor: number;
+    // unknown[] needs to be changed to string[] on the backend
+    matches: string[];
+  }[];
+};
+
+export type TemporaryParsedTextViewParallelsData =
+  TemporaryParsedTextViewParallel[];
+
+export async function getTextViewParallelsData(
+  body: APITextViewParallelsRequestBody,
+  // TODO: remove return type when backend is updated (see above)
+): Promise<{ data: TemporaryParsedTextViewParallelsData; pageNumber: number }> {
   const { data } = await apiClient.POST("/text-view/text-parallels/", {
-    body: {
-      file_name: fileName,
-      ...parseDbPageQueryParams(queryParams),
-      multi_lingual: ["skt", "pli", "chn", "tib"],
-    },
+    body: parseAPIRequestBody(body),
   });
 
-  return { data: parseAPITextData(data as ApiTextPageData), pageNumber };
+  return {
+    data: parseTextViewParallelsData(
+      data ?? [],
+    ) as TemporaryParsedTextViewParallelsData,
+    pageNumber: body.page_number!,
+  };
 }

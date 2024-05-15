@@ -13,8 +13,6 @@ import TextView from "features/textView/TextView";
 import merge from "lodash/merge";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
-import type { PagedResponse } from "utils/api/types/common";
-import type { TextPageData } from "utils/api/types/text";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
@@ -46,7 +44,7 @@ export default function TextPage() {
   } = queryParams;
 
   const { data, fetchNextPage, fetchPreviousPage, isLoading, isError } =
-    useInfiniteQuery<PagedResponse<TextPageData>>({
+    useInfiniteQuery({
       initialPageParam: 0,
       queryKey: DbApi.TextView.makeQueryKey({
         fileName,
@@ -54,9 +52,9 @@ export default function TextPage() {
       }),
       queryFn: ({ pageParam }) =>
         DbApi.TextView.call({
-          fileName,
-          queryParams,
-          pageNumber: pageParam as number,
+          file_name: fileName,
+          ...queryParams,
+          page_number: pageParam,
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>

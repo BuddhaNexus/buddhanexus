@@ -12,7 +12,7 @@ import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { enscriptText } from "features/sidebarSuite/common/dbSidebarHelpers";
 import { useAtomValue, useSetAtom } from "jotai";
 import { NumberParam, StringParam, useQueryParam } from "use-query-params";
-import type { TextPageDataSegment } from "utils/api/types/text";
+import { TemporaryParsedTextViewParallel } from "utils/api/endpoints/text-view/text-parallels";
 
 import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
 import styles from "./textSegment.module.scss";
@@ -21,7 +21,7 @@ export const TextSegment = ({
   data: { segmentText, segmentNumber },
   colorScale,
 }: {
-  data: TextPageDataSegment;
+  data: TemporaryParsedTextViewParallel;
   colorScale: Scale;
 }) => {
   const { mode } = useColorScheme();

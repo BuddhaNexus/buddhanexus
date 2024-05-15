@@ -65,6 +65,7 @@ yarn openapi-ts
   - all parsed return sub-properties types
     - begin with `Parsed`
     - mirror or contain the corresponding api property type names (**if** relevant) eg. `APIFullNames` and `ParsedFullNames`
+- [inferred return types are favoured](https://www.youtube.com/watch?v=I6V2FkW1ozQ)
 
 ## I18n
 

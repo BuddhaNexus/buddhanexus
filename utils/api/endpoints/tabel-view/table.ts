@@ -66,7 +66,6 @@ function parseAPITableData(
 export async function getTableData(
   body: APITableViewRequestBody,
 ): Promise<PagedResponse<ParsedTableViewData>> {
-  // TODO: - This is a temporary fix to enable work elsehwere. Check `getStaticPaths` functionality post BE update
   const { data } = await apiClient.POST("/table-view/table/", {
     body: parseAPIRequestBody(body),
   });
