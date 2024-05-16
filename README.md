@@ -42,7 +42,7 @@ The `utils/api/endpoints` directory mirrors the BE api endpoint structure
 
 ### API type code generation & API Client
 
-The project uses `[openapi-typescript](https://openapi-ts.pages.dev/introduction)` and `[openapi-fetch](https://openapi-ts.pages.dev/openapi-fetch/)` to interface between the backend.
+The project uses [`openapi-typescript`](https://openapi-ts.pages.dev/introduction) and [`openapi-fetch`](https://openapi-ts.pages.dev/openapi-fetch/) to interface between the backend.
 
 Types are generated from the API project's [OpenAPI docs page](https://buddhanexus2.kc-tbts.uni-hamburg.de/api/docs#/) by running:
 
@@ -56,20 +56,18 @@ yarn openapi-ts
 
 **note:** at the time of writing, there is still some inconsistency in BE naming conventions. Some FE parsing needs may be eliminated with BE consistency. Review an update accordingly.
 
-- `types/api/index.ts`: codegen derivate types **only**
+- `utils/api/types.ts`:
+  - this is the **source of truth** for BE<>FE typing
+  - it contains codegen derivate types **only** to create shortened, standardized API type aliases
   - all types begin with `API`
   - all endpoints should have corresponding  `API<endpoint-name>RequestQuery` (for `GET` requests), or `API<endpoint-name>RequestBody` (for `POST` requests), and `API<endpoint-name>ResponseData` types
-- `types/api/<endpoint-name>.ts`: co-locates endpoint fetch function and the **top-level** its return type, **if** required.
+
+- `types/api/<endpoint-name>.ts`: co-locates endpoint fetch function and, **if** required, its return type.
   - [inferred return types are favoured](https://www.youtube.com/watch?v=I6V2FkW1ozQ)
     - in most cases this should be possible, but if eg. doing some complicated mutation, or using the `fetchNextPage` prop from `useInfiniteQuery` it might be necessary to add a `Promise<DataType>` return type. 
   - if needed, parsed return types should
-    - be created from the parser's `ReturnType`
+    - be created from the parser's `ReturnType` if possible
     - follow the `Parsed<endpoint-name>Data` naming convention (parsed return consituent item types should begin with `Parsed`, eg. `ParsedSearchResult`)
-- `types/api/common.ts`: general api types & types for parsed return type sub-properties
-  - all parsed return sub-properties types
-    - begin with `Parsed`
-    - mirror or contain the corresponding api property type names (**if** relevant) eg. `APIFullNames` and `ParsedFullNames`
-
 
 ## I18n
 
