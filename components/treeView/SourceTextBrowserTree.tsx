@@ -65,7 +65,8 @@ export const SourceTextBrowserTree = memo<Props>(
     // TODO: add error handling
     const { data, isLoading } = useQuery<DrawerNavigationNodeData[]>({
       queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-      queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+      queryFn: () =>
+        DbApi.SidebarSourceTexts.call({ language: sourceLanguage }),
     });
 
     const hasData = !(isLoading || !data);

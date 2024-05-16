@@ -8,8 +8,8 @@ import type { SourceLanguage } from "utils/constants";
 import { getGraphData } from "./endpoints/graph-view/graph";
 import { getExternalLinksData } from "./endpoints/links";
 import { getCategoryMenuData } from "./endpoints/menus/category";
-import { getSourceTextMenuData } from "./endpoints/menus/files";
-import { getSourceTextCollections } from "./endpoints/menus/sidebar";
+import { getTextFileMenuData } from "./endpoints/menus/files";
+import { getSidebarTextCollectionsMenuData } from "./endpoints/menus/sidebar";
 import { getNumbersViewCategories } from "./endpoints/numbers-view/categories";
 import { getNumbersViewData } from "./endpoints/numbers-view/numbers";
 import { getGlobalSearchData } from "./endpoints/search";
@@ -57,7 +57,7 @@ export const DbApi = {
       "sourceTextMenuData",
       language,
     ],
-    call: getSourceTextMenuData,
+    call: getTextFileMenuData,
   },
   CategoryMenu: {
     makeQueryKey: (language: SourceLanguage) => ["categoryMenuData", language],
@@ -68,7 +68,7 @@ export const DbApi = {
       "textCollectionsData",
       language,
     ],
-    call: getSourceTextCollections,
+    call: getSidebarTextCollectionsMenuData,
   },
   //* UTILS / SETTINGS
   ParallelCount: {

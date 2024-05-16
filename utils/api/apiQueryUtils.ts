@@ -24,7 +24,7 @@ export async function prefetchDefaultDbPageData(
 
   await queryClient.prefetchQuery({
     queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+    queryFn: () => DbApi.SidebarSourceTexts.call({ language: sourceLanguage }),
   });
 
   return queryClient;

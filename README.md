@@ -61,7 +61,7 @@ yarn openapi-ts
   - all endpoints should have corresponding  `API<endpoint-name>RequestQuery` (for `GET` requests), or `API<endpoint-name>RequestBody` (for `POST` requests), and `API<endpoint-name>ResponseData` types
 - `types/api/<endpoint-name>.ts`: co-locates endpoint fetch function and the **top-level** its return type, **if** required.
   - [inferred return types are favoured](https://www.youtube.com/watch?v=I6V2FkW1ozQ)
-    - in most cases this should be possible, but if using eg. the `fetchNextPage` prop from `useInfiniteQuery` it might be necessary to give a `Promise<DataType>` return type. 
+    - in most cases this should be possible, but if eg. doing some complicated mutation, or using the `fetchNextPage` prop from `useInfiniteQuery` it might be necessary to add a `Promise<DataType>` return type. 
   - if needed, parsed return types should
     - be created from the parser's `ReturnType`
     - follow the `Parsed<endpoint-name>Data` naming convention (parsed return consituent item types should begin with `Parsed`, eg. `ParsedSearchResult`)

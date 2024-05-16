@@ -16,17 +16,20 @@ import {
   type LimitsParam,
 } from "features/sidebarSuite/config/types";
 import { JsonParam, useQueryParam } from "use-query-params";
-import type {
-  DatabaseText,
-  ParsedCategoryMenuItem,
-} from "utils/api/endpoints/menus/types";
+import type { ParsedCategoryMenuItem } from "utils/api/endpoints/menus/category";
+import type { ParsedTextFileMenuItem } from "utils/api/endpoints/menus/files";
 
 import ListboxComponent from "./ListboxComponent";
 import { StyledPopper } from "./muiStyledComponents";
 
+type LimitValueOption = (
+  | ParsedCategoryMenuItem
+  | Pick<ParsedTextFileMenuItem, "id" | "name" | "label">
+)[];
+
 function getValuesFromParams(
   params: LimitsParam,
-  texts: Map<string, DatabaseText>,
+  texts: Map<string, ParsedTextFileMenuItem>,
   categories: Map<string, ParsedCategoryMenuItem>,
 ) {
   return Object.entries(params).reduce((values, [filter, selections]) => {
@@ -40,7 +43,7 @@ function getValuesFromParams(
 
 function getParamsFromValues(
   updatedLimit: Limit,
-  updatedvalue: (ParsedCategoryMenuItem | DatabaseText)[],
+  updatedvalue: LimitValueOption,
   params: LimitsParam,
 ) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -116,10 +119,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
     handleGlobalParamReset,
   ]);
 
-  const handleInputChange = (
-    limit: Limit,
-    value: (ParsedCategoryMenuItem | DatabaseText)[],
-  ) => {
+  const handleInputChange = (limit: Limit, value: LimitValueOption) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { [limit]: prevValue, ...otherLimitValues } = limitsValue;
 
@@ -143,7 +143,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
         ? { options: [...texts.values()], isLoading: isLoadingTexts }
         : {
             options: [...categories.values()].map((category) => ({
-              // gets common properties with `DatabaseText`
+              // gets common properties defined in `LimitValueOption`
               // to ensure type alaignment
               id: category.id,
               name: category.name,

@@ -1,14 +1,12 @@
 import apiClient from "@api";
 import { transformDataForTreeView } from "@components/treeView/utils";
 import type {
-  ApiSourceTextBrowserData,
-  SourceTextBrowserData,
-} from "utils/api/endpoints/menus/types";
+  APIMenuSidebarRequestQuery,
+  APIMenuSidebarResponseData,
+} from "utils/api/types";
 import type { SourceLanguage } from "utils/constants";
 
-function parseSourceTextCollectionData(
-  data: ApiSourceTextBrowserData,
-): SourceTextBrowserData {
+function parseSidebarTextCollectionsMenuData(data: APIMenuSidebarResponseData) {
   return data.navigationmenudata.map(({ collection, categories }) => ({
     collection,
     categories: categories.map(
@@ -18,7 +16,7 @@ function parseSourceTextCollectionData(
             textName: textname,
             displayName: displayname,
             fileName: file_name,
-            availableLanguages: available_lang! as SourceLanguage[],
+            availableLanguages: [available_lang] as SourceLanguage[],
           }),
         ),
         name: categoryname,
@@ -28,14 +26,17 @@ function parseSourceTextCollectionData(
   }));
 }
 
-export async function getSourceTextCollections(language: SourceLanguage) {
+export type ParsedSidebarTextCollectionsMenuData = ReturnType<
+  typeof parseSidebarTextCollectionsMenuData
+>;
+
+export async function getSidebarTextCollectionsMenuData(
+  query: APIMenuSidebarRequestQuery,
+) {
   const { data } = await apiClient.GET("/menus/sidebar/", {
-    params: { query: { language } },
+    params: { query },
   });
 
-  // TODO: - remove type casting once response model is added to api
-  const parsedApiData = parseSourceTextCollectionData(
-    data as ApiSourceTextBrowserData,
-  );
+  const parsedApiData = data ? parseSidebarTextCollectionsMenuData(data) : [];
   return transformDataForTreeView(parsedApiData);
 }

@@ -4,20 +4,28 @@ import type {
   APIMenuFilterCategoriesResponseData,
 } from "utils/api/types";
 
-import { ParsedCategoryMenuItem } from "./types";
+export interface ParsedCategoryMenuItem {
+  id: string;
+  name: string;
+  label: string;
+}
 
 const parseCategoryMenuData = (data: APIMenuFilterCategoriesResponseData) => {
   return data.categoryitems.reduce(
     (map: Map<string, ParsedCategoryMenuItem>, currentCategory) => {
       const { category, categoryname } = currentCategory;
 
+      if (!category || !categoryname) {
+        return map;
+      }
+
       const value: ParsedCategoryMenuItem = {
-        id: category!,
-        name: categoryname!,
+        id: category,
+        name: categoryname,
         label: `${category} ${categoryname}`,
       };
 
-      map.set(category!, value);
+      map.set(category, value);
       return map;
     },
     new Map(),
