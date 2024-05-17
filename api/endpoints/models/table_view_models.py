@@ -29,12 +29,3 @@ class TableDownloadInput(GeneralInput):
 class TableDownloadOutput(BaseModel):
     __root__: str
 
-
-#  Is this still needed as the function doesn't seem to exist any more?
-
-# class MultiLangInput(BaseModel):
-#     file_name: str
-#     score: int = 0
-#     multi_lingual: list = []
-#     page: int = 0
-#     folio: str = ""

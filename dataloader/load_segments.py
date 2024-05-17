@@ -11,7 +11,6 @@ import time
 import pandas as pd
 from tqdm import tqdm as tqdm
 from arango.database import StandardDatabase
-from utils import get_filename_from_segmentnr
 from dataloader_models import Segment, validate_df
 
 from dataloader_constants import (
@@ -30,13 +29,11 @@ from dataloader_constants import (
 )
 
 from utils import (
-    get_cat_from_segmentnr,
-    get_language_from_file_name,
     check_if_collection_exists,
     get_database,
     should_download_file,
 )
-
+from api.utils import get_cat_from_segmentnr, get_language_from_file_name, get_filename_from_segmentnr
 from folios import get_folios_from_segment_keys
 
 

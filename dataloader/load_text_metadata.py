@@ -9,7 +9,7 @@ from utils import (
     should_download_file,
     get_cat_from_segmentnr,
 )
-from utils import get_cat_from_segmentnr
+from api.utils import get_cat_from_segmentnr
 
 
 def load_text_metadata_from_menu_files(langs: list, db: StandardDatabase):

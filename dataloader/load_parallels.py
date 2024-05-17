@@ -9,7 +9,6 @@ from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 import multiprocessing
 import natsort
-from utils import get_filename_from_segmentnr
 
 from dataloader_models import Match, validate_dict_list
 from dataloader_constants import (
@@ -18,12 +17,9 @@ from dataloader_constants import (
     MATCH_LIMIT,
 )
 from folios import get_folios_from_segment_keys
+from utils import should_download_file
+from api.utils import get_cat_from_segmentnr, get_language_from_file_name, get_filename_from_segmentnr
 
-from utils import (
-    get_cat_from_segmentnr,
-    should_download_file,
-    get_language_from_file_name,
-)
 
 # allow importing from api directory
 PACKAGE_PARENT = ".."

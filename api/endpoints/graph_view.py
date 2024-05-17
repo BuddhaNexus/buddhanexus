@@ -21,8 +21,6 @@ async def get_graph_for_file(input: GraphInput) -> Any:
 
     target_collection = create_cleaned_limit_collection(input.target_collection)
 
-    print(target_collection)
-
     query_graph_result = execute_query(
         graph_view_queries.QUERY_GRAPH_VIEW,
         bind_vars={

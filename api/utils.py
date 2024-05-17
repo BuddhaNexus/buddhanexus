@@ -10,8 +10,6 @@ from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
 from .queries import menu_queries, utils_queries, text_view_queries
 from .db_connection import get_db
 
-# COLLECTION_PATTERN = r"^(pli-tv-b[ui]-vb|XX|OT|NG|[A-Z]+[0-9]+|[a-z\-]+)"
-
 
 def prettify_score(score):
     """
@@ -25,6 +23,8 @@ def prettify_score(score):
 def get_filename_from_segmentnr(segnr):
     """
     Get the filename from a segment number.
+    Note that this function is also used in the dataloader and cannot be
+    replaced by a query function.
     """
     segnr = segnr.replace(".json", "")
     if re.search("n[0-9aAbBcCdD]+_[0-9]+", segnr):
@@ -66,6 +66,8 @@ def get_language_from_file_name(file_name) -> str:
     Given the file ID, returns its language.
     :param file_name: The key of the file
     :return: Language of the file
+    Note that this function is also used in the dataloader and cannot be
+    replaced by a query function.
     """
     lang = "pli"
     if re.search(r"[DH][0-9][0-9][0-9]|NK|NG|NY|TZ", file_name):
@@ -112,26 +114,6 @@ def number_exists(input_string) -> bool:
     :return: `True` if the string contains numbers.
     """
     return any(char.isdigit() for char in input_string)
-
-
-# def collect_segment_results(segments) -> List:
-#     """
-#     Query results are analyzed based on what collection they are part of and put in the
-#     relevant category thereof. Returns the results and the keys to the collections.
-#     """
-#     collection_keys = []
-#     segments_result = []
-#     for segment in segments:
-#         if "parallels" not in segment or segment["parallels"] is None:
-#             continue
-#         for parallel in segment["parallels"]:
-#             for seg_nr in parallel:
-#                 collection_key = re.search(COLLECTION_PATTERN, seg_nr)
-#                 if collection_key and collection_key.group() not in collection_keys:
-#                     collection_keys.append(collection_key.group())
-#         segments_result.append(segment)
-
-#     return segments_result, collection_keys
 
 
 def get_folio_regex(language, file_name, folio) -> str:
@@ -243,6 +225,8 @@ def get_file_text(file_name):
 def get_cat_from_segmentnr(segmentnr):
     """
     retrieves the category code from the segmentnumber
+    Note that this function is also used in the dataloader and cannot be
+    replaced by a query function.
     """
     cat = ""
     pali_check = [x for x in ["anya", "atk", "tika"] if segmentnr.startswith(x)]
