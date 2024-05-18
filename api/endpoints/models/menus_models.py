@@ -68,8 +68,8 @@ class SideBarOutput(BaseModel):
 
 
 class GraphCollection(BaseModel):
-    collectionname: str
-    collectionkey: str
+    collection: Union[str, None] = None
+    collectiondisplayname: Union[str, None] = None
 
 
 class GraphCollectionOutput(BaseModel):
