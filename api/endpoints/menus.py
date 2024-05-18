@@ -92,3 +92,18 @@ async def get_data_for_sidebar_menu(
 
     query_sidebar_menu = execute_query(menu_query, current_bind_vars)
     return {"navigationmenudata": query_sidebar_menu.result}
+
+
+@router.get("/graphcollections/", response_model=GraphCollectionOutput)
+async def get_categories_for_filter_menu(
+    language: str = Query(..., description="language to be used")
+) -> Any:
+    """
+    Given a language, return list of collections for the filter menu
+    of graph view and the input menus of the visual view.
+    """
+    query_result = execute_query(
+        menu_queries.QUERY_COLLECTIONS_FOR_LANGUAGE,
+        bind_vars={"language": language}
+    )
+    return {"result": query_result.result[0]}

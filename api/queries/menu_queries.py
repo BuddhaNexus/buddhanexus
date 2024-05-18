@@ -133,3 +133,12 @@ FOR category IN menu_categories
     }
 """
 
+QUERY_COLLECTIONS_FOR_LANGUAGE = """
+LET total_collection = (
+    FOR collection IN menu_collections
+        FILTER collection.language == @language
+        SORT collection.collectionnr
+        RETURN { collection: collection._key, collectiondisplayname: collection.collection}
+    )
+RETURN total_collection
+"""
