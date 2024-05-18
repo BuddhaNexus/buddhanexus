@@ -18,7 +18,11 @@ from dataloader_constants import (
 )
 from folios import get_folios_from_segment_keys
 from utils import should_download_file
-from api.utils import get_cat_from_segmentnr, get_language_from_file_name, get_filename_from_segmentnr
+from api.utils import (
+    get_cat_from_segmentnr,
+    get_language_from_file_name,
+    get_filename_from_segmentnr,
+)
 
 
 # allow importing from api directory

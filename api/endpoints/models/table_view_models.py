@@ -28,4 +28,3 @@ class TableDownloadInput(GeneralInput):
 
 class TableDownloadOutput(BaseModel):
     __root__: str
-

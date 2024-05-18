@@ -342,4 +342,3 @@ def add_sources(c):
     db = get_database()
     print("adding source information")
     load_sources(db, DEFAULT_SOURCE_URL)
-

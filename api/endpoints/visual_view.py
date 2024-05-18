@@ -18,7 +18,7 @@ async def get_visual_view(input: VisualViewInput) -> Any:
     hitcollections = create_cleaned_limit_collection(input.hit_collections)
     visualview_results = []
 
-    if re.search(r'^[a-z]{3}_', input.inquiry_collection):
+    if re.search(r"^[a-z]{3}_", input.inquiry_collection):
         inquirycollection = create_cleaned_limit_collection([input.inquiry_collection])
         query_visual_category_result = execute_query(
             visual_view_queries.QUERY_VISUAL_CATEGORY_VIEW,
@@ -31,9 +31,7 @@ async def get_visual_view(input: VisualViewInput) -> Any:
     else:
         inquirycollection = execute_query(
             visual_view_queries.QUERY_FILES_FOR_ONE_CATEGORY,
-            bind_vars={
-                "category": input.inquiry_collection
-            },
+            bind_vars={"category": input.inquiry_collection},
         ).result
         if len(inquirycollection) == 0:
             inquirycollection = [input.inquiry_collection]

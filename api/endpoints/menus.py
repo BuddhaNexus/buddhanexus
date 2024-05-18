@@ -103,7 +103,6 @@ async def get_categories_for_filter_menu(
     of graph view and the input menus of the visual view.
     """
     query_result = execute_query(
-        menu_queries.QUERY_COLLECTIONS_FOR_LANGUAGE,
-        bind_vars={"language": language}
+        menu_queries.QUERY_COLLECTIONS_FOR_LANGUAGE, bind_vars={"language": language}
     )
     return {"result": query_result.result[0]}

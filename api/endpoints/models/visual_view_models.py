@@ -9,4 +9,3 @@ class VisualViewInput(BaseModel):
 
 class VisualViewOutput(BaseModel):
     __root__: List[List[Union[str, str, int]]]
-

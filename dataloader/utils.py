@@ -33,6 +33,7 @@ SCRIPT_DIR = os.path.dirname(
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
+
 def get_arango_client() -> ArangoClient:
     """Get Arango Client instance"""
     return ArangoClient(hosts=ARANGO_HOST)
