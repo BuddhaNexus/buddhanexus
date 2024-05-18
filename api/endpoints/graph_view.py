@@ -16,7 +16,67 @@ router = APIRouter()
 @router.post("/graph-view/", response_model=GraphViewOutput)
 async def get_graph_for_file(input: GraphInput) -> Any:
     """
-    Endpoint for graph view
+    Endpoint for graph view.
+
+    Input fields are:
+
+    ```
+        {
+          "file_name": "",
+          "score": 0,
+          "par_length": 0,
+          "target_collection": []
+        }
+    ```
+
+    The "target_collection" input comes from a dropdown list that lists collections only.
+    This comes from the `/menus/graphcollections/` endpoint. It is possible to choose
+    more than one option, hence it is a list. F.i.
+
+    ```
+        ...
+        "target_collection": ["pli_Suttas-Early-1", "pli_Vinaya"]
+    ```
+
+    "score", "par_length" and "file_name" are the same as for the other views.
+
+    Output is f.i.:
+
+    ```
+        {
+          "piegraphdata": [
+            [
+              "dn Dīghanikāya",
+              "62063"
+            ],
+            [
+              "mn Majjhimanikāya",
+              "54783"
+            ],
+            [
+              "an Aṅguttaranikāya",
+              "24871"
+            ],
+
+            ...
+
+            ]
+          ],
+          "histogramgraphdata": [
+            [
+              "Kūṭadanta Sutta (Dn 5)",
+              "36982"
+            ],
+            [
+              "Caṅkī Sutta (Mn 95)",
+              "19661"
+            ],
+            [
+              "Bhesajjakkhandhaka (Pli-tv-kd 6)",
+              "7773"
+            ],
+            etc.
+    ```
     """
 
     target_collection = create_cleaned_limit_collection(input.target_collection)
