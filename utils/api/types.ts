@@ -13,6 +13,27 @@ import type { components, operations } from "codegen/api/v2.d.ts";
 
 export type APISchemas = components["schemas"];
 
+type APIRequestBody<OperationName extends keyof operations> =
+  "requestBody" extends keyof operations[OperationName]
+    ? "content" extends keyof operations[OperationName]["requestBody"]
+      ? "application/json" extends keyof operations[OperationName]["requestBody"]["content"]
+        ? operations[OperationName]["requestBody"]["content"]["application/json"]
+        : never
+      : never
+    : never;
+
+type APIRequestParams<OperationName extends keyof operations> =
+  "parameters" extends keyof operations[OperationName]
+    ? "query" extends keyof operations[OperationName]["parameters"]
+      ? operations[OperationName]["parameters"]["query"]
+      : never
+    : never;
+
+type APIResponse<OperationName extends keyof operations> =
+  200 extends keyof operations[OperationName]["responses"]
+    ? operations[OperationName]["responses"][200]["content"]["application/json"]
+    : never;
+
 /** COMMON */
 
 // request
@@ -33,86 +54,115 @@ export type APIParallel = APISchemas["Parallel"];
 
 /** SEARCH */
 
-export type APISearchRequestBody = APISchemas["SearchInput"];
-export type APISearchResponseData = APISchemas["SearchOutput"];
+export type APISearchRequestBody =
+  APIRequestBody<"get_search_results_search__post">;
+export type APISearchResponseData =
+  APIResponse<"get_search_results_search__post">;
 
 /** GRAPH VIEW  */
 
-export type APIGraphViewRequestBody = APIGeneralInput;
-export type APIGraphViewResponseData = components["schemas"]["GraphViewOutput"];
+export type APIGraphViewRequestBody =
+  APIRequestBody<"get_graph_for_file_graph_view__post">;
+export type APIGraphViewResponseData =
+  APIResponse<"get_graph_for_file_graph_view__post">;
 
-/** VISUAL VIEW - not implemented */
+/** VISUAL VIEW  */
+
+export type APIVisualViewRequestBody =
+  APIRequestBody<"get_visual_view_for_file_visual_view__get">;
+export type APIVisualViewResponseData =
+  APIResponse<"get_visual_view_for_file_visual_view__get">;
 
 /** TABEL VIEW */
 
-export type APITableViewRequestBody = APIGeneralInput;
-export type APITableViewResponseData = components["schemas"]["TableViewOutput"];
+export type APITableViewRequestBody =
+  APIRequestBody<"get_table_view_table_view_table__post">;
+export type APITableViewResponseData =
+  APIResponse<"get_table_view_table_view_table__post">;
 
-export type APITableViewDownloadRequestBody = APISchemas["TableDownloadInput"];
+export type APITableViewDownloadRequestBody =
+  APIRequestBody<"get_table_download_table_view_download__post">;
 export type APITableViewDownloadResponseData =
-  APISchemas["TableDownloadOutput"];
+  APIResponse<"get_table_download_table_view_download__post">;
 
 /** TEXT VIEW */
 
-export type APITextViewMiddleRequestBody = APISchemas["TextViewMiddleInput"];
-export type APITextViewMiddleResponseData = APISchemas["TextViewMiddleOutput"];
+export type APITextViewMiddleRequestBody =
+  APIRequestBody<"get_parallels_for_middle_text_view_middle__post">;
+export type APITextViewMiddleResponseData =
+  APIResponse<"get_parallels_for_middle_text_view_middle__post">;
 
-export type APITextViewParallelsRequestBody = APISchemas["TextParallelsInput"];
-export type APITextViewParallelsResponseData = APISchemas["TextViewLeftOutput"];
+export type APITextViewParallelsRequestBody =
+  APIRequestBody<"get_file_text_segments_and_parallels_text_view_text_parallels__post">;
+export type APITextViewParallelsResponseData =
+  APIResponse<"get_file_text_segments_and_parallels_text_view_text_parallels__post">;
 
 /** NUMBERS VIEW */
 
-export type APINumbersViewRequestBody = APIGeneralInput;
+export type APINumbersViewRequestBody =
+  APIRequestBody<"get_numbers_view_numbers_view_numbers__post">;
+export type APINumbersViewResponseData =
+  APIResponse<"get_numbers_view_numbers_view_numbers__post">;
 // `APINumbersSegment`: type for individual result item returned in `NumbersViewOutput` array.
-export type APINumbersSegment =
-  APISchemas["api__endpoints__models__numbers_view_models__Segment"];
-export type APINumbersViewResponseData = APISchemas["NumbersViewOutput"];
+export type APINumbersSegment = APINumbersViewResponseData[number];
 
 export type APINumbersViewCategoryRequestQuery =
-  operations["get_categories_for_numbers_view_numbers_view_categories__get"]["parameters"]["query"];
-export type APINumbersViewCategoryResponseData = APISchemas["MenuOutput"];
+  APIRequestParams<"get_categories_for_numbers_view_numbers_view_categories__get">;
+export type APINumbersViewCategoryResponseData =
+  APIResponse<"get_categories_for_numbers_view_numbers_view_categories__get">;
 
 /** EXTERNAL LINKS */
 
 export type APIExternalLinksRequestQuery =
-  operations["get_external_links_links_external__get"]["parameters"]["query"];
-export type APIExternalLinksResponseData = APISchemas["LinksOutput"];
+  APIRequestParams<"get_external_links_links_external__get">;
+export type APIExternalLinksResponseData =
+  APIResponse<"get_external_links_links_external__get">;
 
 /** UTILS */
 
-export type APICountMatchesRequestBody = APISchemas["CountMatchesInput"];
-export type APICountMatchesResponseData = APISchemas["CountMatchesOutput"];
+export type APICountMatchesRequestBody =
+  APIRequestBody<"get_counts_for_file_utils_count_matches__post">;
+export type APICountMatchesResponseData =
+  APIResponse<"get_counts_for_file_utils_count_matches__post">;
 
 export type APIFolioRequestQuery =
-  operations["get_folios_for_file_utils_folios__get"]["parameters"]["query"];
-export type APIFolioResponseData = APISchemas["FolioOutput"];
+  APIRequestParams<"get_folios_for_file_utils_folios__get">;
+export type APIFolioResponseData =
+  APIResponse<"get_folios_for_file_utils_folios__get">;
 
 export type APIDisplayNameRequestQuery =
-  operations["get_displayname_for_segmentnr_utils_displayname__get"]["parameters"]["query"];
-export type APIDisplayNameResponseData = APISchemas["DisplayNameOutput"];
+  APIRequestParams<"get_displayname_for_segmentnr_utils_displayname__get">;
+export type APIDisplayNameResponseData =
+  APIResponse<"get_displayname_for_segmentnr_utils_displayname__get">;
 
 // sanskrittagger - not implemented
 
 export type APIAvailableLanguagesRequestQuery =
-  operations["get_multilingual_utils_available_languages__get"]["parameters"]["query"];
-export type APIAvailableLanguagesResponseData = APISchemas["LanguageOutput"];
+  APIRequestParams<"get_multilingual_utils_available_languages__get">;
+export type APIAvailableLanguagesResponseData =
+  APIResponse<"get_multilingual_utils_available_languages__get">;
 
 /** MENUS */
 
 export type APIMenuFilesRequestQuery =
-  operations["get_files_for_menu_menus_files__get"]["parameters"]["query"];
-export type APIMenuFilesResponseData = APISchemas["FilesOutput"];
+  APIRequestParams<"get_files_for_menu_menus_files__get">;
+export type APIMenuFilesResponseData =
+  APIResponse<"get_files_for_menu_menus_files__get">;
 
 export type APIMenuFilterFilesRequestQuery =
-  operations["get_files_for_filter_menu_menus_filter__get"]["parameters"]["query"];
-export type APIMenuFilterFilesResponseData = APISchemas["FilterOutput"];
+  APIRequestParams<"get_files_for_filter_menu_menus_filter__get">;
+export type APIMenuFilterFilesResponseData =
+  APIResponse<"get_files_for_filter_menu_menus_filter__get">;
 
 export type APIMenuFilterCategoriesRequestQuery =
-  operations["get_categories_for_filter_menu_menus_category__get"]["parameters"]["query"];
-export type APIMenuFilterCategoriesResponseData = APISchemas["CategoryOutput"];
+  APIRequestParams<"get_categories_for_filter_menu_menus_category__get">;
+export type APIMenuFilterCategoriesResponseData =
+  APIResponse<"get_categories_for_filter_menu_menus_category__get">;
 
-export type APIMenuAllCollectionsResponseData = APISchemas["CollectionsOutput"];
+export type APIMenuAllCollectionsResponseData =
+  APIResponse<"get_all_collections_menus_collections__get">;
 
 export type APIMenuSidebarRequestQuery =
-  operations["get_data_for_sidebar_menu_menus_sidebar__get"]["parameters"]["query"];
-export type APIMenuSidebarResponseData = APISchemas["SideBarOutput"];
+  APIRequestParams<"get_data_for_sidebar_menu_menus_sidebar__get">;
+export type APIMenuSidebarResponseData =
+  APIResponse<"get_data_for_sidebar_menu_menus_sidebar__get">;
