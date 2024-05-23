@@ -56,12 +56,8 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         folios = []
         for folio in folios_list:
             folios.append(folio["num"])
-        root_filename = get_filename_from_segmentnr(
-            parallel["root_segnr"][0], parallel["src_lang"]
-        )
-        par_filename = get_filename_from_segmentnr(
-            parallel["par_segnr"][0], parallel["tgt_lang"]
-        )
+        root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0])
+        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])
         par_filename = re.sub("_[0-9][0-9][0-9]", "", par_filename)
         id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]
         parallel["_id"] = id
@@ -151,7 +147,7 @@ def load_sorted_parallels_file(path, lang, db_collection):
     for file in tqdm(current_files):
         if not should_download_file(file["filename"]):
             continue
-        filename = get_filename_from_segmentnr(file["filename"], lang)
+        filename = get_filename_from_segmentnr(file["filename"])
         file["_key"] = filename
         file["lang"] = lang
         # print all keys of file

@@ -72,7 +72,7 @@ class LoadSegmentsBase:
                 "segnr": segnr,
                 "segtext": original,
                 "language": self.LANG,
-                "filename": get_filename_from_segmentnr(segnr, self.LANG),
+                "filename": get_filename_from_segmentnr(segnr),
             }
             for segnr, original in zip(file_df["segmentnr"], file_df["original"])
         ]
@@ -83,7 +83,7 @@ class LoadSegmentsBase:
         db.collection(COLLECTION_SEGMENTS_PAGES).add_hash_index(fields=["segnr"])
 
         segnrs = [segment["segnr"] for segment in segments]
-        filename = get_filename_from_segmentnr(segnrs[0], self.LANG)
+        filename = get_filename_from_segmentnr(segnrs[0])
         # hack as this filename breaks the DB
         if "K12D0505B" in filename:
             return
@@ -122,7 +122,7 @@ class LoadSegmentsBase:
                     "stemmed": stem,
                     "category": category,
                     "language": self.LANG,
-                    "file_name": get_filename_from_segmentnr(segnr[1], self.LANG),
+                    "file_name": get_filename_from_segmentnr(segnr[1]),
                 }
             )
         db.collection(self.SEARCH_COLLECTION_NAME).delete_many({"language": self.LANG})
@@ -202,7 +202,7 @@ class LoadSegmentsBase:
         segments = collection_segments.find({"language": self.LANG})
 
         for segment in tqdm(segments):
-            filename = get_filename_from_segmentnr(segment["segnr"], self.LANG)
+            filename = get_filename_from_segmentnr(segment["segnr"])
             if filename not in segments_by_file:
                 segments_by_file[filename] = []
             segments_by_file[filename].append(segment["segnr"])
