@@ -33,7 +33,6 @@ SCRIPT_DIR = os.path.dirname(
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.queries import menu_queries
-from utils import get_language_from_file_name
 
 
 def load_parallels(parallels, db: StandardDatabase) -> None:

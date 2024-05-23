@@ -6,8 +6,7 @@ from arango.database import StandardDatabase
 import json
 from dataloader_constants import COLLECTION_FILES, METADATA_DIR
 from utils import (
-    should_download_file,
-    get_cat_from_segmentnr,
+    should_download_file
 )
 from api.utils import get_cat_from_segmentnr
 
