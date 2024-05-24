@@ -175,7 +175,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
         const filterValue = limitsValue[filertName];
 
         return (
-          <Box key={filertName} sx={{ my: 1, width: 1 }}>
+          <Box key={`limit-filter-${filertName}`} sx={{ my: 1, width: 1 }}>
             <Autocomplete
               id={filertName}
               sx={{ mt: 1, mb: 2 }}

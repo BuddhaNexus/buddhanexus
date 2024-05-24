@@ -7,5 +7,5 @@ export async function getCountMatches(body: APICountMatchesRequestBody) {
     body: parseAPIRequestBody(body),
   });
 
-  return data;
+  return data ?? { parallel_count: 0 };
 }
