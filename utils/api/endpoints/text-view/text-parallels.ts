@@ -39,7 +39,10 @@ export async function getTextViewParallelsData(
   // TODO: remove return type when backend is updated (see above)
 ): Promise<{ data: TemporaryParsedTextViewParallelsData; pageNumber: number }> {
   const { data } = await apiClient.POST("/text-view/text-parallels/", {
-    body: parseAPIRequestBody(body),
+    body: {
+      ...parseAPIRequestBody(body),
+      multi_lingual: ["skt", "pli", "chn", "tib"],
+    },
   });
 
   return {
