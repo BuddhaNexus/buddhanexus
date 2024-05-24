@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from fastapi.responses import FileResponse
 from ..colormaps import calculate_color_maps_table_view
 from ..utils import (
     create_cleaned_limit_collection,
@@ -74,7 +75,7 @@ async def get_table_download(input: TableDownloadInput) -> Any:
             },
         )
 
-        return run_table_download(
+        file_location = run_table_download(
             query_result,
             [
                 input.file_name,
@@ -85,6 +86,12 @@ async def get_table_download(input: TableDownloadInput) -> Any:
                 input.folio,
                 language,
             ],
+        )
+        
+        return FileResponse(
+            file_location,
+            media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            # filename=file_name
         )
 
     else:
