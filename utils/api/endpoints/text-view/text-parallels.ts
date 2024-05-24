@@ -6,10 +6,22 @@ import type {
 } from "utils/api/types";
 
 function parseTextViewParallelsData(data: APITextViewParallelsResponseData) {
-  return data.map((segment) => ({
-    segmentNumber: segment.segnr,
-    segmentText: segment.segtext,
-  }));
+  //   return data.map((segment) => ({
+  //   segmentNumber: segment.segnr,
+  //   segmentText: segment.segtext,
+  // }));
+  // TODO: remove temporary parsing / casting when backend model is updated
+  return data.map((segment) => {
+    const { segnr, segtext } = segment;
+    return {
+      segmentNumber: segnr,
+      segmentText: segtext.map(({ text, highlightColor, matches }) => ({
+        text: text as string,
+        highlightColor: highlightColor as number,
+        matches: matches as string[],
+      })),
+    };
+  });
 }
 
 export type ParsedTextViewParallel = ReturnType<
@@ -17,27 +29,9 @@ export type ParsedTextViewParallel = ReturnType<
 >[0];
 export type ParsedTextViewParallelsData = ParsedTextViewParallel[];
 
-// TODO: remove temporary types when backend is updated
-export type TemporaryParsedTextViewParallel = Omit<
-  ParsedTextViewParallel,
-  "segmentText"
-> & {
-  // undefined values will be cleared on backend with pending data update
-  segmentText: {
-    text: string;
-    highlightColor: number;
-    // unknown[] needs to be changed to string[] on the backend
-    matches: string[];
-  }[];
-};
-
-export type TemporaryParsedTextViewParallelsData =
-  TemporaryParsedTextViewParallel[];
-
 export async function getTextViewParallelsData(
   body: APITextViewParallelsRequestBody,
-  // TODO: remove return type when backend is updated (see above)
-): Promise<{ data: TemporaryParsedTextViewParallelsData; pageNumber: number }> {
+) {
   const { data } = await apiClient.POST("/text-view/text-parallels/", {
     body: {
       ...parseAPIRequestBody(body),
@@ -46,9 +40,7 @@ export async function getTextViewParallelsData(
   });
 
   return {
-    data: parseTextViewParallelsData(
-      data ?? [],
-    ) as TemporaryParsedTextViewParallelsData,
+    data: parseTextViewParallelsData(data ?? []),
     pageNumber: body.page_number!,
   };
 }
