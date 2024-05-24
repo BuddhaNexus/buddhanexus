@@ -65,7 +65,7 @@ export const ParallelSegment = ({
   }, [infoToCopy]);
 
   // TODO: confirm this logic
-  const linkSegementNumber =
+  const linkSegmentNumber =
     textSegmentNumberRange.split("-")[0] ?? textSegmentNumberRange;
 
   return (
@@ -88,7 +88,7 @@ export const ParallelSegment = ({
             <Link
               href={makeTextViewSegmentPath({
                 language,
-                segmentNumber: linkSegementNumber,
+                segmentNumber: linkSegmentNumber,
               })}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
               target="_blank"

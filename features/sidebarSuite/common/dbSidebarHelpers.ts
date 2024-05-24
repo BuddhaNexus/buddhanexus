@@ -9,7 +9,7 @@ import type {
 } from "features/sidebarSuite/config/types";
 import type { Script } from "features/sidebarSuite/subComponents/settings/TextScriptOption";
 import { EwtsConverter } from "tibetan-ewts-converter";
-import { getParallelDownloadData } from "utils/api/endpoints/tabel-view/downloads";
+import { getParallelDownloadData } from "utils/api/endpoints/table-view/downloads";
 import { SourceLanguage } from "utils/constants";
 
 export const isSettingOmitted = ({
