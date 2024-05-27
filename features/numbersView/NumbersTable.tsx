@@ -26,7 +26,7 @@ import {
   createTableColumns,
   createTableRows,
   getVirtuosoTableComponents,
-} from "./numbresViewTableContent";
+} from "./numbersViewTableContent";
 
 interface NumbersTableProps {
   categories: APINumbersViewCategoryResponseData;

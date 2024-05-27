@@ -153,7 +153,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
           };
 
       return {
-        filertName: limit,
+        filterName: limit,
         filter,
       };
     });
@@ -168,16 +168,16 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
       </FormLabel>
       {limitFilters.map((limit) => {
         const {
-          filertName,
+          filterName,
           filter: { options, isLoading },
         } = limit;
 
-        const filterValue = limitsValue[filertName];
+        const filterValue = limitsValue[filterName];
 
         return (
-          <Box key={`limit-filter-${filertName}`} sx={{ my: 1, width: 1 }}>
+          <Box key={`limit-filter-${filterName}`} sx={{ my: 1 }}>
             <Autocomplete
-              id={filertName}
+              id={filterName}
               sx={{ mt: 1, mb: 2 }}
               multiple={true}
               value={filterValue ?? []}
@@ -192,7 +192,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={t([`filtersLabels.${filertName}`])}
+                  label={t([`filtersLabels.${filterName}`])}
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
@@ -213,7 +213,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
               loading={isLoading}
               filterSelectedOptions
               disablePortal
-              onChange={(event, value) => handleInputChange(filertName, value)}
+              onChange={(event, value) => handleInputChange(filterName, value)}
             />
           </Box>
         );

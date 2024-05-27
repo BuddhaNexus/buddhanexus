@@ -64,7 +64,6 @@ export const ParallelSegment = ({
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
 
-  // TODO: confirm this logic
   const linkSegmentNumber =
     textSegmentNumberRange.split("-")[0] ?? textSegmentNumberRange;
 

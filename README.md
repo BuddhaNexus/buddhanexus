@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server (make sure to use [yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable) and not `npm`\*!):
+First, run the development server (make sure to use [yarn](https://yarnpkg.com/getting-started/install) and not `npm`\*!):
 
 **\*note:** the project doesn't use yarn classic (it's been deprecated), so install yarn if needed: https://yarnpkg.com/getting-started/install
 
@@ -27,7 +27,7 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 ### Building locally:
 
-The project generates many, many dynamic pages which in most cases will preclude the possibility of running a normal build locally.
+The project generates many, many static pages which in most cases will preclude the possibility of running a normal build locally.
 
 It is possible to use the [compile mode](https://github.com/vercel/next.js/blob/c0ae6f6ffdad865de660e897ecbeafda2bca78da/docs/02-app/02-api-reference/08-next-cli.mdx#L189) locally:
 
