@@ -72,10 +72,10 @@ export type APIGraphViewResponseData = APIResponse<
 /** VISUAL VIEW  */
 
 export type APIVisualViewRequestBody = APIRequestParams<
-  paths["/visual-view/"]["get"]
+  paths["/visual-view/"]["post"]
 >;
 export type APIVisualViewResponseData = APIResponse<
-  paths["/visual-view/"]["get"]
+  paths["/visual-view/"]["post"]
 >;
 
 /** TABEL VIEW */

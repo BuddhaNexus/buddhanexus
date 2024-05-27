@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
   "/search/": {
     /**
@@ -16,17 +15,162 @@ export interface paths {
   "/graph-view/": {
     /**
      * Get Graph For File
-     * @description Endpoint for graph view
+     * @description Endpoint for graph view.
+     *
+     * Input fields are:
+     *
+     * ```
+     *     {
+     *       "file_name": "",
+     *       "score": 0,
+     *       "par_length": 0,
+     *       "target_collection": []
+     *     }
+     * ```
+     *
+     * The "target_collection" input comes from a dropdown list that lists collections only.
+     * This comes from the `/menus/graphcollections/` endpoint. It is possible to choose
+     * more than one option, hence it is a list. F.i.
+     *
+     * ```
+     *     ...
+     *     "target_collection": ["pli_Suttas-Early-1", "pli_Vinaya"]
+     * ```
+     *
+     * "score", "par_length" and "file_name" are the same as for the other views.
+     *
+     * Output is f.i.:
+     *
+     * ```
+     *     {
+     *       "piegraphdata": [
+     *         [
+     *           "dn Dīghanikāya",
+     *           "62063"
+     *         ],
+     *         [
+     *           "mn Majjhimanikāya",
+     *           "54783"
+     *         ],
+     *         [
+     *           "an Aṅguttaranikāya",
+     *           "24871"
+     *         ],
+     *
+     *         ...
+     *
+     *         ]
+     *       ],
+     *       "histogramgraphdata": [
+     *         [
+     *           "Kūṭadanta Sutta (Dn 5)",
+     *           "36982"
+     *         ],
+     *         [
+     *           "Caṅkī Sutta (Mn 95)",
+     *           "19661"
+     *         ],
+     *         [
+     *           "Bhesajjakkhandhaka (Pli-tv-kd 6)",
+     *           "7773"
+     *         ],
+     *         etc.
+     * ```
      */
     post: operations["get_graph_for_file_graph_view__post"];
   };
   "/visual-view/": {
     /**
-     * Get Visual View For File
-     * @description This view might be discontinued.
-     * Endpoint for visual view
+     * Get Visual View
+     * @description Endpoint for visual view.
+     *
+     * Input is as follows:
+     *
+     * ```
+     *     {
+     *       "inquiry_collection": "",
+     *       "hit_collections": []
+     *     }
+     * ```
+     *
+     * "inquiry_collection" input comes from a dropdown list that lists collections only.
+     * This comes from the `/menus/graphcollections/` endpoint.
+     *
+     * "hit_collections" also uses the same `/menus/graphcollections/` input but here it is
+     * possible to choose more than one option, hence it is a list.
+     *
+     * F.i
+     *
+     * ```
+     *     {
+     *       "inquiry_collection": "pli_Suttas-Early-1",
+     *       "hit_collections": ["pli_Suttas-Early-2"]
+     *     }
+     * ```
+     *
+     * Generates an output:
+     *
+     * ```
+     *     [
+     *       [
+     *         "Dīghanikāya (dn)",
+     *         "Khuddakapāṭha (kp)",
+     *         "49864"
+     *       ],
+     *       [
+     *         "Dīghanikāya (dn)",
+     *         "Dhammapada (dhp)",
+     *         "52645"
+     *       ],
+     *       etc.
+     * ```
+     *
+     * When the first sankey-chart is generated, you can click on the collections on the left
+     * top open them. The "hit_collections" remain the same but the "inquiry_collection" changes
+     * to the value of the clicked item (between brackets). F.i. in the above example, clicking on
+     * "Dīghanikāya (dn)" will generate the request for:
+     *
+     * ```
+     *     {
+     *       "inquiry_collection": "dn",
+     *       "hit_collections": ["pli_Suttas-Early-2"]
+     *     }
+     * ```
+     *
+     * Which outputs:
+     *
+     * ```
+     *     [
+     *       [
+     *         "Brahmajāla Sutta (dn1)",
+     *         "Khuddakapāṭha (kp)",
+     *         "55916"
+     *       ],
+     *       [
+     *         "Brahmajāla Sutta (dn1)",
+     *         "Udāna (ud)",
+     *         "57381"
+     *       ],
+     *       etc.
+     * ```
+     *
+     * The sankey-chart is then updated with the new data.
+     *
+     * Then clicking on "Brahmajāla Sutta (dn1)" generates the request for:
+     *
+     * ```
+     *     {
+     *       "inquiry_collection": "dn1",
+     *       "hit_collections": ["pli_Suttas-Early-2"]
+     *     }
+     * ```
+     *
+     * Which provides the next dataset for the new updated sankey-chart.
+     *
+     * When then clicking on "Brahmajāla Sutta (dn1)" again opens the file "dn1" in
+     * text-view mode.
      */
-    get: operations["get_visual_view_for_file_visual_view__get"];
+    post: operations["get_visual_view_visual_view__post"];
   };
   "/table-view/table/": {
     /**
@@ -136,6 +280,39 @@ export interface paths {
     /**
      * Get Categories For Filter Menu
      * @description Given a language, return list of categories for the filter menu
+     * in text view, table view and numbers view.
+     *
+     * Input is the language string like "pli".
+     * Output is:
+     *
+     * ```
+     *     {
+     *       "categoryitems": [
+     *         {
+     *           "category": "pli_Suttas-Early-1",
+     *           "categoryname": "SUTTAS-EARLY-1 (ALL)"
+     *         },
+     *         {
+     *           "category": "dn",
+     *           "categoryname": "• Dīghanikāya (DN)"
+     *         },
+     *         {
+     *           "category": "mn",
+     *           "categoryname": "• Majjhimanikāya (MN)"
+     *         },
+     *         etc.
+     * ```
+     *
+     * Where "category" is the value that needs to be returns to the backend once
+     * selected and "categoryname" is what displays in the dropdown menu:
+     *
+     * ```
+     *     SUTTAS-EARLY-1 (ALL)
+     *     • Dīghanikāya (DN)
+     *     • Majjhimanikāya (MN)
+     *     etc.
+     *
+     * ```
      */
     get: operations["get_categories_for_filter_menu_menus_category__get"];
   };
@@ -152,6 +329,42 @@ export interface paths {
      * @description Endpoint for sidebar menu
      */
     get: operations["get_data_for_sidebar_menu_menus_sidebar__get"];
+  };
+  "/menus/graphcollections/": {
+    /**
+     * Get Categories For Filter Menu
+     * @description Given a language, return list of collections for the filter menu
+     * of graph view and the input menus of the visual view.
+     *
+     * Input is the language string like "pli".
+     * Output is:
+     *
+     * ```
+     *     {
+     *       "result": [
+     *         {
+     *           "collection": "pli_Suttas-Early-1",
+     *           "collectiondisplayname": "Suttas-Early-1"
+     *         },
+     *         {
+     *           "collection": "pli_Suttas-Early-2",
+     *           "collectiondisplayname": "Suttas-Early-2"
+     *         },
+     *         etc.
+     * ```
+     *
+     * Where "collection" is the value that needs to be returns to the backend once
+     * selected and "collectiondisplayname" is what displays in the dropdown menu:
+     *
+     * ```
+     *     Suttas-Early-1
+     *     Suttas-Early-2
+     *     Suttas-Late-1
+     *     etc.
+     *
+     * ```
+     */
+    get: operations["get_categories_for_filter_menu_menus_graphcollections__get"];
   };
   "/": {
     /**
@@ -350,6 +563,18 @@ export interface components {
        */
       folio?: string;
     };
+    /** GraphCollection */
+    GraphCollection: {
+      /** Collection */
+      collection?: string;
+      /** Collectiondisplayname */
+      collectiondisplayname?: string;
+    };
+    /** GraphCollectionOutput */
+    GraphCollectionOutput: {
+      /** Result */
+      result: components["schemas"]["GraphCollection"][];
+    };
     /** GraphInput */
     GraphInput: {
       /**
@@ -376,9 +601,9 @@ export interface components {
     /** GraphViewOutput */
     GraphViewOutput: {
       /** Piegraphdata */
-      piegraphdata: ((string | number)[])[];
+      piegraphdata: (string | number)[][];
       /** Histogramgraphdata */
-      histogramgraphdata: ((string | number)[])[];
+      histogramgraphdata: (string | number)[][];
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -586,12 +811,27 @@ export interface components {
     /** ValidationError */
     ValidationError: {
       /** Location */
-      loc: string[];
+      loc: (string | number)[];
       /** Message */
       msg: string;
       /** Error Type */
       type: string;
     };
+    /** VisualViewInput */
+    VisualViewInput: {
+      /**
+       * Inquiry Collection
+       * @default
+       */
+      inquiry_collection?: string;
+      /**
+       * Hit Collections
+       * @default []
+       */
+      hit_collections?: unknown[];
+    };
+    /** VisualViewOutput */
+    VisualViewOutput: (string | number)[][];
     /** Segment */
     api__endpoints__models__numbers_view_models__Segment: {
       /** Segmentnr */
@@ -676,7 +916,6 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-
   /**
    * Get Search Results
    * @description Returns search results for given search string.
@@ -705,7 +944,67 @@ export interface operations {
   };
   /**
    * Get Graph For File
-   * @description Endpoint for graph view
+   * @description Endpoint for graph view.
+   *
+   * Input fields are:
+   *
+   * ```
+   *     {
+   *       "file_name": "",
+   *       "score": 0,
+   *       "par_length": 0,
+   *       "target_collection": []
+   *     }
+   * ```
+   *
+   * The "target_collection" input comes from a dropdown list that lists collections only.
+   * This comes from the `/menus/graphcollections/` endpoint. It is possible to choose
+   * more than one option, hence it is a list. F.i.
+   *
+   * ```
+   *     ...
+   *     "target_collection": ["pli_Suttas-Early-1", "pli_Vinaya"]
+   * ```
+   *
+   * "score", "par_length" and "file_name" are the same as for the other views.
+   *
+   * Output is f.i.:
+   *
+   * ```
+   *     {
+   *       "piegraphdata": [
+   *         [
+   *           "dn Dīghanikāya",
+   *           "62063"
+   *         ],
+   *         [
+   *           "mn Majjhimanikāya",
+   *           "54783"
+   *         ],
+   *         [
+   *           "an Aṅguttaranikāya",
+   *           "24871"
+   *         ],
+   *
+   *         ...
+   *
+   *         ]
+   *       ],
+   *       "histogramgraphdata": [
+   *         [
+   *           "Kūṭadanta Sutta (Dn 5)",
+   *           "36982"
+   *         ],
+   *         [
+   *           "Caṅkī Sutta (Mn 95)",
+   *           "19661"
+   *         ],
+   *         [
+   *           "Bhesajjakkhandhaka (Pli-tv-kd 6)",
+   *           "7773"
+   *         ],
+   *         etc.
+   * ```
    */
   get_graph_for_file_graph_view__post: {
     requestBody: {
@@ -729,23 +1028,106 @@ export interface operations {
     };
   };
   /**
-   * Get Visual View For File
-   * @description This view might be discontinued.
-   * Endpoint for visual view
+   * Get Visual View
+   * @description Endpoint for visual view.
+   *
+   * Input is as follows:
+   *
+   * ```
+   *     {
+   *       "inquiry_collection": "",
+   *       "hit_collections": []
+   *     }
+   * ```
+   *
+   * "inquiry_collection" input comes from a dropdown list that lists collections only.
+   * This comes from the `/menus/graphcollections/` endpoint.
+   *
+   * "hit_collections" also uses the same `/menus/graphcollections/` input but here it is
+   * possible to choose more than one option, hence it is a list.
+   *
+   * F.i
+   *
+   * ```
+   *     {
+   *       "inquiry_collection": "pli_Suttas-Early-1",
+   *       "hit_collections": ["pli_Suttas-Early-2"]
+   *     }
+   * ```
+   *
+   * Generates an output:
+   *
+   * ```
+   *     [
+   *       [
+   *         "Dīghanikāya (dn)",
+   *         "Khuddakapāṭha (kp)",
+   *         "49864"
+   *       ],
+   *       [
+   *         "Dīghanikāya (dn)",
+   *         "Dhammapada (dhp)",
+   *         "52645"
+   *       ],
+   *       etc.
+   * ```
+   *
+   * When the first sankey-chart is generated, you can click on the collections on the left
+   * top open them. The "hit_collections" remain the same but the "inquiry_collection" changes
+   * to the value of the clicked item (between brackets). F.i. in the above example, clicking on
+   * "Dīghanikāya (dn)" will generate the request for:
+   *
+   * ```
+   *     {
+   *       "inquiry_collection": "dn",
+   *       "hit_collections": ["pli_Suttas-Early-2"]
+   *     }
+   * ```
+   *
+   * Which outputs:
+   *
+   * ```
+   *     [
+   *       [
+   *         "Brahmajāla Sutta (dn1)",
+   *         "Khuddakapāṭha (kp)",
+   *         "55916"
+   *       ],
+   *       [
+   *         "Brahmajāla Sutta (dn1)",
+   *         "Udāna (ud)",
+   *         "57381"
+   *       ],
+   *       etc.
+   * ```
+   *
+   * The sankey-chart is then updated with the new data.
+   *
+   * Then clicking on "Brahmajāla Sutta (dn1)" generates the request for:
+   *
+   * ```
+   *     {
+   *       "inquiry_collection": "dn1",
+   *       "hit_collections": ["pli_Suttas-Early-2"]
+   *     }
+   * ```
+   *
+   * Which provides the next dataset for the new updated sankey-chart.
+   *
+   * When then clicking on "Brahmajāla Sutta (dn1)" again opens the file "dn1" in
+   * text-view mode.
    */
-  get_visual_view_for_file_visual_view__get: {
-    parameters: {
-      query: {
-        searchterm: string;
-        language: string;
-        selected?: string[];
+  get_visual_view_visual_view__post: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["VisualViewInput"];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": unknown;
+          "application/json": components["schemas"]["VisualViewOutput"];
         };
       };
       /** @description Validation Error */
@@ -1123,6 +1505,39 @@ export interface operations {
   /**
    * Get Categories For Filter Menu
    * @description Given a language, return list of categories for the filter menu
+   * in text view, table view and numbers view.
+   *
+   * Input is the language string like "pli".
+   * Output is:
+   *
+   * ```
+   *     {
+   *       "categoryitems": [
+   *         {
+   *           "category": "pli_Suttas-Early-1",
+   *           "categoryname": "SUTTAS-EARLY-1 (ALL)"
+   *         },
+   *         {
+   *           "category": "dn",
+   *           "categoryname": "• Dīghanikāya (DN)"
+   *         },
+   *         {
+   *           "category": "mn",
+   *           "categoryname": "• Majjhimanikāya (MN)"
+   *         },
+   *         etc.
+   * ```
+   *
+   * Where "category" is the value that needs to be returns to the backend once
+   * selected and "categoryname" is what displays in the dropdown menu:
+   *
+   * ```
+   *     SUTTAS-EARLY-1 (ALL)
+   *     • Dīghanikāya (DN)
+   *     • Majjhimanikāya (MN)
+   *     etc.
+   *
+   * ```
    */
   get_categories_for_filter_menu_menus_category__get: {
     parameters: {
@@ -1176,6 +1591,61 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["SideBarOutput"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get Categories For Filter Menu
+   * @description Given a language, return list of collections for the filter menu
+   * of graph view and the input menus of the visual view.
+   *
+   * Input is the language string like "pli".
+   * Output is:
+   *
+   * ```
+   *     {
+   *       "result": [
+   *         {
+   *           "collection": "pli_Suttas-Early-1",
+   *           "collectiondisplayname": "Suttas-Early-1"
+   *         },
+   *         {
+   *           "collection": "pli_Suttas-Early-2",
+   *           "collectiondisplayname": "Suttas-Early-2"
+   *         },
+   *         etc.
+   * ```
+   *
+   * Where "collection" is the value that needs to be returns to the backend once
+   * selected and "collectiondisplayname" is what displays in the dropdown menu:
+   *
+   * ```
+   *     Suttas-Early-1
+   *     Suttas-Early-2
+   *     Suttas-Late-1
+   *     etc.
+   *
+   * ```
+   */
+  get_categories_for_filter_menu_menus_graphcollections__get: {
+    parameters: {
+      query: {
+        /** @description language to be used */
+        language: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["GraphCollectionOutput"];
         };
       };
       /** @description Validation Error */
