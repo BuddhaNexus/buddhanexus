@@ -156,27 +156,6 @@ def load_sorted_parallels_file(path, lang, db_collection):
         filename = get_filename_from_segmentnr(file["filename"], lang)
         file["_key"] = filename
         file["lang"] = lang
-        # print all keys of file
-        file["parallels_sorted_by_src_pos"] = file["ids_sorted_by_root_segnr"][
-            :MATCH_LIMIT
-        ]
-        file["parallels_sorted_by_tgt_pos"] = file["ids_sorted_by_par_segnr"][
-            :MATCH_LIMIT
-        ]
-        file["parallels_sorted_by_length_src"] = file["ids_sorted_by_root_length"][
-            :MATCH_LIMIT
-        ]
-        file["parallels_sorted_by_length_tgt"] = file["ids_sorted_by_par_length"][
-            :MATCH_LIMIT
-        ]
-        file["parallels_randomized"] = file["ids_shuffled"][:MATCH_LIMIT]
-
-        del file["ids_sorted_by_root_segnr"]
-        del file["ids_sorted_by_par_segnr"]
-        del file["ids_sorted_by_root_length"]
-        del file["ids_sorted_by_par_length"]
-        del file["ids_shuffled"]
-
         db_collection.insert(file, overwrite=True)
 
 
