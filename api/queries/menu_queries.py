@@ -133,16 +133,12 @@ FOR category IN menu_categories
     }
 """
 
-QUERY_FILES_PER_CATEGORY = """
-FOR file IN files_parallel_count
-    FILTER file.category == @category
-    FILTER file.language == @language
-    FOR file_name in files
-        FILTER file_name._key == file._key
-        SORT file.filenr
-        RETURN {
-            file_name: file._key,
-            displayName: file_name.displayName,
-            totallengthcount: file.totallengthcount
-        }
+QUERY_COLLECTIONS_FOR_LANGUAGE = """
+LET total_collection = (
+    FOR collection IN menu_collections
+        FILTER collection.language == @language
+        SORT collection.collectionnr
+        RETURN { collection: collection._key, collectiondisplayname: collection.collection}
+    )
+RETURN total_collection
 """

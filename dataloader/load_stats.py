@@ -13,7 +13,7 @@ from dataloader_constants import (
 
 def load_global_stats_for_language(folder, lang, db):
     """
-    global stats are precalculated and fount at json/{lang}/stats/global_stats.json
+    global stats are precalculated and fount ad matches/{lang}/stats/global_stats.json.gz
     :param lang: language code
     :param db: ArangoDB connection object
     :param number_of_threads: Number of threads to use for parallel loading
@@ -26,9 +26,9 @@ def load_global_stats_for_language(folder, lang, db):
     try:
         print(global_stats.keys())
         # insert global stats into the database based on the keys in categories and files
-        for key in tqdm(global_stats["collections"]):
+        for key in tqdm(global_stats["categories"]):
             db_collection_categories.insert(
-                {"_key": key, "lang": lang, "stats": global_stats["collections"][key]}
+                {"_key": key, "lang": lang, "stats": global_stats["categories"][key]}
             )
         for key in tqdm(global_stats["files"]):
             db_collection_files.insert(

@@ -342,13 +342,3 @@ def add_sources(c):
     db = get_database()
     print("adding source information")
     load_sources(db, DEFAULT_SOURCE_URL)
-
-
-# IS this function still used?
-
-# @task
-# def calculate_collection_totals(c):
-#     print("Calculating collection totals from loaded data")
-#     calculate_parallel_totals()
-
-#     print("Parallel totals calculation completed.")

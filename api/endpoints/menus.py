@@ -58,6 +58,39 @@ async def get_categories_for_filter_menu(
 ) -> Any:
     """
     Given a language, return list of categories for the filter menu
+    in text view, table view and numbers view.
+
+    Input is the language string like "pli".
+    Output is:
+
+    ```
+        {
+          "categoryitems": [
+            {
+              "category": "pli_Suttas-Early-1",
+              "categoryname": "SUTTAS-EARLY-1 (ALL)"
+            },
+            {
+              "category": "dn",
+              "categoryname": "• Dīghanikāya (DN)"
+            },
+            {
+              "category": "mn",
+              "categoryname": "• Majjhimanikāya (MN)"
+            },
+            etc.
+    ```
+
+    Where "category" is the value that needs to be returns to the backend once
+    selected and "categoryname" is what displays in the dropdown menu:
+
+    ```
+        SUTTAS-EARLY-1 (ALL)
+        • Dīghanikāya (DN)
+        • Majjhimanikāya (MN)
+        etc.
+
+    ```
     """
     query_result = execute_query(
         menu_queries.QUERY_CATEGORIES_FOR_LANGUAGE,
@@ -92,3 +125,45 @@ async def get_data_for_sidebar_menu(
 
     query_sidebar_menu = execute_query(menu_query, current_bind_vars)
     return {"navigationmenudata": query_sidebar_menu.result}
+
+
+@router.get("/graphcollections/", response_model=GraphCollectionOutput)
+async def get_categories_for_filter_menu(
+    language: str = Query(..., description="language to be used")
+) -> Any:
+    """
+    Given a language, return list of collections for the filter menu
+    of graph view and the input menus of the visual view.
+
+    Input is the language string like "pli".
+    Output is:
+
+    ```
+        {
+          "result": [
+            {
+              "collection": "pli_Suttas-Early-1",
+              "collectiondisplayname": "Suttas-Early-1"
+            },
+            {
+              "collection": "pli_Suttas-Early-2",
+              "collectiondisplayname": "Suttas-Early-2"
+            },
+            etc.
+    ```
+
+    Where "collection" is the value that needs to be returns to the backend once
+    selected and "collectiondisplayname" is what displays in the dropdown menu:
+
+    ```
+        Suttas-Early-1
+        Suttas-Early-2
+        Suttas-Late-1
+        etc.
+
+    ```
+    """
+    query_result = execute_query(
+        menu_queries.QUERY_COLLECTIONS_FOR_LANGUAGE, bind_vars={"language": language}
+    )
+    return {"result": query_result.result[0]}
