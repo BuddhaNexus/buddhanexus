@@ -201,7 +201,7 @@ class LoadSegmentsBase:
         segments = collection_segments.find({"language": self.LANG})
 
         for segment in tqdm(segments):
-            filename = get_filename_from_segmentnr(segment["segnr"], self.LANG)
+            filename = get_filename_from_segmentnr(segment["segnr"], self.LANG)            
             if filename not in segments_by_file:
                 segments_by_file[filename] = []
             segments_by_file[filename].append(segment["segnr"])

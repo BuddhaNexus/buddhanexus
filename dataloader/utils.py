@@ -103,7 +103,7 @@ def should_download_file(file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    # if "T06" in file_name:
+    #if "dn2" in file_name:
     return True
 
 
