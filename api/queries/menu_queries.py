@@ -1,10 +1,10 @@
 QUERY_FILES_FOR_LANGUAGE = """
 FOR file IN files
     FILTER file.language == @language
+    FILTER file.displayName != null
     SORT file.filenr
     RETURN {
-        displayName: file.displayName,
-        search_field: file.search_field,
+        displayName: file.displayName,        
         textname: file.textname,
         filename: file.filename,
         category: file.category,
@@ -17,6 +17,7 @@ FOR file in files
     FILTER LENGTH(file.available_lang) > 0
     SORT file.language, file.filename ASC
     RETURN {
+        filelanguage: file.language,
         displayName: file.displayName,
         search_field: file.search_field,
         textname: file.textname,
@@ -32,23 +33,28 @@ FOR file IN files
         SORT file.filenr
         RETURN {
             filename: file.filename,
-            categoryname: CONCAT(file.textname," ",file.displayName)
+            categoryname: file.textname,
+            displayname: file.displayName,
+            search_field: file.search_field
         }
 """
 
 QUERY_CATEGORIES_FOR_LANGUAGE = """
 LET total_collection = (
-    FOR collection IN 1..1 OUTBOUND CONCAT("languages/", @language) GRAPH 'collections_categories' OPTIONS { "uniqueVertices": "global", "bfs": true }
+    FOR collection IN menu_collections
+        FILTER collection.language == @language
         SORT collection.collectionnr
         LET categories = (
-            FOR category IN 1..1 OUTBOUND collection._id GRAPH 'collections_categories'
-                SORT category.categorynr
-                LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
-                LET categoryname = CONCAT_SEPARATOR(" ",categorynamepart,CONCAT("(",UPPER(category.category),")"))
-                RETURN {
-                    category: category.category,
-                    categoryname: CONCAT("• ",categoryname)
-                }
+            for collection_category in collection.categories
+                FOR category IN menu_categories
+                    FILTER category.category == collection_category
+                    SORT category.categorynr
+                    LET categorynamepart = SPLIT( category.categoryname, [ "—", "(" ] )[0]
+                    LET categoryname = CONCAT_SEPARATOR(" ",categorynamepart,CONCAT("(",UPPER(category.category),")"))
+                    RETURN {
+                        category: category.category,
+                        categoryname: CONCAT("• ",categoryname)
+                    }
         )
         RETURN APPEND(
             [{ category: collection._key, categoryname: CONCAT(UPPER(collection.collection), " (ALL)") }],
@@ -59,29 +65,34 @@ RETURN FLATTEN(total_collection)
 """
 
 QUERY_TOTAL_MENU = """
-FOR collection IN 1..1 OUTBOUND concat("languages/", @language) GRAPH 'collections_categories'
+FOR collection IN menu_collections
+    filter collection.language == @language
     LET categories = (
-        FOR category IN 1..1 OUTBOUND collection._id GRAPH 'collections_categories'
-            SORT category.categorynr
-            LET catname = SPLIT(category.categoryname,["—","("])[0]
-            LET filelist = (
-                FOR file IN files
-                    FILTER file.language == category.language
-                    FILTER file.category == category.category
-                    SORT file.filenr
-                    FILTER file
-                    RETURN { filename: file.filename, textname: file.textname, displayname: file.displayName, available_lang : file.available_lang}
-            )
-            RETURN {
-                categoryname: category.category,
-                categorydisplayname: catname,
-                files: filelist
-            }
+        FOR categories in collection.categories
+            FOR category IN menu_categories
+                FILTER category.language == @language
+                FILTER category.category == categories 
+                SORT category.categorynr
+                LET catname = SPLIT(category.categoryname,["—","("])[0]
+                LET filelist = (
+                    FOR file IN files
+                        FILTER file.language == category.language
+                        FILTER file.category == category.category
+                        SORT file.filenr
+                        FILTER file
+                        RETURN { file_name: file.filename, textname: file.textname, displayname: file.displayName, available_lang : file.available_lang}
+                )
+                RETURN {
+                    categoryname: category.category,
+                    categorydisplayname: catname,
+                    files: filelist
+                }
     )
     RETURN {
         collection: collection.collection,
         categories: categories
-    }"""
+    }
+"""
 
 
 QUERY_ALL_COLLECTIONS = """
@@ -93,21 +104,10 @@ FOR menu IN menu_collections
     }
 """
 
-QUERY_CATEGORIES_PER_COLLECTION = """
-FOR lang IN languages
-    FOR collection IN 1..1 OUTBOUND concat("languages/", lang._key) GRAPH 'collections_categories'
-            LET categories = (
-                FOR category IN 1..1 OUTBOUND collection._id GRAPH 'collections_categories'
-                    SORT category.categorynr
-                    LET catname = SPLIT(category.categoryname,["—","("])[0]
-                    RETURN {[category["category"]]: catname }
-        )
-    RETURN { collection: collection._key, language: collection.language, categories: categories }
-"""
-
 QUERY_ONE_COLLECTION = """
-FOR category IN 1..1 OUTBOUND concat("menu_collections/", @collectionkey) GRAPH 'collections_categories'
-    RETURN category.category
+FOR collection in menu_collections
+    FILTER collection._key == @collectionkey
+    RETURN collection.categories
 """
 
 QUERY_COLLECTION_NAMES = """
@@ -123,16 +123,22 @@ RETURN (
 )
 """
 
-QUERY_FILES_PER_CATEGORY = """
-FOR file IN files_parallel_count
-    FILTER file.category == @category
-    FILTER file.language == @language
-    FOR filename in files
-        FILTER filename._key == file._key
-        SORT file.filenr
-        RETURN {
-            filename: file._key,
-            displayName: filename.displayName,
-            totallengthcount: file.totallengthcount
-        }
+QUERY_CATEGORIES_PER_LANGUAGE = """
+FOR category IN menu_categories
+    FILTER category.language == @language
+    SORT category.categorynr
+    RETURN {
+        id: category["category"],
+        displayName: category.categoryname
+    }
+"""
+
+QUERY_COLLECTIONS_FOR_LANGUAGE = """
+LET total_collection = (
+    FOR collection IN menu_collections
+        FILTER collection.language == @language
+        SORT collection.collectionnr
+        RETURN { collection: collection._key, collectiondisplayname: collection.collection}
+    )
+RETURN total_collection
 """

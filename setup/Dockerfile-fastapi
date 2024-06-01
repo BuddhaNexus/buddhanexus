@@ -1,4 +1,4 @@
-FROM python:3.7.4-buster
+FROM python:3.8-bookworm
 
 RUN mkdir -p /opt/buddhanexus
 WORKDIR /opt/buddhanexus

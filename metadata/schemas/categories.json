@@ -1,0 +1,28 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Categories",
+    "description": "Language specific list of categories for menu",
+    "type": "array",
+    "items": {
+        "additionalProperties": false,
+        "required": [
+            "category",
+            "files",
+            "categoryname"
+        ],
+        "properties": {
+            "category": {
+                "type": "string"
+            },
+            "files": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "categoryname": {
+                "type": "string"
+            }
+        }
+    }
+}
