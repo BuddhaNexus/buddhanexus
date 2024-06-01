@@ -1,9 +1,5 @@
 from pydantic import BaseModel
-from typing import List, Dict, Tuple, Union
-
-"""
-THE GRAPH VIEW IS NOT WORKING. NEEDS TOTAL REVAMP!
-"""
+from typing import List, Union
 
 
 class GraphInput(BaseModel):

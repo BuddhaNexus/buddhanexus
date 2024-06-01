@@ -39,7 +39,7 @@ par_fulltext can then be made un-optional
 
 
 class Segment(BaseModel):
-    par_segnr: str
+    par_segnr_range: str
     display_name: Union[str, None] = None
     tgt_lang: str
     par_offset_beg: Optional[int]

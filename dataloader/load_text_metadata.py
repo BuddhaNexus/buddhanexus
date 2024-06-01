@@ -6,10 +6,9 @@ from arango.database import StandardDatabase
 import json
 from dataloader_constants import COLLECTION_FILES, METADATA_DIR
 from utils import (
-    should_download_file,
-    get_cat_from_segmentnr,
+    should_download_file
 )
-from utils import get_cat_from_segmentnr
+from api.utils import get_cat_from_segmentnr
 
 
 def load_text_metadata_from_menu_files(langs: list, db: StandardDatabase):

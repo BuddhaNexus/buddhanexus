@@ -65,3 +65,12 @@ class SideBar(BaseModel):
 
 class SideBarOutput(BaseModel):
     navigationmenudata: List[SideBar]
+
+
+class GraphCollection(BaseModel):
+    collection: Union[str, None] = None
+    collectiondisplayname: Union[str, None] = None
+
+
+class GraphCollectionOutput(BaseModel):
+    result: List[GraphCollection]

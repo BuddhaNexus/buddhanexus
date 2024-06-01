@@ -146,8 +146,8 @@ def calculate_color_maps_table_view(data):
             par_colormap[par_start:par_end] = [1] * (par_end - par_start)
             par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
             entry["par_fulltext"] = par_fulltext
-            entry["par_segnr"] = shorten_segment_names(entry["par_segnr"])
-            entry["root_segnr"] = shorten_segment_names(entry["root_segnr"])
+            entry["par_segnr_range"] = shorten_segment_names(entry["par_segnr"])
+            entry["root_segnr_range"] = shorten_segment_names(entry["root_segnr"])
             entry["score"] = prettify_score(entry["score"])
             del entry["par_segment"]
             del entry["root_seg_text"]
@@ -156,6 +156,8 @@ def calculate_color_maps_table_view(data):
             del entry["par_offset_beg"]
             del entry["par_offset_end"]
             del entry["par_pos_beg"]
+            del entry["par_segnr"]
+            del entry["root_segnr"]
     return data
 
 
@@ -179,9 +181,10 @@ def calculate_color_maps_middle_view(data):
             par_fulltext = create_segmented_text_color_only(par_fulltext, par_colormap)
             entry["par_fulltext"] = par_fulltext
             entry["score"] = prettify_score(entry["score"])
-            entry["par_segnr"] = shorten_segment_names(entry["par_segnr"])
+            entry["par_segnr_range"] = shorten_segment_names(entry["par_segnr"])
             del entry["par_offset_beg"]
             del entry["par_offset_end"]
+            del entry["par_segnr"]
     return data
 
 

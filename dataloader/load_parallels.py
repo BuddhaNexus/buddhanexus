@@ -9,7 +9,6 @@ from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 import multiprocessing
 import natsort
-from utils import get_filename_from_segmentnr
 
 from dataloader_models import Match, validate_dict_list
 from dataloader_constants import (
@@ -18,12 +17,12 @@ from dataloader_constants import (
     MATCH_LIMIT,
 )
 from folios import get_folios_from_segment_keys
-
-from utils import (
+from utils import should_download_file
+from api.utils import (
     get_cat_from_segmentnr,
-    should_download_file,
-    get_language_from_file_name,
+    get_filename_from_segmentnr,
 )
+
 
 # allow importing from api directory
 PACKAGE_PARENT = ".."
@@ -33,7 +32,6 @@ SCRIPT_DIR = os.path.dirname(
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.queries import menu_queries
-from utils import get_language_from_file_name
 
 
 def load_parallels(parallels, db: StandardDatabase) -> None:
@@ -58,12 +56,8 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         folios = []
         for folio in folios_list:
             folios.append(folio["num"])
-        root_filename = get_filename_from_segmentnr(
-            parallel["root_segnr"][0], parallel["src_lang"]
-        )
-        par_filename = get_filename_from_segmentnr(
-            parallel["par_segnr"][0], parallel["tgt_lang"]
-        )
+        root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0])
+        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])
         par_filename = re.sub("_[0-9][0-9][0-9]", "", par_filename)
         id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]
         parallel["_id"] = id
@@ -153,7 +147,7 @@ def load_sorted_parallels_file(path, lang, db_collection):
     for file in tqdm(current_files):
         if not should_download_file(file["filename"]):
             continue
-        filename = get_filename_from_segmentnr(file["filename"], lang)
+        filename = get_filename_from_segmentnr(file["filename"])
         file["_key"] = filename
         file["lang"] = lang
         # print all keys of file
