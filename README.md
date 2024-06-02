@@ -38,7 +38,7 @@ yarn start
 
 ## API BE<>FE intergration
 
-https://dharmamitra.org/api-db/docs#/
+https://buddhanexus2.kc-tbts.uni-hamburg.de/api/docs#/ (as an intrim measure the BN api is hosted at https://dharmamitra.org/api-db/docs#/ with the api model available at https://dharmamitra.org/api-db/openapi.json)
 
 The `utils/api/endpoints` directory mirrors the BE api endpoint structure
 
@@ -48,7 +48,7 @@ The project uses [`openapi-typescript`](https://openapi-ts.pages.dev/introductio
 
 Types are generated from the API project's [OpenAPI docs page](https://buddhanexus2.kc-tbts.uni-hamburg.de/api/docs#/) by running:
 
-```
+```sh
 yarn openapi-ts
 ```
 

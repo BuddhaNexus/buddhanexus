@@ -13,7 +13,6 @@ import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/source
 import merge from "lodash/merge";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
-import type { ApiGraphPageData } from "utils/api/endpoints/graph-view/graph";
 import { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
@@ -37,22 +36,33 @@ const GraphContainer: React.FC<{ children: React.ReactNode }> = ({
 );
 
 export default function GraphPage() {
-  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
+  const {
+    sourceLanguage,
+    fileName,
+    queryParams: { score, par_length, target_collection },
+    defaultQueryParams,
+  } = useDbQueryParams();
   const { isFallback } = useSourceFile();
   useDbView();
 
   const { t } = useTranslation();
 
-  const { data, isLoading, isError } = useQuery<ApiGraphPageData>({
-    queryKey: DbApi.GraphView.makeQueryKey({
+  const requestBody = React.useMemo(
+    () => ({
       file_name: fileName,
-      ...queryParams,
+      score: score ? Number(score) : defaultQueryParams.score,
+      par_length: par_length
+        ? Number(par_length)
+        : defaultQueryParams.par_length,
+      // TODO: Add target_collection when available
+      target_collection: undefined,
     }),
-    queryFn: () =>
-      DbApi.GraphView.call({
-        fileName,
-        queryParams,
-      }),
+    [fileName, score, par_length, target_collection, defaultQueryParams],
+  );
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: DbApi.GraphView.makeQueryKey(requestBody),
+    queryFn: () => DbApi.GraphView.call(requestBody),
   });
 
   const filteredHistogramData = useMemo(
@@ -97,9 +107,11 @@ export default function GraphPage() {
             {t("graph.pieDataSubtitle")}
           </Typography>
 
-          <GraphContainer>
-            <PieDataChart data={data?.piegraphdata} />
-          </GraphContainer>
+          <Box sx={{ maxWidth: "900px" }}>
+            <GraphContainer>
+              <PieDataChart data={data?.piegraphdata} />
+            </GraphContainer>
+          </Box>
 
           <Typography variant="h4" sx={{ my: 2 }}>
             {t("graph.histogramDataTitle")}

@@ -3,6 +3,7 @@
  * Do not make direct changes to the file.
  */
 
+
 export interface paths {
   "/search/": {
     /**
@@ -601,9 +602,9 @@ export interface components {
     /** GraphViewOutput */
     GraphViewOutput: {
       /** Piegraphdata */
-      piegraphdata: (string | number)[][];
+      piegraphdata: ((string | number)[])[];
       /** Histogramgraphdata */
-      histogramgraphdata: (string | number)[][];
+      histogramgraphdata: ((string | number)[])[];
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -831,7 +832,7 @@ export interface components {
       hit_collections?: unknown[];
     };
     /** VisualViewOutput */
-    VisualViewOutput: (string | number)[][];
+    VisualViewOutput: ((string | number)[])[];
     /** Segment */
     api__endpoints__models__numbers_view_models__Segment: {
       /** Segmentnr */
@@ -916,6 +917,7 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
+
   /**
    * Get Search Results
    * @description Returns search results for given search string.

@@ -1,39 +1,33 @@
-// graph view
-// import apiClient from "@api";
-// import type {
-//   APIGraphViewRequestBody,
-//   APIGraphViewResponseData,
-// } from "utils/api/types";
-import createClient from "openapi-fetch";
-
-export interface FilePropApiQuery {
-  fileName: string;
-  queryParams: any;
-}
+import apiClient from "@api";
+import type {
+  APIGraphViewRequestBody,
+  APIGraphViewResponseData,
+} from "utils/api/types";
 
 export type GraphPageGraphData = [name: string, count: number][];
 
-export interface ApiGraphPageData {
-  histogramgraphdata: GraphPageGraphData;
-  piegraphdata: GraphPageGraphData;
+const defaultReturnValue = {
+  histogramgraphdata: [],
+  piegraphdata: [],
+};
+
+function parseAPIGraphData(data: APIGraphViewResponseData) {
+  return data
+    ? Object.entries(data).reduce((acc, [key, value]) => {
+        return {
+          ...acc,
+          [key]: value.map((item) => {
+            return [item[0], Number(item[1])];
+          }) as GraphPageGraphData,
+        };
+      }, defaultReturnValue)
+    : defaultReturnValue;
 }
 
-// TODO: move to new BE once the endpoint is ready there
-const OLD_BE_GRAPH_VIEW_ENDPOINT =
-  "https://buddhanexus.kc-tbts.uni-hamburg.de/api/files";
+export async function getGraphData(body: APIGraphViewRequestBody) {
+  const { data } = await apiClient.POST("/graph-view/", {
+    body,
+  });
 
-export async function getGraphData({
-  fileName,
-  // queryParams,
-}: FilePropApiQuery): Promise<ApiGraphPageData> {
-  const apiClient = createClient({ baseUrl: OLD_BE_GRAPH_VIEW_ENDPOINT });
-
-  const { data } = await apiClient.GET(
-    // @ts-expect-error typings don't include the old BE
-    `/${fileName}/graph?co_occ=2000`,
-    {},
-  );
-
-  // TODO: - remove type casting once response model is added to api
-  return data as unknown as ApiGraphPageData;
+  return data ? parseAPIGraphData(data) : defaultReturnValue;
 }
