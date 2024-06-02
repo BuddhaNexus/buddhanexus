@@ -4,8 +4,6 @@ import { useTranslation } from "next-i18next";
 import { useTheme } from "@mui/material/styles";
 import { GraphPageGraphData } from "utils/api/endpoints/graph-view/graph";
 
-import { GRAPH_BG_COLOR } from "./constants";
-
 interface Props {
   data: GraphPageGraphData;
   chartType?: GoogleChartWrapperChartType;
@@ -28,10 +26,15 @@ export const HistogramDataChart = memo<Props>(function HistogramDataChart({
       options={{
         colors: [palette.secondary.main],
         legend: { position: "none" },
-        backgroundColor: GRAPH_BG_COLOR,
-        chartArea: { width: "80%", height: "80%" },
-        vAxis: { scaleType: isScatterChart ? "log" : undefined },
+        backgroundColor: palette.background.paper,
+        chartArea: { width: "85%", height: "80%" },
+        vAxis: {
+          scaleType: isScatterChart ? "log" : undefined,
+          textStyle: { color: palette.text.primary },
+        },
+        hAxis: { textStyle: { color: palette.text.primary } },
       }}
+      width="100%"
       height="100%"
     />
   );

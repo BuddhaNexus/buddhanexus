@@ -19,7 +19,6 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 import { Box, Paper, Typography } from "@mui/material";
-import { GRAPH_BG_COLOR } from "features/graphView/constants";
 import { HistogramDataChart } from "features/graphView/HistogramDataChart";
 import { PieDataChart } from "features/graphView/PieDataChart";
 
@@ -27,13 +26,7 @@ const HISTOGRAM_DATA_MATCH_LIMIT = 50;
 
 const GraphContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
-}) => (
-  <Paper
-    sx={{ backgroundColor: GRAPH_BG_COLOR, my: 2, flex: 1, minHeight: "500px" }}
-  >
-    {children}
-  </Paper>
-);
+}) => <Paper sx={{ my: 2, minHeight: "500px", flex: 1 }}>{children}</Paper>;
 
 export default function GraphPage() {
   const {
