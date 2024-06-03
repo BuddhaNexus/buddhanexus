@@ -64,10 +64,6 @@ def tag_sanskrit(sanskrit_string):
 
 
 def get_offsets(search_string, segment_text):
-    segment_text = re.sub(
-        "@[0-9a-b+]+", "", segment_text
-    )  # we need to do this in order to make sure that the search function is matching strings that contain folio numbers as well
-    segment_text = re.sub("/+", "", segment_text)  # remove possible dandas
     allowed_distance = 0
     max_distance = len(search_string) / 5
     match = []
@@ -124,7 +120,7 @@ def process_result(result, search_string):
         result["similarity"] = 100
         if distance != 0:
             result["similarity"] = 100 - distance / len(search_string)
-        result["segment_nr"] = shorten_segment_names(result["segment_nr"])
+        result["segment_nr"] = result['segment_nr'][0]
         return result
     except (RuntimeError, TypeError, NameError):
         pass
@@ -133,8 +129,10 @@ def process_result(result, search_string):
 def postprocess_results(search_strings, results):
     new_results = []
     search_string = search_strings["skt"]
-
     for result in results:
+        result['original'] = re.sub(
+        "@[0-9a-b+]+", "", result['original']
+        )  # remove possible tib folio numbers
         new_results.append(process_result(result, search_string))
 
     results = [x for x in new_results if x is not None]
