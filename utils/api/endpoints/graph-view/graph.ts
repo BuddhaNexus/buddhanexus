@@ -11,7 +11,7 @@ const defaultReturnValue = {
   piegraphdata: [],
 };
 
-function parseAPIGraphData(data: APIGraphViewResponseData) {
+function parseAPIGraphData(data: APIGraphViewResponseData | undefined) {
   return data
     ? Object.entries(data).reduce((acc, [key, value]) => {
         return {
@@ -29,5 +29,5 @@ export async function getGraphData(body: APIGraphViewRequestBody) {
     body,
   });
 
-  return data ? parseAPIGraphData(data) : defaultReturnValue;
+  return parseAPIGraphData(data);
 }
