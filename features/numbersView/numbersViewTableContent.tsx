@@ -15,18 +15,21 @@ import {
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import { Link } from "components/common/Link";
 import type {
-  APINumbersCategoriesData,
-  APINumbersData,
-  NumbersParallel,
-  NumbersSegment,
-} from "utils/api/numbers";
+  APINumbersSegment,
+  APINumbersViewCategoryResponseData,
+  APINumbersViewResponseData,
+  APIParallel,
+} from "utils/api/types";
 import { SourceLanguage } from "utils/constants";
 
-export const createTableRows = (rowData: APINumbersData) =>
+export const createTableRows = (rowData: APINumbersViewResponseData) =>
   rowData.map((item) => {
     const row: any = { segment: item.segmentnr };
 
     item.parallels.forEach((parallel) => {
+      // TODO: - clear undefined check onee Pali data is updated to BE.
+      if (!parallel.category) return;
+
       const prevCategoryValue = row[parallel.category] || [];
       Object.assign(row, {
         [parallel.category]: [...prevCategoryValue, parallel],
@@ -37,7 +40,7 @@ export const createTableRows = (rowData: APINumbersData) =>
   });
 
 interface CreateTableColumnProps {
-  categories: APINumbersCategoriesData;
+  categories: APINumbersViewCategoryResponseData;
   language: SourceLanguage;
   fileName: string;
 }
@@ -45,7 +48,7 @@ export const createTableColumns = ({
   categories,
   language,
   fileName,
-}: CreateTableColumnProps): ColumnDef<NumbersSegment>[] => [
+}: CreateTableColumnProps): ColumnDef<APINumbersSegment>[] => [
   {
     accessorKey: "segment",
     header: () => (
@@ -85,8 +88,8 @@ export const createTableColumns = ({
         <Typography textTransform="uppercase">{header.id}</Typography>
       </div>
     ),
-    cell: (info: CellContext<NumbersSegment, unknown>) => {
-      const parallels = info?.getValue<NumbersParallel[]>() || [];
+    cell: (info: CellContext<APINumbersSegment, unknown>) => {
+      const parallels = info?.getValue<APIParallel[]>() || [];
       return (
         <div
           style={{

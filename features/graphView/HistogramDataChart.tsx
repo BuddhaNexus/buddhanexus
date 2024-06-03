@@ -2,9 +2,7 @@ import React, { memo } from "react";
 import { Chart, GoogleChartWrapperChartType } from "react-google-charts";
 import { useTranslation } from "next-i18next";
 import { useTheme } from "@mui/material/styles";
-import { GraphPageGraphData } from "types/api/common";
-
-import { GRAPH_BG_COLOR } from "./constants";
+import { GraphPageGraphData } from "utils/api/endpoints/graph-view/graph";
 
 interface Props {
   data: GraphPageGraphData;
@@ -28,10 +26,15 @@ export const HistogramDataChart = memo<Props>(function HistogramDataChart({
       options={{
         colors: [palette.secondary.main],
         legend: { position: "none" },
-        backgroundColor: GRAPH_BG_COLOR,
-        chartArea: { width: "80%", height: "80%" },
-        vAxis: { scaleType: isScatterChart ? "log" : undefined },
+        backgroundColor: palette.background.paper,
+        chartArea: { width: "85%", height: "80%" },
+        vAxis: {
+          scaleType: isScatterChart ? "log" : undefined,
+          textStyle: { color: palette.text.primary },
+        },
+        hAxis: { textStyle: { color: palette.text.primary } },
       }}
+      width="100%"
       height="100%"
     />
   );

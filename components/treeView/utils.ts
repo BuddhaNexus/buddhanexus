@@ -1,7 +1,9 @@
 import { NodeDataChildType } from "@components/treeView/types";
-import type { SourceTextBrowserData } from "types/api/menus";
+import type { ParsedSidebarTextCollectionsMenuData } from "utils/api/endpoints/menus/sidebar";
 
-export function transformDataForTreeView(data: SourceTextBrowserData) {
+export function transformDataForTreeView(
+  data: ParsedSidebarTextCollectionsMenuData,
+) {
   return data.map((collection) => ({
     id: collection.collection,
     name: collection.collection,

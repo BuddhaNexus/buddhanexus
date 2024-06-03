@@ -10,8 +10,6 @@ import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "features/tableView/TableView";
 import merge from "lodash/merge";
-import type { PagedResponse } from "types/api/common";
-import type { TablePageData } from "types/api/table";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
@@ -21,22 +19,28 @@ export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers"
 
 // TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
-  const { sourceLanguage, fileName, queryParams } = useDbQueryParams();
+  const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
+    useDbQueryParams();
   const { isFallback } = useSourceFile();
   useDbView();
 
+  const requestBody = React.useMemo(
+    () => ({
+      file_name: fileName,
+      ...defaultQueryParams,
+      ...queryParams,
+    }),
+    [fileName, defaultQueryParams, queryParams],
+  );
+
   const { data, fetchNextPage, fetchPreviousPage, isLoading } =
-    useInfiniteQuery<PagedResponse<TablePageData>>({
+    useInfiniteQuery({
       initialPageParam: 0,
-      queryKey: DbApi.TableView.makeQueryKey({
-        fileName,
-        queryParams,
-      }),
+      queryKey: DbApi.TableView.makeQueryKey(requestBody),
       queryFn: ({ pageParam }) =>
         DbApi.TableView.call({
-          fileName,
-          queryParams,
-          pageNumber: pageParam as number,
+          ...requestBody,
+          page: pageParam,
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
       getPreviousPageParam: (lastPage) =>

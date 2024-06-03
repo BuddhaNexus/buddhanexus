@@ -14,7 +14,7 @@ import {
   Link,
   Tooltip,
 } from "@mui/material";
-import type { ApiTextSegment } from "types/api/common";
+import type { APIFullText } from "utils/api/types";
 import type { SourceLanguage } from "utils/constants";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
@@ -39,14 +39,14 @@ interface ParallelSegmentProps {
   displayName: string;
   length: number;
 
-  text: ApiTextSegment[];
-  textSegmentNumbers: [start: string, end: string];
+  text: APIFullText[];
+  textSegmentNumberRange: string;
 
   score?: number;
 }
 
 export const ParallelSegment = ({
-  textSegmentNumbers,
+  textSegmentNumberRange,
   text,
   score,
   length,
@@ -57,12 +57,15 @@ export const ParallelSegment = ({
 
   const sourceLanguageName = t(`language.${language}`);
 
-  const infoToCopy = `${textSegmentNumbers.join("-")}: ${displayName}`;
+  const infoToCopy = `${textSegmentNumberRange}: ${displayName}`;
 
   // Example of copied data: dn1:1.1.1_0–1.1.2_0: Brahmajāla Sutta
   const copyTextInfoToClipboard = useCallback(async () => {
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
+
+  const linkSegmentNumber =
+    textSegmentNumberRange.split("-")[0] ?? textSegmentNumberRange;
 
   return (
     <Card sx={{ flex: 1, wordBreak: "break-all", my: 1 }} elevation={1}>
@@ -84,13 +87,13 @@ export const ParallelSegment = ({
             <Link
               href={makeTextViewSegmentPath({
                 language,
-                segmentNumber: textSegmentNumbers[0],
+                segmentNumber: linkSegmentNumber,
               })}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
               target="_blank"
               rel="noreferrer noopenner"
             >
-              {textSegmentNumbers}
+              {textSegmentNumberRange}
             </Link>
           </Tooltip>
           <IconButton

@@ -14,31 +14,28 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table";
+import type { NumbersViewData } from "utils/api/endpoints/numbers-view/numbers";
 import type {
-  APINumbersCategoriesData,
-  APINumbersData,
-  NumbersSegment,
-} from "utils/api/numbers";
-import { PagedAPINumbersData } from "utils/api/numbers";
+  APINumbersSegment,
+  APINumbersViewCategoryResponseData,
+  APINumbersViewResponseData,
+} from "utils/api/types";
 import { SourceLanguage } from "utils/constants";
 
 import {
   createTableColumns,
   createTableRows,
   getVirtuosoTableComponents,
-} from "./numbresViewTableContent";
+} from "./numbersViewTableContent";
 
 interface NumbersTableProps {
-  categories: APINumbersCategoriesData;
-  data: APINumbersData;
+  categories: APINumbersViewCategoryResponseData;
+  data: APINumbersViewResponseData;
   hasNextPage: boolean;
   fetchNextPage: (
     options?: FetchNextPageOptions | undefined,
   ) => Promise<
-    InfiniteQueryObserverResult<
-      InfiniteData<PagedAPINumbersData, unknown>,
-      Error
-    >
+    InfiniteQueryObserverResult<InfiniteData<NumbersViewData, unknown>, Error>
   >;
   isFetching: boolean;
   isLoading: boolean;
@@ -66,7 +63,7 @@ export default function NumbersTable({
 
   const rowData = React.useMemo(() => createTableRows(data), [data]);
 
-  const columns = React.useMemo<ColumnDef<NumbersSegment>[]>(
+  const columns = React.useMemo<ColumnDef<APINumbersSegment>[]>(
     () => createTableColumns({ categories, language, fileName }),
     [categories, language, fileName],
   );

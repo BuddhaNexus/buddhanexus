@@ -12,7 +12,7 @@ import CappedMatchesChip from "./CappedMatchesChip";
 export default function ParallelsChip() {
   const { t } = useTranslation("settings");
 
-  const { fileName, queryParams } = useDbQueryParams();
+  const { fileName, defaultQueryParams, queryParams } = useDbQueryParams();
 
   // ignore some params that shouldn't result in refetching this query
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,13 +21,14 @@ export default function ParallelsChip() {
   const { data, isLoading } = useQuery({
     // TODO: - see if the query can return result before main results
     queryKey: DbApi.ParallelCount.makeQueryKey({
-      fileName,
-      queryParams: restOfQueryParams,
+      file_name: fileName,
+      ...restOfQueryParams,
     }),
     queryFn: () =>
       DbApi.ParallelCount.call({
-        fileName,
-        queryParams,
+        file_name: fileName,
+        ...defaultQueryParams,
+        ...queryParams,
       }),
   });
 

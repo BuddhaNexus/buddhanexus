@@ -15,16 +15,22 @@ import {
   type LimitsFilterValue,
   type LimitsParam,
 } from "features/sidebarSuite/config/types";
-import type { CategoryMenuItem, DatabaseText } from "types/api/menus";
 import { JsonParam, useQueryParam } from "use-query-params";
+import type { ParsedCategoryMenuItem } from "utils/api/endpoints/menus/category";
+import type { ParsedTextFileMenuItem } from "utils/api/endpoints/menus/files";
 
 import ListboxComponent from "./ListboxComponent";
 import { StyledPopper } from "./muiStyledComponents";
 
+type LimitValueOption = (
+  | ParsedCategoryMenuItem
+  | Pick<ParsedTextFileMenuItem, "id" | "name" | "label">
+)[];
+
 function getValuesFromParams(
   params: LimitsParam,
-  texts: Map<string, DatabaseText>,
-  categories: Map<string, CategoryMenuItem>,
+  texts: Map<string, ParsedTextFileMenuItem>,
+  categories: Map<string, ParsedCategoryMenuItem>,
 ) {
   return Object.entries(params).reduce((values, [filter, selections]) => {
     const list = filter.startsWith("category") ? categories : texts;
@@ -37,7 +43,7 @@ function getValuesFromParams(
 
 function getParamsFromValues(
   updatedLimit: Limit,
-  updatedvalue: (CategoryMenuItem | DatabaseText)[],
+  updatedvalue: LimitValueOption,
   params: LimitsParam,
 ) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -113,10 +119,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
     handleGlobalParamReset,
   ]);
 
-  const handleInputChange = (
-    limit: Limit,
-    value: (CategoryMenuItem | DatabaseText)[],
-  ) => {
+  const handleInputChange = (limit: Limit, value: LimitValueOption) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { [limit]: prevValue, ...otherLimitValues } = limitsValue;
 
@@ -140,7 +143,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
         ? { options: [...texts.values()], isLoading: isLoadingTexts }
         : {
             options: [...categories.values()].map((category) => ({
-              // gets common properties with `DatabaseText`
+              // gets common properties defined in `LimitValueOption`
               // to ensure type alaignment
               id: category.id,
               name: category.name,
@@ -150,7 +153,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
           };
 
       return {
-        filertName: limit,
+        filterName: limit,
         filter,
       };
     });
@@ -165,16 +168,16 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
       </FormLabel>
       {limitFilters.map((limit) => {
         const {
-          filertName,
+          filterName,
           filter: { options, isLoading },
         } = limit;
 
-        const filterValue = limitsValue[filertName];
+        const filterValue = limitsValue[filterName];
 
         return (
-          <Box key={filertName} sx={{ my: 1, width: 1 }}>
+          <Box key={`limit-filter-${filterName}`} sx={{ my: 1 }}>
             <Autocomplete
-              id={filertName}
+              id={filterName}
               sx={{ mt: 1, mb: 2 }}
               multiple={true}
               value={filterValue ?? []}
@@ -189,7 +192,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label={t([`filtersLabels.${filertName}`])}
+                  label={t([`filtersLabels.${filterName}`])}
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (
@@ -210,7 +213,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
               loading={isLoading}
               filterSelectedOptions
               disablePortal
-              onChange={(event, value) => handleInputChange(filertName, value)}
+              onChange={(event, value) => handleInputChange(filterName, value)}
             />
           </Box>
         );

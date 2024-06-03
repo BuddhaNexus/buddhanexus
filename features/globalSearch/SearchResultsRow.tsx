@@ -1,13 +1,8 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import type { SearchResult } from "utils/api/search";
+import type { ParsedSearchResult } from "utils/api/endpoints/search";
 
 import { SearchResultItem } from "./SearchResultItem";
-
-interface Props {
-  row: number;
-  rowItems: SearchResult[];
-}
 
 const ListContainer = styled("div")(({ theme }) => ({
   paddingInline: "0",
@@ -25,6 +20,11 @@ const DummyFillerItem = styled("div")(({ theme }) => ({
   },
   wordBreak: "break-all",
 }));
+
+interface Props {
+  row: number;
+  rowItems: ParsedSearchResult[];
+}
 
 export const SearchResultsRow = ({ row, rowItems }: Props) => {
   /* search results data is grouped into 3-item arrays in `pages/search/index.tsx`. This is a workaround to simulate the `VituosoGrid` component which can't be used due to its inability to handle vairable item heights (see: https://virtuoso.dev/troubleshooting). Creating rows with a stable height fixes the jumping behaviour, allowing a grid layout for better desktop UX. 

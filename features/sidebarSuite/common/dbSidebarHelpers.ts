@@ -9,7 +9,7 @@ import type {
 } from "features/sidebarSuite/config/types";
 import type { Script } from "features/sidebarSuite/subComponents/settings/TextScriptOption";
 import { EwtsConverter } from "tibetan-ewts-converter";
-import { getParallelDownloadData } from "utils/api/downloads";
+import { getParallelDownloadData } from "utils/api/endpoints/table-view/downloads";
 import { SourceLanguage } from "utils/constants";
 
 export const isSettingOmitted = ({
@@ -76,9 +76,13 @@ export const onDownload = async ({
 }: UtilityClickHandlerProps) => {
   const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
+  const { fileName, queryParams } = download;
+
   const file = await getParallelDownloadData({
-    fileName: download.fileName,
-    queryParams: download.queryParams,
+    file_name: fileName,
+    ...queryParams,
+    // TODO: determine what is needed for this prop
+    download_data: "",
   });
 
   if (file) {
