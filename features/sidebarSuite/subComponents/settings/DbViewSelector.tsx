@@ -34,9 +34,6 @@ export const DbViewSelector = () => {
 
   const handleChange = async (e: SelectChangeEvent) => {
     const newView = e.target.value as DbViewEnum;
-
-    // TODO: clean up redundant params depending on the view that the user chooses.
-    // For example, the `sort_method` param is not applicable in the text view.
     await router.push({
       pathname: router.pathname.replace(currentView, newView),
       query: { ...router.query },
