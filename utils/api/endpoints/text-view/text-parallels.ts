@@ -37,7 +37,7 @@ export async function getTextViewParallelsData(
   const { data } = await apiClient.POST("/text-view/text-parallels/", {
     body: {
       ...parseAPIRequestBody({ ...params, page_number }),
-      // TODO: add support for multiple languages when available
+      // TODO: remove once backend model is updated
       multi_lingual: ["skt", "pli", "chn", "tib"],
     },
   });

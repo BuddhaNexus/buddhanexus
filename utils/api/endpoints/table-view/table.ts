@@ -6,7 +6,7 @@ import type {
 } from "utils/api/types";
 import type { SourceLanguage } from "utils/constants";
 
-function parseAPITableData(data: APITableViewResponseData) {
+function parseAPITableData(data: APITableViewResponseData | undefined) {
   return data
     ? data.map((p) => ({
         sourceLanguage: p.src_lang as SourceLanguage,
@@ -48,8 +48,9 @@ export async function getTableData(body: APITableViewRequestBody) {
   const { data } = await apiClient.POST("/table-view/table/", {
     body: parseAPIRequestBody({ ...params, page }),
   });
+
   return {
-    data: data ? parseAPITableData(data) : [],
+    data: parseAPITableData(data),
     pageNumber: page,
   };
 }
