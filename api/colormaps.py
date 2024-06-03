@@ -185,10 +185,12 @@ def calculate_color_maps_middle_view(data):
             del entry["par_offset_beg"]
             del entry["par_offset_end"]
             del entry["par_segnr"]
+        else:
+            print(entry)
     return data
 
 
-def calculate_color_maps_search(data):
+def calculate_color_maps_search(data):    
     """takes the search results and calculates the color maps for the search"""
     for entry in data:
         text = entry["original"]
@@ -196,8 +198,8 @@ def calculate_color_maps_search(data):
         beg = entry["offset_beg"]
         end = entry["offset_end"]
         colormap[beg:end] = [1] * (end - beg)
-        entry["segtext"] = create_segmented_text_color_only(text, colormap)
-        entry["segment_nr"] = shorten_segment_names(entry["segment_nr"])
+        entry["segtext"] = create_segmented_text_color_only(text, colormap)        
+        #entry["segment_nr"] = shorten_segment_names(entry["segment_nr"])
         del entry["offset_beg"]
         del entry["offset_end"]
         del entry["original"]

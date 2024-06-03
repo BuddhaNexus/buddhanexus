@@ -47,7 +47,7 @@ add-sources:
 	@docker exec -ti dataloader bash -c "invoke add-sources"
 
 clean-db:
-	@docker exec -t dataloader bash -c "invoke clean-all"
+	@docker exec -t dataloader bash -c "invoke clean-all-collections"
 	@docker exec -t dataloader bash -c "invoke create-db create-collections"
 
 # these commands are for loading individual datasets asynchronously
