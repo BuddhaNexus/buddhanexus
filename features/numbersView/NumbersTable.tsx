@@ -1,6 +1,6 @@
 import React from "react";
 import { TableComponents, TableVirtuoso } from "react-virtuoso";
-import { Skeleton, TableCell, TableRow } from "@mui/material";
+import { Box, Skeleton, TableCell, TableRow } from "@mui/material";
 import {
   FetchNextPageOptions,
   InfiniteData,
@@ -143,7 +143,15 @@ export default function NumbersTable({
               }),
             }}
           >
-            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            {cell.column.getIsFirstColumn() ? (
+              <Box sx={{ position: "absolute", top: 0, bottom: 0 }}>
+                <Box sx={{ position: "sticky", top: "54px" }}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </Box>
+              </Box>
+            ) : (
+              flexRender(cell.column.columnDef.cell, cell.getContext())
+            )}
           </TableCell>
         ))}
       </>
