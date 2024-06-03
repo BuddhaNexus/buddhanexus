@@ -43,10 +43,10 @@ export type ParsedTableViewParallel = ReturnType<
 export type ParsedTableViewData = ParsedTableViewParallel[];
 
 export async function getTableData(body: APITableViewRequestBody) {
-  const page = body.page ?? 0;
+  const { page = 0, ...params } = body;
 
   const { data } = await apiClient.POST("/table-view/table/", {
-    body: parseAPIRequestBody({ ...body, page }),
+    body: parseAPIRequestBody({ ...params, page }),
   });
   return {
     data: data ? parseAPITableData(data) : [],

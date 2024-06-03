@@ -1,5 +1,7 @@
+import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { currentViewAtom, DbViewEnum } from "@components/hooks/useDbView";
 import {
   FormControl,
@@ -16,6 +18,19 @@ export const DbViewSelector = () => {
   const router = useRouter();
 
   const [currentView, setCurrentDbView] = useAtom(currentViewAtom);
+  const {
+    sourceLanguage,
+    settingsOmissionsConfig: { viewSelector: omittedViews },
+  } = useDbQueryParams();
+
+  const availableViews = React.useMemo(() => {
+    if (Object.hasOwn(omittedViews, sourceLanguage)) {
+      return Object.values(DbViewEnum).filter(
+        (view) => !omittedViews[sourceLanguage]!.includes(view as DbViewEnum),
+      ) as DbViewEnum[];
+    }
+    return Object.values(DbViewEnum);
+  }, [omittedViews]);
 
   const handleChange = async (e: SelectChangeEvent) => {
     const newView = e.target.value as DbViewEnum;
@@ -42,7 +57,7 @@ export const DbViewSelector = () => {
         value={currentView}
         onChange={(e: SelectChangeEvent) => handleChange(e)}
       >
-        {Object.values(DbViewEnum).map((view) => (
+        {availableViews.map((view) => (
           <MenuItem key={view} value={view}>
             {t(`dbViewLabels.${view}`)}
           </MenuItem>

@@ -85,12 +85,20 @@ export const UTILITY_OPTIONS_OMISSIONS_CONFIG: SettingOmissions<UtilityOption> =
     },
   };
 
+export const VIEW_SELECTOR_OMISSIONS_CONFIG: Partial<
+  Record<SourceLanguage, DbViewEnum[]>
+> = {
+  [SourceLanguage.SANSKRIT]: [DbViewEnum.NUMBERS],
+  [SourceLanguage.TIBETAN]: [DbViewEnum.NUMBERS],
+};
+
 export const SETTINGS_OMISSIONS_CONFIG = {
   filters: { ...DB_PAGE_FILTER_OMISSIONS_CONFIG },
   displayOptions: {
     ...DISPLAY_OPTIONS_OMISSIONS_CONFIG,
   },
   utilityOptions: { ...UTILITY_OPTIONS_OMISSIONS_CONFIG },
+  viewSelector: { ...VIEW_SELECTOR_OMISSIONS_CONFIG },
 };
 
 export const DEFAULT_QUERY_PARAMS_VALUES: QueryParams = {
