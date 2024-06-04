@@ -32,7 +32,7 @@ export default function GraphPage() {
   const {
     sourceLanguage,
     fileName,
-    queryParams: { score, par_length, target_collection },
+    queryParams: { score, par_length },
     defaultQueryParams,
   } = useDbQueryParams();
   const { isFallback } = useSourceFile();
@@ -47,10 +47,10 @@ export default function GraphPage() {
       par_length: par_length
         ? Number(par_length)
         : defaultQueryParams.par_length,
-      // TODO: Add target_collection when available
+      // TODO: Add target_collection when available / or remove
       target_collection: undefined,
     }),
-    [fileName, score, par_length, target_collection, defaultQueryParams],
+    [fileName, score, par_length, defaultQueryParams],
   );
 
   const { data, isLoading, isError } = useQuery({

@@ -30,7 +30,7 @@ export const DbViewSelector = () => {
       ) as DbViewEnum[];
     }
     return Object.values(DbViewEnum);
-  }, [omittedViews]);
+  }, [omittedViews, sourceLanguage]);
 
   const handleChange = async (e: SelectChangeEvent) => {
     const newView = e.target.value as DbViewEnum;
