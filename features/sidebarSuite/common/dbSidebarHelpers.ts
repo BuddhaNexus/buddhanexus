@@ -165,7 +165,7 @@ export const enscriptText = ({
   language: SourceLanguage;
   script: Script;
 }) => {
-  return script === "Wylie" && language === SourceLanguage.TIBETAN
+  return script === "Unicode" && language === SourceLanguage.TIBETAN
     ? ewts.to_unicode(text)
     : text;
 };
