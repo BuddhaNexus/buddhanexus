@@ -26,19 +26,28 @@ function PartnerInstitution({ name, href, alt, src }: Props) {
       <Typography variant="h5" component="figcaption" sx={{ mb: 2 }}>
         {name}
       </Typography>
-      <Paper
-        sx={{
-          position: "relative",
-          height: {
-            xs: "170px",
-            sm: "300px",
-          },
-          width: "100%",
-        }}
-        elevation={3}
-      >
-        <Link href={href} target="_blank" rel="noopener noreferrer">
-          <Image src={src} alt={alt} fill={true} placeholder="blur" />
+      <Paper elevation={3}>
+        <Link
+          sx={{
+            position: "relative",
+            display: "block",
+            height: {
+              xs: "170px",
+              sm: "300px",
+            },
+            width: "100%",
+          }}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            src={src}
+            alt={alt}
+            fill={true}
+            sizes="(max-width: 768px) calc(100vw - 112px), 600px"
+            placeholder="blur"
+          />
         </Link>
       </Paper>
       <br />
