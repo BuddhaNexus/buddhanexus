@@ -54,7 +54,11 @@ export function getMDXContentBySlug(
 }
 
 export function getAllPosts(pathBaseItems: string[], lang: string) {
-  const slugs = fs.readdirSync(path.join(...pathBaseItems));
+  const dirPath = pathBaseItems
+    .reduce((acc, item) => `${acc}/${item}`, "")
+    .slice(1);
+
+  const slugs = fs.readdirSync(dirPath);
 
   const posts = slugs
     .map((slug) => getMDXContentBySlug(pathBaseItems.join("/"), slug, lang))
