@@ -5,7 +5,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import { useQueryParam } from "use-query-params";
 
 export function ClearSelectedSegmentButton() {
-  const [, setSelectedSegmentId] = useQueryParam<string>("selectedSegment");
+  const [, setSelectedSegmentId] = useQueryParam("selectedSegment");
 
   const { t } = useTranslation();
 
@@ -14,7 +14,10 @@ export function ClearSelectedSegmentButton() {
       title={t("common:db.clearSelectedSegment")}
       PopperProps={{ disablePortal: true }}
     >
-      <IconButton color="inherit" onClick={() => setSelectedSegmentId("")}>
+      <IconButton
+        color="inherit"
+        onClick={() => setSelectedSegmentId(undefined)}
+      >
         <HighlightOffIcon aria-label={t("common:db.clearSelectedSegment")} />
       </IconButton>
     </Tooltip>

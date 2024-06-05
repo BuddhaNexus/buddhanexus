@@ -42,7 +42,7 @@ const GlobalSearchDesktop = () => {
     >
       <IconButton
         color="inherit"
-        aria-label={isOpen ? t("search.closeSearch") : t("search.openSearch")}
+        aria-label="Toggle search field"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? (
