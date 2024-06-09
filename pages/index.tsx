@@ -24,7 +24,7 @@ export default function Home() {
     <PageContainer backgroundName="welcome">
       <Box
         component="img"
-        src="/assets/icons/full-logo.svg"
+        src="/assets/logos/bn_full_logo.svg"
         height="30vh"
         alt="buddhanexus logo"
         sx={{

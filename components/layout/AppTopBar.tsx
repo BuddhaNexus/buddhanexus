@@ -96,7 +96,7 @@ export const AppTopBar = () => {
               >
                 <Box
                   component="img"
-                  src="/assets/icons/bn_tree.svg"
+                  src="/assets/logos/bn_tree_only.svg"
                   width={68}
                   sx={{
                     maxHeight: 48,
@@ -110,7 +110,7 @@ export const AppTopBar = () => {
                 {!isHomeRoute && (
                   <Box
                     component="img"
-                    src="/assets/icons/bn_name.svg"
+                    src="/assets/logos/bn_text_only.svg"
                     width={144}
                     sx={{
                       maxHeight: 24,

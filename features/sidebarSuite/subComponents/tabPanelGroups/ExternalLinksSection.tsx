@@ -8,13 +8,16 @@ import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { SourceLink } from "features/sidebarSuite/common/MuiStyledSidebarComponents";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
-import BDRCLogo from "public/assets/icons/logo_bdrc.png";
-import CBETALogo from "public/assets/icons/logo_cbeta.png";
-import DSBCLogo from "public/assets/icons/logo_dsbc.png";
-import GRETILLogo from "public/assets/icons/logo_gretil.png";
-import RKTSLogo from "public/assets/icons/logo_rkts.png";
-import SCLogo from "public/assets/icons/logo_sc.png";
-import VRILogo from "public/assets/icons/logo_vri.png";
+import BDRCLogo from "public/assets/logos/bdrc.png";
+import BDRCLogoLight from "public/assets/logos/bdrc_light.png";
+import CBETALogo from "public/assets/logos/cbeta.png";
+import DSBCLogo from "public/assets/logos/dsbc.png";
+import GRETILLogo from "public/assets/logos/gretil.png";
+import GRETILLogoLight from "public/assets/logos/gretil_light.png";
+import RKTSLogo from "public/assets/logos/rkts.png";
+import RKTSLogoLight from "public/assets/logos/rkts_light.png";
+import SCLogo from "public/assets/logos/sc.png";
+import VRILogo from "public/assets/logos/vri.png";
 import { DbApi } from "utils/api/dbApi";
 
 function CBCIcon({ fill }: { fill: string }) {
@@ -45,17 +48,6 @@ function CBCIcon({ fill }: { fill: string }) {
   );
 }
 
-const logos: Record<string, StaticImageData> = {
-  bdrc: BDRCLogo,
-  cbeta: CBETALogo,
-  dsbc: DSBCLogo,
-  gretil: GRETILLogo,
-  rkts: RKTSLogo,
-  suttacentral: SCLogo,
-  vri: VRILogo,
-};
-
-// TODO: confirm this is exclusively used in DB file selection results pages and does not need to be refactored to be applied universally
 export const ExternalLinksSection = () => {
   const { fileName } = useDbQueryParams();
   const { t } = useTranslation("settings");
@@ -66,8 +58,19 @@ export const ExternalLinksSection = () => {
     queryFn: () => DbApi.ExternalLinksData.call({ file_name: fileName }),
   });
 
-  // TODO: sort out dark theme icons, http://localhost:3000/db/tib/K01D0003_H0003/table
-  // const isDarkTheme = materialTheme.palette.mode === "dark"
+  const isDarkTheme = materialTheme.palette.mode === "dark";
+
+  const logos = React.useMemo<Record<string, StaticImageData>>(() => {
+    return {
+      bdrc: isDarkTheme ? BDRCLogoLight : BDRCLogo,
+      cbeta: CBETALogo,
+      dsbc: DSBCLogo,
+      gretil: isDarkTheme ? GRETILLogoLight : GRETILLogo,
+      rkts: isDarkTheme ? RKTSLogoLight : RKTSLogo,
+      suttacentral: SCLogo,
+      vri: VRILogo,
+    };
+  }, [isDarkTheme]);
 
   if (data && Object.keys(data).length > 0) {
     return (
@@ -81,28 +84,23 @@ export const ExternalLinksSection = () => {
             flexWrap: "wrap",
           }}
         >
-          {Object.entries(data).map(
-            ([key, value]) =>
-              value && (
-                <ListItem key={key} sx={{ width: "inherit", pr: 0 }}>
-                  <SourceLink
-                    href={value}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={key}
-                  >
-                    {key === "cbc" ? (
-                      <CBCIcon fill={materialTheme.palette.text.primary} />
-                    ) : (
-                      <Image
-                        src={logos[key]!}
-                        alt={`${key} logo`}
-                        height={32}
-                      />
-                    )}
-                  </SourceLink>
-                </ListItem>
-              ),
+          {Object.entries(data).map(([key, value]) =>
+            !value || value === "False" ? null : (
+              <ListItem key={key} sx={{ width: "inherit", pr: 0 }}>
+                <SourceLink
+                  href={value}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={key}
+                >
+                  {key === "cbc" ? (
+                    <CBCIcon fill={materialTheme.palette.text.primary} />
+                  ) : (
+                    <Image src={logos[key]!} alt={`${key} logo`} height={32} />
+                  )}
+                </SourceLink>
+              </ListItem>
+            ),
           )}
         </List>
       </>
