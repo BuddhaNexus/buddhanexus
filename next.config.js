@@ -1,13 +1,25 @@
 const { i18n } = require("./next-i18next.config");
 const nextMDX = require("@next/mdx");
-const path = require("path");
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   i18n,
   reactStrictMode: true,
   compiler: { emotion: true },
-  pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
+  experimental: {
+    turbo: {
+      resolveExtensions: [
+        ".mdx",
+        ".md",
+        ".tsx",
+        ".ts",
+        ".jsx",
+        ".js",
+        ".mjs",
+        ".json",
+      ],
+    },
+  },
 };
 
 const withMDX = nextMDX({
