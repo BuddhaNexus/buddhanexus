@@ -19,7 +19,6 @@ const SCRIPT_OPTIONS: Partial<Record<SourceLanguage, Script[]>> = {
 };
 const DEFAULT_SCRIPT = "Unicode";
 
-// TODO: add convertion to text-view on view completion
 export default function TextScriptOption() {
   const { sourceLanguage } = useDbQueryParams();
   const { t } = useTranslation("settings");
