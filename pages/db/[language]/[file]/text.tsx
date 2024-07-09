@@ -5,9 +5,7 @@ import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
-import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import { Paper } from "@mui/material";
 import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
 import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TextView from "features/textView/TextView";
@@ -17,9 +15,11 @@ import { DbApi } from "utils/api/dbApi";
 import type { SourceLanguage } from "utils/constants";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
+import LoadingSpinner from "@components/common/LoadingSpinner";
 import { textViewFilterComparisonAtom } from "features/atoms";
 import { useAtom } from "jotai";
 import { NumberParam, StringParam, useQueryParam } from "use-query-params";
+
 /**
  * TODO
  * 1. Display text on left side
@@ -31,23 +31,6 @@ import { NumberParam, StringParam, useQueryParam } from "use-query-params";
  *
  * @constructor
  */
-
-const Loading = () => (
-  <Paper
-    sx={{
-      display: "flex",
-      alignItems: "center",
-      flex: 1,
-      width: "100%",
-      height: "100dvh",
-      py: 1,
-      pl: 2,
-      my: 1,
-    }}
-  >
-    <CenteredProgress />
-  </Paper>
-);
 
 export default function TextPage() {
   const { sourceLanguage, fileName, queryParams, defaultQueryParams } =
@@ -133,7 +116,7 @@ export default function TextPage() {
   if (isFallback) {
     return (
       <PageContainer backgroundName={sourceLanguage}>
-        <Loading />
+        <LoadingSpinner />
       </PageContainer>
     );
   }
@@ -147,7 +130,7 @@ export default function TextPage() {
       <DbViewPageHead />
 
       {isLoading ? (
-        <Loading />
+        <LoadingSpinner />
       ) : (
         <TextView
           data={allData}
