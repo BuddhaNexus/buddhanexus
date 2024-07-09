@@ -32,18 +32,18 @@ export type ParsedTextViewParallelsData = ParsedTextViewParallel[];
 export async function getTextViewParallelsData(
   body: APITextViewParallelsRequestBody,
 ) {
-  const page = body.page_number ?? 0;
+  const { page_number = 0, ...params } = body;
 
   const { data } = await apiClient.POST("/text-view/text-parallels/", {
     body: {
-      ...parseAPIRequestBody({ ...body, page }),
-      // TODO: add support for multiple languages when available
+      ...parseAPIRequestBody({ ...params, page_number }),
+      // TODO: remove once backend model is updated
       multi_lingual: ["skt", "pli", "chn", "tib"],
     },
   });
 
   return {
     data: parseTextViewParallelsData(data ?? []),
-    pageNumber: page,
+    pageNumber: page_number,
   };
 }

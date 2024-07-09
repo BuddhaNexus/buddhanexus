@@ -6,7 +6,7 @@ import type {
 } from "utils/api/types";
 import type { SourceLanguage } from "utils/constants";
 
-function parseAPITableData(data: APITableViewResponseData) {
+function parseAPITableData(data: APITableViewResponseData | undefined) {
   return data
     ? data.map((p) => ({
         sourceLanguage: p.src_lang as SourceLanguage,
@@ -43,13 +43,14 @@ export type ParsedTableViewParallel = ReturnType<
 export type ParsedTableViewData = ParsedTableViewParallel[];
 
 export async function getTableData(body: APITableViewRequestBody) {
-  const page = body.page ?? 0;
+  const { page = 0, ...params } = body;
 
   const { data } = await apiClient.POST("/table-view/table/", {
-    body: parseAPIRequestBody({ ...body, page }),
+    body: parseAPIRequestBody({ ...params, page }),
   });
+
   return {
-    data: data ? parseAPITableData(data) : [],
+    data: parseAPITableData(data),
     pageNumber: page,
   };
 }
