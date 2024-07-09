@@ -57,6 +57,7 @@
     "inputPlaceholder": "Geben Sie den genauen Suchbegriff ein (nur ganze Wörter)",
     "search": "Suchen",
     "runSearch": "Suche ausführen",
+    "toggleSearch": "Toggle search box",
     "clearSearch": "Suchbegriff löschen",
     "openSearch": "Suchfeld öffnen",
     "closeSearch": "Suchfeld schließen",

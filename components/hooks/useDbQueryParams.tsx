@@ -45,18 +45,18 @@ export const useDbQueryParams = () => {
       : MIN_PAR_LENGTH_VALUES.chn,
   };
 
-  const queryParams = new URLSearchParams(searchParams);
+  const queryParamsMap = new URLSearchParams(searchParams);
   // Remove NextJS dynamic route param. The file name is already given in the url & `file` cannot be used to query the API.
-  queryParams.delete("file");
+  queryParamsMap.delete("file");
 
-  const sortParam = queryParams.get(uniqueSettings.queryParams.sortMethod);
+  const sortParam = queryParamsMap.get(uniqueSettings.queryParams.sortMethod);
   const sortMethodSelectValue = sortParam ?? "position";
 
   return {
     sourceLanguage,
     sourceLanguageName,
     fileName,
-    queryParams: Object.fromEntries(queryParams.entries()),
+    queryParams: Object.fromEntries(queryParamsMap.entries()),
     defaultQueryParams,
     defaultParamConfig: DEFAULT_QUERY_PARAMS_VALUES,
     parLengthConfig,

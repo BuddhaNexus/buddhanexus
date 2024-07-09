@@ -58,6 +58,7 @@
     "search": "Search",
     "runSearch": "Run search",
     "clearSearch": "Clear search term",
+    "toggleSearch": "Toggle search box",
     "openSearch": "Open search box",
     "closeSearch": "Close search box",
     "noResultsHeading": "No results found",
