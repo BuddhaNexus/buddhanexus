@@ -1,35 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
-import { atom, useSetAtom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
+import { currentViewAtom } from "features/atoms";
+import { DbViewEnum } from "features/sidebarSuite/config/types";
+import { useSetAtom } from "jotai";
 
-// eslint-disable-next-line no-shadow
-export enum DbViewEnum {
-  GRAPH = "graph",
-  NUMBERS = "numbers",
-  TABLE = "table",
-  TEXT = "text",
-}
+import { useDbQueryParams } from "./useDbQueryParams";
 
-export const currentViewAtom = atom<DbViewEnum>(DbViewEnum.TEXT);
-export const shouldShowSegmentNumbersAtom = atomWithStorage<boolean>(
-  "shouldShowSegmentNumbers",
-  true,
-);
-export const shouldUseOldSegmentColorsAtom = atomWithStorage<boolean>(
-  "shouldUseOldSegmentColors",
-  true,
-);
+export const isValideView = (view: unknown): view is DbViewEnum =>
+  Object.values(DbViewEnum).some((item) => item === view);
 
-const initiateView = (view: DbViewEnum | string): DbViewEnum => {
-  if (Object.values(DbViewEnum).includes(view as DbViewEnum)) {
-    return view as DbViewEnum;
-  }
-  return DbViewEnum.TEXT;
+export const getSafeView = (view: unknown) => {
+  return isValideView(view) ? view : DbViewEnum.TEXT;
+};
+
+export const useAvailableDbViews = () => {
+  const {
+    sourceLanguage,
+    settingsOmissionsConfig: { viewSelector: omittedViews },
+  } = useDbQueryParams();
+
+  return useMemo(() => {
+    const allViews = Object.values(DbViewEnum);
+    const unavailableViews = omittedViews[sourceLanguage];
+
+    if (!unavailableViews) return allViews;
+
+    return allViews.filter((view) => !unavailableViews.includes(view));
+  }, [omittedViews, sourceLanguage]);
 };
 
 // This allows two-way view setting: url <--> view selector
-export const useDbView = () => {
+export const useSetDbViewFromPath = () => {
   const { pathname } = useRouter();
   const setCurrentView = useSetAtom(currentViewAtom);
 
@@ -37,6 +38,6 @@ export const useDbView = () => {
   const pathnameView = pathnameParts.at(-1) ?? DbViewEnum.TEXT;
 
   useEffect(() => {
-    setCurrentView(initiateView(pathnameView));
+    setCurrentView(getSafeView(pathnameView));
   }, [pathnameView, setCurrentView]);
 };

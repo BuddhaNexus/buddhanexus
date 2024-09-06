@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import type { GetStaticProps } from "next";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useDbView } from "@components/hooks/useDbView";
+import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -22,7 +22,8 @@ export default function TablePage() {
   const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
     useDbQueryParams();
   const { isFallback } = useSourceFile();
-  useDbView();
+
+  useSetDbViewFromPath();
 
   const requestBody = React.useMemo(
     () => ({

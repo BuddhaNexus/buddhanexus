@@ -1,4 +1,3 @@
-import { DbViewEnum } from "@components/hooks/useDbView";
 import { SourceLanguage } from "utils/constants";
 
 import {
@@ -10,6 +9,7 @@ import {
   UtilityOption,
 } from "./settings";
 import type { QueryParams, SettingOmissions } from "./types";
+import { DbViewEnum } from "./types";
 
 const { queryParams, local, remote } = uniqueSettings;
 

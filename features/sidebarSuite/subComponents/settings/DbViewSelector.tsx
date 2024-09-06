@@ -1,8 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom, DbViewEnum } from "@components/hooks/useDbView";
+import { getSafeView, useAvailableDbViews } from "@components/hooks/useDbView";
 import {
   FormControl,
   InputLabel,
@@ -10,6 +9,7 @@ import {
   Select,
   type SelectChangeEvent,
 } from "@mui/material";
+import { currentViewAtom } from "features/atoms";
 import { useAtom } from "jotai";
 
 export const DbViewSelector = () => {
@@ -18,22 +18,11 @@ export const DbViewSelector = () => {
   const router = useRouter();
 
   const [currentView, setCurrentDbView] = useAtom(currentViewAtom);
-  const {
-    sourceLanguage,
-    settingsOmissionsConfig: { viewSelector: omittedViews },
-  } = useDbQueryParams();
 
-  const availableViews = React.useMemo(() => {
-    if (Object.hasOwn(omittedViews, sourceLanguage)) {
-      return Object.values(DbViewEnum).filter(
-        (view) => !omittedViews[sourceLanguage]!.includes(view as DbViewEnum),
-      ) as DbViewEnum[];
-    }
-    return Object.values(DbViewEnum);
-  }, [omittedViews, sourceLanguage]);
+  const availableViews = useAvailableDbViews();
 
   const handleChange = async (e: SelectChangeEvent) => {
-    const newView = e.target.value as DbViewEnum;
+    const newView = getSafeView(e.target.value);
     await router.push({
       pathname: router.pathname.replace(currentView, newView),
       query: { ...router.query },

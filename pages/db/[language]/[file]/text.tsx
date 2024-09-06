@@ -3,7 +3,7 @@ import type { GetStaticProps } from "next";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useDbView } from "@components/hooks/useDbView";
+import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
@@ -37,7 +37,7 @@ export default function TextPage() {
     useDbQueryParams();
   const { isFallback } = useSourceFile();
 
-  useDbView();
+  useSetDbViewFromPath();
 
   const [selectedSegment, setSelectedSegment] = useQueryParam(
     "selectedSegment",

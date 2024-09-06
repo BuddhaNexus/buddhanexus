@@ -48,7 +48,7 @@
     "copyQueryLink": "Copy results page link",
     "emailQueryLink": "Email results page link",
     "showSegmentNumbers": "Show segment numbers",
-    "usePreviousSegmentColors": "Use segment colors from the previous website"
+    "useMonochromaticSegmentColors": "Use monochromatic segment match colors"
   },
   "optionsPopperMsgs": {
     "download": "Ooops! Something went wrong!",

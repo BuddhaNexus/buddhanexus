@@ -1,4 +1,4 @@
-import type { DbViewEnum } from "@components/hooks/useDbView";
+import type { DbViewEnum } from "features/sidebarSuite/config/types";
 import type { SourceLanguage } from "utils/constants";
 
 export const getTextPath = ({
