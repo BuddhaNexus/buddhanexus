@@ -1,7 +1,6 @@
 import type { FC, PropsWithChildren } from "react";
-import type { SxProps } from "@mui/material";
-import { Container } from "@mui/material";
-import type { Breakpoint } from "@mui/system";
+import { Container, LinearProgress, SxProps } from "@mui/material";
+import { Box, Breakpoint } from "@mui/system";
 import bgChn from "@public/assets/images/bg_chn_upscaled_bw.jpg";
 import bgPli from "@public/assets/images/bg_pli_upscaled_bw.jpg";
 import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
@@ -33,6 +32,7 @@ interface Props extends PropsWithChildren {
   backgroundName?: BackgroundName;
   maxWidth?: Breakpoint | false;
   isQueryResultsPage?: boolean;
+  isLoading?: boolean;
 }
 
 export const PageContainer: FC<Props> = ({
@@ -40,6 +40,7 @@ export const PageContainer: FC<Props> = ({
   backgroundName,
   maxWidth = "md",
   isQueryResultsPage,
+  isLoading,
 }) => {
   const containerStyles: SxProps = {
     pt: { xs: 0, sm: 4 },
@@ -83,6 +84,7 @@ export const PageContainer: FC<Props> = ({
           {children}
         </Container>
       )}
+      {isLoading ? <LinearProgress /> : <Box sx={{ height: 4 }} />}
     </>
   );
 };

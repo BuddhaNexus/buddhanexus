@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { useTranslation } from "next-i18next";
 import {
   type InputKeyDown,
@@ -90,4 +90,4 @@ const GlobalSearchDesktop = () => {
   );
 };
 
-export default GlobalSearchDesktop;
+export default memo(GlobalSearchDesktop);

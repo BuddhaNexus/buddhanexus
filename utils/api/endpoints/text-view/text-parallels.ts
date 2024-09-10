@@ -1,46 +1,51 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "utils/api/apiQueryUtils";
 import type {
-  APITextViewParallelsRequestBody,
-  APITextViewParallelsResponseData,
+  APITextViewParallelsV2RequestBody,
+  APITextViewParallelsV2ResponseData,
 } from "utils/api/types";
 
-function parseTextViewParallelsData(data: APITextViewParallelsResponseData) {
-  //   return data.map((segment) => ({
-  //   segmentNumber: segment.segnr,
-  //   segmentText: segment.segtext,
-  // }));
-  // TODO: remove temporary parsing / casting when backend model is updated
-  return data.map((segment) => {
-    const { segnr, segtext } = segment;
-    return {
-      segmentNumber: segnr,
-      segmentText: segtext.map(({ text, highlightColor, matches }) => ({
-        text: text as string,
-        highlightColor: highlightColor as number,
-        matches: matches as string[],
-      })),
-    };
-  });
+function parseTextViewParallelsData(data: APITextViewParallelsV2ResponseData) {
+  return {
+    page: data.page,
+    totalPages: data.total_pages,
+    items: data.items?.map((segment) => {
+      const { segnr, segtext } = segment;
+      return {
+        segmentNumber: segnr,
+        segmentText: segtext.map(({ text, highlightColor, matches }) => ({
+          text,
+          highlightColor,
+          matches,
+        })),
+      };
+    }),
+  };
 }
 
-export type ParsedTextViewParallel = ReturnType<
+export type ParsedTextViewParallelsData = ReturnType<
   typeof parseTextViewParallelsData
->[0];
-export type ParsedTextViewParallelsData = ParsedTextViewParallel[];
+>;
+
+export type ParsedTextViewParallels = ParsedTextViewParallelsData["items"];
+export type ParsedTextViewParallel = ParsedTextViewParallelsData["items"][0];
 
 export async function getTextViewParallelsData(
-  body: APITextViewParallelsRequestBody,
+  body: APITextViewParallelsV2RequestBody,
 ) {
   const { page_number = 0, ...params } = body;
 
-  const { data } = await apiClient.POST("/text-view/text-parallels/", {
+  const { data } = await apiClient.POST("/text-view/text-parallels-v2/", {
     body: {
       ...parseAPIRequestBody({ ...params, page_number }),
       // TODO: remove once backend model is updated
       multi_lingual: ["skt", "pli", "chn", "tib"],
     },
   });
+
+  if (!data) {
+    throw new Error("[Parallels Data] no data returned");
+  }
 
   return {
     data: parseTextViewParallelsData(data ?? []),

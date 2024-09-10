@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbMenus } from "@components/hooks/useDbMenus";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -58,6 +58,8 @@ function getParamsFromValues(
   };
 }
 
+const DEFAULT_LIMITS_VALUE = {};
+
 const IncludeExcludeFilters = ({ language }: { language: string }) => {
   const { t } = useTranslation("settings");
 
@@ -71,31 +73,30 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
     JsonParam,
   );
 
-  const [limitsValue, setLimitsValue] = useState<LimitsFilterValue>({});
-  const isInitilized = React.useRef(false);
+  const [limitsValue, setLimitsValue] =
+    useState<LimitsFilterValue>(DEFAULT_LIMITS_VALUE);
+
+  const isInitialized = React.useRef(false);
   const isValueSet = React.useRef(false);
 
   const updateLimitsValue = React.useCallback(() => {
-    if (!isInitilized.current && !isLoadingTexts && !isLoadingCategories) {
-      const values = getValuesFromParams(limitsParam ?? {}, texts, categories);
-      setLimitsValue(values);
-      isInitilized.current = true;
+    if (!isInitialized.current && !isLoadingTexts && !isLoadingCategories) {
+      const limitsValues = getValuesFromParams(
+        limitsParam ?? DEFAULT_LIMITS_VALUE,
+        texts,
+        categories,
+      );
+      setLimitsValue(limitsValues);
+      isInitialized.current = true;
     }
-  }, [
-    isLoadingTexts,
-    isLoadingCategories,
-    texts,
-    categories,
-    limitsParam,
-    setLimitsValue,
-  ]);
+  }, [isLoadingTexts, isLoadingCategories, texts, categories, limitsParam]);
 
   const handleGlobalParamReset = React.useCallback(() => {
     // `isValueSet` deals with param-value setting cycle
     // and avoids selection flicker & update lag
     isValueSet.current = false;
-    setLimitsValue({});
-  }, [isValueSet, setLimitsValue]);
+    setLimitsValue(DEFAULT_LIMITS_VALUE);
+  }, [isValueSet]);
 
   useEffect(() => {
     if (!language) return;
@@ -130,6 +131,7 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
     setLimitsValue(updatedLimitValues);
 
     const updatedParams = getParamsFromValues(limit, value, limitsParam ?? {});
+
     setLimitsParam(
       Object.keys(updatedParams).length > 0
         ? updatedParams
@@ -222,4 +224,4 @@ const IncludeExcludeFilters = ({ language }: { language: string }) => {
   );
 };
 
-export default IncludeExcludeFilters;
+export default memo(IncludeExcludeFilters);

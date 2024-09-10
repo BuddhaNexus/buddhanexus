@@ -44,7 +44,11 @@ export const DbApi = {
     call: getNumbersViewCategories,
   },
   TextView: {
-    makeQueryKey: (params: APIGeneralInput) => ["textView", params],
+    makeQueryKey: (params: APIGeneralInput, selectedSegment?: string) => [
+      "textView",
+      params,
+      selectedSegment,
+    ],
     call: getTextViewParallelsData,
   },
   TextViewMiddle: {
