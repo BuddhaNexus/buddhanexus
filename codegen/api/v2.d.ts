@@ -203,6 +203,13 @@ export interface paths {
      */
     post: operations["get_file_text_segments_and_parallels_text_view_text_parallels__post"];
   };
+  "/text-view/text-parallels-v2/": {
+    /**
+     * Get File Text Segments And Parallels
+     * @description Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
+     */
+    post: operations["get_file_text_segments_and_parallels_text_view_text_parallels_v2__post"];
+  };
   "/numbers-view/numbers/": {
     /**
      * Get Numbers View
@@ -764,6 +771,17 @@ export interface components {
     TableViewOutput: components["schemas"]["api__endpoints__models__table_view_models__Segment"][];
     /** TextItem */
     TextItem: {
+      /** Page */
+      page: number;
+      /** Total Pages */
+      total_pages: number;
+      /** Segnr */
+      segnr: string;
+      /** Segtext */
+      segtext: components["schemas"]["FullMatchText"][];
+    };
+    /** TextItemNew */
+    TextItemNew: {
       /** Segnr */
       segnr: string;
       /** Segtext */
@@ -802,6 +820,15 @@ export interface components {
     };
     /** TextViewLeftOutput */
     TextViewLeftOutput: components["schemas"]["TextItem"][];
+    /** TextViewLeftOutputV2 */
+    TextViewLeftOutputV2: {
+      /** Page */
+      page: number;
+      /** Total Pages */
+      total_pages: number;
+      /** Items */
+      items: components["schemas"]["TextItemNew"][];
+    };
     /** TextViewMiddleInput */
     TextViewMiddleInput: {
       /** Parallel Ids */
@@ -1232,6 +1259,31 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["TextViewLeftOutput"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get File Text Segments And Parallels
+   * @description Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
+   */
+  get_file_text_segments_and_parallels_text_view_text_parallels_v2__post: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["TextParallelsInput"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TextViewLeftOutputV2"];
         };
       };
       /** @description Validation Error */

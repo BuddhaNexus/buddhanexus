@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { memo, useRef } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import {
@@ -116,4 +116,4 @@ const GlobalSearchMobile = () => {
   );
 };
 
-export default GlobalSearchMobile;
+export default memo(GlobalSearchMobile);

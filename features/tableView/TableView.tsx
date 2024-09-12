@@ -1,5 +1,8 @@
 import { Virtuoso } from "react-virtuoso";
-import { EmptyPlaceholder, Footer } from "@components/db/ListComponents";
+import {
+  EmptyPlaceholder,
+  ListLoadingIndicator,
+} from "@components/db/ListComponents";
 import type { ParsedTableViewData } from "utils/api/endpoints/table-view/table";
 
 import { TableViewRow } from "./TableViewRow";
@@ -25,7 +28,10 @@ export default function TableView({
       endReached={onEndReached}
       startReached={onStartReached}
       overscan={20}
-      components={{ Footer: hasData ? Footer : undefined, EmptyPlaceholder }}
+      components={{
+        Footer: hasData ? ListLoadingIndicator : undefined,
+        EmptyPlaceholder,
+      }}
     />
   );
 }

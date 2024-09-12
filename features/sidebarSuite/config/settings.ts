@@ -131,3 +131,6 @@ export const uniqueSettings = {
   remote,
   local,
 } as const;
+
+type UniqueSettingsType = typeof uniqueSettings;
+export { type UniqueSettingsType };

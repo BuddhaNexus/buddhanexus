@@ -161,7 +161,7 @@ export const enscriptText = ({
   language,
   script,
 }: {
-  text: string;
+  text?: string;
   language: SourceLanguage;
   script: Script;
 }) => {

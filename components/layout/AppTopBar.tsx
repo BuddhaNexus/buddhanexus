@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
@@ -35,7 +35,7 @@ const AppBarLink = ({ title, href }: AppBarLinkProps) => (
   </Link>
 );
 
-export const AppTopBar = () => {
+export const AppTopBar = memo(function AppTopBar() {
   const materialTheme = useTheme();
 
   const { mode, setMode } = useColorScheme();
@@ -174,4 +174,4 @@ export const AppTopBar = () => {
       )}
     </>
   );
-};
+});
