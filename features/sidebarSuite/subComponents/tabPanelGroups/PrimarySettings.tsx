@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from "react";
+import { Fragment, memo, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -6,17 +6,61 @@ import { Box } from "@mui/material";
 import { currentViewAtom } from "features/atoms";
 import { isSettingOmitted } from "features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "features/sidebarSuite/common/PanelHeading";
+import { UniqueSettingsType } from "features/sidebarSuite/config/settings";
 import type { SidebarSuitePageContext } from "features/sidebarSuite/config/types";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
   IncludeExcludeFilters,
-  // MultiLingualSelector,
   ParLengthFilter,
   ScoreFilter,
   SearchLanguageSelector,
 } from "features/sidebarSuite/subComponents/settings";
 import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
 import { useAtomValue } from "jotai";
+import { SourceLanguage } from "utils/constants";
+
+type FiltersProps = {
+  filters: string[];
+  uniqueSettings: UniqueSettingsType;
+  sourceLanguage: SourceLanguage;
+};
+
+const Filters = memo(function Filters({
+  filters,
+  uniqueSettings,
+  sourceLanguage,
+}: FiltersProps) {
+  return filters.map((filter) => {
+    const key = `filter-setting-${filter}`;
+
+    switch (filter) {
+      case uniqueSettings.queryParams.language: {
+        return <SearchLanguageSelector key={key} />;
+      }
+      case uniqueSettings.queryParams.score: {
+        return <ScoreFilter key={key} />;
+      }
+      case uniqueSettings.queryParams.parLength: {
+        return <ParLengthFilter key={key} />;
+      }
+      // disabled in features/sidebarSuite/config/settings.ts
+      // case uniqueSettings.queryParams.multiLingual: {
+      //   return <MultiLingualSelector key={key} />;
+      // }
+      case uniqueSettings.queryParams.limits: {
+        return <IncludeExcludeFilters key={key} language={sourceLanguage} />;
+      }
+      case uniqueSettings.queryParams.targetCollection: {
+        return (
+          <Fragment key={key}>{StandinSetting("target_collection")}</Fragment>
+        );
+      }
+      default: {
+        return null;
+      }
+    }
+  });
+});
 
 export const PrimarySettings = ({
   pageType = "dbResult",
@@ -65,40 +109,12 @@ export const PrimarySettings = ({
       ) : null}
 
       <PanelHeading heading={t("headings.filters")} sx={{ mt: 1 }} />
-      {filters.map((filter) => {
-        const key = `filter-setting-${filter}`;
 
-        switch (filter) {
-          case uniqueSettings.queryParams.language: {
-            return <SearchLanguageSelector key={key} />;
-          }
-          case uniqueSettings.queryParams.score: {
-            return <ScoreFilter key={key} />;
-          }
-          case uniqueSettings.queryParams.parLength: {
-            return <ParLengthFilter key={key} />;
-          }
-          // disabled in features/sidebarSuite/config/settings.ts
-          // case uniqueSettings.queryParams.multiLingual: {
-          //   return <MultiLingualSelector key={key} />;
-          // }
-          case uniqueSettings.queryParams.limits: {
-            return (
-              <IncludeExcludeFilters key={key} language={sourceLanguage} />
-            );
-          }
-          case uniqueSettings.queryParams.targetCollection: {
-            return (
-              <Fragment key={key}>
-                {StandinSetting("target_collection")}
-              </Fragment>
-            );
-          }
-          default: {
-            return null;
-          }
-        }
-      })}
+      <Filters
+        filters={filters}
+        uniqueSettings={uniqueSettings}
+        sourceLanguage={sourceLanguage}
+      />
     </Box>
   ) : null;
 };

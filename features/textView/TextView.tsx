@@ -2,32 +2,40 @@ import "allotment/dist/style.css";
 
 import React, { useMemo } from "react";
 import { Virtuoso } from "react-virtuoso";
-import { EmptyPlaceholder, Footer } from "@components/db/ListComponents";
+import {
+  EmptyPlaceholder,
+  ListLoadingIndicator,
+} from "@components/db/ListComponents";
 import { Paper } from "@mui/material";
 import { Allotment } from "allotment";
 import chroma from "chroma-js";
 import { selectedSegmentMatchesAtom } from "features/atoms/textView";
 import { useAtomValue } from "jotai/index";
 import { useQueryParam } from "use-query-params";
-import { ParsedTextViewParallelsData } from "utils/api/endpoints/text-view/text-parallels";
+import { ParsedTextViewParallels } from "utils/api/endpoints/text-view/text-parallels";
 
 import { TextSegment } from "./TextSegment";
 import TextViewMiddleParallels from "./TextViewMiddleParallels";
 
 interface Props {
-  data: ParsedTextViewParallelsData;
+  data: ParsedTextViewParallels;
   onEndReached: () => void;
-  onStartReached: () => void;
+  onStartReached: () => Promise<void>;
+  firstItemIndex?: number;
+  isFetchingPreviousPage?: boolean;
+  isFetchingNextPage?: boolean;
 }
 
 // todo: check other elements in segmentText
-export default function TextView({
+export const TextView = ({
   data,
   onEndReached,
   onStartReached,
-}: Props) {
+  firstItemIndex,
+  isFetchingPreviousPage,
+  isFetchingNextPage,
+}: Props) => {
   const [selectedSegmentId] = useQueryParam("selectedSegment");
-
   const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
 
   const colorScale = useMemo(() => {
@@ -61,19 +69,23 @@ export default function TextView({
         {/* Left pane - text (main view) */}
         <Allotment.Pane>
           <Virtuoso
+            firstItemIndex={firstItemIndex}
+            initialTopMostItemIndex={selectedSegmentIndexInData}
+            data={hasData && data.length > 0 ? data : undefined}
+            startReached={onStartReached}
+            endReached={onEndReached}
             totalCount={data.length}
-            data={hasData ? data : undefined}
+            overscan={900} // pixel value
+            increaseViewportBy={500} // solves empty content at start/end of list issue
+            initialItemCount={5} // for SSR
+            components={{
+              Header: isFetchingPreviousPage ? ListLoadingIndicator : undefined,
+              Footer: isFetchingNextPage ? ListLoadingIndicator : undefined,
+              EmptyPlaceholder,
+            }}
             itemContent={(_, dataSegment) => (
               <TextSegment data={dataSegment} colorScale={colorScale} />
             )}
-            initialTopMostItemIndex={selectedSegmentIndexInData}
-            endReached={onEndReached}
-            startReached={onStartReached}
-            overscan={20}
-            components={{
-              Footer: hasData ? Footer : undefined,
-              EmptyPlaceholder,
-            }}
           />
         </Allotment.Pane>
 
@@ -84,4 +96,6 @@ export default function TextView({
       </Allotment>
     </Paper>
   );
-}
+};
+
+TextView.displayName = "TextView";

@@ -110,6 +110,13 @@ export type APITextViewParallelsResponseData = APIResponse<
   paths["/text-view/text-parallels/"]["post"]
 >;
 
+export type APITextViewParallelsV2RequestBody = APIRequestBody<
+  paths["/text-view/text-parallels-v2/"]["post"]
+>;
+export type APITextViewParallelsV2ResponseData = APIResponse<
+  paths["/text-view/text-parallels-v2/"]["post"]
+>;
+
 /** NUMBERS VIEW */
 
 export type APINumbersViewRequestBody = APIRequestBody<

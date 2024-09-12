@@ -1,9 +1,7 @@
 import { useTranslation } from "next-i18next";
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 
-export const Footer = () => {
-  const { t } = useTranslation("common");
-
+export const ListLoadingIndicator = () => {
   return (
     <div
       style={{
@@ -12,7 +10,7 @@ export const Footer = () => {
         justifyContent: "center",
       }}
     >
-      <Typography>{t("prompts.loading")}</Typography>
+      <CircularProgress />
     </div>
   );
 };

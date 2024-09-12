@@ -11,7 +11,7 @@
     "options": "Custom options: {{value}}",
     "settings": "Settings",
     "settingsTip": "Toggle settings panel",
-    "reset": "Reset",
+    "reset": "Reset Filters",
     "resetTip": "Resort default settings",
     "textSelect": "Change text",
     "textSelectTip": "Select a new inquiry text",
