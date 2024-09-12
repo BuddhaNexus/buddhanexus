@@ -14,7 +14,10 @@ export const currentViewAtom = atom<DbViewEnum>(DbViewEnum.TEXT);
  * SETTINGS SIDEBAR
  */
 export const isNavigationDrawerOpen = atom(false);
-export const scriptSelectionAtom = atom<Script>("Unicode");
+export const scriptSelectionAtom = atomWithStorage<Script>(
+  "text-script-selection",
+  "Unicode",
+);
 export const isSettingsOpenAtom = atom(true);
 export const defaultSourceLanguagesSelection = atom<SourceLanguage[]>([]);
 

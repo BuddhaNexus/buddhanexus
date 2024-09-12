@@ -17,30 +17,12 @@ export type Script = "Unicode" | "Wylie";
 const SCRIPT_OPTIONS: Partial<Record<SourceLanguage, Script[]>> = {
   tib: ["Unicode", "Wylie"],
 };
-const DEFAULT_SCRIPT = "Unicode";
 
 export default function TextScriptOption() {
   const { sourceLanguage } = useDbQueryParams();
   const { t } = useTranslation("settings");
 
   const [scriptSelection, setScriptSelection] = useAtom(scriptSelectionAtom);
-
-  React.useEffect(() => {
-    const storedSelection = window.localStorage.getItem(
-      "text-script-selection",
-    );
-
-    if (storedSelection && storedSelection !== "undefined") {
-      setScriptSelection(JSON.parse(storedSelection));
-    }
-  }, [setScriptSelection]);
-
-  React.useEffect(() => {
-    window.localStorage.setItem(
-      "text-script-selection",
-      JSON.stringify(scriptSelection),
-    );
-  }, [scriptSelection]);
 
   return (
     <FormControl sx={{ width: 1, mb: 1 }}>
@@ -56,7 +38,7 @@ export default function TextScriptOption() {
           id: "sort-option-selector",
         }}
         input={<OutlinedInput label={t("optionsLabels.script")} />}
-        value={scriptSelection ?? DEFAULT_SCRIPT}
+        value={scriptSelection}
         onChange={(e) => setScriptSelection(e.target.value as Script)}
       >
         {SCRIPT_OPTIONS[sourceLanguage]?.map((script) => {
