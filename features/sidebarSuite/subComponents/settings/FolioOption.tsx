@@ -82,8 +82,8 @@ export default function FolioOption() {
               data.length > 1 &&
               data.map((folio: ParsedFolio) => {
                 return (
-                  <MenuItem key={folio.id} value={folio.id}>
-                    {folio.segmentNr}
+                  <MenuItem key={folio.segmentNr} value={folio.number}>
+                    {folio.number}
                   </MenuItem>
                 );
               })}
