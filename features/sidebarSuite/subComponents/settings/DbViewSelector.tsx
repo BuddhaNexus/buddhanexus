@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { getSafeView, useAvailableDbViews } from "@components/hooks/useDbView";
+import { getValidView, useAvailableDbViews } from "@components/hooks/useDbView";
 import {
   FormControl,
   InputLabel,
@@ -22,7 +22,7 @@ export const DbViewSelector = () => {
   const availableViews = useAvailableDbViews();
 
   const handleChange = async (e: SelectChangeEvent) => {
-    const newView = getSafeView(e.target.value);
+    const newView = getValidView(e.target.value);
     await router.push({
       pathname: router.pathname.replace(currentView, newView),
       query: { ...router.query },

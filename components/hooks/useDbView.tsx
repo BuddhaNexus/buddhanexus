@@ -6,11 +6,14 @@ import { useSetAtom } from "jotai";
 
 import { useDbQueryParams } from "./useDbQueryParams";
 
+export { DbViewEnum } from "features/sidebarSuite/config/types";
+export const defaultDBView = DbViewEnum.TEXT;
+
 export const isValidView = (view: unknown): view is DbViewEnum =>
   Object.values(DbViewEnum).some((item) => item === view);
 
-export const getSafeView = (view: unknown) => {
-  return isValidView(view) ? view : DbViewEnum.TEXT;
+export const getValidView = (view: unknown) => {
+  return isValidView(view) ? view : defaultDBView;
 };
 
 export const useAvailableDbViews = () => {
@@ -35,9 +38,9 @@ export const useSetDbViewFromPath = () => {
   const setCurrentView = useSetAtom(currentViewAtom);
 
   const pathnameParts = pathname.split("/");
-  const pathnameView = pathnameParts.at(-1) ?? DbViewEnum.TEXT;
+  const pathnameView = pathnameParts.at(-1) ?? defaultDBView;
 
   useEffect(() => {
-    setCurrentView(getSafeView(pathnameView));
+    setCurrentView(getValidView(pathnameView));
   }, [pathnameView, setCurrentView]);
 };
