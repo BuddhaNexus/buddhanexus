@@ -6,8 +6,8 @@ import type {
 
 const parseFolioData = (data: APIFolioResponseData) => {
   return data.folios.map((folio: { segment_nr: string; num: string }) => ({
-    id: folio.num,
     segmentNr: folio.segment_nr,
+    number: folio.num,
   }));
 };
 

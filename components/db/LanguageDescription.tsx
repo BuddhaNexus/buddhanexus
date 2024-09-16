@@ -79,10 +79,6 @@ const PaliDescription = () => {
       </Typography>
 
       <Typography>{t("pli.p04")}</Typography>
-
-      <Typography variant="body2" sx={{ my: 2 }}>
-        {t("pli.p05")}
-      </Typography>
     </>
   );
 };

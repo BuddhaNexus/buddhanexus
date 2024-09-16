@@ -1,4 +1,5 @@
 import { Link } from "@components/common/Link";
+import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import LaunchIcon from "@mui/icons-material/Launch";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -24,6 +25,7 @@ export type MDXPageDataStore = Record<string, any>;
 
 export const MDX_COMPONENTS: MDXPageDataStore = {
   KeyboardDoubleArrowUpIcon,
+  ExploreOutlinedIcon,
   LaunchIcon,
   MenuIcon,
   Event,
