@@ -10,7 +10,7 @@ class TextParallelsInput(BaseModel):
     par_length: int = 0
     limits: Optional[Limits]
     multi_lingual: list = []
-    page_number: int = 0
+    page_number: int = 0    
 
 
 class FullMatchText(FullText):
@@ -18,13 +18,22 @@ class FullMatchText(FullText):
 
 
 class TextItem(BaseModel):
+    page: int
+    total_pages: int
     segnr: str
     segtext: List[FullMatchText]
 
+class TextItemNew(BaseModel):
+    segnr: str
+    segtext: List[FullMatchText]
 
 class TextViewLeftOutput(BaseModel):
     __root__: List[TextItem]
 
+class TextViewLeftOutputV2(BaseModel):
+    page: int
+    total_pages: int
+    items: List[TextItemNew]
 
 class TextViewMiddleInput(BaseModel):
     parallel_ids: list

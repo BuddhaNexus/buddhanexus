@@ -23,12 +23,13 @@ async def get_search_results(input: SearchInput) -> Any:
     limit_collection_exclude = create_cleaned_limit_collection(
         input.limits.category_exclude + input.limits.file_exclude
     )
+    print("LANGUAGE", input.language)
     result = []
     search_string = input.search_string.lower()
     search_strings = search_utils.preprocess_search_string(
         search_string[:300], input.language
     )
-
+    print("SEARCH STRINGS", search_strings)
     query_search = execute_query(
         search_queries.QUERY_SEARCH,
         bind_vars={
@@ -42,9 +43,12 @@ async def get_search_results(input: SearchInput) -> Any:
         },
     )
     query_result = query_search.result[0]
+    #print("SEARCH RESULT BEFORE POSTPROCESSING", query_result)
     result = search_utils.postprocess_results(
         search_strings,
         query_result,
     )
+    #print("SEARCH RESULT AFTER POSTPROCESSING 1", result)
     results = calculate_color_maps_search(result)
+    #print("SEARCH RESULT AFTER POSTPROCESSING 2", results)
     return {"searchResults": result}

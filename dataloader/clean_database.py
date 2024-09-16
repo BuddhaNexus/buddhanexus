@@ -143,3 +143,18 @@ def clean_all_lang_db(current_lang):
     files_collection = db.collection(COLLECTION_FILES)
     files_collection.delete_match({"language": current_lang})
     print("Cleaning data done.")
+
+def clean_paralels_lang_db(current_lang):
+    print("Cleaning data for language", current_lang)
+    db = get_database()
+
+    parallels_collection = db.collection(COLLECTION_PARALLELS)
+    parallels_collection.delete_match({"src_lang": current_lang})
+
+    parallels_sorted_collection = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
+    parallels_sorted_collection.delete_match({"lang": current_lang})
+
+    parallels_count_collection = db.collection(COLLECTION_FILES_PARALLEL_COUNT)
+    parallels_count_collection.delete_match({"language": current_lang})
+
+    print("Cleaning data done.")

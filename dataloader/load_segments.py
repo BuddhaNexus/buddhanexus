@@ -137,9 +137,10 @@ class LoadSegmentsBase:
         metadata_reference_filename = file.split(".tsv")[0].split("$")[0]
         # n0 and n1 only appear in chinese files, we need to remove folio numbers for these as well
         if "n0" in metadata_reference_filename or "n1" in metadata_reference_filename or "n2" in metadata_reference_filename:
-            metadata_reference_filename = re.sub(r"_[0-9][0-9][0-9]", "", metadata_reference_filename)
+            metadata_reference_filename = re.sub(r"_[0-9][0-9][0-9abcdef]", "", metadata_reference_filename)
         if metadata_reference_filename not in self.metadata_file_list:
             print(f"ERROR: file not in metadata: { file }")
+            print(f"metadata_reference_filename: {metadata_reference_filename}")
             return
         print(f"Processing file: { file }")
         db = get_database()
