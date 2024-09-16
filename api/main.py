@@ -19,7 +19,7 @@ from .endpoints import (
     links,
 )
 
-API_PREFIX = "/api" if os.environ["PROD"] == "1" else ""
+API_PREFIX = "/api-db" if os.environ["PROD"] == "1" else "/api-db"
 
 APP = FastAPI(title="BuddhaNexus Backend", version="0.2.1", openapi_prefix=API_PREFIX)
 

@@ -7,8 +7,8 @@ def get_folios_from_segment_keys(segment_keys, lang):
     folios = []
     if lang == LANG_CHINESE:
         last_num = ""
-        for segment_key in segment_keys:
-            num = segment_key.split("_")[1].split(":")[0]
+        for segment_key in segment_keys:            
+            num = segment_key.split(":")[0].split("_")[1]
             if num != last_num:
                 folios.append({"num": num, "segment_nr": segment_key})
                 last_num = num

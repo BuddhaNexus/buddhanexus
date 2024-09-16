@@ -59,7 +59,7 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0])
         par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])
         par_filename = re.sub("_[0-9][0-9][0-9]", "", par_filename)
-        id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]
+        id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]                
         parallel["_id"] = id
         parallel["_key"] = id
         parallel["folios"] = folios
@@ -72,7 +72,7 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         del parallel["par_string"]
         del parallel["root_string"]
         # todo: delete the root_filename key after it's not needed anymore
-        parallel["root_filename"] = root_filename
+        parallel["root_filename"] = root_filename        
         parallels_to_be_inserted.append(parallel)
 
     chunksize = 10000
@@ -111,9 +111,10 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     files = os.listdir(folder)
     files = list(filter(lambda f: f.endswith(".json.gz"), files))
     pool = multiprocessing.Pool(number_of_threads)
-    for file in files:
+    for file in files:        
         pool.apply_async(process_file, args=(os.path.join(folder, file), db))
-        # process_file(os.path.join(folder, file), db)
+        #process_file(os.path.join(folder, file), db)
+
     db_collection.add_hash_index(
         fields=[
             "root_filename",
@@ -150,27 +151,6 @@ def load_sorted_parallels_file(path, lang, db_collection):
         filename = get_filename_from_segmentnr(file["filename"])
         file["_key"] = filename
         file["lang"] = lang
-        # print all keys of file
-        file["parallels_sorted_by_src_pos"] = file["ids_sorted_by_root_segnr"][
-            :MATCH_LIMIT
-        ]
-        file["parallels_sorted_by_tgt_pos"] = file["ids_sorted_by_par_segnr"][
-            :MATCH_LIMIT
-        ]
-        file["parallels_sorted_by_length_src"] = file["ids_sorted_by_root_length"][
-            :MATCH_LIMIT
-        ]
-        file["parallels_sorted_by_length_tgt"] = file["ids_sorted_by_par_length"][
-            :MATCH_LIMIT
-        ]
-        file["parallels_randomized"] = file["ids_shuffled"][:MATCH_LIMIT]
-
-        del file["ids_sorted_by_root_segnr"]
-        del file["ids_sorted_by_par_segnr"]
-        del file["ids_sorted_by_root_length"]
-        del file["ids_sorted_by_par_length"]
-        del file["ids_shuffled"]
-
         db_collection.insert(file, overwrite=True)
 
 

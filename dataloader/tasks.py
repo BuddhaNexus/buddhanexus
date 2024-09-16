@@ -112,7 +112,7 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
     db = get_database()
-    number_of_threads = os.cpu_count()
+    number_of_threads = os.cpu_count() - 1
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]

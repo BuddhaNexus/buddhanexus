@@ -54,10 +54,12 @@ FOR file IN files
         ) : []
     )
 
+
 LET parallel_ids = UNIQUE(FLATTEN(
     FOR segment IN page_segments
         RETURN segment.parallel_ids
 ))
+
 
 LET parallels = (
     FOR parallel_id IN parallel_ids
