@@ -6,11 +6,11 @@ import { useSetAtom } from "jotai";
 
 import { useDbQueryParams } from "./useDbQueryParams";
 
-export const isValideView = (view: unknown): view is DbViewEnum =>
+export const isValidView = (view: unknown): view is DbViewEnum =>
   Object.values(DbViewEnum).some((item) => item === view);
 
 export const getSafeView = (view: unknown) => {
-  return isValideView(view) ? view : DbViewEnum.TEXT;
+  return isValidView(view) ? view : DbViewEnum.TEXT;
 };
 
 export const useAvailableDbViews = () => {
