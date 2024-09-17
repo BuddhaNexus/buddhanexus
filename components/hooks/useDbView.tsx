@@ -1,35 +1,30 @@
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { currentViewAtom } from "features/atoms";
-import { DbViewEnum } from "features/sidebarSuite/config/types";
+import { SETTINGS_OMISSIONS_CONFIG } from "features/sidebarSuite/config";
 import { useSetAtom } from "jotai";
+import { DbViewEnum, DEFAULT_DB_VIEW, SourceLanguage } from "utils/constants";
+import { getValidDbView } from "utils/validators";
 
 import { useDbQueryParams } from "./useDbQueryParams";
 
-export { DbViewEnum } from "features/sidebarSuite/config/types";
-export const defaultDBView = DbViewEnum.TEXT;
+const { viewSelector: omittedViews } = SETTINGS_OMISSIONS_CONFIG;
 
-export const isValidView = (view: unknown): view is DbViewEnum =>
-  Object.values(DbViewEnum).some((item) => item === view);
+export const getAvailableDBViews = (language: SourceLanguage) => {
+  const allViews = Object.values(DbViewEnum);
+  const unavailableViews = omittedViews[language];
 
-export const getValidView = (view: unknown) => {
-  return isValidView(view) ? view : defaultDBView;
+  if (!unavailableViews) return allViews;
+
+  return allViews.filter((view) => !unavailableViews.includes(view));
 };
 
 export const useAvailableDbViews = () => {
-  const {
-    sourceLanguage,
-    settingsOmissionsConfig: { viewSelector: omittedViews },
-  } = useDbQueryParams();
+  const { sourceLanguage } = useDbQueryParams();
 
   return useMemo(() => {
-    const allViews = Object.values(DbViewEnum);
-    const unavailableViews = omittedViews[sourceLanguage];
-
-    if (!unavailableViews) return allViews;
-
-    return allViews.filter((view) => !unavailableViews.includes(view));
-  }, [omittedViews, sourceLanguage]);
+    return getAvailableDBViews(sourceLanguage);
+  }, [sourceLanguage]);
 };
 
 // This allows two-way view setting: url <--> view selector
@@ -38,9 +33,9 @@ export const useSetDbViewFromPath = () => {
   const setCurrentView = useSetAtom(currentViewAtom);
 
   const pathnameParts = pathname.split("/");
-  const pathnameView = pathnameParts.at(-1) ?? defaultDBView;
+  const pathnameView = pathnameParts.at(-1) ?? DEFAULT_DB_VIEW;
 
   useEffect(() => {
-    setCurrentView(getValidView(pathnameView));
+    setCurrentView(getValidDbView(pathnameView));
   }, [pathnameView, setCurrentView]);
 };

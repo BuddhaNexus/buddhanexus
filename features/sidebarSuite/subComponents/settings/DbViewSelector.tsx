@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { getValidView, useAvailableDbViews } from "@components/hooks/useDbView";
+import { useAvailableDbViews } from "@components/hooks/useDbView";
 import {
   FormControl,
   InputLabel,
@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { currentViewAtom } from "features/atoms";
 import { useAtom } from "jotai";
+import { getValidDbView } from "utils/validators";
 
 export const DbViewSelector = () => {
   const { t } = useTranslation("settings");
@@ -22,7 +23,7 @@ export const DbViewSelector = () => {
   const availableViews = useAvailableDbViews();
 
   const handleChange = async (e: SelectChangeEvent) => {
-    const newView = getValidView(e.target.value);
+    const newView = getValidDbView(e.target.value);
     await router.push({
       pathname: router.pathname.replace(currentView, newView),
       query: { ...router.query },

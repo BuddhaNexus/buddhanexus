@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { currentViewAtom } from "features/atoms";
-import { DbViewEnum } from "features/sidebarSuite/config/types";
 import { useAtomValue } from "jotai";
+import { DbViewEnum } from "utils/constants";
 
 // TODO: Determine relevant support info for sub-components & add to local files.
 const TEMP_VIEW_INFO: Record<DbViewEnum, string> = {

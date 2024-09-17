@@ -1,6 +1,6 @@
 import type { ParsedCategoryMenuItem } from "utils/api/endpoints/menus/category";
 import type { ParsedTextFileMenuItem } from "utils/api/endpoints/menus/files";
-import type { SourceLanguage } from "utils/constants";
+import type { DbViewEnum, SourceLanguage } from "utils/constants";
 
 import {
   DisplayOption,
@@ -8,13 +8,6 @@ import {
   uniqueSettings,
   UtilityOption,
 } from "./settings";
-
-export enum DbViewEnum {
-  GRAPH = "graph",
-  NUMBERS = "numbers",
-  TABLE = "table",
-  TEXT = "text",
-}
 
 export type SidebarSuitePageContext = "dbResult" | "search";
 export type SettingOmissionContext = DbViewEnum | "search";

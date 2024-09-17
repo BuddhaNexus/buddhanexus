@@ -1,14 +1,13 @@
-import { DbViewEnum, defaultDBView } from "components/hooks/useDbView";
 import type { Script } from "features/sidebarSuite/subComponents/settings/TextScriptOption";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import type { SourceLanguage } from "utils/constants";
+import { DbViewEnum, DEFAULT_DB_VIEW, SourceLanguage } from "utils/constants";
 
 /**
  * GENERAL
  */
 
-export const currentViewAtom = atom<DbViewEnum>(defaultDBView);
+export const currentViewAtom = atom<DbViewEnum>(DEFAULT_DB_VIEW);
 
 /**
  * SETTINGS SIDEBAR
