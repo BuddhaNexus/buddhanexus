@@ -14,3 +14,11 @@ tramp
 # Environments
 .env
 json
+data
+download
+*.tsv
+*.zip
+*.ipynb
+*.error
+*.gz
+venv

@@ -15,7 +15,7 @@ PROPERTIES_SEARCH_INDEX_TIB = {
     "links": {
         COLLECTION_SEARCH_INDEX_TIB: {
             "analyzers": [TIBETAN_ANALYZER],
-            "fields": {"search_string_precise": {"analyzers": [TIBETAN_ANALYZER]}},
+            "fields": {"original": {"analyzers": [TIBETAN_ANALYZER]}},
         }
     },
     "includeAllFields": True,
@@ -28,9 +28,7 @@ PROPERTIES_SEARCH_INDEX_TIB_FUZZY = {
     "links": {
         COLLECTION_SEARCH_INDEX_TIB: {
             "analyzers": [TIBETAN_FUZZY_ANALYZER],
-            "fields": {
-                "search_string_fuzzy": {"analyzers": [TIBETAN_FUZZY_ANALYZER]}
-            },
+            "fields": {"stemmed": {"analyzers": [TIBETAN_FUZZY_ANALYZER]}},
         }
     },
     "includeAllFields": True,
@@ -38,15 +36,14 @@ PROPERTIES_SEARCH_INDEX_TIB_FUZZY = {
     "trackListPositions": False,
 }
 
-
 PROPERTIES_SEARCH_INDEX_SKT = {
     "cleanupIntervalStep": 0,
     "links": {
         COLLECTION_SEARCH_INDEX_SKT: {
             "analyzers": [SANSKRIT_ANALYZER],
             "fields": {
-                "search_string_precise": {"analyzers": [SANSKRIT_ANALYZER]},
-                "search_string_fuzzy": {"analyzers": [SANSKRIT_ANALYZER]},
+                "original": {"analyzers": [SANSKRIT_ANALYZER]},
+                "stemmed": {"analyzers": [SANSKRIT_ANALYZER]},
             },
         }
     },
@@ -61,8 +58,8 @@ PROPERTIES_SEARCH_INDEX_PLI = {
         COLLECTION_SEARCH_INDEX_PLI: {
             "analyzers": [PALI_ANALYZER],
             "fields": {
-                "search_string_precise": {"analyzers": [PALI_ANALYZER]},
-                "search_string_fuzzy": {"analyzers": [PALI_ANALYZER]},
+                "original": {"analyzers": [PALI_ANALYZER]},
+                "stemmed": {"analyzers": [PALI_ANALYZER]},
             },
         }
     },
@@ -77,7 +74,7 @@ PROPERTIES_SEARCH_INDEX_CHN = {
     "links": {
         COLLECTION_SEARCH_INDEX_CHN: {
             "analyzers": [CHINESE_ANALYZER],
-            "fields": {"search_string_precise": {"analyzers": [CHINESE_ANALYZER]}},
+            "fields": {"original": {"analyzers": [CHINESE_ANALYZER]}},
         }
     },
     "includeAllFields": True,
