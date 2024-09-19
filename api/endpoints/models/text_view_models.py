@@ -10,12 +10,11 @@ class TextParallelsInput(BaseModel):
     par_length: int = 0
     limits: Optional[Limits]
     multi_lingual: list = []
-    page_number: int = 0    
-
+    page_number: int = 0
+    folio: str = ""
 
 class FullMatchText(FullText):
     matches: list = []
-
 
 class TextItem(BaseModel):
     page: int

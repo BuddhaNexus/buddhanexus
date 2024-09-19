@@ -61,6 +61,7 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
         "multi_lingual": input.multi_lingual,
         "limitcollection_include": limitcollection_include,
         "limitcollection_exclude": limitcollection_exclude,
+        "folio": input.folio
     }
 
     text_segments_query_result = execute_query(
@@ -87,7 +88,7 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     filename = input.file_name
     parallel_ids_type = "parallel_ids"
     page_number = input.page_number
-    print("ALL INPUTS", input)
+    print("ALL INPUTS 2", input)
     if input.active_segment != "none":
         page_number = get_page_for_segment(input.active_segment)
         filename = get_filename_from_segmentnr(input.active_segment)
