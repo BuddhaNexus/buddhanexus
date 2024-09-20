@@ -2,14 +2,12 @@
 This file contains the functions needed to create Excel
 worksheets for download
 """
-
+from io import BytesIO
+from fastapi import Response
 import re
 import xlsxwriter
 from .utils import shorten_segment_names
 from .endpoints.utils import get_displayname
-from io import BytesIO
-from fastapi import Response
-
 
 def run_table_download(query, file_values):
 
@@ -345,9 +343,7 @@ def run_numbers_download(categories, segments, file_values):
     for item in segments:
         worksheet.write(row, 0, item["segmentnr"], workbook_formats[11])
 
-        category_dict = get_category_dict(item["parallels"], categories_list)
-
-        for key, value in category_dict.items():
+        for key, value in get_category_dict(item["parallels"], categories_list).items():
             worksheet.write(row, key, "\n".join(sorted(value)), workbook_formats[12])
 
         row += 1
