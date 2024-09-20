@@ -3,8 +3,8 @@ This file contains the functions needed to create Excel
 worksheets for download
 """
 from io import BytesIO
-from fastapi import Response
 import re
+from fastapi import Response
 import xlsxwriter
 from .utils import shorten_segment_names
 from .endpoints.utils import get_displayname
