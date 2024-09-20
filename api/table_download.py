@@ -7,6 +7,8 @@ import re
 import xlsxwriter
 from .utils import shorten_segment_names
 from .endpoints.utils import get_displayname
+from io import BytesIO
+from fastapi import Response
 
 
 def run_table_download(query, file_values):
@@ -15,10 +17,10 @@ def run_table_download(query, file_values):
     Creates an Excel workbook with data given
     """
     # Create a workbook and add a worksheet.
-    file_location = "download/" + file_values[0] + "_download.xlsx"
+    file = BytesIO()
     workbook = xlsxwriter.Workbook(
-        file_location,
-        {"constant_memory": True, "use_zip64": True},
+        file,
+        {"use_zip64": True, 'in_memory': True},
     )
     worksheet = workbook.add_worksheet()
     worksheet.set_landscape()
@@ -90,7 +92,13 @@ def run_table_download(query, file_values):
         row += 3
 
     workbook.close()
-    return file_location
+    return Response(
+        file.getvalue(),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={
+            "Content-Disposition": "attachment; filename=buddhanexus_download.xlsx"
+        }
+    )
 
 
 def get_spreadsheet_fields(lang, file_values):
@@ -274,9 +282,10 @@ def run_numbers_download(categories, segments, file_values):
     Creates an Excel workbook with data given for the numbers view
     """
     # Create a workbook and add a worksheet.
+    file = BytesIO()
     workbook = xlsxwriter.Workbook(
-        "download/" + file_values[0] + "_download.xlsx",
-        {"constant_memory": True, "use_zip64": True},
+        file,
+        {"use_zip64": True, 'in_memory': True},
     )
     worksheet = workbook.add_worksheet()
     worksheet.set_landscape()
@@ -344,7 +353,13 @@ def run_numbers_download(categories, segments, file_values):
         row += 1
 
     workbook.close()
-    return "download/" + file_values[0] + "_download.xlsx"
+    return Response(
+        file.getvalue(),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={
+            "Content-Disposition": "attachment; filename=buddhanexus_download.xlsx"
+        }
+    )
 
 
 def get_category_dict(segment_parallels, categories_list):
