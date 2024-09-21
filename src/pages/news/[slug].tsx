@@ -7,17 +7,17 @@ import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Paper, Typography } from "@mui/material";
-import fs from "fs";
-import path from "path";
-import type { SupportedLocale } from "types/i18next";
 import {
   type CompiledMDXData,
   getMDXContentBySlug,
   getMDXPageComponents,
   getMDXPagePaths,
   POST_DATE_OPTS,
-} from "utils/mdxPageHelpers";
-import { getI18NextStaticProps } from "utils/nextJsHelpers";
+} from "@utils/mdxPageHelpers";
+import { getI18NextStaticProps } from "@utils/nextJsHelpers";
+import fs from "fs";
+import path from "path";
+import type { SupportedLocale } from "types/i18next";
 
 export default function PostPage({
   locale,

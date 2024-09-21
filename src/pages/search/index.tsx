@@ -10,19 +10,19 @@ import {
 } from "@components/hooks/useGlobalSearch";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
-import { Close, Search } from "@mui/icons-material";
-import { CircularProgress, IconButton, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { SearchResults } from "features/globalSearch";
+import { SearchResults } from "@features/globalSearch";
 import {
   SearchBoxInput,
   SearchBoxWrapper,
-} from "features/globalSearch/GlobalSearchStyledMuiComponents";
-import NoSearchResultsFound from "features/globalSearch/NoSearchResultsFound";
-import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+} from "@features/globalSearch/GlobalSearchStyledMuiComponents";
+import NoSearchResultsFound from "@features/globalSearch/NoSearchResultsFound";
+import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import { Close, Search } from "@mui/icons-material";
+import { CircularProgress, IconButton, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { DbApi } from "@utils/api/dbApi";
+import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import _ from "lodash";
-import { DbApi } from "utils/api/dbApi";
-import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function SearchPage() {
   const { t } = useTranslation();

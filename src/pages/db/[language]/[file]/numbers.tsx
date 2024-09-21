@@ -7,21 +7,21 @@ import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
+import NumbersTable from "@features/numbersView/NumbersTable";
+import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import {
   dehydrate,
   keepPreviousData,
   useInfiniteQuery,
   useQuery,
 } from "@tanstack/react-query";
-import NumbersTable from "features/numbersView/NumbersTable";
-import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
+import { DbApi } from "@utils/api/dbApi";
+import type { SourceLanguage } from "@utils/constants";
+import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import merge from "lodash/merge";
-import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
-import { DbApi } from "utils/api/dbApi";
-import type { SourceLanguage } from "utils/constants";
-import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
-export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
+export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 export default function NumbersPage() {
   const { sourceLanguage, fileName, defaultQueryParams, queryParams } =

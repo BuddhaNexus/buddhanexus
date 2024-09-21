@@ -11,9 +11,9 @@ import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
+import { SourceLanguage } from "@utils/constants";
+import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import merge from "lodash/merge";
-import { SourceLanguage } from "utils/constants";
-import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
 export default function Home() {
   const { t } = useTranslation();

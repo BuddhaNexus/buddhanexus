@@ -14,16 +14,16 @@ import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
+import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import { TextView } from "@features/textView/TextView";
 import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
-import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-import { TextView } from "features/textView/TextView";
+import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
+import { DbApi } from "@utils/api/dbApi";
+import type { SourceLanguage } from "@utils/constants";
+import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import merge from "lodash/merge";
-import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
-import { DbApi } from "utils/api/dbApi";
-import type { SourceLanguage } from "utils/constants";
-import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
-export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
+export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 type QueryParams = Record<string, string>;
 

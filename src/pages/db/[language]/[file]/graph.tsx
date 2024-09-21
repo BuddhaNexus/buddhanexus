@@ -8,19 +8,19 @@ import { useDbView } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
+import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import { dehydrate, useQuery } from "@tanstack/react-query";
-import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
+import { DbApi } from "@utils/api/dbApi";
+import { SourceLanguage } from "@utils/constants";
+import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import merge from "lodash/merge";
-import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
-import { DbApi } from "utils/api/dbApi";
-import { SourceLanguage } from "utils/constants";
-import { getI18NextStaticProps } from "utils/nextJsHelpers";
 
-export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
+export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
+import { HistogramDataChart } from "@features/graphView/HistogramDataChart";
+import { PieDataChart } from "@features/graphView/PieDataChart";
 import { Box, Paper, Typography } from "@mui/material";
-import { HistogramDataChart } from "features/graphView/HistogramDataChart";
-import { PieDataChart } from "features/graphView/PieDataChart";
 
 const HISTOGRAM_DATA_MATCH_LIMIT = 50;
 

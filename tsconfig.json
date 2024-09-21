@@ -2,9 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["components/*"],
+      "@components/*": ["src/components/*"],
       "@public/*": ["public/*"],
-      "@api": ["utils/api/client.ts"]
+      "@api": ["src/utils/api/client.ts"],
+      "@features/*": ["src/features/*"],
+      "@utils/*": ["src/utils/*"],
     },
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],

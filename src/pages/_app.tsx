@@ -17,10 +17,10 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { queryCacheTimeDefaults } from "@utils/api/apiQueryUtils";
+import { ThemeProvider } from "@utils/ThemeProvider";
 import queryString from "query-string";
 import { QueryParamProvider } from "use-query-params";
-import { queryCacheTimeDefaults } from "utils/api/apiQueryUtils";
-import { ThemeProvider } from "utils/ThemeProvider";
 
 function MyApp(props: AppProps) {
   const { Component, pageProps } = props;
