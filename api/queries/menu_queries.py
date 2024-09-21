@@ -80,7 +80,7 @@ FOR collection IN menu_collections
                         FILTER file.category == category.category
                         SORT file.filenr
                         FILTER file
-                        RETURN { file_name: file.filename, textname: file.textname, displayname: file.displayName, available_lang : file.available_lang}
+                        RETURN { file_name: file.filename, textname: file.textname, displayname: file.displayName}
                 )
                 RETURN {
                     categoryname: category.category,

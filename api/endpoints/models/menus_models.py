@@ -49,7 +49,6 @@ class AllFilesForCategory(BaseModel):
     file_name: str
     textname: str
     displayname: str
-    available_lang: Union[str, None] = None
 
 
 class AllCategories(BaseModel):
