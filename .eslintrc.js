@@ -51,6 +51,8 @@ const rules = {
   "multiline-comment-style": "off",
   "consistent-return": "off",
   "prefer-named-capture-group": "off",
+  // https://github.com/typescript-eslint/typescript-eslint/issues/2483
+  "no-shadow": "off",
 
   // @typescript-eslint
   "@typescript-eslint/prefer-readonly-parameter-types": "off",
@@ -96,6 +98,8 @@ const rules = {
   "@typescript-eslint/space-before-function-paren": "off",
   "@typescript-eslint/comma-dangle": "off",
   "@typescript-eslint/no-extra-parens": "off",
+  "@typescript-eslint/no-shadow": "error",
+  "@typescript-eslint/prefer-includes": "error",
 
   // unicorn
   "unicorn/catch-error-name": [
@@ -121,6 +125,7 @@ const rules = {
   "unicorn/template-indent": "off",
   "unicorn/text-encoding-identifier-case": "off",
   "unicorn/no-array-for-each": "off",
+  "unicorn/prefer-includes": "off",
 
   // react
   "react/react-in-jsx-scope": "off",

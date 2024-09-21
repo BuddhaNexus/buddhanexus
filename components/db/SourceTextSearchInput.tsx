@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { getTextPath } from "@components/common/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@components/hooks/useDbView";
 import {
   Autocomplete,
   autocompleteClasses,
@@ -25,6 +24,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import { useQuery } from "@tanstack/react-query";
+import { currentViewAtom } from "features/atoms";
 import { useAtomValue } from "jotai";
 import { DbApi } from "utils/api/dbApi";
 import type { ParsedTextFileMenuItem } from "utils/api/endpoints/menus/files";

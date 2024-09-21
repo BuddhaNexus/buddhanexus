@@ -4,7 +4,6 @@ import { Link } from "@components/common/Link";
 import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
 import { getTextPath } from "@components/common/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@components/hooks/useDbView";
 import type { DrawerNavigationNodeData } from "@components/treeView/types";
 import { NodeDataChildType } from "@components/treeView/types";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -13,6 +12,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ShortTextIcon from "@mui/icons-material/ShortText";
 import { Box, Chip, Tooltip, Typography } from "@mui/material";
+import { currentViewAtom } from "features/atoms";
 import { useAtomValue } from "jotai";
 import type { SourceLanguage } from "utils/constants";
 

@@ -1,5 +1,4 @@
-import { DbViewEnum } from "@components/hooks/useDbView";
-import { SourceLanguage } from "utils/constants";
+import { DbViewEnum, SourceLanguage } from "utils/constants";
 
 import {
   DisplayOption,

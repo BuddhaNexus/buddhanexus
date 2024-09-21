@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useDbView } from "@components/hooks/useDbView";
+import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
@@ -56,7 +56,7 @@ export default function TextPage() {
     useDbQueryParams();
   const { isFallback } = useSourceFile();
 
-  useDbView();
+  useSetDbViewFromPath();
 
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 

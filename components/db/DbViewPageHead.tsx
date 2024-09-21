@@ -1,9 +1,9 @@
 import { NextSeo } from "next-seo";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@components/hooks/useDbView";
 import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { currentViewAtom } from "features/atoms";
 import { useAtomValue } from "jotai";
 import { startCase } from "lodash";
 import { DbApi } from "utils/api/dbApi";
