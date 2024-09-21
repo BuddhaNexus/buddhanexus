@@ -16,7 +16,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./:/
+      - ./src:/app/src
       - ./public:/app/public
     restart: always
     ports:
