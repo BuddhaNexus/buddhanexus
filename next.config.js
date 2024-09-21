@@ -6,6 +6,7 @@ const nextConfig = {
   i18n,
   reactStrictMode: true,
   compiler: { emotion: true },
+  output: "standalone",
 
   // todo: remove after turbopack is stable
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
