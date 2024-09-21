@@ -33,7 +33,6 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     filename = input.file_name
     parallel_ids_type = "parallel_ids"
     page_number = input.page_number
-    print("ALL INPUTS", input)
     if input.active_segment != "none":
         page_number = get_page_for_segment(input.active_segment)
         filename = get_filename_from_segmentnr(input.active_segment)
@@ -50,7 +49,6 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
             "file_name": filename,
         },
     ).result[0]
-    print("TOTAL PAGES", number_of_total_pages)
     if page_number >= number_of_total_pages:
         return []
     current_bind_vars = {
@@ -88,7 +86,6 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     filename = input.file_name
     parallel_ids_type = "parallel_ids"
     page_number = input.page_number
-    print("ALL INPUTS 2", input)
     if input.active_segment != "none":
         page_number = get_page_for_segment(input.active_segment)
         filename = get_filename_from_segmentnr(input.active_segment)
@@ -105,7 +102,6 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
             "file_name": filename,
         },
     ).result[0]
-    print("TOTAL PAGES", number_of_total_pages)
     if page_number >= number_of_total_pages:
         return {
             "page": page_number,
