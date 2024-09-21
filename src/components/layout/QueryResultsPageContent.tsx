@@ -4,13 +4,12 @@ import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import { Main } from "@features/sidebarSuite/common/MuiStyledSidebarComponents";
 import { SidebarSuite } from "@features/sidebarSuite/SidebarSuite";
-import type { SxProps } from "@mui/material";
+import type { Breakpoint, SxProps } from "@mui/material";
 import {
   Container,
   Typography,
   useTheme as useMaterialTheme,
 } from "@mui/material";
-import type { Breakpoint } from "@mui/system";
 import { visuallyHidden } from "@mui/utils";
 
 interface Props extends PropsWithChildren {

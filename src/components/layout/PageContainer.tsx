@@ -1,6 +1,11 @@
 import type { FC, PropsWithChildren } from "react";
-import { Container, LinearProgress, SxProps } from "@mui/material";
-import { Box, Breakpoint } from "@mui/system";
+import {
+  Box,
+  Breakpoint,
+  Container,
+  LinearProgress,
+  SxProps,
+} from "@mui/material";
 import bgChn from "@public/assets/images/bg_chn_upscaled_bw.jpg";
 import bgPli from "@public/assets/images/bg_pli_upscaled_bw.jpg";
 import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";

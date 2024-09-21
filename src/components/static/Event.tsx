@@ -1,4 +1,4 @@
-import { Box, styled } from "@mui/system";
+import { Box, styled } from "@mui/material";
 
 interface Props {
   year: string;

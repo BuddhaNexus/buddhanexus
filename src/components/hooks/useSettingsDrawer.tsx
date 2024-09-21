@@ -1,5 +1,5 @@
 import { isSettingsOpenAtom } from "@features/atoms";
-import type { Breakpoint } from "@mui/system";
+import type { Breakpoint } from "@mui/material";
 import { useAtom } from "jotai";
 
 export const SETTINGS_DRAWER_WIDTH = 360;

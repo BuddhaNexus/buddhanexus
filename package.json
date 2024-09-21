@@ -29,6 +29,7 @@
     "@mui/material": "^5.15.17",
     "@mui/material-nextjs": "^5.15.11",
     "@mui/styles": "^5.15.17",
+    "@mui/utils": "^6.1.1",
     "@next/mdx": "^14.2.5",
     "@tanstack/react-query": "^5.34.2",
     "@tanstack/react-table": "^8.17.0",
