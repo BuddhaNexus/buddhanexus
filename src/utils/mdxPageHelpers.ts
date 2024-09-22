@@ -2,7 +2,7 @@ import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
-import type { SupportedLocale } from "types/i18next";
+import type { SupportedLocale } from "src/types/i18next";
 
 import {
   MDX_COMPONENTS,

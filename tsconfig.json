@@ -6,6 +6,7 @@
       "@components/*": ["src/components/*"],
       "@features/*": ["src/features/*"],
       "@utils/*": ["src/utils/*"],
+      "@types/*": ["src/types/*"],
       "@api": ["src/utils/api/client.ts"]
     },
     "target": "es2017",

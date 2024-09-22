@@ -6,7 +6,7 @@ import { Link } from "@components/common/Link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import type { SupportedLocale } from "types/i18next";
+import type { SupportedLocale } from "src/types/i18next";
 
 import { Copyright } from "./Copyright";
 

@@ -10,7 +10,7 @@ import ListItem from "@mui/material/ListItem";
 import type { MDXData } from "@utils/mdxPageHelpers";
 import { getAllPosts, POST_DATE_OPTS } from "@utils/mdxPageHelpers";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
-import type { SupportedLocale } from "types/i18next";
+import type { SupportedLocale } from "src/types/i18next";
 
 const PostArchive = ({
   locale,

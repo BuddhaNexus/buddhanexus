@@ -5,7 +5,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import { Button, Menu } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { SUPPORTED_LOCALES } from "@utils/constants";
-import type { SupportedLocale } from "types/i18next";
+import type { SupportedLocale } from "src/types/i18next";
 
 export default function LocaleSelector() {
   const router = useRouter();

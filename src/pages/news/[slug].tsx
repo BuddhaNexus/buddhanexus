@@ -17,7 +17,7 @@ import {
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import fs from "fs";
 import path from "path";
-import type { SupportedLocale } from "types/i18next";
+import type { SupportedLocale } from "src/types/i18next";
 
 export default function PostPage({
   locale,
