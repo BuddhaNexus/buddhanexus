@@ -3158,7 +3158,9 @@ __metadata:
     gray-matter: "npm:^4.0.3"
     husky: "npm:^9.0.11"
     i18next: "npm:^23.11.3"
+    i18next-chained-backend: "npm:^4.6.2"
     i18next-http-backend: "npm:^2.5.1"
+    i18next-localstorage-backend: "npm:^4.2.0"
     jest: "npm:^29.7.0"
     jotai: "npm:^2.8.0"
     lint-staged: "npm:^15.2.2"
@@ -5530,6 +5532,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"i18next-chained-backend@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "i18next-chained-backend@npm:4.6.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.2"
+  checksum: 10c0/319d7b69b9c86e6b0684e8506bd7d3ef55fe149695f9b5602ac4f2d335b85efdfbbb771406cd79936ecccf7ab1671055ebf4acd473addd6117d43a0265565270
+  languageName: node
+  linkType: hard
+
 "i18next-fs-backend@npm:^2.3.1":
   version: 2.3.1
   resolution: "i18next-fs-backend@npm:2.3.1"
@@ -5543,6 +5554,15 @@ __metadata:
   dependencies:
     cross-fetch: "npm:4.0.0"
   checksum: 10c0/8063619a1c5b26aa10f4d35685f18179cbc5022624b40e55447aaae467fc4942e6e2949fabe460632de02e70709cdf987900d64d238e2a250af78fa732d1d962
+  languageName: node
+  linkType: hard
+
+"i18next-localstorage-backend@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "i18next-localstorage-backend@npm:4.2.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.22.15"
+  checksum: 10c0/b19b4c8b23f8b84cf4e7ba90086fdb60c75b211431e2ee9df07aee77f8f622470b87ee0c1ede19ebe07fee2dc697065f02f6d662d31ae047e6e77186ab31bbee
   languageName: node
   linkType: hard
 

@@ -5,25 +5,28 @@ import React, {
   useRef,
   useState,
 } from "react";
-import type { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
+// import type { GetStaticProps } from "next";
 import { useSearchParams } from "next/navigation";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useDbView } from "@components/hooks/useDbView";
+import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import { TextView } from "@features/textView/TextView";
-import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
-import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
+// import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
+// import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-import type { SourceLanguage } from "@utils/constants";
-import { getI18NextStaticProps } from "@utils/nextJsHelpers";
-import merge from "lodash/merge";
+// import type { SourceLanguage } from "@utils/constants";
+// import { getI18NextStaticProps } from "@utils/nextJsHelpers";
+// import merge from "lodash/merge";
 
-export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
+// export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 type QueryParams = Record<string, string>;
 
@@ -56,7 +59,7 @@ export default function TextPage() {
     useDbQueryParams();
   const { isFallback } = useSourceFile();
 
-  useDbView();
+  useSetDbViewFromPath();
 
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
@@ -226,19 +229,25 @@ export default function TextPage() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const i18nProps = await getI18NextStaticProps({ locale }, [
-    "common",
-    "settings",
-  ]);
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "en", ["common", "settings"])),
+  },
+});
 
-  const queryClient = await prefetchDbResultsPageData(
-    params?.language as SourceLanguage,
-    params?.file as string,
-  );
-
-  return merge(
-    { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps,
-  );
-};
+// export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+//   const i18nProps = await getI18NextStaticProps({ locale }, [
+//     "common",
+//     "settings",
+//   ]);
+//
+//   const queryClient = await prefetchDbResultsPageData(
+//     params?.language as SourceLanguage,
+//     params?.file as string,
+//   );
+//
+//   return merge(
+//     { props: { dehydratedState: dehydrate(queryClient) } },
+//     i18nProps,
+//   );
+// };

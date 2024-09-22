@@ -4,7 +4,7 @@ import React from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
-import i18nextConfig from "next-i18next.config";
+import nextI18NextConfig from "next-i18next.config";
 import { NextAdapter } from "next-query-params";
 import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
@@ -67,4 +67,4 @@ function MyApp(props: AppProps) {
   );
 }
 
-export default appWithTranslation(MyApp, i18nextConfig);
+export default appWithTranslation(MyApp, nextI18NextConfig);

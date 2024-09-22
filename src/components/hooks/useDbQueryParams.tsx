@@ -22,7 +22,10 @@ export const useDbQueryParams = () => {
   const { file, language } = router.query;
 
   const sourceLanguage = language as SourceLanguage;
-  const sourceLanguageName = t(`language.${sourceLanguage}`);
+
+  const sourceLanguageName = sourceLanguage
+    ? t(`language.${sourceLanguage}`)
+    : "";
   const fileName = file as string;
 
   // TODO: See default params need to be set here

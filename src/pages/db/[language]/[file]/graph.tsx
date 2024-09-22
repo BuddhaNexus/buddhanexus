@@ -1,26 +1,35 @@
 import React, { useMemo } from "react";
-import type { GetStaticProps } from "next";
+import {
+  // GetStaticProps,
+  GetServerSideProps,
+} from "next";
 import { useTranslation } from "next-i18next";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useDbView } from "@components/hooks/useDbView";
+import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-import { dehydrate, useQuery } from "@tanstack/react-query";
-import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
+import {
+  // dehydrate,
+  useQuery,
+} from "@tanstack/react-query";
+// import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-import { SourceLanguage } from "@utils/constants";
-import { getI18NextStaticProps } from "@utils/nextJsHelpers";
-import merge from "lodash/merge";
+// import { SourceLanguage } from "@utils/constants";
+// import { getI18NextStaticProps } from "@utils/nextJsHelpers";
+// import merge from "lodash/merge";
 
-export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
+export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { HistogramDataChart } from "@features/graphView/HistogramDataChart";
 import { PieDataChart } from "@features/graphView/PieDataChart";
 import { Box, Paper, Typography } from "@mui/material";
+import { HistogramDataChart } from "features/graphView/HistogramDataChart";
+import { PieDataChart } from "features/graphView/PieDataChart";
 
 const HISTOGRAM_DATA_MATCH_LIMIT = 50;
 
@@ -36,7 +45,8 @@ export default function GraphPage() {
     defaultQueryParams,
   } = useDbQueryParams();
   const { isFallback } = useSourceFile();
-  useDbView();
+
+  useSetDbViewFromPath();
 
   const { t } = useTranslation();
 
@@ -133,19 +143,25 @@ export default function GraphPage() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const i18nProps = await getI18NextStaticProps({ locale }, [
-    "common",
-    "settings",
-  ]);
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "en", ["common", "settings"])),
+  },
+});
 
-  const queryClient = await prefetchDbResultsPageData(
-    params?.language as SourceLanguage,
-    params?.file as string,
-  );
-
-  return merge(
-    { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps,
-  );
-};
+// export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+//   const i18nProps = await getI18NextStaticProps({ locale }, [
+//     "common",
+//     "settings",
+//   ]);
+//
+//   const queryClient = await prefetchDbResultsPageData(
+//     params?.language as SourceLanguage,
+//     params?.file as string,
+//   );
+//
+//   return merge(
+//     { props: { dehydratedState: dehydrate(queryClient) } },
+//     i18nProps,
+//   );
+// };

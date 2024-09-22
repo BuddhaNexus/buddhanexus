@@ -1,4 +1,5 @@
 const { i18n } = require("./next-i18next.config");
+
 const nextMDX = require("@next/mdx");
 
 /** @type {import("next").NextConfig} */

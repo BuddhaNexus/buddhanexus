@@ -1,33 +1,38 @@
 import React from "react";
-import type { GetStaticProps } from "next";
+import {
+  // GetStaticProps,
+  GetServerSideProps,
+} from "next";
+// import type { SourceLanguage } from "@utils/constants";
+// import { getI18NextStaticProps } from "@utils/nextJsHelpers";
+// import merge from "lodash/merge";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useDbView } from "@components/hooks/useDbView";
+import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import NumbersTable from "@features/numbersView/NumbersTable";
-import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import {
-  dehydrate,
+  // dehydrate,
   keepPreviousData,
   useInfiniteQuery,
   useQuery,
 } from "@tanstack/react-query";
-import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
+// import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-import type { SourceLanguage } from "@utils/constants";
-import { getI18NextStaticProps } from "@utils/nextJsHelpers";
-import merge from "lodash/merge";
+import NumbersTable from "features/numbersView/NumbersTable";
+import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 
-export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
+// export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 export default function NumbersPage() {
   const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
     useDbQueryParams();
   const { isFallback } = useSourceFile();
-  useDbView();
+
+  useSetDbViewFromPath();
 
   const {
     data: headerCollections,
@@ -121,19 +126,25 @@ export default function NumbersPage() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const i18nProps = await getI18NextStaticProps({ locale }, [
-    "common",
-    "settings",
-  ]);
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "en", ["common", "settings"])),
+  },
+});
 
-  const queryClient = await prefetchDbResultsPageData(
-    params?.language as SourceLanguage,
-    params?.file as string,
-  );
-
-  return merge(
-    { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps,
-  );
-};
+// export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+//   const i18nProps = await getI18NextStaticProps({ locale }, [
+//     "common",
+//     "settings",
+//   ]);
+//
+//   const queryClient = await prefetchDbResultsPageData(
+//     params?.language as SourceLanguage,
+//     params?.file as string,
+//   );
+//
+//   return merge(
+//     { props: { dehydratedState: dehydrate(queryClient) } },
+//     i18nProps,
+//   );
+// };

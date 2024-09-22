@@ -20,6 +20,7 @@ export default function MyDocument(
   return (
     <Html lang={currentLocale}>
       <Head nonce={process.env.nonce} data-color-scheme="light">
+        <meta charSet="utf-8" />
         <DocumentHeadTags {...props} />
         <script
           // eslint-disable-next-line react/no-danger

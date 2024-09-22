@@ -1,28 +1,36 @@
 import React, { useMemo } from "react";
-import type { GetStaticProps } from "next";
+import {
+  // GetStaticProps,
+  GetServerSideProps,
+} from "next";
+// import type { SourceLanguage } from "@utils/constants";
+// import { getI18NextStaticProps } from "@utils/nextJsHelpers";
+// import merge from "lodash/merge";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { useDbView } from "@components/hooks/useDbView";
+import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "@features/tableView/TableView";
-import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
-import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
+import {
+  // dehydrate,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
+// import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-import type { SourceLanguage } from "@utils/constants";
-import { getI18NextStaticProps } from "@utils/nextJsHelpers";
-import merge from "lodash/merge";
 
-export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
+// export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 // TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
   const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
     useDbQueryParams();
   const { isFallback } = useSourceFile();
-  useDbView();
+
+  useSetDbViewFromPath();
 
   const requestBody = React.useMemo(
     () => ({
@@ -83,16 +91,22 @@ export default function TablePage() {
   );
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
-  const i18nProps = await getI18NextStaticProps({ locale }, ["settings"]);
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "en", ["common", "settings"])),
+  },
+});
 
-  const queryClient = await prefetchDbResultsPageData(
-    params?.language as SourceLanguage,
-    params?.file as string,
-  );
-
-  return merge(
-    { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps,
-  );
-};
+// export const getStaticProps: GetStaticProps = async ({ locale, params }) => {
+//   const i18nProps = await getI18NextStaticProps({ locale }, ["settings"]);
+//
+//   const queryClient = await prefetchDbResultsPageData(
+//     params?.language as SourceLanguage,
+//     params?.file as string,
+//   );
+//
+//   return merge(
+//     { props: { dehydratedState: dehydrate(queryClient) } },
+//     i18nProps,
+//   );
+// };
