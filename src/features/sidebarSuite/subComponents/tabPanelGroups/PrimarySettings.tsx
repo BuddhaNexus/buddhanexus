@@ -2,7 +2,7 @@ import { Fragment, memo, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@components/hooks/useDbView";
+import { currentViewAtom } from "@features/atoms";
 import { isSettingOmitted } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "@features/sidebarSuite/common/PanelHeading";
 import { UniqueSettingsType } from "@features/sidebarSuite/config/settings";

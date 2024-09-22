@@ -1,11 +1,11 @@
 import { useCallback, useLayoutEffect } from "react";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import {
-  shouldShowSegmentNumbersAtom,
-  shouldUseOldSegmentColorsAtom,
-} from "@components/hooks/useDbView";
 import { sourceSans } from "@components/theme";
-import { scriptSelectionAtom } from "@features/atoms";
+import {
+  scriptSelectionAtom,
+  shouldShowSegmentNumbersAtom,
+  shouldUseMonochromaticSegmentColorsAtom,
+} from "@features/atoms";
 import { selectedSegmentMatchesAtom } from "@features/atoms/textView";
 import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import { useColorScheme } from "@mui/material/styles";
@@ -37,7 +37,9 @@ export const TextSegment = ({
   );
   const { sourceLanguage } = useDbQueryParams();
 
-  const shouldUseOldSegmentColors = useAtomValue(shouldUseOldSegmentColorsAtom);
+  const shouldUseMonochromaticSegmentColors = useAtomValue(
+    shouldUseMonochromaticSegmentColorsAtom,
+  );
   const shouldShowSegmentNumbers = useAtomValue(shouldShowSegmentNumbersAtom);
   const scriptSelection = useAtomValue(scriptSelectionAtom);
   const setSelectedSegmentMatches = useSetAtom(selectedSegmentMatchesAtom);
@@ -93,11 +95,11 @@ export const TextSegment = ({
           );
         }
 
-        const color = shouldUseOldSegmentColors
-          ? ((highlightColor &&
+        const color = shouldUseMonochromaticSegmentColors
+          ? colorScale(highlightColor).hex()
+          : ((highlightColor &&
               OLD_WEBSITE_SEGMENT_COLORS[highlightColor]) as string) ??
-            OLD_WEBSITE_SEGMENT_COLORS.at(-1)
-          : colorScale(highlightColor).hex();
+            OLD_WEBSITE_SEGMENT_COLORS.at(-1);
 
         return (
           <button

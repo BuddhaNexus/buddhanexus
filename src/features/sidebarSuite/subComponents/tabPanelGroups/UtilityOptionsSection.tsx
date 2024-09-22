@@ -3,7 +3,7 @@ import useDownloader from "react-use-downloader";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@components/hooks/useDbView";
+import { currentViewAtom } from "@features/atoms";
 import {
   defaultAnchorEls,
   isSettingOmitted,

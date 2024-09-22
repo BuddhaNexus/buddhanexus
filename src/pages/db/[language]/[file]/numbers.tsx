@@ -14,6 +14,8 @@ import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
+import NumbersTable from "@features/numbersView/NumbersTable";
+import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import {
   // dehydrate,
   keepPreviousData,
@@ -22,8 +24,6 @@ import {
 } from "@tanstack/react-query";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-import NumbersTable from "features/numbersView/NumbersTable";
-import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 

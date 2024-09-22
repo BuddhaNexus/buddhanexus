@@ -1,5 +1,6 @@
-import { currentViewAtom, type DbViewEnum } from "@components/hooks/useDbView";
+import { currentViewAtom } from "@features/atoms";
 import { Typography } from "@mui/material";
+import { DbViewEnum } from "@utils/constants";
 import { useAtomValue } from "jotai";
 
 // TODO: Determine relevant support info for sub-components & add to local files.

@@ -48,7 +48,7 @@
     "copyQueryLink": "Link der Ergebnisseite kopieren",
     "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden",
     "hideSegmentNumbers": "Segmentnummern anzeigen",
-    "usePreviousSegmentColors": "Verwenden Sie Segmentfarben der vorherigen Website"
+    "useMonochromaticSegmentColors": "Verwenden Sie monochromatische Farbkombinationen"
   },
   "optionsPopperMsgs": {
     "download": "Hoppla! Etwas ist schief gelaufen!",

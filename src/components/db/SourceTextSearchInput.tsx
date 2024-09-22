@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { getTextPath } from "@components/common/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@components/hooks/useDbView";
+import { currentViewAtom } from "@features/atoms";
 import {
   Autocomplete,
   autocompleteClasses,

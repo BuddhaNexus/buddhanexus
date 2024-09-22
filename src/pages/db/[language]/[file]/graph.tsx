@@ -22,14 +22,12 @@ import { DbApi } from "@utils/api/dbApi";
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 
-export { getDbViewFileStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
+export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { HistogramDataChart } from "@features/graphView/HistogramDataChart";
 import { PieDataChart } from "@features/graphView/PieDataChart";
 import { Box, Paper, Typography } from "@mui/material";
-import { HistogramDataChart } from "features/graphView/HistogramDataChart";
-import { PieDataChart } from "features/graphView/PieDataChart";
 
 const HISTOGRAM_DATA_MATCH_LIMIT = 50;
 

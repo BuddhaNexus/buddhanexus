@@ -2,9 +2,9 @@ import React from "react";
 import { useTranslation } from "next-i18next";
 import {
   shouldShowSegmentNumbersAtom,
-  shouldUseOldSegmentColorsAtom,
-} from "@components/hooks/useDbView";
-import { FormControlLabel, FormGroup, Switch } from "@mui/material";
+  shouldUseMonochromaticSegmentColorsAtom,
+} from "@features/atoms";
+import { FormControlLabel, FormGroup, Switch, Typography } from "@mui/material";
 import { useAtom } from "jotai/index";
 
 export const SegmentOptions = () => {
@@ -13,9 +13,8 @@ export const SegmentOptions = () => {
   const [shouldShowSegmentNumbers, setShouldShowSegmentNumbers] = useAtom(
     shouldShowSegmentNumbersAtom,
   );
-  const [shouldUseOldSegmentColors, setShouldUseOldSegmentColors] = useAtom(
-    shouldUseOldSegmentColorsAtom,
-  );
+  const [shouldUseMonochromaticSegmentColors, setShouldUseOldSegmentColors] =
+    useAtom(shouldUseMonochromaticSegmentColorsAtom);
 
   return (
     <FormGroup>
@@ -33,13 +32,17 @@ export const SegmentOptions = () => {
       <FormControlLabel
         control={
           <Switch
-            checked={shouldUseOldSegmentColors}
+            checked={shouldUseMonochromaticSegmentColors}
             onChange={(event) =>
               setShouldUseOldSegmentColors(event.target.checked)
             }
           />
         }
-        label={t("optionsLabels.usePreviousSegmentColors")}
+        label={
+          <Typography lineHeight={1.25}>
+            {t("optionsLabels.useMonochromaticSegmentColors")}
+          </Typography>
+        }
       />
     </FormGroup>
   );
