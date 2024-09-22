@@ -11,21 +11,18 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+COPY package.json yarn.lock* ./
 # Omit --production flag for TypeScript devDependencies
-RUN \
-  if [ -f yarn.lock ]; then yarn install --immutable; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
-  # Allow install without lockfile, so example works even without Node.js installed locally
-  else echo "Warning: Lockfile not found. It is recommended to commit lockfiles to version control." && yarn install; \
-  fi
+RUN yarn install --immutable
 
 COPY src ./src
 COPY public ./public
+COPY content ./content
 COPY next.config.js .
 COPY tsconfig.json .
 COPY next-i18next.config.js .
+COPY .eslintrc.js .
+COPY .eslintignore .
 COPY globalStyles.css .
 COPY next-seo.config.js .
 
@@ -45,12 +42,7 @@ ENV NEXT_PUBLIC_DOWNLOAD_URL=${NEXT_PUBLIC_DOWNLOAD_URL}
 ENV NEXT_TELEMETRY_DISABLED 1
 
 # Build Next.js based on the preferred package manager
-RUN \
-  if [ -f yarn.lock ]; then yarn build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then pnpm build; \
-  else npm run build; \
-  fi
+RUN yarn build
 
 # Note: It is not necessary to add an intermediate step that does a full copy of `node_modules` here
 

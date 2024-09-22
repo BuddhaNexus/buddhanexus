@@ -1,4 +1,4 @@
-import type { components, paths } from "codegen/api/v2.d.ts";
+import type { components, paths } from "src/codegen/api/v2.d.ts";
 
 // TODO: most endpoint query functions have a `if undefined` check, this is to match a temp fix for BE data issues. The check should be cleared onee Pali data is updated on the BE.
 
@@ -6,7 +6,7 @@ import type { components, paths } from "codegen/api/v2.d.ts";
  * *********** !!! ***********
  * CODEGEN DERIVATE TYPES ONLY
  * Requests & responses mirror paths given in the `operations`
- * interface in `codegen/api/v2.d.ts`
+ * interface in `src/codegen/api/v2.d.ts`
  * Sub-components taken directly from `components` interface
  * ************************** ¡¡¡ **************************
  */
