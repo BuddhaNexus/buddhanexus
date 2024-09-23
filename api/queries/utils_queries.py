@@ -58,9 +58,3 @@ FOR file IN files
         source_string: file.source_string
    }
 """
-
-QUERY_MULTILINGUAL_LANGS = """
-FOR file IN files
-    FILTER file._key == @file_name
-    RETURN UNIQUE(FLATTEN([file.language, file.available_lang]))
-"""
