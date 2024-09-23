@@ -27,4 +27,4 @@ class TableDownloadInput(GeneralInput):
 
 
 class TableDownloadOutput(BaseModel):
-    __root__: str
+    __root__: bytes
