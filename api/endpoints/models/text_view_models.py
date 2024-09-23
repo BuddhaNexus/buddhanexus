@@ -5,6 +5,7 @@ from .general_models import Limits, FullText
 
 class TextParallelsInput(BaseModel):
     file_name: str
+    folio: str
     active_segment: str = "none"
     score: int = 0
     par_length: int = 0

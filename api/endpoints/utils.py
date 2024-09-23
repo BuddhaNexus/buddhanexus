@@ -49,7 +49,8 @@ async def get_folios_for_file(
         utils_queries.QUERY_FOLIOS,
         bind_vars={"file_name": file_name},
     )
-    folios = query_graph_result.result[0]
+    print(query_graph_result.result)
+    folios = query_graph_result.result
     return {"folios": folios}
 
 

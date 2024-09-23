@@ -4,16 +4,27 @@ Contains all database queries for various utils.
 """
 
 QUERY_FOLIOS = """
-FOR file IN files
-    FILTER file._key == @file_name
-    RETURN file.folios
+FOR segment in segments
+    FILTER segment.filename == @file_name
+    COLLECT folio = segment.folio
+    RETURN folio
 """
 
 QUERY_PAGE_FOR_SEGMENT = """
 FOR segment IN segments_pages
-    FILTER segment.segnr == @segmentnr
+    FILTER segment.segmentnr == @segmentnr
     return segment.page
 """
+
+QUERY_SEGMENT_FOR_FOLIO = """
+RETURN FIRST(
+    FOR segment IN segments
+        FILTER segment.folio == @folio
+        RETURN segment.segmentnr
+)
+"""
+
+
 
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels

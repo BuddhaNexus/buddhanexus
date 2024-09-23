@@ -48,13 +48,13 @@ def preprocess_search_string(search_string, language):
         chn = search_string
     else:
         skt = search_string
-    if language == "skt":
+    if language == "sa":
         tib = chn = pli = ""
-    if language == "tib":
+    if language == "bo":
         chn = pli = ""
-    if language == "chn":
+    if language == "zh":
         tib = pli = ""
-    if language == "pli":
+    if language == "pa":
         tib = chn = ""
     return {"skt": skt, "skt_fuzzy": skt_fuzzy, "tib": tib, "pli": pli, "chn": chn}
 

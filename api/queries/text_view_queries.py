@@ -11,7 +11,7 @@ FOR file IN files
             FOR segment in segments
                 FILTER segment._key == segmentnr
                 RETURN {
-                    segnr: segment.segnr,
+                    segnr: segment.segmentnr,
                     segtext: segment.segtext
                 }
         )
@@ -47,7 +47,7 @@ FOR file IN files
                             RETURN p._key
                     )
                     RETURN {
-                        segnr: segment.segnr,
+                        segnr: segment.segmentnr,
                         segtext: segment.segtext,
                         parallel_ids: parallel_ids
                     }

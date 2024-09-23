@@ -7,6 +7,7 @@ from ..utils import (
     create_cleaned_limit_collection,
     get_page_for_segment,
     get_filename_from_segmentnr,
+    get_segment_for_folio
 )
 from .models.text_view_models import *
 
@@ -33,8 +34,12 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     filename = input.file_name
     parallel_ids_type = "parallel_ids"
     page_number = input.page_number
-    print("ALL INPUTS", input)
-    if input.active_segment != "none":
+    active_segment = input.active_segment    
+    # If a folio parameter is set, we force active_segment to match it 
+    if input.folio:
+        active_segment = get_segment_for_folio(input.folio)
+    
+    if active_segment != "none":
         page_number = get_page_for_segment(input.active_segment)
         filename = get_filename_from_segmentnr(input.active_segment)
 
@@ -56,6 +61,7 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     current_bind_vars = {
         "file_name": filename,
         "page_number": page_number,
+        "folio": input.folio,
         "score": input.score,
         "parlength": input.par_length,
         "multi_lingual": input.multi_lingual,
