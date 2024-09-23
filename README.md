@@ -21,6 +21,11 @@ Clone the project repository:
 ```shell
 git clone https://github.com/ayya-vimala/buddhanexus.git && cd buddhanexus
 ```
+Also, in order to load the segment data, it is necessary to create the segment docker volume beforehand: 
+```
+git clone https://github.com/dharmamitra/dharmanexus-data ; cd dharmanexus-data; make build; make init
+```
+This will make sure that the database loads segment files that are valid and up to date.
 
 #### 1.3 Install our githooks:
 This project uses `pre-commit` to maintain code style and format it using `black`.

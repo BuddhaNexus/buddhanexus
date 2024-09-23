@@ -5,12 +5,14 @@ Here we create the search index and analyzers for the global search in the text 
 from arango.database import StandardDatabase
 from tqdm import tqdm as tqdm
 from dataloader_constants import (
-    METADATA_DIR,
-    VIEW_SEARCH_INDEX_TIB,
-    VIEW_SEARCH_INDEX_TIB_FUZZY,
-    VIEW_SEARCH_INDEX_PLI,
-    VIEW_SEARCH_INDEX_SKT,
-    VIEW_SEARCH_INDEX_CHN,
+    SA_STOPWORDS_URL,
+    BO_STOPWORDS_URL,
+    PA_STOPWORDS_URL,
+    VIEW_SEARCH_INDEX_BO,
+    VIEW_SEARCH_INDEX_BO_FUZZY,
+    VIEW_SEARCH_INDEX_PA,
+    VIEW_SEARCH_INDEX_SA,
+    VIEW_SEARCH_INDEX_ZH,
     TIBETAN_ANALYZER,
     TIBETAN_FUZZY_ANALYZER,
     SANSKRIT_ANALYZER,
@@ -21,13 +23,12 @@ from dataloader_constants import (
 
 from utils import check_if_view_exists
 from views_properties import (
-    PROPERTIES_SEARCH_INDEX_TIB,
-    PROPERTIES_SEARCH_INDEX_TIB_FUZZY,
-    PROPERTIES_SEARCH_INDEX_SKT,
-    PROPERTIES_SEARCH_INDEX_PLI,
-    PROPERTIES_SEARCH_INDEX_CHN,
+    PROPERTIES_SEARCH_INDEX_BO,
+    PROPERTIES_SEARCH_INDEX_BO_FUZZY,
+    PROPERTIES_SEARCH_INDEX_SA,
+    PROPERTIES_SEARCH_INDEX_PA,
+    PROPERTIES_SEARCH_INDEX_ZH,
 )
-
 
 def get_stopwords_list(path):
     stopwords = []
@@ -36,11 +37,9 @@ def get_stopwords_list(path):
             stopwords.append(line.strip())
     return stopwords
 
-
-tib_stopwords_list = get_stopwords_list(METADATA_DIR + "tib_stopwords.txt")
-skt_stopwords_list = get_stopwords_list(METADATA_DIR + "skt_stopwords.txt")
-pli_stopwords_list = get_stopwords_list(METADATA_DIR + "pli_stopwords.txt")
-
+bo_stopwords_list = get_stopwords_list(SA_STOPWORDS_URL)
+sa_stopwords_list = get_stopwords_list(BO_STOPWORDS_URL)
+pa_stopwords_list = get_stopwords_list(PA_STOPWORDS_URL)
 
 class AnalyzerBase:
     ANALYZER_NAME: str
@@ -66,14 +65,14 @@ class AnalyzerBase:
 class AnalyzerSanskrit(AnalyzerBase):
     ANALYZER_NAME = SANSKRIT_ANALYZER
     CASE = "none"
-    STOPWORDS = skt_stopwords_list
+    STOPWORDS = sa_stopwords_list
     ACCENT = True
 
 
 class AnalyzerPali(AnalyzerBase):
     ANALYZER_NAME = PALI_ANALYZER
     CASE = "none"
-    STOPWORDS = pli_stopwords_list
+    STOPWORDS = pa_stopwords_list
     ACCENT = True
 
 
@@ -87,7 +86,7 @@ class AnalyzerTibetan(AnalyzerBase):
 class AnalyzerTibetanFuzzy(AnalyzerBase):
     ANALYZER_NAME = TIBETAN_FUZZY_ANALYZER
     CASE = "none"
-    STOPWORDS = tib_stopwords_list
+    STOPWORDS = bo_stopwords_list
     ACCENT = False
 
 
@@ -126,25 +125,25 @@ def create_search_view(
 
 
 def create_search_views(db: StandardDatabase, langs=[]):
-    if "tib" in langs:
+    if "bo" in langs:
         create_search_view(
-            db, VIEW_SEARCH_INDEX_TIB, PROPERTIES_SEARCH_INDEX_TIB, "Tibetan"
+            db, VIEW_SEARCH_INDEX_BO, PROPERTIES_SEARCH_INDEX_BO, "Tibetan"
         )
         create_search_view(
             db,
-            VIEW_SEARCH_INDEX_TIB_FUZZY,
-            PROPERTIES_SEARCH_INDEX_TIB_FUZZY,
+            VIEW_SEARCH_INDEX_BO_FUZZY,
+            PROPERTIES_SEARCH_INDEX_BO_FUZZY,
             "Tibetan Fuzzy",
         )
-    if "skt" in langs:
+    if "sa" in langs:
         create_search_view(
-            db, VIEW_SEARCH_INDEX_SKT, PROPERTIES_SEARCH_INDEX_SKT, "Sanskrit"
+            db, VIEW_SEARCH_INDEX_SA, PROPERTIES_SEARCH_INDEX_SA, "Sanskrit"
         )
-    if "pli" in langs:
+    if "pa" in langs:
         create_search_view(
-            db, VIEW_SEARCH_INDEX_PLI, PROPERTIES_SEARCH_INDEX_PLI, "Pali"
+            db, VIEW_SEARCH_INDEX_PA, PROPERTIES_SEARCH_INDEX_PA, "Pali"
         )
-    if "chn" in langs:
+    if "zh" in langs:
         create_search_view(
-            db, VIEW_SEARCH_INDEX_CHN, PROPERTIES_SEARCH_INDEX_CHN, "Chinese"
+            db, VIEW_SEARCH_INDEX_ZH, PROPERTIES_SEARCH_INDEX_ZH, "Chinese"
         )

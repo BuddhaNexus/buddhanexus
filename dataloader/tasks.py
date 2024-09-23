@@ -13,13 +13,14 @@ from invoke import task
 from dataloader_constants import (
     DB_NAME,
     COLLECTION_NAMES,
-    DEFAULT_SOURCE_URL,
-    DEFAULT_TSV_URL,
+    DEFAULT_MATCH_URL,    
     LANG_TIBETAN,
     LANG_PALI,
     LANG_CHINESE,
     LANG_SANSKRIT,
     DEFAULT_LANGS,
+    METADATA_URLS,
+    CATEGORY_NAMES_URLS,
 )
 
 from load_segments import (
@@ -42,30 +43,23 @@ from load_parallels import (
 )
 
 from load_stats import load_global_stats_for_language
-
-from tasks_menu import (
-    load_all_menu_collections,
-    load_all_menu_categories,
-)
-
 from utils import get_database, get_system_database
 
 from clean_database import (
     clean_search_index_db,
     clean_all_collections_db,
     clean_global_stats_db,
-    clean_segment_collections_db,
-    clean_menu_collections_db,
+    clean_segment_collections_db,    
     clean_all_lang_db,
 )
 
-from dataloader.load_text_metadata import load_text_metadata_from_menu_files
+from load_metadata import load_metadata_from_files, load_category_names
 
 SEGMENT_LOADERS = {
-    "skt": LoadSegmentsSanskrit,
-    "pli": LoadSegmentsPali,
-    "tib": LoadSegmentsTibetan,
-    "chn": LoadSegmentsChinese,
+    LANG_PALI: LoadSegmentsPali,
+    LANG_TIBETAN: LoadSegmentsTibetan,
+    LANG_CHINESE: LoadSegmentsChinese,
+    LANG_SANSKRIT: LoadSegmentsSanskrit,
 }
 
 
@@ -103,7 +97,7 @@ def create_collections(c, collections=COLLECTION_NAMES):
 
 
 @task
-def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded=True):
+def load_text_segments(c, lang=DEFAULT_LANGS, threaded=True):
     """
     Load texts and their segments into the database
 
@@ -112,15 +106,14 @@ def load_text_segments(c, root_url=DEFAULT_TSV_URL, lang=DEFAULT_LANGS, threaded
     :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
     """
     db = get_database()
-    number_of_threads = os.cpu_count() - 1
+
+    number_of_threads = 1
+    if threaded:
+        number_of_threads = os.cpu_count() - 1
     # this is a hack to work around the way parameters are passed via invoke
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
-    print(
-        f"Loading source files from {root_url} using {f'{number_of_threads} threads' if threaded else '1 thread'}."
-    )
 
-    load_text_metadata_from_menu_files(lang, db)
     for l in lang:
         print("LANG: ", l)
         SegmentLoaderClass = SEGMENT_LOADERS.get(l)
@@ -154,7 +147,7 @@ def clean_text_segments(c, lang=DEFAULT_LANGS):
 
 
 @task
-def load_parallels(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS, threaded=True):
+def load_parallels(c, root_url=DEFAULT_MATCH_URL, lang=DEFAULT_LANGS, threaded=True):
     thread_count = os.cpu_count()
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
@@ -181,7 +174,7 @@ def clean_parallels(c, lang=DEFAULT_LANGS):
 
 
 @task
-def load_global_stats(c, root_url=DEFAULT_SOURCE_URL, lang=DEFAULT_LANGS):
+def load_global_stats(c, root_url=DEFAULT_MATCH_URL, lang=DEFAULT_LANGS):
     db = get_database()
     if lang != DEFAULT_LANGS:
         lang = ["".join(lang)]
@@ -197,7 +190,7 @@ def clean_global_stats(c):
 
 
 @task
-def load_multi_files(c, root_url=DEFAULT_SOURCE_URL, threaded=False):
+def load_multi_files(c, root_url=DEFAULT_MATCH_URL, threaded=False):
     """
     Download, parse and load multilingual data into database collections.
 
@@ -276,17 +269,6 @@ def clean_segment_collections(c):
     """
     clean_segment_collections_db()
 
-
-@task
-def clean_menu_collections(c):
-    """
-    Clear the menu database collections completely.
-
-    :param c: invoke.py context object
-    """
-    clean_menu_collections_db()
-
-
 @task
 def clean_tibetan(c):
     """
@@ -326,19 +308,13 @@ def clean_chinese(c):
     """
     clean_all_lang_db(LANG_CHINESE)
 
-
 @task()
-def load_menu_files(c):
-    print("Loading menu collections...")
+def load_metadata(c):
+    """
+    Load metadata from JSON files into the database.
+
+    :param c: invoke.py context object
+    """
     db = get_database()
-    load_all_menu_categories(db)
-    load_all_menu_collections(db)
-
-    print("Menu data loading completed!")
-
-
-@task
-def add_sources(c):
-    db = get_database()
-    print("adding source information")
-    load_sources(db, DEFAULT_SOURCE_URL)
+    load_metadata_from_files(METADATA_URLS.values(), db)
+    load_category_names(CATEGORY_NAMES_URLS.values(), db)
