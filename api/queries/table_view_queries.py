@@ -8,7 +8,13 @@ FOR f IN parallels_sorted_file
     FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
-            FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
+            LET folios = (
+                FOR segmentnr IN p.root_segnr
+                    FOR segment IN segments
+                        FILTER segment._key == segmentnr
+                        RETURN segment.folio
+            )
+            FILTER LENGTH(@folio) == 0 OR @folio IN FOLIOS[*]
             FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
             FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
@@ -69,7 +75,13 @@ FOR f IN parallels_sorted_file
     FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
-            FILTER LENGTH(@folio) == 0 OR @folio IN p.folios[*]
+            LET folios = (
+                FOR segnr IN p.root_segnr
+                    FOR segment IN segments
+                        FILTER segment._key == segnr
+                        RETURN segment.folio
+            )
+            FILTER LENGTH(@folio) == 0 OR @folio IN folios[*]
             FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
             FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
@@ -115,8 +127,12 @@ QUERY_NUMBERS_VIEW = """
 FOR file IN files
     FILTER file._key == @file_name
     LET selected_folio_segmentnr = (
-        RETURN file.folios[@folio].segment_nr
+        FOR segmentnr in segments
+            FILTER segmentnr.filename == @file_name
+            FILTER segmentnr.folio == @folio
+            RETURN segmentnr.segmentnr
     )
+
     LET current_segments = (
         LET startIndex = POSITION(file.segment_keys, selected_folio_segmentnr[0], true)
         LET subArray = SLICE(file.segment_keys, startIndex)
@@ -153,7 +169,7 @@ FOR file IN files
                 )
                 FILTER LENGTH(parallels) > 0
                 RETURN {
-                    segmentnr: segment.segnr,
+                    segmentnr: segment.segmentnr,
                     parallels: parallels
                 }
         )
@@ -194,7 +210,7 @@ FOR file IN files
                 FILTER LENGTH(parallels) > 0
                 LIMIT 20000
                 RETURN {
-                    segmentnr: segment.segnr,
+                    segmentnr: segment.segmentnr,
                     parallels: parallels
                 }
         )

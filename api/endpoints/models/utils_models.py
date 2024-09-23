@@ -13,14 +13,8 @@ class CountMatchesInput(BaseModel):
 class CountMatchesOutput(BaseModel):
     parallel_count: int
 
-
-class Segment(BaseModel):
-    num: str
-    segment_nr: str
-
-
 class FolioOutput(BaseModel):
-    folios: List[Segment]
+    folios: List
 
 
 class DisplayNameOutput(BaseModel):

@@ -78,36 +78,6 @@ def get_language_from_file_name(file_name) -> str:
         return "zh"
 
 
-
-
-def create_cleaned_limit_collection(limit_collection) -> List:
-    """
-    Check if limit_collection is a category or entire collection.
-    If a collection, fetch all the categories in that collection and add that to the
-    new_limit_collection
-    """
-    new_limit_collection = []
-    for file in limit_collection:
-        if re.search("([a-z]+_[A-Z][a-z]+[a-zA-Z1-2EL-]+$)|tib_NyKM", file):
-            query = get_db().AQLQuery(
-                query=menu_queries.QUERY_ONE_COLLECTION,
-                batchSize=1000,
-                bindVars={
-                    "collectionkey": file.replace("!", ""),
-                },
-            )
-            for item in query.result[0]:
-                new_limit_collection.append(item)
-        else:
-            if (
-                "tib_NyGB" in file
-            ):  # this is a collection-specific hack and things like this should never be done
-                new_limit_collection.append("NG")
-            else:
-                new_limit_collection.append(file)
-    return new_limit_collection
-
-
 def number_exists(input_string) -> bool:
     """
     Simple utility to check if string has number characters.
@@ -115,35 +85,6 @@ def number_exists(input_string) -> bool:
     :return: `True` if the string contains numbers.
     """
     return any(char.isdigit() for char in input_string)
-
-
-def get_folio_regex(language, file_name, folio) -> str:
-    """
-    Creates a regular expression for use in the AD Queries based on the language and
-    file so as to match the segment numbers therein.
-    """
-    start_folio = ""
-    if folio:
-        if language == "pli":
-            if re.search(r"^(anya|tika|atk)", file_name):
-                start_folio = file_name + ":" + folio[:-1] + "[0-9][._]"
-            else:
-                start_folio = file_name + ":" + folio + "[._]"
-        elif language == "skt":
-            if re.search(r"^(K14dhppat)", file_name):
-                start_folio = file_name + ":pdhp_" + folio + "_"
-            elif re.search(r"^(K10udanav)", file_name):
-                start_folio = file_name + ":uv_" + folio + "_"
-            elif re.search(r"^(K10uvs)", file_name):
-                start_folio = file_name + ":uvs_" + folio + "_"
-            else:
-                start_folio = file_name + ":" + folio[:-1] + "[0-9](_[0-9]+)*$"
-        elif language == "tib":
-            start_folio = file_name + ":" + folio + "-"
-        elif language == "chn":
-            start_folio = file_name + "_" + folio + ":"
-    return start_folio
-
 
 def add_source_information(file_name, query_result):
     """
@@ -153,7 +94,7 @@ def add_source_information(file_name, query_result):
     TODO: We might want to add this to Pali/Chn/Tib as well in the future!
     """
     lang = get_language_from_file_name(file_name)
-    if lang == "skt":
+    if lang == "sa":
         query_source_information = get_db().AQLQuery(
             query=utils_queries.QUERY_SOURCE,
             bindVars={"file_name": file_name},
@@ -193,6 +134,16 @@ def get_page_for_segment(active_segment):
         bindVars={"segmentnr": active_segment},
     )
     return page_for_segment.result[0]
+
+def get_segment_for_folio(folio):
+    """
+    Gets the segment number for a given folio.
+    """
+    segment_for_folio = get_db().AQLQuery(
+        query=utils_queries.QUERY_SEGMENT_FOR_FOLIO,
+        bindVars={"folio": folio},
+    )
+    return segment_for_folio.result
 
 
 def get_file_text(file_name):
