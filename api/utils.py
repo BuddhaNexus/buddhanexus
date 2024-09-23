@@ -75,7 +75,7 @@ def get_language_from_file_name(file_name) -> str:
         return "sa"
     if "ZH_" in file_name:
         return "zh"
-    return
+    return "bo"
 
 
 def number_exists(input_string) -> bool:
