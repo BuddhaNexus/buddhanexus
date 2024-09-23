@@ -2,12 +2,12 @@
 This file contains the functions needed to create Excel
 worksheets for download
 """
-
+from io import BytesIO
 import re
+from fastapi import Response
 import xlsxwriter
 from .utils import shorten_segment_names
 from .endpoints.utils import get_displayname
-
 
 def run_table_download(query, file_values):
 
@@ -15,10 +15,10 @@ def run_table_download(query, file_values):
     Creates an Excel workbook with data given
     """
     # Create a workbook and add a worksheet.
-    file_location = "download/" + file_values[0] + "_download.xlsx"
+    file = BytesIO()
     workbook = xlsxwriter.Workbook(
-        file_location,
-        {"constant_memory": True, "use_zip64": True},
+        file,
+        {"use_zip64": True, 'in_memory': True},
     )
     worksheet = workbook.add_worksheet()
     worksheet.set_landscape()
@@ -90,7 +90,13 @@ def run_table_download(query, file_values):
         row += 3
 
     workbook.close()
-    return file_location
+    return Response(
+        file.getvalue(),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={
+            "Content-Disposition": "attachment; filename=buddhanexus_download.xlsx"
+        }
+    )
 
 
 def get_spreadsheet_fields(lang, file_values):
@@ -274,9 +280,10 @@ def run_numbers_download(categories, segments, file_values):
     Creates an Excel workbook with data given for the numbers view
     """
     # Create a workbook and add a worksheet.
+    file = BytesIO()
     workbook = xlsxwriter.Workbook(
-        "download/" + file_values[0] + "_download.xlsx",
-        {"constant_memory": True, "use_zip64": True},
+        file,
+        {"use_zip64": True, 'in_memory': True},
     )
     worksheet = workbook.add_worksheet()
     worksheet.set_landscape()
@@ -336,15 +343,19 @@ def run_numbers_download(categories, segments, file_values):
     for item in segments:
         worksheet.write(row, 0, item["segmentnr"], workbook_formats[11])
 
-        category_dict = get_category_dict(item["parallels"], categories_list)
-
-        for key, value in category_dict.items():
+        for key, value in get_category_dict(item["parallels"], categories_list).items():
             worksheet.write(row, key, "\n".join(sorted(value)), workbook_formats[12])
 
         row += 1
 
     workbook.close()
-    return "download/" + file_values[0] + "_download.xlsx"
+    return Response(
+        file.getvalue(),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={
+            "Content-Disposition": "attachment; filename=buddhanexus_download.xlsx"
+        }
+    )
 
 
 def get_category_dict(segment_parallels, categories_list):
