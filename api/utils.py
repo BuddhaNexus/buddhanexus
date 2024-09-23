@@ -3,11 +3,10 @@ Various utilities for interacting with data in API queries.
 """
 
 import re
-from typing import List
 from urllib.parse import unquote
 from fastapi import HTTPException
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
-from .queries import menu_queries, utils_queries, text_view_queries
+from .queries import utils_queries, text_view_queries
 from .db_connection import get_db
 
 
@@ -76,6 +75,7 @@ def get_language_from_file_name(file_name) -> str:
         return "sa"
     if "ZH_" in file_name:
         return "zh"
+    return
 
 
 def number_exists(input_string) -> bool:
