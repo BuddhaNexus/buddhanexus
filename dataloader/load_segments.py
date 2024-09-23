@@ -13,39 +13,34 @@ from tqdm import tqdm as tqdm
 from arango.database import StandardDatabase
 from dataloader_models import Segment, validate_df
 
-from dataloader_constants import (
-    METADATA_DIR,
-    COLLECTION_SEARCH_INDEX_TIB,
-    COLLECTION_SEARCH_INDEX_SKT,
-    COLLECTION_SEARCH_INDEX_PLI,
-    COLLECTION_SEARCH_INDEX_CHN,
-    SKT_TSV_DATA_PATH,
-    PLI_TSV_DATA_PATH,
-    TIB_TSV_DATA_PATH,
-    CHN_TSV_DATA_PATH,
+from dataloader_constants import (    
+    PAGE_SIZE,
+    COLLECTION_SEARCH_INDEX_BO,
+    COLLECTION_SEARCH_INDEX_SA,
+    COLLECTION_SEARCH_INDEX_PA,
+    COLLECTION_SEARCH_INDEX_ZH,
+    SEGMENT_URLS,
     COLLECTION_SEGMENTS,
     COLLECTION_SEGMENTS_PAGES,
     COLLECTION_FILES,
+    LANG_PALI,
+    LANG_SANSKRIT,
+    LANG_TIBETAN,
+    LANG_CHINESE,
+    METADATA_URLS,
 )
 
 from utils import (
     check_if_collection_exists,
     get_database,
     should_download_file,
+    sliding_window,
 )
 from api.utils import (
     get_cat_from_segmentnr,
     get_language_from_file_name,
     get_filename_from_segmentnr,
 )
-from folios import get_folios_from_segment_keys
-
-
-def sliding_window(data_list, window_size=3):
-    """Generates sliding windows from a list."""
-    return [
-        data_list[i : i + window_size] for i in range(len(data_list) - window_size + 1)
-    ]
 
 
 def process_file_group_helper(args):
@@ -56,39 +51,34 @@ def process_file_group_helper(args):
 
 class LoadSegmentsBase:
     SEARCH_COLLECTION_NAME: str
-    DATA_PATH: str
+    
 
     def __init__(self) -> None:
-        self.metadata_file_list = self._init_metadata_file_list()
+        self.metadata = self._init_metadata()
+        self.DATA_PATH = SEGMENT_URLS[self.LANG] + "segments/"
 
-    def _init_metadata_file_list(self):
-        df = pd.read_json(f"{METADATA_DIR}{self.LANG}-files.json")
-        return df["filename"].to_list()
+    def _init_metadata(self):
+        df = pd.read_json(METADATA_URLS[self.LANG])        
+        return df.set_index("filename").to_dict(orient="index")
+        
 
-    def _load_segments(self, file_df, db) -> None:
-        segments = [
-            {
-                "_key": segnr,
-                "segnr": segnr,
-                "segtext": original,
-                "language": self.LANG,
-                "filename": get_filename_from_segmentnr(segnr),
-            }
-            for segnr, original in zip(file_df["segmentnr"], file_df["original"])
-        ]
+    def _load_segments(self, segments_df, db) -> None:
         # print(f"DEBUG: segments[:3]: {segments[:3]}")
-        db.collection(COLLECTION_SEGMENTS).delete_many({"language": self.LANG})
-        db.collection(COLLECTION_SEGMENTS).insert_many(segments)
-        db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr", "language"])
-        db.collection(COLLECTION_SEGMENTS_PAGES).add_hash_index(fields=["segnr"])
+        db.collection(COLLECTION_SEGMENTS).delete_many({"lang": self.LANG})
+        db.collection(COLLECTION_SEGMENTS).insert_many(
+            segments_df.to_dict("records")
+        )
+        
+        db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segmentnr", "lang", "filename", "category", "collection"], unique=False)
+        db.collection(COLLECTION_SEGMENTS_PAGES).add_hash_index(fields=["segmentnr"])
+        filename = segments_df["filename"].iloc[0]
 
-        segnrs = [segment["segnr"] for segment in segments]
-        filename = get_filename_from_segmentnr(segnrs[0])
-        # hack as this filename breaks the DB
-        if "K12D0505B" in filename:
-            return
-        # check if filename is in collection
-        current_file = db.collection(COLLECTION_FILES).get(filename)
+        current_file_cursor = db.collection(COLLECTION_FILES).find({"filename": filename})
+        current_file = next(current_file_cursor, None)
+        
+        segnrs = segments_df["segmentnr"].tolist()
+        filename = segments_df["filename"].iloc[0]
+                
         if current_file:
             current_file["segment_keys"] += segnrs
             db.collection(COLLECTION_FILES).update(current_file)
@@ -103,7 +93,7 @@ class LoadSegmentsBase:
         """
         segmentnrs = sliding_window(file_df["segmentnr"].tolist(), 3)
         originals = sliding_window(file_df["original"].tolist(), 3)
-        stems = sliding_window(file_df["stemmed"].tolist(), 3)
+        stems = sliding_window(file_df["analyzed"].tolist(), 3)
         search_index_entries = []
         for segnr, original, stem in zip(segmentnrs, originals, stems):
             if self.LANG == "chn":
@@ -117,35 +107,36 @@ class LoadSegmentsBase:
 
             search_index_entries.append(
                 {
-                    "segment_nr": segnr,
+                    "segmentnr": segnr,
                     "original": original,
-                    "stemmed": stem,
+                    "analyzed": stem,
                     "category": category,
-                    "language": self.LANG,
-                    "file_name": get_filename_from_segmentnr(segnr[1]),
+                    "lang": self.LANG,
+                    "filename": get_filename_from_segmentnr(segnr[1]),
                 }
             )
-        db.collection(self.SEARCH_COLLECTION_NAME).delete_many({"language": self.LANG})
+        db.collection(self.SEARCH_COLLECTION_NAME).delete_many({"lang": self.LANG})
 
         db.collection(self.SEARCH_COLLECTION_NAME).insert_many(search_index_entries)
 
         db.collection(self.SEARCH_COLLECTION_NAME).add_hash_index(
-            fields=["segment_nr", "language"]
+            fields=["segmentnr", "lang"]
         )
 
     def _process_file(self, file):
-        metadata_reference_filename = file.split(".tsv")[0].split("$")[0]
-        # n0 and n1 only appear in chinese files, we need to remove folio numbers for these as well
-        if "n0" in metadata_reference_filename or "n1" in metadata_reference_filename or "n2" in metadata_reference_filename:
-            metadata_reference_filename = re.sub(r"_[0-9][0-9][0-9abcdef]", "", metadata_reference_filename)
-        if metadata_reference_filename not in self.metadata_file_list:
+        metadata_reference_filename = file.replace(".json", "")
+        if metadata_reference_filename not in self.metadata:
             print(f"ERROR: file not in metadata: { file }")
             print(f"metadata_reference_filename: {metadata_reference_filename}")
             return
         print(f"Processing file: { file }")
         db = get_database()
         try:
-            file_df = pd.read_csv(os.path.join(self.DATA_PATH, file), sep="\t")
+            file_df = pd.read_json(os.path.join(self.DATA_PATH, file))
+            file_df['lang'] = self.LANG
+            file_df['filename'] = metadata_reference_filename
+            file_df['category'] = self.metadata[metadata_reference_filename]["category"]
+            file_df['collection'] = self.metadata[metadata_reference_filename]["collection"]              
             self._load_segments(file_df, db)
             self._load_segments_to_search_index(file_df, db)
         except Exception as e:
@@ -158,17 +149,17 @@ class LoadSegmentsBase:
             db.create_collection(self.SEARCH_COLLECTION_NAME)
         if not check_if_collection_exists(db, COLLECTION_SEGMENTS):
             db.create_collection(COLLECTION_SEGMENTS)
-            db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segnr"])
+            db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segmentnr"])
 
         category_files = defaultdict(list)
         print(f"Loading Segments from: {self.DATA_PATH}")
         if os.path.isdir(self.DATA_PATH):
             all_files = sorted(
-                [f for f in os.listdir(self.DATA_PATH) if f.endswith(".tsv")]
+                [f for f in os.listdir(self.DATA_PATH) if f.endswith(".json")]
             )
-            print(f"Found {len(all_files)} with .tsv extention")
+            print(f"Found {len(all_files)} with .json extention")
             for file in all_files:
-                if file.endswith(".tsv") and should_download_file(file):
+                if should_download_file(file):
                     category = get_cat_from_segmentnr(file)
                     category_files[category].append(file)
                     if number_of_threads == 1:
@@ -189,7 +180,7 @@ class LoadSegmentsBase:
         else:
             for file_group in tqdm(list(category_files.values())):
                 process_file_group_helper((self, file_group))
-        print("DONE LOADING DATA")
+        print("DONE LOADING SEGMENT DATA")
         self._sort_segnrs()
 
     def _sort_segnrs(self):
@@ -204,23 +195,23 @@ class LoadSegmentsBase:
         collection_files = db.collection(COLLECTION_FILES)
         segments_by_file = {}
 
-        segments = collection_segments.find({"language": self.LANG})
-
+        segments = collection_segments.find({"lang": self.LANG})
+        folios = []
         for segment in tqdm(segments):
-            filename = get_filename_from_segmentnr(segment["segnr"])
+            filename = get_filename_from_segmentnr(segment["segmentnr"])
             if filename not in segments_by_file:
                 segments_by_file[filename] = []
-            segments_by_file[filename].append(segment["segnr"])
+            segments_by_file[filename].append(segment["segmentnr"])
+            folios.append(segment["folio"])
 
         for filename in tqdm(segments_by_file):
             segments_sorted = natsort.natsorted(segments_by_file[filename])
-            lang = get_language_from_file_name(filename)
-            folios = get_folios_from_segment_keys(segments_sorted, lang)
-
+            lang = get_language_from_file_name(filename)        
+            # in order to save some grief on the frontend, we paginate the segments arbitrarily 
             page_size = 400
             segments_paginated = [
-                segments_sorted[i : i + page_size]
-                for i in range(0, len(segments_sorted), page_size)
+                segments_sorted[i : i + PAGE_SIZE]
+                for i in range(0, len(segments_sorted), PAGE_SIZE)
             ]
 
             segments_paginated = {
@@ -230,32 +221,32 @@ class LoadSegmentsBase:
             segments_paginated_to_be_inserted = []
             for page in segments_paginated:
                 current_segments = [
-                    {"segnr": seg, "page": page} for seg in segments_paginated[page]
+                    {"segmentnr": seg, "page": page} for seg in segments_paginated[page]
                 ]
                 segments_paginated_to_be_inserted += current_segments
 
             collection_segments_pages.insert_many(segments_paginated_to_be_inserted)
-
-            file = collection_files.get(filename)
-            # this is a hack since arango doesn't permit [] in keys; we need to fix the data!
-            if not "=[" in filename:
-                if file:
-                    file["segment_keys"] = segments_sorted
-                    file["segment_pages"] = segments_paginated
-                    file["language"] = lang
-                    file["folios"] = folios
-                    collection_files.update(file)
-                else:
-                    print(f"Could not find file {filename} in db.")
-                    file = {
-                        "_key": filename,
-                        "filename": filename,
-                        "language": lang,
-                        "folios": folios,
-                        "segment_keys": segments_sorted,
-                        "segment_pages": segments_paginated,
-                    }
-                    collection_files.insert(file)
+            # get file where 'textname' equals to filename
+            files = list(collection_files.find({"filename": filename}))
+            if len(files) > 0:
+                file = files[0]
+                file["segment_keys"] = segments_sorted
+                file["segment_pages"] = segments_paginated
+                file["lang"] = lang
+                file["folios"] = folios
+                collection_files.update(file)
+            else:
+                # if we don't have metadata for a file, this will end in an orphaned file in the db. For cempletion sake, we will insert this anyway, but its a bad sign. 
+                print(f"Could not find file {filename} in db.")                    
+                file = {
+                    "_key": filename,
+                    "filename": filename,
+                    "lang": lang,
+                    "folios": folios,
+                    "segment_keys": segments_sorted,
+                    "segment_pages": segments_paginated,
+                }
+                collection_files.insert(file)
         print("Done sorting segment numbers.")
         print(
             f"Time taken to sort segment numbers: {time.time() - time_before:.2f} seconds."
@@ -268,24 +259,17 @@ class LoadSegmentsBase:
 
 
 class LoadSegmentsSanskrit(LoadSegmentsBase):
-    SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_SKT
-    DATA_PATH = SKT_TSV_DATA_PATH
-    LANG = "skt"
-
+    SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_SA
+    LANG = LANG_SANSKRIT
 
 class LoadSegmentsPali(LoadSegmentsBase):
-    SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_PLI
-    DATA_PATH = PLI_TSV_DATA_PATH
-    LANG = "pli"
-
+    SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_PA
+    LANG = LANG_PALI    
 
 class LoadSegmentsTibetan(LoadSegmentsBase):
-    SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_TIB
-    DATA_PATH = TIB_TSV_DATA_PATH
-    LANG = "tib"
-
+    SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_BO
+    LANG = LANG_TIBETAN
 
 class LoadSegmentsChinese(LoadSegmentsBase):
-    SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_CHN
-    DATA_PATH = CHN_TSV_DATA_PATH
-    LANG = "chn"
+    SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_ZH
+    LANG = LANG_CHINESE

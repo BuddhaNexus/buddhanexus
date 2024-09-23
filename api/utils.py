@@ -22,14 +22,15 @@ def prettify_score(score):
 
 def get_filename_from_segmentnr(segnr):
     """
-    Get the filename from a segment number.
+    Get the base filename from a segment number.
     Note that this function is also used in the dataloader and cannot be
     replaced by a query function.
     """
     segnr = segnr.replace(".json", "")
-    if re.search("n[0-9aAbBcCdD]+_[0-9]+", segnr):
+    if "ZH" in segnr:
         segnr = re.sub("_[0-9]+", "", segnr)
-    segnr = re.sub(r"\$[0-9]+", "", segnr)
+    else:
+        segnr = re.sub(r"\$[0-9]+", "", segnr)
     return segnr.split(":")[0]
 
 
@@ -66,17 +67,17 @@ def get_language_from_file_name(file_name) -> str:
     Given the file ID, returns its language.
     :param file_name: The key of the file
     :return: Language of the file
-    Note that this function is also used in the dataloader and cannot be
-    replaced by a query function.
     """
-    lang = "pli"
-    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG|NY|TZ", file_name):
-        lang = "tib"
-    elif re.search(r"(u$|u:|^Y|^XX|sc$|sc:)", file_name):
-        lang = "skt"
-    elif re.search(r"[TX][0-9][0-9]n[0-9]", file_name):
-        lang = "chn"
-    return lang
+    if "BO_" in file_name:
+        return "bo"
+    if "PA_" in file_name:
+        return "pa"
+    if "SA_" in file_name:
+        return "sa"
+    if "ZH_" in file_name:
+        return "zh"
+
+
 
 
 def create_cleaned_limit_collection(limit_collection) -> List:
@@ -228,25 +229,4 @@ def get_cat_from_segmentnr(segmentnr):
     Note that this function is also used in the dataloader and cannot be
     replaced by a query function.
     """
-    cat = ""
-    pali_check = [x for x in ["anya", "atk", "tika"] if segmentnr.startswith(x)]
-    pali_vinaya_check = [
-        x for x in ["pli-tv-bi-vb", "pli-tv-bu-vb"] if segmentnr.startswith(x)
-    ]
-    search = re.search("^[A-Z]+[0-9]+", segmentnr)
-    if "NG" in segmentnr:
-        return "NG"
-    if search:
-        cat = search[0]
-    elif pali_check:
-        search = re.search("^[a-z]+-[a-z]+[0-9][0-9]", segmentnr)
-        cat = search[0]
-    elif pali_vinaya_check:
-        cat = pali_vinaya_check[0]
-    else:
-        search = re.search("^[a-z-]+", segmentnr)
-        if search:
-            cat = search[0]
-        else:
-            cat = segmentnr[0:2]
-    return cat
+    return segmentnr.split("_")[1]
