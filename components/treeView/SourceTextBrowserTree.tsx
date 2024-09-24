@@ -4,7 +4,7 @@ import useDimensions from "react-cool-dimensions";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { Node } from "@components/treeView/DrawerNavigationComponents";
+import { Node } from "@components/treeView/TreeNodeComponents";
 import type { DrawerNavigationNodeData } from "@components/treeView/types";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -40,7 +40,7 @@ const TreeViewContent = memo(function TreeViewContent({
       initialData={data}
       openByDefault={false}
       disableDrag={true}
-      rowHeight={60}
+      rowHeight={68}
       disableDrop={true}
       disableEdit={true}
       padding={12}
