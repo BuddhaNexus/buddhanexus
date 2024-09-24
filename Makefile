@@ -1,4 +1,4 @@
-COMPOSE := docker-compose -f docker-compose.yml
+COMPOSE := docker compose -f docker-compose.yml
 COMPOSEPROD := $(COMPOSE) -f docker-compose.prod.yml
 
 SERVICES := dataloader arangodb fastapi
@@ -16,7 +16,7 @@ run-prod-no-logs:
 	@$(COMPOSEPROD) up -d $(SERVICES)
 
 stop:
-	docker-compose down
+	docker down
 
 # Display recent logs from all docker containers.
 show-logs:
@@ -39,8 +39,10 @@ create-collections:
 
 # Load menu collections and categories based on local menu files
 load-menu-data:
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
+	@docker exec -t dataloader bash -c "invoke load-metadata"
 
+load-metadata:
+	@docker exec -t dataloader bash -c "invoke load-metadata"
 # Load & build the search-index
 
 add-sources:
@@ -53,52 +55,52 @@ clean-db:
 # these commands are for loading individual datasets asynchronously
 # @Vladimir this is all you need for now, use 'make run-dev' to start the docker image and then run 'make load-tibetan-data'. If you want to remove data, run 'make clean-db'
 load-tibetan-data:
-	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=tib"
-	@docker exec -t dataloader bash -c "invoke load-parallels --lang=tib"
-	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=tib"
+	#@docker exec -t dataloader bash -c "invoke create-collections"
+	#@docker exec -t dataloader bash -c "invoke load-metadata"
+	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=bo"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=bo"
+	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=bo"
 
 load-pali-data:
 	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=pli"
-	@docker exec -t dataloader bash -c "invoke load-parallels --lang=pli"
-	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=pli"
+	@docker exec -t dataloader bash -c "invoke load-metadata"
+	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=pa"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=pa"
+	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=pa"
 
 load-chinese-data:
 	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=chn"
-	@docker exec -t dataloader bash -c "invoke load-parallels --lang=chn"
-	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=chn"
+	@docker exec -t dataloader bash -c "invoke load-metadata"
+	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=zh"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=zh"
+	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=zh"
 
 load-sanskrit-data:
 	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-menu-files"
-	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=skt"
-	@docker exec -t dataloader bash -c "invoke load-parallels --lang=skt"
-	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=skt"
+	#@docker exec -t dataloader bash -c "invoke load-metadata"
+	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=sa"
+	#@docker exec -t dataloader bash -c "invoke load-parallels --lang=sa"
+	#@docker exec -t dataloader bash -c "invoke load-global-stats --lang=sa"
 
 clean-tibetan-data:
-	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=tib"
-	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=tib"
-	@docker exec -t dataloader bash -c "invoke clean-global-stats --lang=tib"
+	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=bo"
+	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=bo"
+	@docker exec -t dataloader bash -c "invoke clean-global-stats --lang=bo"
 
 clean-chinese-data:
-	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=chn"
-	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=chn"
-	@docker exec -t dataloader bash -c "invoke clean-global-stats --lang=chn"
+	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=zh"
+	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=zh"
+	@docker exec -t dataloader bash -c "invoke clean-global-stats --lang=zh"
 
 clean-pali-data:
-	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=pli"
-	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=pli"
-	@docker exec -t dataloader bash -c "invoke clean-global-stats --lang=pli"
+	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=pa"
+	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=pa"
+	@docker exec -t dataloader bash -c "invoke clean-global-stats --lang=pa"
 
 clean-sanskrit-data:
-	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=skt"
-	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=skt"
-	@docker exec -t dataloader bash -c "invoke clean-global-stats --lang=skt"
+	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=sa"
+	@docker exec -t dataloader bash -c "invoke clean-parallels --lang=sa"
+	@docker exec -t dataloader bash -c "invoke clean-global-stats --lang=sa"
 
 list-tasks:
 	@docker exec -t dataloader bash -c "invoke --list"
