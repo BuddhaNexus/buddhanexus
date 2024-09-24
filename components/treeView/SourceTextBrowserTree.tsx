@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import { Tree } from "react-arborist";
 import useDimensions from "react-cool-dimensions";
+import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { Node } from "@components/treeView/DrawerNavigationComponents";
@@ -10,7 +11,6 @@ import {
   Backdrop,
   Box,
   CircularProgress,
-  Divider,
   FormControl,
   InputAdornment,
   TextField,
@@ -31,8 +31,11 @@ const TreeViewContent = memo(function TreeViewContent({
   width: number;
   searchTerm?: string;
 }) {
+  const router = useRouter();
+
   return (
     <Tree
+      key={router.asPath}
       searchTerm={searchTerm}
       initialData={data}
       openByDefault={false}
@@ -52,10 +55,17 @@ const TreeViewContent = memo(function TreeViewContent({
 interface Props {
   parentHeight: number;
   parentWidth: number;
+  renderHeading?: boolean;
+  px?: number;
 }
 
 export const SourceTextBrowserTree = memo<Props>(
-  function SourceTextBrowserTree({ parentHeight, parentWidth }) {
+  function SourceTextBrowserTree({
+    parentHeight,
+    parentWidth,
+    renderHeading = true,
+    px = 2,
+  }) {
     const [searchTerm, setSearchTerm] = useState("");
     const { sourceLanguage } = useDbQueryParams();
     const { observe, height: inputHeight } = useDimensions();
@@ -74,11 +84,11 @@ export const SourceTextBrowserTree = memo<Props>(
 
     return (
       <>
-        <Typography variant="h5" sx={{ p: 2, pb: 0 }}>
-          {t("textBrowser.mainPrompt", { languageName })}
-        </Typography>
-
-        <Divider />
+        {renderHeading ? (
+          <Typography variant="h5" component="h2" sx={{ px, pt: 0, pb: 2 }}>
+            {t("textBrowser.mainPrompt", { languageName })}
+          </Typography>
+        ) : null}
 
         {hasData && (
           <>
@@ -86,7 +96,7 @@ export const SourceTextBrowserTree = memo<Props>(
             <FormControl
               ref={observe}
               variant="outlined"
-              sx={{ p: 2, pb: 0 }}
+              sx={{ px, pt: 2, pb: 0 }}
               fullWidth
             >
               <TextField
@@ -103,7 +113,7 @@ export const SourceTextBrowserTree = memo<Props>(
             </FormControl>
 
             {/* Tree view - text browser */}
-            <Box sx={{ pl: 2 }}>
+            <Box sx={{ pl: px }}>
               <TreeViewContent
                 data={data}
                 height={parentHeight - inputHeight}
