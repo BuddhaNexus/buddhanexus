@@ -19,8 +19,10 @@ Includes:
 Clone the project repository:
 
 ```shell
-git clone https://github.com/ayya-vimala/buddhanexus.git && cd buddhanexus
+git clone ThisRepository && cd buddhanexus
 ```
+(substitute ThisRepository with the corect filepath)
+
 Also, in order to load the segment data, it is necessary to create the segment docker volume beforehand: 
 ```
 git clone https://github.com/dharmamitra/dharmanexus-data ; cd dharmanexus-data; make build; make init
