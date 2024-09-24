@@ -29,6 +29,11 @@ git clone https://github.com/dharmamitra/dharmanexus-data ; cd dharmanexus-data;
 ```
 This will make sure that the database loads segment files that are valid and up to date.
 
+The match data is a lot and cannot be stored on github. It should be placed in a folder outside of the backend repository. The following variable in the .env configuration needs to point to the local folder with the match data (bo, sa, zh, pa):
+```
+LOCAL_MATCHES_PATH=/patch/to/matches/
+```
+
 #### 1.3 Install our githooks:
 This project uses `pre-commit` to maintain code style and format it using `black`.
 
