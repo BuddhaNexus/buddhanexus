@@ -120,10 +120,9 @@ function ParentItemExpander({
           }
           size="small"
           variant="outlined"
-          sx={{ width: "fit-content", mx: 1 }}
         />
       )}
-      <Typography fontSize="inherit" whiteSpace="nowrap">
+      <Typography fontSize="inherit" whiteSpace="nowrap" mx={1}>
         {name}
       </Typography>
     </>

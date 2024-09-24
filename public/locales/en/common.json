@@ -44,10 +44,10 @@
     "backToNews": "Back to News"
   },
   "textBrowser": {
-    "mainPrompt": "Browse texts in {{ languageName }}"
+    "mainPrompt": "Browse {{ languageName }} texts"
   },
   "prompts": {
-    "genericErrorTitle": "Something went wrong",
+    "genericErrorTitle": "Something went wrong.",
     "genericErrorDescription": "Please contact us if the issue persists.",
     "loading": "Loading...",
     "noResults": "No results found."

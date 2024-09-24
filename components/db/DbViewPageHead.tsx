@@ -25,7 +25,9 @@ export const DbViewPageHead = () => {
           displayName ? `${displayName} ::` : ""
         } ${startCase(dbView)} View`}
       />
+
       <QueryPageTopStack />
+
       {isLoading ? (
         <Typography variant="h2" component="h1" mb={1}>
           {fileName?.toUpperCase()}

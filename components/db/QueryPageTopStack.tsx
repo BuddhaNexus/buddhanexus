@@ -4,27 +4,14 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { getTextPath } from "@components/common/utils";
 import CurrentResultChips from "@components/db/CurrentResultChips";
-import { SourceTextSearchInput } from "@components/db/SourceTextSearchInput";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
-import { Box, Button, Modal, Stack } from "@mui/material";
-import { currentViewAtom } from "features/atoms";
-import { useAtomValue } from "jotai";
-
-const modalBoxstyles = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: { xs: "90vw", md: "70vw", lg: "60vw", xl: "50vw" },
-  height: "500px",
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-};
+import { Box, Button, Stack } from "@mui/material";
+import { currentViewAtom, isNavigationDrawerOpen } from "features/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
 
 /**
  * Renders a Stack UI component for the top of query pages with query
@@ -41,11 +28,8 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   const { fileName, sourceLanguage } = useDbQueryParams();
   const dbView = useAtomValue(currentViewAtom);
 
-  const { isSettingsOpen, setIsSettingsOpen } = useSettingsDrawer();
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const setIsSourceTreerOpen = useSetAtom(isNavigationDrawerOpen);
+  const { setIsSettingsOpen } = useSettingsDrawer();
 
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get("search_string");
@@ -81,7 +65,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
           aria-label={t(`resultsHead.settingsTip`)}
           title={t(`resultsHead.settingsTip`)}
           startIcon={<TuneIcon />}
-          onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+          onClick={() => setIsSettingsOpen((prev) => !prev)}
         >
           {t(`resultsHead.settings`)}
         </Button>
@@ -95,7 +79,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
         >
           {t(`resultsHead.reset`)}
         </Button>
-        {!isSearchRoute && (
+        {isSearchRoute ? null : (
           <Box sx={{ order: { xs: 2, lg: -1 } }}>
             <Button
               variant="outlined"
@@ -103,24 +87,10 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
               aria-label={t(`resultsHead.textSelectTip`)}
               title={t(`resultsHead.textSelectTip`)}
               startIcon={<GradingOutlinedIcon />}
-              onClick={handleOpen}
+              onClick={() => setIsSourceTreerOpen(true)}
             >
               {t(`resultsHead.textSelect`)}
             </Button>
-            <Modal
-              open={open}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-              sx={{
-                backdropFilter: "blur(3px)",
-                bgcolor: "rgba(255, 255, 255, 0.1)",
-              }}
-              onClose={handleClose}
-            >
-              <Box sx={modalBoxstyles}>
-                <SourceTextSearchInput setIsModalOpen={setOpen} autoFocus />
-              </Box>
-            </Modal>
           </Box>
         )}
       </Box>

@@ -131,7 +131,7 @@ const rules = {
   "react/react-in-jsx-scope": "off",
   "react/boolean-prop-naming": "error",
   "react/button-has-type": "error",
-  "react/destructuring-assignment": "error",
+  "react/destructuring-assignment": "off",
   "react/forbid-prop-types": "error",
   "react/jsx-curly-brace-presence": "error",
   "react/jsx-no-useless-fragment": [

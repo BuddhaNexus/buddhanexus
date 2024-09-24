@@ -2,21 +2,17 @@ import React, { memo, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import LocaleSelector from "@components/layout/LocaleSelector";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import Brightness1Icon from "@mui/icons-material/Brightness4";
 import Brightness2Icon from "@mui/icons-material/Brightness7";
-import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { IconButton, useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { useColorScheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
-import { isNavigationDrawerOpen } from "features/atoms";
 import { GlobalSearchDesktop, GlobalSearchMobile } from "features/globalSearch";
-import { useSetAtom } from "jotai";
 
 interface AppBarLinkProps {
   title: string;
@@ -39,11 +35,9 @@ export const AppTopBar = memo(function AppTopBar() {
   const materialTheme = useTheme();
 
   const { mode, setMode } = useColorScheme();
-  const { sourceLanguage } = useDbQueryParams();
 
   const { route } = useRouter();
   const { t } = useTranslation();
-  const setIsDrawerOpen = useSetAtom(isNavigationDrawerOpen);
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -124,14 +118,6 @@ export const AppTopBar = memo(function AppTopBar() {
               </Box>
             </Link>
 
-            {sourceLanguage && (
-              <IconButton
-                color="inherit"
-                onClick={() => setIsDrawerOpen((isOpen) => !isOpen)}
-              >
-                <ExploreOutlinedIcon sx={{ fontSize: 28 }} />
-              </IconButton>
-            )}
             {!isSearchRoute && <GlobalSearchDesktop />}
           </Box>
           <Box
