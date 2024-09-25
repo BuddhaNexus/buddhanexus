@@ -86,6 +86,7 @@ def number_exists(input_string) -> bool:
     """
     return any(char.isdigit() for char in input_string)
 
+
 def add_source_information(file_name, query_result):
     """
     Checks if a special source string is stored in the database.
@@ -135,6 +136,7 @@ def get_page_for_segment(active_segment):
     )
     return page_for_segment.result[0]
 
+
 def get_segment_for_folio(folio):
     """
     Gets the segment number for a given folio.
@@ -182,6 +184,7 @@ def get_cat_from_segmentnr(segmentnr):
     """
     return segmentnr.split("_")[1]
 
+
 def arrange_filter_data(filter_items):
     """
     Adds filter items to include or exclude dictionary.
@@ -196,18 +199,18 @@ def arrange_filter_data(filter_items):
         "categories": [],
         "collections": [],
     }
-    for item in filter_items['include']:
-        if item['type'] == 'file':
-            include['files'].append(item['value'])
-        if item['type'] == 'category':
-            include['categories'].append(item['value'])
-        if item['type'] == 'collection':
-            include['collections'].append(item['value'])
-    for item in filter_items['exclude']:
-        if item['type'] == 'file':
-            exclude['files'].append(item['value'])
-        if item['type'] == 'category':
-            exclude['categories'].append(item['value'])
-        if item['type'] == 'collection':
-            exclude['collections'].append(item['value'])
+    for item in filter_items["include"]:
+        if item["type"] == "file":
+            include["files"].append(item["value"])
+        if item["type"] == "category":
+            include["categories"].append(item["value"])
+        if item["type"] == "collection":
+            include["collections"].append(item["value"])
+    for item in filter_items["exclude"]:
+        if item["type"] == "file":
+            exclude["files"].append(item["value"])
+        if item["type"] == "category":
+            exclude["categories"].append(item["value"])
+        if item["type"] == "collection":
+            exclude["collections"].append(item["value"])
     return include, exclude

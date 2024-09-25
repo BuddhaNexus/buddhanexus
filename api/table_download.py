@@ -2,6 +2,7 @@
 This file contains the functions needed to create Excel
 worksheets for download
 """
+
 from io import BytesIO
 import re
 from fastapi import Response
@@ -9,8 +10,8 @@ import xlsxwriter
 from .utils import shorten_segment_names
 from .endpoints.utils import get_displayname
 
-def run_table_download(query, file_values):
 
+def run_table_download(query, file_values):
     """
     Creates an Excel workbook with data given
     """
@@ -18,7 +19,7 @@ def run_table_download(query, file_values):
     file = BytesIO()
     workbook = xlsxwriter.Workbook(
         file,
-        {"use_zip64": True, 'in_memory': True},
+        {"use_zip64": True, "in_memory": True},
     )
     worksheet = workbook.add_worksheet()
     worksheet.set_landscape()
@@ -95,7 +96,7 @@ def run_table_download(query, file_values):
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={
             "Content-Disposition": "attachment; filename=buddhanexus_download.xlsx"
-        }
+        },
     )
 
 
@@ -283,7 +284,7 @@ def run_numbers_download(categories, segments, file_values):
     file = BytesIO()
     workbook = xlsxwriter.Workbook(
         file,
-        {"use_zip64": True, 'in_memory': True},
+        {"use_zip64": True, "in_memory": True},
     )
     worksheet = workbook.add_worksheet()
     worksheet.set_landscape()
@@ -354,7 +355,7 @@ def run_numbers_download(categories, segments, file_values):
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={
             "Content-Disposition": "attachment; filename=buddhanexus_download.xlsx"
-        }
+        },
     )
 
 

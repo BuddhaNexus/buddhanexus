@@ -25,7 +25,6 @@ RETURN FIRST(
 """
 
 
-
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels
     FILTER p.root_filename == @file_name

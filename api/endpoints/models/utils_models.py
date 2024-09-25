@@ -13,6 +13,7 @@ class CountMatchesInput(BaseModel):
 class CountMatchesOutput(BaseModel):
     parallel_count: int
 
+
 class FolioOutput(BaseModel):
     folios: List
 

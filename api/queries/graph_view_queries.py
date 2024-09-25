@@ -3,7 +3,6 @@ Contains all database queries related to graph view.
 
 """
 
-
 QUERY_GRAPH_VIEW = """
 FOR f in parallels_sorted_file
     filter f._key == @file_name

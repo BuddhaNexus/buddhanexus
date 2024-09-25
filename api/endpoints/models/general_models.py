@@ -2,23 +2,27 @@ from pydantic import BaseModel
 from typing import Optional, Union, List
 from enum import Enum
 
+
 class FilterTypes(str, Enum):
     """
     Possible limit types
     """
+
     collection = "collection"
     category = "category"
     file = "file"
-    
+
 
 class FilterItem(BaseModel):
     limit_value: str
     limit_type: FilterTypes
 
+
 class Filters(BaseModel):
     """
     Filters for matches
     """
+
     include: Optional[List[FilterItem]]
     exclude: Optional[List[FilterItem]]
 

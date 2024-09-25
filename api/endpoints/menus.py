@@ -28,6 +28,7 @@ async def get_files_for_menu(
     query_result = add_searchfield(query_result.result)
     return {"results": query_result}
 
+
 @router.get("/collections/", response_model=CollectionsOutput)
 async def get_all_collections() -> Any:
     """

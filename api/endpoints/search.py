@@ -35,12 +35,12 @@ async def get_search_results(input: SearchInput) -> Any:
         },
     )
     query_result = query_search.result[0]
-    #print("SEARCH RESULT BEFORE POSTPROCESSING", query_result)
+    # print("SEARCH RESULT BEFORE POSTPROCESSING", query_result)
     result = search_utils.postprocess_results(
         search_strings,
         query_result,
     )
-    #print("SEARCH RESULT AFTER POSTPROCESSING 1", result)
+    # print("SEARCH RESULT AFTER POSTPROCESSING 1", result)
     results = calculate_color_maps_search(result)
-    #print("SEARCH RESULT AFTER POSTPROCESSING 2", results)
+    # print("SEARCH RESULT AFTER POSTPROCESSING 2", results)
     return {"searchResults": result}

@@ -7,7 +7,7 @@ from ..utils import (
     arrange_filter_data,
     get_page_for_segment,
     get_filename_from_segmentnr,
-    get_segment_for_folio
+    get_segment_for_folio,
 )
 from .models.text_view_models import *
 
@@ -24,6 +24,7 @@ async def get_parallels_for_middle(input: TextViewMiddleInput) -> Any:
         bind_vars={"parallel_ids": input.parallel_ids},
     )
     return calculate_color_maps_middle_view(query_result.result[0])
+
 
 @router.post("/text-parallels/", response_model=TextViewLeftOutputV2)
 async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any:
@@ -47,11 +48,7 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     ).result[0]
     print("TOTAL PAGES", number_of_total_pages)
     if page_number >= number_of_total_pages:
-        return {
-            "page": page_number,
-            "total_pages": number_of_total_pages,
-            "items": []
-        }
+        return {"page": page_number, "total_pages": number_of_total_pages, "items": []}
     current_bind_vars = {
         "file_name": filename,
         "page_number": page_number,
@@ -74,8 +71,9 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     data_with_colormaps = calculate_color_maps_text_view(
         text_segments_query_result.result[0]
     )
-    
+
     return {
         "page": page_number,
         "total_pages": number_of_total_pages,
-        "items": data_with_colormaps}
+        "items": data_with_colormaps,
+    }

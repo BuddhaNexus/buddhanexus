@@ -2,7 +2,6 @@
 Contains all database queries for text-view and middle text view.
 """
 
-
 QUERY_FILE_TEXT = """
 FOR file IN files
     FILTER file._key == @file_name

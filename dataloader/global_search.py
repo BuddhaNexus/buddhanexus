@@ -30,6 +30,7 @@ from views_properties import (
     PROPERTIES_SEARCH_INDEX_ZH,
 )
 
+
 def get_stopwords_list(path):
     stopwords = []
     with open(path) as file:
@@ -37,9 +38,11 @@ def get_stopwords_list(path):
             stopwords.append(line.strip())
     return stopwords
 
+
 bo_stopwords_list = get_stopwords_list(SA_STOPWORDS_URL)
 sa_stopwords_list = get_stopwords_list(BO_STOPWORDS_URL)
 pa_stopwords_list = get_stopwords_list(PA_STOPWORDS_URL)
+
 
 class AnalyzerBase:
     ANALYZER_NAME: str
@@ -140,9 +143,7 @@ def create_search_views(db: StandardDatabase, langs=[]):
             db, VIEW_SEARCH_INDEX_SA, PROPERTIES_SEARCH_INDEX_SA, "Sanskrit"
         )
     if "pa" in langs:
-        create_search_view(
-            db, VIEW_SEARCH_INDEX_PA, PROPERTIES_SEARCH_INDEX_PA, "Pali"
-        )
+        create_search_view(db, VIEW_SEARCH_INDEX_PA, PROPERTIES_SEARCH_INDEX_PA, "Pali")
     if "zh" in langs:
         create_search_view(
             db, VIEW_SEARCH_INDEX_ZH, PROPERTIES_SEARCH_INDEX_ZH, "Chinese"

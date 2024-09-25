@@ -11,12 +11,10 @@ router = APIRouter()
 
 @router.post("/count-matches/", response_model=CountMatchesOutput)
 async def get_counts_for_file(input: CountMatchesInput) -> Any:
-
     """
     Returns number of filtered parallels
     """
     filter_include, filter_exclude = arrange_filter_data(input.filters)
-
 
     query_graph_result = execute_query(
         utils_queries.QUERY_COUNT_MATCHES,
@@ -55,7 +53,6 @@ async def get_folios_for_file(
 
 
 def get_displayname(segmentnr):
-
     """
     Downloads the displaynames for the worksheet
     """
