@@ -93,7 +93,7 @@ def add_source_information(file_name, query_result):
     Currently only works for SKT.
     TODO: We might want to add this to Pali/Chn/Tib as well in the future!
     """
-    lang = get_language_from_file_name(file_name)
+    lang = get_language_from_filename(file_name)
     if lang == "sa":
         query_source_information = get_db().AQLQuery(
             query=utils_queries.QUERY_SOURCE,
@@ -183,6 +183,9 @@ def get_cat_from_segmentnr(segmentnr):
     return segmentnr.split("_")[1]
 
 def arrange_filter_data(filter_items):
+    """
+    Adds filter items to include or exclude dictionary.
+    """
     include = {
         "files": [],
         "categories": [],
