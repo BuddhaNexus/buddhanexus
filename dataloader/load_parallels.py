@@ -2,19 +2,16 @@ import json
 import os
 import re
 import gzip
-import random
 import sys
 from tqdm import tqdm as tqdm
 from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 import multiprocessing
-import natsort
 
 from dataloader_models import Match, validate_dict_list
 from dataloader_constants import (
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
-    MATCH_LIMIT,
 )
 from utils import should_download_file
 from api.utils import (
@@ -29,8 +26,6 @@ SCRIPT_DIR = os.path.dirname(
     os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
-
-from api.queries import menu_queries
 
 
 def load_parallels(parallels, db: StandardDatabase) -> None:

@@ -3,10 +3,7 @@ from arango import (
     DatabaseCreateError,
     CollectionCreateError,
     CollectionDeleteError,
-    GraphDeleteError,
 )
-
-from arango.database import StandardDatabase
 
 from invoke import task
 
@@ -32,7 +29,6 @@ from load_segments import (
 
 from global_search import (
     create_analyzers,
-    clean_analyzers,
     create_search_views,
 )
 
@@ -50,7 +46,6 @@ from clean_database import (
     clean_all_collections_db,
     clean_global_stats_db,
     clean_segment_collections_db,
-    clean_all_lang_db,
 )
 
 from load_metadata import load_metadata_from_files, load_category_names
@@ -189,31 +184,7 @@ def clean_global_stats(c):
     clean_global_stats_db()
 
 
-@task
-def load_multi_files(c, root_url=DEFAULT_MATCH_URL, threaded=False):
-    """
-    Download, parse and load multilingual data into database collections.
-
-    :param c: invoke.py context object
-    :param root_url: URL to the server where source files are stored
-    :param threaded: If dataloading should use multithreading. Uses n-1 threads, where n = system hyperthreaded cpu count.
-    """
-    thread_count = 1  # os.cpu_count() - 1
-    # this is a hack to work around the way parameters are passed via invoke
-    load_multilingual_parallels(root_url, thread_count if threaded else 1)
-    print("Multi-lingual data loading completed.")
-
-
-@task
-def clean_multi_data(c):
-    """
-    Clear the multilingual data from the database
-
-    :param c: invoke.py context object
-    """
-    clean_multi()
-
-
+# Is this still needed????
 @task
 def clean_search_index(c):
     """
@@ -233,23 +204,7 @@ def clean_all_collections(c):
     clean_all_collections_db()
 
 
-def clean_pali(c):
-    """
-    Clear all the pali data from the database.
-    :param c: invoke.py context object
-    """
-    db = get_database()
-    current_name = ""
-    try:
-        for name in COLLECTION_NAMES:
-            current_name = name
-            db.delete_collection(name)
-    except CollectionDeleteError as e:
-        print("Error deleting collection %s: " % current_name, e)
-
-    print("all collections cleaned.")
-
-
+# Is this still needed???
 @task
 def clean_totals_collection(c):
     """
@@ -260,6 +215,7 @@ def clean_totals_collection(c):
     clean_totals_collection_db()
 
 
+# Is this still needed???
 @task
 def clean_segment_collections(c):
     """
@@ -270,46 +226,7 @@ def clean_segment_collections(c):
     clean_segment_collections_db()
 
 
-@task
-def clean_tibetan(c):
-    """
-    Clear tibetan segments collections completely.
-
-    :param c: invoke.py context object
-    """
-    clean_all_lang_db(LANG_TIBETAN)
-
-
-@task
-def clean_sanskrit(c):
-    """
-    Clear sanskrit segments collections completely.
-
-    :param c: invoke.py context object
-    """
-    clean_all_lang_db(LANG_SANSKRIT)
-
-
-@task
-def clean_pali(c):
-    """
-    Clear pali segments collections completely.
-
-    :param c: invoke.py context object
-    """
-    clean_all_lang_db(LANG_PALI)
-
-
-@task
-def clean_chinese(c):
-    """
-    Clear chinese segments collections completely.
-
-    :param c: invoke.py context object
-    """
-    clean_all_lang_db(LANG_CHINESE)
-
-
+# This function is not defined in the Makefile
 @task()
 def load_metadata(c):
     """

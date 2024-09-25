@@ -7,7 +7,6 @@ from typing import List
 from arango.database import StandardDatabase
 from dataloader_constants import COLLECTION_FILES, COLLECTION_CATEGORY_NAMES
 from utils import (
-    should_download_file,
     get_language_from_file_name,
     get_filename_from_segmentnr,
 )

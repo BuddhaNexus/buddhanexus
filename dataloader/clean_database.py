@@ -1,11 +1,9 @@
 from arango import (
-    DatabaseCreateError,
     CollectionCreateError,
     CollectionDeleteError,
     GraphDeleteError,
 )
 from arango.database import StandardDatabase
-from tqdm import tqdm as tqdm
 
 from global_search import clean_analyzers
 
@@ -17,14 +15,14 @@ from dataloader_constants import (
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_FILES,
-    COLLECTION_LANGUAGES,
     GLOBAL_STATS_CATEGORIES,
     GLOBAL_STATS_FILES,
 )
 
-from utils import get_database, get_system_database
+from utils import get_database
 
 
+# Is this function still needed??? 
 def clean_search_index_db():
     """
     Clear all the search index views and collections.
@@ -86,6 +84,7 @@ def empty_collection(collection_name: str, db: StandardDatabase, edge: bool = Fa
         print(f"couldn't create collection: {collection_name}")
 
 
+# Is this function still needed????
 def clean_segment_collections_db():
     """
     Clear the segment database collections completely.
@@ -101,15 +100,7 @@ def clean_segment_collections_db():
     print("segment collections cleaned.")
 
 
-def clean_metadata_db():
-    """
-    Clear the metadata database collections completely.
-    """
-    db = get_database()
-    db.delete_collection(COLLECTION_METADATA)
-    print("metadata data collection cleaned.")
-
-
+# Is this function still needed????
 def clean_all_lang_db(current_lang):
     print("Cleaning data for language", current_lang)
     db = get_database()
@@ -134,20 +125,4 @@ def clean_all_lang_db(current_lang):
 
     files_collection = db.collection(COLLECTION_FILES)
     files_collection.delete_match({"language": current_lang})
-    print("Cleaning data done.")
-
-
-def clean_paralels_lang_db(current_lang):
-    print("Cleaning data for language", current_lang)
-    db = get_database()
-
-    parallels_collection = db.collection(COLLECTION_PARALLELS)
-    parallels_collection.delete_match({"src_lang": current_lang})
-
-    parallels_sorted_collection = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
-    parallels_sorted_collection.delete_match({"lang": current_lang})
-
-    parallels_count_collection = db.collection(COLLECTION_FILES_PARALLEL_COUNT)
-    parallels_count_collection.delete_match({"language": current_lang})
-
     print("Cleaning data done.")

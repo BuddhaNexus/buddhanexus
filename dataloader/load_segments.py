@@ -6,12 +6,9 @@ from collections import defaultdict
 import os
 import natsort
 import multiprocessing
-import re
 import time
 import pandas as pd
 from tqdm import tqdm as tqdm
-from arango.database import StandardDatabase
-from dataloader_models import Segment, validate_df
 
 from dataloader_constants import (
     PAGE_SIZE,

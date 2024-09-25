@@ -2,9 +2,7 @@
 Utilities for interacting with the database and other tasks
 """
 
-import gzip
 import io
-import json
 import re
 
 from arango import ArangoClient
@@ -24,7 +22,6 @@ from dataloader_constants import (
     ARANGO_USER,
     ARANGO_PASSWORD,
     ARANGO_HOST,
-    LANG_SANSKRIT,
 )
 
 PACKAGE_PARENT = ".."
@@ -32,8 +29,6 @@ SCRIPT_DIR = os.path.dirname(
     os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
-
-from api.utils import get_language_from_file_name, get_filename_from_segmentnr
 
 
 def get_arango_client() -> ArangoClient:
@@ -53,23 +48,13 @@ def get_database() -> StandardDatabase:
     return client.db(DB_NAME, username=ARANGO_USER, password=ARANGO_PASSWORD)
 
 
-def get_remote_bytes(file_url) -> io.BytesIO:
-    """
-    Download remote file and return its bytes object
-    :param file_url: URL to the file
-    :return:
-    """
-    result = urlfetch.fetch(file_url)
-    return io.BytesIO(result.content)
-
-
 def sliding_window(data_list, window_size=3):
     """Generates sliding windows from a list."""
     return [
         data_list[i : i + window_size] for i in range(len(data_list) - window_size + 1)
     ]
 
-
+# Is this a work in progress? Or can it be deleted?
 def execute_in_parallel(task, items, threads) -> None:
     """
     Execute arbitrary function over a collection of items in parallel or synchronously.
@@ -101,18 +86,7 @@ def should_download_file(file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    # if "n2" in file_name:
-    # if "T06D4032" in file_name:
-    if "T06" in file_name:
-        return True
-
-
-def get_collection_list_for_language(language, all_cols):
-    total_collection_list = []
-    for col in all_cols:
-        if col["language"] == language:
-            total_collection_list.append(col["collection"])
-    return total_collection_list
+    return True
 
 
 def check_if_collection_exists(db, collection_name):
@@ -129,31 +103,7 @@ def check_if_view_exists(db, view_name):
             return True
 
 
-def get_categories_for_language_collection(
-    language_collection, query_collection_cursor
-):
-    for target in query_collection_cursor:
-        if target["collection"] == language_collection:
-            target_col_dict = {}
-            for target_cat in target["categories"]:
-                target_col_dict.update(target_cat)
-
-            return target_col_dict
-
-
-def get_language_name(language_key):
-    if language_key == LANG_CHINESE:
-        return "Chinese"
-    elif language_key == LANG_TIBETAN:
-        return "Tibetan"
-    elif language_key == LANG_PALI:
-        return "Pali"
-    elif language_key == LANG_SANSKRIT:
-        return "Sanskrit"
-    else:
-        return "Unknown"
-
-
+# Are the below 2 functions used or can they be deleted?
 def atoi(text):
     return int(text) if text.isdigit() else text
 
