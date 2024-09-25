@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import useDimensions from "react-cool-dimensions";
-import { SourceTextBrowserTree } from "@components/treeView/SourceTextBrowserTree";
+import { SourceTextTree } from "@components/db/SourceTextTree";
 import { Drawer as MuiDrawer } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { isNavigationDrawerOpen } from "features/atoms";
+import { isSourceTextBrowserDrawerOpen } from "features/atoms";
 import { useAtom } from "jotai";
 
 const Drawer = styled(MuiDrawer)(({ theme }) => ({
@@ -29,7 +29,9 @@ const Drawer = styled(MuiDrawer)(({ theme }) => ({
 export const SourceTextBrowserDrawer = memo(function SourceTextBrowserDrawer() {
   const { observe, height, width } = useDimensions();
 
-  const [isDrawerOpen, setIsDrawerOpen] = useAtom(isNavigationDrawerOpen);
+  const [isDrawerOpen, setIsDrawerOpen] = useAtom(
+    isSourceTextBrowserDrawerOpen,
+  );
 
   return (
     <Drawer
@@ -39,7 +41,7 @@ export const SourceTextBrowserDrawer = memo(function SourceTextBrowserDrawer() {
       open={isDrawerOpen}
       onClose={() => setIsDrawerOpen(false)}
     >
-      <SourceTextBrowserTree parentHeight={height} parentWidth={width} />
+      <SourceTextTree type="browse" parentHeight={height} parentWidth={width} />
     </Drawer>
   );
 });

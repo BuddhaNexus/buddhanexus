@@ -1,15 +1,16 @@
 import type { SourceLanguage } from "utils/constants";
 
-export enum NodeDataChildType {
+export enum SourceTextTreeNodeDataType {
   Category = "category",
   Collection = "collection",
   Text = "text",
 }
 
-export type DrawerNavigationNodeData = {
+export type SourceTextTreeNode = {
   id: string;
   name: string;
+  dataType: SourceTextTreeNodeDataType;
+  children?: SourceTextTreeNode[];
   fileName?: string;
   availableLanguages?: SourceLanguage[];
-  dataType?: NodeDataChildType;
 };

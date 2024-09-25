@@ -1,24 +1,24 @@
 import type { NodeApi, NodeRendererProps } from "react-arborist";
 import { Link } from "@components/common/Link";
 import { getTextPath } from "@components/common/utils";
+import type { SourceTextTreeNode } from "@components/db/SourceTextTree/types";
+import { SourceTextTreeNodeDataType } from "@components/db/SourceTextTree/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import type { DrawerNavigationNodeData } from "@components/treeView/types";
-import { NodeDataChildType } from "@components/treeView/types";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ShortTextIcon from "@mui/icons-material/ShortText";
-import { Box, Chip, Tooltip, Typography } from "@mui/material";
+import { Box, Checkbox, Chip, Tooltip, Typography } from "@mui/material";
 import { currentViewAtom } from "features/atoms";
-import { useAtomValue } from "jotai";
+import { PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 
 import styles from "./TreeNodeComponents.module.css";
 
 const CHARACTER_WIDTH = 8;
 const INDENTATION_WIDTH = 90;
 
-function FolderArrow({ node }: { node: NodeApi<DrawerNavigationNodeData> }) {
+function FolderArrow({ node }: { node: NodeApi<SourceTextTreeNode> }) {
   if (node.isInternal) {
     return node.isOpen ? (
       <ExpandMoreIcon sx={{ mr: 1 }} />
@@ -29,7 +29,7 @@ function FolderArrow({ node }: { node: NodeApi<DrawerNavigationNodeData> }) {
   return null;
 }
 
-function TextItemLink({ node }: { node: NodeApi<DrawerNavigationNodeData> }) {
+function TextItemLink({ node }: { node: NodeApi<SourceTextTreeNode> }) {
   const { name, fileName, id } = node.data;
   let elementWidth = 300;
   const nameWidth = name.length * CHARACTER_WIDTH;
@@ -99,19 +99,15 @@ function TextItemLink({ node }: { node: NodeApi<DrawerNavigationNodeData> }) {
   );
 }
 
-function ParentItemExpander({
-  node,
-}: {
-  node: NodeApi<DrawerNavigationNodeData>;
-}) {
+function ParentItemExpander({ node }: { node: NodeApi<SourceTextTreeNode> }) {
   const { dataType, name, id } = node.data;
 
   return (
     <>
-      {dataType === NodeDataChildType.Collection && (
+      {dataType === SourceTextTreeNodeDataType.Collection && (
         <LibraryBooksIcon fontSize="inherit" />
       )}
-      {dataType === NodeDataChildType.Category && (
+      {dataType === SourceTextTreeNodeDataType.Category && (
         <Chip
           label={
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
@@ -129,12 +125,12 @@ function ParentItemExpander({
   );
 }
 
-export function Node({
+export function BrowserNode({
   node,
   style,
   // TODO: check if this `dragHandle` can be removed
   dragHandle,
-}: NodeRendererProps<DrawerNavigationNodeData>) {
+}: NodeRendererProps<SourceTextTreeNode>) {
   const { dataType } = node.data;
 
   const handleClick = () => {
@@ -162,11 +158,97 @@ export function Node({
     >
       <FolderArrow node={node} />
 
-      {dataType === NodeDataChildType.Text ? (
+      {dataType === SourceTextTreeNodeDataType.Text ? (
         <TextItemLink node={node} />
       ) : (
         <ParentItemExpander node={node} />
       )}
+    </Box>
+  );
+}
+
+type SelectorNodeProps = {
+  selectedItemsAtom: PrimitiveAtom<SourceTextTreeNode[]>;
+} & NodeRendererProps<SourceTextTreeNode>;
+
+export function SelectorNode({
+  node,
+  style,
+  selectedItemsAtom,
+}: SelectorNodeProps) {
+  const { name, id } = node.data;
+
+  const [selectedSourceFilter, setSelectedSourceFilter] =
+    useAtom(selectedItemsAtom);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (node.isLeaf) return;
+
+    const isCheckboxClick =
+      event.nativeEvent.target instanceof HTMLInputElement;
+
+    if (isCheckboxClick) return;
+
+    node.toggle();
+  };
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setSelectedSourceFilter([...selectedSourceFilter, node.data]);
+    } else {
+      setSelectedSourceFilter(
+        selectedSourceFilter.filter((excludeItem) => excludeItem.id !== id),
+      );
+    }
+  };
+
+  return (
+    <Box
+      style={style}
+      sx={{
+        flex: 1,
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        fontSize: 16,
+        ":hover": {
+          backgroundColor: "grey.200",
+          fontWeight: 500,
+        },
+      }}
+      onClick={handleClick}
+    >
+      <FolderArrow node={node} />
+
+      <Checkbox
+        size="small"
+        checked={selectedSourceFilter.some((item) => item.id === id)}
+        onChange={handleCheckboxChange}
+      />
+
+      <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+        <Tooltip
+          title={<Typography>{name}</Typography>}
+          PopperProps={{ disablePortal: true }}
+          // disableHoverListener={nameWidth < elementWidth}
+          enterDelay={300}
+        >
+          <Typography
+            className={styles.textName}
+            overflow="clip"
+            textOverflow="ellipsis"
+            variant="body3"
+            whiteSpace="nowrap"
+            lineHeight={1.1}
+            sx={{ px: 0.5, display: "flex", flexDirection: "column" }}
+          >
+            <Typography variant="body2" component="span">
+              {id}:
+            </Typography>{" "}
+            {name}
+          </Typography>
+        </Tooltip>
+      </Box>
     </Box>
   );
 }

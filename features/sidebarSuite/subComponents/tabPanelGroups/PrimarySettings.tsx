@@ -10,25 +10,22 @@ import { UniqueSettingsType } from "features/sidebarSuite/config/settings";
 import type { SidebarSuitePageContext } from "features/sidebarSuite/config/types";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
-  IncludeExcludeFilters,
   ParLengthFilter,
   ScoreFilter,
   SearchLanguageSelector,
+  SourceFilters,
 } from "features/sidebarSuite/subComponents/settings";
 import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
 import { useAtomValue } from "jotai";
-import { SourceLanguage } from "utils/constants";
 
 type FiltersProps = {
   filters: string[];
   uniqueSettings: UniqueSettingsType;
-  sourceLanguage: SourceLanguage;
 };
 
 const Filters = memo(function Filters({
   filters,
   uniqueSettings,
-  sourceLanguage,
 }: FiltersProps) {
   return filters.map((filter) => {
     const key = `filter-setting-${filter}`;
@@ -48,7 +45,7 @@ const Filters = memo(function Filters({
       //   return <MultiLingualSelector key={key} />;
       // }
       case uniqueSettings.queryParams.limits: {
-        return <IncludeExcludeFilters key={key} language={sourceLanguage} />;
+        return <SourceFilters key={key} />;
       }
       case uniqueSettings.queryParams.targetCollection: {
         return (
@@ -99,22 +96,24 @@ export const PrimarySettings = ({
     pageSettings,
   ]);
 
-  return filters.length > 0 ? (
+  if (filters.length === 0) return null;
+
+  if (isDbRoute) {
+    return (
+      <Box>
+        <PanelHeading heading={t("tabs.settings")} />
+        <DbViewSelector />
+
+        <PanelHeading heading={t("headings.filters")} sx={{ mt: 1 }} />
+        <Filters filters={filters} uniqueSettings={uniqueSettings} />
+      </Box>
+    );
+  }
+
+  return (
     <Box>
-      {isDbRoute ? (
-        <>
-          <PanelHeading heading={t("tabs.settings")} />
-          <DbViewSelector />
-        </>
-      ) : null}
-
       <PanelHeading heading={t("headings.filters")} sx={{ mt: 1 }} />
-
-      <Filters
-        filters={filters}
-        uniqueSettings={uniqueSettings}
-        sourceLanguage={sourceLanguage}
-      />
+      <Filters filters={filters} uniqueSettings={uniqueSettings} />
     </Box>
-  ) : null;
+  );
 };

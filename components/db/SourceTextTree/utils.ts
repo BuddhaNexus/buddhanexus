@@ -1,17 +1,17 @@
-import { NodeDataChildType } from "@components/treeView/types";
-import type { ParsedSidebarTextCollectionsMenuData } from "utils/api/endpoints/menus/sidebar";
+import { SourceTextTreeNodeDataType } from "@components/db/SourceTextTree/types";
+import type { ParsedStructuredSourceTextMenuData } from "utils/api/endpoints/menus/sidebar";
 
 export function transformDataForTreeView(
-  data: ParsedSidebarTextCollectionsMenuData,
+  data: ParsedStructuredSourceTextMenuData,
 ) {
   return data.map((collection) => ({
     id: collection.collection,
     name: collection.collection,
-    dataType: NodeDataChildType.Collection,
+    dataType: SourceTextTreeNodeDataType.Collection,
     children: collection.categories.map(({ name, displayName, files }) => ({
       id: name,
       name: displayName,
-      dataType: NodeDataChildType.Category,
+      dataType: SourceTextTreeNodeDataType.Category,
       children: files.map(
         ({
           fileName,
@@ -23,7 +23,7 @@ export function transformDataForTreeView(
           name: fileDisplayName,
           fileName,
           availableLanguages,
-          dataType: NodeDataChildType.Text,
+          dataType: SourceTextTreeNodeDataType.Text,
         }),
       ),
     })),

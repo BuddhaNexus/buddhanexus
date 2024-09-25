@@ -169,31 +169,3 @@ export const enscriptText = ({
     ? ewts.to_unicode(text)
     : text;
 };
-
-//  TODO: clarify spec - is disabling logically impossible (per include/exclude filter selections) desired behaviour? Applies to all included/excluded filters.
-//
-//   const [disableSelectors, setDisableSelectors] = useAtom(
-//     disableLimitColectionSelectAtom
-//   );
-
-//   function setIsSelectorDisabled(
-//     key: keyof QueryValues["limit_collection"],
-//     value: boolean
-//   ) {
-//     setDisableSelectors((prevState) => {
-//       const updates = {
-//         excludedCategories: {},
-//         excludedTexts: {},
-//         includedCategories: {
-//           excludedCategories: !value,
-//           excludedTexts: !value,
-//         },
-//         includedTexts: {
-//           excludedCategories: !value,
-//           excludedTexts: !value,
-//           includedCategories: !value,
-//         },
-//       };
-//       return { ...prevState, ...updates[key] };
-//     });
-//   }

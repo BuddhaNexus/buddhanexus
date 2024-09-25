@@ -59,11 +59,8 @@
   "filtersLabels": {
     "score": "Similarity Score:",
     "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
-    "includeExcludeFilters": "Elemente ein- und ausschließen",
-    "category_exclude": "Sammlungen ausschließen",
-    "category_include": "Nur Sammlungen einschließen",
-    "file_exclude": "Texte ausschließen",
-    "file_include": "Nur Texte einschließen"
+    "source_exclude": "Exclude sources:",
+    "source_include": "Only include sources:"
   },
   "dbViewLabels": {
     "view": "Sicht",

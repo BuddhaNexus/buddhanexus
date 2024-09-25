@@ -13,7 +13,7 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export { getSourceLanguageStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 import useDimensions from "react-cool-dimensions";
-import { SourceTextBrowserTree } from "@components/treeView/SourceTextBrowserTree";
+import { SourceTextTree } from "@components/db/SourceTextTree";
 
 export default function DbIndexPage() {
   const { sourceLanguageName, sourceLanguage } = useDbQueryParams();
@@ -37,10 +37,11 @@ export default function DbIndexPage() {
             maxHeight: "70dvh",
           }}
         >
-          <SourceTextBrowserTree
+          <SourceTextTree
+            type="browse"
             parentHeight={height}
             parentWidth={width}
-            renderHeading={false}
+            hasHeading={false}
             px={0}
           />
         </Box>

@@ -47,6 +47,11 @@ type QueryStringParam =
 
 export type MultiLingalParam = SourceLanguage[] | undefined;
 
+/**
+ * <LIMITS FILTER REFACTOR WORKING IN PROGRESS
+ * BE updates pending, temp typing for now
+ */
+
 export type LimitsFilterValue = {
   category_exclude?: ParsedCategoryMenuItem[];
   category_include?: ParsedCategoryMenuItem[];
@@ -71,6 +76,12 @@ export const limits: Limit[] = [
   "file_include",
 ];
 
+export type SourceFilter = "exclude" | "include";
+
+/**
+ * LIMITS FILTER REFACTOR WORKING IN PROGRESS />
+ */
+
 export const sortMethods = ["position", "quoted-text", "length2"] as const;
 export type SortMethod = (typeof sortMethods)[number];
 
@@ -90,11 +101,11 @@ type DefaultValueParams =
   | "sort_method";
 
 /**
- * `QueryParams` defineds all query params available in the API and the types they can take (and whether or not they can be left undefined, or must have a value set).
+ * `QueryParams` defines all query params available on the API and the types they can take (and whether or not they can be left undefined, or must have a value set).
  *
- * The nested ternary checking if the object key is in `QueryStringParam`, `QueryNumberParam` or param with a custom type is unreasonably complex, but this is a common pattern in TS when you want to map different keys to different types.
+ * The nested ternary checks if the object key is in `QueryStringParam`, `QueryNumberParam` or a param with a custom type. It is unreasonably complex, but this is a common pattern in TS when you want to map different keys to different types.
  *
- * TS is perfectly bonkers and in the condition check context, `extends` means "is in".
+ * TS is perfectly bonkers and in the condition check context, `extends` means `is in`.
  */
 export type QueryParams = {
   [Key in QueryParamKeys]: Key extends QueryStringParam

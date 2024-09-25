@@ -1,8 +1,8 @@
 import { memo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { useTranslation } from "next-i18next";
+import type { SourceTextTreeNode } from "@components/db/SourceTextTree/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import type { DrawerNavigationNodeData } from "@components/treeView/types";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, FormControl, InputAdornment, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -13,31 +13,39 @@ import {
   TreeException,
   TreeHeading,
   TreeViewContent,
-} from "./TreeBrowserComponents";
+  type TreeViewContentType,
+  type TreeViewSelectProps,
+} from "./TreeBaseComponents";
 
-interface SourceTextBrowserTreeProps {
+interface SourceTextTreeBaseProps {
   parentHeight: number;
   parentWidth: number;
-  renderHeading?: boolean;
+  type?: TreeViewContentType;
+  hasHeading?: boolean;
   px?: number;
 }
 
-export const SourceTextBrowserTree = memo<SourceTextBrowserTreeProps>(
-  function SourceTextBrowserTree({
-    parentHeight,
-    parentWidth,
-    renderHeading = true,
-    px = 2,
-  }) {
+type SourceTextTreeProps =
+  | ({ type: "browse" } & SourceTextTreeBaseProps)
+  | ({ type: "select" } & SourceTextTreeBaseProps & TreeViewSelectProps);
+
+export const SourceTextTree = memo<SourceTextTreeProps>(
+  function SourceTextTree(props) {
+    const {
+      parentHeight,
+      parentWidth,
+      hasHeading = true,
+      px = 2,
+      ...treeProps
+    } = props;
+
     const [searchTerm, setSearchTerm] = useState("");
     const { sourceLanguage } = useDbQueryParams();
     const { observe, height: inputHeight } = useDimensions();
 
     const { t } = useTranslation(["common"]);
 
-    const { data, isLoading, isError, error } = useQuery<
-      DrawerNavigationNodeData[]
-    >({
+    const { data, isLoading, isError, error } = useQuery<SourceTextTreeNode[]>({
       queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
       queryFn: () =>
         DbApi.SidebarSourceTexts.call({ language: sourceLanguage }),
@@ -46,7 +54,7 @@ export const SourceTextBrowserTree = memo<SourceTextBrowserTreeProps>(
     if (isLoading) {
       return (
         <LoadingTree
-          renderHeading={renderHeading}
+          hasHeading={hasHeading}
           sourceLanguage={sourceLanguage}
           px={px}
         />
@@ -56,7 +64,7 @@ export const SourceTextBrowserTree = memo<SourceTextBrowserTreeProps>(
     if (isError || !data) {
       return (
         <TreeException
-          renderHeading={renderHeading}
+          hasHeading={hasHeading}
           sourceLanguage={sourceLanguage}
           px={px}
           message={error ? error.message : t("prompts.noResults")}
@@ -66,10 +74,7 @@ export const SourceTextBrowserTree = memo<SourceTextBrowserTreeProps>(
 
     return (
       <>
-        <TreeHeading
-          isRendered={renderHeading}
-          sourceLanguage={sourceLanguage}
-        />
+        <TreeHeading isRendered={hasHeading} sourceLanguage={sourceLanguage} />
 
         {/* Search input */}
         <FormControl
@@ -98,6 +103,7 @@ export const SourceTextBrowserTree = memo<SourceTextBrowserTreeProps>(
             height={parentHeight - inputHeight}
             width={parentWidth}
             searchTerm={searchTerm}
+            {...treeProps}
           />
         </Box>
       </>
