@@ -4,7 +4,7 @@ from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_mid
 from .endpoint_utils import execute_query
 from typing import Any
 from ..utils import (
-    create_cleaned_limit_collection,
+    arrange_filter_data,
     get_page_for_segment,
     get_filename_from_segmentnr,
     get_segment_for_folio
@@ -25,67 +25,7 @@ async def get_parallels_for_middle(input: TextViewMiddleInput) -> Any:
     )
     return calculate_color_maps_middle_view(query_result.result[0])
 
-
-@router.post("/text-parallels/", response_model=TextViewLeftOutput)
-async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any:
-    """
-    Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
-    """
-    filename = input.file_name
-    parallel_ids_type = "parallel_ids"
-    page_number = input.page_number
-    active_segment = input.active_segment    
-    # If a folio parameter is set, we force active_segment to match it 
-    if input.folio:
-        active_segment = get_segment_for_folio(input.folio)
-    
-    if active_segment != "none":
-        page_number = get_page_for_segment(input.active_segment)
-        filename = get_filename_from_segmentnr(input.active_segment)
-
-    limitcollection_include = create_cleaned_limit_collection(
-        input.limits.category_include + input.limits.file_include
-    )
-    limitcollection_exclude = create_cleaned_limit_collection(
-        input.limits.category_exclude + input.limits.file_exclude
-    )
-    number_of_total_pages = execute_query(
-        text_view_queries.QUERY_GET_NUMBER_OF_PAGES,
-        bind_vars={
-            "file_name": filename,
-        },
-    ).result[0]
-    print("TOTAL PAGES", number_of_total_pages)
-    if page_number >= number_of_total_pages:
-        return []
-    current_bind_vars = {
-        "file_name": filename,
-        "page_number": page_number,
-        "folio": input.folio,
-        "score": input.score,
-        "parlength": input.par_length,
-        "multi_lingual": input.multi_lingual,
-        "limitcollection_include": limitcollection_include,
-        "limitcollection_exclude": limitcollection_exclude,
-    }
-
-    text_segments_query_result = execute_query(
-        text_view_queries.QUERY_TEXT_AND_PARALLELS,
-        bind_vars=current_bind_vars,
-    )
-
-    data_with_colormaps = calculate_color_maps_text_view(
-        text_segments_query_result.result[0]
-    )
-    
-    for entry in data_with_colormaps:
-        entry["page"] = page_number
-        entry['total_pages'] = number_of_total_pages
-    return data_with_colormaps
-
-
-
-@router.post("/text-parallels-v2/", response_model=TextViewLeftOutputV2)
+@router.post("/text-parallels/", response_model=TextViewLeftOutputV2)
 async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any:
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
@@ -97,13 +37,8 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     if input.active_segment != "none":
         page_number = get_page_for_segment(input.active_segment)
         filename = get_filename_from_segmentnr(input.active_segment)
+    filters_include, filters_exclude = arrange_filter_data(input.filters)
 
-    limitcollection_include = create_cleaned_limit_collection(
-        input.limits.category_include + input.limits.file_include
-    )
-    limitcollection_exclude = create_cleaned_limit_collection(
-        input.limits.category_exclude + input.limits.file_exclude
-    )
     number_of_total_pages = execute_query(
         text_view_queries.QUERY_GET_NUMBER_OF_PAGES,
         bind_vars={
@@ -123,8 +58,12 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
         "score": input.score,
         "parlength": input.par_length,
         "multi_lingual": input.multi_lingual,
-        "limitcollection_include": limitcollection_include,
-        "limitcollection_exclude": limitcollection_exclude,
+        "filter_include_files": filters_include["files"],
+        "filter_include_categories": filters_include["categories"],
+        "filter_include_collections": filters_include["collections"],
+        "filter_exclude_files": filters_exclude["files"],
+        "filter_exclude_categories": filters_exclude["categories"],
+        "filter_exclude_collections": filters_exclude["collections"],
     }
 
     text_segments_query_result = execute_query(

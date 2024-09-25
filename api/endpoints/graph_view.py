@@ -2,8 +2,7 @@ from fastapi import APIRouter, Query
 from .endpoint_utils import execute_query
 from ..queries import graph_view_queries, menu_queries, utils_queries
 from ..utils import (
-    get_language_from_file_name,
-    create_cleaned_limit_collection,
+    get_language_from_filename,
     get_cat_from_segmentnr,
 )
 import re
@@ -78,8 +77,8 @@ async def get_graph_for_file(input: GraphInput) -> Any:
             etc.
     ```
     """
-
-    target_collection = create_cleaned_limit_collection(input.target_collection)
+    # todo sep/25: Here we should get explitiely the names of the target collections from the frontend, there should be no need to call any additional function
+    #target_collection = create_cleaned_limit_collection(input.target_collection)
 
     query_graph_result = execute_query(
         graph_view_queries.QUERY_GRAPH_VIEW,
@@ -122,7 +121,7 @@ async def get_graph_for_file(input: GraphInput) -> Any:
         menu_queries.QUERY_COLLECTION_NAMES,
         bind_vars={
             "collections": collection_keys,
-            "language": get_language_from_file_name(input.file_name),
+            "language": get_language_from_filename(input.file_name),
         },
     )
     collections_with_full_name = {}

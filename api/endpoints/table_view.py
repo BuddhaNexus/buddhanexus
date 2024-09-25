@@ -1,79 +1,94 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query, HTTPException
+from ..db_connection import get_db
 from ..colormaps import calculate_color_maps_table_view
 from ..utils import (
-    create_cleaned_limit_collection,
-    get_sort_key,
-    get_language_from_file_name,
+    get_language_from_filename, 
+    arrange_filter_data,
+    get_sort_key, 
 )
-from typing import Any
+from .numbers_view import create_numbers_view_data
 from .endpoint_utils import execute_query
 from ..queries import table_view_queries, menu_queries
 from ..table_download import run_table_download, run_numbers_download
 from .models.general_models import GeneralInput
-from .models.table_view_models import *
-from .numbers_view import create_numbers_view_data
+from .models.table_view_models import TableDownloadInput
+from typing import List
 
 router = APIRouter()
 
+def collect_segment_results(segments) -> List:
+    """
+    Query results are analyzed based on what collection they are part of and put in the
+    relevant category thereof. Returns the results and the keys to the collections.
+    """
+    collection_keys = []
+    segments_result = []
+    for segment in segments:
+        if "parallels" not in segment or segment["parallels"] is None:
+            continue
+        for parallel in segment["parallels"]:
+            for seg_nr in parallel:
+                collection_key = re.search(COLLECTION_PATTERN, seg_nr)
+                if collection_key and collection_key.group() not in collection_keys:
+                    collection_keys.append(collection_key.group())
+        segments_result.append(segment)
 
-@router.post("/table/", response_model=TableViewOutput)
-async def get_table_view(input: GeneralInput) -> Any:
+    return segments_result, collection_keys
+
+
+@router.post("/table")
+async def get_table_view(input: GeneralInput
+):
     """
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
     """
-    limitcollection_include = create_cleaned_limit_collection(
-        input.limits.category_include + input.limits.file_include
-    )
-    limitcollection_exclude = create_cleaned_limit_collection(
-        input.limits.category_exclude + input.limits.file_exclude
-    )
-
-    sortkey = get_sort_key(input.sort_method)
-    query_result = execute_query(
-        table_view_queries.QUERY_TABLE_VIEW,
-        bind_vars={
-            "file_name": input.file_name,
-            "score": input.score,
-            "parlength": input.par_length,
-            "sortkey": sortkey,
-            "limitcollection_include": limitcollection_include,
-            "limitcollection_exclude": limitcollection_exclude,
-            "page": input.page,
-            "folio": input.folio,
-        },
-    )
+    filter_include, filter_exclude = arrange_filter_data(input.filters)
+    query_result = execute_query(table_view_queries.QUERY_TABLE_VIEW,                            
+            bind_vars={
+                "filename": input.file_name,
+                "score": input.score,
+                "parlength": input.par_length,
+                "sortkey": input.get_sort_key(input.sort_method),
+                "filter_include_files": filter_include["files"],
+                "filter_exclude_files": filter_exclude["files"],
+                "filter_include_categories": filter_include["categories"],
+                "filter_exclude_categories": filter_exclude["categories"],
+                "filter_include_collections": filter_include["collections"],
+                "filter_exclude_collections": filter_exclude["collections"],
+                "page": input.page,
+                "folio": input.folio,
+            }
+        )
     return calculate_color_maps_table_view(query_result.result)
 
-
-@router.post("/download/", response_model=TableDownloadOutput)
-async def get_table_download(input: TableDownloadInput) -> Any:
+@router.post("/download")
+async def get_table_download(input: TableDownloadInput):
     """
     Endpoint for the download table. Accepts filters.
     :return: List of segments and parallels for the downloaded table view.
     """
-    language = get_language_from_file_name(input.file_name)
-    limitcollection_include = create_cleaned_limit_collection(
-        input.limits.category_include + input.limits.file_include
-    )
-    limitcollection_exclude = create_cleaned_limit_collection(
-        input.limits.category_exclude + input.limits.file_exclude
-    )
+    filter_include, filter_exclude = arrange_filter_data(input.filters)
+    language = get_language_from_filename(input.file_name)
 
-    if input.download_data == "table":
-        query_result = execute_query(
-            table_view_queries.QUERY_TABLE_DOWNLOAD,
+    query_result = execute_query(table_view_queries.QUERY_TABLE_DOWNLOAD,                           
             bind_vars={
-                "file_name": input.file_name,
+                "filename": input.file_name,
                 "score": input.score,
                 "parlength": input.par_length,
-                "sortkey": get_sort_key(input.sort_method),
-                "limitcollection_include": limitcollection_include,
-                "limitcollection_exclude": limitcollection_exclude,
+                "sortkey": input.get_sort_key(input.sort_method),
+                "filter_include_files": filter_include["files"],
+                "filter_exclude_files": filter_exclude["files"],
+                "filter_include_categories": filter_include["categories"],
+                "filter_exclude_categories": filter_exclude["categories"],
+                "filter_include_collections": filter_include["collections"],
+                "filter_exclude_collections": filter_exclude["collections"],
                 "folio": input.folio,
-            },
+            }
         )
+    
 
+    if input.download_data == "table":
         return run_table_download(
             query_result,
             [
@@ -81,41 +96,35 @@ async def get_table_download(input: TableDownloadInput) -> Any:
                 input.score,
                 input.par_length,
                 input.sort_method,
-                input.limits,
+                [],
                 input.folio,
                 language,
             ],
+        )        
+    
+    segment_collection_results = collect_segment_results(
+        create_numbers_view_data(
+            query_result.result, get_folio_regex(language, input.file_name, input.folio)
         )
+    )
 
-    else:
-        query_result = execute_query(
-            table_view_queries.QUERY_NUMBERS_DOWNLOAD,
-            bind_vars={
-                "file_name": input.file_name,
-                "score": input.score,
-                "parlength": input.par_length,
-                "limitcollection_include": limitcollection_include,
-                "limitcollection_exclude": limitcollection_exclude,
-            },
-        )
-
-        categories_result = execute_query(
-            menu_queries.QUERY_CATEGORIES_PER_LANGUAGE,
-            bind_vars={"language": language},
-        )
-
-        return run_numbers_download(
-            categories_result.result,
-            query_result.result[0],
-            [
-                input.file_name,
-                input.score,
-                input.par_length,
-                input.sort_method,
-                input.limits,
-                "All",
-                language,
-            ],
-        )
-
-    return
+    collections_result = execute_query(menu_queries.QUERY_COLLECTION_NAMES,
+        bind_vars={
+            "collections": segment_collection_results[1],
+            "language": language,
+        }
+    ).result[0]
+    
+    return run_numbers_download(
+        collections_result,
+        segment_collection_results[0],
+        [
+            input.file_name,
+            input.score,
+            input.par_length,
+            input.sort_method,
+            input.limit_collection,
+            input.folio,
+            language,
+        ],
+    )

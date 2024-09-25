@@ -1,13 +1,13 @@
 from pydantic import BaseModel
 from typing import List, Optional
-from .general_models import Limits
+from .general_models import Filters
 
 
 class CountMatchesInput(BaseModel):
     file_name: str = ""
     score = 0
     par_length = 0
-    limits: Optional[Limits]
+    filters: Optional[Filters]
 
 
 class CountMatchesOutput(BaseModel):

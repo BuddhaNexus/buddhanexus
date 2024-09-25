@@ -61,7 +61,7 @@ def get_sort_key(sort_method) -> str:
     return sort_key
 
 
-def get_language_from_file_name(file_name) -> str:
+def get_language_from_filename(file_name) -> str:
     """
     Given the file ID, returns its language.
     :param file_name: The key of the file
@@ -181,3 +181,30 @@ def get_cat_from_segmentnr(segmentnr):
     replaced by a query function.
     """
     return segmentnr.split("_")[1]
+
+def arrange_filter_data(filter_items):
+    include = {
+        "files": [],
+        "categories": [],
+        "collections": [],
+    }
+    exclude = {
+        "files": [],
+        "categories": [],
+        "collections": [],
+    }
+    for item in filter_items['include']:
+        if item['type'] == 'file':
+            include['files'].append(item['value'])
+        if item['type'] == 'category':
+            include['categories'].append(item['value'])
+        if item['type'] == 'collection':
+            include['collections'].append(item['value'])
+    for item in filter_items['exclude']:
+        if item['type'] == 'file':
+            exclude['files'].append(item['value'])
+        if item['type'] == 'category':
+            exclude['categories'].append(item['value'])
+        if item['type'] == 'collection':
+            exclude['collections'].append(item['value'])
+    return include, exclude

@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 from typing import Any
 from ..db_connection import get_db
-from ..utils import create_cleaned_limit_collection
 from ..search import search_utils
 from ..queries import search_queries
 from .models.search_models import SearchOutput, SearchInput
@@ -17,13 +16,6 @@ async def get_search_results(input: SearchInput) -> Any:
     Returns search results for given search string.
     :return: List of search results
     """
-    limitcollection_include = create_cleaned_limit_collection(
-        input.limits.category_include + input.limits.file_include
-    )
-    limit_collection_exclude = create_cleaned_limit_collection(
-        input.limits.category_exclude + input.limits.file_exclude
-    )
-    print("LANGUAGE", input.language)
     result = []
     search_string = input.search_string.lower()
     search_strings = search_utils.preprocess_search_string(

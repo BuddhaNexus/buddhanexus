@@ -41,8 +41,16 @@ FOR file IN files
                             FILTER segmentnr IN p.root_segnr
                             FILTER p.score * 100 >= @score
                             FILTER p.par_length >= @parlength
-                            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
-                            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+
+                            FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
+                            FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
+
+                            FILTER LENGTH(@filter_include_categories) == 0 OR p.par_category IN @filter_include_categories
+                            FILTER LENGTH(@filter_exclude_categories) == 0 OR p.par_category NOT IN @filter_exclude_categories
+
+                            FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
+                            FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
+                            
                             FILTER POSITION(@multi_lingual, p.tgt_lang)
                             RETURN p._key
                     )
@@ -67,8 +75,17 @@ LET parallels = (
             FILTER p._key == parallel_id
             FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+            
+            FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
+            FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
+
+            FILTER LENGTH(@filter_include_categories) == 0 OR p.par_category IN @filter_include_categories
+            FILTER LENGTH(@filter_exclude_categories) == 0 OR p.par_category NOT IN @filter_exclude_categories
+
+            FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
+            FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
+
+
             FILTER POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
             RETURN {

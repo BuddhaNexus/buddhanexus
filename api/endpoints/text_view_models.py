@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Union, Optional
-from .general_models import Filters, FullText
+from .general_models import segmentnr, FullText
 
 
 class TextParallelsInput(BaseModel):

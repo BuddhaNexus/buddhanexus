@@ -13,7 +13,6 @@ from .endpoints import (
     text_view,
     numbers_view,
     graph_view,
-    visual_view,
     menus,
     utils,
     links,
@@ -29,7 +28,6 @@ APP.add_middleware(
 
 APP.include_router(search.router)
 APP.include_router(graph_view.router)
-APP.include_router(visual_view.router)
 APP.include_router(table_view.router, prefix="/table-view")
 APP.include_router(text_view.router, prefix="/text-view")
 APP.include_router(numbers_view.router, prefix="/numbers-view")

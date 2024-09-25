@@ -29,8 +29,16 @@ RETURN FIRST(
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels
     FILTER p.root_filename == @file_name
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+    
+    FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
+    FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
+            
+    FILTER LENGTH(@filter_include_categories) == 0 OR p.par_category IN @filter_include_categories
+    FILTER LENGTH(@filter_exclude_categories) == 0 OR p.par_category NOT IN @filter_exclude_categories
+
+    FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
+    FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
+
     FILTER p.score * 100 >= @score
     FILTER p.par_length >= @parlength
     LIMIT 15000

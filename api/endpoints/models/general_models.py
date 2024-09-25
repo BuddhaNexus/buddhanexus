@@ -1,23 +1,33 @@
 from pydantic import BaseModel
-from typing import Optional, Union
+from typing import Optional, Union, List
+from enum import Enum
 
-
-class Limits(BaseModel):
+class FilterTypes(str, Enum):
     """
-    Limits for parallels
+    Possible limit types
     """
+    collection = "collection"
+    category = "category"
+    file = "file"
+    
 
-    category_include: list = []
-    category_exclude: list = []
-    file_include: list = []
-    file_exclude: list = []
+class FilterItem(BaseModel):
+    limit_value: str
+    limit_type: FilterTypes
+
+class Filters(BaseModel):
+    """
+    Filters for matches
+    """
+    include: Optional[List[FilterItem]]
+    exclude: Optional[List[FilterItem]]
 
 
 class GeneralInput(BaseModel):
     file_name: str
     score: int = 0
     par_length: int = 0
-    limits: Optional[Limits]
+    filters: Optional[Filters]
     page: int = 0
     sort_method: str = "position"
     folio: str = ""
