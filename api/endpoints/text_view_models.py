@@ -4,7 +4,7 @@ from .general_models import segmentnr, FullText
 
 
 class TextParallelsInput(BaseModel):
-    file_name: str
+    filename: str
     folio: str
     active_segment: str = "none"
     score: int = 0
@@ -59,7 +59,7 @@ class Segment(BaseModel):
     par_offset_beg: Optional[int]
     par_offset_end: Optional[int]
     par_segtext: list = []
-    file_name: str
+    filename: str
     score: int
     length: int
     par_fulltext: Optional[List[FullText]]

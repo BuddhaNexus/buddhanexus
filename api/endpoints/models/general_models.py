@@ -28,7 +28,7 @@ class Filters(BaseModel):
 
 
 class GeneralInput(BaseModel):
-    file_name: str
+    filename: str
     score: int = 0
     par_length: int = 0
     filters: Optional[Filters]

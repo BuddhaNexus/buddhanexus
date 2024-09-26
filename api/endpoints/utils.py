@@ -19,7 +19,7 @@ async def get_counts_for_file(input: CountMatchesInput) -> Any:
     query_graph_result = execute_query(
         utils_queries.QUERY_COUNT_MATCHES,
         bind_vars={
-            "file_name": input.file_name,
+            "filename": input.filename,
             "score": input.score,
             "parlength": input.par_length,
             "filter_include_files": filter_include["files"],
@@ -35,7 +35,7 @@ async def get_counts_for_file(input: CountMatchesInput) -> Any:
 
 @router.get("/folios/", response_model=FolioOutput)
 async def get_folios_for_file(
-    file_name: str = Query(
+    filename: str = Query(
         ..., description="File name of the text for which folios should be fetched."
     ),
 ) -> Any:
@@ -45,7 +45,7 @@ async def get_folios_for_file(
     """
     query_graph_result = execute_query(
         utils_queries.QUERY_FOLIOS,
-        bind_vars={"file_name": file_name},
+        bind_vars={"filename": filename},
     )
     print(query_graph_result.result)
     folios = query_graph_result.result
@@ -56,10 +56,10 @@ def get_displayname(segmentnr):
     """
     Downloads the displaynames for the worksheet
     """
-    file_name = segmentnr.split(":")[0]
+    filename = segmentnr.split(":")[0]
     query_graph_result = execute_query(
         utils_queries.QUERY_DISPLAYNAME,
-        bind_vars={"filename": file_name},
+        bind_vars={"filename": filename},
     )
     displayname = query_graph_result.result[0]
     return displayname
@@ -79,7 +79,7 @@ async def get_displayname_for_segmentnr(
 
 @router.get("/available-languages/", response_model=LanguageOutput)
 async def get_multilingual(
-    file_name: str = Query(
+    filename: str = Query(
         ...,
         description="File name of the text for which the available languages should be fetched.",
     )
@@ -90,7 +90,7 @@ async def get_multilingual(
     query_result = {"langList": []}
     query_displayname = execute_query(
         utils_queries.QUERY_MULTILINGUAL_LANGS,
-        bind_vars={"file_name": file_name},
+        bind_vars={"filename": filename},
         raw_results=True,
     )
     query_result = {"langList": query_displayname.result[0]}

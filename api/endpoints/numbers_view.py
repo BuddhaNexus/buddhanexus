@@ -61,7 +61,7 @@ async def get_numbers_view(input: GeneralInput) -> Any:
     query_result = execute_query(
         table_view_queries.QUERY_NUMBERS_VIEW,
         bind_vars={
-            "file_name": input.file_name,
+            "filename": input.filename,
             "score": input.score,
             "parlength": input.par_length,
             "filter_include_files": filter_include["files"],
@@ -82,12 +82,12 @@ async def get_numbers_view(input: GeneralInput) -> Any:
 
 @router.get("/categories/", response_model=MenuOutput)
 async def get_categories_for_numbers_view(
-    file_name: str = Query(..., description="Filename to be used")
+    filename: str = Query(..., description="Filename to be used")
 ) -> Any:
     """
     Endpoint that returns list of categories for the given language
     """
-    language = get_language_from_filename(file_name)
+    language = get_language_from_filename(filename)
     query_result = execute_query(
         menu_queries.QUERY_CATEGORIES_PER_LANGUAGE,
         bind_vars={"language": language},

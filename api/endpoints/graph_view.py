@@ -21,7 +21,7 @@ async def get_graph_for_file(input: GraphInput) -> Any:
 
     ```
         {
-          "file_name": "",
+          "filename": "",
           "score": 0,
           "par_length": 0,
           "target_collection": []
@@ -37,7 +37,7 @@ async def get_graph_for_file(input: GraphInput) -> Any:
         "target_collection": ["pli_Suttas-Early-1", "pli_Vinaya"]
     ```
 
-    "score", "par_length" and "file_name" are the same as for the other views.
+    "score", "par_length" and "filename" are the same as for the other views.
 
     Output is f.i.:
 
@@ -84,7 +84,7 @@ async def get_graph_for_file(input: GraphInput) -> Any:
     query_graph_result = execute_query(
         graph_view_queries.QUERY_GRAPH_VIEW,
         bind_vars={
-            "file_name": input.file_name,
+            "filename": input.filename,
             "score": input.score,
             "parlength": input.par_length,
             "targetcollection": target_collection,
@@ -98,13 +98,13 @@ async def get_graph_for_file(input: GraphInput) -> Any:
     # extract a dictionary of collection numbers and number of parallels for each
     for parallel in query_graph_result.result:
         count_this_parallel = parallel["parlength"]
-        target_file_name = re.sub("_[0-9][0-9][0-9]", "", parallel["textname"])
-        if target_file_name in total_histogram_dict:
-            total_histogram_dict[target_file_name] += count_this_parallel
+        target_filename = re.sub("_[0-9][0-9][0-9]", "", parallel["textname"])
+        if target_filename in total_histogram_dict:
+            total_histogram_dict[target_filename] += count_this_parallel
         else:
-            total_histogram_dict[target_file_name] = count_this_parallel
+            total_histogram_dict[target_filename] = count_this_parallel
 
-        collection_key = get_cat_from_segmentnr(target_file_name)
+        collection_key = get_cat_from_segmentnr(target_filename)
 
         if not collection_key:
             continue
@@ -122,7 +122,7 @@ async def get_graph_for_file(input: GraphInput) -> Any:
         menu_queries.QUERY_COLLECTION_NAMES,
         bind_vars={
             "collections": collection_keys,
-            "language": get_language_from_filename(input.file_name),
+            "language": get_language_from_filename(input.filename),
         },
     )
     collections_with_full_name = {}
