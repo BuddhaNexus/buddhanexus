@@ -14,11 +14,6 @@ from dataloader_constants import (
     COLLECTION_PARALLELS_SORTED_BY_FILE,
 )
 from utils import should_download_file
-from api.utils import (
-    get_cat_from_segmentnr,
-    get_filename_from_segmentnr,
-)
-
 
 # allow importing from api directory
 PACKAGE_PARENT = ".."
@@ -26,6 +21,11 @@ SCRIPT_DIR = os.path.dirname(
     os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
+from api.utils import (
+    get_cat_from_segmentnr,
+    get_filename_from_segmentnr,
+)
 
 
 def load_parallels(parallels, db: StandardDatabase) -> None:

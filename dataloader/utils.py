@@ -24,13 +24,6 @@ from dataloader_constants import (
     ARANGO_HOST,
 )
 
-PACKAGE_PARENT = ".."
-SCRIPT_DIR = os.path.dirname(
-    os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
-)
-sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
-
-
 def get_arango_client() -> ArangoClient:
     """Get Arango Client instance"""
     return ArangoClient(hosts=ARANGO_HOST)
@@ -86,7 +79,8 @@ def should_download_file(file_name: str) -> bool:
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    return True
+    if "dn" in file_name:
+        return True
 
 
 def check_if_collection_exists(db, collection_name):

@@ -4,6 +4,7 @@ This code loads the segments for the files into the database.
 
 from collections import defaultdict
 import os
+import sys
 import natsort
 import multiprocessing
 import time
@@ -33,6 +34,14 @@ from utils import (
     should_download_file,
     sliding_window,
 )
+
+# allow importing from api directory
+PACKAGE_PARENT = ".."
+SCRIPT_DIR = os.path.dirname(
+    os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
+)
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
 from api.utils import (
     get_cat_from_segmentnr,
     get_language_from_file_name,
