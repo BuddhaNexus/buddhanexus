@@ -38,7 +38,7 @@ from utils import (
 )
 from api.utils import (
     get_cat_from_segmentnr,
-    get_language_from_file_name,
+    get_language_from_filename,
     get_filename_from_segmentnr,
 )
 
@@ -209,7 +209,7 @@ class LoadSegmentsBase:
 
         for filename in tqdm(segments_by_file):
             segments_sorted = natsort.natsorted(segments_by_file[filename])
-            lang = get_language_from_file_name(filename)
+            lang = get_language_from_filename(filename)
             # in order to save some grief on the frontend, we paginate the segments arbitrarily
             page_size = 400
             segments_paginated = [

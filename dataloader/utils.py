@@ -33,7 +33,7 @@ SCRIPT_DIR = os.path.dirname(
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
-from api.utils import get_language_from_file_name, get_filename_from_segmentnr
+from api.utils import get_language_from_filename, get_filename_from_segmentnr
 
 
 def get_arango_client() -> ArangoClient:
@@ -103,7 +103,7 @@ def should_download_file(file_name: str) -> bool:
     """
     # if "n2" in file_name:
     # if "T06D4032" in file_name:
-    if "T06" in file_name:
+    if "dn" in file_name:
         return True
 
 
