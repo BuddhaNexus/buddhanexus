@@ -15,7 +15,6 @@ SCRIPT_DIR = os.path.dirname(
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
-
 from api.utils import (
     get_language_from_filename,
     get_filename_from_segmentnr,
