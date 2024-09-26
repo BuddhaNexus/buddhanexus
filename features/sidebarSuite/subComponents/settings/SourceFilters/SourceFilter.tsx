@@ -1,28 +1,86 @@
 import React from "react";
-import useDimensions from "react-cool-dimensions";
-import { useTranslation } from "next-i18next";
-import { SourceTextTree } from "@components/db/SourceTextTree";
+import { useRouter } from "next/router";
 import { TreeViewSelectProps } from "@components/db/SourceTextTree/TreeBaseComponents";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { Box, Chip, FormLabel, IconButton, Popper } from "@mui/material";
-import { type SourceFilter as SourceFilterType } from "features/sidebarSuite/config/types";
+import { SourceTextTreeNode } from "@components/db/SourceTextTree/types";
+import { SourceFilter as SourceFilterType } from "features/sidebarSuite/config/types";
 import { useAtom } from "jotai";
+
+import SourceFilterInput from "./SourceFilterInput";
+import SourceFilterLabel from "./SourceFilterLabel";
+import SourceFilterTreePopper from "./SourceFilterTreePopper";
 
 type SourceFilterSelectorProps = {
   filterName: SourceFilterType;
 } & TreeViewSelectProps;
 
+const CHIP_GAP = 6;
+const MAX_CHIP_ROW_WIDTH = 253;
+
 const SourceFilter = ({
   selectedItemsAtom,
   filterName,
 }: SourceFilterSelectorProps) => {
-  const { t } = useTranslation("settings");
-
   const [selectedSourceFilter, setSelectedSourceFilter] =
     useAtom(selectedItemsAtom);
 
-  const { observe, height, width } = useDimensions();
+  /**
+   * Selection box setup
+   */
+  const [isExpanded, setIsExpanded] = React.useState(false);
+  const [showButton, setShowButton] = React.useState(false);
+  const selectionBoxRef = React.useRef<HTMLElement>(null);
 
+  const toggleExpand = () => {
+    setIsExpanded((prevIsExpanded) => !prevIsExpanded);
+  };
+
+  const calculateChipVisibility = React.useCallback(() => {
+    const selectionBox = selectionBoxRef.current;
+    if (selectionBox) {
+      let rowWidth = 0;
+      let rowCount = 1;
+
+      Array.from(selectionBox.children).forEach((child) => {
+        if (child.nodeType === 1 && child instanceof HTMLElement) {
+          const width = child.offsetWidth;
+          rowWidth += width + CHIP_GAP;
+
+          if (rowWidth > MAX_CHIP_ROW_WIDTH) {
+            rowWidth = width;
+            rowCount += 1;
+          }
+        }
+      });
+
+      setShowButton(rowCount > 3);
+    }
+  }, [selectionBoxRef]);
+
+  React.useEffect(() => {
+    const observer = new ResizeObserver(calculateChipVisibility);
+    if (selectionBoxRef.current) {
+      observer.observe(selectionBoxRef.current);
+    }
+    return () => {
+      if (selectionBoxRef.current) {
+        observer.unobserve(selectionBoxRef.current);
+      }
+    };
+  }, [calculateChipVisibility]);
+
+  React.useEffect(() => {
+    calculateChipVisibility();
+  }, [selectedSourceFilter, calculateChipVisibility]);
+
+  const handleDelete = (item: SourceTextTreeNode) => {
+    setSelectedSourceFilter(
+      selectedSourceFilter.filter((excludeItem) => excludeItem.id !== item.id),
+    );
+  };
+
+  /**
+   * Tree popper setup
+   */
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -31,84 +89,54 @@ const SourceFilter = ({
 
   const open = Boolean(anchorEl);
   const popperId = open ? `${filterName}-source-filter-popper` : undefined;
+  const handleClosePopper = () => {
+    setAnchorEl(null);
+  };
+
+  const onClear = () => setSelectedSourceFilter([]);
+
+  /**
+   * Route change handling
+   */
+  const router = useRouter();
+
+  React.useEffect(() => {
+    const handleRouteChange = () => {
+      setSelectedSourceFilter([]);
+    };
+
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [router.events, setSelectedSourceFilter]);
 
   return (
-    <div>
-      <FormLabel>{t(`filtersLabels.source_${filterName}`)}</FormLabel>
-
-      {/* simulates "Autocomplete" style input box */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 2,
-          borderRadius: 1,
-          border: "1px solid",
-          borderColor: "grey.400",
-          minHeight: "4rem",
-          p: 1,
-        }}
-      >
-        <Box display="flex" flexWrap="wrap" gap={1}>
-          {selectedSourceFilter.map((item) => (
-            <Chip
-              key={item.id}
-              label={item.id}
-              onDelete={() => {
-                setSelectedSourceFilter(
-                  selectedSourceFilter.filter(
-                    (excludeItem) => excludeItem.id !== item.id,
-                  ),
-                );
-              }}
-            />
-          ))}
-        </Box>
-
-        <IconButton
-          aria-describedby={popperId}
-          type="button"
-          onClick={handleClick}
-        >
-          <ArrowDropDownIcon />
-        </IconButton>
-      </Box>
-
-      <Popper
-        id={popperId}
+    <div key={filterName}>
+      <SourceFilterLabel
+        filterName={filterName}
+        selectedSourceFilter={selectedSourceFilter}
+        onClear={onClear}
+      />
+      <SourceFilterInput
+        isExpanded={isExpanded}
+        showButton={showButton}
+        selectedSourceFilter={selectedSourceFilter}
+        selectionBoxRef={selectionBoxRef}
+        popperId={popperId}
+        handleClick={handleClick}
+        handleDelete={handleDelete}
+        toggleExpand={toggleExpand}
+        open={open}
+      />
+      <SourceFilterTreePopper
+        popperId={popperId}
         open={open}
         anchorEl={anchorEl}
-        sx={{
-          zIndex: 1200,
-          maxHeight: "424px",
-          width: "100%",
-          maxWidth: "340px",
-          overflow: "clip",
-          boxShadow: 3,
-          borderRadius: 1,
-          bgcolor: "background.paper",
-        }}
-        placement="top"
-      >
-        <Box
-          ref={observe}
-          sx={{
-            p: 1,
-            minHeight: 400,
-            width: "100%",
-          }}
-        >
-          <SourceTextTree
-            type="select"
-            selectedItemsAtom={selectedItemsAtom}
-            parentHeight={height}
-            parentWidth={width}
-            hasHeading={false}
-            px={0}
-          />
-        </Box>
-      </Popper>
+        handleClose={handleClosePopper}
+        selectedItemsAtom={selectedItemsAtom}
+      />
     </div>
   );
 };

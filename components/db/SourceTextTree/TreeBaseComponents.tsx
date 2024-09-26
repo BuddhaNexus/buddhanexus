@@ -86,6 +86,7 @@ const TreeViewSelectorContent = memo(function TreeViewSelectorContent({
       padding={12}
       height={height}
       width={width}
+      indent={16}
     >
       {(props) => (
         <SelectorNode {...props} selectedItemsAtom={selectedItemsAtom} />

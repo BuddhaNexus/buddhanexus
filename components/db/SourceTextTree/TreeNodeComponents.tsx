@@ -1,3 +1,4 @@
+import React from "react";
 import type { NodeApi, NodeRendererProps } from "react-arborist";
 import { Link } from "@components/common/Link";
 import { getTextPath } from "@components/common/utils";
@@ -5,33 +6,86 @@ import type { SourceTextTreeNode } from "@components/db/SourceTextTree/types";
 import { SourceTextTreeNodeDataType } from "@components/db/SourceTextTree/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import ShortTextIcon from "@mui/icons-material/ShortText";
-import { Box, Checkbox, Chip, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  Chip,
+  SvgIconProps,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { currentViewAtom } from "features/atoms";
 import { PrimitiveAtom, useAtom, useAtomValue } from "jotai";
 
 import styles from "./TreeNodeComponents.module.css";
 
 const CHARACTER_WIDTH = 8;
+const CHARACTER_WIDTH_SMALL = 6.5;
 const INDENTATION_WIDTH = 90;
+const DEFAULT_NODE_WIDTH = 300;
 
-function FolderArrow({ node }: { node: NodeApi<SourceTextTreeNode> }) {
-  if (node.isInternal) {
-    return node.isOpen ? (
-      <ExpandMoreIcon sx={{ mr: 1 }} />
-    ) : (
-      <ChevronRightIcon sx={{ mr: 1 }} />
-    );
+const nodeBoxStyles = {
+  flex: 1,
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  fontSize: 16,
+  ":hover": {
+    backgroundColor: "grey.200",
+    fontWeight: 500,
+  },
+};
+
+const labelBaseStyles = {
+  overflow: "clip",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  fontSize: "inherit",
+};
+
+function ExpanderArrow({
+  node,
+  mr = 1,
+}: {
+  node: NodeApi<SourceTextTreeNode>;
+  mr?: number;
+}) {
+  if (!node.isInternal) return null;
+
+  return (
+    <ChevronRightIcon
+      sx={{
+        mr,
+        transform: node.isOpen ? "rotate(90deg)" : undefined,
+        transition: "transform 200ms",
+      }}
+    />
+  );
+}
+
+function SourceTypeIcon({
+  dataType,
+  ...iconProps
+}: SvgIconProps & {
+  dataType: SourceTextTreeNodeDataType;
+}) {
+  if (dataType === SourceTextTreeNodeDataType.Collection) {
+    return <LibraryBooksIcon {...iconProps} />;
   }
-  return null;
+
+  if (dataType === SourceTextTreeNodeDataType.Category) {
+    return <MenuBookIcon {...iconProps} />;
+  }
+
+  return <ShortTextIcon {...iconProps} />;
 }
 
 function TextItemLink({ node }: { node: NodeApi<SourceTextTreeNode> }) {
-  const { name, fileName, id } = node.data;
-  let elementWidth = 300;
+  const { name, fileName, id, dataType } = node.data;
+  let elementWidth = DEFAULT_NODE_WIDTH;
   const nameWidth = name.length * CHARACTER_WIDTH;
 
   if (typeof node.tree.props.width === "number") {
@@ -65,7 +119,7 @@ function TextItemLink({ node }: { node: NodeApi<SourceTextTreeNode> }) {
                 gap: 0.5,
               }}
             >
-              <ShortTextIcon fontSize="inherit" />
+              <SourceTypeIcon dataType={dataType} />
               {id}
             </Box>
           }
@@ -85,11 +139,7 @@ function TextItemLink({ node }: { node: NodeApi<SourceTextTreeNode> }) {
         >
           <Typography
             className={styles.textName}
-            overflow="clip"
-            textOverflow="ellipsis"
-            fontSize="inherit"
-            whiteSpace="nowrap"
-            sx={{ px: 1 }}
+            sx={{ ...labelBaseStyles, px: 1 }}
           >
             {name}
           </Typography>
@@ -105,13 +155,13 @@ function ParentItemExpander({ node }: { node: NodeApi<SourceTextTreeNode> }) {
   return (
     <>
       {dataType === SourceTextTreeNodeDataType.Collection && (
-        <LibraryBooksIcon fontSize="inherit" />
+        <SourceTypeIcon dataType={dataType} fontSize="inherit" />
       )}
       {dataType === SourceTextTreeNodeDataType.Category && (
         <Chip
           label={
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-              <MenuBookIcon fontSize="inherit" /> {id}
+              <SourceTypeIcon dataType={dataType} fontSize="inherit" /> {id}
             </Box>
           }
           size="small"
@@ -143,20 +193,10 @@ export function BrowserNode({
     <Box
       ref={dragHandle}
       style={style}
-      sx={{
-        flex: 1,
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        fontSize: 16,
-        ":hover": {
-          backgroundColor: "grey.200",
-          fontWeight: 500,
-        },
-      }}
+      sx={nodeBoxStyles}
       onClick={handleClick}
     >
-      <FolderArrow node={node} />
+      <ExpanderArrow node={node} />
 
       {dataType === SourceTextTreeNodeDataType.Text ? (
         <TextItemLink node={node} />
@@ -176,49 +216,55 @@ export function SelectorNode({
   style,
   selectedItemsAtom,
 }: SelectorNodeProps) {
-  const { name, id } = node.data;
+  const { name, id, dataType } = node.data;
 
   const [selectedSourceFilter, setSelectedSourceFilter] =
     useAtom(selectedItemsAtom);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (node.isLeaf) return;
+  let elementWidth = DEFAULT_NODE_WIDTH;
+  const nameWidth = name.length * CHARACTER_WIDTH_SMALL;
 
-    const isCheckboxClick =
-      event.nativeEvent.target instanceof HTMLInputElement;
+  if (typeof node.tree.props.width === "number") {
+    elementWidth = node.tree.props.width - INDENTATION_WIDTH;
+  }
 
-    if (isCheckboxClick) return;
+  const handleClick = React.useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      if (node.isLeaf) return;
 
-    node.toggle();
-  };
+      const isCheckboxClick =
+        event.nativeEvent.target instanceof HTMLInputElement;
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      setSelectedSourceFilter([...selectedSourceFilter, node.data]);
-    } else {
-      setSelectedSourceFilter(
-        selectedSourceFilter.filter((excludeItem) => excludeItem.id !== id),
-      );
-    }
-  };
+      if (isCheckboxClick) return;
+
+      node.toggle();
+    },
+    [node],
+  );
+
+  const handleCheckboxChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        setSelectedSourceFilter([...selectedSourceFilter, node.data]);
+      } else {
+        setSelectedSourceFilter(
+          selectedSourceFilter.filter((excludeItem) => excludeItem.id !== id),
+        );
+      }
+    },
+    [node, selectedSourceFilter],
+  );
 
   return (
     <Box
       style={style}
       sx={{
-        flex: 1,
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        fontSize: 16,
-        ":hover": {
-          backgroundColor: "grey.200",
-          fontWeight: 500,
-        },
+        ...nodeBoxStyles,
+        ml: dataType === SourceTextTreeNodeDataType.Text ? 1.1 : undefined,
       }}
       onClick={handleClick}
     >
-      <FolderArrow node={node} />
+      <ExpanderArrow node={node} mr={0} />
 
       <Checkbox
         size="small"
@@ -226,27 +272,52 @@ export function SelectorNode({
         onChange={handleCheckboxChange}
       />
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 0.5,
+          width: "100%",
+        }}
+      >
         <Tooltip
           title={<Typography>{name}</Typography>}
           PopperProps={{ disablePortal: true }}
-          // disableHoverListener={nameWidth < elementWidth}
+          disableHoverListener={nameWidth < elementWidth}
           enterDelay={300}
         >
-          <Typography
+          <Box
             className={styles.textName}
-            overflow="clip"
-            textOverflow="ellipsis"
-            variant="body3"
-            whiteSpace="nowrap"
-            lineHeight={1.1}
-            sx={{ px: 0.5, display: "flex", flexDirection: "column" }}
+            sx={{
+              px: 0.5,
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
-            <Typography variant="body2" component="span">
-              {id}:
-            </Typography>{" "}
-            {name}
-          </Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <SourceTypeIcon
+                dataType={dataType}
+                sx={{ mr: 0.5, fontSize: "0.85rem", color: "grey.500" }}
+              />
+              <Typography
+                variant="body2"
+                component="span"
+                sx={{ display: "block", mt: 0.25 }}
+              >
+                {id}
+              </Typography>
+            </Box>
+            <Typography
+              variant="body3"
+              lineHeight={1.1}
+              sx={{
+                maxWidth: elementWidth,
+                ...labelBaseStyles,
+              }}
+            >
+              {name}
+            </Typography>
+          </Box>
         </Tooltip>
       </Box>
     </Box>

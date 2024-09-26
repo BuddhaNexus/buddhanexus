@@ -50,7 +50,9 @@
     "genericErrorTitle": "Something went wrong.",
     "genericErrorDescription": "Please contact us if the issue persists.",
     "loading": "Loading...",
-    "noResults": "No results found."
+    "noResults": "No results found.",
+    "showLess": "Show Less",
+    "showAll": "Show All ({{count}})"
   },
   "search": {
     "pageTitle": "Search Results",

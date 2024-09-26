@@ -50,7 +50,9 @@
     "genericErrorTitle": "Etwas ist schiefgelaufen.",
     "genericErrorDescription": "Bitte kontaktieren Sie uns, wenn das Problem weiterhin besteht.",
     "loading": "Wird geladen...",
-    "noResults": "Keine Ergebnisse gefunden."
+    "noResults": "Keine Ergebnisse gefunden.",
+    "showLess": "Weniger anzeigen",
+    "showAll": "Alle anzeigen ({{count}})"
   },
   "search": {
     "pageTitle": "Suchergebnisse",
