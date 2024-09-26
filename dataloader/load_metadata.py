@@ -1,13 +1,23 @@
 """
 This file contains the code to load the complete metadata from the metadata files into the database.
 """
-
+import os
+import sys
 import pandas as pd
 from typing import List
 from arango.database import StandardDatabase
 from dataloader_constants import COLLECTION_FILES, COLLECTION_CATEGORY_NAMES
-from utils import (
-    get_language_from_file_name,
+
+# allow importing from api directory
+PACKAGE_PARENT = ".."
+SCRIPT_DIR = os.path.dirname(
+    os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
+)
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
+
+from api.utils import (
+    get_language_from_filename,
     get_filename_from_segmentnr,
 )
 
@@ -33,7 +43,7 @@ def load_metadata_from_files(paths: List[str], db: StandardDatabase) -> None:
             df = df[
                 ["filename", "displayName", "category", "collection", "textname"]
             ]  # metadata might contain more data; we are only interested in these columns
-            df["lang"] = df["filename"].apply(get_language_from_file_name)
+            df["lang"] = df["filename"].apply(get_language_from_filename)
             df["filenr"] = df.index
             df["segment_keys"] = df["filenr"].apply(lambda x: [])
             # df['_id'] = df['filename']
@@ -63,7 +73,7 @@ def load_category_names(paths: List[str], db: StandardDatabase) -> None:
     for path in paths:
         try:
             df = pd.read_json(path)
-            df["lang"] = get_language_from_file_name(path)
+            df["lang"] = get_language_from_filename(path)
             collection.import_bulk(df.to_dict("records"))
             print(f"Loaded {len(df)} category names from {path}.")
 

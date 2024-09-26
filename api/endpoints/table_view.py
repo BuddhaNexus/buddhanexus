@@ -47,7 +47,7 @@ async def get_table_view(input: GeneralInput):
     query_result = execute_query(
         table_view_queries.QUERY_TABLE_VIEW,
         bind_vars={
-            "filename": input.file_name,
+            "filename": input.filename,
             "score": input.score,
             "parlength": input.par_length,
             "sortkey": input.get_sort_key(input.sort_method),
@@ -71,12 +71,12 @@ async def get_table_download(input: TableDownloadInput):
     :return: List of segments and parallels for the downloaded table view.
     """
     filter_include, filter_exclude = arrange_filter_data(input.filters)
-    language = get_language_from_filename(input.file_name)
+    language = get_language_from_filename(input.filename)
 
     query_result = execute_query(
         table_view_queries.QUERY_TABLE_DOWNLOAD,
         bind_vars={
-            "filename": input.file_name,
+            "filename": input.filename,
             "score": input.score,
             "parlength": input.par_length,
             "sortkey": input.get_sort_key(input.sort_method),
@@ -94,7 +94,7 @@ async def get_table_download(input: TableDownloadInput):
         return run_table_download(
             query_result,
             [
-                input.file_name,
+                input.filename,
                 input.score,
                 input.par_length,
                 input.sort_method,
@@ -106,7 +106,7 @@ async def get_table_download(input: TableDownloadInput):
 
     segment_collection_results = collect_segment_results(
         create_numbers_view_data(
-            query_result.result, get_folio_regex(language, input.file_name, input.folio)
+            query_result.result, get_folio_regex(language, input.filename, input.folio)
         )
     )
 
@@ -122,7 +122,7 @@ async def get_table_download(input: TableDownloadInput):
         collections_result,
         segment_collection_results[0],
         [
-            input.file_name,
+            input.filename,
             input.score,
             input.par_length,
             input.sort_method,

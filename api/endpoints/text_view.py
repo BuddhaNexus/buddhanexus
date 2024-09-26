@@ -31,7 +31,7 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
     """
-    filename = input.file_name
+    filename = input.filename
     parallel_ids_type = "parallel_ids"
     page_number = input.page_number
     print("ALL INPUTS", input)
@@ -43,14 +43,14 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     number_of_total_pages = execute_query(
         text_view_queries.QUERY_GET_NUMBER_OF_PAGES,
         bind_vars={
-            "file_name": filename,
+            "filename": filename,
         },
     ).result[0]
     print("TOTAL PAGES", number_of_total_pages)
     if page_number >= number_of_total_pages:
         return {"page": page_number, "total_pages": number_of_total_pages, "items": []}
     current_bind_vars = {
-        "file_name": filename,
+        "filename": filename,
         "page_number": page_number,
         "score": input.score,
         "parlength": input.par_length,

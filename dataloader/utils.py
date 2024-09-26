@@ -74,12 +74,12 @@ def execute_in_parallel(task, items, threads) -> None:
         )
 
 
-def should_download_file(file_name: str) -> bool:
+def should_download_file(filename: str) -> bool:
     """
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    if "dn" in file_name:
+    if "dn" in filename:
         return True
 
 
