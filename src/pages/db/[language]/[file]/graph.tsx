@@ -4,6 +4,11 @@ import {
   GetServerSideProps,
 } from "next";
 import { useTranslation } from "next-i18next";
+// import { SourceLanguage } from "@utils/constants";
+// import { getI18NextStaticProps } from "@utils/nextJsHelpers";
+// import merge from "lodash/merge";
+// export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -11,23 +16,16 @@ import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
+import { HistogramDataChart } from "@features/graphView/HistogramDataChart";
+import { PieDataChart } from "@features/graphView/PieDataChart";
 import { SourceTextBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import { Box, Paper, Typography } from "@mui/material";
 import {
   // dehydrate,
   useQuery,
 } from "@tanstack/react-query";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-// import { SourceLanguage } from "@utils/constants";
-// import { getI18NextStaticProps } from "@utils/nextJsHelpers";
-// import merge from "lodash/merge";
-
-export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
-
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { HistogramDataChart } from "@features/graphView/HistogramDataChart";
-import { PieDataChart } from "@features/graphView/PieDataChart";
-import { Box, Paper, Typography } from "@mui/material";
 
 const HISTOGRAM_DATA_MATCH_LIMIT = 50;
 

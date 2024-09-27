@@ -2,6 +2,8 @@ const { i18n } = require("./next-i18next.config");
 
 const nextMDX = require("@next/mdx");
 
+const NODE_ENV = process.env.NODE_ENV;
+
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   i18n,
@@ -21,6 +23,11 @@ const nextConfig = {
     //   }),
     // );
     // }
+
+    // We upload source maps for production.
+    if (NODE_ENV === "production") {
+      config.devtool = "hidden-source-map";
+    }
     config.resolve.fallback = { fs: false, path: false };
     return config;
   },

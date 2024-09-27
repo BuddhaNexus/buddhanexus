@@ -1,17 +1,31 @@
+# https://calvinf.com/blog/2023/11/10/node-js-20-yarn-4-and-next-js-on-docker/
 # https://medium.com/@FandaSidak/dockerfile-with-next-js-app-using-yarn-4-fc553152a356
 
 FROM node:22-alpine AS base
 
-# Step 1. Rebuild the source code only when needed
-FROM base AS builder
+# Setup env variabless for yarn and nextjs
+# https://nextjs.org/telemetry
+ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production YARN_VERSION=4.3.1
 
-RUN corepack enable
+# update dependencies, add libc6-compat and dumb-init to the base image
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+RUN apk update && apk upgrade && apk add --no-cache libc6-compat && apk add dumb-init
+
+# install and use yarn 4.x
+RUN corepack enable && corepack prepare yarn@${YARN_VERSION}
+
+# add the user and group we'll need in our final image
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+FROM base AS builder
 WORKDIR /app
 
+COPY . .
+
 # Install dependencies based on the preferred package manager
-COPY package.json yarn.lock* ./
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
 # Omit --production flag for TypeScript devDependencies
 RUN yarn install --immutable
 
@@ -37,10 +51,6 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 ARG NEXT_PUBLIC_DOWNLOAD_URL
 ENV NEXT_PUBLIC_DOWNLOAD_URL=${NEXT_PUBLIC_DOWNLOAD_URL}
 
-# Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line to disable telemetry at build time
-ENV NEXT_TELEMETRY_DISABLED 1
-
 # Build Next.js based on the preferred package manager
 RUN yarn build
 
@@ -51,17 +61,20 @@ FROM base AS runner
 
 WORKDIR /app
 
-# Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
 USER nextjs
 
 COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
+
+# copy the public folder from the project as this is not included in the build process
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+# copy the standalone folder inside the .next folder generated from the build process
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+# copy the static folder inside the .next folder generated from the build process
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
 
 # Environment variables must be redefined at run time
 ARG ENV_VARIABLE
@@ -78,4 +91,4 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 # Note: Don't expose ports here, Compose will handle that for us
 
-CMD ["node", "server.js"]
+CMD ["dumb-init","node","server.js"]
