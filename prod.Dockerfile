@@ -5,7 +5,7 @@ FROM node:22-alpine AS base
 
 # Setup env variabless for yarn and nextjs
 # https://nextjs.org/telemetry
-ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production YARN_VERSION=4.3.1
+ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production YARN_VERSION=4.5.0
 
 # update dependencies, add libc6-compat and dumb-init to the base image
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
