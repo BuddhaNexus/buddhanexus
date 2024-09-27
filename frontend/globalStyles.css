@@ -1,0 +1,24 @@
+html,
+body,
+body > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+* {
+  transition: opacity 200ms;
+}
+
+/* Sets the light/dark values used in the `Link` component for mdx links to be consistent with tsx links & fix a11y issue. */
+html[data-mui-color-scheme="light"] .mdx-content a {
+  color: #7c3a00;
+}
+html[data-mui-color-scheme="dark"] .mdx-content a {
+  color: #e3bf99;
+}
+
+address {
+  font-style: normal;
+}

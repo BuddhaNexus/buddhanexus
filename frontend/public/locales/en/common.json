@@ -1,0 +1,75 @@
+{
+  "global": {
+    "siteTitle": "BuddhaNexus",
+    "language": "Language"
+  },
+  "header": {
+    "guide": "Guide",
+    "database": "Database"
+  },
+  "language": {
+    "all": "All",
+    "pli": "Pāli",
+    "chn": "Chinese",
+    "skt": "Sanskrit",
+    "tib": "Tibetan"
+  },
+  "footer": {
+    "about": "About",
+    "introduction": "Introduction",
+    "history": "History",
+    "guide": "Guide",
+    "community": "Community",
+    "institutions": "Institutions",
+    "people": "People",
+    "news": "News",
+    "activities": "Activities",
+    "publications": "Publications",
+    "events": "Events",
+    "projects": "Projects",
+    "presentations": "Presentations",
+    "contact": "Contact"
+  },
+  "db": {
+    "searchInputPlaceholder": "Choose source text",
+    "length": "Length",
+    "score": "Score",
+    "matches": "Matches",
+    "clearSelectedSegment": "Clear selected segment",
+    "segmentMatches": "Segment Matches"
+  },
+  "news": {
+    "title": "News",
+    "readMore": "Read more",
+    "backToNews": "Back to News"
+  },
+  "textBrowser": {
+    "mainPrompt": "Browse texts in {{ languageName }}"
+  },
+  "prompts": {
+    "genericErrorTitle": "Something went wrong",
+    "genericErrorDescription": "Please contact us if the issue persists.",
+    "loading": "Loading...",
+    "noResults": "No results found."
+  },
+  "search": {
+    "pageTitle": "Search Results",
+    "inputPlaceholder": "Enter exact search term (whole words only)",
+    "search": "Search",
+    "runSearch": "Run search",
+    "clearSearch": "Clear search term",
+    "toggleSearch": "Toggle search box",
+    "openSearch": "Open search box",
+    "closeSearch": "Close search box",
+    "noResultsHeading": "No results found",
+    "noResultsTip": "Try search for an exact term with whole words, correct punctuation and diacretical marks where relevant:"
+  },
+  "graph": {
+    "histogramDataTitle": "Distribution of the top files that have matches with the Inquiry Text:",
+    "histogramDataSubtitle": "The histogram displays the distribution of the top files that have matches with the Inquiry Text based on the accumulated length of the matches. A maximum of 50 Hit Texts are shown.",
+    "pieDataTitle": "Distribution of all the matches found with the current filters across the various collections and their subsections.",
+    "pieDataSubtitle": "The distribution is weighted by length of matches found:",
+    "collection": "Collection",
+    "matchLengths": "Match Lengths"
+  }
+}

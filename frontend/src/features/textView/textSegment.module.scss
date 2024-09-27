@@ -1,0 +1,56 @@
+.segmentWrapper {
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+span.segment {
+  cursor: not-allowed;
+}
+
+.segment {
+  pointer-events: auto;
+  display: inline;
+  text-align: start;
+  white-space: pre;
+  user-select: text;
+  -webkit-user-select: text;
+
+  //make button appear like span
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  font-size: 1rem;
+  user-select: text;
+  -webkit-user-select: text;
+
+  &__button:hover {
+    cursor: text;
+    text-decoration: underline;
+  }
+
+  &--dark {
+    filter: invert(1);
+  }
+
+  &--selected {
+    background: #eeeeee !important;
+    text-decoration: underline;
+  }
+}
+
+.segmentNumber {
+  &::before {
+    content: attr(data-segmentnumber);
+    font-size: 0.6rem;
+    padding: 0.2em;
+    margin-right: 1em;
+  }
+
+  &--selected {
+    text-decoration: underline;
+  }
+
+  &--hidden {
+    display: none;
+  }
+}

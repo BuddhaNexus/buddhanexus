@@ -1,0 +1,38 @@
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { scriptSelectionAtom } from "@features/atoms";
+import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
+import { Typography } from "@mui/material";
+import type { APIFullText } from "@utils/api/types";
+import { useAtomValue } from "jotai";
+
+interface Props {
+  id: string;
+  textParts: APIFullText[];
+}
+
+export const SearchResultItemText = ({ id, textParts }: Props) => {
+  const { sourceLanguage } = useDbQueryParams();
+  const script = useAtomValue(scriptSelectionAtom);
+
+  return (
+    <>
+      {textParts.map((textPart, index) => {
+        const { text, highlightColor: highlighted } = textPart;
+        return (
+          <Typography
+            key={`search-match-${id}-${index}`}
+            sx={{ display: "inline" }}
+            fontWeight={highlighted === 1 ? 600 : 400}
+            color={highlighted === 1 ? "text.primary" : "text.secondary"}
+          >
+            {enscriptText({
+              text: text ?? "",
+              script,
+              language: sourceLanguage,
+            })}
+          </Typography>
+        );
+      })}
+    </>
+  );
+};

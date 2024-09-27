@@ -1,0 +1,47 @@
+---
+title: "Richtlinien"
+date: ""
+keywords: []
+description: ""
+componentList: [KeyboardDoubleArrowUpIcon, ExploreOutlinedIcon, LaunchIcon]
+---
+
+BuddhaNexus wird die Textübereinstimmungen der verschiedenen Sprachen und Textkorpora nach und nach veröffentlichen, während die Arbeit fortschreitet. Es wird auch die Algorithmen weiter verbessern, um die Ergebnisse sowohl der einsprachigen Textübereinstimmungen als auch ihrer jeweiligen translingualen Ausrichtungen zu verbessern. Für das Hochladen neuer Daten, wesentliche Verbesserungen bestehender Funktionen und die Einführung neuer Funktionen siehe [Nachrichten](/news). Im Allgemeinen bestand die größte Herausforderung darin, „Goldstandards“ festzulegen, um einerseits die besten Ergebnisse zu erzielen und andererseits „Rauschen“ zu vermeiden. Während BuddhaNexus bestrebt ist, die standardmäßigen „Goldstandards“ zu optimieren, versteht es, dass solche Standards je nach abgefragtem Text, Forschungsfragen und persönlichen Interessen schwanken können, sodass der Benutzer mehrere Parameter manuell einstellen kann. Um zudem Analysen aus unterschiedlichen Perspektiven zu ermöglichen, sind mehrere Ansichtsoptionen möglich.
+
+Die in BuddhaNexus verwendeten Textkorpora wurden von verschiedenen Institutionen bezogen (für Details siehe die einzelnen Sprachen). Aufgrund der enormen Menge an Material hat BuddhaNexus keinen Versuch unternommen, die Qualität der Texte zu verbessern (z. B. das Entfernen von Tippfehlern und dergleichen). Aus technischen Gründen (z. B. Vereinheitlichung von Transliterationen oder Formaten) wurden jedoch gelegentlich geringfügige Änderungen an den Texten vorgenommen. Da unsere Algorithmen nach ungefähren (und nicht genauen) Übereinstimmungen suchen, glauben wir, dass in den meisten Fällen Varianten, die aus Tippfehlern oder aus unterschiedlichen Orthographien und dergleichen resultieren, keine größeren Probleme bei der Erkennung von Textübereinstimmungen darstellen sollten.
+
+## Geben Sie die Datenbank ein
+
+Um in die Datenbank zu gelangen, wählen Sie die gewünschte Sprache aus, indem Sie entweder auf das entsprechende Symbol klicken oder sie in der oberen Menüleiste unter „Datenbank“ auswählen.
+
+### Senden Sie eine Anfrage
+
+Um eine Anfrage zu stellen, wählen Sie einen Text aus der Dropdown-Liste anhand der jeweiligen Katalognummer aus (Details finden Sie in den Richtlinien zu den einzelnen Sprachen). Sobald die Übereinstimmungen generiert wurden (Textansicht), können Sie sie anzeigen, indem Sie entweder nach unten und oben scrollen oder die Passage auswählen, an der Sie interessiert sind, indem Sie die entsprechende Folio- Facsimile-, Sutta- oder Segmentnummer aus der Dropdown-Liste auswählen. Alternativ können Sie auch einen Text aus der Sidebar auswählen (öffnet sich durch Klick auf das dreifache Balkensymbol <ExploreOutlinedIcon fontSize="small" /> auf der linken Seite der Menüleiste), die eine Übersicht der verfügbaren Texte nach Themenbereichen bietet verschiedener Art.
+
+### Globale Textsuche
+
+Die Globale Textsuche bietet eine Suche nach einer Textpassage. Nach Eingabe einer Textpassage (max. Länge 150 Zeichen) wird eine Liste mit den dazugehörigen Treffern angezeigt. Ein Klick auf eines der Ergebnisse zeigt den vollständigen Text im Textansichtsmodus an. Die Gesamtzahl der möglichen Suchergebnisse ist auf 200 Einträge begrenzt.
+
+### Filteroptionen
+
+- **Ähnlichkeitsbewertung:** Verwendet die Entfernung der Zeichenfolgenbearbeitung als Grundlage für die Berechnung. Diese können zwischen 0 und 100 % variieren. Der Wert 100 bedeutet eine perfekte Übereinstimmung, während ein niedrigerer Wert eine geringere Ähnlichkeit anzeigt. Der Standardwert variiert von einer Sprache zur anderen.
+- **Mindestlänge der Übereinstimmung:** Filtert nach Mindestlänge der Übereinstimmungen basierend auf der Anzahl der Zeichen der Übereinstimmung, ausgenommen Satzzeichen. Der Standardwert variiert von einer Sprache zur anderen.
+- **Sammlungen ausschließen:** Zeigt keine Übereinstimmungen an, die in den ausgeschlossenen Sammlungen (oder Abschnitten) gefunden wurden.
+- **Dateien ausschließen:** Zeigt die in den ausgeschlossenen Dateien gefundenen Übereinstimmungen nicht an.
+- **Auf Sammlungen beschränken:** Zeigt die Übereinstimmungen an, die nur in den ausgewählten Sammlungen (oder Abschnitten) gefunden wurden.
+- **Auf Dateien beschränken:** Zeigt die Übereinstimmungen an, die nur in den ausgewählten Dateien gefunden wurden.
+
+### Optionen anzeigen (under construction)
+
+- **Textansicht**: Bei Auswahl einer Datei wird der gesamte Anfragetext mit den gefundenen Passagen angezeigt. Das Vorhandensein von Übereinstimmungen im Anfragetext wird durch Farben angezeigt. Um die Übereinstimmungen anzuzeigen, verwenden Sie die Bildlaufleiste, um zum Anfang des Anfragetexts zurückzukehren, klicken Sie auf das Symbol <KeyboardDoubleArrowUpIcon fontSize="small" />, um den Anfragetext in einem neuen Tab anzuzeigen, klicken Sie auf das Symbol <LaunchIcon fontSize="small" /> Symbol. Beim Auswählen (durch Anklicken) einer der farbigen Positionen werden die Übereinstimmungen, die in verschiedenen Treffertexten für diese Position gefunden wurden, in einer neuen Spalte angezeigt. Immer wenn eine mehrsprachige Ausrichtung (Sanskrit – Tibetisch) für den Anfragetext verfügbar ist, wird die mehrsprachige Übereinstimmung zuerst angezeigt, gefolgt von den verschiedenen einsprachigen Übereinstimmungen, die in anderen Texten gefunden werden. (Eine Option zum Deaktivieren der mehrsprachigen Übereinstimmungsanzeige ist im Filter verfügbar.) Durch Klicken auf eine dieser Übereinstimmungen wird das r
+
+Der jeweilige Treffertext wird in einer weiteren Spalte angezeigt, wobei die betreffende Übereinstimmung hervorgehoben ist. Alle Übereinstimmungen mit dem im angezeigten Treffertext gefundenen Anfragetext werden farbig dargestellt. Um den Treffertext in einem neuen Tab anzuzeigen, klicken Sie auf das Symbol <LaunchIcon fontSize="small" /> .
+
+- **Tabellenansicht**: Zeigt eine Tabelle der Übereinstimmungen an, die für den aktuellen Anfragetext gefunden wurden. Die Ergebnisse können auf drei verschiedene Arten sortiert werden: (1) nach ihrer Position im Anfragetext, (2) nach ihrer Position in den Treffertexten und (3) nach der Länge der Übereinstimmung im Treffertext.
+- **Zahlenansicht**: Zeigt eine Tabelle mit den Segmentnummern der gefundenen Übereinstimmungen für den aktuellen Anfragetext an. Dieser Ansichtsmodus ist nur für Pāli- und chinesische Texte verfügbar, bei denen die Segmentnummern die PTS- bzw. Taisho-Nummern darstellen.
+- **Grafikansicht**: Zeigt verschiedene Grafiken an, die die (ungefähren) Übereinstimmungen visualisieren, die für den Anfragetext gefunden wurden. Das Tortendiagramm zeigt die Verteilung der (ungefähren) Übereinstimmungen nach den Abschnitten der Sammlung. Das Histogramm zeigt die Verteilung der Top-Dateien, die Übereinstimmungen mit dem Anfragetext aufweisen, basierend auf der kumulierten Länge der ungefähren Übereinstimmungen. Es werden maximal 50 Treffertexte angezeigt.
+
+### Verknüpfungen
+
+BuddhaNexus bemüht sich, nützliche Links verschiedener Art bereitzustellen. Dazu gehören, wenn immer möglich, Links der einzelnen Dateien zu den Websites, von denen die digitalen Texte bezogen wurden, und zu Websites, die Katalogisierungsdaten anbieten. Derzeit sind Links zu den folgenden Websites verfügbar: <a href="https://tipitaka.org/" target="_blank" rel="noopener">VRI</a> und <a href="https://suttacentral.net" target="_blank" rel="noopener">SuttaCentral</a> für Pāli, <a href="http://gretil.sub. uni-goettingen.de/gretil.html" target="_blank" rel="noopener">GRETIL</a>, <a href="http://www.dsbcproject.org" target="_blank" rel="noopener">DSBC</a> und <a href="https://suttacentral.net" target="_blank" rel="noopener">SuttaCentral</a> für Sanskrit, <a href="https://www .bdrc.io/buda-archive/" target="_blank" rel="noopener">BUDA</a> und <a href="https://www.istb.univie.ac.at/kanjur/rktsneu/sub/index.php" target="_blank" rel="noopener">rKTs</a> für Tibetisch und <a href="https:/ /cbeta.org" target="_blank" rel="noopener">CBETA</a>, <a href="https://dazangthings.nz/cbc/" target="_blank" rel="noopener">CBC@</a> und <a href="https://suttacentral.net" target="_blank" rel="noopener">SuttaCentral</a> für Chinesisch.
+
