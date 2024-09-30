@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "next-i18next";
+import { scriptSelectionAtom } from "@atoms";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { scriptSelectionAtom } from "@features/atoms";
 import {
   FormControl,
   InputLabel,

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import useDownloader from "react-use-downloader";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { currentDbViewAtom } from "@atoms";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@features/atoms";
 import {
   defaultAnchorEls,
   isSettingOmitted,
@@ -54,7 +54,7 @@ const utilityComponents: UtilityOptions = {
 
 export const UtilityOptionsSection = () => {
   const { t } = useTranslation("settings");
-  const currentView = useAtomValue(currentViewAtom);
+  const currentView = useAtomValue(currentDbViewAtom);
   const {
     fileName,
     sourceLanguage,

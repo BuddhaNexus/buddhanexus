@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
+import { currentDbViewAtom } from "@atoms";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@features/atoms";
 import { isSettingOmitted } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "@features/sidebarSuite/common/PanelHeading";
 import {
@@ -17,7 +17,7 @@ import { useAtomValue } from "jotai";
 export const DisplayOptionsSection = () => {
   const { t } = useTranslation("settings");
 
-  const currentView = useAtomValue(currentViewAtom);
+  const currentView = useAtomValue(currentDbViewAtom);
 
   const {
     sourceLanguage,

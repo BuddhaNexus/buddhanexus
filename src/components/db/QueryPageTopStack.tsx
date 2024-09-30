@@ -2,11 +2,11 @@ import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { currentDbViewAtom, isDbSourceBrowserDrawerOpen } from "@atoms";
 import { getTextPath } from "@components/common/utils";
 import CurrentResultChips from "@components/db/CurrentResultChips";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
-import { currentViewAtom, isDbSourceBrowserDrawerOpen } from "@features/atoms";
 import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -26,7 +26,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   const isSearchRoute = router.route.startsWith("/search");
 
   const { fileName, sourceLanguage } = useDbQueryParams();
-  const dbView = useAtomValue(currentViewAtom);
+  const dbView = useAtomValue(currentDbViewAtom);
 
   const setIsSourceTreerOpen = useSetAtom(isDbSourceBrowserDrawerOpen);
   const { setIsSettingsOpen } = useSettingsDrawer();

@@ -1,9 +1,9 @@
 import React from "react";
 import { NodeApi } from "react-arborist";
+import { currentDbViewAtom } from "@atoms";
 import { getTextPath } from "@components/common/utils";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@features/atoms";
 import { Chip, Tooltip, Typography } from "@mui/material";
 import { useAtomValue } from "jotai";
 
@@ -25,7 +25,7 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
   }
 
   const { sourceLanguage } = useDbQueryParams();
-  const dbView = useAtomValue(currentViewAtom);
+  const dbView = useAtomValue(currentDbViewAtom);
   return (
     <TextNodeLink
       className={styles.textNodeLink}

@@ -3,7 +3,7 @@ import { useTranslation } from "next-i18next";
 import {
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
-} from "@features/atoms";
+} from "@atoms";
 import { FormControlLabel, FormGroup, Switch, Typography } from "@mui/material";
 import { useAtom } from "jotai/index";
 

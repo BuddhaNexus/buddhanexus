@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
-import { selectedSegmentMatchesAtom } from "@features/atoms/textView";
+import { selectedSegmentMatchesAtom } from "@atoms";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { Numbers } from "@mui/icons-material";
 import { Chip, CircularProgress } from "@mui/material";

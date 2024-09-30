@@ -1,10 +1,10 @@
 import React, { memo } from "react";
 import useDimensions from "react-cool-dimensions";
+import { isDbSourceBrowserDrawerOpen } from "@atoms";
 import {
   DbSourceTreeType,
   SearchableDbSourceTree,
 } from "@components/db/SearchableDbSourceTree";
-import { isDbSourceBrowserDrawerOpen } from "@features/atoms";
 import { Drawer as MuiDrawer } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useAtom } from "jotai";

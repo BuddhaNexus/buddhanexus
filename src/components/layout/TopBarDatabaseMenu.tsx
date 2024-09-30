@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { currentDbViewAtom } from "@atoms";
 import { getAvailableDBViews } from "@components/hooks/useDbView";
-import { currentViewAtom } from "@features/atoms";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { DEFAULT_DB_VIEW, SOURCE_LANGUAGES } from "@utils/constants";
 import { getValidDbLanguage } from "@utils/validators";
@@ -18,7 +18,7 @@ export const DatabaseMenu = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [currentView, setCurrentView] = useAtom(currentViewAtom);
+  const [currentView, setCurrentView] = useAtom(currentDbViewAtom);
 
   const handleLanguageChange = React.useCallback(
     async (language: string) => {

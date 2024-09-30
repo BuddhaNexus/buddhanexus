@@ -1,7 +1,7 @@
 import { NextSeo } from "next-seo";
+import { currentDbViewAtom } from "@atoms";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { currentViewAtom } from "@features/atoms";
 import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
@@ -16,7 +16,7 @@ export const DbViewPageHead = () => {
     queryFn: () => DbApi.TextDisplayName.call({ segmentnr: fileName }),
   });
 
-  const dbView = useAtomValue(currentViewAtom);
+  const dbView = useAtomValue(currentDbViewAtom);
 
   return (
     <>

@@ -1,5 +1,5 @@
+import { scriptSelectionAtom } from "@atoms";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { scriptSelectionAtom } from "@features/atoms";
 import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import { Typography } from "@mui/material";
 import type { APIFullText } from "@utils/api/types";

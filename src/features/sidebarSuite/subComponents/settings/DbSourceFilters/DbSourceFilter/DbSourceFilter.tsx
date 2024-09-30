@@ -1,5 +1,5 @@
 import React from "react";
-import { dbSourceFiltersSelectedIdsAtom } from "@features/atoms";
+import { dbSourceFiltersSelectedIdsAtom } from "@atoms";
 import { DbSourceFilterType } from "@features/sidebarSuite/config/types";
 import { useSetAtom } from "jotai";
 
@@ -22,8 +22,10 @@ const DbSourceFilter = ({
     setAnchorEl(anchorEl ? null : event.currentTarget.parentElement);
   };
 
-  const open = Boolean(anchorEl);
-  const popperId = open ? `${filterName}-source-filter-popper` : undefined;
+  const isPopperOpen = Boolean(anchorEl);
+  const popperId = isPopperOpen
+    ? `${filterName}-source-filter-popper`
+    : undefined;
   const handleClosePopper = () => {
     setAnchorEl(null);
   };
@@ -46,11 +48,11 @@ const DbSourceFilter = ({
         selectionIds={selectionIds}
         popperId={popperId}
         handleClick={handleClick}
-        open={open}
+        open={isPopperOpen}
       />
       <TreePopper
         popperId={popperId}
-        open={open}
+        open={isPopperOpen}
         anchorEl={anchorEl}
         handleClose={handleClosePopper}
         filterSettingName={filterName}

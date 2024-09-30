@@ -1,4 +1,4 @@
-import { currentViewAtom } from "@features/atoms";
+import { currentDbViewAtom } from "@atoms";
 import { Typography } from "@mui/material";
 import { DbViewEnum } from "@utils/constants";
 import { useAtomValue } from "jotai";
@@ -27,7 +27,7 @@ const TEMP_VIEW_INFO: Record<DbViewEnum, string> = {
 };
 
 export const Info = () => {
-  const currentView = useAtomValue(currentViewAtom);
+  const currentView = useAtomValue(currentDbViewAtom);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { isSettingsOpenAtom } from "@features/atoms";
+import { isSettingsOpenAtom } from "@atoms";
 import type { Breakpoint } from "@mui/material";
 import { useAtom } from "jotai";
 

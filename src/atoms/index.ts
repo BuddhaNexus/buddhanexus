@@ -8,7 +8,7 @@ import { atomWithStorage } from "jotai/utils";
  * GENERAL
  */
 
-export const currentViewAtom = atom<DbViewEnum>(DEFAULT_DB_VIEW);
+export const currentDbViewAtom = atom<DbViewEnum>(DEFAULT_DB_VIEW);
 
 /**
  * SOURCE DATA TREE

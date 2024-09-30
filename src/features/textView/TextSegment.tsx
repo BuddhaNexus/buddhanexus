@@ -1,12 +1,12 @@
 import { useCallback, useLayoutEffect } from "react";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import { sourceSans } from "@components/theme";
 import {
   scriptSelectionAtom,
+  selectedSegmentMatchesAtom,
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
-} from "@features/atoms";
-import { selectedSegmentMatchesAtom } from "@features/atoms/textView";
+} from "@atoms";
+import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { sourceSans } from "@components/theme";
 import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import { useColorScheme } from "@mui/material/styles";
 import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";

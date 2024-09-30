@@ -2,11 +2,11 @@ import "allotment/dist/style.css";
 
 import React, { useMemo } from "react";
 import { Virtuoso } from "react-virtuoso";
+import { selectedSegmentMatchesAtom } from "@atoms";
 import {
   EmptyPlaceholder,
   ListLoadingIndicator,
 } from "@components/db/ListComponents";
-import { selectedSegmentMatchesAtom } from "@features/atoms/textView";
 import { Paper } from "@mui/material";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
 import { Allotment } from "allotment";

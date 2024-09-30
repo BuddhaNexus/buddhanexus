@@ -1,11 +1,11 @@
 import { memo } from "react";
 import { Tree } from "react-arborist";
 import { useRouter } from "next/router";
+import { dbSourceFiltersSelectedIdsAtom } from "@atoms";
 import type {
   DbSourceFilterSelectorTreeProps,
   DbSourceTreeBaseProps,
 } from "@components/db/SearchableDbSourceTree/types";
-import { dbSourceFiltersSelectedIdsAtom } from "@features/atoms";
 import { useAtomValue } from "jotai";
 
 import { DbSourceFilterTreeNode } from "./DbSourceFilterTreeNode";
