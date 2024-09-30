@@ -127,14 +127,7 @@ export function DbSourceFilterTreeNode({
           disableHoverListener={nameWidth < elementWidth}
           enterDelay={300}
         >
-          <Box
-            className={styles.textName}
-            sx={{
-              px: 0.5,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+          <Box className={styles.textName} sx={{ px: 0.5, lineHeight: 1.1 }}>
             <RowBox>
               <SourceTypeIcon
                 dataType={dataType}
@@ -145,20 +138,12 @@ export function DbSourceFilterTreeNode({
                   color: "grey.500",
                 }}
               />
-              <Typography
-                variant="body2"
-                component="span"
-                sx={{ display: "block", mt: 0.25 }}
-              >
+              <Typography variant="body2" component="span">
                 {id}
               </Typography>
             </RowBox>
 
-            <TextNameTypography
-              variant="body3"
-              lineHeight={1.1}
-              sx={{ maxWidth: elementWidth }}
-            >
+            <TextNameTypography variant="body3" sx={{ maxWidth: elementWidth }}>
               {name}
             </TextNameTypography>
           </Box>

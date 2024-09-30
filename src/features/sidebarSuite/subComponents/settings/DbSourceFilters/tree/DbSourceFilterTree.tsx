@@ -24,9 +24,11 @@ export const DbSourceFilterSelectorTree = memo(
       dbSourceFiltersSelectedIdsAtom,
     );
 
+    const key = `${router.asPath.replace(/\?.*/, "")}-${filterSettingName}`;
+
     return (
       <Tree
-        key={router.asPath}
+        key={key}
         searchTerm={searchTerm}
         initialData={data}
         openByDefault={false}

@@ -52,10 +52,10 @@ export const updateFilterParamArray = ({
   id,
   action,
 }: {
-  array: any[];
+  array: string[];
   id: string;
   action: "add" | "remove";
-}): any[] => {
+}) => {
   if (action === "add") {
     return [...array, id];
   } else if (action === "remove") {
