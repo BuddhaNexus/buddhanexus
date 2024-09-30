@@ -1,12 +1,12 @@
 import apiClient from "@api";
-import { transformDataForTreeView } from "@components/db/SourceTextTree/utils";
+import { transformDataForTreeView } from "@components/db/SearchableDbSourceTree/utils";
 import type {
   APIMenuSidebarRequestQuery,
   APIMenuSidebarResponseData,
 } from "utils/api/types";
 import type { SourceLanguage } from "utils/constants";
 
-function parseStructuredSourceTextMenuData(data: APIMenuSidebarResponseData) {
+function parseStructuredDbSourceMenuData(data: APIMenuSidebarResponseData) {
   return data.navigationmenudata.map(({ collection, categories }) => ({
     collection,
     categories: categories.map(
@@ -26,8 +26,8 @@ function parseStructuredSourceTextMenuData(data: APIMenuSidebarResponseData) {
   }));
 }
 
-export type ParsedStructuredSourceTextMenuData = ReturnType<
-  typeof parseStructuredSourceTextMenuData
+export type ParsedStructuredDbSourceMenuData = ReturnType<
+  typeof parseStructuredDbSourceMenuData
 >;
 
 export async function getSidebarTextCollectionsMenuData(
@@ -37,6 +37,6 @@ export async function getSidebarTextCollectionsMenuData(
     params: { query },
   });
 
-  const parsedApiData = data ? parseStructuredSourceTextMenuData(data) : [];
+  const parsedApiData = data ? parseStructuredDbSourceMenuData(data) : [];
   return transformDataForTreeView(parsedApiData);
 }

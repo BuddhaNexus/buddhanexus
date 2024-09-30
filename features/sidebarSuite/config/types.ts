@@ -76,7 +76,17 @@ export const limits: Limit[] = [
   "file_include",
 ];
 
-export type SourceFilter = "exclude" | "include";
+export type DbSourceFilters = {
+  include_files?: string[];
+  include_categories?: string[];
+  include_collections?: string[];
+  exclude_files?: string[];
+  exclude_categories?: string[];
+  exclude_collections?: string[];
+};
+
+export type DbSourceFilterType = "exclude" | "include";
+export type DbSourceFiltersSelectedIds = Record<DbSourceFilterType, string[]>;
 
 /**
  * LIMITS FILTER REFACTOR WORKING IN PROGRESS />

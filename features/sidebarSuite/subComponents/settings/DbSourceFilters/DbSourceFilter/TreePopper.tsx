@@ -1,24 +1,26 @@
 import React from "react";
 import useDimensions from "react-cool-dimensions";
-import { SourceTextTree } from "@components/db/SourceTextTree";
+import { SearchableDbSourceTree } from "@components/db/SearchableDbSourceTree";
+import { DbSourceTreeType } from "@components/db/SearchableDbSourceTree/types";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 import { Box, Popper } from "@mui/material";
+import { DbSourceFilterType } from "features/sidebarSuite/config/types";
 
-type SourceFilterTreePopperProps = {
+type DbSourceFilterTreePopperProps = {
   popperId: string | undefined;
   open: boolean;
   anchorEl: null | HTMLElement;
   handleClose: () => void;
-  selectedItemsAtom: any;
+  filterSettingName: DbSourceFilterType;
 };
 
-const SourceFilterTreePopper = ({
+const DbSourceFilterTreePopper = ({
   popperId,
   open,
   anchorEl,
   handleClose,
-  selectedItemsAtom,
-}: SourceFilterTreePopperProps) => {
+  filterSettingName,
+}: DbSourceFilterTreePopperProps) => {
   const { observe, height, width } = useDimensions();
 
   return (
@@ -47,9 +49,9 @@ const SourceFilterTreePopper = ({
             width: "100%",
           }}
         >
-          <SourceTextTree
-            type="select"
-            selectedItemsAtom={selectedItemsAtom}
+          <SearchableDbSourceTree
+            type={DbSourceTreeType.FilterSelector}
+            filterSettingName={filterSettingName}
             parentHeight={height}
             parentWidth={width}
             hasHeading={false}
@@ -61,4 +63,4 @@ const SourceFilterTreePopper = ({
   );
 };
 
-export default SourceFilterTreePopper;
+export default DbSourceFilterTreePopper;

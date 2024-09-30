@@ -1,17 +1,17 @@
-import { SourceTextTreeNodeDataType } from "@components/db/SourceTextTree/types";
-import type { ParsedStructuredSourceTextMenuData } from "utils/api/endpoints/menus/sidebar";
+import { DbSourceTreeNodeDataType } from "@components/db/SearchableDbSourceTree/types";
+import type { ParsedStructuredDbSourceMenuData } from "utils/api/endpoints/menus/sidebar";
 
 export function transformDataForTreeView(
-  data: ParsedStructuredSourceTextMenuData,
+  data: ParsedStructuredDbSourceMenuData,
 ) {
   return data.map((collection) => ({
     id: collection.collection,
     name: collection.collection,
-    dataType: SourceTextTreeNodeDataType.Collection,
+    dataType: DbSourceTreeNodeDataType.Collection,
     children: collection.categories.map(({ name, displayName, files }) => ({
       id: name,
       name: displayName,
-      dataType: SourceTextTreeNodeDataType.Category,
+      dataType: DbSourceTreeNodeDataType.Category,
       children: files.map(
         ({
           fileName,
@@ -23,7 +23,7 @@ export function transformDataForTreeView(
           name: fileDisplayName,
           fileName,
           availableLanguages,
-          dataType: SourceTextTreeNodeDataType.Text,
+          dataType: DbSourceTreeNodeDataType.Text,
         }),
       ),
     })),

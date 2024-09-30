@@ -23,8 +23,8 @@ export async function prefetchDefaultDbPageData(
   });
 
   await queryClient.prefetchQuery({
-    queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.SidebarSourceTexts.call({ language: sourceLanguage }),
+    queryKey: DbApi.DbSourcesMenu.makeQueryKey(sourceLanguage),
+    queryFn: () => DbApi.DbSourcesMenu.call({ language: sourceLanguage }),
   });
 
   return queryClient;
@@ -50,8 +50,8 @@ export async function prefetchDbResultsPageData(
 
   // TODO: review. disabled for now to lighten build burden.
   // await queryClient.prefetchQuery({
-  //   queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-  //   queryFn: () => DbApi.SidebarSourceTexts.call(sourceLanguage),
+  //   queryKey: DbApi.DbSourcesMenu.makeQueryKey(sourceLanguage),
+  //   queryFn: () => DbApi.DbSourcesMenu.call(sourceLanguage),
   // });
 
   // TODO: confirm spec for multi_lingal query param. For discussion see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/117

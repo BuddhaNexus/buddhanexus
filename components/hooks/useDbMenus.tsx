@@ -10,8 +10,8 @@ export const useDbMenus = () => {
   const { sourceLanguage } = useDbQueryParams();
 
   const { data: textsData, isLoading: isLoadingTexts } = useQuery({
-    queryKey: DbApi.SourceTextMenu.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.SourceTextMenu.call({ language: sourceLanguage }),
+    queryKey: DbApi.DbSourceMenu.makeQueryKey(sourceLanguage),
+    queryFn: () => DbApi.DbSourceMenu.call({ language: sourceLanguage }),
   });
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useQuery({

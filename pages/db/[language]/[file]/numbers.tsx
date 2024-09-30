@@ -14,7 +14,7 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import NumbersTable from "features/numbersView/NumbersTable";
-import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import { DbSourceBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import merge from "lodash/merge";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
 import { DbApi } from "utils/api/dbApi";
@@ -117,7 +117,7 @@ export default function NumbersPage() {
         language={sourceLanguage}
         fileName={fileName}
       />
-      <SourceTextBrowserDrawer />
+      <DbSourceBrowserDrawer />
     </PageContainer>
   );
 }

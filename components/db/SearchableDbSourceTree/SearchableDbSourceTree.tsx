@@ -1,42 +1,46 @@
 import { memo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { useTranslation } from "next-i18next";
-import type { SourceTextTreeNode } from "@components/db/SourceTextTree/types";
+import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, FormControl, InputAdornment, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "utils/api/dbApi";
 
+import { DbSourceTree } from "./treeComponents/DbSourceTree";
+import { LoadingTree } from "./treeComponents/LoadingTree";
+import { TreeException } from "./treeComponents/TreeException";
+import { TreeHeading } from "./treeComponents/TreeHeading";
 import {
-  LoadingTree,
-  TreeException,
-  TreeHeading,
-  TreeViewContent,
-  type TreeViewContentType,
-  type TreeViewSelectProps,
-} from "./TreeBaseComponents";
+  BrowserTreeProps,
+  DbSourceFilterSelectorTreeProps,
+  DbSourceTreeType,
+} from "./types";
 
-interface SourceTextTreeBaseProps {
+type SearchableDbSourceTreeBaseProps = {
   parentHeight: number;
   parentWidth: number;
-  type?: TreeViewContentType;
   hasHeading?: boolean;
   px?: number;
-}
+};
 
-type SourceTextTreeProps =
-  | ({ type: "browse" } & SourceTextTreeBaseProps)
-  | ({ type: "select" } & SourceTextTreeBaseProps & TreeViewSelectProps);
+type SearchableDbSourceTreeProps = SearchableDbSourceTreeBaseProps &
+  (
+    | ({ type: DbSourceTreeType.Browser } & BrowserTreeProps)
+    | ({
+        type: DbSourceTreeType.FilterSelector;
+      } & DbSourceFilterSelectorTreeProps)
+  );
 
-export const SourceTextTree = memo<SourceTextTreeProps>(
-  function SourceTextTree(props) {
+export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
+  function SearchableDbSourceTree(props) {
     const {
       parentHeight,
       parentWidth,
       hasHeading = true,
       px = 2,
-      ...treeProps
+      ...treeTypeProps
     } = props;
 
     const [searchTerm, setSearchTerm] = useState("");
@@ -45,10 +49,9 @@ export const SourceTextTree = memo<SourceTextTreeProps>(
 
     const { t } = useTranslation(["common"]);
 
-    const { data, isLoading, isError, error } = useQuery<SourceTextTreeNode[]>({
-      queryKey: DbApi.SidebarSourceTexts.makeQueryKey(sourceLanguage),
-      queryFn: () =>
-        DbApi.SidebarSourceTexts.call({ language: sourceLanguage }),
+    const { data, isLoading, isError, error } = useQuery<DbSourceTreeNode[]>({
+      queryKey: DbApi.DbSourcesMenu.makeQueryKey(sourceLanguage),
+      queryFn: () => DbApi.DbSourcesMenu.call({ language: sourceLanguage }),
     });
 
     if (isLoading) {
@@ -98,12 +101,12 @@ export const SourceTextTree = memo<SourceTextTreeProps>(
 
         {/* Tree view - text browser */}
         <Box sx={{ pl: px }}>
-          <TreeViewContent
+          <DbSourceTree
             data={data}
             height={parentHeight - inputHeight}
             width={parentWidth}
             searchTerm={searchTerm}
-            {...treeProps}
+            {...treeTypeProps}
           />
         </Box>
       </>

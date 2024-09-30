@@ -1,9 +1,12 @@
 import React, { memo } from "react";
 import useDimensions from "react-cool-dimensions";
-import { SourceTextTree } from "@components/db/SourceTextTree";
+import {
+  DbSourceTreeType,
+  SearchableDbSourceTree,
+} from "@components/db/SearchableDbSourceTree";
 import { Drawer as MuiDrawer } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { isSourceTextBrowserDrawerOpen } from "features/atoms";
+import { isDbSourceBrowserDrawerOpen } from "features/atoms";
 import { useAtom } from "jotai";
 
 const Drawer = styled(MuiDrawer)(({ theme }) => ({
@@ -26,12 +29,10 @@ const Drawer = styled(MuiDrawer)(({ theme }) => ({
 }));
 
 // TODO: preselect currently viewed text in the sidebar
-export const SourceTextBrowserDrawer = memo(function SourceTextBrowserDrawer() {
+export const DbSourceBrowserDrawer = memo(function DbSourceBrowserDrawer() {
   const { observe, height, width } = useDimensions();
 
-  const [isDrawerOpen, setIsDrawerOpen] = useAtom(
-    isSourceTextBrowserDrawerOpen,
-  );
+  const [isDrawerOpen, setIsDrawerOpen] = useAtom(isDbSourceBrowserDrawerOpen);
 
   return (
     <Drawer
@@ -41,7 +42,11 @@ export const SourceTextBrowserDrawer = memo(function SourceTextBrowserDrawer() {
       open={isDrawerOpen}
       onClose={() => setIsDrawerOpen(false)}
     >
-      <SourceTextTree type="browse" parentHeight={height} parentWidth={width} />
+      <SearchableDbSourceTree
+        type={DbSourceTreeType.Browser}
+        parentHeight={height}
+        parentWidth={width}
+      />
     </Drawer>
   );
 });

@@ -46,6 +46,7 @@
     "next-mdx-remote": "^4.4.1",
     "next-query-params": "^5.0.0",
     "next-seo": "^6.5.0",
+    "nuqs": "^1.19.3",
     "openapi-fetch": "^0.9.5",
     "query-string": "^9.0.0",
     "react": "18.2.0",

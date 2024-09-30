@@ -1,4 +1,4 @@
-import { SourceTextTreeNode } from "@components/db/SourceTextTree/types";
+import { DbSourceFiltersSelectedIds } from "features/sidebarSuite/config/types";
 import type { Script } from "features/sidebarSuite/subComponents/settings/TextScriptOption";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
@@ -14,7 +14,7 @@ export const currentViewAtom = atom<DbViewEnum>(DEFAULT_DB_VIEW);
  * SOURCE DATA TREE
  */
 
-export const isSourceTextBrowserDrawerOpen = atom(false);
+export const isDbSourceBrowserDrawerOpen = atom(false);
 
 /**
  * SETTINGS SIDEBAR
@@ -25,8 +25,10 @@ export const scriptSelectionAtom = atomWithStorage<Script>(
 );
 export const isSettingsOpenAtom = atom(true);
 export const defaultSourceLanguagesSelection = atom<SourceLanguage[]>([]);
-export const selectedExcludeSourceFilterAtom = atom<SourceTextTreeNode[]>([]);
-export const selectedIncludeSourceFilterAtom = atom<SourceTextTreeNode[]>([]);
+export const dbSourceFiltersSelectedIdsAtom = atom<DbSourceFiltersSelectedIds>({
+  exclude: [],
+  include: [],
+});
 
 /**
  * TEXT VIEW

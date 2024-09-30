@@ -13,7 +13,10 @@ import { getI18NextStaticProps } from "utils/nextJsHelpers";
 export { getSourceLanguageStaticPaths as getStaticPaths } from "utils/nextJsHelpers";
 
 import useDimensions from "react-cool-dimensions";
-import { SourceTextTree } from "@components/db/SourceTextTree";
+import {
+  DbSourceTreeType,
+  SearchableDbSourceTree,
+} from "@components/db/SearchableDbSourceTree";
 
 export default function DbIndexPage() {
   const { sourceLanguageName, sourceLanguage } = useDbQueryParams();
@@ -37,8 +40,8 @@ export default function DbIndexPage() {
             maxHeight: "70dvh",
           }}
         >
-          <SourceTextTree
-            type="browse"
+          <SearchableDbSourceTree
+            type={DbSourceTreeType.Browser}
             parentHeight={height}
             parentWidth={width}
             hasHeading={false}

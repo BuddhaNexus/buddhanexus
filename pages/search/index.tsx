@@ -19,7 +19,7 @@ import {
   SearchBoxWrapper,
 } from "features/globalSearch/GlobalSearchStyledMuiComponents";
 import NoSearchResultsFound from "features/globalSearch/NoSearchResultsFound";
-import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import { DbSourceBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import _ from "lodash";
 import { DbApi } from "utils/api/dbApi";
 import { getI18NextStaticProps } from "utils/nextJsHelpers";
@@ -139,7 +139,7 @@ export default function SearchPage() {
         </>
       )}
 
-      <SourceTextBrowserDrawer />
+      <DbSourceBrowserDrawer />
     </PageContainer>
   );
 }

@@ -3128,6 +3128,7 @@ __metadata:
     next-mdx-remote: "npm:^4.4.1"
     next-query-params: "npm:^5.0.0"
     next-seo: "npm:^6.5.0"
+    nuqs: "npm:^1.19.3"
     openapi-fetch: "npm:^0.9.5"
     openapi-typescript: "npm:^6.7.5"
     prettier: "npm:^3.2.5"
@@ -8236,6 +8237,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mitt@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "mitt@npm:3.0.1"
+  checksum: 10c0/3ab4fdecf3be8c5255536faa07064d05caa3dd332bd318ff02e04621f7b3069ca1de9106cfe8e7ced675abfc2bec2ce4c4ef321c4a1bb1fb29df8ae090741913
+  languageName: node
+  linkType: hard
+
 "mkdirp@npm:^1.0.3":
   version: 1.0.4
   resolution: "mkdirp@npm:1.0.4"
@@ -8514,6 +8522,17 @@ __metadata:
   dependencies:
     path-key: "npm:^4.0.0"
   checksum: 10c0/ff6d77514489f47fa1c3b1311d09cd4b6d09a874cc1866260f9dea12cbaabda0436ed7f8c2ee44d147bf99a3af29307c6f63b0f83d242b0b6b0ab25dff2629e3
+  languageName: node
+  linkType: hard
+
+"nuqs@npm:^1.19.3":
+  version: 1.19.3
+  resolution: "nuqs@npm:1.19.3"
+  dependencies:
+    mitt: "npm:^3.0.1"
+  peerDependencies:
+    next: ">=13.4 <14.0.2 || ^14.0.3"
+  checksum: 10c0/e2dc4241626181cf78edba6816c60a17a6dab9bcecb326c0ddeb0c030e2ff66d8409ee74b0112509efc5645641f9e7c271abcf4cb2f389459efeb5f8ace3e1b9
   languageName: node
   linkType: hard
 

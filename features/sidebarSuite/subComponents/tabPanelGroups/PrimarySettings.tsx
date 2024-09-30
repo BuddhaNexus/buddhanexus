@@ -10,10 +10,10 @@ import { UniqueSettingsType } from "features/sidebarSuite/config/settings";
 import type { SidebarSuitePageContext } from "features/sidebarSuite/config/types";
 import { StandinSetting } from "features/sidebarSuite/SidebarSuite";
 import {
+  DbSourceFilters,
   ParLengthFilter,
   ScoreFilter,
   SearchLanguageSelector,
-  SourceFilters,
 } from "features/sidebarSuite/subComponents/settings";
 import { DbViewSelector } from "features/sidebarSuite/subComponents/settings/DbViewSelector";
 import { useAtomValue } from "jotai";
@@ -45,7 +45,7 @@ const Filters = memo(function Filters({
       //   return <MultiLingualSelector key={key} />;
       // }
       case uniqueSettings.queryParams.limits: {
-        return <SourceFilters key={key} />;
+        return <DbSourceFilters key={key} />;
       }
       case uniqueSettings.queryParams.targetCollection: {
         return (

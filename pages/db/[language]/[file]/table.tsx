@@ -7,7 +7,7 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { dehydrate, useInfiniteQuery } from "@tanstack/react-query";
-import { SourceTextBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
+import { DbSourceBrowserDrawer } from "features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "features/tableView/TableView";
 import merge from "lodash/merge";
 import { prefetchDbResultsPageData } from "utils/api/apiQueryUtils";
@@ -79,7 +79,7 @@ export default function TablePage() {
           onStartReached={fetchPreviousPage}
         />
       )}
-      <SourceTextBrowserDrawer />
+      <DbSourceBrowserDrawer />
     </PageContainer>
   );
 }

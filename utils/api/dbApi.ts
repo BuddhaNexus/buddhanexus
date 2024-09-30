@@ -56,7 +56,7 @@ export const DbApi = {
     call: getTextViewMiddleParallelsData,
   },
   //* MENUS
-  SourceTextMenu: {
+  DbSourceMenu: {
     makeQueryKey: (language: SourceLanguage) => [
       "sourceTextMenuData",
       language,
@@ -67,7 +67,7 @@ export const DbApi = {
     makeQueryKey: (language: SourceLanguage) => ["categoryMenuData", language],
     call: getCategoryMenuData,
   },
-  SidebarSourceTexts: {
+  DbSourcesMenu: {
     makeQueryKey: (language: SourceLanguage) => [
       "textCollectionsData",
       language,

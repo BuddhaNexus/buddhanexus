@@ -10,7 +10,7 @@ import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
 import { Box, Button, Stack } from "@mui/material";
-import { currentViewAtom, isSourceTextBrowserDrawerOpen } from "features/atoms";
+import { currentViewAtom, isDbSourceBrowserDrawerOpen } from "features/atoms";
 import { useAtomValue, useSetAtom } from "jotai";
 
 /**
@@ -28,7 +28,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   const { fileName, sourceLanguage } = useDbQueryParams();
   const dbView = useAtomValue(currentViewAtom);
 
-  const setIsSourceTreerOpen = useSetAtom(isSourceTextBrowserDrawerOpen);
+  const setIsSourceTreerOpen = useSetAtom(isDbSourceBrowserDrawerOpen);
   const { setIsSettingsOpen } = useSettingsDrawer();
 
   const searchParams = useSearchParams();
