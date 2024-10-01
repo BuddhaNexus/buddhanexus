@@ -28,7 +28,6 @@ const Drawer = styled(MuiDrawer)(({ theme }) => ({
   padding: 2,
 }));
 
-// TODO: preselect currently viewed text in the sidebar
 export const DbSourceBrowserDrawer = memo(function DbSourceBrowserDrawer() {
   const { observe, height, width } = useDimensions();
 

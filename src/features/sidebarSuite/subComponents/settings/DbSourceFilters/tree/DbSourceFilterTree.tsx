@@ -6,6 +6,7 @@ import type {
   DbSourceFilterSelectorTreeProps,
   DbSourceTreeBaseProps,
 } from "@components/db/SearchableDbSourceTree/types";
+import { getTreeKeyFromPath } from "@components/db/SearchableDbSourceTree/utils";
 import { useAtomValue } from "jotai";
 
 import { DbSourceFilterTreeNode } from "./DbSourceFilterTreeNode";
@@ -24,11 +25,9 @@ export const DbSourceFilterSelectorTree = memo(
       dbSourceFiltersSelectedIdsAtom,
     );
 
-    const key = `${router.asPath.replace(/\?.*/, "")}-${filterSettingName}`;
-
     return (
       <Tree
-        key={key}
+        key={getTreeKeyFromPath(router.asPath, filterSettingName)}
         searchTerm={searchTerm}
         initialData={data}
         openByDefault={false}

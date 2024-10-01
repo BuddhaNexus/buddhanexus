@@ -1,14 +1,20 @@
 import { Box, Link, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
-export const NodeBox = styled(Box)(({ theme }) => ({
+export const NodeBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isSelected",
+})<{ isSelected?: boolean }>(({ theme, isSelected }) => ({
   flex: 1,
   height: "100%",
   display: "flex",
   alignItems: "center",
   fontSize: 16,
-  ":hover": {
-    backgroundColor: theme.palette.grey[200],
+  ...(isSelected && {
+    backgroundColor: theme.palette.background.default,
+    fontWeight: 500,
+  }),
+  "&:hover": {
+    backgroundColor: theme.palette.background.card,
     fontWeight: 500,
   },
 }));

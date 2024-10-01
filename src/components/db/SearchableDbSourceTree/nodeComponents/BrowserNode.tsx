@@ -23,7 +23,7 @@ export function BrowserNode({
   };
 
   return (
-    <NodeBox style={style} onClick={handleClick}>
+    <NodeBox style={style} isSelected={node.isSelected} onClick={handleClick}>
       <ExpanderArrow node={node} />
 
       {dataType === NodeType.Text ? (

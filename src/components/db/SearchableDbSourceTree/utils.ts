@@ -4,6 +4,7 @@ import type { ParsedStructuredDbSourceMenuData } from "@utils/api/endpoints/menu
 export function transformDataForTreeView(
   data: ParsedStructuredDbSourceMenuData,
 ) {
+  // TODO: check if BE prop naming is correct (fileName vs textName)
   return data.map((collection) => ({
     id: collection.collection,
     name: collection.collection,
@@ -13,13 +14,8 @@ export function transformDataForTreeView(
       name: displayName,
       dataType: DbSourceTreeNodeDataType.Category,
       children: files.map(
-        ({
-          fileName,
-          displayName: fileDisplayName,
-          textName,
-          availableLanguages,
-        }) => ({
-          id: textName,
+        ({ fileName, displayName: fileDisplayName, availableLanguages }) => ({
+          id: fileName,
           name: fileDisplayName,
           fileName,
           availableLanguages,
@@ -28,4 +24,8 @@ export function transformDataForTreeView(
       ),
     })),
   }));
+}
+
+export function getTreeKeyFromPath(path: string, suffix?: string) {
+  return `${path.replace(/\?.*/, "")}-${suffix}`;
 }
