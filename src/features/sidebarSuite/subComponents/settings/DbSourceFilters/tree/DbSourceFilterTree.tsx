@@ -1,13 +1,16 @@
 import { memo } from "react";
 import { Tree } from "react-arborist";
 import { useRouter } from "next/router";
-import { dbSourceFiltersSelectedIdsAtom } from "@atoms";
+import {
+  activeDbSourceBrowserTreeAtom,
+  dbSourceFiltersSelectedIdsAtom,
+} from "@atoms";
 import type {
   DbSourceFilterSelectorTreeProps,
   DbSourceTreeBaseProps,
 } from "@components/db/SearchableDbSourceTree/types";
 import { getTreeKeyFromPath } from "@components/db/SearchableDbSourceTree/utils";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { DbSourceFilterTreeNode } from "./DbSourceFilterTreeNode";
 
@@ -24,10 +27,12 @@ export const DbSourceFilterSelectorTree = memo(
     const dbSourceFiltersSelectedIds = useAtomValue(
       dbSourceFiltersSelectedIdsAtom,
     );
+    const setDbSourceBrowserTree = useSetAtom(activeDbSourceBrowserTreeAtom);
 
     return (
       <Tree
         key={getTreeKeyFromPath(router.asPath, filterSettingName)}
+        ref={(tree) => setDbSourceBrowserTree(tree)}
         searchTerm={searchTerm}
         initialData={data}
         openByDefault={false}

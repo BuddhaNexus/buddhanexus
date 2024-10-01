@@ -2,7 +2,7 @@ import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { currentDbViewAtom, isDbSourceBrowserDrawerOpen } from "@atoms";
+import { currentDbViewAtom, isDbSourceBrowserDrawerOpenAtom } from "@atoms";
 import { getTextPath } from "@components/common/utils";
 import CurrentResultChips from "@components/db/CurrentResultChips";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
@@ -28,7 +28,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   const { fileName, sourceLanguage } = useDbQueryParams();
   const dbView = useAtomValue(currentDbViewAtom);
 
-  const setIsSourceTreerOpen = useSetAtom(isDbSourceBrowserDrawerOpen);
+  const setIsSourceTreerOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);
   const { setIsSettingsOpen } = useSettingsDrawer();
 
   const searchParams = useSearchParams();

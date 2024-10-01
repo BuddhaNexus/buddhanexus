@@ -37,7 +37,8 @@ export default function DbIndexPage() {
         <Box
           ref={observe}
           sx={{
-            maxHeight: "70dvh",
+            height: "calc(100% - 5rem)",
+            mt: 2,
           }}
         >
           <SearchableDbSourceTree
@@ -45,7 +46,7 @@ export default function DbIndexPage() {
             parentHeight={height}
             parentWidth={width}
             hasHeading={false}
-            px={0}
+            padding={0}
           />
         </Box>
       </Paper>

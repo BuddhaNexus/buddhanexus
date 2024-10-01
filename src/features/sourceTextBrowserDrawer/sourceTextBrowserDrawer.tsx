@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import useDimensions from "react-cool-dimensions";
-import { isDbSourceBrowserDrawerOpen } from "@atoms";
+import { isDbSourceBrowserDrawerOpenAtom } from "@atoms";
 import {
   DbSourceTreeType,
   SearchableDbSourceTree,
@@ -31,7 +31,9 @@ const Drawer = styled(MuiDrawer)(({ theme }) => ({
 export const DbSourceBrowserDrawer = memo(function DbSourceBrowserDrawer() {
   const { observe, height, width } = useDimensions();
 
-  const [isDrawerOpen, setIsDrawerOpen] = useAtom(isDbSourceBrowserDrawerOpen);
+  const [isDrawerOpen, setIsDrawerOpen] = useAtom(
+    isDbSourceBrowserDrawerOpenAtom,
+  );
 
   return (
     <Drawer

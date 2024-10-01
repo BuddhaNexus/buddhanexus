@@ -1,3 +1,5 @@
+import { TreeApi } from "react-arborist";
+import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { DbSourceFiltersSelectedIds } from "@features/sidebarSuite/config/types";
 import type { Script } from "@features/sidebarSuite/subComponents/settings/TextScriptOption";
 import { DbViewEnum, DEFAULT_DB_VIEW, SourceLanguage } from "@utils/constants";
@@ -14,7 +16,10 @@ export const currentDbViewAtom = atom<DbViewEnum>(DEFAULT_DB_VIEW);
  * SOURCE DATA TREE
  */
 
-export const isDbSourceBrowserDrawerOpen = atom(false);
+export const isDbSourceBrowserDrawerOpenAtom = atom(false);
+export const activeDbSourceBrowserTreeAtom = atom<
+  TreeApi<DbSourceTreeNode> | null | undefined
+>(null);
 
 /**
  * SETTINGS SIDEBAR

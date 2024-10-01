@@ -55,7 +55,7 @@ const DbSourceFilterTreePopper = ({
             parentHeight={height}
             parentWidth={width}
             hasHeading={false}
-            px={0}
+            padding={0}
           />
         </Box>
       </ClickAwayListener>
