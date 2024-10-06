@@ -4,7 +4,7 @@ from enum import Enum
 
 class FilterTypes(str, Enum):
     """
-    Possible limit types
+    Possible filter types
     """
     collection = "collection"
     category = "category"
@@ -12,8 +12,8 @@ class FilterTypes(str, Enum):
     
 
 class FilterItem(BaseModel):
-    limit_value: str
-    limit_type: FilterTypes
+    filter_value: str
+    filter_type: FilterTypes
 
 class Filters(BaseModel):
     """
