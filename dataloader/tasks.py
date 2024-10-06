@@ -13,7 +13,7 @@ from invoke import task
 from dataloader_constants import (
     DB_NAME,
     COLLECTION_NAMES,
-    DEFAULT_MATCH_URL,    
+    DEFAULT_MATCH_URL,
     LANG_TIBETAN,
     LANG_PALI,
     LANG_CHINESE,
@@ -49,7 +49,7 @@ from clean_database import (
     clean_search_index_db,
     clean_all_collections_db,
     clean_global_stats_db,
-    clean_segment_collections_db,    
+    clean_segment_collections_db,
     clean_all_lang_db,
 )
 
@@ -269,6 +269,7 @@ def clean_segment_collections(c):
     """
     clean_segment_collections_db()
 
+
 @task
 def clean_tibetan(c):
     """
@@ -307,6 +308,7 @@ def clean_chinese(c):
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_CHINESE)
+
 
 @task()
 def load_metadata(c):

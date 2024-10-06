@@ -3,10 +3,9 @@ Contains all database queries related to graph view.
 
 """
 
-
 QUERY_GRAPH_VIEW = """
 FOR f in parallels_sorted_file
-    filter f._key == @file_name
+    filter f._key == @filename
     LET current_parallels = (
     for current_parallel in slice(f.parallels_randomized,0,2500)
         for p in parallels

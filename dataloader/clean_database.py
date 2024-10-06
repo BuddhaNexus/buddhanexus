@@ -101,13 +101,12 @@ def clean_segment_collections_db():
     print("segment collections cleaned.")
 
 
-
 def clean_metadata_db():
     """
     Clear the metadata database collections completely.
     """
     db = get_database()
-    db.delete_collection(COLLECTION_METADATA)    
+    db.delete_collection(COLLECTION_METADATA)
     print("metadata data collection cleaned.")
 
 
@@ -136,6 +135,7 @@ def clean_all_lang_db(current_lang):
     files_collection = db.collection(COLLECTION_FILES)
     files_collection.delete_match({"language": current_lang})
     print("Cleaning data done.")
+
 
 def clean_paralels_lang_db(current_lang):
     print("Cleaning data for language", current_lang)

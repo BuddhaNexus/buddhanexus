@@ -2,10 +2,9 @@
 Contains all database queries for text-view and middle text view.
 """
 
-
 QUERY_FILE_TEXT = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file._key == @filename
     LET segments = (
         FOR segmentnr IN file.segment_keys
             FOR segment in segments
@@ -22,14 +21,14 @@ RETURN {
 
 QUERY_GET_NUMBER_OF_PAGES = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file._key == @filename
     RETURN LENGTH(file.segment_pages)
 """
 
 
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file._key == @filename
     LET page_segments = (        
         LENGTH(file.segment_pages[@page_number] ? file.segment_pages[@page_number] : []) > 0 ?
         (
@@ -129,7 +128,7 @@ LET parallels = (
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
                 par_segtext: par_segtext,
-                file_name: p.id,
+                filename: p.id,
                 score: p.score * 100,
                 length: p.par_length
             }
@@ -159,7 +158,7 @@ LET parallels_multi = (
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
                 par_segtext: par_segtext,
-                file_name: p.id,
+                filename: p.id,
                 score: p.score * 100,
                 length: p.par_length
             }

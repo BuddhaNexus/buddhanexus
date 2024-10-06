@@ -120,7 +120,7 @@ def process_result(result, search_string):
         result["similarity"] = 100
         if distance != 0:
             result["similarity"] = 100 - distance / len(search_string)
-        result["segment_nr"] = result['segment_nr'][0]
+        result["segment_nr"] = result["segment_nr"][0]
         return result
     except (RuntimeError, TypeError, NameError):
         pass
@@ -130,8 +130,8 @@ def postprocess_results(search_strings, results):
     new_results = []
     search_string = search_strings["skt"]
     for result in results:
-        result['original'] = re.sub(
-        "@[0-9a-b+]+", "", result['original']
+        result["original"] = re.sub(
+            "@[0-9a-b+]+", "", result["original"]
         )  # remove possible tib folio numbers
         new_results.append(process_result(result, search_string))
 

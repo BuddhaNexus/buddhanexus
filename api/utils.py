@@ -61,19 +61,19 @@ def get_sort_key(sort_method) -> str:
     return sort_key
 
 
-def get_language_from_filename(file_name) -> str:
+def get_language_from_filename(filename) -> str:
     """
     Given the file ID, returns its language.
-    :param file_name: The key of the file
+    :param filename: The key of the file
     :return: Language of the file
     """
-    if "BO_" in file_name:
+    if "BO_" in filename:
         return "bo"
-    if "PA_" in file_name:
+    if "PA_" in filename:
         return "pa"
-    if "SA_" in file_name:
+    if "SA_" in filename:
         return "sa"
-    if "ZH_" in file_name:
+    if "ZH_" in filename:
         return "zh"
     return "bo"
 
@@ -86,18 +86,19 @@ def number_exists(input_string) -> bool:
     """
     return any(char.isdigit() for char in input_string)
 
-def add_source_information(file_name, query_result):
+
+def add_source_information(filename, query_result):
     """
     Checks if a special source string is stored in the database.
     If not, it will return a generic message based on a regex pattern.
     Currently only works for SKT.
     TODO: We might want to add this to Pali/Chn/Tib as well in the future!
     """
-    lang = get_language_from_file_name(file_name)
+    lang = get_language_from_filename(filename)
     if lang == "sa":
         query_source_information = get_db().AQLQuery(
             query=utils_queries.QUERY_SOURCE,
-            bindVars={"file_name": file_name},
+            bindVars={"filename": filename},
             rawResults=True,
         )
         source_id = query_source_information.result[0]["source_id"]
@@ -135,6 +136,7 @@ def get_page_for_segment(active_segment):
     )
     return page_for_segment.result[0]
 
+
 def get_segment_for_folio(folio):
     """
     Gets the segment number for a given folio.
@@ -146,14 +148,14 @@ def get_segment_for_folio(folio):
     return segment_for_folio.result
 
 
-def get_file_text(file_name):
+def get_file_text(filename):
     """
     Gets file segments and numbers only from start_int onwards with max 800 segments.
     """
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=text_view_queries.QUERY_FILE_TEXT,
-            bindVars={"file_name": file_name},
+            bindVars={"filename": filename},
         )
 
         if text_segments_query_result.result:
@@ -182,7 +184,11 @@ def get_cat_from_segmentnr(segmentnr):
     """
     return segmentnr.split("_")[1]
 
+
 def arrange_filter_data(filter_items):
+    """
+    Adds filter items to include or exclude dictionary.
+    """
     include = {
         "files": [],
         "categories": [],
@@ -193,18 +199,18 @@ def arrange_filter_data(filter_items):
         "categories": [],
         "collections": [],
     }
-    for item in filter_items['include']:
-        if item['type'] == 'file':
-            include['files'].append(item['value'])
-        if item['type'] == 'category':
-            include['categories'].append(item['value'])
-        if item['type'] == 'collection':
-            include['collections'].append(item['value'])
-    for item in filter_items['exclude']:
-        if item['type'] == 'file':
-            exclude['files'].append(item['value'])
-        if item['type'] == 'category':
-            exclude['categories'].append(item['value'])
-        if item['type'] == 'collection':
-            exclude['collections'].append(item['value'])
+    for item in filter_items["include"]:
+        if item["type"] == "file":
+            include["files"].append(item["value"])
+        if item["type"] == "category":
+            include["categories"].append(item["value"])
+        if item["type"] == "collection":
+            include["collections"].append(item["value"])
+    for item in filter_items["exclude"]:
+        if item["type"] == "file":
+            exclude["files"].append(item["value"])
+        if item["type"] == "category":
+            exclude["categories"].append(item["value"])
+        if item["type"] == "collection":
+            exclude["collections"].append(item["value"])
     return include, exclude

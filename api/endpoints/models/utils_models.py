@@ -4,7 +4,7 @@ from .general_models import Filters
 
 
 class CountMatchesInput(BaseModel):
-    file_name: str = ""
+    filename: str = ""
     score = 0
     par_length = 0
     filters: Optional[Filters]
@@ -12,6 +12,7 @@ class CountMatchesInput(BaseModel):
 
 class CountMatchesOutput(BaseModel):
     parallel_count: int
+
 
 class FolioOutput(BaseModel):
     folios: List

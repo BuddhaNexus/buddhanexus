@@ -4,7 +4,7 @@ Contains all database queries related to table view.
 
 QUERY_TABLE_VIEW = """
 FOR f IN parallels_sorted_file
-    FILTER f._key == @file_name
+    FILTER f._key == @filename
     FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
@@ -65,7 +65,7 @@ FOR f IN parallels_sorted_file
                 par_segment: par_segment,
                 par_full_names: par_full_names[0] || {},
                 root_full_names: root_full_names[0],
-                file_name: p.id,
+                filename: p.id,
                 root_segnr: p.root_segnr,
                 root_seg_text: root_seg_text,
                 par_length: p.par_length,
@@ -79,7 +79,7 @@ FOR f IN parallels_sorted_file
 
 QUERY_TABLE_DOWNLOAD = """
 FOR f IN parallels_sorted_file
-    FILTER f._key == @file_name
+    FILTER f._key == @filename
     FOR current_parallel in f.@sortkey
         FOR p in parallels
             FILTER p._key == current_parallel
@@ -114,11 +114,11 @@ FOR f IN parallels_sorted_file
                         FILTER segment._key == segnr
                         RETURN segment.segtext
             )
-            LET file_name1 = REGEX_REPLACE(p.par_segnr[0],":.*","")
-            LET file_name = REGEX_REPLACE(file_name1,"_[0-9]+","")
+            LET filename1 = REGEX_REPLACE(p.par_segnr[0],":.*","")
+            LET filename = REGEX_REPLACE(filename1,"_[0-9]+","")
             let displayname = (
                 FOR file IN files
-                    FILTER file._key == file_name
+                    FILTER file._key == filename
                     return file.displayName
             )
             LIMIT 20000
@@ -141,10 +141,10 @@ FOR f IN parallels_sorted_file
 
 QUERY_NUMBERS_VIEW = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file._key == @filename
     LET selected_folio_segmentnr = (
         FOR segmentnr in segments
-            FILTER segmentnr.filename == @file_name
+            FILTER segmentnr.filename == @filename
             FILTER segmentnr.folio == @folio
             RETURN segmentnr.segmentnr
     )
@@ -202,7 +202,7 @@ RETURN current_segments
 
 QUERY_NUMBERS_DOWNLOAD = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file._key == @filename
     LET current_segments = (
         FOR segmentnr IN file.segment_keys
             FOR segment in segments

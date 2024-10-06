@@ -5,7 +5,7 @@ Contains all database queries for various utils.
 
 QUERY_FOLIOS = """
 FOR segment in segments
-    FILTER segment.filename == @file_name
+    FILTER segment.filename == @filename
     COLLECT folio = segment.folio
     RETURN folio
 """
@@ -25,10 +25,9 @@ RETURN FIRST(
 """
 
 
-
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels
-    FILTER p.root_filename == @file_name
+    FILTER p.root_filename == @filename
     
     FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
     FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
@@ -54,13 +53,13 @@ FOR file IN files
 
 QUERY_LINK = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file._key == @filename
     RETURN [file.link, file.link2]
 """
 
 QUERY_SOURCE = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file._key == @filename
     RETURN {
         source_id: file.source,
         source_string: file.source_string

@@ -13,7 +13,7 @@ from tqdm import tqdm as tqdm
 from arango.database import StandardDatabase
 from dataloader_models import Segment, validate_df
 
-from dataloader_constants import (    
+from dataloader_constants import (
     PAGE_SIZE,
     COLLECTION_SEARCH_INDEX_BO,
     COLLECTION_SEARCH_INDEX_SA,
@@ -38,7 +38,7 @@ from utils import (
 )
 from api.utils import (
     get_cat_from_segmentnr,
-    get_language_from_file_name,
+    get_language_from_filename,
     get_filename_from_segmentnr,
 )
 
@@ -51,34 +51,35 @@ def process_file_group_helper(args):
 
 class LoadSegmentsBase:
     SEARCH_COLLECTION_NAME: str
-    
 
     def __init__(self) -> None:
         self.metadata = self._init_metadata()
         self.DATA_PATH = SEGMENT_URLS[self.LANG] + "segments/"
 
     def _init_metadata(self):
-        df = pd.read_json(METADATA_URLS[self.LANG])        
+        df = pd.read_json(METADATA_URLS[self.LANG])
         return df.set_index("filename").to_dict(orient="index")
-        
 
     def _load_segments(self, segments_df, db) -> None:
         # print(f"DEBUG: segments[:3]: {segments[:3]}")
         db.collection(COLLECTION_SEGMENTS).delete_many({"lang": self.LANG})
-        db.collection(COLLECTION_SEGMENTS).insert_many(
-            segments_df.to_dict("records")
+        db.collection(COLLECTION_SEGMENTS).insert_many(segments_df.to_dict("records"))
+
+        db.collection(COLLECTION_SEGMENTS).add_hash_index(
+            fields=["segmentnr", "lang", "filename", "category", "collection"],
+            unique=False,
         )
-        
-        db.collection(COLLECTION_SEGMENTS).add_hash_index(fields=["segmentnr", "lang", "filename", "category", "collection"], unique=False)
         db.collection(COLLECTION_SEGMENTS_PAGES).add_hash_index(fields=["segmentnr"])
         filename = segments_df["filename"].iloc[0]
 
-        current_file_cursor = db.collection(COLLECTION_FILES).find({"filename": filename})
+        current_file_cursor = db.collection(COLLECTION_FILES).find(
+            {"filename": filename}
+        )
         current_file = next(current_file_cursor, None)
-        
+
         segnrs = segments_df["segmentnr"].tolist()
         filename = segments_df["filename"].iloc[0]
-                
+
         if current_file:
             current_file["segment_keys"] += segnrs
             db.collection(COLLECTION_FILES).update(current_file)
@@ -133,10 +134,12 @@ class LoadSegmentsBase:
         db = get_database()
         try:
             file_df = pd.read_json(os.path.join(self.DATA_PATH, file))
-            file_df['lang'] = self.LANG
-            file_df['filename'] = metadata_reference_filename
-            file_df['category'] = self.metadata[metadata_reference_filename]["category"]
-            file_df['collection'] = self.metadata[metadata_reference_filename]["collection"]              
+            file_df["lang"] = self.LANG
+            file_df["filename"] = metadata_reference_filename
+            file_df["category"] = self.metadata[metadata_reference_filename]["category"]
+            file_df["collection"] = self.metadata[metadata_reference_filename][
+                "collection"
+            ]
             self._load_segments(file_df, db)
             self._load_segments_to_search_index(file_df, db)
         except Exception as e:
@@ -206,8 +209,8 @@ class LoadSegmentsBase:
 
         for filename in tqdm(segments_by_file):
             segments_sorted = natsort.natsorted(segments_by_file[filename])
-            lang = get_language_from_file_name(filename)        
-            # in order to save some grief on the frontend, we paginate the segments arbitrarily 
+            lang = get_language_from_filename(filename)
+            # in order to save some grief on the frontend, we paginate the segments arbitrarily
             page_size = 400
             segments_paginated = [
                 segments_sorted[i : i + PAGE_SIZE]
@@ -236,8 +239,8 @@ class LoadSegmentsBase:
                 file["folios"] = folios
                 collection_files.update(file)
             else:
-                # if we don't have metadata for a file, this will end in an orphaned file in the db. For cempletion sake, we will insert this anyway, but its a bad sign. 
-                print(f"Could not find file {filename} in db.")                    
+                # if we don't have metadata for a file, this will end in an orphaned file in the db. For cempletion sake, we will insert this anyway, but its a bad sign.
+                print(f"Could not find file {filename} in db.")
                 file = {
                     "_key": filename,
                     "filename": filename,
@@ -262,13 +265,16 @@ class LoadSegmentsSanskrit(LoadSegmentsBase):
     SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_SA
     LANG = LANG_SANSKRIT
 
+
 class LoadSegmentsPali(LoadSegmentsBase):
     SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_PA
-    LANG = LANG_PALI    
+    LANG = LANG_PALI
+
 
 class LoadSegmentsTibetan(LoadSegmentsBase):
     SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_BO
     LANG = LANG_TIBETAN
+
 
 class LoadSegmentsChinese(LoadSegmentsBase):
     SEARCH_COLLECTION_NAME = COLLECTION_SEARCH_INDEX_ZH
