@@ -1,4 +1,5 @@
 import { Box, Link, Typography } from "@mui/material";
+import { lighten } from "@mui/material/styles";
 import { styled } from "@mui/system";
 
 export const NodeBox = styled(Box, {
@@ -10,11 +11,11 @@ export const NodeBox = styled(Box, {
   alignItems: "center",
   fontSize: 16,
   ...(isSelected && {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.background.selected,
     fontWeight: 500,
   }),
   "&:hover": {
-    backgroundColor: theme.palette.background.card,
+    backgroundColor: lighten(theme.palette.background.selected, 0.2),
     fontWeight: 500,
   },
 }));

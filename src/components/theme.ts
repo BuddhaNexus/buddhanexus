@@ -7,18 +7,6 @@ import { SourceLanguage } from "@utils/constants";
 export const sourceSerif = Noto_Serif({ subsets: ["latin", "latin-ext"] });
 export const sourceSans = Source_Sans_3({ subsets: ["latin", "latin-ext"] });
 
-declare module "@mui/material/styles" {
-  interface TypeBackground {
-    header: string;
-    accent: string;
-    card: string;
-    inverted: string;
-  }
-  interface TypeText {
-    inverted: string;
-  }
-}
-
 interface DesignTokenParams {
   // some theme elements depend on the source language selected
   sourceLanguage: SourceLanguage;
@@ -76,11 +64,12 @@ export const getDesignTokens = ({
         background: {
           default: "#efe0c2",
           paper: "#ffffff",
-          accent: grey[50],
           header: sourceLanguage
             ? SOURCE_LANG_COLORS[sourceLanguage]
             : "#29262d",
+          accent: grey[50],
           card: grey[100],
+          selected: grey[300],
           inverted: grey[800],
         },
         text: {
@@ -119,11 +108,13 @@ export const getDesignTokens = ({
         background: {
           default: "#201c22",
           paper: "#29262d",
-          accent: grey[900],
           header: sourceLanguage
             ? SOURCE_LANG_DARK_COLORS.main[sourceLanguage]
             : "#29262d",
+          accent: grey[900],
           card: "#29262d",
+          selected: "#262329",
+          inverted: grey[100],
         },
         text: {
           primary: grey[100],

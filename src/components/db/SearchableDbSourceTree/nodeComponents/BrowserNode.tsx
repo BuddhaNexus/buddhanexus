@@ -10,24 +10,17 @@ import { ParentItemExpander } from "./ParentItemExpander";
 import { NodeBox } from "./styledComponents";
 import { TextItemLink } from "./TextItemLink";
 
-type BrowserNodeProps = NodeRendererProps<DbSourceTreeNode> & {
-  currentFile: string;
-};
+type BrowserNodeProps = NodeRendererProps<DbSourceTreeNode>;
 
-export function BrowserNode({ node, style, currentFile }: BrowserNodeProps) {
-  const { dataType, id } = node.data;
-
-  const handleClick = () => {
-    if (node.isInternal) {
-      node.toggle();
-    }
-  };
+export function BrowserNode({ node, style }: BrowserNodeProps) {
+  const { dataType } = node.data;
 
   return (
     <NodeBox
+      key={node.id + node.level + node.childIndex}
       style={style}
-      isSelected={currentFile === id}
-      onClick={handleClick}
+      isSelected={node.isSelected}
+      onClick={() => node.toggle()}
     >
       <ExpanderArrow node={node} />
 

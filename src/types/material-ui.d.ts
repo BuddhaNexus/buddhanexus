@@ -10,6 +10,19 @@ declare module "@mui/material/styles/createPalette" {
   }
 }
 
+declare module "@mui/material/styles" {
+  interface TypeBackground {
+    header: string;
+    accent: string;
+    card: string;
+    selected: string;
+    inverted: string;
+  }
+  interface TypeText {
+    inverted: string;
+  }
+}
+
 declare module "@mui/material/Typography" {
   interface TypographyPropsVariantOverrides {
     body3: true;

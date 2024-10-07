@@ -13,7 +13,7 @@ export function TreeHeading({ isRendered, sourceLanguage }: HeadingProps) {
 
   const languageName = t(`language.${sourceLanguage}`);
   return (
-    <Typography variant="h5" component="h2" sx={{ px: 2, py: 2 }}>
+    <Typography variant="h5" component="h2" sx={{ px: 2, pt: 2 }}>
       {t("textBrowser.mainPrompt", { languageName })}
     </Typography>
   );

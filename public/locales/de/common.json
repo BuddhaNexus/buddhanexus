@@ -52,7 +52,9 @@
     "loading": "Wird geladen...",
     "noResults": "Keine Ergebnisse gefunden.",
     "showLess": "Weniger anzeigen",
-    "showAll": "Alle anzeigen ({{count}})"
+    "showAll": "Alle anzeigen ({{count}})",
+    "openAll": "Alle öffnen",
+    "closeAll": "Alle schließen"
   },
   "search": {
     "pageTitle": "Suchergebnisse",

@@ -1,5 +1,5 @@
 import React from "react";
-import type { NodeRendererProps } from "react-arborist";
+import type { NodeApi, NodeRendererProps } from "react-arborist";
 import { ExpanderArrow } from "@components/db/SearchableDbSourceTree/nodeComponents/ExpanderArrow";
 import { SourceTypeIcon } from "@components/db/SearchableDbSourceTree/nodeComponents/SourceTypeIcon";
 import {
@@ -28,6 +28,21 @@ const CHARACTER_WIDTH = 6.5;
 const INDENTATION_WIDTH = 90;
 const DEFAULT_NODE_WIDTH = 300;
 
+type HandleFilterNodeClickProps = {
+  node: NodeApi<DbSourceTreeNode>;
+  event: React.MouseEvent<HTMLElement>;
+};
+
+const handleClick = ({ node, event }: HandleFilterNodeClickProps) => {
+  if (node.isLeaf) return;
+
+  const isCheckboxClick = event.nativeEvent.target instanceof HTMLInputElement;
+
+  if (isCheckboxClick) return;
+
+  node.toggle();
+};
+
 type DbSourceFilterTreeNodeProps = {
   filterSettingName: DbSourceFilterType;
   selectionIds: string[];
@@ -52,20 +67,6 @@ export function DbSourceFilterTreeNode({
   if (typeof node.tree.props.width === "number") {
     elementWidth = node.tree.props.width - INDENTATION_WIDTH;
   }
-
-  const handleClick = React.useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      if (node.isLeaf) return;
-
-      const isCheckboxClick =
-        event.nativeEvent.target instanceof HTMLInputElement;
-
-      if (isCheckboxClick) return;
-
-      node.toggle();
-    },
-    [node],
-  );
 
   const handleFilterParamUpdate = React.useCallback(
     async ({
@@ -104,7 +105,8 @@ export function DbSourceFilterTreeNode({
         ml: dataType === NodeType.Text ? 1.1 : undefined,
       }}
       role="option"
-      onClick={handleClick}
+      isSelected={node.isSelected}
+      onClick={(event) => handleClick({ node, event })}
     >
       <ExpanderArrow node={node} mr={0} />
 

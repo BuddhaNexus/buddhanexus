@@ -1,10 +1,17 @@
 import { memo } from "react";
 import { Tree } from "react-arborist";
 import { useRouter } from "next/router";
-import { activeDbSourceBrowserTreeAtom } from "@atoms";
+import {
+  activeDbSourceTreeAtom,
+  activeDbSourceTreeBreadcrumbsAtom,
+  focusedDbSourceTreeNodeAtom,
+} from "@atoms";
 import { BrowserNode } from "@components/db/SearchableDbSourceTree/nodeComponents/BrowserNode";
 import { DbSourceTreeBaseProps } from "@components/db/SearchableDbSourceTree/types";
-import { getTreeKeyFromPath } from "@components/db/SearchableDbSourceTree/utils";
+import {
+  getTreeKeyFromPath,
+  handleTreeChange,
+} from "@components/db/SearchableDbSourceTree/utils";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSetAtom } from "jotai";
 
@@ -17,28 +24,33 @@ const DbSourceBrowserTree = memo(function DbSourceBrowserTree({
   const router = useRouter();
   const { fileName } = useDbQueryParams();
 
-  const setActiveDbSourceBrowserTree = useSetAtom(
-    activeDbSourceBrowserTreeAtom,
-  );
+  const setActiveTree = useSetAtom(activeDbSourceTreeAtom);
+  const setBreacrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
+  const setFocusedDbSourceTreeNode = useSetAtom(focusedDbSourceTreeNodeAtom);
 
   return (
     <Tree
       key={getTreeKeyFromPath(router.asPath)}
-      ref={(tree) => setActiveDbSourceBrowserTree(tree)}
-      selectionFollowsFocus={false}
+      ref={(activeTree) => {
+        handleTreeChange({ activeTree, setActiveTree, setBreacrumbs });
+      }}
       searchTerm={searchTerm}
       initialData={data}
       openByDefault={false}
       disableDrag={true}
-      rowHeight={64}
       disableDrop={true}
+      dndRootElement={null}
       disableEdit={true}
-      padding={12}
       height={height}
       width={width}
+      rowHeight={64}
+      padding={12}
       selection={fileName}
+      onFocus={(node) => setFocusedDbSourceTreeNode(node)}
     >
-      {(props) => <BrowserNode currentFile={fileName} {...props} />}
+      {(props) => {
+        return <BrowserNode {...props} />;
+      }}
     </Tree>
   );
 });

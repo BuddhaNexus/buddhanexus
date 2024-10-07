@@ -1,27 +1,23 @@
-import { memo, useState } from "react";
+import React, { memo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { useTranslation } from "next-i18next";
-import { activeDbSourceBrowserTreeAtom } from "@atoms";
+import {
+  activeDbSourceTreeAtom,
+  activeDbSourceTreeBreadcrumbsAtom,
+} from "@atoms";
 import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import SearchIcon from "@mui/icons-material/Search";
-import {
-  Box,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  TextField,
-} from "@mui/material";
+import { Box, FormControl, InputAdornment, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { DbSourceTree } from "./treeComponents/DbSourceTree";
 import { LoadingTree } from "./treeComponents/LoadingTree";
 import { TreeException } from "./treeComponents/TreeException";
 import { TreeHeading } from "./treeComponents/TreeHeading";
+import { TreeNavigation } from "./TreeNavigation";
 import {
   BrowserTreeProps,
   DbSourceFilterSelectorTreeProps,
@@ -57,9 +53,27 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
     const { sourceLanguage } = useDbQueryParams();
     const { observe, height: inputHeight } = useDimensions();
 
-    const { t } = useTranslation(["common"]);
+    const activeTree = useAtomValue(activeDbSourceTreeAtom);
+    const setBreacrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
 
-    const activeTree = useAtomValue(activeDbSourceBrowserTreeAtom);
+    const handleSearchChange = React.useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        setSearchTerm(value);
+
+        if (value) {
+          activeTree?.setSelection({
+            ids: null,
+            anchor: null,
+            mostRecent: activeTree.mostRecentNode,
+          });
+          setBreacrumbs([]);
+        }
+      },
+      [setSearchTerm, setBreacrumbs, activeTree],
+    );
+
+    const { t } = useTranslation(["common"]);
 
     const { data, isLoading, isError, error } = useQuery<DbSourceTreeNode[]>({
       queryKey: DbApi.DbSourcesMenu.makeQueryKey(sourceLanguage),
@@ -71,7 +85,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
         <LoadingTree
           hasHeading={hasHeading}
           sourceLanguage={sourceLanguage}
-          px={padding}
+          padding={padding}
         />
       );
     }
@@ -81,7 +95,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
         <TreeException
           hasHeading={hasHeading}
           sourceLanguage={sourceLanguage}
-          px={padding}
+          padding={padding}
           message={error ? error.message : t("prompts.noResults")}
         />
       );
@@ -103,24 +117,11 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
                   </InputAdornment>
                 ),
               }}
-              onChange={(event) => setSearchTerm(event.target.value)}
+              onChange={handleSearchChange}
             />
           </FormControl>
 
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            gap="0.5rem"
-            mt={treeTypeProps.type === DbSourceTreeType.Browser ? 2 : 1}
-          >
-            <IconButton size="small" onClick={() => activeTree?.openAll()}>
-              <AddIcon color="action" />
-            </IconButton>
-
-            <IconButton size="small" onClick={() => activeTree?.closeAll()}>
-              <RemoveIcon color="action" />
-            </IconButton>
-          </Box>
+          <TreeNavigation type={treeTypeProps.type} />
         </Box>
 
         {/* Tree view - text browser */}

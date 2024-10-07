@@ -1,4 +1,4 @@
-import { TreeApi } from "react-arborist";
+import { NodeApi, TreeApi } from "react-arborist";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { DbSourceFiltersSelectedIds } from "@features/sidebarSuite/config/types";
 import type { Script } from "@features/sidebarSuite/subComponents/settings/TextScriptOption";
@@ -17,8 +17,14 @@ export const currentDbViewAtom = atom<DbViewEnum>(DEFAULT_DB_VIEW);
  */
 
 export const isDbSourceBrowserDrawerOpenAtom = atom(false);
-export const activeDbSourceBrowserTreeAtom = atom<
+export const activeDbSourceTreeAtom = atom<
   TreeApi<DbSourceTreeNode> | null | undefined
+>(null);
+export const activeDbSourceTreeBreadcrumbsAtom = atom<
+  NodeApi<DbSourceTreeNode>[]
+>([]);
+export const focusedDbSourceTreeNodeAtom = atom<
+  NodeApi<DbSourceTreeNode> | null | undefined
 >(null);
 
 /**

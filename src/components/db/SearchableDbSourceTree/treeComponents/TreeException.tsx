@@ -1,5 +1,5 @@
 import InactiveTreeHead, {
-  type InactiveTreeHeadProps,
+  InactiveTreeHeadProps,
 } from "@components/db/SearchableDbSourceTree/treeComponents/InactiveTreeHead";
 import { Typography } from "@mui/material";
 

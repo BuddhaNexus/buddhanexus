@@ -2,14 +2,18 @@ import { memo } from "react";
 import { Tree } from "react-arborist";
 import { useRouter } from "next/router";
 import {
-  activeDbSourceBrowserTreeAtom,
+  activeDbSourceTreeAtom,
+  activeDbSourceTreeBreadcrumbsAtom,
   dbSourceFiltersSelectedIdsAtom,
 } from "@atoms";
 import type {
   DbSourceFilterSelectorTreeProps,
   DbSourceTreeBaseProps,
 } from "@components/db/SearchableDbSourceTree/types";
-import { getTreeKeyFromPath } from "@components/db/SearchableDbSourceTree/utils";
+import {
+  getTreeKeyFromPath,
+  handleTreeChange,
+} from "@components/db/SearchableDbSourceTree/utils";
 import { useAtomValue, useSetAtom } from "jotai";
 
 import { DbSourceFilterTreeNode } from "./DbSourceFilterTreeNode";
@@ -24,21 +28,25 @@ export const DbSourceFilterSelectorTree = memo(
   }: DbSourceTreeBaseProps & Omit<DbSourceFilterSelectorTreeProps, "type">) {
     const router = useRouter();
 
+    const setActiveTree = useSetAtom(activeDbSourceTreeAtom);
+    const setBreacrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
     const dbSourceFiltersSelectedIds = useAtomValue(
       dbSourceFiltersSelectedIdsAtom,
     );
-    const setDbSourceBrowserTree = useSetAtom(activeDbSourceBrowserTreeAtom);
 
     return (
       <Tree
         key={getTreeKeyFromPath(router.asPath, filterSettingName)}
-        ref={(tree) => setDbSourceBrowserTree(tree)}
+        ref={(activeTree) => {
+          handleTreeChange({ activeTree, setActiveTree, setBreacrumbs });
+        }}
         searchTerm={searchTerm}
         initialData={data}
         openByDefault={false}
-        disableDrag={true}
         rowHeight={46}
+        disableDrag={true}
         disableDrop={true}
+        dndRootElement={null}
         disableEdit={true}
         disableMultiSelection={false}
         padding={12}

@@ -6,18 +6,18 @@ import { SourceLanguage } from "@utils/constants";
 export type InactiveTreeHeadProps = {
   hasHeading: boolean;
   sourceLanguage: SourceLanguage;
-  px?: number;
+  padding?: number;
 };
 
 function InactiveTreeHead({
   hasHeading,
   sourceLanguage,
-  px,
+  padding,
 }: InactiveTreeHeadProps) {
   return (
     <>
       <TreeHeading isRendered={hasHeading} sourceLanguage={sourceLanguage} />
-      <FormControl variant="outlined" sx={{ px, pt: 2, pb: 0 }} fullWidth>
+      <FormControl variant="outlined" sx={{ p: padding, pb: 0 }} fullWidth>
         <TextField
           label="Search"
           InputProps={{
