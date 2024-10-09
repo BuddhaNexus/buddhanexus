@@ -77,7 +77,7 @@ async def get_graph_for_file(input: GraphInput) -> Any:
             etc.
     ```
     """
-    # todo sep/25: Here we should get explitiely the names of the target 
+    # todo sep/25: Here we should get explitiely the names of the target
     # collections from the frontend, there should be no need to call any additional function
     # target_collection = create_cleaned_limit_collection(input.target_collection)
 

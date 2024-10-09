@@ -51,8 +51,6 @@ async def get_numbers_view(input: GeneralInput) -> Any:
     Endpoint for numbers view.
     """
 
-    
-
     folio = input.folio
     if not input.folio:
         folio = 0

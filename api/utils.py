@@ -69,11 +69,11 @@ def get_language_from_filename(filename) -> str:
     """
     if filename.startswith("BO_"):
         return "bo"
-    if filename.startswith("PA_"):
+    elif filename.startswith("PA_"):
         return "pa"
-    if filename.startswith("SA_"):
+    elif filename.startswith("SA_"):
         return "sa"
-    if filename.startswith("ZH_"):
+    elif filename.startswith("ZH_"):
         return "zh"
     else:
         print("ERROR: Language not found for filename: ", filename)

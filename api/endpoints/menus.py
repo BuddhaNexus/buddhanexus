@@ -4,10 +4,8 @@ from .endpoint_utils import execute_query
 from ..queries import menu_queries
 from .helpers.menu_helpers import structure_menu_data
 
-from .models.menus_models import (
-    GraphCollectionOutput,
-    MetadataOutput
-)
+from .models.menus_models import GraphCollectionOutput, MetadataOutput
+
 router = APIRouter()
 
 

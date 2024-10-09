@@ -95,6 +95,7 @@ def create_collections(c, collections=COLLECTION_NAMES):
             print(f"Error creating collection {name}: ", e)
     print(f"created {collections} collections")
 
+
 @task
 def load_metadata(c):
     """
@@ -319,6 +320,3 @@ def clean_chinese(c):
     :param c: invoke.py context object
     """
     clean_all_lang_db(LANG_CHINESE)
-
-
-

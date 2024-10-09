@@ -8,6 +8,7 @@ class File(BaseModel):
     category: str
     search_field: str
 
+
 class CategoryBase(BaseModel):
     category: str
     categorydisplayname: str
@@ -25,8 +26,10 @@ class CollectionBase(BaseModel):
 class Collection(CollectionBase):
     categories: List[Category]
 
+
 class GraphCollection(CollectionBase):
     collectiondisplayname: Union[str, None] = None
+
 
 class GraphCollectionOutput(BaseModel):
     result: List[GraphCollection]
