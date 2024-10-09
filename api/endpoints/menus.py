@@ -2,49 +2,19 @@ from fastapi import APIRouter, Query
 from typing import Any
 from .endpoint_utils import execute_query
 from ..queries import menu_queries
-from .helpers.menu_helpers import structure_menu_data, add_searchfield
-import unidecode
-from .models.menus_models import (
-    FilesOutput,
-    CollectionsOutput,
-    GraphCollectionOutput,
-    SideBarOutput,
-)
+from .helpers.menu_helpers import structure_menu_data
+
+from .models.menus_models import GraphCollectionOutput, MetadataOutput
 
 router = APIRouter()
 
 
-@router.get("/files/", response_model=FilesOutput)
-async def get_files_for_menu(
-    language: str = Query(..., description="language to be used")
-) -> Any:
-    """
-    Endpoint that returns list of file IDs in a given language or
-    all files available in multilang if the language is multi.
-    """
-    menu_query = menu_queries.QUERY_FILES_FOR_LANGUAGE
-    bind_vars = {"language": language}
-    query_result = execute_query(menu_query, bind_vars)
-    query_result = add_searchfield(query_result.result)
-    return {"results": query_result}
-
-
-@router.get("/collections/", response_model=CollectionsOutput)
-async def get_all_collections() -> Any:
-    """
-    Returns list of all available collections.
-    """
-    collections_query_result = execute_query(menu_queries.QUERY_ALL_COLLECTIONS)
-    print(collections_query_result.result)
-    return {"result": collections_query_result.result}
-
-
-@router.get("/sidebar/", response_model=SideBarOutput)
+@router.get("/metadata/", response_model=MetadataOutput)
 async def get_data_for_sidebar_menu(
     language: str = Query(..., description="language to be used")
 ) -> Any:
     """
-    Endpoint for sidebar menu
+    Endpoint for Metadata, formerly known as the sidebar menu.
     """
     menu_query = menu_queries.QUERY_TOTAL_DATA
     current_bind_vars = {"lang": language}
@@ -52,7 +22,7 @@ async def get_data_for_sidebar_menu(
     query_sidebar_menu = execute_query(menu_query, current_bind_vars)
     print(query_sidebar_menu.result)
     structured_menu_data = structure_menu_data(query_sidebar_menu.result)
-    return {"navigationmenudata": structured_menu_data}
+    return {"metadata": structured_menu_data}
 
 
 @router.get("/graphcollections/", response_model=GraphCollectionOutput)

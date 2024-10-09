@@ -92,6 +92,18 @@ def create_collections(c, collections=COLLECTION_NAMES):
 
 
 @task
+def load_metadata(c):
+    """
+    Load metadata from JSON files into the database.
+
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    load_metadata_from_files(METADATA_URLS.values(), db)
+    load_category_names(CATEGORY_NAMES_URLS.values(), db)
+
+
+@task
 def load_text_segments(c, lang=DEFAULT_LANGS, threaded=True):
     """
     Load texts and their segments into the database
@@ -224,16 +236,3 @@ def clean_segment_collections(c):
     :param c: invoke.py context object
     """
     clean_segment_collections_db()
-
-
-# This function is not defined in the Makefile
-@task()
-def load_metadata(c):
-    """
-    Load metadata from JSON files into the database.
-
-    :param c: invoke.py context object
-    """
-    db = get_database()
-    load_metadata_from_files(METADATA_URLS.values(), db)
-    load_category_names(CATEGORY_NAMES_URLS.values(), db)

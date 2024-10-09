@@ -5,7 +5,7 @@ let filelist = (
         let segment_lengths = (
             for csegment in file.segment_keys
                 for rsegment in segments
-                    FILTER rsegment._key == csegment
+                    FILTER rsegment.segmentnr == csegment
                     return LENGTH(rsegment.segtext)
 
         )

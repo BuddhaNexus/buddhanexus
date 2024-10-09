@@ -8,7 +8,7 @@ FOR file IN files
     LET segments = (
         FOR segmentnr IN file.segment_keys
             FOR segment in segments
-                FILTER segment._key == segmentnr
+                FILTER segment.segmentnr == segmentnr
                 RETURN {
                     segnr: segment.segmentnr,
                     segtext: segment.segtext
@@ -34,7 +34,7 @@ FOR file IN files
         (
             FOR segmentnr IN file.segment_pages[@page_number]
                 FOR segment IN segments
-                    FILTER segment._key == segmentnr
+                    FILTER segment.segmentnr == segmentnr
                     LET parallel_ids = (
                         FOR p IN parallels
                             FILTER segmentnr IN p.root_segnr
@@ -111,7 +111,7 @@ LET parallels = (
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segnr
+                        FILTER segment.segmentnr == segnr
                         RETURN segment.segtext
                )
 
@@ -141,7 +141,7 @@ LET parallels_multi = (
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segnr
+                        FILTER segment.segmentnr == segnr
                         RETURN segment.segtext
             )
 

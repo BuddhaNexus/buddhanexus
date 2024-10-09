@@ -40,7 +40,8 @@ def structure_menu_data(query_result):
 
     navigation_menu_data = [
         Collection(
-            collection=collection,
+            collectionname=collection,
+            collectiondisplayname=collection,
             categories=[
                 Category(
                     categoryname=cat_info["categoryname"],

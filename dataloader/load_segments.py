@@ -127,7 +127,7 @@ class LoadSegmentsBase:
         db.collection(self.SEARCH_COLLECTION_NAME).insert_many(search_index_entries)
 
         db.collection(self.SEARCH_COLLECTION_NAME).add_hash_index(
-            fields=["segmentnr", "lang"]
+            fields=["segmentnr", "lang", "filename", "category"], unique=False
         )
 
     def _process_file(self, file):
