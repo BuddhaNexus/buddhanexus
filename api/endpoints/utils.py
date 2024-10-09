@@ -2,7 +2,6 @@ from fastapi import APIRouter, Query
 from typing import Any
 from .endpoint_utils import execute_query
 from ..queries import utils_queries
-from ..utils import arrange_filter_data
 from ..search import search_utils
 from .models.utils_models import *
 
@@ -14,8 +13,7 @@ async def get_counts_for_file(input: CountMatchesInput) -> Any:
     """
     Returns number of filtered parallels
     """
-    filter_include, filter_exclude = arrange_filter_data(input.filters)
-
+    
     query_graph_result = execute_query(
         utils_queries.QUERY_COUNT_MATCHES,
         bind_vars={

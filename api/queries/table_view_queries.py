@@ -31,7 +31,7 @@ FOR f IN parallels_sorted_file
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
                         FILTER segment.segmentnr == segnr
-                        RETURN segment.segtext
+                        RETURN segment.original
             )
             LET par_segment = (
                 FOR segnr IN p.par_segnr
@@ -106,13 +106,13 @@ FOR f IN parallels_sorted_file
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
                         FILTER segment.segmentnr == segnr
-                        RETURN segment.segtext
+                        RETURN segment.original
             )
             LET par_segment = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
                         FILTER segment.segmentnr == segnr
-                        RETURN segment.segtext
+                        RETURN segment.original
             )
             LET filename1 = REGEX_REPLACE(p.par_segnr[0],":.*","")
             LET filename = REGEX_REPLACE(filename1,"_[0-9]+","")

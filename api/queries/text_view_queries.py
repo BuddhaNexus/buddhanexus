@@ -4,7 +4,7 @@ Contains all database queries for text-view and middle text view.
 
 QUERY_FILE_TEXT = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file.filename == @filename
     LET segments = (
         FOR segmentnr IN file.segment_keys
             FOR segment in segments
@@ -21,14 +21,14 @@ RETURN {
 
 QUERY_GET_NUMBER_OF_PAGES = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file.filename == @filename
     RETURN LENGTH(file.segment_pages)
 """
 
 
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
-    FILTER file._key == @filename
+    FILTER file.filename == @filename
     LET page_segments = (        
         LENGTH(file.segment_pages[@page_number] ? file.segment_pages[@page_number] : []) > 0 ?
         (
@@ -55,7 +55,7 @@ FOR file IN files
                     )
                     RETURN {
                         segnr: segment.segmentnr,
-                        segtext: segment.segtext,
+                        segtext: segment.original,
                         parallel_ids: parallel_ids
                     }
         ) : []
@@ -71,7 +71,7 @@ LET parallel_ids = UNIQUE(FLATTEN(
 LET parallels = (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels
-            FILTER p._key == parallel_id
+            FILTER p.filename == parallel_id
             FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
             
@@ -106,13 +106,13 @@ QUERY_PARALLELS_FOR_MIDDLE_TEXT = """
 LET parallels = (
     FOR parallel_id IN @parallel_ids
         FOR p IN parallels
-            FILTER p._key == parallel_id
+            FILTER p.filename == parallel_id
 
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
                         FILTER segment.segmentnr == segnr
-                        RETURN segment.segtext
+                        RETURN segment.original
                )
 
             LET par_full_name = (

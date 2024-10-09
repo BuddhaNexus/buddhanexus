@@ -4,12 +4,16 @@ from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_mid
 from .endpoint_utils import execute_query
 from typing import Any
 from ..utils import (
-    arrange_filter_data,
     get_page_for_segment,
     get_filename_from_segmentnr,
     get_segment_for_folio,
 )
-from .models.text_view_models import *
+from .models.text_view_models import (
+    TextViewLeftOutputV2,
+    TextParallelsInput,
+    TextViewMiddleInput,
+    TextViewMiddleOutput,
+)
 
 router = APIRouter()
 
@@ -34,40 +38,38 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     filename = input.filename
     parallel_ids_type = "parallel_ids"
     page_number = input.page_number
-    print("ALL INPUTS", input)
     if input.active_segment != "none":
         page_number = get_page_for_segment(input.active_segment)
         filename = get_filename_from_segmentnr(input.active_segment)
-    filters_include, filters_exclude = arrange_filter_data(input.filters)
+    
 
     number_of_total_pages = execute_query(
         text_view_queries.QUERY_GET_NUMBER_OF_PAGES,
         bind_vars={
             "filename": filename,
         },
-    ).result[0]
-    print("TOTAL PAGES", number_of_total_pages)
+    ).result[0]    
     if page_number >= number_of_total_pages:
         return {"page": page_number, "total_pages": number_of_total_pages, "items": []}
     current_bind_vars = {
         "filename": filename,
         "page_number": page_number,
-        "score": input.score,
-        "parlength": input.par_length,
-        "multi_lingual": input.multi_lingual,
-        "filter_include_files": filters_include["files"],
-        "filter_include_categories": filters_include["categories"],
-        "filter_include_collections": filters_include["collections"],
-        "filter_exclude_files": filters_exclude["files"],
-        "filter_exclude_categories": filters_exclude["categories"],
-        "filter_exclude_collections": filters_exclude["collections"],
+        "score": input.filters.score,
+        "parlength": input.filters.par_length,
+        "multi_lingual": input.filters.languages,
+        "filter_include_files": input.filters.include_files,
+        "filter_include_categories": input.filters.include_categories,
+        "filter_include_collections": input.filters.include_collections,
+        "filter_exclude_files": input.filters.exclude_files,
+        "filter_exclude_categories": input.filters.exclude_categories,
+        "filter_exclude_collections": input.filters.exclude_collections
     }
 
     text_segments_query_result = execute_query(
         text_view_queries.QUERY_TEXT_AND_PARALLELS,
         bind_vars=current_bind_vars,
     )
-
+    print(text_segments_query_result.result)
     data_with_colormaps = calculate_color_maps_text_view(
         text_segments_query_result.result[0]
     )
