@@ -67,17 +67,18 @@ def get_language_from_filename(filename) -> str:
     :param filename: The key of the file
     :return: Language of the file
     """
+    language = "unknown"
     if filename.startswith("BO_"):
-        return "bo"
+        language = "bo"
     elif filename.startswith("PA_"):
-        return "pa"
+        language = "pa"
     elif filename.startswith("SA_"):
-        return "sa"
+        language = "sa"
     elif filename.startswith("ZH_"):
-        return "zh"
+        language = "zh"
     else:
         print("ERROR: Language not found for filename: ", filename)
-        return "unknown"
+    return language
 
 
 def number_exists(input_string) -> bool:
