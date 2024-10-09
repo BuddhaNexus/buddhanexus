@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, Union, List
 from enum import Enum
 
+
 class Languages(str, Enum):
     all = "all"
     tibetan = "bo"
@@ -14,10 +15,11 @@ class Filters(BaseModel):
     """
     Filters for matches
     """
+
     par_length: int = 0
-    score: int = 0 
+    score: int = 0
     languages: Optional[List[Languages]]
-    
+
     include_files: Optional[List[str]]
     exclude_files: Optional[List[str]]
 
@@ -26,7 +28,6 @@ class Filters(BaseModel):
 
     include_collections: Optional[List[str]]
     exclude_collections: Optional[List[str]]
-
 
 
 class GeneralInput(BaseModel):

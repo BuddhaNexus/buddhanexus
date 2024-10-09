@@ -58,7 +58,7 @@ async def get_table_view(input: GeneralInput):
             "filter_exclude_collections": input.filters.exclude_collections,
             "page": input.page,
             "folio": input.folio,
-        },        
+        },
     )
     return calculate_color_maps_table_view(query_result.result)
 
