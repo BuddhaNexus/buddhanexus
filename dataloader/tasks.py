@@ -95,6 +95,17 @@ def create_collections(c, collections=COLLECTION_NAMES):
             print(f"Error creating collection {name}: ", e)
     print(f"created {collections} collections")
 
+@task
+def load_metadata(c):
+    """
+    Load metadata from JSON files into the database.
+
+    :param c: invoke.py context object
+    """
+    db = get_database()
+    load_metadata_from_files(METADATA_URLS.values(), db)
+    load_category_names(CATEGORY_NAMES_URLS.values(), db)
+
 
 @task
 def load_text_segments(c, lang=DEFAULT_LANGS, threaded=True):
@@ -310,13 +321,4 @@ def clean_chinese(c):
     clean_all_lang_db(LANG_CHINESE)
 
 
-@task()
-def load_metadata(c):
-    """
-    Load metadata from JSON files into the database.
 
-    :param c: invoke.py context object
-    """
-    db = get_database()
-    load_metadata_from_files(METADATA_URLS.values(), db)
-    load_category_names(CATEGORY_NAMES_URLS.values(), db)

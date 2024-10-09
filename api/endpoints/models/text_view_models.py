@@ -7,10 +7,7 @@ class TextParallelsInput(BaseModel):
     filename: str
     folio: str
     active_segment: str = "none"
-    score: int = 0
-    par_length: int = 0
     filters: Optional[Filters]
-    multi_lingual: list = []
     page_number: int = 0
 
 

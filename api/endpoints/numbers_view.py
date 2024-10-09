@@ -3,7 +3,6 @@ import re
 from typing import Any
 from ..utils import (
     get_language_from_filename,
-    arrange_filter_data,
     shorten_segment_names,
 )
 from .endpoint_utils import execute_query
@@ -52,7 +51,7 @@ async def get_numbers_view(input: GeneralInput) -> Any:
     Endpoint for numbers view.
     """
 
-    filter_include, filter_exclude = arrange_filter_data(input.filters)
+    
 
     folio = input.folio
     if not input.folio:
@@ -64,12 +63,12 @@ async def get_numbers_view(input: GeneralInput) -> Any:
             "filename": input.filename,
             "score": input.score,
             "parlength": input.par_length,
-            "filter_include_files": filter_include["files"],
-            "filter_exclude_files": filter_exclude["files"],
-            "filter_include_categories": filter_include["categories"],
-            "filter_exclude_categories": filter_exclude["categories"],
-            "filter_include_collections": filter_include["collections"],
-            "filter_exclude_collections": filter_exclude["collections"],
+            "filter_include_files": input.filters.include_files,
+            "filter_exclude_files": input.filters.exclude_files,
+            "filter_include_categories": input.filters.include_categories,
+            "filter_exclude_categories": input.filters.exclude_categories,
+            "filter_include_collections": input.filters.include_collections,
+            "filter_exclude_collections": input.filters.exclude_collections,
             "page": input.page,
             "folio": folio,
         },

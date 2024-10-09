@@ -67,15 +67,17 @@ def get_language_from_filename(filename) -> str:
     :param filename: The key of the file
     :return: Language of the file
     """
-    if "BO_" in filename:
+    if filename.startswith("BO_"):
         return "bo"
-    if "PA_" in filename:
+    if filename.startswith("PA_"):
         return "pa"
-    if "SA_" in filename:
+    if filename.startswith("SA_"):
         return "sa"
-    if "ZH_" in filename:
+    if filename.startswith("ZH_"):
         return "zh"
-    return "bo"
+    else:
+        print("ERROR: Language not found for filename: ", filename)
+        return "unknown"
 
 
 def number_exists(input_string) -> bool:
@@ -183,34 +185,3 @@ def get_cat_from_segmentnr(segmentnr):
     replaced by a query function.
     """
     return segmentnr.split("_")[1]
-
-
-def arrange_filter_data(filter_items):
-    """
-    Adds filter items to include or exclude dictionary.
-    """
-    include = {
-        "files": [],
-        "categories": [],
-        "collections": [],
-    }
-    exclude = {
-        "files": [],
-        "categories": [],
-        "collections": [],
-    }
-    for item in filter_items["include"]:
-        if item["type"] == "file":
-            include["files"].append(item["value"])
-        if item["type"] == "category":
-            include["categories"].append(item["value"])
-        if item["type"] == "collection":
-            include["collections"].append(item["value"])
-    for item in filter_items["exclude"]:
-        if item["type"] == "file":
-            exclude["files"].append(item["value"])
-        if item["type"] == "category":
-            exclude["categories"].append(item["value"])
-        if item["type"] == "collection":
-            exclude["collections"].append(item["value"])
-    return include, exclude

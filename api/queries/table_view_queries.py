@@ -11,10 +11,10 @@ FOR f IN parallels_sorted_file
             LET folios = (
                 FOR segmentnr IN p.root_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segmentnr
+                        FILTER segment.segmentnr == segmentnr
                         RETURN segment.folio
             )
-            FILTER LENGTH(@folio) == 0 OR @folio IN FOLIOS[*]
+            FILTER LENGTH(@folio) == 0 OR @folio IN folios[*]
             FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
 
@@ -30,18 +30,18 @@ FOR f IN parallels_sorted_file
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segnr
+                        FILTER segment.segmentnr == segnr
                         RETURN segment.segtext
             )
             LET par_segment = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segnr
-                        RETURN segment.segtext
+                        FILTER segment.segmentnr == segnr
+                        RETURN segment.original
             )
             LET par_full_names = (
                 FOR file in files
-                    FILTER file._key == p.par_filename
+                    FILTER file.filename == p.par_filename
                     RETURN {"display_name": file.displayName,
                     "text_name": file.textname,
                     "link1": file.link,
@@ -49,7 +49,7 @@ FOR f IN parallels_sorted_file
                 )
             LET root_full_names = (
                 FOR file in files
-                    FILTER file._key == p.root_filename
+                    FILTER file.filename == p.root_filename
                     RETURN {"display_name": file.displayName,
                     "text_name": file.textname,
                     "link1": file.link,
@@ -86,7 +86,7 @@ FOR f IN parallels_sorted_file
             LET folios = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segnr
+                        FILTER segment.segmentnr == segnr
                         RETURN segment.folio
             )
             FILTER LENGTH(@folio) == 0 OR @folio IN folios[*]
@@ -105,13 +105,13 @@ FOR f IN parallels_sorted_file
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segnr
+                        FILTER segment.segmentnr == segnr
                         RETURN segment.segtext
             )
             LET par_segment = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segnr
+                        FILTER segment.segmentnr == segnr
                         RETURN segment.segtext
             )
             LET filename1 = REGEX_REPLACE(p.par_segnr[0],":.*","")
@@ -154,7 +154,7 @@ FOR file IN files
         LET subArray = SLICE(file.segment_keys, startIndex)
         FOR segmentnr IN subArray
             FOR segment in segments
-                FILTER segment._key == segmentnr
+                FILTER segment.segmentnr == segmentnr
                 LET parallel_ids = (
                     FOR p IN parallels
                         FILTER segmentnr IN p.root_segnr
@@ -206,7 +206,7 @@ FOR file IN files
     LET current_segments = (
         FOR segmentnr IN file.segment_keys
             FOR segment in segments
-                FILTER segment._key == segmentnr
+                FILTER segment.segmentnr == segmentnr
                 LET parallel_ids = (
                     FOR p IN parallels
                         FILTER segmentnr IN p.root_segnr
