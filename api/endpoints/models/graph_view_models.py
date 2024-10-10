@@ -15,4 +15,4 @@ class GraphData(BaseModel):
 
 
 class GraphViewOutput(BaseModel):
-    __root__: List[GraphData]
+    __root__: GraphData

@@ -25,23 +25,24 @@ LET fileslist = (
             FILTER LENGTH(@targetcollection) == 0 OR file.collection IN @targetcollection
             FOR cat in category_names
                 FILTER cat.category == file.category
+                FILTER cat.lang == file.lang
             RETURN {
-                "category": CONCAT(file.category, " ", cat.displayName),
+                "category": CONCAT(UPPER(cat.lang),"_", file.category, " ", cat.displayName),
                 "parlength": p.par_length,
-                "displayname": CONCAT(file.displayName, " (", file.textname, ")") 
+                "displayname": CONCAT(file.displayName, " (", UPPER(cat.lang), " ", file.textname, ")")
                 }
         )
 
 LET piegraphdata = (
     FOR item IN fileslist
-    COLLECT category = item.category 
+    COLLECT category = item.category
     AGGREGATE total_length = SUM(item.parlength)
     SORT total_length DESC
     RETURN [category, total_length]
 )
 
 LET histogramgraphdata = (
-    LENGTH(fileslist) < 2499
+    LENGTH(fileslist) < 2500
     ? (
         FOR item IN fileslist
         COLLECT displayname = item.displayname
@@ -54,5 +55,4 @@ LET histogramgraphdata = (
 
 RETURN {"piegraphdata": piegraphdata,
         "histogramgraphdata": histogramgraphdata}
-
 """

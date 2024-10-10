@@ -78,6 +78,7 @@ async def get_graph_for_file(input: GraphInput) -> Any:
     ```
 
     If the histogramgraphdata is null, it means that the dataset is too large to display the histogram.
+    Please display a message asking the user to use the filters to reduce the dataset size.
     """
 
     query_graph_result = execute_query(
@@ -90,4 +91,4 @@ async def get_graph_for_file(input: GraphInput) -> Any:
         },
     )
 
-    return query_graph_result.result
+    return query_graph_result.result[0]
