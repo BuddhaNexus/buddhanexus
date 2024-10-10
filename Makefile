@@ -43,7 +43,6 @@ load-menu-data:
 
 load-metadata:
 	@docker exec -t dataloader bash -c "invoke load-metadata"
-# Load & build the search-index
 
 add-sources:
 	@docker exec -ti dataloader bash -c "invoke add-sources"

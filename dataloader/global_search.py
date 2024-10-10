@@ -3,7 +3,6 @@ Here we create the search index and analyzers for the global search in the text 
 """
 
 from arango.database import StandardDatabase
-from tqdm import tqdm as tqdm
 from dataloader_constants import (
     SA_STOPWORDS_URL,
     BO_STOPWORDS_URL,

@@ -1,13 +1,21 @@
 """
 This file contains the code to load the complete metadata from the metadata files into the database.
 """
-
+import os
+import sys
 import pandas as pd
 from typing import List
 from arango.database import StandardDatabase
 from dataloader_constants import COLLECTION_FILES, COLLECTION_CATEGORY_NAMES
-from utils import (
-    should_download_file,
+
+# allow importing from api directory
+PACKAGE_PARENT = ".."
+SCRIPT_DIR = os.path.dirname(
+    os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))
+)
+sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
+
+from api.utils import (
     get_language_from_filename,
     get_filename_from_segmentnr,
 )
