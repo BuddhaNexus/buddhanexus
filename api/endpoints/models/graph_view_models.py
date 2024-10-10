@@ -6,7 +6,7 @@ class GraphInput(BaseModel):
     filename: str = ""
     score: int = 0
     par_length: int = 0
-    target_collection: list = []
+    target_collection: List[str] = []
 
 
 class GraphViewOutput(BaseModel):

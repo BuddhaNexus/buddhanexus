@@ -5,7 +5,7 @@ from .general_models import Filters, FullText
 
 class TextParallelsInput(BaseModel):
     filename: str
-    folio: str
+    folio: str = ""
     active_segment: str = "none"
     filters: Optional[Filters]
     page_number: int = 0
