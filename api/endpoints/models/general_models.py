@@ -20,7 +20,7 @@ class Filters(BaseModel):
     score: int = 0
     languages: Optional[List[Languages]]
 
-    include_files: Optional[List[str]] = [] 
+    include_files: Optional[List[str]] = []
     exclude_files: Optional[List[str]] = []
 
     include_categories: Optional[List[str]] = []

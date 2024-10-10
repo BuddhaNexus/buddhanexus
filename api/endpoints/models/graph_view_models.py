@@ -11,4 +11,3 @@ class GraphInput(BaseModel):
 
 class GraphViewOutput(BaseModel):
     piegraphdata: List[List[Union[str, int]]]
-    histogramgraphdata: List[List[Union[str, int]]]
