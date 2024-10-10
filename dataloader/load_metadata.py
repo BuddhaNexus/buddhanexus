@@ -32,8 +32,11 @@ def load_metadata_from_files(paths: List[str], db: StandardDatabase) -> None:
             )  # this is to remove duplicate parts of the same file
             df = df.drop_duplicates(subset=["filename"])
             df = df[
-                ["filename", "displayName", "category", "collection", "textname"]
+                ["filename", "displayName", "category", "collection", "textname", "link", "link2"]                
             ]  # metadata might contain more data; we are only interested in these columns
+            # set link and link2 to empty string if they are NaN
+            df["link"] = df["link"].fillna("")
+            df["link2"] = df["link2"].fillna("")
             df["lang"] = df["filename"].apply(get_language_from_filename)
             df["filenr"] = df.index
             df["segment_keys"] = df["filenr"].apply(lambda x: [])
