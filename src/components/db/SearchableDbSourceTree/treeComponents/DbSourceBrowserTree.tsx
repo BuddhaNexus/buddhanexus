@@ -25,14 +25,14 @@ const DbSourceBrowserTree = memo(function DbSourceBrowserTree({
   const { fileName } = useDbQueryParams();
 
   const setActiveTree = useSetAtom(activeDbSourceTreeAtom);
-  const setBreacrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
+  const setBreadcrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
   const setFocusedDbSourceTreeNode = useSetAtom(focusedDbSourceTreeNodeAtom);
 
   return (
     <Tree
       key={getTreeKeyFromPath(router.asPath)}
       ref={(activeTree) => {
-        handleTreeChange({ activeTree, setActiveTree, setBreacrumbs });
+        handleTreeChange({ activeTree, setActiveTree, setBreadcrumbs });
       }}
       searchTerm={searchTerm}
       initialData={data}

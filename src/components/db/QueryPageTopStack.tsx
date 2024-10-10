@@ -28,7 +28,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   const { fileName, sourceLanguage } = useDbQueryParams();
   const dbView = useAtomValue(currentDbViewAtom);
 
-  const setIsSourceTreerOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);
+  const setIsSourceTreeOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);
   const { setIsSettingsOpen } = useSettingsDrawer();
 
   const searchParams = useSearchParams();
@@ -87,7 +87,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
               aria-label={t(`resultsHead.textSelectTip`)}
               title={t(`resultsHead.textSelectTip`)}
               startIcon={<GradingOutlinedIcon />}
-              onClick={() => setIsSourceTreerOpen(true)}
+              onClick={() => setIsSourceTreeOpen(true)}
             >
               {t(`resultsHead.textSelect`)}
             </Button>

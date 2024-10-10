@@ -54,7 +54,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
     const { observe, height: inputHeight } = useDimensions();
 
     const activeTree = useAtomValue(activeDbSourceTreeAtom);
-    const setBreacrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
+    const setBreadcrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
 
     const handleSearchChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,10 +67,10 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
             anchor: null,
             mostRecent: activeTree.mostRecentNode,
           });
-          setBreacrumbs([]);
+          setBreadcrumbs([]);
         }
       },
-      [setSearchTerm, setBreacrumbs, activeTree],
+      [setSearchTerm, setBreadcrumbs, activeTree],
     );
 
     const { t } = useTranslation(["common"]);

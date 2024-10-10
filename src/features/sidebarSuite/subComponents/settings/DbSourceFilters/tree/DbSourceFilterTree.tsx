@@ -29,7 +29,7 @@ export const DbSourceFilterSelectorTree = memo(
     const router = useRouter();
 
     const setActiveTree = useSetAtom(activeDbSourceTreeAtom);
-    const setBreacrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
+    const setBreadcrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
     const dbSourceFiltersSelectedIds = useAtomValue(
       dbSourceFiltersSelectedIdsAtom,
     );
@@ -38,7 +38,7 @@ export const DbSourceFilterSelectorTree = memo(
       <Tree
         key={getTreeKeyFromPath(router.asPath, filterSettingName)}
         ref={(activeTree) => {
-          handleTreeChange({ activeTree, setActiveTree, setBreacrumbs });
+          handleTreeChange({ activeTree, setActiveTree, setBreadcrumbs });
         }}
         searchTerm={searchTerm}
         initialData={data}

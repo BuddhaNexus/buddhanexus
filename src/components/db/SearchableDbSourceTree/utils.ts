@@ -38,7 +38,7 @@ export function getTreeKeyFromPath(path: string, suffix?: string) {
   return `${path.replace(/\?.*/, "")}-${suffix}`;
 }
 
-export function getTreeBreadcruumbs(node: NodeApi<DbSourceTreeNode>) {
+export function getTreeBreadcrumbs(node: NodeApi<DbSourceTreeNode>) {
   const crumbs = [];
   let current: NodeApi<DbSourceTreeNode> | null = node;
 
@@ -55,7 +55,7 @@ type InitializeTreeProps = {
   setActiveTree: React.Dispatch<
     React.SetStateAction<TreeApi<DbSourceTreeNode> | null | undefined>
   >;
-  setBreacrumbs: React.Dispatch<
+  setBreadcrumbs: React.Dispatch<
     React.SetStateAction<NodeApi<DbSourceTreeNode>[]>
   >;
 };
@@ -63,21 +63,21 @@ type InitializeTreeProps = {
 export const handleTreeChange = ({
   activeTree,
   setActiveTree,
-  setBreacrumbs,
+  setBreadcrumbs,
 }: InitializeTreeProps) => {
   setActiveTree(activeTree);
   const selectedFileNode = activeTree?.selectedNodes[0];
 
   if (!selectedFileNode) {
-    setBreacrumbs([]);
+    setBreadcrumbs([]);
     return;
   }
 
-  const crumbs = getTreeBreadcruumbs(selectedFileNode);
+  const crumbs = getTreeBreadcrumbs(selectedFileNode);
 
   if (selectedFileNode.isLeaf) {
     crumbs.pop();
   }
 
-  setBreacrumbs(crumbs);
+  setBreadcrumbs(crumbs);
 };

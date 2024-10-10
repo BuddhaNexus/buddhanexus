@@ -7,7 +7,7 @@ export const InputOutlineBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1),
 }));
 
-export const ComboboxBox = styled(Box)(({ theme }) => ({
+export const MultiSelectionBox = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",

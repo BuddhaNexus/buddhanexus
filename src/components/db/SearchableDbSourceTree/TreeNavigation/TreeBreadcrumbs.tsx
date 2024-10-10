@@ -5,7 +5,7 @@ import {
   type DbSourceTreeNode,
   DbSourceTreeType,
 } from "@components/db/SearchableDbSourceTree/types";
-import { getTreeBreadcruumbs } from "@components/db/SearchableDbSourceTree/utils";
+import { getTreeBreadcrumbs } from "@components/db/SearchableDbSourceTree/utils";
 import { Box, Button, Typography } from "@mui/material";
 import { lighten } from "@mui/material/styles";
 import { useAtom } from "jotai";
@@ -13,26 +13,26 @@ import { SourceTypeIcon } from "src/components/db/SearchableDbSourceTree/nodeCom
 
 type HandleBreadcrumbClickProps = {
   node: NodeApi<DbSourceTreeNode> | null | undefined;
-  setBreacrumbs: React.Dispatch<
+  setBreadcrumbs: React.Dispatch<
     React.SetStateAction<NodeApi<DbSourceTreeNode>[]>
   >;
 };
 
 const handleBreadcrumbClick = ({
   node,
-  setBreacrumbs,
+  setBreadcrumbs,
 }: HandleBreadcrumbClickProps) => {
   if (!node) return;
 
   node?.select();
   node?.toggle();
 
-  const crumbs = getTreeBreadcruumbs(node);
-  setBreacrumbs(crumbs);
+  const crumbs = getTreeBreadcrumbs(node);
+  setBreadcrumbs(crumbs);
 };
 
 const TreeBreadcrumbs = ({ type }: { type: DbSourceTreeType }) => {
-  const [breadcrumbs, setBreacrumbs] = useAtom(
+  const [breadcrumbs, setBreadcrumbs] = useAtom(
     activeDbSourceTreeBreadcrumbsAtom,
   );
 
@@ -80,7 +80,7 @@ const TreeBreadcrumbs = ({ type }: { type: DbSourceTreeType }) => {
                 background: lighten(theme.palette.background.selected, 0.2),
               },
             })}
-            onClick={() => handleBreadcrumbClick({ node, setBreacrumbs })}
+            onClick={() => handleBreadcrumbClick({ node, setBreadcrumbs })}
           >
             <Box
               sx={{

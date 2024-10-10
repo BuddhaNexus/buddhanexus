@@ -5,8 +5,8 @@ import type {
   DbSourceFilterType,
 } from "@features/sidebarSuite/config/types";
 import {
-  ComboboxBox,
   InputOutlineBox,
+  MultiSelectionBox,
   SelectionChipsBox,
 } from "@features/sidebarSuite/subComponents/settings/DbSourceFilters/styledComponents";
 import { removeItemsById } from "@features/sidebarSuite/subComponents/settings/DbSourceFilters/utils";
@@ -104,7 +104,7 @@ const DbSourceFilterInput = ({
 
   return (
     <InputOutlineBox>
-      <ComboboxBox role="combobox" onClick={handleClick}>
+      <MultiSelectionBox role="combobox" onClick={handleClick}>
         <SelectionChipsBox ref={selectionBoxRef} isExpanded={isExpanded}>
           {selectionIds.map((id) => (
             <Chip
@@ -127,7 +127,7 @@ const DbSourceFilterInput = ({
             }}
           />
         </IconButton>
-      </ComboboxBox>
+      </MultiSelectionBox>
 
       {showButton && (
         <Button sx={{ mt: 1 }} onClick={toggleExpand}>
