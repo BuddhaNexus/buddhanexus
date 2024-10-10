@@ -1,26 +1,21 @@
 from pydantic import BaseModel
 from typing import List, Optional
-from .general_models import Limits
+from .general_models import Filters
 
 
 class CountMatchesInput(BaseModel):
-    file_name: str = ""
+    filename: str = ""
     score = 0
     par_length = 0
-    limits: Optional[Limits]
+    filters: Optional[Filters]
 
 
 class CountMatchesOutput(BaseModel):
     parallel_count: int
 
 
-class Segment(BaseModel):
-    num: str
-    segment_nr: str
-
-
 class FolioOutput(BaseModel):
-    folios: List[Segment]
+    folios: List
 
 
 class DisplayNameOutput(BaseModel):

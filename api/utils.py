@@ -3,11 +3,10 @@ Various utilities for interacting with data in API queries.
 """
 
 import re
-from typing import List
 from urllib.parse import unquote
 from fastapi import HTTPException
 from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
-from .queries import menu_queries, utils_queries, text_view_queries
+from .queries import utils_queries, text_view_queries
 from .db_connection import get_db
 
 
@@ -22,14 +21,15 @@ def prettify_score(score):
 
 def get_filename_from_segmentnr(segnr):
     """
-    Get the filename from a segment number.
+    Get the base filename from a segment number.
     Note that this function is also used in the dataloader and cannot be
     replaced by a query function.
     """
     segnr = segnr.replace(".json", "")
-    if re.search("n[0-9aAbBcCdD]+_[0-9]+", segnr):
+    if "ZH" in segnr:
         segnr = re.sub("_[0-9]+", "", segnr)
-    segnr = re.sub(r"\$[0-9]+", "", segnr)
+    else:
+        segnr = re.sub(r"\$[0-9]+", "", segnr)
     return segnr.split(":")[0]
 
 
@@ -61,50 +61,24 @@ def get_sort_key(sort_method) -> str:
     return sort_key
 
 
-def get_language_from_file_name(file_name) -> str:
+def get_language_from_filename(filename) -> str:
     """
     Given the file ID, returns its language.
-    :param file_name: The key of the file
+    :param filename: The key of the file
     :return: Language of the file
-    Note that this function is also used in the dataloader and cannot be
-    replaced by a query function.
     """
-    lang = "pli"
-    if re.search(r"[DH][0-9][0-9][0-9]|NK|NG|NY|TZ", file_name):
-        lang = "tib"
-    elif re.search(r"(u$|u:|^Y|^XX|sc$|sc:)", file_name):
-        lang = "skt"
-    elif re.search(r"[TX][0-9][0-9]n[0-9]", file_name):
-        lang = "chn"
-    return lang
-
-
-def create_cleaned_limit_collection(limit_collection) -> List:
-    """
-    Check if limit_collection is a category or entire collection.
-    If a collection, fetch all the categories in that collection and add that to the
-    new_limit_collection
-    """
-    new_limit_collection = []
-    for file in limit_collection:
-        if re.search("([a-z]+_[A-Z][a-z]+[a-zA-Z1-2EL-]+$)|tib_NyKM", file):
-            query = get_db().AQLQuery(
-                query=menu_queries.QUERY_ONE_COLLECTION,
-                batchSize=1000,
-                bindVars={
-                    "collectionkey": file.replace("!", ""),
-                },
-            )
-            for item in query.result[0]:
-                new_limit_collection.append(item)
-        else:
-            if (
-                "tib_NyGB" in file
-            ):  # this is a collection-specific hack and things like this should never be done
-                new_limit_collection.append("NG")
-            else:
-                new_limit_collection.append(file)
-    return new_limit_collection
+    language = "unknown"
+    if filename.startswith("BO_"):
+        language = "bo"
+    elif filename.startswith("PA_"):
+        language = "pa"
+    elif filename.startswith("SA_"):
+        language = "sa"
+    elif filename.startswith("ZH_"):
+        language = "zh"
+    else:
+        print("ERROR: Language not found for filename: ", filename)
+    return language
 
 
 def number_exists(input_string) -> bool:
@@ -116,46 +90,18 @@ def number_exists(input_string) -> bool:
     return any(char.isdigit() for char in input_string)
 
 
-def get_folio_regex(language, file_name, folio) -> str:
-    """
-    Creates a regular expression for use in the AD Queries based on the language and
-    file so as to match the segment numbers therein.
-    """
-    start_folio = ""
-    if folio:
-        if language == "pli":
-            if re.search(r"^(anya|tika|atk)", file_name):
-                start_folio = file_name + ":" + folio[:-1] + "[0-9][._]"
-            else:
-                start_folio = file_name + ":" + folio + "[._]"
-        elif language == "skt":
-            if re.search(r"^(K14dhppat)", file_name):
-                start_folio = file_name + ":pdhp_" + folio + "_"
-            elif re.search(r"^(K10udanav)", file_name):
-                start_folio = file_name + ":uv_" + folio + "_"
-            elif re.search(r"^(K10uvs)", file_name):
-                start_folio = file_name + ":uvs_" + folio + "_"
-            else:
-                start_folio = file_name + ":" + folio[:-1] + "[0-9](_[0-9]+)*$"
-        elif language == "tib":
-            start_folio = file_name + ":" + folio + "-"
-        elif language == "chn":
-            start_folio = file_name + "_" + folio + ":"
-    return start_folio
-
-
-def add_source_information(file_name, query_result):
+def add_source_information(filename, query_result):
     """
     Checks if a special source string is stored in the database.
     If not, it will return a generic message based on a regex pattern.
     Currently only works for SKT.
     TODO: We might want to add this to Pali/Chn/Tib as well in the future!
     """
-    lang = get_language_from_file_name(file_name)
-    if lang == "skt":
+    lang = get_language_from_filename(filename)
+    if lang == "sa":
         query_source_information = get_db().AQLQuery(
             query=utils_queries.QUERY_SOURCE,
-            bindVars={"file_name": file_name},
+            bindVars={"filename": filename},
             rawResults=True,
         )
         source_id = query_source_information.result[0]["source_id"]
@@ -194,14 +140,25 @@ def get_page_for_segment(active_segment):
     return page_for_segment.result[0]
 
 
-def get_file_text(file_name):
+def get_segment_for_folio(folio):
+    """
+    Gets the segment number for a given folio.
+    """
+    segment_for_folio = get_db().AQLQuery(
+        query=utils_queries.QUERY_SEGMENT_FOR_FOLIO,
+        bindVars={"folio": folio},
+    )
+    return segment_for_folio.result
+
+
+def get_file_text(filename):
     """
     Gets file segments and numbers only from start_int onwards with max 800 segments.
     """
     try:
         text_segments_query_result = get_db().AQLQuery(
             query=text_view_queries.QUERY_FILE_TEXT,
-            bindVars={"file_name": file_name},
+            bindVars={"filename": filename},
         )
 
         if text_segments_query_result.result:
@@ -228,25 +185,4 @@ def get_cat_from_segmentnr(segmentnr):
     Note that this function is also used in the dataloader and cannot be
     replaced by a query function.
     """
-    cat = ""
-    pali_check = [x for x in ["anya", "atk", "tika"] if segmentnr.startswith(x)]
-    pali_vinaya_check = [
-        x for x in ["pli-tv-bi-vb", "pli-tv-bu-vb"] if segmentnr.startswith(x)
-    ]
-    search = re.search("^[A-Z]+[0-9]+", segmentnr)
-    if "NG" in segmentnr:
-        return "NG"
-    if search:
-        cat = search[0]
-    elif pali_check:
-        search = re.search("^[a-z]+-[a-z]+[0-9][0-9]", segmentnr)
-        cat = search[0]
-    elif pali_vinaya_check:
-        cat = pali_vinaya_check[0]
-    else:
-        search = re.search("^[a-z-]+", segmentnr)
-        if search:
-            cat = search[0]
-        else:
-            cat = segmentnr[0:2]
-    return cat
+    return segmentnr.split("_")[1]

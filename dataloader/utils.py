@@ -33,6 +33,8 @@ SCRIPT_DIR = os.path.dirname(
 )
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
+from api.utils import get_language_from_filename, get_filename_from_segmentnr
+
 
 def get_arango_client() -> ArangoClient:
     """Get Arango Client instance"""
@@ -61,6 +63,13 @@ def get_remote_bytes(file_url) -> io.BytesIO:
     return io.BytesIO(result.content)
 
 
+def sliding_window(data_list, window_size=3):
+    """Generates sliding windows from a list."""
+    return [
+        data_list[i : i + window_size] for i in range(len(data_list) - window_size + 1)
+    ]
+
+
 def execute_in_parallel(task, items, threads) -> None:
     """
     Execute arbitrary function over a collection of items in parallel or synchronously.
@@ -87,39 +96,15 @@ def execute_in_parallel(task, items, threads) -> None:
         )
 
 
-def should_download_file(file_name: str) -> bool:
+def should_download_file(filename: str) -> bool:
     """
     Limit source file set size to speed up loading process
     Can be controlled with the `LIMIT` environment variable.
     """
-    #if "n2" in file_name:
-    #if "T06D4032" in file_name:
-    if not "segment" in file_name:
-        return True
-
-
-def get_segments_and_parallels_from_gzipped_remote_file(file_url: str) -> list:
-    """
-    Given a url to a .gz file:
-    1. Download the file
-    2. Unpack it in memory
-    3. Return segments and parallels
-
-    :param file_url: URL to the gzipped file
-    """
-    if "http" in file_url:
-        file_bytes = get_remote_bytes(file_url)
-    else:
-        file_bytes = file_url
-    try:
-        with gzip.open(file_bytes) as f:
-            parsed = json.loads(f.read())
-            segments, parallels = parsed[:2]
-            f.close()
-            return [segments, parallels]
-    except OSError as os_error:
-        print(f"Could not load the gzipped file {file_url}. Error: ", os_error)
-        return [None, None]
+    # if "n2" in filename:
+    # if "T06D4032" in filename:
+    # if "dn" in filename:
+    return True
 
 
 def get_collection_list_for_language(language, all_cols):

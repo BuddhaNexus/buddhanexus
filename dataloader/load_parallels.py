@@ -16,7 +16,6 @@ from dataloader_constants import (
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     MATCH_LIMIT,
 )
-from folios import get_folios_from_segment_keys
 from utils import should_download_file
 from api.utils import (
     get_cat_from_segmentnr,
@@ -50,19 +49,12 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
             continue
         category_root = get_cat_from_segmentnr(parallel["root_segnr"][0])
         category_parallel = get_cat_from_segmentnr(parallel["par_segnr"][0])
-        folios_list = get_folios_from_segment_keys(
-            parallel["root_segnr"], parallel["src_lang"]
-        )
-        folios = []
-        for folio in folios_list:
-            folios.append(folio["num"])
         root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0])
         par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])
         par_filename = re.sub("_[0-9][0-9][0-9]", "", par_filename)
-        id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]                
+        id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]
         parallel["_id"] = id
         parallel["_key"] = id
-        parallel["folios"] = folios
         parallel["root_category"] = category_root
         parallel["par_category"] = category_parallel
         parallel["par_filename"] = par_filename
@@ -72,7 +64,7 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         del parallel["par_string"]
         del parallel["root_string"]
         # todo: delete the root_filename key after it's not needed anymore
-        parallel["root_filename"] = root_filename        
+        parallel["root_filename"] = root_filename
         parallels_to_be_inserted.append(parallel)
 
     chunksize = 10000
@@ -111,9 +103,9 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     files = os.listdir(folder)
     files = list(filter(lambda f: f.endswith(".json.gz"), files))
     pool = multiprocessing.Pool(number_of_threads)
-    for file in files:        
+    for file in files:
         pool.apply_async(process_file, args=(os.path.join(folder, file), db))
-        #process_file(os.path.join(folder, file), db)
+        # process_file(os.path.join(folder, file), db)
 
     db_collection.add_hash_index(
         fields=[

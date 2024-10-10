@@ -1,8 +1,8 @@
 from dataloader_constants import (
-    COLLECTION_SEARCH_INDEX_SKT,
-    COLLECTION_SEARCH_INDEX_PLI,
-    COLLECTION_SEARCH_INDEX_TIB,
-    COLLECTION_SEARCH_INDEX_CHN,
+    COLLECTION_SEARCH_INDEX_SA,
+    COLLECTION_SEARCH_INDEX_PA,
+    COLLECTION_SEARCH_INDEX_BO,
+    COLLECTION_SEARCH_INDEX_ZH,
     TIBETAN_ANALYZER,
     TIBETAN_FUZZY_ANALYZER,
     SANSKRIT_ANALYZER,
@@ -10,10 +10,10 @@ from dataloader_constants import (
     CHINESE_ANALYZER,
 )
 
-PROPERTIES_SEARCH_INDEX_TIB = {
+PROPERTIES_SEARCH_INDEX_BO = {
     "cleanupIntervalStep": 0,
     "links": {
-        COLLECTION_SEARCH_INDEX_TIB: {
+        COLLECTION_SEARCH_INDEX_BO: {
             "analyzers": [TIBETAN_ANALYZER],
             "fields": {"original": {"analyzers": [TIBETAN_ANALYZER]}},
         }
@@ -23,10 +23,10 @@ PROPERTIES_SEARCH_INDEX_TIB = {
     "trackListPositions": False,
 }
 
-PROPERTIES_SEARCH_INDEX_TIB_FUZZY = {
+PROPERTIES_SEARCH_INDEX_BO_FUZZY = {
     "cleanupIntervalStep": 0,
     "links": {
-        COLLECTION_SEARCH_INDEX_TIB: {
+        COLLECTION_SEARCH_INDEX_BO: {
             "analyzers": [TIBETAN_FUZZY_ANALYZER],
             "fields": {"stemmed": {"analyzers": [TIBETAN_FUZZY_ANALYZER]}},
         }
@@ -36,10 +36,10 @@ PROPERTIES_SEARCH_INDEX_TIB_FUZZY = {
     "trackListPositions": False,
 }
 
-PROPERTIES_SEARCH_INDEX_SKT = {
+PROPERTIES_SEARCH_INDEX_SA = {
     "cleanupIntervalStep": 0,
     "links": {
-        COLLECTION_SEARCH_INDEX_SKT: {
+        COLLECTION_SEARCH_INDEX_SA: {
             "analyzers": [SANSKRIT_ANALYZER],
             "fields": {
                 "original": {"analyzers": [SANSKRIT_ANALYZER]},
@@ -52,10 +52,10 @@ PROPERTIES_SEARCH_INDEX_SKT = {
     "trackListPositions": False,
 }
 
-PROPERTIES_SEARCH_INDEX_PLI = {
+PROPERTIES_SEARCH_INDEX_PA = {
     "cleanupIntervalStep": 0,
     "links": {
-        COLLECTION_SEARCH_INDEX_PLI: {
+        COLLECTION_SEARCH_INDEX_PA: {
             "analyzers": [PALI_ANALYZER],
             "fields": {
                 "original": {"analyzers": [PALI_ANALYZER]},
@@ -69,10 +69,10 @@ PROPERTIES_SEARCH_INDEX_PLI = {
 }
 
 
-PROPERTIES_SEARCH_INDEX_CHN = {
+PROPERTIES_SEARCH_INDEX_ZH = {
     "cleanupIntervalStep": 0,
     "links": {
-        COLLECTION_SEARCH_INDEX_CHN: {
+        COLLECTION_SEARCH_INDEX_ZH: {
             "analyzers": [CHINESE_ANALYZER],
             "fields": {"original": {"analyzers": [CHINESE_ANALYZER]}},
         }
