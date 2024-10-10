@@ -18,20 +18,41 @@ LET current_parallels = (
             RETURN p
 )
 
-FOR p IN current_parallels
-    FOR file IN files
-        FILTER file.filename == p.par_filename
-        FILTER LENGTH(@targetcollection) == 0 OR file.collection IN @targetcollection
-        LET categorylist = (
+LET fileslist = (
+    FOR p IN current_parallels
+        FOR file IN files
+            FILTER file.filename == p.par_filename
+            FILTER LENGTH(@targetcollection) == 0 OR file.collection IN @targetcollection
+            FOR cat in category_names
+                FILTER cat.category == file.category
             RETURN {
-                "category": file.category,
-                "parlength": p.par_length
+                "category": CONCAT(file.category, " ", cat.displayName),
+                "parlength": p.par_length,
+                "displayname": CONCAT(file.displayName, " (", file.textname, ")") 
                 }
         )
-    
-FOR item IN categorylist
-COLLECT category = item.category 
-AGGREGATE total_length = SUM(item.parlength)
-SORT total_length DESC
-RETURN [category, total_length]
+
+LET piegraphdata = (
+    FOR item IN fileslist
+    COLLECT category = item.category 
+    AGGREGATE total_length = SUM(item.parlength)
+    SORT total_length DESC
+    RETURN [category, total_length]
+)
+
+LET histogramgraphdata = (
+    LENGTH(fileslist) < 2499
+    ? (
+        FOR item IN fileslist
+        COLLECT displayname = item.displayname
+        AGGREGATE total_length = SUM(item.parlength)
+        SORT total_length DESC
+        RETURN [displayname, total_length]
+    )
+    : null
+)
+
+RETURN {"piegraphdata": piegraphdata,
+        "histogramgraphdata": histogramgraphdata}
+
 """

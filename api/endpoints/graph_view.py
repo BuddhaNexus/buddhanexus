@@ -60,9 +60,24 @@ async def get_graph_for_file(input: GraphInput) -> Any:
             ...
 
             ]
-          ]
-          }
+          ],
+          "histogramgraphdata": [
+            [
+              "Kūṭadanta Sutta (Dn 5)",
+              "36982"
+            ],
+            [
+              "Caṅkī Sutta (Mn 95)",
+              "19661"
+            ],
+            [
+              "Bhesajjakkhandhaka (Pli-tv-kd 6)",
+              "7773"
+            ],
+            etc.
     ```
+
+    If the histogramgraphdata is null, it means that the dataset is too large to display the histogram.
     """
 
     query_graph_result = execute_query(
@@ -75,4 +90,4 @@ async def get_graph_for_file(input: GraphInput) -> Any:
         },
     )
 
-    return {"piegraphdata": query_graph_result.result}
+    return query_graph_result.result
