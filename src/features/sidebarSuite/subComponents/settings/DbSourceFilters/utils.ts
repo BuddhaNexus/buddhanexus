@@ -59,7 +59,7 @@ export const updateFilterParamArray = ({
   if (action === "add") {
     return [...array, id];
   } else if (action === "remove") {
-    return array.filter((item) => item !== id);
+    return array?.filter((item) => item !== id);
   }
   return array;
 };
@@ -79,7 +79,7 @@ export const removeItemsById = ({
     let updatedFilterValue = filterValue;
     if (key.startsWith(filterSettingName)) {
       updatedFilterValue = updateFilterParamArray({
-        array: filterValue,
+        array: filterValue ?? [],
         id,
         action: "remove",
       });
