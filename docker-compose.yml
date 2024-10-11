@@ -1,0 +1,53 @@
+version: "3.7"
+
+services:
+  arangodb:
+    image: arangodb:3.8.4
+    expose:
+      - "8529"
+    container_name: "arangodb"
+    ports:
+      - "8529:8529"
+    env_file:
+      - .env
+    entrypoint: /entrypoint.sh
+    command: --query.optimizer-rules "-splice-subqueries"
+    volumes:
+      - dbdata:/var/lib/arangodb3
+    restart: always
+
+  dataloader:
+    build:
+      context: .
+      dockerfile: ./setup/Dockerfile-dataloader
+    container_name: "dataloader"
+    volumes:
+      - .:/opt/buddhanexus
+    env_file:
+      - .env
+    links:
+      - "arangodb"
+    depends_on:
+      - arangodb
+    restart: always
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: ./setup/Dockerfile-fastapi
+    container_name: "fastapi"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/opt/buddhanexus
+    env_file:
+      - .env
+    environment:
+      - PROD=0
+    command: uvicorn --host 0.0.0.0 api.main:APP --reload
+    restart: always
+    depends_on:
+      - arangodb
+
+volumes:
+  dbdata:

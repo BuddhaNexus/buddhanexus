@@ -1,0 +1,8 @@
+FROM python:3.8-bookworm
+
+RUN mkdir -p /opt/buddhanexus
+WORKDIR /opt/buddhanexus
+COPY */requirements-fastapi.txt requirements.txt
+RUN pip install -r requirements.txt
+RUN pip install -U setuptools
+RUN pip install -U pylint

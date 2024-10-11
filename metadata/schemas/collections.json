@@ -1,0 +1,22 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Collections",
+    "description": "Language specific list of collections for the DB",
+    "type": "array",
+    "items": {
+        "additionalProperties": false,
+        "required": [
+            "collection",
+            "categories"
+        ],
+        "properties": {
+            "collection": { "type": "string" },
+            "categories": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
