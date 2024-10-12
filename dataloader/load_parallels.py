@@ -14,7 +14,9 @@ from dataloader_models import Match, validate_dict_list
 from dataloader_constants import (
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
+    COLLECTION_FILES,
     MATCH_LIMIT,
+    
 )
 from utils import should_download_file
 from api.utils import (
@@ -50,19 +52,29 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         category_root = get_cat_from_segmentnr(parallel["root_segnr"][0])
         category_parallel = get_cat_from_segmentnr(parallel["par_segnr"][0])
         root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0])
-        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])
-        par_filename = re.sub("_[0-9][0-9][0-9]", "", par_filename)
-        id = parallel["root_segnr"][0] + "_" + parallel["par_segnr"][0]
-        parallel["_id"] = id
-        parallel["_key"] = id
+        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])        
+        parallel["_id"] = parallel['id']
+        parallel["_key"] = parallel['id']
         parallel["root_category"] = category_root
         parallel["par_category"] = category_parallel
         parallel["par_filename"] = par_filename
         # here we delete some things that we don't need in the DB:
+        del parallel["id"]
         del parallel["par_segtext"]
         del parallel["root_segtext"]
         del parallel["par_string"]
         del parallel["root_string"]
+        root_file_doc = files_collection.get(root_filename)
+        if root_file_doc:
+            parallel["root_collection"] = root_file_doc.get("collection")
+        else:
+            print(f"Warning: No collection found for root file {root_filename}")
+
+        par_file_doc = files_collection.get(par_filename)
+        if par_file_doc:
+            parallel["par_collection"] = par_file_doc.get("collection")
+        else:
+            print(f"Warning: No collection found for parallel file {par_filename}")
         # todo: delete the root_filename key after it's not needed anymore
         parallel["root_filename"] = root_filename
         parallels_to_be_inserted.append(parallel)

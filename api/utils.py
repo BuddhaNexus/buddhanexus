@@ -25,9 +25,10 @@ def get_filename_from_segmentnr(segnr):
     Note that this function is also used in the dataloader and cannot be
     replaced by a query function.
     """
+    segmentnr_before = segnr
     segnr = segnr.replace(".json", "")
-    if "ZH" in segnr:
-        segnr = re.sub("_[0-9]+", "", segnr)
+    if "ZH_" in segnr:
+        segnr = re.sub("_[0-9]+:", ":", segnr)
     else:
         segnr = re.sub(r"\$[0-9]+", "", segnr)
     return segnr.split(":")[0]
@@ -67,18 +68,17 @@ def get_language_from_filename(filename) -> str:
     :param filename: The key of the file
     :return: Language of the file
     """
-    language = "unknown"
     if filename.startswith("BO_"):
-        language = "bo"
-    elif filename.startswith("PA_"):
-        language = "pa"
-    elif filename.startswith("SA_"):
-        language = "sa"
-    elif filename.startswith("ZH_"):
-        language = "zh"
+        return "bo"
+    if filename.startswith("PA_"):
+        return "pa"
+    if filename.startswith("SA_"):
+        return "sa"
+    if filename.startswith("ZH_"):
+        return "zh"
     else:
         print("ERROR: Language not found for filename: ", filename)
-    return language
+        return "unknown"
 
 
 def number_exists(input_string) -> bool:

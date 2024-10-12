@@ -6,6 +6,7 @@ from collections import defaultdict
 import os
 import natsort
 import multiprocessing
+from functools import partial
 import re
 import time
 import pandas as pd
@@ -47,6 +48,23 @@ def process_file_group_helper(args):
     loader_instance, file_group = args
     for file in file_group:
         loader_instance._process_file(file)
+
+def sort_file_segments(filename, segments_and_folios):        
+    print("Sorting segments for file", filename)
+    segments_and_folios = segments_and_folios[filename]    
+    segments_and_folios = natsort.natsorted(segments_and_folios, key=lambda x: x['segmentnr'])
+    segments = [seg['segmentnr'] for seg in segments_and_folios]
+    folios = [seg['folio'] for seg in segments_and_folios]
+    lang = get_language_from_filename(filename)
+    segments_paginated = [
+        segments[i : i + PAGE_SIZE]
+        for i in range(0, len(segments), PAGE_SIZE)
+    ]
+    segments_paginated = {
+        count: page for count, page in enumerate(segments_paginated)
+    }    
+    folios = list(dict.fromkeys(folios))
+    return filename, segments, folios, segments_paginated, lang
 
 
 class LoadSegmentsBase:
@@ -188,72 +206,67 @@ class LoadSegmentsBase:
 
     def _sort_segnrs(self):
         time_before = time.time()
-        """
-        This sorts the segmentnrs per file, as we don't know their order yet when loading them.
-        """
-        db = get_database()
         print("\nSorting segment numbers...")
+        db = get_database()
         collection_segments = db.collection(COLLECTION_SEGMENTS)
         collection_segments_pages = db.collection(COLLECTION_SEGMENTS_PAGES)
         collection_files = db.collection(COLLECTION_FILES)
-        segments_by_file = {}
+        
+        segments_and_folios_by_file = {}
 
         segments = collection_segments.find({"lang": self.LANG})
-        folios = []
-        for segment in tqdm(segments):
+        for segment in tqdm(segments, desc="Grouping segments"):
             filename = get_filename_from_segmentnr(segment["segmentnr"])
-            if filename not in segments_by_file:
-                segments_by_file[filename] = []
-            segments_by_file[filename].append(segment["segmentnr"])
-            folios.append(segment["folio"])
+            if filename not in segments_and_folios_by_file:
+                segments_and_folios_by_file[filename] = []
+            segments_and_folios_by_file[filename].append(
+                {"segmentnr": segment["segmentnr"], "folio": segment["folio"]})
+                
 
-        for filename in tqdm(segments_by_file):
-            segments_sorted = natsort.natsorted(segments_by_file[filename])
-            lang = get_language_from_filename(filename)
-            # in order to save some grief on the frontend, we paginate the segments arbitrarily
-            page_size = 400
-            segments_paginated = [
-                segments_sorted[i : i + PAGE_SIZE]
-                for i in range(0, len(segments_sorted), PAGE_SIZE)
-            ]
 
-            segments_paginated = {
-                count: page for count, page in enumerate(segments_paginated)
-            }
+        # Parallel sorting
+        print("Now parallel sorting")
+        with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
+            sorted_results = pool.map(partial(sort_file_segments, segments_and_folios=segments_and_folios_by_file), segments_and_folios_by_file.keys())
+            
+        # Prepare data for bulk insert
+        segments_pages_to_insert = []
+        files_to_update = []
 
-            segments_paginated_to_be_inserted = []
-            for page in segments_paginated:
-                current_segments = [
-                    {"segmentnr": seg, "page": page} for seg in segments_paginated[page]
-                ]
-                segments_paginated_to_be_inserted += current_segments
+        for filename, segments_sorted, folios_sorted, segments_paginated, lang in sorted_results:            
+            # Prepare segments pages for bulk insert
+            for page, segs in segments_paginated.items():
+                segments_pages_to_insert.extend([
+                    {"segmentnr": seg, "page": page} for seg in segs
+                ])
 
-            collection_segments_pages.insert_many(segments_paginated_to_be_inserted)
-            # get file where 'textname' equals to filename
-            files = list(collection_files.find({"filename": filename}))
-            if len(files) > 0:
-                file = files[0]
+            # Prepare file updates
+            file = collection_files.get(filename)
+            
+            if file:
                 file["segment_keys"] = segments_sorted
                 file["segment_pages"] = segments_paginated
                 file["lang"] = lang
-                file["folios"] = folios
-                collection_files.update(file)
+                file["folios"] = folios_sorted
+                files_to_update.append(file)
+
             else:
-                # if we don't have metadata for a file, this will end in an orphaned file in the db. For cempletion sake, we will insert this anyway, but its a bad sign.
                 print(f"Could not find file {filename} in db.")
-                file = {
+                files_to_update.append({
                     "_key": filename,
                     "filename": filename,
                     "lang": lang,
-                    "folios": folios,
+                    "folios": folios_sorted,
                     "segment_keys": segments_sorted,
                     "segment_pages": segments_paginated,
-                }
-                collection_files.insert(file)
-        print("Done sorting segment numbers.")
-        print(
-            f"Time taken to sort segment numbers: {time.time() - time_before:.2f} seconds."
-        )
+                })
+
+        # Bulk insert and update
+        if segments_pages_to_insert:
+            collection_segments_pages.insert_many(segments_pages_to_insert)
+        
+        for file in files_to_update:            
+            collection_files.update(file)
 
     def clean(self):
         db = get_database()
