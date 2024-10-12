@@ -13,7 +13,7 @@ async def get_counts_for_file(input: CountMatchesInput) -> Any:
     """
     Returns number of filtered parallels
     """
-    
+
     query_graph_result = execute_query(
         utils_queries.QUERY_COUNT_MATCHES,
         bind_vars={

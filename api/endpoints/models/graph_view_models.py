@@ -9,6 +9,10 @@ class GraphInput(BaseModel):
     target_collection: List[str] = []
 
 
-class GraphViewOutput(BaseModel):
+class GraphData(BaseModel):
     piegraphdata: List[List[Union[str, int]]]
-    histogramgraphdata: List[List[Union[str, int]]]
+    histogramgraphdata: List[List[Union[str, int]]] = None
+
+
+class GraphViewOutput(BaseModel):
+    __root__: GraphData
