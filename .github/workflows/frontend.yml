@@ -1,0 +1,22 @@
+name: CI
+on:
+  pull_request:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working_directory: ./frontend
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+          cache: "yarn"
+      - name: Install modules
+        run: yarn
+      - name: Run TypeScript compiler
+        run: tsc
+      - name: Run ESLint
+        run: yarn eslint .
