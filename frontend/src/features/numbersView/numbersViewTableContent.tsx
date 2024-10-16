@@ -15,14 +15,16 @@ import {
 } from "@mui/material";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import type {
-  APINumbersSegment,
-  APINumbersViewCategoryResponseData,
-  APINumbersViewResponseData,
-  APIParallel,
+  APIGetResponse,
+  APIPostResponse,
+  APISchemas,
 } from "@utils/api/types";
 import { SourceLanguage } from "@utils/constants";
+import type { NumbersSegment } from "./NumbersTable";
 
-export const createTableRows = (rowData: APINumbersViewResponseData) =>
+export const createTableRows = (
+  rowData: APIPostResponse<"/numbers-view/numbers/">
+) =>
   rowData.map((item) => {
     const row: any = { segment: item.segmentnr };
 
@@ -40,7 +42,7 @@ export const createTableRows = (rowData: APINumbersViewResponseData) =>
   });
 
 interface CreateTableColumnProps {
-  categories: APINumbersViewCategoryResponseData;
+  categories: APIGetResponse<"/numbers-view/categories/">;
   language: SourceLanguage;
   fileName: string;
 }
@@ -48,7 +50,7 @@ export const createTableColumns = ({
   categories,
   language,
   fileName,
-}: CreateTableColumnProps): ColumnDef<APINumbersSegment>[] => [
+}: CreateTableColumnProps): ColumnDef<NumbersSegment>[] => [
   {
     accessorKey: "segment",
     header: () => (
@@ -88,8 +90,8 @@ export const createTableColumns = ({
         <Typography textTransform="uppercase">{header.id}</Typography>
       </div>
     ),
-    cell: (info: CellContext<APINumbersSegment, unknown>) => {
-      const parallels = info?.getValue<APIParallel[]>() || [];
+    cell: (info: CellContext<NumbersSegment, unknown>) => {
+      const parallels = info?.getValue<APISchemas["Parallel"][]>() || [];
       return (
         <div
           style={{
@@ -137,18 +139,18 @@ export const createTableColumns = ({
 const ScrollerRef = React.forwardRef<HTMLDivElement>(
   function ScrollerRef(props, ref) {
     return <TableContainer component={Paper} {...props} ref={ref} />;
-  },
+  }
 );
 const TableHeadRef = React.forwardRef<HTMLTableSectionElement>(
   function TableHeadRef(props, ref) {
     return <TableHead {...props} ref={ref} sx={{ zIndex: "2 !important" }} />;
-  },
+  }
 );
 
 const TableBodyRef = React.forwardRef<HTMLTableSectionElement>(
   function TableBodyRef(props, ref) {
     return <TableBody {...props} ref={ref} />;
-  },
+  }
 );
 
 export const getVirtuosoTableComponents = (): TableComponents => ({

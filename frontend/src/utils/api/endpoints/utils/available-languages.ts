@@ -1,12 +1,9 @@
 import apiClient from "@api";
-import type {
-  APIAvailableLanguagesRequestQuery,
-  APIAvailableLanguagesResponseData,
-} from "@utils/api/types";
+import type { APIGetRequestQuery, APIGetResponse } from "@utils/api/types";
 import { SourceLanguage } from "@utils/constants";
 
 const parseAPIAvailableLanguagesData = (
-  data: APIAvailableLanguagesResponseData,
+  data: APIGetResponse<"/utils/available-languages/">
 ) => {
   return data
     ? data.langList.map((lang) => lang as SourceLanguage).filter(Boolean)
@@ -14,9 +11,9 @@ const parseAPIAvailableLanguagesData = (
 };
 
 export async function getAvailableLanguages(
-  query: APIAvailableLanguagesRequestQuery,
+  query: APIGetRequestQuery<"/utils/available-languages/">
 ) {
-  if (!query.file_name) {
+  if (!query.filename) {
     return [];
   }
 

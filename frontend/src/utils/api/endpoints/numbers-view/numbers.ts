@@ -1,18 +1,15 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
-import type {
-  APINumbersViewRequestBody,
-  APINumbersViewResponseData,
-} from "@utils/api/types";
+import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
 export type NumbersViewData = {
-  data: APINumbersViewResponseData;
+  data: APIPostResponse<"/numbers-view/numbers/">;
   hasNextPage: boolean;
   pageNumber: number;
 };
 
 export async function getNumbersViewData(
-  body: APINumbersViewRequestBody,
+  body: APIPostRequestBody<"/numbers-view/numbers/">
 ): Promise<NumbersViewData> {
   const { data } = await apiClient.POST("/numbers-view/numbers/", {
     body: parseAPIRequestBody(body),

@@ -51,15 +51,15 @@ export default function GraphPage() {
 
   const requestBody = React.useMemo(
     () => ({
-      file_name: fileName,
+      filename: fileName,
       score: score ? Number(score) : defaultQueryParams.score,
       par_length: par_length
         ? Number(par_length)
         : defaultQueryParams.par_length,
       // TODO: Add target_collection when available / or remove
-      target_collection: undefined,
+      target_collection: [],
     }),
-    [fileName, score, par_length, defaultQueryParams],
+    [fileName, score, par_length, defaultQueryParams]
   );
 
   const { data, isLoading, isError } = useQuery({

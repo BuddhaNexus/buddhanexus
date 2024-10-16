@@ -15,11 +15,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import type { NumbersViewData } from "@utils/api/endpoints/numbers-view/numbers";
-import type {
-  APINumbersSegment,
-  APINumbersViewCategoryResponseData,
-  APINumbersViewResponseData,
-} from "@utils/api/types";
+import type { APIGetResponse, APIPostResponse } from "@utils/api/types";
 import { SourceLanguage } from "@utils/constants";
 
 import {
@@ -28,12 +24,14 @@ import {
   getVirtuosoTableComponents,
 } from "./numbersViewTableContent";
 
+export type NumbersSegment = APIPostResponse<"/numbers-view/numbers/">[number];
+
 interface NumbersTableProps {
-  categories: APINumbersViewCategoryResponseData;
-  data: APINumbersViewResponseData;
+  categories: APIGetResponse<"/numbers-view/categories/">;
+  data: APIPostResponse<"/numbers-view/numbers/">;
   hasNextPage: boolean;
   fetchNextPage: (
-    options?: FetchNextPageOptions | undefined,
+    options?: FetchNextPageOptions | undefined
   ) => Promise<
     InfiniteQueryObserverResult<InfiniteData<NumbersViewData, unknown>, Error>
   >;
@@ -63,9 +61,9 @@ export default function NumbersTable({
 
   const rowData = React.useMemo(() => createTableRows(data), [data]);
 
-  const columns = React.useMemo<ColumnDef<APINumbersSegment>[]>(
+  const columns = React.useMemo<ColumnDef<NumbersSegment>[]>(
     () => createTableColumns({ categories, language, fileName }),
-    [categories, language, fileName],
+    [categories, language, fileName]
   );
 
   const table = useReactTable({
@@ -79,7 +77,7 @@ export default function NumbersTable({
 
   const components = React.useMemo(
     () => getVirtuosoTableComponents() as TableComponents<any>,
-    [],
+    []
   );
 
   const FixedHeaderContent = React.memo(() => {

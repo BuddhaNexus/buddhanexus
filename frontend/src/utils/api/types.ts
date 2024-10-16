@@ -1,19 +1,40 @@
-import type { components, paths } from "src/codegen/api/v2.ts";
+import type { components, paths } from "src/codegen/api/proto.ts";
 
 // TODO: most endpoint query functions have a `if undefined` check, this is to match a temp fix for BE data issues. The check should be cleared onee Pali data is updated on the BE.
 
 /**
  * *********** !!! ***********
- * CODEGEN DERIVATE TYPES ONLY
+ * CODEGEN DERIVATE TYPES / CREATOR TYPE HELPERS  ONLY
  * Requests & responses mirror paths given in the `operations`
- * interface in `src/codegen/api/v2.d.ts`
+ * interface in `src/codegen/api/*.ts`
  * Sub-components taken directly from `components` interface
  * ************************** ¡¡¡ **************************
  */
 
-export type APISchemas = components["schemas"];
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type HasPostMethod<T> = T extends { post: any } ? true : false;
 
-type APIRequestBody<operation> = "requestBody" extends keyof operation
+type FilterPostEndpoints<T> = {
+  [K in keyof T]: HasPostMethod<T[K]> extends true ? K : never;
+}[keyof T];
+
+type FilterGetEndpoints<T> = {
+  [K in keyof T]: HasPostMethod<T[K]> extends false ? K : never;
+}[keyof T];
+
+export type APISchemas = components["schemas"];
+export type Endpoint = keyof paths;
+
+/**
+ * *********************
+ * CREATOR TYPE HELPERS
+ * **************************
+ */
+
+type PostEndpoint = FilterPostEndpoints<paths>;
+type GetEndpoint = FilterGetEndpoints<paths>;
+
+type RequestBody<operation> = "requestBody" extends keyof operation
   ? "content" extends keyof operation["requestBody"]
     ? "application/json" extends keyof operation["requestBody"]["content"]
       ? operation["requestBody"]["content"]["application/json"]
@@ -21,7 +42,7 @@ type APIRequestBody<operation> = "requestBody" extends keyof operation
     : never
   : never;
 
-type APIRequestParams<operation> = "parameters" extends keyof operation
+type RequestQuery<operation> = "parameters" extends keyof operation
   ? "query" extends keyof operation["parameters"]
     ? operation["parameters"]["query"]
     : never
@@ -37,173 +58,18 @@ type APIResponse<operation> = "responses" extends keyof operation
     : never
   : never;
 
-/** COMMON */
-
-// request
-export type APIGeneralInput = APISchemas["GeneralInput"];
-
-// response
-export type APILimits = APISchemas["Limits"];
-export type APIFullNames = APISchemas["FullNames"];
-export type APIFullText = APISchemas["FullText"];
-export type APIFullMatchText = APISchemas["FullMatchText"];
-export type APIParallel = APISchemas["Parallel"];
-
-/**
- * *****************************************
- * ENDPOINTS (`operations` interface mirror)
- * *****************************************
- */
-
-/** SEARCH */
-
-export type APISearchRequestBody = APIRequestBody<paths["/search/"]["post"]>;
-export type APISearchResponseData = APIResponse<paths["/search/"]["post"]>;
-
-/** GRAPH VIEW  */
-
-export type APIGraphViewRequestBody = APIRequestBody<
-  paths["/graph-view/"]["post"]
->;
-export type APIGraphViewResponseData = APIResponse<
-  paths["/graph-view/"]["post"]
+export type APIPostRequestBody<Endpoint extends PostEndpoint> = RequestBody<
+  paths[Endpoint]["post"]
 >;
 
-/** VISUAL VIEW  */
-
-export type APIVisualViewRequestBody = APIRequestParams<
-  paths["/visual-view/"]["post"]
->;
-export type APIVisualViewResponseData = APIResponse<
-  paths["/visual-view/"]["post"]
+export type APIPostResponse<Endpoint extends PostEndpoint> = APIResponse<
+  paths[Endpoint]["post"]
 >;
 
-/** TABEL VIEW */
-
-export type APITableViewRequestBody = APIRequestBody<
-  paths["/table-view/table/"]["post"]
->;
-export type APITableViewResponseData = APIResponse<
-  paths["/table-view/table/"]["post"]
+export type APIGetRequestQuery<Endpoint extends GetEndpoint> = RequestQuery<
+  paths[Endpoint]["get"]
 >;
 
-export type APITableViewDownloadRequestBody = APIRequestBody<
-  paths["/table-view/download/"]["post"]
->;
-export type APITableViewDownloadResponseData = APIResponse<
-  paths["/table-view/download/"]["post"]
->;
-
-/** TEXT VIEW */
-
-export type APITextViewMiddleRequestBody = APIRequestBody<
-  paths["/text-view/middle/"]["post"]
->;
-export type APITextViewMiddleResponseData = APIResponse<
-  paths["/text-view/middle/"]["post"]
->;
-
-export type APITextViewParallelsRequestBody = APIRequestBody<
-  paths["/text-view/text-parallels/"]["post"]
->;
-export type APITextViewParallelsResponseData = APIResponse<
-  paths["/text-view/text-parallels/"]["post"]
->;
-
-export type APITextViewParallelsV2RequestBody = APIRequestBody<
-  paths["/text-view/text-parallels-v2/"]["post"]
->;
-export type APITextViewParallelsV2ResponseData = APIResponse<
-  paths["/text-view/text-parallels-v2/"]["post"]
->;
-
-/** NUMBERS VIEW */
-
-export type APINumbersViewRequestBody = APIRequestBody<
-  paths["/numbers-view/numbers/"]["post"]
->;
-export type APINumbersViewResponseData = APIResponse<
-  paths["/numbers-view/numbers/"]["post"]
->;
-// `APINumbersSegment`: type for individual result item returned in `NumbersViewOutput` array.
-export type APINumbersSegment = APINumbersViewResponseData[number];
-
-export type APINumbersViewCategoryRequestQuery = APIRequestParams<
-  paths["/numbers-view/categories/"]["get"]
->;
-export type APINumbersViewCategoryResponseData = APIResponse<
-  paths["/numbers-view/categories/"]["get"]
->;
-
-/** EXTERNAL LINKS */
-
-export type APIExternalLinksRequestQuery = APIRequestParams<
-  paths["/links/external/"]["get"]
->;
-export type APIExternalLinksResponseData = APIResponse<
-  paths["/links/external/"]["get"]
->;
-
-/** UTILS */
-
-export type APICountMatchesRequestBody = APIRequestBody<
-  paths["/utils/count-matches/"]["post"]
->;
-export type APICountMatchesResponseData = APIResponse<
-  paths["/utils/count-matches/"]["post"]
->;
-
-export type APIFolioRequestQuery = APIRequestParams<
-  paths["/utils/folios/"]["get"]
->;
-export type APIFolioResponseData = APIResponse<paths["/utils/folios/"]["get"]>;
-
-export type APIDisplayNameRequestQuery = APIRequestParams<
-  paths["/utils/displayname/"]["get"]
->;
-export type APIDisplayNameResponseData = APIResponse<
-  paths["/utils/displayname/"]["get"]
->;
-
-// sanskrittagger - not implemented
-
-export type APIAvailableLanguagesRequestQuery = APIRequestParams<
-  paths["/utils/available-languages/"]["get"]
->;
-export type APIAvailableLanguagesResponseData = APIResponse<
-  paths["/utils/available-languages/"]["get"]
->;
-
-/** MENUS */
-
-export type APIMenuFilesRequestQuery = APIRequestParams<
-  paths["/menus/files/"]["get"]
->;
-export type APIMenuFilesResponseData = APIResponse<
-  paths["/menus/files/"]["get"]
->;
-
-export type APIMenuFilterFilesRequestQuery = APIRequestParams<
-  paths["/menus/filter/"]["get"]
->;
-export type APIMenuFilterFilesResponseData = APIResponse<
-  paths["/menus/filter/"]["get"]
->;
-
-export type APIMenuFilterCategoriesRequestQuery = APIRequestParams<
-  paths["/menus/category/"]["get"]
->;
-export type APIMenuFilterCategoriesResponseData = APIResponse<
-  paths["/menus/category/"]["get"]
->;
-
-export type APIMenuAllCollectionsResponseData = APIResponse<
-  paths["/menus/collections/"]["get"]
->;
-
-export type APIMenuSidebarRequestQuery = APIRequestParams<
-  paths["/menus/sidebar/"]["get"]
->;
-export type APIMenuSidebarResponseData = APIResponse<
-  paths["/menus/sidebar/"]["get"]
+export type APIGetResponse<Endpoint extends GetEndpoint> = APIResponse<
+  paths[Endpoint]["get"]
 >;

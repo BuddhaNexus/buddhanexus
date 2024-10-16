@@ -1,6 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-import type { APILimits } from "@utils/api/types";
 import type { SourceLanguage } from "@utils/constants";
 
 export const queryCacheTimeDefaults = {
@@ -11,7 +10,7 @@ export const queryCacheTimeDefaults = {
 };
 
 export async function prefetchDefaultDbPageData(
-  sourceLanguage: SourceLanguage,
+  sourceLanguage: SourceLanguage
 ): Promise<QueryClient> {
   const queryClient = new QueryClient({
     // https://www.codemzy.com/blog/react-query-cachetime-staletime
@@ -32,7 +31,7 @@ export async function prefetchDefaultDbPageData(
 
 export async function prefetchDbResultsPageData(
   sourceLanguage: SourceLanguage,
-  fileName: string,
+  fileName: string
 ): Promise<QueryClient> {
   const queryClient = new QueryClient({
     // https://www.codemzy.com/blog/react-query-cachetime-staletime
@@ -63,8 +62,9 @@ export async function prefetchDbResultsPageData(
   return queryClient;
 }
 
-export function parseAPIRequestBody<T extends { limits?: APILimits }>(body: T) {
-  const limits = body?.limits ? JSON.parse(body.limits as string) : {};
+export function parseAPIRequestBody<T>(body: T) {
+  // TODO: refactor for limits > filter update
+  // const limits = body?.limits ? JSON.parse(body.limits as string) : {};
 
-  return { ...body, limits };
+  return { ...body };
 }

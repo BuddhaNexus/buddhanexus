@@ -1,16 +1,15 @@
 import apiClient from "@api";
-import type {
-  APIDisplayNameRequestQuery,
-  APIDisplayNameResponseData,
-} from "@utils/api/types";
+import type { APIGetRequestQuery, APIGetResponse } from "@utils/api/types";
 
-const parseTextDisplayNameData = (data: APIDisplayNameResponseData) => {
+const parseTextDisplayNameData = (
+  data: APIGetResponse<"/utils/displayname/">
+) => {
   const [textName] = data.displayname;
   return textName as string;
 };
 
 export async function getTextDisplayName(
-  query: APIDisplayNameRequestQuery,
+  query: APIGetRequestQuery<"/utils/displayname/">
 ): Promise<string> {
   if (!query.segmentnr) {
     return "";

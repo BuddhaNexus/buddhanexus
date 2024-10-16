@@ -1,8 +1,8 @@
 import apiClient from "@api";
-import type { APINumbersViewCategoryRequestQuery } from "@utils/api/types";
+import type { APIGetRequestQuery } from "@utils/api/types";
 
 export async function getNumbersViewCategories(
-  query: APINumbersViewCategoryRequestQuery,
+  query: APIGetRequestQuery<"/numbers-view/categories/">
 ) {
   const { data } = await apiClient.GET("/numbers-view/categories/", {
     params: { query },

@@ -1,12 +1,9 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
-import type {
-  APISearchRequestBody,
-  APISearchResponseData,
-} from "@utils/api/types";
+import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 import type { SourceLanguage } from "@utils/constants";
 
-function parseAPISearchData(data: APISearchResponseData) {
+function parseAPISearchData(data: APIPostResponse<"/search/">) {
   const searchResults = [];
 
   for (const result of data.searchResults) {
@@ -39,7 +36,9 @@ export type ParsedSearchResult = ReturnType<typeof parseAPISearchData>[number];
  * Return has a hard limit of 200 matches.
  * @see https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/122#issuecomment-1925895599
  */
-export async function getGlobalSearchData(body: APISearchRequestBody) {
+export async function getGlobalSearchData(
+  body: APIPostRequestBody<"/search/">
+) {
   if (!body.search_string) {
     return [];
   }

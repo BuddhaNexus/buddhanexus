@@ -1,16 +1,15 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
-import type {
-  APITableViewRequestBody,
-  APITableViewResponseData,
-} from "@utils/api/types";
-import type { SourceLanguage } from "@utils/constants";
+import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
+import { getValidDbLanguage } from "@utils/validators";
 
-function parseAPITableData(data: APITableViewResponseData | undefined) {
-  return data
+function parseAPITableData(
+  data: APIPostResponse<"/table-view/table"> | undefined
+) {
+  return data && Array.isArray(data)
     ? data.map((p) => ({
-        sourceLanguage: p.src_lang as SourceLanguage,
-        targetLanguage: p.tgt_lang as SourceLanguage,
+        sourceLanguage: getValidDbLanguage(p.src_lang),
+        targetLanguage: getValidDbLanguage(p.tgt_lang),
         fileName: p.file_name,
         score: p.score,
 
@@ -42,10 +41,12 @@ export type ParsedTableViewParallel = ReturnType<
 >[number];
 export type ParsedTableViewData = ParsedTableViewParallel[];
 
-export async function getTableData(body: APITableViewRequestBody) {
+export async function getTableData(
+  body: APIPostRequestBody<"/table-view/table">
+) {
   const { page = 0, ...params } = body;
 
-  const { data } = await apiClient.POST("/table-view/table/", {
+  const { data } = await apiClient.POST("/table-view/table", {
     body: parseAPIRequestBody({ ...params, page }),
   });
 
