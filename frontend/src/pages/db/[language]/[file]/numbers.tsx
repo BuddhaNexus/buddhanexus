@@ -40,9 +40,9 @@ export default function NumbersPage() {
     isError: isHeadersError,
   } = useQuery({
     queryKey: DbApi.NumbersViewCategories.makeQueryKey({
-      file_name: fileName,
+      filename: fileName,
     }),
-    queryFn: () => DbApi.NumbersViewCategories.call({ file_name: fileName }),
+    queryFn: () => DbApi.NumbersViewCategories.call({ filename: fileName }),
   });
 
   const requestBody = React.useMemo(

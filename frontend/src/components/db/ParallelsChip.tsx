@@ -21,12 +21,12 @@ export default function ParallelsChip() {
   const { data, isLoading } = useQuery({
     // TODO: - see if the query can return result before main results
     queryKey: DbApi.ParallelCount.makeQueryKey({
-      file_name: fileName,
+      filename: fileName,
       ...restOfQueryParams,
     }),
     queryFn: () =>
       DbApi.ParallelCount.call({
-        file_name: fileName,
+        filename: fileName,
         ...defaultQueryParams,
         ...queryParams,
       }),

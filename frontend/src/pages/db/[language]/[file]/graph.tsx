@@ -18,8 +18,6 @@ import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { DbSourceBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 
-export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
-
 import { HistogramDataChart } from "@features/graphView/HistogramDataChart";
 import { PieDataChart } from "@features/graphView/PieDataChart";
 import { Box, Paper, Typography } from "@mui/material";

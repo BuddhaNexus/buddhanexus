@@ -91,7 +91,7 @@ export default function CurrentResultChips({
   const { fileName, queryParams, defaultQueryParams } = useDbQueryParams();
   const { data: multiLangParamData } = useQuery({
     queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
-    queryFn: () => DbApi.AvailableLanguagesData.call({ file_name: fileName }),
+    queryFn: () => DbApi.AvailableLanguagesData.call({ filename: fileName }),
   });
 
   const count = getSettingCounts({

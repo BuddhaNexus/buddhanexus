@@ -51,51 +51,51 @@ export const getSourceLanguageStaticPaths: GetStaticPaths = () => ({
   fallback: false,
 });
 
-export const getDbViewFileStaticPaths: GetStaticPaths = async () => {
-  const pliMenuData = await getTextFileMenuData({
-    language: SourceLanguage.PALI,
-  });
-  const paliFilenames = pliMenuData.map((menuData) => menuData.fileName);
-  const chineseMenuData = await getTextFileMenuData({
-    language: SourceLanguage.CHINESE,
-  });
-  const chineseFilenames = chineseMenuData.map((menuData) => menuData.fileName);
-  const sanskritMenuData = await getTextFileMenuData({
-    language: SourceLanguage.SANSKRIT,
-  });
-  const sanskritFilenames = sanskritMenuData.map(
-    (menuData) => menuData.fileName,
-  );
-  const tibetanMenuData = await getTextFileMenuData({
-    language: SourceLanguage.TIBETAN,
-  });
-  const tibetanFilenames = tibetanMenuData.map((menuData) => menuData.fileName);
+// export const getDbViewFileStaticPaths: GetStaticPaths = async () => {
+//   const pliMenuData = await getTextFileMenuData({
+//     language: SourceLanguage.PALI,
+//   });
+//   const paliFilenames = pliMenuData.map((menuData) => menuData.fileName);
+//   const chineseMenuData = await getTextFileMenuData({
+//     language: SourceLanguage.CHINESE,
+//   });
+//   const chineseFilenames = chineseMenuData.map((menuData) => menuData.fileName);
+//   const sanskritMenuData = await getTextFileMenuData({
+//     language: SourceLanguage.SANSKRIT,
+//   });
+//   const sanskritFilenames = sanskritMenuData.map(
+//     (menuData) => menuData.fileName,
+//   );
+//   const tibetanMenuData = await getTextFileMenuData({
+//     language: SourceLanguage.TIBETAN,
+//   });
+//   const tibetanFilenames = tibetanMenuData.map((menuData) => menuData.fileName);
 
-  const allFilenames = [
-    { language: SourceLanguage.TIBETAN, filenames: tibetanFilenames },
-    { language: SourceLanguage.CHINESE, filenames: chineseFilenames },
-    { language: SourceLanguage.SANSKRIT, filenames: sanskritFilenames },
-    { language: SourceLanguage.PALI, filenames: paliFilenames },
-  ];
+//   const allFilenames = [
+//     { language: SourceLanguage.TIBETAN, filenames: tibetanFilenames },
+//     { language: SourceLanguage.CHINESE, filenames: chineseFilenames },
+//     { language: SourceLanguage.SANSKRIT, filenames: sanskritFilenames },
+//     { language: SourceLanguage.PALI, filenames: paliFilenames },
+//   ];
 
-  /**
-   * Returns object like:
-   * [
-   *   { params: { language: 'pli', file: 'dn1' }, locale: 'en' },
-   *   { params: { language: 'pli', file: 'dn1' }, locale: 'de' },
-   *   { params: { language: 'pli', file: 'dn2' }, locale: 'en' },
-   *   ...
-   * ]
-   */
-  return {
-    paths: allFilenames.flatMap(({ language, filenames }) =>
-      filenames.flatMap((file) =>
-        Object.keys(SUPPORTED_LOCALES).map((locale) => ({
-          params: { language, file },
-          locale,
-        })),
-      ),
-    ),
-    fallback: true,
-  };
-};
+//   /**
+//    * Returns object like:
+//    * [
+//    *   { params: { language: 'pli', file: 'dn1' }, locale: 'en' },
+//    *   { params: { language: 'pli', file: 'dn1' }, locale: 'de' },
+//    *   { params: { language: 'pli', file: 'dn2' }, locale: 'en' },
+//    *   ...
+//    * ]
+//    */
+//   return {
+//     paths: allFilenames.flatMap(({ language, filenames }) =>
+//       filenames.flatMap((file) =>
+//         Object.keys(SUPPORTED_LOCALES).map((locale) => ({
+//           params: { language, file },
+//           locale,
+//         })),
+//       ),
+//     ),
+//     fallback: true,
+//   };
+// };

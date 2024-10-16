@@ -1,5 +1,3 @@
-import type { ParsedCategoryMenuItem } from "@utils/api/endpoints/menus/category";
-import type { ParsedTextFileMenuItem } from "@utils/api/endpoints/menus/files";
 import type { DbViewEnum, SourceLanguage } from "@utils/constants";
 
 import {
@@ -52,24 +50,14 @@ export type MultiLingalParam = SourceLanguage[] | undefined;
  * BE updates pending, temp typing for now
  */
 
-export type LimitsFilterValue = {
-  category_exclude?: ParsedCategoryMenuItem[];
-  category_include?: ParsedCategoryMenuItem[];
-  file_exclude?: ParsedTextFileMenuItem[];
-  file_include?: ParsedTextFileMenuItem[];
-};
-
 export type LimitsParam = {
   category_exclude?: string[];
   category_include?: string[];
   file_exclude?: string[];
   file_include?: string[];
 };
-
-export type Limit = keyof LimitsFilterValue;
-
 // Technically "limits" is not a type but TS is limited in it's ability to enforce the contents of arrays based on types, so this is being defined here as a pseduo type.
-export const limits: Limit[] = [
+export const limits: any[] = [
   "category_exclude",
   "file_exclude",
   "category_include",
@@ -125,9 +113,7 @@ export type QueryParams = {
       : Key extends "sort_method"
         ? SortMethod | (Key extends UndefinedParams ? undefined : never)
         : Key extends "limits"
-          ?
-              | LimitsFilterValue
-              | (Key extends UndefinedParams ? undefined : never)
+          ? any | (Key extends UndefinedParams ? undefined : never)
           : Key extends "target_collection"
             ? string[] | (Key extends UndefinedParams ? undefined : never)
             : Key extends "multi_lingual"

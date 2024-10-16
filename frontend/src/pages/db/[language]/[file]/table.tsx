@@ -34,11 +34,11 @@ export default function TablePage() {
 
   const requestBody = React.useMemo(
     () => ({
-      file_name: fileName,
+      filename: fileName,
       ...defaultQueryParams,
       ...queryParams,
     }),
-    [fileName, defaultQueryParams, queryParams],
+    [fileName, defaultQueryParams, queryParams]
   );
 
   const { data, fetchNextPage, fetchPreviousPage, isLoading } =

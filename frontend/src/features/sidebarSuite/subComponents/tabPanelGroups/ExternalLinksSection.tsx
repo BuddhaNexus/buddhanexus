@@ -55,7 +55,7 @@ export const ExternalLinksSection = () => {
 
   const { data } = useQuery({
     queryKey: [DbApi.ExternalLinksData.makeQueryKey(fileName)],
-    queryFn: () => DbApi.ExternalLinksData.call({ file_name: fileName }),
+    queryFn: () => DbApi.ExternalLinksData.call({ filename: fileName }),
   });
 
   const isDarkTheme = materialTheme.palette.mode === "dark";

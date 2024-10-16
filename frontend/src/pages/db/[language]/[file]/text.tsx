@@ -95,8 +95,8 @@ export default function TextPage() {
     enabled: Boolean(fileName),
     initialPageParam: selectedSegment ? undefined : 0,
     queryKey: DbApi.TextView.makeQueryKey(
-      { file_name: fileName, ...apiQueryParams },
-      selectedSegment ?? undefined,
+      { filename: fileName, ...apiQueryParams },
+      selectedSegment ?? undefined
     ),
     queryFn: ({ pageParam }) => {
       // We pass the active_segment, but only on the first page load :/

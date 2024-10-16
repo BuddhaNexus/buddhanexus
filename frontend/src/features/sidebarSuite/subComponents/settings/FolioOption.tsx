@@ -21,7 +21,7 @@ export default function FolioOption() {
   const { fileName, defaultParamConfig, uniqueSettings } = useDbQueryParams();
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
-    queryFn: () => DbApi.FolioData.call({ file_name: fileName }),
+    queryFn: () => DbApi.FolioData.call({ filename: fileName }),
   });
 
   const [folioParam, setFolioParam] = useQueryParam(

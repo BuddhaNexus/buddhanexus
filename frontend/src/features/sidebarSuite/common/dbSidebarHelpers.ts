@@ -79,7 +79,7 @@ export const onDownload = async ({
   const { fileName, queryParams } = download;
 
   const file = await getParallelDownloadData({
-    file_name: fileName,
+    filename: fileName,
     ...queryParams,
     // TODO: determine what is needed for this prop
     download_data: "",
