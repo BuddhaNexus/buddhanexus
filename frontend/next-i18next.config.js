@@ -20,7 +20,7 @@ module.exports = {
     backends: isBrowser ? [LocalStorageBackend, HttpBackend] : [],
   },
 
-  debug: isDev,
+  debug: false,
   i18n: {
     defaultLocale: "en",
     locales: ["en", "de"],
