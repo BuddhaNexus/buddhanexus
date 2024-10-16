@@ -15,8 +15,6 @@ services:
     restart: always
     ports:
       - "3000:3000"
-#    networks:
-#      - my_network
 
 volumes:
   dbdata:
