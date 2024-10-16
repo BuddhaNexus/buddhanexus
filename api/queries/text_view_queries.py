@@ -2,16 +2,15 @@
 Contains all database queries for text-view and middle text view.
 """
 
-
 QUERY_FILE_TEXT = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file.filename == @filename
     LET segments = (
         FOR segmentnr IN file.segment_keys
             FOR segment in segments
-                FILTER segment._key == segmentnr
+                FILTER segment.segmentnr == segmentnr
                 RETURN {
-                    segnr: segment.segnr,
+                    segnr: segment.segmentnr,
                     segtext: segment.segtext
                 }
         )
@@ -22,33 +21,41 @@ RETURN {
 
 QUERY_GET_NUMBER_OF_PAGES = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file.filename == @filename
     RETURN LENGTH(file.segment_pages)
 """
 
 
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
-    FILTER file._key == @file_name
+    FILTER file.filename == @filename
     LET page_segments = (        
         LENGTH(file.segment_pages[@page_number] ? file.segment_pages[@page_number] : []) > 0 ?
         (
             FOR segmentnr IN file.segment_pages[@page_number]
                 FOR segment IN segments
-                    FILTER segment._key == segmentnr
+                    FILTER segment.segmentnr == segmentnr
                     LET parallel_ids = (
                         FOR p IN parallels
                             FILTER segmentnr IN p.root_segnr
                             FILTER p.score * 100 >= @score
                             FILTER p.par_length >= @parlength
-                            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
-                            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+
+                            FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
+                            FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
+
+                            FILTER LENGTH(@filter_include_categories) == 0 OR p.par_category IN @filter_include_categories
+                            FILTER LENGTH(@filter_exclude_categories) == 0 OR p.par_category NOT IN @filter_exclude_categories
+
+                            FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
+                            FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
+                            
                             FILTER POSITION(@multi_lingual, p.tgt_lang)
                             RETURN p._key
                     )
                     RETURN {
-                        segnr: segment.segnr,
-                        segtext: segment.segtext,
+                        segnr: segment.segmentnr,
+                        segtext: segment.original,
                         parallel_ids: parallel_ids
                     }
         ) : []
@@ -64,11 +71,20 @@ LET parallel_ids = UNIQUE(FLATTEN(
 LET parallels = (
     FOR parallel_id IN parallel_ids
         FOR p IN parallels
-            FILTER p._key == parallel_id
+            FILTER p.filename == parallel_id
             FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
-            FILTER LENGTH(@limitcollection_include) == 0 OR (p.par_category IN @limitcollection_include OR p.par_filename IN @limitcollection_include)
-            FILTER LENGTH(@limitcollection_exclude) == 0 OR (p.par_category NOT IN @limitcollection_exclude AND p.par_filename NOT IN @limitcollection_exclude)
+            
+            FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
+            FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
+
+            FILTER LENGTH(@filter_include_categories) == 0 OR p.par_category IN @filter_include_categories
+            FILTER LENGTH(@filter_exclude_categories) == 0 OR p.par_category NOT IN @filter_exclude_categories
+
+            FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
+            FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
+
+
             FILTER POSITION(@multi_lingual, p.tgt_lang)
             LIMIT 100000
             RETURN {
@@ -90,13 +106,13 @@ QUERY_PARALLELS_FOR_MIDDLE_TEXT = """
 LET parallels = (
     FOR parallel_id IN @parallel_ids
         FOR p IN parallels
-            FILTER p._key == parallel_id
+            FILTER p.filename == parallel_id
 
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segnr
-                        RETURN segment.segtext
+                        FILTER segment.segmentnr == segnr
+                        RETURN segment.original
                )
 
             LET par_full_name = (
@@ -112,7 +128,7 @@ LET parallels = (
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
                 par_segtext: par_segtext,
-                file_name: p.id,
+                filename: p.id,
                 score: p.score * 100,
                 length: p.par_length
             }
@@ -125,7 +141,7 @@ LET parallels_multi = (
             LET par_segtext = (
                 FOR segnr IN p.par_segnr
                     FOR segment IN segments
-                        FILTER segment._key == segnr
+                        FILTER segment.segmentnr == segnr
                         RETURN segment.segtext
             )
 
@@ -142,7 +158,7 @@ LET parallels_multi = (
                 par_offset_beg: p.par_offset_beg,
                 par_offset_end: p.par_offset_end,
                 par_segtext: par_segtext,
-                file_name: p.id,
+                filename: p.id,
                 score: p.score * 100,
                 length: p.par_length
             }

@@ -1,13 +1,13 @@
 from pydantic import BaseModel
 from typing import List
-from .general_models import GeneralInput, FullNames, FullText
+from .general_models import GeneralInput, FullNames, FullText, Filters
 
 
 class Segment(BaseModel):
     par_segnr_range: str
     par_full_names: FullNames
     root_full_names: FullNames
-    file_name: str
+    filename: str
     root_segnr_range: str
     par_length: int
     root_length: int

@@ -2,8 +2,7 @@ from fastapi import APIRouter, Query
 import re
 from typing import Any
 from ..utils import (
-    get_language_from_file_name,
-    create_cleaned_limit_collection,
+    get_language_from_filename,
     shorten_segment_names,
 )
 from .endpoint_utils import execute_query
@@ -51,12 +50,6 @@ async def get_numbers_view(input: GeneralInput) -> Any:
     """
     Endpoint for numbers view.
     """
-    limitcollection_include = create_cleaned_limit_collection(
-        input.limits.category_include + input.limits.file_include
-    )
-    limitcollection_exclude = create_cleaned_limit_collection(
-        input.limits.category_exclude + input.limits.file_exclude
-    )
 
     folio = input.folio
     if not input.folio:
@@ -65,11 +58,15 @@ async def get_numbers_view(input: GeneralInput) -> Any:
     query_result = execute_query(
         table_view_queries.QUERY_NUMBERS_VIEW,
         bind_vars={
-            "file_name": input.file_name,
+            "filename": input.filename,
             "score": input.score,
             "parlength": input.par_length,
-            "limitcollection_include": limitcollection_include,
-            "limitcollection_exclude": limitcollection_exclude,
+            "filter_include_files": input.filters.include_files,
+            "filter_exclude_files": input.filters.exclude_files,
+            "filter_include_categories": input.filters.include_categories,
+            "filter_exclude_categories": input.filters.exclude_categories,
+            "filter_include_collections": input.filters.include_collections,
+            "filter_exclude_collections": input.filters.exclude_collections,
             "page": input.page,
             "folio": folio,
         },
@@ -82,12 +79,12 @@ async def get_numbers_view(input: GeneralInput) -> Any:
 
 @router.get("/categories/", response_model=MenuOutput)
 async def get_categories_for_numbers_view(
-    file_name: str = Query(..., description="Filename to be used")
+    filename: str = Query(..., description="Filename to be used")
 ) -> Any:
     """
     Endpoint that returns list of categories for the given language
     """
-    language = get_language_from_file_name(file_name)
+    language = get_language_from_filename(filename)
     query_result = execute_query(
         menu_queries.QUERY_CATEGORIES_PER_LANGUAGE,
         bind_vars={"language": language},

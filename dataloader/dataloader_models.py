@@ -8,10 +8,10 @@ from pydantic import BaseModel, Field, ValidationError
 
 
 class Lang(str, Enum):
-    tibetan = "tib"
-    sanskrit = "skt"
-    chinese = "chn"
-    pali = "pli"
+    tibetan = "bo"
+    sanskrit = "sa"
+    chinese = "zh"
+    pali = "pa"
 
 
 class Match(BaseModel):

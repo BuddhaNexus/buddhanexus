@@ -1,9 +1,10 @@
-""" This module provides the links for each file_name """
+""" This module provides the links for each filename """
+
 import re
-from .utils import get_language_from_file_name
+from .utils import get_language_from_filename
 
 
-def get_links(file_name, links_query):
+def get_links(filename, links_query):
     """get links for each file name"""
     if len(links_query.result) < 1:
         return {
@@ -28,11 +29,11 @@ def get_links(file_name, links_query):
     sc_link = False
     cbc = False
     vri = False
-    lang = get_language_from_file_name(file_name)
+    lang = get_language_from_filename(filename)
 
     # for Tibetan, we serve links to BDRC and RKTS
-    if lang == "tib" and not file_name.startswith(
-        "N"
+    if lang == "bo" and not filename.startswith(
+        "BO_N"
     ):  # We exclude N files from external linking
         bdrc = link1
         rkts = bdrc.replace(
@@ -44,7 +45,7 @@ def get_links(file_name, links_query):
         )
 
     # for Sanskrit, we serve links to Gretil and DSBC and SC
-    if lang == "skt":
+    if lang == "sa":
         if "gretil" in link1:
             gretil = link1
         elif "dsbc" in link1:
@@ -52,18 +53,18 @@ def get_links(file_name, links_query):
         sc_link = link2
 
     # for Chinese, we serve links to CBETA, SC and CBC
-    if lang == "chn":
+    if lang == "zh":
         cbeta = (
-            "https://cbetaonline.dila.edu.tw/" + file_name + "_001"
-        )  # why did we do this on the frontend:  re.sub(file_name, "_[TX]", "n")
+            "https://cbetaonline.dila.edu.tw/" + filename + "_001"
+        )  # why did we do this on the frontend:  re.sub(filename, "_[TX]", "n")
         sc_link = link2
-        cbc_file_name = file_name[0] + file_name[4:]
-        cbc = "https://dazangthings.nz/cbc/text/" + cbc_file_name
+        cbc_filename = filename[0] + filename[4:]
+        cbc = "https://dazangthings.nz/cbc/text/" + cbc_filename
 
-    if lang == "pli":
+    if lang == "pa":
         vri = link1 or "https://tipitaka.org/romn/"
-        if not re.search("^tika|^anya|^atk", file_name):
-            sc_link = "https://suttacentral.net/" + file_name
+        if not re.search("^tika|^anya|^atk", filename):
+            sc_link = "https://suttacentral.net/" + filename
 
     return {
         "bdrc": bdrc,

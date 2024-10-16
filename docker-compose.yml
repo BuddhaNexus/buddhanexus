@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   arangodb:
     image: arangodb:3.8.4
@@ -23,6 +21,12 @@ services:
     container_name: "dataloader"
     volumes:
       - .:/opt/buddhanexus
+      - type: volume
+        source: dharmanexus-data
+        target: /data
+      - type: bind
+        source: $LOCAL_MATCHES_PATH
+        target: /data/matches/
     env_file:
       - .env
     links:
@@ -40,6 +44,9 @@ services:
       - "8000:8000"
     volumes:
       - .:/opt/buddhanexus
+      - type: volume
+        source: dharmanexus-data
+        target: /data
     env_file:
       - .env
     environment:
@@ -51,3 +58,5 @@ services:
 
 volumes:
   dbdata:
+  dharmanexus-data:
+    external: true
