@@ -102,7 +102,7 @@ export const SETTINGS_OMISSIONS_CONFIG = {
 
 export const DEFAULT_QUERY_PARAMS_VALUES: QueryParams = {
   score: 30,
-  // par_length is given a dummy value of 25 (lowest value applicable to all languages). The true value is initated in useDbQueryParams hook when src lang value is available.
+  // par_length is given a dummy value of 25 (lowest value applicable to all languages). The true value is initated in useDbRouterParams hook when src lang value is available.
   par_length: 25,
   folio: undefined,
   sort_method: undefined,

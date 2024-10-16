@@ -3,7 +3,7 @@ import { NodeApi } from "react-arborist";
 import { currentDbViewAtom } from "@atoms";
 import { getTextPath } from "@components/common/utils";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Chip, Tooltip, Typography } from "@mui/material";
 import { useAtomValue } from "jotai";
 
@@ -24,7 +24,7 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
     elementWidth = node.tree.props.width - INDENTATION_WIDTH;
   }
 
-  const { sourceLanguage } = useDbQueryParams();
+  const { sourceLanguage } = useDbRouterParams();
   const dbView = useAtomValue(currentDbViewAtom);
   return (
     <TextNodeLink

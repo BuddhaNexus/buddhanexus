@@ -2,7 +2,7 @@ import { Fragment, memo, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { isSettingOmitted } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "@features/sidebarSuite/common/PanelHeading";
 import { UniqueSettingsType } from "@features/sidebarSuite/config/settings";
@@ -17,6 +17,10 @@ import {
 import { DbViewSelector } from "@features/sidebarSuite/subComponents/settings/DbViewSelector";
 import { Box } from "@mui/material";
 import { useAtomValue } from "jotai";
+import {
+  uniqueSettings,
+  pageSettings,
+} from "@features/sidebarSuite/config/settings";
 
 type FiltersProps = {
   filters: string[];
@@ -69,32 +73,29 @@ export const PrimarySettings = ({
   const router = useRouter();
   const isDbRoute = router.route.startsWith("/db");
 
-  const {
-    sourceLanguage,
-    pageSettings,
-    uniqueSettings,
-    settingsOmissionsConfig,
-  } = useDbQueryParams();
+  const { sourceLanguage } = useDbRouterParams();
 
-  const filters = useMemo(() => {
-    const filterList = Object.values(pageSettings[pageType].filters);
+  const filters: string[] = [];
 
-    return filterList.filter(
-      (filter) =>
-        !isSettingOmitted({
-          omissions: settingsOmissionsConfig.filters,
-          settingName: filter,
-          language: sourceLanguage,
-          pageContext: pageType === "search" ? "search" : currentView,
-        }),
-    );
-  }, [
-    pageType,
-    sourceLanguage,
-    currentView,
-    settingsOmissionsConfig,
-    pageSettings,
-  ]);
+  // const filters = useMemo(() => {
+  //   const filterList = Object.values(pageSettings[pageType].filters);
+
+  //   return filterList.filter(
+  //     (filter) =>
+  //       !isSettingOmitted({
+  //         omissions: settingsOmissionsConfig.filters,
+  //         settingName: filter,
+  //         language: sourceLanguage,
+  //         pageContext: pageType === "search" ? "search" : currentView,
+  //       })
+  //   );
+  // }, [
+  //   pageType,
+  //   sourceLanguage,
+  //   currentView,
+  //   settingsOmissionsConfig,
+  //   pageSettings,
+  // ]);
 
   if (filters.length === 0) return null;
 

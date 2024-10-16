@@ -9,7 +9,7 @@ import {
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
@@ -28,8 +28,7 @@ import { DbApi } from "@utils/api/dbApi";
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 export default function NumbersPage() {
-  const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
-    useDbQueryParams();
+  const { sourceLanguage, fileName } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
@@ -45,14 +44,21 @@ export default function NumbersPage() {
     queryFn: () => DbApi.NumbersViewCategories.call({ filename: fileName }),
   });
 
-  const requestBody = React.useMemo(
-    () => ({
-      file_name: fileName,
-      ...defaultQueryParams,
-      ...queryParams,
-    }),
-    [fileName, defaultQueryParams, queryParams],
-  );
+  // const requestBody = React.useMemo(
+  //   () => ({
+  //     file_name: fileName,
+  //     ...defaultQueryParams,
+  //     ...queryParams,
+  //   }),
+  //   [fileName, defaultQueryParams, queryParams]
+  // );
+
+  const requestBody = {
+    filename: fileName,
+    filters: undefined,
+    sort_method: "position",
+    folio: "",
+  };
 
   const {
     data,

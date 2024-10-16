@@ -1,6 +1,6 @@
 import React from "react";
 import type { GetStaticProps } from "next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 // import { dehydrate } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ import {
 } from "@components/db/SearchableDbSourceTree";
 
 export default function DbIndexPage() {
-  const { sourceLanguageName, sourceLanguage } = useDbQueryParams();
+  const { sourceLanguageName, sourceLanguage } = useDbRouterParams();
   const { observe, height, width } = useDimensions();
 
   return (

@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { getDesignTokens } from "@components/theme";
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
@@ -8,10 +8,10 @@ import {
 } from "@mui/material/styles";
 
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
-  const { sourceLanguage } = useDbQueryParams();
+  const { sourceLanguage } = useDbRouterParams();
 
   const MUITheme = responsiveFontSizes(
-    extendTheme(getDesignTokens({ sourceLanguage })),
+    extendTheme(getDesignTokens({ sourceLanguage }))
   );
 
   // @ts-expect-error type issue with responsiveFontSizes not being ready for the experimental CSSVars API, but it works file.

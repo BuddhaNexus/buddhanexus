@@ -1,16 +1,15 @@
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { SourceLanguage as SourceLanguageEnum } from "@utils/constants";
 import { StringParam, useQueryParam } from "use-query-params";
+import { uniqueSettings } from "@features/sidebarSuite/config/settings";
 
 const SearchLanguageSelector = () => {
   const { t } = useTranslation(["common", "settings"]);
-  const { uniqueSettings } = useDbQueryParams();
 
   const [currentLang, setCurrentDbLang] = useQueryParam(
     uniqueSettings.queryParams.language,
-    StringParam,
+    StringParam
   );
 
   return (
@@ -25,7 +24,7 @@ const SearchLanguageSelector = () => {
         value={currentLang ?? "all"}
         onChange={(e) =>
           setCurrentDbLang(
-            e.target.value === "all" ? undefined : e.target.value,
+            e.target.value === "all" ? undefined : e.target.value
           )
         }
       >

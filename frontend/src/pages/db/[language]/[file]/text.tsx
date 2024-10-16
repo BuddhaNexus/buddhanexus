@@ -11,7 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
@@ -55,11 +55,25 @@ const START_INDEX = 1_000_000;
 //   - https://github.com/vercel/next.js/issues/53543
 
 export default function TextPage() {
-  const { sourceLanguage, fileName, queryParams, defaultQueryParams } =
-    useDbQueryParams();
+  const { sourceLanguage, fileName } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
+
+  const defaultQueryParams = {
+    filters: undefined,
+    sort_method: "position",
+    folio: "",
+    active_segment: "",
+    page_number: 0,
+  };
+  const apiQueryParams = {
+    filters: undefined,
+    sort_method: "position",
+    folio: "",
+    active_segment: "",
+    page_number: 0,
+  };
 
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
@@ -72,13 +86,13 @@ export default function TextPage() {
   const searchParams = useSearchParams();
   const selectedSegment = searchParams.get("selectedSegment");
 
-  const apiQueryParams = cleanUpQueryParams(queryParams);
+  // const apiQueryParams = cleanUpQueryParams(queryParams);
 
   const hasSegmentBeenSelected = useCallback(
     (segmentId: string | null): boolean =>
       segmentId !== null &&
       Boolean(previouslySelectedSegmentsMap.current[segmentId]),
-    [],
+    []
   );
 
   const {
@@ -116,11 +130,11 @@ export default function TextPage() {
         : selectedSegment;
 
       return DbApi.TextView.call({
-        file_name: fileName,
+        filename: fileName,
         ...defaultQueryParams,
         ...apiQueryParams,
-        page_number: pageParam,
-        active_segment: active_segment ?? undefined,
+        // page_number: pageParam,
+        // active_segment: active_segment ?? undefined,
       });
     },
 
@@ -147,7 +161,7 @@ export default function TextPage() {
       if (isSuccess && selectedSegment)
         previouslySelectedSegmentsMap.current[selectedSegment] = true;
     },
-    [isSuccess, selectedSegment],
+    [isSuccess, selectedSegment]
   );
 
   useEffect(
@@ -162,7 +176,7 @@ export default function TextPage() {
         paginationState.current[1] = data?.pages[0].data.page;
       }
     },
-    [data?.pages],
+    [data?.pages]
   );
 
   const handleFetchingPreviousPage = useCallback(async () => {
@@ -188,7 +202,7 @@ export default function TextPage() {
 
   const allParallels = useMemo(
     () => (data?.pages ? data.pages.flatMap((page) => page.data.items) : []),
-    [data?.pages],
+    [data?.pages]
   );
 
   if (isError) {

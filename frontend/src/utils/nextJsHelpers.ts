@@ -2,10 +2,9 @@ import type { GetStaticPaths } from "next";
 import type { UserConfig } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { getTextFileMenuData } from "./api/endpoints/menus/files";
 import {
   SOURCE_LANGUAGES,
-  SourceLanguage,
+  // SourceLanguage,
   SUPPORTED_LOCALES,
 } from "./constants";
 

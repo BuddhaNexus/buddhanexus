@@ -26,17 +26,15 @@ export const DbApi = {
     call: getGraphData,
   },
   TableView: {
-    makeQueryKey: (params: APIPostRequestBody<"/table-view/table">) => [
-      "tableView",
-      params,
-    ],
+    makeQueryKey: (
+      params: Omit<APIPostRequestBody<"/table-view/table">, "page">
+    ) => ["tableView", params],
     call: getTableData,
   },
   NumbersView: {
-    makeQueryKey: (params: APIPostRequestBody<"/numbers-view/numbers/">) => [
-      "numbersView",
-      params,
-    ],
+    makeQueryKey: (
+      params: Omit<APIPostRequestBody<"/numbers-view/numbers/">, "page">
+    ) => ["numbersView", params],
     call: getNumbersViewData,
   },
   NumbersViewCategories: {

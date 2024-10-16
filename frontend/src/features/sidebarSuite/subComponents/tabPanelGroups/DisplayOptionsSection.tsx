@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { isSettingOmitted } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "@features/sidebarSuite/common/PanelHeading";
 import {
@@ -12,6 +12,10 @@ import {
 import { SegmentOptions } from "@features/sidebarSuite/subComponents/settings/SegmentOptions";
 import { Box } from "@mui/material";
 import { useAtomValue } from "jotai";
+import {
+  uniqueSettings,
+  pageSettings,
+} from "@features/sidebarSuite/config/settings";
 
 // Exclusively used in DB file selection results pages and has not been refactored for options in multiple contexts (i.e. global search results page).
 export const DisplayOptionsSection = () => {
@@ -19,29 +23,26 @@ export const DisplayOptionsSection = () => {
 
   const currentView = useAtomValue(currentDbViewAtom);
 
-  const {
-    sourceLanguage,
-    pageSettings,
-    uniqueSettings,
-    settingsOmissionsConfig,
-  } = useDbQueryParams();
+  const { sourceLanguage } = useDbRouterParams();
 
-  const options = useMemo(() => {
-    return Object.values(pageSettings.dbResult.displayOptions).filter(
-      (option) =>
-        !isSettingOmitted({
-          omissions: settingsOmissionsConfig.displayOptions,
-          settingName: option,
-          language: sourceLanguage,
-          pageContext: currentView,
-        }),
-    );
-  }, [
-    pageSettings,
-    settingsOmissionsConfig.displayOptions,
-    sourceLanguage,
-    currentView,
-  ]);
+  const options: string[] = [];
+
+  // const options = useMemo(() => {
+  //   return Object.values(pageSettings.dbResult.displayOptions).filter(
+  //     (option) =>
+  //       !isSettingOmitted({
+  //         omissions: settingsOmissionsConfig.displayOptions,
+  //         settingName: option,
+  //         language: sourceLanguage,
+  //         pageContext: currentView,
+  //       })
+  //   );
+  // }, [
+  //   pageSettings,
+  //   settingsOmissionsConfig.displayOptions,
+  //   sourceLanguage,
+  //   currentView,
+  // ]);
 
   if (options.length === 0) {
     return null;

@@ -8,7 +8,7 @@ import {
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
@@ -26,20 +26,26 @@ import { DbApi } from "@utils/api/dbApi";
 
 // TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
-  const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
-    useDbQueryParams();
+  const { sourceLanguage, fileName } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
 
-  const requestBody = React.useMemo(
-    () => ({
-      filename: fileName,
-      ...defaultQueryParams,
-      ...queryParams,
-    }),
-    [fileName, defaultQueryParams, queryParams]
-  );
+  // const requestBody = React.useMemo(
+  //   () => ({
+  //     filename: fileName,
+  //     ...defaultQueryParams,
+  //     ...queryParams,
+  //   }),
+  //   [fileName, defaultQueryParams, queryParams]
+  // );
+
+  const requestBody = {
+    filename: fileName,
+    filters: undefined,
+    sort_method: "position",
+    folio: "",
+  };
 
   const { data, fetchNextPage, fetchPreviousPage, isLoading } =
     useInfiniteQuery({
@@ -57,7 +63,7 @@ export default function TablePage() {
 
   const allData = useMemo(
     () => (data ? data.pages.flatMap((page) => page.data) : []),
-    [data],
+    [data]
   );
 
   if (isFallback) {

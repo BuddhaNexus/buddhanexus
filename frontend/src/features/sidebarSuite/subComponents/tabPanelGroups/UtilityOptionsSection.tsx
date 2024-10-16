@@ -3,7 +3,7 @@ import useDownloader from "react-use-downloader";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   defaultAnchorEls,
   isSettingOmitted,
@@ -32,6 +32,10 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useAtomValue } from "jotai";
+import {
+  uniqueSettings,
+  pageSettings,
+} from "@features/sidebarSuite/config/settings";
 
 const utilityComponents: UtilityOptions = {
   download: {
@@ -55,13 +59,7 @@ const utilityComponents: UtilityOptions = {
 export const UtilityOptionsSection = () => {
   const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentDbViewAtom);
-  const {
-    fileName,
-    sourceLanguage,
-    queryParams,
-    pageSettings,
-    settingsOmissionsConfig,
-  } = useDbQueryParams();
+  const { fileName, sourceLanguage } = useDbRouterParams();
   let href: string;
 
   if (typeof window !== "undefined") {
@@ -82,20 +80,20 @@ export const UtilityOptionsSection = () => {
 
       <List sx={{ m: 0 }}>
         {Object.values(
-          pageSettings[isSearchRoute ? "search" : "dbResult"].utilityOptions,
+          pageSettings[isSearchRoute ? "search" : "dbResult"].utilityOptions
         ).map((utilityKey) => {
           const Icon = utilityComponents[utilityKey].icon;
 
-          if (
-            isSettingOmitted({
-              omissions: settingsOmissionsConfig.utilityOptions,
-              settingName: utilityKey,
-              language: sourceLanguage,
-              pageContext: isSearchRoute ? "search" : currentView,
-            })
-          ) {
-            return null;
-          }
+          // if (
+          //   isSettingOmitted({
+          //     omissions: settingsOmissionsConfig.utilityOptions,
+          //     settingName: utilityKey,
+          //     language: sourceLanguage,
+          //     pageContext: isSearchRoute ? "search" : currentView,
+          //   })
+          // ) {
+          //   return null;
+          // }
 
           const isPopperOpen = Boolean(popperAnchorEl[utilityKey]);
           const showPopper =
@@ -122,7 +120,12 @@ export const UtilityOptionsSection = () => {
                       popperAnchorEl,
                       setPopperAnchorEl,
                     ],
-                    download: { call: download, fileName, queryParams },
+                    download: {
+                      call: download,
+                      fileName,
+                      //TODO: queryParams
+                      queryParams: {},
+                    },
                     href,
                     messages: {
                       subject: t("generic.resutsSubject"),

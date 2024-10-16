@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import ParallelsChip from "@components/db/ParallelsChip";
 import SearchMatchesChip from "@components/db/SearchMatchesChip";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   customFiltersChipQueryExclusions,
   customOptionsChipQueries,
@@ -11,15 +11,13 @@ import {
 import { uniqueSettings } from "@features/sidebarSuite/config/settings";
 import type {
   DefaultQueryParams,
-  LimitsFilterValue,
-  MultiLingalParam,
   QueryParams,
 } from "@features/sidebarSuite/config/types";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 
-type ParamValues = string | number | LimitsFilterValue | MultiLingalParam;
+type ParamValues = any;
 
 function getFilterCount(key: string) {
   return customFiltersChipQueryExclusions.includes(key) ? 0 : 1;
@@ -88,20 +86,25 @@ export default function CurrentResultChips({
   const { t } = useTranslation("settings");
 
   const isSearchRoute = router.route.startsWith("/search");
-  const { fileName, queryParams, defaultQueryParams } = useDbQueryParams();
+  const { fileName } = useDbRouterParams();
   const { data: multiLangParamData } = useQuery({
     queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
     queryFn: () => DbApi.AvailableLanguagesData.call({ filename: fileName }),
   });
 
-  const count = getSettingCounts({
-    isSearchRoute,
-    currentQueries: queryParams,
-    defaultQueries: {
-      ...defaultQueryParams,
-      [uniqueSettings.queryParams.multiLingual]: multiLangParamData,
-    },
-  });
+  const count = {
+    display: 0,
+    filter: 0,
+  };
+
+  // const count = getSettingCounts({
+  //   isSearchRoute,
+  //   currentQueries: queryParams,
+  //   defaultQueries: {
+  //     ...defaultQueryParams,
+  //     [uniqueSettings.queryParams.multiLingual]: multiLangParamData,
+  //   },
+  // });
 
   return (
     <>

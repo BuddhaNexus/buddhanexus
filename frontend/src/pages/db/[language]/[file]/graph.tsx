@@ -11,7 +11,7 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
@@ -35,30 +35,32 @@ const GraphContainer: React.FC<{ children: React.ReactNode }> = ({
 }) => <Paper sx={{ my: 2, minHeight: "500px", flex: 1 }}>{children}</Paper>;
 
 export default function GraphPage() {
-  const {
-    sourceLanguage,
-    fileName,
-    queryParams: { score, par_length },
-    defaultQueryParams,
-  } = useDbQueryParams();
+  const { sourceLanguage, fileName } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
 
   const { t } = useTranslation();
 
-  const requestBody = React.useMemo(
-    () => ({
-      filename: fileName,
-      score: score ? Number(score) : defaultQueryParams.score,
-      par_length: par_length
-        ? Number(par_length)
-        : defaultQueryParams.par_length,
-      // TODO: Add target_collection when available / or remove
-      target_collection: [],
-    }),
-    [fileName, score, par_length, defaultQueryParams]
-  );
+  // const requestBody = React.useMemo(
+  //   () => ({
+  //     filename: fileName,
+  //     score: score ? Number(score) : defaultQueryParams.score,
+  //     par_length: par_length
+  //       ? Number(par_length)
+  //       : defaultQueryParams.par_length,
+  //     // TODO: Add target_collection when available / or remove
+  //     target_collection: [],
+  //   }),
+  //   [fileName, score, par_length, defaultQueryParams]
+  // );
+
+  const requestBody = {
+    filename: fileName,
+    score: 50,
+    par_length: 50,
+    target_collection: [],
+  };
 
   const { data, isLoading, isError } = useQuery({
     queryKey: DbApi.GraphView.makeQueryKey(requestBody),
@@ -67,7 +69,7 @@ export default function GraphPage() {
 
   const filteredHistogramData = useMemo(
     () => data?.histogramgraphdata.slice(0, HISTOGRAM_DATA_MATCH_LIMIT) ?? [],
-    [data?.histogramgraphdata],
+    [data?.histogramgraphdata]
   );
 
   if (isError) {

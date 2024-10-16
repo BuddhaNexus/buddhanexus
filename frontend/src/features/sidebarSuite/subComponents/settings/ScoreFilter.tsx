@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
+import { uniqueSettings } from "@features/sidebarSuite/config/settings";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -23,14 +24,17 @@ function normalizeValue(value: number | null | undefined) {
 
 export default function ScoreFilter() {
   const { t } = useTranslation("settings");
-  const { defaultParamConfig, uniqueSettings } = useDbQueryParams();
+
+  const defaultParamConfig = {
+    score: 50,
+  };
 
   const [scoreParam, setScoreParam] = useQueryParam(
     uniqueSettings.queryParams.score,
-    NumberParam,
+    NumberParam
   );
   const [scoreValue, setScoreValue] = useState(
-    scoreParam ?? defaultParamConfig.score,
+    scoreParam ?? defaultParamConfig.score
   );
 
   useEffect(() => {
@@ -39,7 +43,7 @@ export default function ScoreFilter() {
 
   const setDebouncedScoreParam = useMemo(
     () => debounce(setScoreParam, 600),
-    [setScoreParam],
+    [setScoreParam]
   );
 
   const handleChange = useCallback(
@@ -48,7 +52,7 @@ export default function ScoreFilter() {
       setScoreValue(value);
       setDebouncedScoreParam(normalizedValue);
     },
-    [setScoreValue, setDebouncedScoreParam],
+    [setScoreValue, setDebouncedScoreParam]
   );
 
   const handleBlur = () => {

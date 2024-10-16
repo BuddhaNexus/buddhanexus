@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   Popper,
   PopperMsgBox,
@@ -21,11 +21,12 @@ import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import type { SourceLanguage } from "@utils/constants";
+import { uniqueSettings } from "@features/sidebarSuite/config/settings";
 
 function getStyles(
   name: SourceLanguage,
   selectedLanguages: SourceLanguage[] | undefined,
-  theme: Theme,
+  theme: Theme
 ) {
   if (!selectedLanguages) return;
   return {
@@ -38,8 +39,12 @@ function getStyles(
 const MultiLingualSelector = () => {
   const { t } = useTranslation(["settings", "common"]);
   const router = useRouter();
-  const { fileName, queryParams, uniqueSettings } = useDbQueryParams();
+  const { fileName } = useDbRouterParams();
   const theme = useTheme();
+
+  const queryParams = {
+    multi_lingual: null,
+  };
 
   const { data: availableLanguages } = useQuery({
     queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),

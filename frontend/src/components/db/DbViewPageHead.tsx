@@ -1,7 +1,7 @@
 import { NextSeo } from "next-seo";
 import { currentDbViewAtom } from "@atoms";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
@@ -9,7 +9,7 @@ import { useAtomValue } from "jotai";
 import { startCase } from "lodash";
 
 export const DbViewPageHead = () => {
-  const { fileName } = useDbQueryParams();
+  const { fileName } = useDbRouterParams();
 
   const { data: displayName, isLoading } = useQuery({
     queryKey: DbApi.TextDisplayName.makeQueryKey(fileName),

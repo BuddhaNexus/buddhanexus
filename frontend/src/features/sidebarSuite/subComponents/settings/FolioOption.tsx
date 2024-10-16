@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   CircularProgress,
   FormControl,
@@ -14,11 +14,16 @@ import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import type { ParsedFolio } from "@utils/api/endpoints/utils/folios";
 import { StringParam, useQueryParam } from "use-query-params";
+import { uniqueSettings } from "@features/sidebarSuite/config/settings";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
   const { t } = useTranslation("settings");
-  const { fileName, defaultParamConfig, uniqueSettings } = useDbQueryParams();
+  const { fileName } = useDbRouterParams();
+
+  const defaultParamConfig = {
+    folio: null,
+  };
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),
     queryFn: () => DbApi.FolioData.call({ filename: fileName }),
@@ -26,7 +31,7 @@ export default function FolioOption() {
 
   const [folioParam, setFolioParam] = useQueryParam(
     uniqueSettings.queryParams.folio,
-    StringParam,
+    StringParam
   );
 
   useEffect(() => {

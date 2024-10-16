@@ -6,7 +6,7 @@ import { DbViewEnum, DEFAULT_DB_VIEW, SourceLanguage } from "@utils/constants";
 import { getValidDbView } from "@utils/validators";
 import { useSetAtom } from "jotai";
 
-import { useDbQueryParams } from "./useDbQueryParams";
+import { useDbRouterParams } from "./useDbRouterParams";
 
 const { viewSelector: omittedViews } = SETTINGS_OMISSIONS_CONFIG;
 
@@ -20,7 +20,7 @@ export const getAvailableDBViews = (language: SourceLanguage) => {
 };
 
 export const useAvailableDbViews = () => {
-  const { sourceLanguage } = useDbQueryParams();
+  const { sourceLanguage } = useDbRouterParams();
 
   return useMemo(() => {
     return getAvailableDBViews(sourceLanguage);

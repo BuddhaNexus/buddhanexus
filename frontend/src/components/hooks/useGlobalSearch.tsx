@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { uniqueSettings } from "@features/sidebarSuite/config/settings";
 import { pageSettings } from "@features/sidebarSuite/config/settings";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
@@ -20,7 +20,6 @@ interface GlobalSearchProps {
 export function useGlobalSearch(): GlobalSearchProps {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { uniqueSettings } = useDbQueryParams();
 
   const params = new URLSearchParams(searchParams);
 

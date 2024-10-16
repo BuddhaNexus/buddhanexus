@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
   type SortMethod,
   sortMethods,
@@ -13,11 +12,13 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
+import { uniqueSettings } from "@features/sidebarSuite/config/settings";
 
 export default function SortOption() {
   const { t } = useTranslation("settings");
   const router = useRouter();
-  const { uniqueSettings, sortMethodSelectValue } = useDbQueryParams();
+
+  const sortMethodSelectValue = "position";
 
   const handleSelectChange = async (sortMethod: SortMethod) => {
     await router.push({
