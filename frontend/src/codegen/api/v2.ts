@@ -3,389 +3,685 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
   "/search/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get Search Results
      * @description Returns search results for given search string.
-     * :return: List of search results
+     *     :return: List of search results
      */
     post: operations["get_search_results_search__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/graph-view/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get Graph For File
      * @description Endpoint for graph view.
      *
-     * Input fields are:
+     *     Input fields are:
      *
-     * ```
-     *     {
-     *       "file_name": "",
-     *       "score": 0,
-     *       "par_length": 0,
-     *       "target_collection": []
-     *     }
-     * ```
+     *     ```
+     *         {
+     *           "file_name": "",
+     *           "score": 0,
+     *           "par_length": 0,
+     *           "target_collection": []
+     *         }
+     *     ```
      *
-     * The "target_collection" input comes from a dropdown list that lists collections only.
-     * This comes from the `/menus/graphcollections/` endpoint. It is possible to choose
-     * more than one option, hence it is a list. F.i.
+     *     The "target_collection" input comes from a dropdown list that lists collections only.
+     *     This comes from the `/menus/graphcollections/` endpoint. It is possible to choose
+     *     more than one option, hence it is a list. F.i.
      *
-     * ```
-     *     ...
-     *     "target_collection": ["pli_Suttas-Early-1", "pli_Vinaya"]
-     * ```
-     *
-     * "score", "par_length" and "file_name" are the same as for the other views.
-     *
-     * Output is f.i.:
-     *
-     * ```
-     *     {
-     *       "piegraphdata": [
-     *         [
-     *           "dn Dīghanikāya",
-     *           "62063"
-     *         ],
-     *         [
-     *           "mn Majjhimanikāya",
-     *           "54783"
-     *         ],
-     *         [
-     *           "an Aṅguttaranikāya",
-     *           "24871"
-     *         ],
-     *
+     *     ```
      *         ...
+     *         "target_collection": ["pli_Suttas-Early-1", "pli_Vinaya"]
+     *     ```
      *
-     *         ]
-     *       ],
-     *       "histogramgraphdata": [
-     *         [
-     *           "Kūṭadanta Sutta (Dn 5)",
-     *           "36982"
-     *         ],
-     *         [
-     *           "Caṅkī Sutta (Mn 95)",
-     *           "19661"
-     *         ],
-     *         [
-     *           "Bhesajjakkhandhaka (Pli-tv-kd 6)",
-     *           "7773"
-     *         ],
-     *         etc.
-     * ```
+     *     "score", "par_length" and "file_name" are the same as for the other views.
+     *
+     *     Output is f.i.:
+     *
+     *     ```
+     *         {
+     *           "piegraphdata": [
+     *             [
+     *               "dn Dīghanikāya",
+     *               "62063"
+     *             ],
+     *             [
+     *               "mn Majjhimanikāya",
+     *               "54783"
+     *             ],
+     *             [
+     *               "an Aṅguttaranikāya",
+     *               "24871"
+     *             ],
+     *
+     *             ...
+     *
+     *             ]
+     *           ],
+     *           "histogramgraphdata": [
+     *             [
+     *               "Kūṭadanta Sutta (Dn 5)",
+     *               "36982"
+     *             ],
+     *             [
+     *               "Caṅkī Sutta (Mn 95)",
+     *               "19661"
+     *             ],
+     *             [
+     *               "Bhesajjakkhandhaka (Pli-tv-kd 6)",
+     *               "7773"
+     *             ],
+     *             etc.
+     *     ```
      */
     post: operations["get_graph_for_file_graph_view__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/visual-view/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get Visual View
      * @description Endpoint for visual view.
      *
-     * Input is as follows:
+     *     Input is as follows:
      *
-     * ```
-     *     {
-     *       "inquiry_collection": "",
-     *       "hit_collections": []
-     *     }
-     * ```
+     *     ```
+     *         {
+     *           "inquiry_collection": "",
+     *           "hit_collections": []
+     *         }
+     *     ```
      *
-     * "inquiry_collection" input comes from a dropdown list that lists collections only.
-     * This comes from the `/menus/graphcollections/` endpoint.
+     *     "inquiry_collection" input comes from a dropdown list that lists collections only.
+     *     This comes from the `/menus/graphcollections/` endpoint.
      *
-     * "hit_collections" also uses the same `/menus/graphcollections/` input but here it is
-     * possible to choose more than one option, hence it is a list.
+     *     "hit_collections" also uses the same `/menus/graphcollections/` input but here it is
+     *     possible to choose more than one option, hence it is a list.
      *
-     * F.i
+     *     F.i
      *
-     * ```
-     *     {
-     *       "inquiry_collection": "pli_Suttas-Early-1",
-     *       "hit_collections": ["pli_Suttas-Early-2"]
-     *     }
-     * ```
+     *     ```
+     *         {
+     *           "inquiry_collection": "pli_Suttas-Early-1",
+     *           "hit_collections": ["pli_Suttas-Early-2"]
+     *         }
+     *     ```
      *
-     * Generates an output:
+     *     Generates an output:
      *
-     * ```
-     *     [
-     *       [
-     *         "Dīghanikāya (dn)",
-     *         "Khuddakapāṭha (kp)",
-     *         "49864"
-     *       ],
-     *       [
-     *         "Dīghanikāya (dn)",
-     *         "Dhammapada (dhp)",
-     *         "52645"
-     *       ],
-     *       etc.
-     * ```
+     *     ```
+     *         [
+     *           [
+     *             "Dīghanikāya (dn)",
+     *             "Khuddakapāṭha (kp)",
+     *             "49864"
+     *           ],
+     *           [
+     *             "Dīghanikāya (dn)",
+     *             "Dhammapada (dhp)",
+     *             "52645"
+     *           ],
+     *           etc.
+     *     ```
      *
-     * When the first sankey-chart is generated, you can click on the collections on the left
-     * top open them. The "hit_collections" remain the same but the "inquiry_collection" changes
-     * to the value of the clicked item (between brackets). F.i. in the above example, clicking on
-     * "Dīghanikāya (dn)" will generate the request for:
+     *     When the first sankey-chart is generated, you can click on the collections on the left
+     *     top open them. The "hit_collections" remain the same but the "inquiry_collection" changes
+     *     to the value of the clicked item (between brackets). F.i. in the above example, clicking on
+     *     "Dīghanikāya (dn)" will generate the request for:
      *
-     * ```
-     *     {
-     *       "inquiry_collection": "dn",
-     *       "hit_collections": ["pli_Suttas-Early-2"]
-     *     }
-     * ```
+     *     ```
+     *         {
+     *           "inquiry_collection": "dn",
+     *           "hit_collections": ["pli_Suttas-Early-2"]
+     *         }
+     *     ```
      *
-     * Which outputs:
+     *     Which outputs:
      *
-     * ```
-     *     [
-     *       [
-     *         "Brahmajāla Sutta (dn1)",
-     *         "Khuddakapāṭha (kp)",
-     *         "55916"
-     *       ],
-     *       [
-     *         "Brahmajāla Sutta (dn1)",
-     *         "Udāna (ud)",
-     *         "57381"
-     *       ],
-     *       etc.
-     * ```
+     *     ```
+     *         [
+     *           [
+     *             "Brahmajāla Sutta (dn1)",
+     *             "Khuddakapāṭha (kp)",
+     *             "55916"
+     *           ],
+     *           [
+     *             "Brahmajāla Sutta (dn1)",
+     *             "Udāna (ud)",
+     *             "57381"
+     *           ],
+     *           etc.
+     *     ```
      *
-     * The sankey-chart is then updated with the new data.
+     *     The sankey-chart is then updated with the new data.
      *
-     * Then clicking on "Brahmajāla Sutta (dn1)" generates the request for:
+     *     Then clicking on "Brahmajāla Sutta (dn1)" generates the request for:
      *
-     * ```
-     *     {
-     *       "inquiry_collection": "dn1",
-     *       "hit_collections": ["pli_Suttas-Early-2"]
-     *     }
-     * ```
+     *     ```
+     *         {
+     *           "inquiry_collection": "dn1",
+     *           "hit_collections": ["pli_Suttas-Early-2"]
+     *         }
+     *     ```
      *
-     * Which provides the next dataset for the new updated sankey-chart.
+     *     Which provides the next dataset for the new updated sankey-chart.
      *
-     * When then clicking on "Brahmajāla Sutta (dn1)" again opens the file "dn1" in
-     * text-view mode.
+     *     When then clicking on "Brahmajāla Sutta (dn1)" again opens the file "dn1" in
+     *     text-view mode.
      */
     post: operations["get_visual_view_visual_view__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/table-view/table/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get Table View
      * @description Endpoint for the table view. Accepts filters.
-     * :return: List of segments and parallels for the table view.
+     *     :return: List of segments and parallels for the table view.
      */
     post: operations["get_table_view_table_view_table__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/table-view/download/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get Table Download
      * @description Endpoint for the download table. Accepts filters.
-     * :return: List of segments and parallels for the downloaded table view.
+     *     :return: List of segments and parallels for the downloaded table view.
      */
     post: operations["get_table_download_table_view_download__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/text-view/middle/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get Parallels For Middle
      * @description :return: List of parallels for text view (middle)
      */
     post: operations["get_parallels_for_middle_text_view_middle__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/text-view/text-parallels/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get File Text Segments And Parallels
      * @description Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
      */
     post: operations["get_file_text_segments_and_parallels_text_view_text_parallels__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/text-view/text-parallels-v2/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get File Text Segments And Parallels
      * @description Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
      */
     post: operations["get_file_text_segments_and_parallels_text_view_text_parallels_v2__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/numbers-view/numbers/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get Numbers View
      * @description Endpoint for numbers view.
      */
     post: operations["get_numbers_view_numbers_view_numbers__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/numbers-view/categories/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get Categories For Numbers View
      * @description Endpoint that returns list of categories for the given language
      */
     get: operations["get_categories_for_numbers_view_numbers_view_categories__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/links/external/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get External Links
      * @description Returns the external links for a given file_name or segmentnr.
      */
     get: operations["get_external_links_links_external__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/utils/count-matches/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /**
      * Get Counts For File
      * @description Returns number of filtered parallels
      */
     post: operations["get_counts_for_file_utils_count_matches__post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/utils/folios/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get Folios For File
      * @description Returns number of folios (TIB) / facsimiles (CHN) /
-     * suttas/PTS nrs/segments (PLI) / segments (SKT)
+     *     suttas/PTS nrs/segments (PLI) / segments (SKT)
      */
     get: operations["get_folios_for_file_utils_folios__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/utils/displayname/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get Displayname For Segmentnr
      * @description Returns the displayname for a given segmentnr
      */
     get: operations["get_displayname_for_segmentnr_utils_displayname__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/utils/sanskrittagger/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Tag Sanskrit
      * @description IS THIS FUNCTION BEING USED?
-     * Stemming + Tagging for Sanskrit
-     * :return: String with tagged Sanskrit
+     *     Stemming + Tagging for Sanskrit
+     *     :return: String with tagged Sanskrit
      */
     get: operations["tag_sanskrit_utils_sanskrittagger__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/utils/available-languages/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get Multilingual
      * @description Returns a list of the available languages of matches for the given file.
      */
     get: operations["get_multilingual_utils_available_languages__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/menus/files/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get Files For Menu
      * @description Endpoint that returns list of file IDs in a given language or
-     * all files available in multilang if the language is multi.
+     *     all files available in multilang if the language is multi.
      */
     get: operations["get_files_for_menu_menus_files__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/menus/filter/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get Files For Filter Menu
      * @description Given a language, return list of files for the category menu
      */
     get: operations["get_files_for_filter_menu_menus_filter__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/menus/category/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get Categories For Filter Menu
      * @description Given a language, return list of categories for the filter menu
-     * in text view, table view and numbers view.
+     *     in text view, table view and numbers view.
      *
-     * Input is the language string like "pli".
-     * Output is:
+     *     Input is the language string like "pli".
+     *     Output is:
      *
-     * ```
-     *     {
-     *       "categoryitems": [
+     *     ```
      *         {
-     *           "category": "pli_Suttas-Early-1",
-     *           "categoryname": "SUTTAS-EARLY-1 (ALL)"
-     *         },
-     *         {
-     *           "category": "dn",
-     *           "categoryname": "• Dīghanikāya (DN)"
-     *         },
-     *         {
-     *           "category": "mn",
-     *           "categoryname": "• Majjhimanikāya (MN)"
-     *         },
+     *           "categoryitems": [
+     *             {
+     *               "category": "pli_Suttas-Early-1",
+     *               "categoryname": "SUTTAS-EARLY-1 (ALL)"
+     *             },
+     *             {
+     *               "category": "dn",
+     *               "categoryname": "• Dīghanikāya (DN)"
+     *             },
+     *             {
+     *               "category": "mn",
+     *               "categoryname": "• Majjhimanikāya (MN)"
+     *             },
+     *             etc.
+     *     ```
+     *
+     *     Where "category" is the value that needs to be returns to the backend once
+     *     selected and "categoryname" is what displays in the dropdown menu:
+     *
+     *     ```
+     *         SUTTAS-EARLY-1 (ALL)
+     *         • Dīghanikāya (DN)
+     *         • Majjhimanikāya (MN)
      *         etc.
-     * ```
      *
-     * Where "category" is the value that needs to be returns to the backend once
-     * selected and "categoryname" is what displays in the dropdown menu:
-     *
-     * ```
-     *     SUTTAS-EARLY-1 (ALL)
-     *     • Dīghanikāya (DN)
-     *     • Majjhimanikāya (MN)
-     *     etc.
-     *
-     * ```
+     *     ```
      */
     get: operations["get_categories_for_filter_menu_menus_category__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/menus/collections/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get All Collections
      * @description Returns list of all available collections.
      */
     get: operations["get_all_collections_menus_collections__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/menus/sidebar/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get Data For Sidebar Menu
      * @description Endpoint for sidebar menu
      */
     get: operations["get_data_for_sidebar_menu_menus_sidebar__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/menus/graphcollections/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Get Categories For Filter Menu
      * @description Given a language, return list of collections for the filter menu
-     * of graph view and the input menus of the visual view.
+     *     of graph view and the input menus of the visual view.
      *
-     * Input is the language string like "pli".
-     * Output is:
+     *     Input is the language string like "pli".
+     *     Output is:
      *
-     * ```
-     *     {
-     *       "result": [
+     *     ```
      *         {
-     *           "collection": "pli_Suttas-Early-1",
-     *           "collectiondisplayname": "Suttas-Early-1"
-     *         },
-     *         {
-     *           "collection": "pli_Suttas-Early-2",
-     *           "collectiondisplayname": "Suttas-Early-2"
-     *         },
+     *           "result": [
+     *             {
+     *               "collection": "pli_Suttas-Early-1",
+     *               "collectiondisplayname": "Suttas-Early-1"
+     *             },
+     *             {
+     *               "collection": "pli_Suttas-Early-2",
+     *               "collectiondisplayname": "Suttas-Early-2"
+     *             },
+     *             etc.
+     *     ```
+     *
+     *     Where "collection" is the value that needs to be returns to the backend once
+     *     selected and "collectiondisplayname" is what displays in the dropdown menu:
+     *
+     *     ```
+     *         Suttas-Early-1
+     *         Suttas-Early-2
+     *         Suttas-Late-1
      *         etc.
-     * ```
      *
-     * Where "collection" is the value that needs to be returns to the backend once
-     * selected and "collectiondisplayname" is what displays in the dropdown menu:
-     *
-     * ```
-     *     Suttas-Early-1
-     *     Suttas-Early-2
-     *     Suttas-Late-1
-     *     etc.
-     *
-     * ```
+     *     ```
      */
     get: operations["get_categories_for_filter_menu_menus_graphcollections__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   "/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /**
      * Root
      * @description Root API endpoint
-     * :return: The response (json object)
+     *     :return: The response (json object)
      */
     get: operations["root__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
   schemas: {
     /** AllCategories */
@@ -451,18 +747,18 @@ export interface components {
        * File Name
        * @default
        */
-      file_name?: string;
+      file_name: string;
       limits?: components["schemas"]["Limits"];
       /**
        * Score
        * @default 0
        */
-      score?: number;
+      score: number;
       /**
        * Par Length
        * @default 0
        */
-      par_length?: number;
+      par_length: number;
     };
     /** CountMatchesOutput */
     CountMatchesOutput: {
@@ -512,12 +808,12 @@ export interface components {
        * Highlightcolor
        * @default 0
        */
-      highlightColor?: number;
+      highlightColor: number;
       /**
        * Matches
        * @default []
        */
-      matches?: unknown[];
+      matches: unknown[];
     };
     /** FullNames */
     FullNames: {
@@ -538,7 +834,7 @@ export interface components {
        * Highlightcolor
        * @default 0
        */
-      highlightColor?: number;
+      highlightColor: number;
     };
     /** GeneralInput */
     GeneralInput: {
@@ -548,28 +844,28 @@ export interface components {
        * Score
        * @default 0
        */
-      score?: number;
+      score: number;
       /**
        * Par Length
        * @default 0
        */
-      par_length?: number;
+      par_length: number;
       limits?: components["schemas"]["Limits"];
       /**
        * Page
        * @default 0
        */
-      page?: number;
+      page: number;
       /**
        * Sort Method
        * @default position
        */
-      sort_method?: string;
+      sort_method: string;
       /**
        * Folio
        * @default
        */
-      folio?: string;
+      folio: string;
     };
     /** GraphCollection */
     GraphCollection: {
@@ -589,29 +885,29 @@ export interface components {
        * File Name
        * @default
        */
-      file_name?: string;
+      file_name: string;
       /**
        * Score
        * @default 0
        */
-      score?: number;
+      score: number;
       /**
        * Par Length
        * @default 0
        */
-      par_length?: number;
+      par_length: number;
       /**
        * Target Collection
        * @default []
        */
-      target_collection?: unknown[];
+      target_collection: unknown[];
     };
     /** GraphViewOutput */
     GraphViewOutput: {
       /** Piegraphdata */
-      piegraphdata: ((string | number)[])[];
+      piegraphdata: (string | number)[][];
       /** Histogramgraphdata */
-      histogramgraphdata: ((string | number)[])[];
+      histogramgraphdata: (string | number)[][];
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -632,22 +928,22 @@ export interface components {
        * Category Include
        * @default []
        */
-      category_include?: unknown[];
+      category_include: unknown[];
       /**
        * Category Exclude
        * @default []
        */
-      category_exclude?: unknown[];
+      category_exclude: unknown[];
       /**
        * File Include
        * @default []
        */
-      file_include?: unknown[];
+      file_include: unknown[];
       /**
        * File Exclude
        * @default []
        */
-      file_exclude?: unknown[];
+      file_exclude: unknown[];
     };
     /** LinksOutput */
     LinksOutput: {
@@ -698,7 +994,7 @@ export interface components {
        * Language
        * @default
        */
-      language?: string;
+      language: string;
       limits?: components["schemas"]["Limits"];
     };
     /** SearchOutput */
@@ -740,28 +1036,28 @@ export interface components {
        * Score
        * @default 0
        */
-      score?: number;
+      score: number;
       /**
        * Par Length
        * @default 0
        */
-      par_length?: number;
+      par_length: number;
       limits?: components["schemas"]["Limits"];
       /**
        * Page
        * @default 0
        */
-      page?: number;
+      page: number;
       /**
        * Sort Method
        * @default position
        */
-      sort_method?: string;
+      sort_method: string;
       /**
        * Folio
        * @default
        */
-      folio?: string;
+      folio: string;
       /** Download Data */
       download_data: string;
     };
@@ -795,28 +1091,28 @@ export interface components {
        * Active Segment
        * @default none
        */
-      active_segment?: string;
+      active_segment: string;
       /**
        * Score
        * @default 0
        */
-      score?: number;
+      score: number;
       /**
        * Par Length
        * @default 0
        */
-      par_length?: number;
+      par_length: number;
       limits?: components["schemas"]["Limits"];
       /**
        * Multi Lingual
        * @default []
        */
-      multi_lingual?: unknown[];
+      multi_lingual: unknown[];
       /**
        * Page Number
        * @default 0
        */
-      page_number?: number;
+      page_number: number;
     };
     /** TextViewLeftOutput */
     TextViewLeftOutput: components["schemas"]["TextItem"][];
@@ -851,15 +1147,15 @@ export interface components {
        * Inquiry Collection
        * @default
        */
-      inquiry_collection?: string;
+      inquiry_collection: string;
       /**
        * Hit Collections
        * @default []
        */
-      hit_collections?: unknown[];
+      hit_collections: unknown[];
     };
     /** VisualViewOutput */
-    VisualViewOutput: ((string | number)[])[];
+    VisualViewOutput: (string | number)[][];
     /** Segment */
     api__endpoints__models__numbers_view_models__Segment: {
       /** Segmentnr */
@@ -891,12 +1187,12 @@ export interface components {
        * Root Fulltext
        * @default []
        */
-      root_fulltext?: components["schemas"]["FullText"][];
+      root_fulltext: components["schemas"]["FullText"][];
       /**
        * Par Fulltext
        * @default []
        */
-      par_fulltext?: components["schemas"]["FullText"][];
+      par_fulltext: components["schemas"]["FullText"][];
     };
     /** Segment */
     api__endpoints__models__text_view_models__Segment: {
@@ -914,7 +1210,7 @@ export interface components {
        * Par Segtext
        * @default []
        */
-      par_segtext?: unknown[];
+      par_segtext: unknown[];
       /** File Name */
       file_name: string;
       /** Score */
@@ -938,19 +1234,15 @@ export interface components {
   headers: never;
   pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
-export type external = Record<string, never>;
-
 export interface operations {
-
-  /**
-   * Get Search Results
-   * @description Returns search results for given search string.
-   * :return: List of search results
-   */
   get_search_results_search__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["SearchInput"];
@@ -959,83 +1251,27 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["SearchOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Graph For File
-   * @description Endpoint for graph view.
-   *
-   * Input fields are:
-   *
-   * ```
-   *     {
-   *       "file_name": "",
-   *       "score": 0,
-   *       "par_length": 0,
-   *       "target_collection": []
-   *     }
-   * ```
-   *
-   * The "target_collection" input comes from a dropdown list that lists collections only.
-   * This comes from the `/menus/graphcollections/` endpoint. It is possible to choose
-   * more than one option, hence it is a list. F.i.
-   *
-   * ```
-   *     ...
-   *     "target_collection": ["pli_Suttas-Early-1", "pli_Vinaya"]
-   * ```
-   *
-   * "score", "par_length" and "file_name" are the same as for the other views.
-   *
-   * Output is f.i.:
-   *
-   * ```
-   *     {
-   *       "piegraphdata": [
-   *         [
-   *           "dn Dīghanikāya",
-   *           "62063"
-   *         ],
-   *         [
-   *           "mn Majjhimanikāya",
-   *           "54783"
-   *         ],
-   *         [
-   *           "an Aṅguttaranikāya",
-   *           "24871"
-   *         ],
-   *
-   *         ...
-   *
-   *         ]
-   *       ],
-   *       "histogramgraphdata": [
-   *         [
-   *           "Kūṭadanta Sutta (Dn 5)",
-   *           "36982"
-   *         ],
-   *         [
-   *           "Caṅkī Sutta (Mn 95)",
-   *           "19661"
-   *         ],
-   *         [
-   *           "Bhesajjakkhandhaka (Pli-tv-kd 6)",
-   *           "7773"
-   *         ],
-   *         etc.
-   * ```
-   */
   get_graph_for_file_graph_view__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["GraphInput"];
@@ -1044,109 +1280,27 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["GraphViewOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Visual View
-   * @description Endpoint for visual view.
-   *
-   * Input is as follows:
-   *
-   * ```
-   *     {
-   *       "inquiry_collection": "",
-   *       "hit_collections": []
-   *     }
-   * ```
-   *
-   * "inquiry_collection" input comes from a dropdown list that lists collections only.
-   * This comes from the `/menus/graphcollections/` endpoint.
-   *
-   * "hit_collections" also uses the same `/menus/graphcollections/` input but here it is
-   * possible to choose more than one option, hence it is a list.
-   *
-   * F.i
-   *
-   * ```
-   *     {
-   *       "inquiry_collection": "pli_Suttas-Early-1",
-   *       "hit_collections": ["pli_Suttas-Early-2"]
-   *     }
-   * ```
-   *
-   * Generates an output:
-   *
-   * ```
-   *     [
-   *       [
-   *         "Dīghanikāya (dn)",
-   *         "Khuddakapāṭha (kp)",
-   *         "49864"
-   *       ],
-   *       [
-   *         "Dīghanikāya (dn)",
-   *         "Dhammapada (dhp)",
-   *         "52645"
-   *       ],
-   *       etc.
-   * ```
-   *
-   * When the first sankey-chart is generated, you can click on the collections on the left
-   * top open them. The "hit_collections" remain the same but the "inquiry_collection" changes
-   * to the value of the clicked item (between brackets). F.i. in the above example, clicking on
-   * "Dīghanikāya (dn)" will generate the request for:
-   *
-   * ```
-   *     {
-   *       "inquiry_collection": "dn",
-   *       "hit_collections": ["pli_Suttas-Early-2"]
-   *     }
-   * ```
-   *
-   * Which outputs:
-   *
-   * ```
-   *     [
-   *       [
-   *         "Brahmajāla Sutta (dn1)",
-   *         "Khuddakapāṭha (kp)",
-   *         "55916"
-   *       ],
-   *       [
-   *         "Brahmajāla Sutta (dn1)",
-   *         "Udāna (ud)",
-   *         "57381"
-   *       ],
-   *       etc.
-   * ```
-   *
-   * The sankey-chart is then updated with the new data.
-   *
-   * Then clicking on "Brahmajāla Sutta (dn1)" generates the request for:
-   *
-   * ```
-   *     {
-   *       "inquiry_collection": "dn1",
-   *       "hit_collections": ["pli_Suttas-Early-2"]
-   *     }
-   * ```
-   *
-   * Which provides the next dataset for the new updated sankey-chart.
-   *
-   * When then clicking on "Brahmajāla Sutta (dn1)" again opens the file "dn1" in
-   * text-view mode.
-   */
   get_visual_view_visual_view__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["VisualViewInput"];
@@ -1155,24 +1309,27 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["VisualViewOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Table View
-   * @description Endpoint for the table view. Accepts filters.
-   * :return: List of segments and parallels for the table view.
-   */
   get_table_view_table_view_table__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["GeneralInput"];
@@ -1181,24 +1338,27 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["TableViewOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Table Download
-   * @description Endpoint for the download table. Accepts filters.
-   * :return: List of segments and parallels for the downloaded table view.
-   */
   get_table_download_table_view_download__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["TableDownloadInput"];
@@ -1207,23 +1367,27 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["TableDownloadOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Parallels For Middle
-   * @description :return: List of parallels for text view (middle)
-   */
   get_parallels_for_middle_text_view_middle__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["TextViewMiddleInput"];
@@ -1232,23 +1396,27 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["TextViewMiddleOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get File Text Segments And Parallels
-   * @description Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
-   */
   get_file_text_segments_and_parallels_text_view_text_parallels__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["TextParallelsInput"];
@@ -1257,23 +1425,27 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["TextViewLeftOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get File Text Segments And Parallels
-   * @description Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
-   */
   get_file_text_segments_and_parallels_text_view_text_parallels_v2__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["TextParallelsInput"];
@@ -1282,23 +1454,27 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["TextViewLeftOutputV2"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Numbers View
-   * @description Endpoint for numbers view.
-   */
   get_numbers_view_numbers_view_numbers__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["GeneralInput"];
@@ -1307,75 +1483,83 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["NumbersViewOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Categories For Numbers View
-   * @description Endpoint that returns list of categories for the given language
-   */
   get_categories_for_numbers_view_numbers_view_categories__get: {
     parameters: {
       query: {
         /** @description Filename to be used */
         file_name: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["MenuOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get External Links
-   * @description Returns the external links for a given file_name or segmentnr.
-   */
   get_external_links_links_external__get: {
     parameters: {
       query: {
         file_name: string;
         segmentnr?: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["LinksOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Counts For File
-   * @description Returns number of filtered parallels
-   */
   get_counts_for_file_utils_count_matches__post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["CountMatchesInput"];
@@ -1384,341 +1568,302 @@ export interface operations {
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["CountMatchesOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Folios For File
-   * @description Returns number of folios (TIB) / facsimiles (CHN) /
-   * suttas/PTS nrs/segments (PLI) / segments (SKT)
-   */
   get_folios_for_file_utils_folios__get: {
     parameters: {
       query: {
         /** @description File name of the text for which folios should be fetched. */
         file_name: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["FolioOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Displayname For Segmentnr
-   * @description Returns the displayname for a given segmentnr
-   */
   get_displayname_for_segmentnr_utils_displayname__get: {
     parameters: {
       query: {
         /** @description Segmentnr for which the displayname should be fetched. */
         segmentnr: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["DisplayNameOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Tag Sanskrit
-   * @description IS THIS FUNCTION BEING USED?
-   * Stemming + Tagging for Sanskrit
-   * :return: String with tagged Sanskrit
-   */
   tag_sanskrit_utils_sanskrittagger__get: {
     parameters: {
       query: {
         /** @description Sanskrit string to be tagged. */
         sanskrit_string: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": unknown;
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Multilingual
-   * @description Returns a list of the available languages of matches for the given file.
-   */
   get_multilingual_utils_available_languages__get: {
     parameters: {
       query: {
         /** @description File name of the text for which the available languages should be fetched. */
         file_name: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["LanguageOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Files For Menu
-   * @description Endpoint that returns list of file IDs in a given language or
-   * all files available in multilang if the language is multi.
-   */
   get_files_for_menu_menus_files__get: {
     parameters: {
       query: {
         /** @description language to be used */
         language: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["FilesOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Files For Filter Menu
-   * @description Given a language, return list of files for the category menu
-   */
   get_files_for_filter_menu_menus_filter__get: {
     parameters: {
       query: {
         /** @description language to be used */
         language: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["FilterOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Categories For Filter Menu
-   * @description Given a language, return list of categories for the filter menu
-   * in text view, table view and numbers view.
-   *
-   * Input is the language string like "pli".
-   * Output is:
-   *
-   * ```
-   *     {
-   *       "categoryitems": [
-   *         {
-   *           "category": "pli_Suttas-Early-1",
-   *           "categoryname": "SUTTAS-EARLY-1 (ALL)"
-   *         },
-   *         {
-   *           "category": "dn",
-   *           "categoryname": "• Dīghanikāya (DN)"
-   *         },
-   *         {
-   *           "category": "mn",
-   *           "categoryname": "• Majjhimanikāya (MN)"
-   *         },
-   *         etc.
-   * ```
-   *
-   * Where "category" is the value that needs to be returns to the backend once
-   * selected and "categoryname" is what displays in the dropdown menu:
-   *
-   * ```
-   *     SUTTAS-EARLY-1 (ALL)
-   *     • Dīghanikāya (DN)
-   *     • Majjhimanikāya (MN)
-   *     etc.
-   *
-   * ```
-   */
   get_categories_for_filter_menu_menus_category__get: {
     parameters: {
       query: {
         /** @description language to be used */
         language: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["CategoryOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get All Collections
-   * @description Returns list of all available collections.
-   */
   get_all_collections_menus_collections__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["CollectionsOutput"];
         };
       };
     };
   };
-  /**
-   * Get Data For Sidebar Menu
-   * @description Endpoint for sidebar menu
-   */
   get_data_for_sidebar_menu_menus_sidebar__get: {
     parameters: {
       query: {
         /** @description language to be used */
         language: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["SideBarOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Get Categories For Filter Menu
-   * @description Given a language, return list of collections for the filter menu
-   * of graph view and the input menus of the visual view.
-   *
-   * Input is the language string like "pli".
-   * Output is:
-   *
-   * ```
-   *     {
-   *       "result": [
-   *         {
-   *           "collection": "pli_Suttas-Early-1",
-   *           "collectiondisplayname": "Suttas-Early-1"
-   *         },
-   *         {
-   *           "collection": "pli_Suttas-Early-2",
-   *           "collectiondisplayname": "Suttas-Early-2"
-   *         },
-   *         etc.
-   * ```
-   *
-   * Where "collection" is the value that needs to be returns to the backend once
-   * selected and "collectiondisplayname" is what displays in the dropdown menu:
-   *
-   * ```
-   *     Suttas-Early-1
-   *     Suttas-Early-2
-   *     Suttas-Late-1
-   *     etc.
-   *
-   * ```
-   */
   get_categories_for_filter_menu_menus_graphcollections__get: {
     parameters: {
       query: {
         /** @description language to be used */
         language: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["GraphCollectionOutput"];
         };
       };
       /** @description Validation Error */
       422: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["HTTPValidationError"];
         };
       };
     };
   };
-  /**
-   * Root
-   * @description Root API endpoint
-   * :return: The response (json object)
-   */
   root__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
     responses: {
       /** @description Successful Response */
       200: {
+        headers: Record<string, unknown>;
         content: {
           "application/json": unknown;
         };

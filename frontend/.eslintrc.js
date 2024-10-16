@@ -212,6 +212,12 @@ module.exports = {
         project: true, // Specify it only for TypeScript files
       },
     },
+    {
+      files: ["./src/codegen/api/*ts"],
+      rules: {
+        "no-use-before-define": "off",
+      },
+    },
   ],
   extends: ["plugin:@next/next/recommended"],
 };

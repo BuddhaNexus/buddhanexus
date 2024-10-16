@@ -1,4 +1,4 @@
-import type { components, paths } from "src/codegen/api/v2.d.ts";
+import type { components, paths } from "src/codegen/api/v2.ts";
 
 // TODO: most endpoint query functions have a `if undefined` check, this is to match a temp fix for BE data issues. The check should be cleared onee Pali data is updated on the BE.
 
