@@ -189,6 +189,10 @@ def get_cat_from_segmentnr(segmentnr):
 
 
 def arrange_filter_data(filters):
+    """
+    Stringify include and exclude filters for display
+    in download table and numbers files.
+    """
     filter_display_include = ""
     filter_display_exclude = ""
     filter_display = ""
