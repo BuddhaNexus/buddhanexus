@@ -23,7 +23,7 @@ class TableViewOutput(BaseModel):
 
 
 class TableDownloadInput(GeneralInput):
-    download_data: str
+    download_data: str = "table"
 
 
 class TableDownloadOutput(BaseModel):

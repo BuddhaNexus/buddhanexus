@@ -46,5 +46,3 @@ class FullText(BaseModel):
 class FullNames(BaseModel):
     display_name: Union[str, None] = None
     text_name: Union[str, None] = None
-    link1: Union[str, None] = None
-    link2: Union[str, None] = None

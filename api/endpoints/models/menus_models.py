@@ -27,12 +27,8 @@ class Collection(CollectionBase):
     categories: List[Category]
 
 
-class GraphCollection(CollectionBase):
-    collectiondisplayname: Union[str, None] = None
-
-
 class GraphCollectionOutput(BaseModel):
-    result: List[GraphCollection]
+    __root__: list
 
 
 class MetadataOutput(BaseModel):

@@ -25,16 +25,16 @@ def create_numbers_view_data(table_results):
         parallels_list = []
         if result["parallels"]:
             for parallel in result["parallels"]:
-                if parallel["par_full_names"]:
+                if parallel["par_full_names"][0]:
                     parallel_dic = {}
                     parallel_dic["segmentnr"] = shorten_segment_names(
                         parallel["par_segnr"]
                     )
-                    parallel_dic["displayName"] = parallel["par_full_names"][
+                    parallel_dic["displayName"] = parallel["par_full_names"][0][
                         "displayName"
                     ]
-                    parallel_dic["fileName"] = parallel["par_full_names"]["fileName"]
-                    parallel_dic["category"] = parallel["par_full_names"]["category"]
+                    parallel_dic["fileName"] = parallel["par_full_names"][0]["fileName"]
+                    parallel_dic["category"] = parallel["par_full_names"][0]["category"]
                     parallels_list.append(parallel_dic)
 
             if parallels_list:
@@ -59,8 +59,8 @@ async def get_numbers_view(input: GeneralInput) -> Any:
         table_view_queries.QUERY_NUMBERS_VIEW,
         bind_vars={
             "filename": input.filename,
-            "score": input.score,
-            "parlength": input.par_length,
+            "score": input.filters.score,
+            "parlength": input.filters.par_length,
             "filter_include_files": input.filters.include_files,
             "filter_exclude_files": input.filters.exclude_files,
             "filter_include_categories": input.filters.include_categories,
