@@ -35,22 +35,16 @@ FOR file IN files
         collectionlanguage: language,
         collectionkey: language + "_" + collection
     }
-
 """
 
 QUERY_COLLECTION_NAMES = "RETURN category_names"
 
 QUERY_CATEGORIES_PER_LANGUAGE = """
-FOR file in files
-    FILTER file.language == @language
-    LET category_info = FIRST(
-        FOR cat IN category_names
-        FILTER cat.category == file.category AND cat.lang == @language
-        RETURN cat.displayName
-    )
+FOR cat IN category_names
+    FILTER cat.lang == @language
     RETURN {
-        id: file.category,
-        displayName: category_info
+        id: cat.category,
+        displayName: cat.displayName
     }
 """
 
@@ -58,11 +52,8 @@ QUERY_COLLECTIONS_FOR_LANGUAGE = """
 LET collections = (
     FOR file IN files
         FILTER file.lang == @language
-        COLLECT collection = file.collection        
-        RETURN DISTINCT {
-            collection: CONCAT(@language, '_', collection),
-            collectiondisplayname: collection
-        }
+        SORT file.filenr
+        RETURN DISTINCT file.collection
 )
 RETURN collections
 """

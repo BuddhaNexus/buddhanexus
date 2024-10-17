@@ -30,9 +30,9 @@ QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file.filename == @filename
     LET page_segments = (        
-        LENGTH(file.segment_pages[@page_number] ? file.segment_pages[@page_number] : []) > 0 ?
+        LENGTH(file.segment_pages[@page] ? file.segment_pages[@page] : []) > 0 ?
         (
-            FOR segmentnr IN file.segment_pages[@page_number]
+            FOR segmentnr IN file.segment_pages[@page]
                 FOR segment IN segments
                     FILTER segment.segmentnr == segmentnr
                     LET parallel_ids = (

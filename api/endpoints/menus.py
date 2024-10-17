@@ -31,37 +31,24 @@ async def get_categories_for_filter_menu(
 ) -> Any:
     """
     Given a language, return list of collections for the filter menu
-    of graph view and the input menus of the visual view.
+    of graph view.
 
-    Input is the language string like "pli".
-    Output is:
+    Input is the language string like "pa".
+    Output is a list:
 
-    ```
-        {
-          "result": [
-            {
-              "collection": "pli_Suttas-Early-1",
-              "collectiondisplayname": "Suttas-Early-1"
-            },
-            {
-              "collection": "pli_Suttas-Early-2",
-              "collectiondisplayname": "Suttas-Early-2"
-            },
-            etc.
-    ```
-
-    Where "collection" is the value that needs to be returns to the backend once
-    selected and "collectiondisplayname" is what displays in the dropdown menu:
 
     ```
-        Suttas-Early-1
-        Suttas-Early-2
-        Suttas-Late-1
-        etc.
+        [
+          "Suttas-Early-1",
+          "Suttas-Early-2",
+          "Suttas-Late-1",
+          "Suttas-Late-2",
+            .... etc.
+        ]
 
     ```
     """
     query_result = execute_query(
         menu_queries.QUERY_COLLECTIONS_FOR_LANGUAGE, bind_vars={"language": language}
     )
-    return {"result": query_result.result[0]}
+    return query_result.result[0]

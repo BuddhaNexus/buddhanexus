@@ -186,3 +186,21 @@ def get_cat_from_segmentnr(segmentnr):
     replaced by a query function.
     """
     return segmentnr.split("_")[1]
+
+
+def arrange_filter_data(filters):
+    filter_display_include = ""
+    filter_display_exclude = ""
+    filter_display = ""
+    for item in filters:
+        if item[0].startswith("i") and item[1]:
+            filter_display_include += ", ".join(item[1]) + ", "
+        if item[0].startswith("e") and item[1]:
+            filter_display_exclude += ", ".join(item[1]) + ", "
+    if filter_display_include:
+        filter_display = "Include: " + filter_display_include[:-2]
+        if filter_display_exclude:
+            filter_display += ", Exclude: " + filter_display_exclude[:-2]
+    elif filter_display_exclude:
+        filter_display = "Exclude: " + filter_display_exclude[:-2]
+    return filter_display

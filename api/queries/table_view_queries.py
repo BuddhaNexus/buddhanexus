@@ -143,10 +143,11 @@ QUERY_NUMBERS_VIEW = """
 FOR file IN files
     FILTER file._key == @filename
     LET selected_folio_segmentnr = (
-        FOR segmentnr in segments
-            FILTER segmentnr.filename == @filename
-            FILTER segmentnr.folio == @folio
-            RETURN segmentnr.segmentnr
+        FOR segmentnr in file.segment_keys
+            FOR segment in segments
+                FILTER segment.segmentnr == segmentnr
+                FILTER segment.folio == @folio
+            RETURN segment.segmentnr
     )
 
     LET current_segments = (
@@ -157,7 +158,8 @@ FOR file IN files
                 FILTER segment.segmentnr == segmentnr
                 LET parallel_ids = (
                     FOR p IN parallels
-                        FILTER segmentnr IN p.root_segnr
+                        FILTER p.root_filename == @filename 
+                        FILTER segment.segmentnr IN p.root_segnr
                         RETURN p._key
                         )
                 FILTER LENGTH(parallel_ids) > 0
@@ -178,7 +180,6 @@ FOR file IN files
                             FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
                             FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
 
-
                             LET par_full_names = (
                                 FOR f in files
                                     FILTER f._key == p.par_filename
@@ -188,8 +189,9 @@ FOR file IN files
                                 )
                             RETURN {
                                 par_segnr: p.par_segnr,
-                                par_full_names: par_full_names[0] || {}
+                                par_full_names: par_full_names
                             }
+
                 )
                 FILTER LENGTH(parallels) > 0
                 RETURN {
@@ -209,7 +211,8 @@ FOR file IN files
                 FILTER segment.segmentnr == segmentnr
                 LET parallel_ids = (
                     FOR p IN parallels
-                        FILTER segmentnr IN p.root_segnr
+                        FILTER p.root_filename == @filename 
+                        FILTER segment.segmentnr IN p.root_segnr
                         RETURN p._key
                         )
                 FILTER LENGTH(parallel_ids) > 0
