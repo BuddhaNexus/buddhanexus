@@ -49,14 +49,14 @@ def get_sort_key(sort_method) -> str:
     """
     Returns the correct sort_key for table and numbers queries
     """
-    sort_key = ""
+    sort_key = "parallels_sorted_by_src_pos"
     if sort_method == "position":
         sort_key = "parallels_sorted_by_src_pos"
-    if sort_method == "quoted-text":
+    elif sort_method == "quoted-text":
         sort_key = "parallels_sorted_by_tgt_pos"
-    if sort_method == "length":
+    elif sort_method == "length":
         sort_key = "parallels_sorted_by_length_src"
-    if sort_method == "length2":
+    elif sort_method == "length2":
         sort_key = "parallels_sorted_by_length_tgt"
     return sort_key
 
@@ -90,42 +90,44 @@ def number_exists(input_string) -> bool:
     return any(char.isdigit() for char in input_string)
 
 
-def add_source_information(filename, query_result):
-    """
-    Checks if a special source string is stored in the database.
-    If not, it will return a generic message based on a regex pattern.
-    Currently only works for SKT.
-    TODO: We might want to add this to Pali/Chn/Tib as well in the future!
-    """
-    lang = get_language_from_filename(filename)
-    if lang == "sa":
-        query_source_information = get_db().AQLQuery(
-            query=utils_queries.QUERY_SOURCE,
-            bindVars={"filename": filename},
-            rawResults=True,
-        )
-        source_id = query_source_information.result[0]["source_id"]
-        source_string = query_source_information.result[0]["source_string"]
-        if source_id == "GRETIL":
-            source_string = """The source of this text is GRETIL
-                               (Göttingen Register of Electronic Texts in Indian Languages).
-                               Click on the link above to access the original etext
-                               with full header Information."""
-        if source_id == "DSBC":
-            source_string = """The source of this text is the Digital
-                               Sanskrit Buddhist Canon project at the University of the West.
-                               Click on the link above to access the
-                               original etext with full header Information."""
-        source_segment = {
-            "segnr": "source:0",
-            "segtext": source_string,
-            "position": -1,
-            "lang": "eng",
-            "parallel_ids": [],
-        }
-        query_result["textleft"].insert(0, source_segment)
-        query_result["textleft"] = query_result["textleft"][:800]
-    return query_result
+# Is the below function still needed?
+
+# def add_source_information(filename, query_result):
+#     """
+#     Checks if a special source string is stored in the database.
+#     If not, it will return a generic message based on a regex pattern.
+#     Currently only works for SKT.
+#     TODO: We might want to add this to Pali/Chn/Tib as well in the future!
+#     """
+#     lang = get_language_from_filename(filename)
+#     if lang == "sa":
+#         query_source_information = get_db().AQLQuery(
+#             query=utils_queries.QUERY_SOURCE,
+#             bindVars={"filename": filename},
+#             rawResults=True,
+#         )
+#         source_id = query_source_information.result[0]["source_id"]
+#         source_string = query_source_information.result[0]["source_string"]
+#         if source_id == "GRETIL":
+#             source_string = """The source of this text is GRETIL
+#                                (Göttingen Register of Electronic Texts in Indian Languages).
+#                                Click on the link above to access the original etext
+#                                with full header Information."""
+#         if source_id == "DSBC":
+#             source_string = """The source of this text is the Digital
+#                                Sanskrit Buddhist Canon project at the University of the West.
+#                                Click on the link above to access the
+#                                original etext with full header Information."""
+#         source_segment = {
+#             "segnr": "source:0",
+#             "segtext": source_string,
+#             "position": -1,
+#             "lang": "eng",
+#             "parallel_ids": [],
+#         }
+#         query_result["textleft"].insert(0, source_segment)
+#         query_result["textleft"] = query_result["textleft"][:800]
+#     return query_result
 
 
 def get_page_for_segment(active_segment):
@@ -140,15 +142,17 @@ def get_page_for_segment(active_segment):
     return page_for_segment.result[0]
 
 
-def get_segment_for_folio(folio):
-    """
-    Gets the segment number for a given folio.
-    """
-    segment_for_folio = get_db().AQLQuery(
-        query=utils_queries.QUERY_SEGMENT_FOR_FOLIO,
-        bindVars={"folio": folio},
-    )
-    return segment_for_folio.result
+# Is the below function still needed?
+
+# def get_segment_for_folio(folio):
+#     """
+#     Gets the segment number for a given folio.
+#     """
+#     segment_for_folio = get_db().AQLQuery(
+#         query=utils_queries.QUERY_SEGMENT_FOR_FOLIO,
+#         bindVars={"folio": folio},
+#     )
+#     return segment_for_folio.result
 
 
 def get_file_text(filename):

@@ -20,7 +20,6 @@ async def get_data_for_sidebar_menu(
     current_bind_vars = {"lang": language}
 
     query_sidebar_menu = execute_query(menu_query, current_bind_vars)
-    print(query_sidebar_menu.result)
     structured_menu_data = structure_menu_data(query_sidebar_menu.result)
     return {"metadata": structured_menu_data}
 

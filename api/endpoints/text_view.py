@@ -3,11 +3,7 @@ from ..queries import text_view_queries
 from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_middle_view
 from .endpoint_utils import execute_query
 from typing import Any
-from ..utils import (
-    get_page_for_segment,
-    get_filename_from_segmentnr,
-    get_segment_for_folio,
-)
+from ..utils import get_page_for_segment, get_filename_from_segmentnr
 from .models.text_view_models import *
 
 router = APIRouter()

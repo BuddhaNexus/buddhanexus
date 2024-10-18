@@ -61,7 +61,6 @@ FOR f IN parallels_sorted_file
                 par_segment: par_segment,
                 par_full_names: par_full_names[0] || {},
                 root_full_names: root_full_names[0],
-                filename: p.id,
                 root_segnr: p.root_segnr,
                 root_seg_text: root_seg_text,
                 par_length: p.par_length,
