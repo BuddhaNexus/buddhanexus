@@ -1,4 +1,4 @@
-import type { components, paths } from "src/codegen/api/proto.ts";
+import type { components, paths, operations } from "src/codegen/api/proto.ts";
 
 // TODO: most endpoint query functions have a `if undefined` check, this is to match a temp fix for BE data issues. The check should be cleared onee Pali data is updated on the BE.
 
@@ -73,3 +73,37 @@ export type APIGetRequestQuery<Endpoint extends GetEndpoint> = RequestQuery<
 export type APIGetResponse<Endpoint extends GetEndpoint> = APIResponse<
   paths[Endpoint]["get"]
 >;
+
+/**
+ * *********************
+ * REQUEST PROP HELPERS
+ * **************************
+ */
+
+type RequestBodyProps = {
+  [K in keyof operations]: operations[K] extends {
+    requestBody: { content: { "application/json": infer U } };
+  }
+    ? U
+    : never;
+}[keyof operations] extends infer U
+  ? (U extends any ? (x: U) => void : never) extends (x: infer I) => void
+    ? I
+    : never
+  : never;
+
+type QueryParameterProps = {
+  [K in keyof operations]: operations[K] extends {
+    parameters: { query: infer U };
+  }
+    ? U
+    : never;
+}[keyof operations] extends infer U
+  ? (U extends any ? (x: U) => void : never) extends (x: infer I) => void
+    ? I
+    : never
+  : never;
+
+export type AllAPIRequestProps = RequestBodyProps & QueryParameterProps;
+
+export type APIRequestPropName = keyof AllAPIRequestProps;

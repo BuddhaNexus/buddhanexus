@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import type { ParsedFolio } from "@utils/api/endpoints/utils/folios";
 import { StringParam, useQueryParam } from "use-query-params";
-import { uniqueSettings } from "@features/sidebarSuite/config/settings";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
@@ -30,7 +30,7 @@ export default function FolioOption() {
   });
 
   const [folioParam, setFolioParam] = useQueryParam(
-    uniqueSettings.queryParams.folio,
+    allUIComponentParamNames.folio,
     StringParam
   );
 

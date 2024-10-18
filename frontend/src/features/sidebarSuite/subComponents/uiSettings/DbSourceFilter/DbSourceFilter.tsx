@@ -1,18 +1,27 @@
 import React, { memo } from "react";
 import {
   DbSourceFilters as DbSourceFiltersType,
-  DbSourceFilterType,
-} from "@features/sidebarSuite/config/types";
+  DbSourceFilterUISetting,
+} from "@features/sidebarSuite/types";
 import { Box } from "@mui/material";
 import { parseAsJson, useQueryState } from "nuqs";
 
-import DbSourceFilter from "./DbSourceFilter";
+import FilterUI from "./FilterUI";
 import { dbSourceFilterSelectors, getFilterIds } from "./utils";
 
-const DbSourceFilters = () => {
+const DbSourceFilter = ({
+  filterName,
+}: {
+  filterName: DbSourceFilterUISetting;
+}) => {
+  /** TODO:
+   * - adjust for graph view = include_collection only
+   * - add render condition on search page if language is not set
+   * */
+
   const [filterParam] = useQueryState(
     "filters",
-    parseAsJson<DbSourceFiltersType>(),
+    parseAsJson<DbSourceFiltersType>()
   );
 
   const selectedSourceFilterIds = React.useMemo(
@@ -27,25 +36,19 @@ const DbSourceFilters = () => {
             }),
           };
         },
-        {} as Record<DbSourceFilterType, string[]>,
+        {} as Record<DbSourceFilterUISetting, string[]>
       ),
-    [filterParam],
+    [filterParam]
   );
 
   return (
-    <>
-      {dbSourceFilterSelectors.map((filter) => {
-        return (
-          <Box key={`source-filter-${filter}`} sx={{ mb: 2 }}>
-            <DbSourceFilter
-              filterName={filter}
-              selectionIds={selectedSourceFilterIds[filter]}
-            />
-          </Box>
-        );
-      })}
-    </>
+    <Box sx={{ mb: 2 }}>
+      <FilterUI
+        filterName={filterName}
+        selectionIds={selectedSourceFilterIds[filterName]}
+      />
+    </Box>
   );
 };
 
-export default memo(DbSourceFilters);
+export default memo(DbSourceFilter);

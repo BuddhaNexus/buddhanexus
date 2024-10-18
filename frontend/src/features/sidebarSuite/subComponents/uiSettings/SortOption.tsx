@@ -1,9 +1,6 @@
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import {
-  type SortMethod,
-  sortMethods,
-} from "@features/sidebarSuite/config/types";
+import { type SortMethod } from "@features/sidebarSuite/types";
 import {
   Box,
   FormControl,
@@ -12,7 +9,10 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import { uniqueSettings } from "@features/sidebarSuite/config/settings";
+import {
+  allUIComponentParamNames,
+  sortMethods,
+} from "@features/sidebarSuite/uiSettingsLists";
 
 export default function SortOption() {
   const { t } = useTranslation("settings");
@@ -25,7 +25,7 @@ export default function SortOption() {
       pathname: router.pathname,
       query: {
         ...router.query,
-        [uniqueSettings.queryParams.sortMethod]: sortMethod,
+        [allUIComponentParamNames.sort_method]: sortMethod,
       },
     });
   };

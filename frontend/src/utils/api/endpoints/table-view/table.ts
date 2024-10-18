@@ -4,20 +4,21 @@ import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 import { getValidDbLanguage } from "@utils/validators";
 
 function parseAPITableData(
-  data: APIPostResponse<"/table-view/table"> | undefined
+  data: APIPostResponse<"/table-view/table/"> | undefined
 ) {
   return data && Array.isArray(data)
     ? data.map((p) => ({
         sourceLanguage: getValidDbLanguage(p.src_lang),
         targetLanguage: getValidDbLanguage(p.tgt_lang),
-        fileName: p.file_name,
+        // fileName: p.file_name,
+        fileName: "",
         score: p.score,
 
         parallelFullNames: {
           displayName: p.par_full_names.display_name ?? "",
           textName: p.par_full_names.text_name ?? "",
-          link1: p.par_full_names.link1,
-          link2: p.par_full_names.link2,
+          // link1: p.par_full_names.link1,
+          // link2: p.par_full_names.link2,
         },
         parallelFullText: p.par_fulltext ?? [],
         parallelLength: p.par_length,
@@ -26,8 +27,8 @@ function parseAPITableData(
         rootFullNames: {
           displayName: p.root_full_names.display_name ?? "",
           textName: p.root_full_names.text_name ?? "",
-          link1: p.root_full_names.link1,
-          link2: p.root_full_names.link2,
+          // link1: p.root_full_names.link1,
+          // link2: p.root_full_names.link2,
         },
         rootFullText: p.root_fulltext ?? [],
         rootLength: p.root_length,
@@ -42,11 +43,11 @@ export type ParsedTableViewParallel = ReturnType<
 export type ParsedTableViewData = ParsedTableViewParallel[];
 
 export async function getTableData(
-  body: APIPostRequestBody<"/table-view/table">
+  body: APIPostRequestBody<"/table-view/table/">
 ) {
   const { page = 0, ...params } = body;
 
-  const { data } = await apiClient.POST("/table-view/table", {
+  const { data } = await apiClient.POST("/table-view/table/", {
     body: parseAPIRequestBody({ ...params, page }),
   });
 

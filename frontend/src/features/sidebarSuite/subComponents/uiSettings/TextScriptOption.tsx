@@ -12,7 +12,7 @@ import {
 import type { SourceLanguage } from "@utils/constants";
 import { useAtom } from "jotai";
 
-export type Script = "Unicode" | "Wylie";
+import type { Script } from "@features/sidebarSuite/types";
 
 const SCRIPT_OPTIONS: Partial<Record<SourceLanguage, Script[]>> = {
   tib: ["Unicode", "Wylie"],

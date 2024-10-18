@@ -4,26 +4,29 @@ import { useTranslation } from "next-i18next";
 import ParallelsChip from "@components/db/ParallelsChip";
 import SearchMatchesChip from "@components/db/SearchMatchesChip";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
-import {
-  customFiltersChipQueryExclusions,
-  customOptionsChipQueries,
-} from "@features/sidebarSuite/config";
-import { uniqueSettings } from "@features/sidebarSuite/config/settings";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
 import type {
   DefaultQueryParams,
   QueryParams,
-} from "@features/sidebarSuite/config/types";
+  UIComponentParamName,
+} from "@features/sidebarSuite/types";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 
 type ParamValues = any;
 
+const displayQueries: UIComponentParamName[] = ["folio", "sort_method"];
+const excludedFromFilterCount: UIComponentParamName[] = [
+  ...displayQueries,
+  "search_string",
+];
+
 function getFilterCount(key: string) {
-  return customFiltersChipQueryExclusions.includes(key) ? 0 : 1;
+  return excludedFromFilterCount.some((item) => item === key) ? 0 : 1;
 }
 function getDisplayOptionCount(key: string) {
-  return customOptionsChipQueries.includes(key) ? 1 : 0;
+  return displayQueries.some((item) => item === key) ? 1 : 0;
 }
 
 function isDefaultValue({
@@ -39,8 +42,8 @@ function isDefaultValue({
   // TODO: handling here is being reviewed for refactoring and this may be removable.
   const defaults = {
     ...defaultQueries,
-    [uniqueSettings.queryParams.sortMethod]: "position",
-    [uniqueSettings.queryParams.folio]: null,
+    [allUIComponentParamNames.sort_method]: "position",
+    [allUIComponentParamNames.folio]: null,
   };
   return defaults[queryKey]?.toString() === value;
 }
@@ -102,7 +105,7 @@ export default function CurrentResultChips({
   //   currentQueries: queryParams,
   //   defaultQueries: {
   //     ...defaultQueryParams,
-  //     [uniqueSettings.queryParams.multiLingual]: multiLangParamData,
+  //     [uallUIComponentParamNames.languages]: multiLangParamData,
   //   },
   // });
 

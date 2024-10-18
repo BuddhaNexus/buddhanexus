@@ -2,13 +2,13 @@ import { useTranslation } from "next-i18next";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { SourceLanguage as SourceLanguageEnum } from "@utils/constants";
 import { StringParam, useQueryParam } from "use-query-params";
-import { uniqueSettings } from "@features/sidebarSuite/config/settings";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
 
 const SearchLanguageSelector = () => {
   const { t } = useTranslation(["common", "settings"]);
 
   const [currentLang, setCurrentDbLang] = useQueryParam(
-    uniqueSettings.queryParams.language,
+    allUIComponentParamNames.language,
     StringParam
   );
 

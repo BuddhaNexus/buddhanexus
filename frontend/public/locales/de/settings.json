@@ -43,7 +43,7 @@
     },
     "wylie": "Wylie",
     "unicode": "Unicode",
-    "download": "Ergebnisse als xmlx-Datei herunterladen",
+    "download_data": "Ergebnisse als xmlx-Datei herunterladen",
     "copyQueryTitle": "Texttitel kopieren",
     "copyQueryLink": "Link der Ergebnisseite kopieren",
     "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden",
@@ -51,7 +51,7 @@
     "useMonochromaticSegmentColors": "Verwenden Sie monochromatische Farbkombinationen"
   },
   "optionsPopperMsgs": {
-    "download": "Hoppla! Etwas ist schief gelaufen!",
+    "download_data": "Hoppla! Etwas ist schief gelaufen!",
     "copyQueryTitle": "Kopiert",
     "copyQueryLink": "Kopiert",
     "emailQueryLink": "E-Mail geöffnet"

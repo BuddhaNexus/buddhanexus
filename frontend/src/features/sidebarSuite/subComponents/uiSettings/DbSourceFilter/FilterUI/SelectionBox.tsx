@@ -2,14 +2,14 @@ import React from "react";
 import { useTranslation } from "next-i18next";
 import type {
   DbSourceFilters,
-  DbSourceFilterType,
-} from "@features/sidebarSuite/config/types";
+  DbSourceFilterUISetting,
+} from "@features/sidebarSuite/types";
 import {
   InputOutlineBox,
   MultiSelectionBox,
   SelectionChipsBox,
-} from "@features/sidebarSuite/subComponents/settings/DbSourceFilters/styledComponents";
-import { removeItemsById } from "@features/sidebarSuite/subComponents/settings/DbSourceFilters/utils";
+} from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/styledComponents";
+import { removeItemsById } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Button, Chip, IconButton } from "@mui/material";
 import { parseAsJson, useQueryState } from "nuqs";
@@ -18,7 +18,7 @@ const CHIP_GAP = 6;
 const MAX_CHIP_ROW_WIDTH = 253;
 
 type DbSourceFilterInputProps = {
-  filterName: DbSourceFilterType;
+  filterName: DbSourceFilterUISetting;
   popperId: string | undefined;
   handleClick: (event: React.MouseEvent<HTMLElement>) => void;
   open: boolean;
@@ -37,7 +37,7 @@ const DbSourceFilterInput = ({
 
   const [, setFilterParam] = useQueryState(
     "filters",
-    parseAsJson<DbSourceFilters>(),
+    parseAsJson<DbSourceFilters>()
   );
 
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -90,7 +90,7 @@ const DbSourceFilterInput = ({
   }, [selectionIds, calculateChipVisibility]);
 
   const handleClearSourcesById = React.useCallback(
-    async (id: string, filterSettingName: DbSourceFilterType) => {
+    async (id: string, filterSettingName: DbSourceFilterUISetting) => {
       await setFilterParam((filterParam) => {
         return removeItemsById({
           filterParam: filterParam ?? {},
@@ -99,7 +99,7 @@ const DbSourceFilterInput = ({
         });
       });
     },
-    [setFilterParam],
+    [setFilterParam]
   );
 
   return (

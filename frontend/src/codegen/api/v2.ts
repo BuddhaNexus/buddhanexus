@@ -1061,7 +1061,10 @@ export interface components {
       /** Download Data */
       download_data: string;
     };
-    /** TableDownloadOutput */
+    /**
+     * TableDownloadOutput
+     * Format: binary
+     */
     TableDownloadOutput: string;
     /** TableViewOutput */
     TableViewOutput: components["schemas"]["api__endpoints__models__table_view_models__Segment"][];

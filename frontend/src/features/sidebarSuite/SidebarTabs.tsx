@@ -7,7 +7,7 @@ import isFeatureEnabled from "@utils/featureControls";
 import { Info } from "./subComponents/Info";
 import { DisplayOptionsSection } from "./subComponents/tabPanelGroups/DisplayOptionsSection";
 import { ExternalLinksSection } from "./subComponents/tabPanelGroups/ExternalLinksSection";
-import { PrimarySettings } from "./subComponents/tabPanelGroups/PrimarySettings";
+import { PrimaryUISettings } from "./subComponents/tabPanelGroups/PrimaryUISettings";
 import { UtilityOptionsSection } from "./subComponents/tabPanelGroups/UtilityOptionsSection";
 
 interface SettingTabListProps {
@@ -43,8 +43,8 @@ export const SearchPageSidebarTabPanels = () => {
   return (
     <>
       <TabPanel value="0" sx={{ px: 2 }}>
-        <PrimarySettings pageType="search" />
-        <UtilityOptionsSection />
+        <PrimaryUISettings pageType="search" />
+        <UtilityOptionsSection pageType="search" />
       </TabPanel>
 
       {isFeatureEnabled.infoTabs ? (
@@ -60,12 +60,12 @@ export const DbFilePageSidebarTabPanels = () => {
   return (
     <>
       <TabPanel value="0" sx={{ px: 2 }}>
-        <PrimarySettings pageType="dbResult" />
+        <PrimaryUISettings pageType="dbSourceFile" />
       </TabPanel>
 
       <TabPanel value="1" sx={{ px: 2, pt: 2 }}>
         <DisplayOptionsSection />
-        <UtilityOptionsSection />
+        <UtilityOptionsSection pageType="dbSourceFile" />
         <ExternalLinksSection />
       </TabPanel>
 

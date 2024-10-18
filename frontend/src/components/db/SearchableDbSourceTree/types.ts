@@ -1,4 +1,4 @@
-import { DbSourceFilterType } from "@features/sidebarSuite/config/types";
+import { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
 import type { SourceLanguage } from "@utils/constants";
 
 export enum DbSourceTreeNodeDataType {
@@ -34,7 +34,7 @@ export type BrowserTreeProps = {
 
 export type DbSourceFilterSelectorTreeProps = {
   type: DbSourceTreeType.FilterSelector;
-  filterSettingName: DbSourceFilterType;
+  filterSettingName: DbSourceFilterUISetting;
 };
 
 export type DbSourceTreeProps = DbSourceTreeBaseProps &

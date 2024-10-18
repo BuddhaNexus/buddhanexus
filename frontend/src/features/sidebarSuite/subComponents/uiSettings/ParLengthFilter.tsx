@@ -3,7 +3,7 @@ import { useTranslation } from "next-i18next";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
-import { uniqueSettings } from "@features/sidebarSuite/config/settings";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -30,7 +30,7 @@ export default function ParLengthFilter() {
     min: 10,
   };
   const [parLengthParam, setParLengthParam] = useQueryParam(
-    uniqueSettings.queryParams.parLength,
+    allUIComponentParamNames.par_length,
     NumberParam
   );
   const [parLength, setParLength] = useState(

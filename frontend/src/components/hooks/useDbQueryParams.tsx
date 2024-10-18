@@ -3,13 +3,9 @@ import {
   DEFAULT_PAR_LENGTH_VALUES,
   DEFAULT_QUERY_PARAMS_VALUES,
   MIN_PAR_LENGTH_VALUES,
-  SETTINGS_OMISSIONS_CONFIG,
 } from "@features/sidebarSuite/config";
-import {
-  pageSettings,
-  uniqueSettings,
-} from "@features/sidebarSuite/config/settings";
-import type { DefaultQueryParams } from "@features/sidebarSuite/config/types";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
+
 import { useDbRouterParams } from "./useDbRouterParams";
 
 export const useDbQueryParams = () => {
@@ -39,7 +35,7 @@ export const useDbQueryParams = () => {
   // Remove NextJS dynamic route param. The file name is already given in the url & `file` cannot be used to query the API.
   queryParamsMap.delete("file");
 
-  const sortParam = queryParamsMap.get(uniqueSettings.queryParams.sortMethod);
+  const sortParam = queryParamsMap.get(allUIComponentParamNames.sort_method);
   const sortMethodSelectValue = sortParam ?? "position";
 
   return {
@@ -48,8 +44,5 @@ export const useDbQueryParams = () => {
     defaultParamConfig: DEFAULT_QUERY_PARAMS_VALUES,
     parLengthConfig,
     sortMethodSelectValue,
-    pageSettings,
-    uniqueSettings,
-    settingsOmissionsConfig: SETTINGS_OMISSIONS_CONFIG,
   };
 };

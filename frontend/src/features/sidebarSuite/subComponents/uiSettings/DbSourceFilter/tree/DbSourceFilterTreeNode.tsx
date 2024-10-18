@@ -15,12 +15,12 @@ import {
 } from "@components/db/SearchableDbSourceTree/types";
 import {
   DbSourceFilters,
-  DbSourceFilterType,
-} from "@features/sidebarSuite/config/types";
+  DbSourceFilterUISetting,
+} from "@features/sidebarSuite/types";
 import {
   DB_SOURCE_UPDATE_MAPPING,
   updateFilterParamArray,
-} from "@features/sidebarSuite/subComponents/settings/DbSourceFilters/utils";
+} from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
 import { Box, Checkbox, Tooltip, Typography } from "@mui/material";
 import { parseAsJson, useQueryState } from "nuqs";
 
@@ -44,7 +44,7 @@ const handleClick = ({ node, event }: HandleFilterNodeClickProps) => {
 };
 
 type DbSourceFilterTreeNodeProps = {
-  filterSettingName: DbSourceFilterType;
+  filterSettingName: DbSourceFilterUISetting;
   selectionIds: string[];
 } & NodeRendererProps<DbSourceTreeNode>;
 
@@ -58,7 +58,7 @@ export function DbSourceFilterTreeNode({
 
   const [, setFilterParam] = useQueryState(
     "filters",
-    parseAsJson<DbSourceFilters>(),
+    parseAsJson<DbSourceFilters>()
   );
 
   let elementWidth = DEFAULT_NODE_WIDTH;
@@ -76,7 +76,7 @@ export function DbSourceFilterTreeNode({
     }: {
       action: "add" | "remove";
       item: DbSourceTreeNode;
-      filterName: DbSourceFilterType;
+      filterName: DbSourceFilterUISetting;
     }) => {
       const { id: itemId, dataType: type } = item;
 
@@ -94,7 +94,7 @@ export function DbSourceFilterTreeNode({
         return updatedFilterParam;
       });
     },
-    [setFilterParam],
+    [setFilterParam]
   );
 
   return (

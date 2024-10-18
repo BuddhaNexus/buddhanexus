@@ -1,7 +1,9 @@
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { uniqueSettings } from "@features/sidebarSuite/config/settings";
-import { pageSettings } from "@features/sidebarSuite/config/settings";
+import {
+  allUIComponentParamNames,
+  searchRequestFilters,
+} from "@features/sidebarSuite/uiSettingsLists";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
 
@@ -30,13 +32,13 @@ export function useGlobalSearch(): GlobalSearchProps {
       event?.preventDefault();
 
       const query: Record<string, string> = {
-        [uniqueSettings.queryParams.searchString]: searchTerm,
+        [allUIComponentParamNames.search_string]: searchTerm,
       };
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(router.query).forEach(([key, value]) => {
         // This resets query values if the search has been initiated from a source text results page. The source language setting.persists.
-        if (value && Object.keys(pageSettings.search.filters).includes(key)) {
+        if (value && searchRequestFilters.some((item) => item === key)) {
           query[key] = value.toString();
         }
       });
@@ -54,6 +56,6 @@ export function useGlobalSearch(): GlobalSearchProps {
 
   return {
     handleSearchAction,
-    searchParam: params.get(uniqueSettings.queryParams.searchString) ?? "",
+    searchParam: params.get(allUIComponentParamNames.search_string) ?? "",
   };
 }

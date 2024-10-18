@@ -2,76 +2,77 @@ import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
-import { isSettingOmitted } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import PanelHeading from "@features/sidebarSuite/common/PanelHeading";
-import {
-  FolioOption,
-  SortOption,
-  TextScriptOption,
-} from "@features/sidebarSuite/subComponents/settings";
-import { SegmentOptions } from "@features/sidebarSuite/subComponents/settings/SegmentOptions";
+import { displaySettingComponents } from "@features/sidebarSuite/subComponents/uiSettings";
+
 import { Box } from "@mui/material";
 import { useAtomValue } from "jotai";
-import {
-  uniqueSettings,
-  pageSettings,
-} from "@features/sidebarSuite/config/settings";
+import { displayUISettings } from "@features/sidebarSuite/uiSettingsLists";
 
-// Exclusively used in DB file selection results pages and has not been refactored for options in multiple contexts (i.e. global search results page).
+import { DisplayUISettingName } from "@features/sidebarSuite/types";
+import {
+  getAvailableSettings,
+  type UnavailableLanguages,
+} from "@features/sidebarSuite/utils";
+import { DbViewEnum, SourceLanguage as Lang } from "@utils/constants";
+
+type LanguageUnabvailableSettings = Partial<
+  Record<DisplayUISettingName, UnavailableLanguages>
+>;
+type UnavailableDisplaySettings = Record<
+  DbViewEnum,
+  LanguageUnabvailableSettings
+>;
+
+const UNAVAILABLE_SETTINGS: UnavailableDisplaySettings = {
+  [DbViewEnum.GRAPH]: {
+    folio: "allLangs",
+    sort_method: "allLangs",
+    showSegmentNrs: "allLangs",
+  },
+  [DbViewEnum.NUMBERS]: {
+    sort_method: "allLangs",
+    script: "allLangs",
+    showSegmentNrs: "allLangs",
+  },
+  [DbViewEnum.TABLE]: {
+    sort_method: "allLangs",
+    script: [Lang.PALI, Lang.CHINESE, Lang.SANSKRIT],
+    showSegmentNrs: "allLangs",
+  },
+  [DbViewEnum.TEXT]: {
+    sort_method: "allLangs",
+    script: [Lang.PALI, Lang.CHINESE, Lang.SANSKRIT],
+  },
+};
+
 export const DisplayOptionsSection = () => {
   const { t } = useTranslation("settings");
 
   const currentView = useAtomValue(currentDbViewAtom);
-
   const { sourceLanguage } = useDbRouterParams();
 
-  const options: string[] = [];
+  const uiSettings = useMemo(() => {
+    return getAvailableSettings<DisplayUISettingName>({
+      sourceLanguage,
+      uiSettings: displayUISettings,
+      unavailableSettingsForView: UNAVAILABLE_SETTINGS[currentView],
+    });
+  }, [sourceLanguage, currentView]);
 
-  // const options = useMemo(() => {
-  //   return Object.values(pageSettings.dbResult.displayOptions).filter(
-  //     (option) =>
-  //       !isSettingOmitted({
-  //         omissions: settingsOmissionsConfig.displayOptions,
-  //         settingName: option,
-  //         language: sourceLanguage,
-  //         pageContext: currentView,
-  //       })
-  //   );
-  // }, [
-  //   pageSettings,
-  //   settingsOmissionsConfig.displayOptions,
-  //   sourceLanguage,
-  //   currentView,
-  // ]);
-
-  if (options.length === 0) {
+  if (uiSettings.length === 0) {
     return null;
   }
 
   return (
     <Box>
       <PanelHeading heading={t("headings.display")} sx={{ mb: 2 }} />
-      {options.map((option) => {
-        const key = `display-option-${option}`;
+      {uiSettings.map((setting) => {
+        const Component = displaySettingComponents[setting];
+        const key = `display-setting-${setting}`;
 
-        switch (option) {
-          case uniqueSettings.queryParams.folio: {
-            return <FolioOption key={key} />;
-          }
-          case uniqueSettings.queryParams.sortMethod: {
-            return <SortOption key={key} />;
-          }
-          // SEE: features/sidebarSuite/config/settings.ts for suspended setting info
-          case uniqueSettings.local.script: {
-            return <TextScriptOption key={key} />;
-          }
-          case uniqueSettings.local.showSegmentNrs: {
-            return <SegmentOptions key={key} />;
-          }
-          default: {
-            return null;
-          }
-        }
+        if (!Component) return null;
+        return React.cloneElement(Component, { key });
       })}
     </Box>
   );

@@ -1,28 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import useDownloader from "react-use-downloader";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   defaultAnchorEls,
-  isSettingOmitted,
-  onCopyQueryLink,
-  onCopyQueryTitle,
-  onDownload,
-  onEmailQueryLink,
   type PopperAnchorState,
-  type UtilityOptions,
 } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import {
   Popper,
   PopperMsgBox,
 } from "@features/sidebarSuite/common/MuiStyledSidebarComponents";
 import PanelHeading from "@features/sidebarSuite/common/PanelHeading";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
-import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+
 import {
   Fade,
   List,
@@ -33,30 +23,51 @@ import {
 } from "@mui/material";
 import { useAtomValue } from "jotai";
 import {
-  uniqueSettings,
-  pageSettings,
-} from "@features/sidebarSuite/config/settings";
+  utilityUISettings,
+  allUIComponentParamNames,
+} from "@features/sidebarSuite/uiSettingsLists";
+import {
+  UtilityUISettingName,
+  SidebarSuitePageContext,
+} from "@features/sidebarSuite/types";
 
-const utilityComponents: UtilityOptions = {
-  download: {
-    callback: onDownload,
-    icon: FileDownloadIcon,
+import {
+  getAvailableSettings,
+  type UnavailableLanguages,
+} from "@features/sidebarSuite/utils";
+
+import { utilityComponents } from "@features/sidebarSuite/subComponents/uiSettings";
+import { DbViewEnum } from "@utils/constants";
+
+type LanguageUnabvailableSettings = Partial<
+  Record<UtilityUISettingName, UnavailableLanguages>
+>;
+type UnavailableDisplaySettings = Record<
+  DbViewEnum,
+  LanguageUnabvailableSettings
+>;
+
+const UNAVAILABLE_DB_SOURCE_PAGE_SETTINGS: UnavailableDisplaySettings = {
+  [DbViewEnum.GRAPH]: {
+    download_data: "allLangs",
   },
-  copyQueryTitle: {
-    callback: onCopyQueryTitle,
-    icon: LocalOfferOutlinedIcon,
+  [DbViewEnum.NUMBERS]: {},
+  [DbViewEnum.TABLE]: {
+    download_data: "allLangs",
   },
-  copyQueryLink: {
-    callback: onCopyQueryLink,
-    icon: ShareOutlinedIcon,
-  },
-  emailQueryLink: {
-    callback: onEmailQueryLink,
-    icon: ForwardToInboxIcon,
-  },
+  [DbViewEnum.TEXT]: {},
 };
 
-export const UtilityOptionsSection = () => {
+const UNAVAILABLE_SEARCH_PAGE_SETTINGS: UtilityUISettingName[] = [
+  "download_data",
+  "copyQueryTitle",
+];
+
+export const UtilityOptionsSection = ({
+  pageType = "dbSourceFile",
+}: {
+  pageType: SidebarSuitePageContext;
+}) => {
   const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentDbViewAtom);
   const { fileName, sourceLanguage } = useDbRouterParams();
@@ -66,38 +77,41 @@ export const UtilityOptionsSection = () => {
     href = window.location.toString();
   }
 
-  const { route } = useRouter();
-
-  const isSearchRoute = route.startsWith("/search");
   const { download, error } = useDownloader();
 
   const [popperAnchorEl, setPopperAnchorEl] =
     useState<PopperAnchorState>(defaultAnchorEls);
+
+  const uiSettings = useMemo(() => {
+    if (pageType === "search") {
+      return utilityUISettings.filter(
+        (setting) => !UNAVAILABLE_SEARCH_PAGE_SETTINGS.includes(setting)
+      );
+    }
+
+    return getAvailableSettings<UtilityUISettingName>({
+      sourceLanguage,
+      uiSettings: utilityUISettings,
+      unavailableSettingsForView:
+        UNAVAILABLE_DB_SOURCE_PAGE_SETTINGS[currentView],
+    });
+  }, [sourceLanguage, currentView, pageType]);
+
+  if (uiSettings.length === 0) {
+    return null;
+  }
 
   return (
     <>
       <PanelHeading heading={t("headings.tools")} sx={{ mt: 3 }} />
 
       <List sx={{ m: 0 }}>
-        {Object.values(
-          pageSettings[isSearchRoute ? "search" : "dbResult"].utilityOptions
-        ).map((utilityKey) => {
+        {uiSettings.map((utilityKey) => {
           const Icon = utilityComponents[utilityKey].icon;
-
-          // if (
-          //   isSettingOmitted({
-          //     omissions: settingsOmissionsConfig.utilityOptions,
-          //     settingName: utilityKey,
-          //     language: sourceLanguage,
-          //     pageContext: isSearchRoute ? "search" : currentView,
-          //   })
-          // ) {
-          //   return null;
-          // }
 
           const isPopperOpen = Boolean(popperAnchorEl[utilityKey]);
           const showPopper =
-            utilityKey === pageSettings.dbResult.utilityOptions.download
+            utilityKey === allUIComponentParamNames.download_data
               ? Boolean(error)
               : true;
           const popperId = isPopperOpen ? `${utilityKey}-popper` : undefined;

@@ -1,25 +1,25 @@
 import { DbSourceTreeNodeDataType as NodeType } from "@components/db/SearchableDbSourceTree/types";
 import {
   DbSourceFilters,
-  DbSourceFilterType,
-} from "@features/sidebarSuite/config/types";
+  DbSourceFilterUISetting,
+} from "@features/sidebarSuite/types";
 import { exhaustiveStringTuple } from "@utils/validators";
 
 export const DB_SOURCE_UPDATE_MAPPING: Record<
   NodeType,
-  Record<DbSourceFilterType, keyof DbSourceFilters>
+  Record<DbSourceFilterUISetting, keyof DbSourceFilters>
 > = {
   [NodeType.Collection]: {
-    include: "include_collections",
-    exclude: "exclude_collections",
+    include_sources: "include_collections",
+    exclude_sources: "exclude_collections",
   },
   [NodeType.Category]: {
-    include: "include_categories",
-    exclude: "exclude_categories",
+    include_sources: "include_categories",
+    exclude_sources: "exclude_categories",
   },
   [NodeType.Text]: {
-    include: "include_files",
-    exclude: "exclude_files",
+    include_sources: "include_files",
+    exclude_sources: "exclude_files",
   },
 };
 
@@ -28,7 +28,7 @@ export const getFilterIds = ({
   filterSettingName,
 }: {
   filterParam: DbSourceFilters | null;
-  filterSettingName: DbSourceFilterType;
+  filterSettingName: DbSourceFilterUISetting;
 }) => {
   const {
     exclude_files = [],
@@ -40,8 +40,16 @@ export const getFilterIds = ({
   } = filterParam ?? {};
 
   const idMapping = {
-    include: [...include_files, ...include_categories, ...include_collections],
-    exclude: [...exclude_files, ...exclude_categories, ...exclude_collections],
+    include_sources: [
+      ...include_files,
+      ...include_categories,
+      ...include_collections,
+    ],
+    exclude_sources: [
+      ...exclude_files,
+      ...exclude_categories,
+      ...exclude_collections,
+    ],
   };
 
   return idMapping[filterSettingName] || [];
@@ -71,7 +79,7 @@ export const removeItemsById = ({
 }: {
   filterParam: DbSourceFilters;
   id: string;
-  filterSettingName: DbSourceFilterType;
+  filterSettingName: DbSourceFilterUISetting;
 }) => {
   let updatedParams = { ...filterParam };
 
@@ -99,7 +107,7 @@ export const clearAllFilterParams = ({
   filterSettingName,
 }: {
   filterParam: DbSourceFilters;
-  filterSettingName: DbSourceFilterType;
+  filterSettingName: DbSourceFilterUISetting;
 }) => {
   let updatedParams = { ...filterParam };
   for (const [key] of Object.entries(filterParam)) {
@@ -114,4 +122,7 @@ export const clearAllFilterParams = ({
 };
 
 export const dbSourceFilterSelectors =
-  exhaustiveStringTuple<DbSourceFilterType>()("exclude", "include");
+  exhaustiveStringTuple<DbSourceFilterUISetting>()(
+    "exclude_sources",
+    "include_sources"
+  );

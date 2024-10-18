@@ -2,7 +2,7 @@ import React from "react";
 import useDimensions from "react-cool-dimensions";
 import { SearchableDbSourceTree } from "@components/db/SearchableDbSourceTree";
 import { DbSourceTreeType } from "@components/db/SearchableDbSourceTree/types";
-import { DbSourceFilterType } from "@features/sidebarSuite/config/types";
+import { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
 import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 import { Box, Popper } from "@mui/material";
 
@@ -11,7 +11,7 @@ type DbSourceFilterTreePopperProps = {
   open: boolean;
   anchorEl: null | HTMLElement;
   handleClose: () => void;
-  filterSettingName: DbSourceFilterType;
+  filterSettingName: DbSourceFilterUISetting;
 };
 
 const DbSourceFilterTreePopper = ({

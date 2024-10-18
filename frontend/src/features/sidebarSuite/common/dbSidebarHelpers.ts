@@ -1,36 +1,42 @@
-import type { UtilityOption } from "@features/sidebarSuite/config/settings";
+import type { UtilityOption } from "@features/sidebarSuite/uiSettingsLists";
 import type {
-  MenuOmission,
-  MenuSetting,
+  MenuUnavailableUISettings,
+  UISetting,
   QueryParams,
-  SettingOmissionContext,
-} from "@features/sidebarSuite/config/types";
-import type { Script } from "@features/sidebarSuite/subComponents/settings/TextScriptOption";
+  AppResultPageView,
+} from "@features/sidebarSuite/types";
+import type {
+  Script,
+  UtilityUISettingName,
+} from "@features/sidebarSuite/types";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { getParallelDownloadData } from "@utils/api/endpoints/table-view/downloads";
 import { SourceLanguage } from "@utils/constants";
 import { EwtsConverter } from "tibetan-ewts-converter";
 
-export const isSettingOmitted = ({
-  omissions,
+export const isSettingUnavailable = ({
+  unavailableUISettings,
   settingName,
   language,
   pageContext,
 }: {
-  omissions: MenuOmission;
-  settingName: MenuSetting;
+  unavailableUISettings: MenuUnavailableUISettings;
+  settingName: UISetting;
   language: SourceLanguage;
-  pageContext: SettingOmissionContext;
+  pageContext: AppResultPageView;
 }) => {
   return Boolean(
-    omissions?.[settingName]?.[pageContext]?.some((omittedLang) =>
-      ["all", language].includes(omittedLang),
-    ),
+    unavailableUISettings?.[settingName]?.[pageContext]?.some(
+      (unavailableLang) => ["all", language].includes(unavailableLang)
+    )
   );
 };
 
-export type PopperAnchorState = Record<UtilityOption, HTMLElement | null>;
+export type PopperAnchorState = Record<
+  UtilityUISettingName,
+  HTMLElement | null
+>;
 
 type PopperUtilityStates<State> = [
   State,
@@ -53,17 +59,18 @@ interface UtilityClickHandlerProps {
   };
 }
 
-type UtilityOptionProps = {
+export type UtilityOptionProps = {
   callback: (props: UtilityClickHandlerProps) => void;
   icon: OverridableComponent<SvgIconTypeMap>;
 };
 
+// 💣💣💣
 export type UtilityOptions = {
   [value in UtilityOption]: UtilityOptionProps;
 };
 
 export const defaultAnchorEls = {
-  download: null,
+  download_data: null,
   copyQueryTitle: null,
   copyQueryLink: null,
   emailQueryLink: null,
@@ -78,12 +85,17 @@ export const onDownload = async ({
 
   const { fileName, queryParams } = download;
 
-  const file = await getParallelDownloadData({
-    filename: fileName,
-    ...queryParams,
-    // TODO: determine what is needed for this prop
-    download_data: "",
-  });
+  // const file = await getParallelDownloadData({
+  //   filename: fileName,
+  //   ...queryParams,
+  //   // TODO: determine what is needed for this prop
+  //   download_data: "",
+  // });
+
+  const file = {
+    name: fileName,
+    url: "",
+  };
 
   if (file) {
     const { call: getDownload } = download;
@@ -93,7 +105,7 @@ export const onDownload = async ({
 
   setAnchorEl({
     ...defaultAnchorEls,
-    download: anchorEl.download
+    download_data: anchorEl.download_data
       ? null
       : (event.nativeEvent.target as HTMLElement),
   });

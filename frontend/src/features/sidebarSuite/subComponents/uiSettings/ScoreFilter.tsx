@@ -4,7 +4,7 @@ import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
-import { uniqueSettings } from "@features/sidebarSuite/config/settings";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -30,7 +30,7 @@ export default function ScoreFilter() {
   };
 
   const [scoreParam, setScoreParam] = useQueryParam(
-    uniqueSettings.queryParams.score,
+    allUIComponentParamNames.score,
     NumberParam
   );
   const [scoreValue, setScoreValue] = useState(

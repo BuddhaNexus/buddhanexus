@@ -65,14 +65,14 @@ export default function TextPage() {
     sort_method: "position",
     folio: "",
     active_segment: "",
-    page_number: 0,
+    page: 0,
   };
   const apiQueryParams = {
     filters: undefined,
     sort_method: "position",
     folio: "",
     active_segment: "",
-    page_number: 0,
+    page: 0,
   };
 
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
@@ -133,7 +133,7 @@ export default function TextPage() {
         filename: fileName,
         ...defaultQueryParams,
         ...apiQueryParams,
-        // page_number: pageParam,
+        // page: pageParam,
         // active_segment: active_segment ?? undefined,
       });
     },

@@ -2,16 +2,16 @@ import React from "react";
 import { useTranslation } from "next-i18next";
 import type {
   DbSourceFilters,
-  DbSourceFilterType,
-} from "@features/sidebarSuite/config/types";
-import { SelectionHeadBox } from "@features/sidebarSuite/subComponents/settings/DbSourceFilters/styledComponents";
-import { clearAllFilterParams } from "@features/sidebarSuite/subComponents/settings/DbSourceFilters/utils";
+  DbSourceFilterUISetting,
+} from "@features/sidebarSuite/types";
+import { SelectionHeadBox } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/styledComponents";
+import { clearAllFilterParams } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { FormLabel, IconButton } from "@mui/material";
 import { parseAsJson, useQueryState } from "nuqs";
 
 type SelectionHeadProps = {
-  filterName: DbSourceFilterType;
+  filterName: DbSourceFilterUISetting;
   selectionIds: string[];
 };
 
@@ -20,11 +20,11 @@ const SelectionHead = ({ filterName, selectionIds }: SelectionHeadProps) => {
 
   const [, setFilterParam] = useQueryState(
     "filters",
-    parseAsJson<DbSourceFilters>(),
+    parseAsJson<DbSourceFilters>()
   );
 
   const handleClearSources = React.useCallback(
-    async (filterSettingName: DbSourceFilterType) => {
+    async (filterSettingName: DbSourceFilterUISetting) => {
       await setFilterParam((filterParam) => {
         return clearAllFilterParams({
           filterParam: filterParam ?? {},
@@ -32,7 +32,7 @@ const SelectionHead = ({ filterName, selectionIds }: SelectionHeadProps) => {
         });
       });
     },
-    [setFilterParam],
+    [setFilterParam]
   );
 
   return (

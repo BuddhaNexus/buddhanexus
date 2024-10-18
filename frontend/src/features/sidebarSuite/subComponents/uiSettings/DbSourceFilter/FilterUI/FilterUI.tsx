@@ -1,6 +1,6 @@
 import React from "react";
 import { dbSourceFiltersSelectedIdsAtom } from "@atoms";
-import { DbSourceFilterType } from "@features/sidebarSuite/config/types";
+import { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
 import { useSetAtom } from "jotai";
 
 import SelectionBox from "./SelectionBox";
@@ -8,11 +8,11 @@ import SelectionHead from "./SelectionHead";
 import TreePopper from "./TreePopper";
 
 type DbSourceFilterSelectorProps = {
-  filterName: DbSourceFilterType;
+  filterName: DbSourceFilterUISetting;
   selectionIds: string[];
 };
 
-const DbSourceFilter = ({
+const FilterUI = ({
   filterName,
   selectionIds,
 }: DbSourceFilterSelectorProps) => {
@@ -31,7 +31,7 @@ const DbSourceFilter = ({
   };
 
   const setDbSourceFiltersSelectedIds = useSetAtom(
-    dbSourceFiltersSelectedIdsAtom,
+    dbSourceFiltersSelectedIdsAtom
   );
 
   React.useEffect(() => {
@@ -61,4 +61,4 @@ const DbSourceFilter = ({
   );
 };
 
-export default DbSourceFilter;
+export default FilterUI;

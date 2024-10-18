@@ -21,7 +21,7 @@ import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import type { SourceLanguage } from "@utils/constants";
-import { uniqueSettings } from "@features/sidebarSuite/config/settings";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
 
 function getStyles(
   name: SourceLanguage,
@@ -78,7 +78,7 @@ const MultiLingualSelector = () => {
       query: {
         ...router.query,
         // A string is given here to avoid NextJS setting params with repeated keys. This allows default value comparison in CurrentResultChips.
-        [uniqueSettings.queryParams.multiLingual]: value.toString(),
+        [allUIComponentParamNames.languages]: value.toString(),
       },
     });
   };

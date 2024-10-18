@@ -32,11 +32,11 @@ export type ParsedTextViewParallel = ParsedTextViewParallelsData["items"][0];
 export async function getTextViewParallelsData(
   body: APIPostRequestBody<"/text-view/text-parallels/">
 ) {
-  const { page_number = 0, ...params } = body;
+  const { page = 0, ...params } = body;
 
   const { data } = await apiClient.POST("/text-view/text-parallels/", {
     body: {
-      ...parseAPIRequestBody({ ...params, page_number }),
+      ...parseAPIRequestBody({ ...params, page }),
     },
   });
 
@@ -46,6 +46,6 @@ export async function getTextViewParallelsData(
 
   return {
     data: parseTextViewParallelsData(data ?? []),
-    pageNumber: page_number,
+    pageNumber: page,
   };
 }
