@@ -48,13 +48,3 @@ FOR cat IN category_names
         displayName: cat.displayName
     }
 """
-
-QUERY_COLLECTIONS_FOR_LANGUAGE = """
-LET collections = (
-    FOR file IN files
-        FILTER file.lang == @language
-        SORT file.filenr
-        RETURN DISTINCT file.collection
-)
-RETURN collections
-"""

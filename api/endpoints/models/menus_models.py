@@ -27,7 +27,3 @@ class Collection(CollectionBase):
 
 class MetadataOutput(BaseModel):
     metadata: List[Collection]
-
-
-class GraphCollectionOutput(BaseModel):
-    __root__: list

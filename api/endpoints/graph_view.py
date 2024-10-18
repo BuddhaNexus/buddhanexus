@@ -17,28 +17,6 @@ async def get_graph_for_file(input: GraphInput) -> Any:
     """
     Endpoint for graph view.
 
-    Input fields are:
-
-    ```
-        {
-          "filename": "",
-          "score": 0,
-          "par_length": 0,
-          "target_collection": []
-        }
-    ```
-
-    The "target_collection" input comes from a dropdown list that lists collections only.
-    This comes from the `/menus/graphcollections/` endpoint. It is possible to choose
-    more than one option, hence it is a list. F.i.
-
-    ```
-        ...
-        "target_collection": ["Suttas-Early-1", "Vinaya"]
-    ```
-
-    "score", "par_length" and "filename" are the same as for the other views.
-
     Output is f.i.:
 
     ```
@@ -85,9 +63,9 @@ async def get_graph_for_file(input: GraphInput) -> Any:
         graph_view_queries.QUERY_GRAPH_VIEW,
         bind_vars={
             "filename": input.filename,
-            "score": input.score,
-            "parlength": input.par_length,
-            "targetcollection": input.target_collection,
+            "score": input.filters.score,
+            "parlength": input.filters.par_length,
+            "filter_include_collections": input.filters.include_collections,
         },
     )
 
