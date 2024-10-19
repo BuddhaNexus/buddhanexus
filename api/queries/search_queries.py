@@ -16,7 +16,7 @@ LET chinese_results = (
 
 let tibetan_fuzzy_results = (
     FOR d IN search_index_bo_fuzzy
-        SEARCH PHRASE(d.stemmed, @search_string_bo, 'tibetan_fuzzy_analyzer')
+        SEARCH PHRASE(d.analyzed, @search_string_bo, 'tibetan_fuzzy_analyzer')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
         FILTER LENGTH(@filter_exclude_files) == 0 OR d.par_filename NOT IN @filter_exclude_files
@@ -30,7 +30,7 @@ let tibetan_fuzzy_results = (
     )
 let sanskrit_results = (
     FOR d IN search_index_sa
-        SEARCH PHRASE(d.original, @search_string_sa, 'sanskrit_analyzer')
+        SEARCH PHRASE(d.analyzed, @search_string_sa, 'sanskrit_analyzer')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
         FILTER LENGTH(@filter_exclude_files) == 0 OR d.par_filename NOT IN @filter_exclude_files
@@ -44,7 +44,7 @@ let sanskrit_results = (
     )
 let sanskrit_results_fuzzy = (
     FOR d IN search_index_sa
-        SEARCH PHRASE(d.stemmed, @search_string_sa_fuzzy, 'sanskrit_analyzer')
+        SEARCH PHRASE(d.analyzed, @search_string_sa_fuzzy, 'sanskrit_analyzer')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
         FILTER LENGTH(@filter_exclude_files) == 0 OR d.par_filename NOT IN @filter_exclude_files
@@ -59,7 +59,7 @@ let sanskrit_results_fuzzy = (
 
 let pali_results = (
     FOR d IN search_index_pa
-        SEARCH PHRASE(d.stemmed, @search_string_pa, 'pali_analyzer')
+        SEARCH PHRASE(d.analyzed, @search_string_pa, 'pali_analyzer')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
         FILTER LENGTH(@filter_exclude_files) == 0 OR d.par_filename NOT IN @filter_exclude_files
