@@ -223,11 +223,11 @@ def get_segment_field(lang, filename):
     The segment field is named differently for different languages
     """
     segment_field = "Segments"
-    if lang == "tib":
+    if lang == "bo":
         segment_field = "Folio"
-    if lang == "pli" and not re.search(r"^(anya|tika|atk)", filename):
+    elif lang == "pa" and not re.search(r"^(anya|tika|atk)", filename):
         segment_field = "PTS nr"
-    if lang == "chn":
+    elif lang == "zh":
         segment_field = "Facsimile"
 
     return segment_field

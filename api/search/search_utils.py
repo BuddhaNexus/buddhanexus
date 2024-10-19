@@ -5,21 +5,21 @@ from ..utils import shorten_segment_names
 import pyewts
 
 bn_analyzer = bn_translate.analyzer()
-tib_converter = pyewts.pyewts()
+bo_converter = pyewts.pyewts()
 from aksharamukha import transliterate
 
 
-def preprocess_search_string(search_string, language):
-    tib = ""
-    chn = ""
-    skt = ""
-    pli = ""
+def preprocess_search_string(search_string, languages):
+    bo = ""
+    zh = ""
+    sa = ""
+    pa = ""
 
     # test if string contains Tibetan characters
     search_string = search_string.strip()
     search_string = re.sub(
         "@[0-9a-b+]+", "", search_string
-    )  # remove possible tib folio numbers
+    )  # remove possible bo folio numbers
     search_string = re.sub(
         "/+", "", search_string
     )  # just in case we have some sort of danda in the search query
@@ -27,36 +27,37 @@ def preprocess_search_string(search_string, language):
         " +", " ", search_string
     )  # search is very sensitive to whitespace
     if re.search("[\u0F00-\u0FDA]", search_string):
-        tib = tib_converter.toWylie(search_string).strip()
-        skt = tib
+        bo = bo_converter.toWylie(search_string).strip()
+        sa = bo
     else:
         if bn_translate.check_if_sanskrit(search_string):
-            skt = transliterate.process("autodetect", "IAST", search_string)
+            sa = transliterate.process("autodetect", "IAST", search_string)
         else:
-            skt = search_string
-        skt = skt.lower()
+            sa = search_string
+        sa = sa.lower()
 
-    # skt_fuzzy also tests if a string contains tib/chn letters; if so, it returns an empty string
-    skt_fuzzy = bn_analyzer.stem_sanskrit(skt)
-    pli = bn_analyzer.stem_pali(search_string)
-    # if skt_fuzzy detected the string to be Tibetan/Chinese or the unicode2wylie transliteration was successful, do this:
-    if skt_fuzzy == "" or tib != "":
-        if tib == "":
-            tib = search_string
-        tib_preprocessed = tib.replace("’", "'")
-        tib = bn_analyzer.stem_tibetan(tib_preprocessed)
-        chn = search_string
+    # sa_fuzzy also tests if a string contains bo/zh letters; if so, it returns an empty string
+    sa_fuzzy = bn_analyzer.stem_sanskrit(sa)
+    pa = bn_analyzer.stem_pali(search_string)
+    # if sa_fuzzy detected the string to be Tibetan/Chinese or the unicode2wylie transliteration was successful, do this:
+    if sa_fuzzy == "" or bo != "":
+        if bo == "":
+            bo = search_string
+        bo_preprocessed = bo.replace("’", "'")
+        bo = bn_analyzer.stem_tibetan(bo_preprocessed)
+        zh = search_string
     else:
-        skt = search_string
-    if language == "sa":
-        tib = chn = pli = ""
-    if language == "bo":
-        chn = pli = ""
-    if language == "zh":
-        tib = pli = ""
-    if language == "pa":
-        tib = chn = ""
-    return {"skt": skt, "skt_fuzzy": skt_fuzzy, "tib": tib, "pli": pli, "chn": chn}
+        sa = search_string
+
+    if "sa" in languages:
+        bo = zh = pa = ""
+    elif "bo" in languages:
+        zh = pa = ""
+    elif "zh" in languages:
+        bo = pa = ""
+    elif "pa" in languages:
+        bo = zh = ""
+    return {"sa": sa, "sa_fuzzy": sa_fuzzy, "bo": bo, "pa": pa, "zh": zh}
 
 
 def tag_sanskrit(sanskrit_string):
@@ -128,11 +129,11 @@ def process_result(result, search_string):
 
 def postprocess_results(search_strings, results):
     new_results = []
-    search_string = search_strings["skt"]
+    search_string = search_strings["sa"]
     for result in results:
         result["original"] = re.sub(
             "@[0-9a-b+]+", "", result["original"]
-        )  # remove possible tib folio numbers
+        )  # remove possible bo folio numbers
         new_results.append(process_result(result, search_string))
 
     results = [x for x in new_results if x is not None]

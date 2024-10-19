@@ -117,9 +117,9 @@ def calculate_color_maps_table_view(data):
         if len(entry["root_seg_text"]) > 0 and len(entry["par_segment"]) > 0:
             join_element_root = ""
             join_element_par = ""
-            if not entry["src_lang"] == "chn":
+            if not entry["src_lang"] == "zh":
                 join_element_root = " "
-            if not entry["tgt_lang"] == "chn":
+            if not entry["tgt_lang"] == "zh":
                 join_element_par = " "
 
             root_fulltext = join_element_root.join(entry["root_seg_text"])
@@ -168,7 +168,7 @@ def calculate_color_maps_middle_view(data):
         # it should be dealt with at data-loader level...
         if len(entry["par_segtext"]) > 0:
             join_element_par = ""
-            if not entry["tgt_lang"] == "chn":
+            if not entry["tgt_lang"] == "zh":
                 join_element_par = " "
             par_fulltext = join_element_par.join(entry["par_segtext"])
             par_colormap = [0] * len(par_fulltext)
