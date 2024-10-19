@@ -6,9 +6,9 @@ export const SUPPORTED_LOCALES: SupportedLocales = {
 };
 
 export enum DbViewEnum {
+  TEXT = "text",
+  TABLE = "table",
   GRAPH = "graph",
   NUMBERS = "numbers",
-  TABLE = "table",
-  TEXT = "text",
 }
 export const DEFAULT_DB_VIEW = DbViewEnum.TEXT;

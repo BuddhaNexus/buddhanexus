@@ -28,7 +28,7 @@ import { DbApi } from "@utils/api/dbApi";
 
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
-import { useStandardViewBaseQueryParams } from "@components/hooks/useStandardViewBaseQueryParams";
+import { useStandardViewBaseQueryParams } from "@components/hooks/commonQueryParams";
 import { useActiveSegmentParam } from "@components/hooks/params";
 
 type QueryParams = Record<string, string>;

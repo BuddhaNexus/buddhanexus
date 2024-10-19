@@ -32,7 +32,9 @@ function getSettingCounts({
   let isExcludeSet = false;
   let isIncludeSet = false;
 
-  for (const key of Object.keys(searchParams)) {
+  const params = Object.fromEntries(searchParams.entries());
+
+  for (const key of Object.keys(params)) {
     if (key.startsWith("exclude_") && !isExcludeSet) {
       filter += 1;
       isExcludeSet = true;
@@ -83,10 +85,14 @@ export default function CurrentResultChips({
   const isSearchRoute = router.route.startsWith("/search");
   const searchParams = useSearchParams();
 
-  const count = getSettingCounts({
-    route: isSearchRoute ? "search" : "dbSourcePage",
-    searchParams,
-  });
+  const count = React.useMemo(
+    () =>
+      getSettingCounts({
+        route: isSearchRoute ? "search" : "dbSourcePage",
+        searchParams,
+      }),
+    [isSearchRoute, searchParams]
+  );
 
   return (
     <>

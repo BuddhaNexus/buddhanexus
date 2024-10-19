@@ -119,7 +119,7 @@ export default function SearchPage() {
         />
       </SearchBoxWrapper>
 
-      <QueryPageTopStack matches={rawData?.length ?? 0} />
+      <QueryPageTopStack matches={rawData?.length} />
 
       {isLoading ? (
         <div>

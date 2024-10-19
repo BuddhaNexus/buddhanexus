@@ -21,7 +21,7 @@ import {
 } from "@tanstack/react-query";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-import { useStandardViewBaseQueryParams } from "@components/hooks/useStandardViewBaseQueryParams";
+import { useStandardViewBaseQueryParams } from "@components/hooks/commonQueryParams";
 import { useSortMethodParam } from "@components/hooks/params";
 
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";

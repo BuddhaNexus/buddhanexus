@@ -26,6 +26,11 @@ import {
 } from "@tanstack/react-query";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
+import {
+  useScoreParam,
+  useParLengthParam,
+  useIncludeCollectionsParam,
+} from "@components/hooks/params";
 
 const HISTOGRAM_DATA_MATCH_LIMIT = 50;
 
@@ -34,31 +39,24 @@ const GraphContainer: React.FC<{ children: React.ReactNode }> = ({
 }) => <Paper sx={{ my: 2, minHeight: "500px", flex: 1 }}>{children}</Paper>;
 
 export default function GraphPage() {
-  const { dbLanguage, fileName } = useDbRouterParams();
+  const { dbLanguage, fileName: filename } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
 
+  const [score] = useScoreParam();
+  const [par_length] = useParLengthParam();
+  const [include_collections] = useIncludeCollectionsParam();
+
   const { t } = useTranslation();
 
-  // const requestBody = React.useMemo(
-  //   () => ({
-  //     filename: fileName,
-  //     score: score ? Number(score) : defaultQueryParams.score,
-  //     par_length: par_length
-  //       ? Number(par_length)
-  //       : defaultQueryParams.par_length,
-  //     // TODO: Add target_collection when available / or remove
-  //     target_collection: [],
-  //   }),
-  //   [fileName, score, par_length, defaultQueryParams]
-  // );
-
   const requestBody = {
-    filename: fileName,
-    score: 50,
-    par_length: 50,
-    target_collection: [],
+    filename,
+    filters: {
+      score,
+      par_length,
+      include_collections: include_collections ?? [],
+    },
   };
 
   const { data, isLoading, isError } = useQuery({
@@ -68,7 +66,7 @@ export default function GraphPage() {
 
   const filteredHistogramData = useMemo(
     () => data?.histogramgraphdata.slice(0, HISTOGRAM_DATA_MATCH_LIMIT) ?? [],
-    [data?.histogramgraphdata],
+    [data?.histogramgraphdata]
   );
 
   if (isError) {
@@ -116,13 +114,6 @@ export default function GraphPage() {
           <Typography variant="subtitle1">
             {t("graph.histogramDataSubtitle")}
           </Typography>
-
-          <GraphContainer>
-            <HistogramDataChart
-              chartType="Histogram"
-              data={filteredHistogramData}
-            />
-          </GraphContainer>
 
           <GraphContainer>
             <HistogramDataChart

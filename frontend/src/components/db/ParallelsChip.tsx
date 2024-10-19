@@ -5,37 +5,29 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
 import { BD_RESULTS_LIMIT } from "@utils/api/constants";
+
 import { DbApi } from "@utils/api/dbApi";
 
 import CappedMatchesChip from "./CappedMatchesChip";
+import { useDbQueryFilters } from "@components/hooks/commonQueryParams";
 
 export default function ParallelsChip() {
   const { t } = useTranslation("settings");
 
   const { fileName } = useDbRouterParams();
+  const filters = useDbQueryFilters();
 
-  // ignore some params that shouldn't result in refetching this query
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const { activeSegment, ...restOfQueryParams } = queryParams;
-
-  // const { data, isLoading } = useQuery({
-  //   // TODO: - see if the query can return result before main results
-  //   queryKey: DbApi.ParallelCount.makeQueryKey({
-  //     filename: fileName,
-  //     ...restOfQueryParams,
-  //   }),
-  //   queryFn: () =>
-  //     DbApi.ParallelCount.call({
-  //       filename: fileName,
-  //       ...defaultQueryParams,
-  //       ...queryParams,
-  //     }),
-  // });
-
-  const data = {
-    parallel_count: 0,
-  };
-  const isLoading = false;
+  const { data, isLoading } = useQuery({
+    queryKey: DbApi.ParallelCount.makeQueryKey({
+      filename: fileName,
+      filters,
+    }),
+    queryFn: () =>
+      DbApi.ParallelCount.call({
+        filename: fileName,
+        filters,
+      }),
+  });
 
   const [parallelCount, setParallelCount] = useState(
     isLoading ? 0 : data?.parallel_count
