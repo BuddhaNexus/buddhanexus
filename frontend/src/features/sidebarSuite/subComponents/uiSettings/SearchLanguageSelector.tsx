@@ -1,15 +1,29 @@
 import { useTranslation } from "next-i18next";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import { dbLanguages } from "@utils/api/constants";
-import { StringParam, useQueryParam } from "use-query-params";
-import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsDefinition";
+
+import { getValidDbLanguage } from "@utils/validators";
+
+import { useLanguageParam } from "@components/hooks/params";
+import React from "react";
 
 const SearchLanguageSelector = () => {
   const { t } = useTranslation(["common", "settings"]);
 
-  const [currentLang, setCurrentDbLang] = useQueryParam(
-    allUIComponentParamNames.language,
-    StringParam
+  const [language, setLanguage] = useLanguageParam();
+
+  const handleChange = React.useCallback(
+    (event: SelectChangeEvent) => {
+      const value = event.target.value;
+      setLanguage(value === "all" ? null : getValidDbLanguage(value));
+    },
+    [setLanguage]
   );
 
   return (
@@ -21,12 +35,8 @@ const SearchLanguageSelector = () => {
         labelId="db-language-selector-label"
         aria-labelledby="db-language-selector-label"
         id="db-language-selector"
-        value={currentLang ?? "all"}
-        onChange={(e) =>
-          setCurrentDbLang(
-            e.target.value === "all" ? undefined : e.target.value
-          )
-        }
+        value={language ?? "all"}
+        onChange={handleChange}
       >
         <MenuItem key="all" value="all">
           {t(`language.all`)}

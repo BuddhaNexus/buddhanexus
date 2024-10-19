@@ -37,7 +37,7 @@ const SelectionHead = ({ filterName, selectionIds }: SelectionHeadProps) => {
 
   return (
     <SelectionHeadBox>
-      <FormLabel>{t(`filtersLabels.source_${filterName}`)}</FormLabel>
+      <FormLabel>{t(`filtersLabels.${filterName}`)}</FormLabel>
 
       {selectionIds.length > 0 ? (
         <IconButton

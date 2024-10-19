@@ -2,8 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { debounce } from "lodash";
-import { NumberParam, useQueryParam } from "use-query-params";
-import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsDefinition";
+
+import { useParLengthParam } from "@components/hooks/params";
+import { MIN_PAR_LENGTH_VALUES } from "@features/sidebarSuite/uiSettingsDefinition";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -25,21 +27,16 @@ function normalizeValue(value: number, min: number) {
 export default function ParLengthFilter() {
   const { t } = useTranslation("settings");
 
-  const parLengthConfig = {
-    default: 30,
-    min: 10,
-  };
-  const [parLengthParam, setParLengthParam] = useQueryParam(
-    allUIComponentParamNames.par_length,
-    NumberParam
-  );
-  const [parLength, setParLength] = useState(
-    parLengthParam ?? parLengthConfig.default
-  );
+  const { dbLanguage } = useDbRouterParams();
+
+  const [parLengthParam, setParLengthParam] = useParLengthParam();
+  const [parLengthValue, setparLengthValue] = useState(parLengthParam);
+
+  const minValue = MIN_PAR_LENGTH_VALUES[dbLanguage];
 
   useEffect(() => {
-    setParLength(parLengthParam ?? parLengthConfig.default);
-  }, [parLengthParam, parLengthConfig.default]);
+    setparLengthValue(parLengthParam);
+  }, [parLengthParam]);
 
   const setDebouncedParLengthParam = useMemo(
     () => debounce(setParLengthParam, 600),
@@ -48,17 +45,17 @@ export default function ParLengthFilter() {
 
   const handleChange = useCallback(
     (value: number) => {
-      const normalizedValue = normalizeValue(value, parLengthConfig.min);
-      setParLength(value);
+      const normalizedValue = normalizeValue(value, minValue);
+      setparLengthValue(value);
       setDebouncedParLengthParam(normalizedValue);
     },
-    [parLengthConfig.min, setParLength, setDebouncedParLengthParam]
+    [minValue, setparLengthValue, setDebouncedParLengthParam]
   );
 
   const marks = [
     {
-      value: parLengthConfig.min,
-      label: `${parLengthConfig.min}`,
+      value: minValue,
+      label: `${minValue}`,
     },
     // TODO set dynamic max
     {
@@ -72,10 +69,10 @@ export default function ParLengthFilter() {
       <FormLabel id="min-match-input-label">
         {t("filtersLabels.minMatch")}
       </FormLabel>
-      {/* TODO: define acceptance criteria for input change handling */}
+
       <TextField
         sx={{ width: 1, my: 1 }}
-        value={parLength ?? ""}
+        value={parLengthValue}
         type="number"
         inputProps={{
           min: 0,
@@ -87,7 +84,7 @@ export default function ParLengthFilter() {
       />
       <Box sx={{ ml: 1, width: "96%" }}>
         <Slider
-          value={parLength ?? parLengthConfig.default}
+          value={parLengthValue}
           aria-labelledby="min-match-input-label"
           getAriaValueText={valueToString}
           min={0}

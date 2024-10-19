@@ -1,6 +1,5 @@
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { type SortMethod } from "@features/sidebarSuite/types";
+import { getValidSortMethod } from "@utils/validators";
 import {
   Box,
   FormControl,
@@ -8,27 +7,24 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  SelectChangeEvent,
 } from "@mui/material";
-import {
-  allUIComponentParamNames,
-  sortMethods,
-} from "@features/sidebarSuite/uiSettingsDefinition";
+import { sortMethods } from "@features/sidebarSuite/uiSettingsDefinition";
+
+import { useSortMethodParam } from "@components/hooks/params";
+import React from "react";
 
 export default function SortOption() {
   const { t } = useTranslation("settings");
-  const router = useRouter();
 
-  const sortMethodSelectValue = "position";
+  const [sortMethod, setSortMethod] = useSortMethodParam();
 
-  const handleSelectChange = async (sortMethod: SortMethod) => {
-    await router.push({
-      pathname: router.pathname,
-      query: {
-        ...router.query,
-        [allUIComponentParamNames.sort_method]: sortMethod,
-      },
-    });
-  };
+  const handleSelectChange = React.useCallback(
+    (event: SelectChangeEvent) => {
+      setSortMethod(getValidSortMethod(event.target.value));
+    },
+    [setSortMethod]
+  );
 
   return (
     <Box sx={{ width: 1, my: 3 }}>
@@ -37,13 +33,13 @@ export default function SortOption() {
           {t("optionsLabels.sort.selector")}
         </InputLabel>
         <Select
-          value={sortMethodSelectValue}
+          value={sortMethod}
           labelId="sort-option-selector-label"
           inputProps={{
             id: "sort-option-selector",
           }}
           input={<OutlinedInput label={t("optionsLabels.sort.selector")} />}
-          onChange={(e) => handleSelectChange(e.target.value as SortMethod)}
+          onChange={handleSelectChange}
         >
           {sortMethods.map((option) => {
             return (

@@ -9,14 +9,12 @@ function parseStructuredDbSourceMenuData(
     collection,
     categories: categories.map(
       ({ files, categorydisplayname, category: categoryName }) => ({
-        files: files.map(
-          ({ displayName, filename, category, search_field }) => ({
-            displayName,
-            searchField: search_field,
-            fileName: filename,
-            category: category,
-          })
-        ),
+        files: files.map(({ displayName, filename, search_field }) => ({
+          displayName,
+          searchField: search_field,
+          fileName: filename,
+          category: categoryName,
+        })),
         name: categoryName,
         displayName: categorydisplayname,
       })

@@ -6,9 +6,9 @@ export type AppResultPageView = DbViewEnum | "search";
 
 type APIRequestPropsName = keyof AllAPIRequestProps;
 
-// `EXAMPLE` is an `at a glance` ref that catches any model changes pulled from the API
+// `AllAPIRequestPropModel` is an `at a glance` ref that catches any model changes pulled from the API
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const EXAMPLE: AllAPIRequestProps = {
+const AllAPIRequestPropModel: AllAPIRequestProps = {
   filters: {
     score: 0,
     par_length: 0,
@@ -26,7 +26,7 @@ const EXAMPLE: AllAPIRequestProps = {
   page: 0,
   download_data: "",
   filename: "",
-  language: "all",
+  language: "pa",
   parallel_ids: [],
   search_string: "",
   segmentnr: "",
@@ -82,6 +82,18 @@ export type DbSourceFiltersSelectedIds = Record<
   DbSourceFilterUISetting,
   string[]
 >;
+
+//TODO: Remove after filter refactor
+export type DbSourceFilters = {
+  include_files?: string[];
+  include_categories?: string[];
+  include_collections?: string[];
+  exclude_files?: string[];
+  exclude_categories?: string[];
+  exclude_collections?: string[];
+};
+
+
 
 /**
  *

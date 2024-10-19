@@ -1,7 +1,8 @@
 import React, { memo } from "react";
 import {
-  FilterUISettings,
+  // FilterUISettings,
   DbSourceFilterUISetting,
+  DbSourceFilters,
 } from "@features/sidebarSuite/types";
 import { Box } from "@mui/material";
 import { parseAsJson, useQueryState } from "nuqs";
@@ -21,7 +22,7 @@ const DbSourceFilter = ({
 
   const [filterParam] = useQueryState(
     "filters",
-    parseAsJson<FilterUISettings>()
+    parseAsJson<DbSourceFilters>()
   );
 
   const selectedSourceFilterIds = React.useMemo(

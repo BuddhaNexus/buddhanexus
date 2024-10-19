@@ -5,10 +5,24 @@ import {
   DisplayUISettingName,
   UtilityUISettingName,
   AllUIComponentParamNames,
+  RequestFilterName,
 } from "./types";
 import { DbLanguage } from "@utils/api/types";
 
 import { exhaustiveStringTuple } from "@utils/validators";
+
+export const allRequestFilters = exhaustiveStringTuple<RequestFilterName>()(
+  "languages",
+  "include_files",
+  "exclude_files",
+  "include_categories",
+  "exclude_categories",
+  "include_collections",
+  "exclude_collections",
+  "par_length",
+  "score",
+  "language"
+);
 
 // order sets appearance in sidebar
 
@@ -27,17 +41,17 @@ export const searchRequestFilters =
     "include_sources"
   );
 
-export const sortMethods = exhaustiveStringTuple<SortMethod>()(
-  "position",
-  "quoted-text",
-  "length2"
-);
-
 export const displayUISettings = exhaustiveStringTuple<DisplayUISettingName>()(
   "folio",
   "sort_method",
   "script",
   "showSegmentNrs"
+);
+
+export const sortMethods = exhaustiveStringTuple<SortMethod>()(
+  "position",
+  "quoted-text",
+  "length2"
 );
 
 export const utilityUISettings = exhaustiveStringTuple<UtilityUISettingName>()(
@@ -77,27 +91,18 @@ export const allUIComponentParamNames: AllUIComponentParamNames = {
 
 export const DEFAULT_PARAM_VALUES = {
   score: 30,
-  // par_length is given a dummy value of 25 (lowest value applicable to all languages). The true value is initated when src lang value is available.
-  par_length: 25,
-  folio: undefined,
-  sort_method: undefined,
-  limits: undefined,
-  target_collection: undefined,
-  multi_lingual: undefined,
-  language: undefined,
-  search_string: undefined,
-};
+  par_length: {
+    zh: 7,
+    pa: 30,
+    sa: 30,
+    bo: 14,
+  },
+  sort_method: "position",
+} as const;
 
 export const MIN_PAR_LENGTH_VALUES: Record<DbLanguage, number> = {
   zh: 5,
   pa: 25,
   sa: 25,
   bo: 7,
-};
-
-export const DEFAULT_PAR_LENGTH_VALUES: Record<DbLanguage, number> = {
-  zh: 7,
-  pa: 30,
-  sa: 30,
-  bo: 14,
 };

@@ -22,7 +22,8 @@ function parseAPITableData(
         },
         parallelFullText: p.par_fulltext ?? [],
         parallelLength: p.par_length,
-        parallelSegmentNumberRange: p.par_segnr_range,
+        // TODO: chech if number ranges can be left undefined
+        parallelSegmentNumberRange: `${p.par_segnr_range}`,
 
         rootFullNames: {
           displayName: p.root_full_names.display_name ?? "",
@@ -32,7 +33,7 @@ function parseAPITableData(
         },
         rootFullText: p.root_fulltext ?? [],
         rootLength: p.root_length,
-        rootSegmentNumberRange: p.root_segnr_range,
+        rootSegmentNumberRange: `${p.root_segnr_range}`,
       }))
     : [];
 }

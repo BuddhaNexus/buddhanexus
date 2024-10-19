@@ -3,25 +3,21 @@ import {
   parseAsJson,
   parseAsString,
   parseAsInteger,
+  parseAsStringLiteral,
   parseAsArrayOf,
   useQueryState,
 } from "nuqs";
 import {
   allUIComponentParamNames,
-  DEFAULT_PAR_LENGTH_VALUES,
+  DEFAULT_PARAM_VALUES,
+  sortMethods,
 } from "@features/sidebarSuite/uiSettingsDefinition";
-import { useDbRouterParams } from "../useDbRouterParams";
-
-export const useFilterParam = () => {
-  return useQueryState(
-    allUIComponentParamNames.filters,
-    parseAsJson<FilterUISettings>()
-  );
-};
+import { useDbRouterParams } from "./useDbRouterParams";
+import { dbLanguages } from "@utils/api/constants";
 
 export const useScoreParam = () => {
   return useQueryState(allUIComponentParamNames.score, {
-    ...parseAsInteger.withDefault(30),
+    ...parseAsInteger.withDefault(DEFAULT_PARAM_VALUES.score),
     clearOnDefault: true,
   });
 };
@@ -29,7 +25,7 @@ export const useScoreParam = () => {
 export const useParLengthParam = () => {
   const { dbLanguage } = useDbRouterParams();
   return useQueryState(allUIComponentParamNames.par_length, {
-    ...parseAsInteger.withDefault(DEFAULT_PAR_LENGTH_VALUES[dbLanguage]),
+    ...parseAsInteger.withDefault(DEFAULT_PARAM_VALUES.par_length[dbLanguage]),
     clearOnDefault: true,
   });
 };
@@ -76,9 +72,48 @@ export const useIncludeFilesParam = () => {
   });
 };
 
+const parseAsDbLanguage = parseAsStringLiteral(dbLanguages);
+
+export const useLanguageParam = () => {
+  return useQueryState(allUIComponentParamNames.languages, {
+    ...parseAsDbLanguage,
+    clearOnDefault: true,
+  });
+};
+
 export const useLanguagesParam = () => {
   return useQueryState(allUIComponentParamNames.languages, {
-    ...parseAsArrayOf(parseAsString),
+    ...parseAsArrayOf(parseAsDbLanguage),
+    clearOnDefault: true,
+  });
+};
+
+export const useActiveSegmentParam = () => {
+  return useQueryState(allUIComponentParamNames.active_segment, {
+    ...parseAsString,
+    clearOnDefault: true,
+  });
+};
+
+const parseAsSortMethod = parseAsStringLiteral(sortMethods);
+
+export const useSortMethodParam = () => {
+  return useQueryState(allUIComponentParamNames.sort_method, {
+    ...parseAsSortMethod.withDefault(DEFAULT_PARAM_VALUES.sort_method),
+    clearOnDefault: true,
+  });
+};
+
+export const useFolioParam = () => {
+  return useQueryState(allUIComponentParamNames.folio, {
+    ...parseAsString,
+    clearOnDefault: true,
+  });
+};
+
+export const useSearchStringParam = () => {
+  return useQueryState(allUIComponentParamNames.search_string, {
+    ...parseAsString,
     clearOnDefault: true,
   });
 };

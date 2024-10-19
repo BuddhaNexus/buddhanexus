@@ -11,7 +11,8 @@ function parseAPISearchData(data: APIPostResponse<"/search/">) {
       category,
       language,
       segment_nr,
-      full_names: { display_name, text_name, link1, link2 },
+      // TODO: check links are to be removed
+      full_names: { display_name, text_name /*link1, link2*/ },
       similarity,
       segtext,
     } = result;
@@ -22,7 +23,9 @@ function parseAPISearchData(data: APIPostResponse<"/search/">) {
       language: getValidDbLanguage(language),
       segmentNumber: segment_nr,
       displayName: display_name ?? "",
-      links: [`${link1}`, `${link2}`],
+      links: [
+        /*`${link1}`, `${link2}`*/
+      ],
       similarity,
       matchTextParts: segtext,
     });

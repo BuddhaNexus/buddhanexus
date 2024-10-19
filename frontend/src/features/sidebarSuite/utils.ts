@@ -23,11 +23,11 @@ export const getAvailableSettings = <T extends string>({
       continue;
     }
 
-    if (typeof unavailableSettingsForView[settingName].length === "string") {
+    if (typeof unavailableSettingsForView[settingName]?.length === "string") {
       continue;
     }
 
-    if (!unavailableSettingsForView[settingName].includes(dbLanguage)) {
+    if (!unavailableSettingsForView[settingName]?.includes(dbLanguage)) {
       availableSettings.push(settingName);
     }
   }
