@@ -1,6 +1,6 @@
 import apiClient from "@api";
 import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
-import { SourceLanguage } from "@utils/constants";
+import { getValidDbLanguage } from "@utils/validators";
 
 function parseAPITextViewMiddleParallelsData(
   data: APIPostResponse<"/text-view/middle/">
@@ -12,7 +12,7 @@ function parseAPITextViewMiddleParallelsData(
     parallelFullText: p.par_fulltext ?? [],
     parallelSegmentNumberRange: p.par_segnr_range,
     score: p.score,
-    targetLanguage: p.tgt_lang as SourceLanguage,
+    targetLanguage: getValidDbLanguage(p.tgt_lang),
   }));
 }
 

@@ -7,7 +7,7 @@ import { useAtomValue } from "jotai";
 
 import FilterUISettings from "./FilterUISettings";
 
-import { dbSoureFileRequestFilters } from "@features/sidebarSuite/uiSettingsLists";
+import { dbSoureFileRequestFilters } from "@features/sidebarSuite/uiSettingsDefinition";
 import { DBSourceFilePageFilterUISettingName } from "@features/sidebarSuite/types";
 import { DbViewEnum } from "@utils/constants";
 

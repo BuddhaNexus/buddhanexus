@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 
 import FilterUISettings from "./FilterUISettings";
 
-import { searchRequestFilters } from "@features/sidebarSuite/uiSettingsLists";
+import { searchRequestFilters } from "@features/sidebarSuite/uiSettingsDefinition";
 
 import DbRoutePrimaryUISettings from "./DbRoutePrimaryUISettings";
 

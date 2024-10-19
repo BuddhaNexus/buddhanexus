@@ -1,4 +1,6 @@
-import { DbViewEnum, DEFAULT_DB_VIEW, SourceLanguage } from "./constants";
+import { DbViewEnum, DEFAULT_DB_VIEW } from "./constants";
+
+import { DbLanguage, dbLanguages } from "./api/constants";
 
 export const isValidDbView = (view: unknown): view is DbViewEnum =>
   Object.values(DbViewEnum).some((item) => item === view);
@@ -7,15 +9,13 @@ export const getValidDbView = (view: unknown) => {
   return isValidDbView(view) ? view : DEFAULT_DB_VIEW;
 };
 
-export const isValidDbLanguage = (lang: unknown): lang is SourceLanguage =>
-  Object.values(SourceLanguage).some((item) => item === lang);
+export const isValidDbLanguage = (lang: unknown): lang is DbLanguage =>
+  Object.values(dbLanguages).some((item) => item === lang);
 
 export const getValidDbLanguage = (lang: unknown) => {
   if (!isValidDbLanguage(lang)) {
     throw new Error(
-      `Invalid language: ${lang}. Valid languages are: ${Object.values(
-        SourceLanguage,
-      )}`,
+      `Invalid language: ${lang}. Valid languages are: ${dbLanguages.join(", ")}`
     );
   }
 

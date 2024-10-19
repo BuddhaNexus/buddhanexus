@@ -19,7 +19,7 @@ import type {
   APIPostResponse,
   APISchemas,
 } from "@utils/api/types";
-import { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 import type { NumbersSegment } from "./NumbersTable";
 
 export const createTableRows = (
@@ -43,7 +43,7 @@ export const createTableRows = (
 
 interface CreateTableColumnProps {
   categories: APIGetResponse<"/numbers-view/categories/">;
-  language: SourceLanguage;
+  language: DbLanguage;
   fileName: string;
 }
 export const createTableColumns = ({

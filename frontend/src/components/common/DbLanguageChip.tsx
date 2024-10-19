@@ -1,20 +1,20 @@
 import React, { useCallback } from "react";
 import type { Theme } from "@mui/material";
 import { Chip, useTheme } from "@mui/material";
-import { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
-const getLanguageColor = (language: SourceLanguage, theme: Theme): string => {
+const getLanguageColor = (language: DbLanguage, theme: Theme): string => {
   switch (language) {
-    case SourceLanguage.PALI: {
+    case "pa": {
       return theme.palette.common.pali;
     }
-    case SourceLanguage.TIBETAN: {
+    case "bo": {
       return theme.palette.common.tibetan;
     }
-    case SourceLanguage.CHINESE: {
+    case "zh": {
       return theme.palette.common.chinese;
     }
-    case SourceLanguage.SANSKRIT: {
+    case "sa": {
       return theme.palette.common.sanskrit;
     }
     default: {
@@ -23,18 +23,18 @@ const getLanguageColor = (language: SourceLanguage, theme: Theme): string => {
   }
 };
 
-export function SourceLanguageChip({
+export function DbLanguageChip({
   label,
   language,
 }: {
   label: string;
-  language: SourceLanguage;
+  language: DbLanguage;
 }) {
   const materialTheme = useTheme();
 
   const languageBadgeColor = useCallback(
     () => getLanguageColor(language, materialTheme),
-    [language, materialTheme],
+    [language, materialTheme]
   );
 
   return (

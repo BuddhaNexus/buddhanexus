@@ -24,12 +24,12 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
     elementWidth = node.tree.props.width - INDENTATION_WIDTH;
   }
 
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
   const dbView = useAtomValue(currentDbViewAtom);
   return (
     <TextNodeLink
       className={styles.textNodeLink}
-      href={getTextPath({ sourceLanguage, fileName, dbView })}
+      href={getTextPath({ dbLanguage, fileName, dbView })}
     >
       <div>
         <Chip

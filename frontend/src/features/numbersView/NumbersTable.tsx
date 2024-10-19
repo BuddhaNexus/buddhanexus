@@ -16,7 +16,7 @@ import {
 } from "@tanstack/react-table";
 import type { NumbersViewData } from "@utils/api/endpoints/numbers-view/numbers";
 import type { APIGetResponse, APIPostResponse } from "@utils/api/types";
-import { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
 import {
   createTableColumns,
@@ -37,7 +37,7 @@ interface NumbersTableProps {
   >;
   isFetching: boolean;
   isLoading: boolean;
-  language: SourceLanguage;
+  language: DbLanguage;
   fileName: string;
 }
 

@@ -20,12 +20,12 @@ import type { Theme } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-import type { SourceLanguage } from "@utils/constants";
-import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
+import { DbLanguage } from "@utils/api/types";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsDefinition";
 
 function getStyles(
-  name: SourceLanguage,
-  selectedLanguages: SourceLanguage[] | undefined,
+  name: DbLanguage,
+  selectedLanguages: DbLanguage[] | undefined,
   theme: Theme
 ) {
   if (!selectedLanguages) return;
@@ -85,7 +85,7 @@ const MultiLingualSelector = () => {
 
   const anchorRef = React.useRef();
   const selectorLabel = t("optionsLabels.multiLingual");
-  const getRenderValue = (selected: SourceLanguage[]) => {
+  const getRenderValue = (selected: DbLanguage[]) => {
     return selected.length > 0 ? (
       selected.map((selection) => t(`common:language.${selection}`)).join(", ")
     ) : (
@@ -119,7 +119,7 @@ const MultiLingualSelector = () => {
           displayEmpty
           onChange={handleChange}
         >
-          {availableLanguages?.map((langKey: SourceLanguage) => (
+          {availableLanguages?.map((langKey: DbLanguage) => (
             <MenuItem
               key={langKey}
               value={langKey}

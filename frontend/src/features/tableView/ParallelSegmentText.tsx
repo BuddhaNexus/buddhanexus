@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const ParallelSegmentText = ({ text }: Props) => {
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
   const script = useAtomValue(scriptSelectionAtom);
 
   if (!text) {
@@ -30,7 +30,7 @@ export const ParallelSegmentText = ({ text }: Props) => {
             {enscriptText({
               text: segmentText ?? "",
               script,
-              language: sourceLanguage,
+              language: dbLanguage,
             })}
           </Typography>
         );

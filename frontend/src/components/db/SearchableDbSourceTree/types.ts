@@ -1,5 +1,5 @@
 import { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
-import type { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
 export enum DbSourceTreeNodeDataType {
   Category = "category",
@@ -13,7 +13,7 @@ export type DbSourceTreeNode = {
   dataType: DbSourceTreeNodeDataType;
   children?: DbSourceTreeNode[];
   fileName?: string;
-  availableLanguages?: SourceLanguage[];
+  availableLanguages?: DbLanguage[];
 };
 
 export enum DbSourceTreeType {

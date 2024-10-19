@@ -7,14 +7,14 @@ import { displaySettingComponents } from "@features/sidebarSuite/subComponents/u
 
 import { Box } from "@mui/material";
 import { useAtomValue } from "jotai";
-import { displayUISettings } from "@features/sidebarSuite/uiSettingsLists";
+import { displayUISettings } from "@features/sidebarSuite/uiSettingsDefinition";
 
 import { DisplayUISettingName } from "@features/sidebarSuite/types";
 import {
   getAvailableSettings,
   type UnavailableLanguages,
 } from "@features/sidebarSuite/utils";
-import { DbViewEnum, SourceLanguage as Lang } from "@utils/constants";
+import { DbViewEnum } from "@utils/constants";
 
 type LanguageUnabvailableSettings = Partial<
   Record<DisplayUISettingName, UnavailableLanguages>
@@ -37,12 +37,12 @@ const UNAVAILABLE_SETTINGS: UnavailableDisplaySettings = {
   },
   [DbViewEnum.TABLE]: {
     sort_method: "allLangs",
-    script: [Lang.PALI, Lang.CHINESE, Lang.SANSKRIT],
+    script: ["pa", "zh", "sa"],
     showSegmentNrs: "allLangs",
   },
   [DbViewEnum.TEXT]: {
     sort_method: "allLangs",
-    script: [Lang.PALI, Lang.CHINESE, Lang.SANSKRIT],
+    script: ["pa", "zh", "sa"],
   },
 };
 
@@ -50,15 +50,15 @@ export const DisplayOptionsSection = () => {
   const { t } = useTranslation("settings");
 
   const currentView = useAtomValue(currentDbViewAtom);
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
 
   const uiSettings = useMemo(() => {
     return getAvailableSettings<DisplayUISettingName>({
-      sourceLanguage,
+      dbLanguage,
       uiSettings: displayUISettings,
       unavailableSettingsForView: UNAVAILABLE_SETTINGS[currentView],
     });
-  }, [sourceLanguage, currentView]);
+  }, [dbLanguage, currentView]);
 
   if (uiSettings.length === 0) {
     return null;

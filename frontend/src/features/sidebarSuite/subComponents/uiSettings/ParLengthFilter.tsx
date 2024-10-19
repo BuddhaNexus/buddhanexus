@@ -3,7 +3,7 @@ import { useTranslation } from "next-i18next";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
-import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsDefinition";
 
 function valueToString(value: number) {
   return `${value}`;

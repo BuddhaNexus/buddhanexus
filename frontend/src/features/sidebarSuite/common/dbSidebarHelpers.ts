@@ -1,10 +1,5 @@
-import type { UtilityOption } from "@features/sidebarSuite/uiSettingsLists";
-import type {
-  MenuUnavailableUISettings,
-  UISetting,
-  QueryParams,
-  AppResultPageView,
-} from "@features/sidebarSuite/types";
+import type { AllUIComponentParamNames } from "@features/sidebarSuite/types";
+import type { AppResultPageView } from "@features/sidebarSuite/types";
 import type {
   Script,
   UtilityUISettingName,
@@ -12,26 +7,8 @@ import type {
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 import { getParallelDownloadData } from "@utils/api/endpoints/table-view/downloads";
-import { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 import { EwtsConverter } from "tibetan-ewts-converter";
-
-export const isSettingUnavailable = ({
-  unavailableUISettings,
-  settingName,
-  language,
-  pageContext,
-}: {
-  unavailableUISettings: MenuUnavailableUISettings;
-  settingName: UISetting;
-  language: SourceLanguage;
-  pageContext: AppResultPageView;
-}) => {
-  return Boolean(
-    unavailableUISettings?.[settingName]?.[pageContext]?.some(
-      (unavailableLang) => ["all", language].includes(unavailableLang)
-    )
-  );
-};
 
 export type PopperAnchorState = Record<
   UtilityUISettingName,
@@ -50,7 +27,7 @@ interface UtilityClickHandlerProps {
   download: {
     call: (url: string, name: string) => void;
     fileName: string;
-    queryParams: Partial<QueryParams>;
+    queryParams: Partial<AllUIComponentParamNames>;
   };
   href: string;
   popperAnchorStateHandler: PopperAnchorStateHandler;
@@ -64,10 +41,6 @@ export type UtilityOptionProps = {
   icon: OverridableComponent<SvgIconTypeMap>;
 };
 
-// 💣💣💣
-export type UtilityOptions = {
-  [value in UtilityOption]: UtilityOptionProps;
-};
 
 export const defaultAnchorEls = {
   download_data: null,
@@ -174,10 +147,10 @@ export const enscriptText = ({
   script,
 }: {
   text?: string;
-  language: SourceLanguage;
+  language: DbLanguage;
   script: Script;
 }) => {
-  return script === "Unicode" && language === SourceLanguage.TIBETAN
+  return script === "Unicode" && language === "bo"
     ? ewts.to_unicode(text)
     : text;
 };

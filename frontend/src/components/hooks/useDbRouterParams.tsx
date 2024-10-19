@@ -8,12 +8,12 @@ export const useDbRouterParams = () => {
   const router = useRouter();
 
   const { file, language } = router.query;
-  const sourceLanguage = getValidDbLanguage(language);
+  const dbLanguage = getValidDbLanguage(language);
   const fileName = file as string;
 
   return {
-    sourceLanguage,
-    sourceLanguageName: t(`language.${sourceLanguage}`),
+    dbLanguage,
+    dbLanguageName: t(`language.${dbLanguage}`),
     fileName,
   };
 };

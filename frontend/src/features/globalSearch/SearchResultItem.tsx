@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
-import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
+import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import { makeTextViewSegmentPath } from "@features/tableView/ParallelSegment";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";
@@ -46,7 +46,7 @@ export const SearchResultItem = ({ result }: Props) => {
         }}
       >
         <SearchResultHeaderChips>
-          <SourceLanguageChip
+          <DbLanguageChip
             label={t(`language.${language}`)}
             language={language}
           />

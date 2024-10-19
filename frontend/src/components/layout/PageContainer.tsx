@@ -11,25 +11,26 @@ import bgPli from "@public/assets/images/bg_pli_upscaled_bw.jpg";
 import bgSkt from "@public/assets/images/bg_skt_upscaled_bw.jpg";
 import bgTib from "@public/assets/images/bg_tib_upscaled_bw.jpg";
 import bgWelcome from "@public/assets/images/bg_welcome_upscaled_bw.jpg";
-import { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 import type { Property } from "csstype";
 
 import { QueryResultsPageContent } from "./QueryResultsPageContent";
-export type BackgroundName = SourceLanguage | "welcome";
+
+export type BackgroundName = DbLanguage | "welcome";
 
 const BgImageSrcs: Record<BackgroundName, string> = {
-  [SourceLanguage.TIBETAN]: bgTib.src,
-  [SourceLanguage.CHINESE]: bgChn.src,
-  [SourceLanguage.SANSKRIT]: bgSkt.src,
-  [SourceLanguage.PALI]: bgPli.src,
+  bo: bgTib.src,
+  zh: bgChn.src,
+  pa: bgPli.src,
+  sa: bgSkt.src,
   welcome: bgWelcome.src,
 };
 
 const BgImageBgSize: Record<BackgroundName, Property.BackgroundSize> = {
-  [SourceLanguage.TIBETAN]: "contain",
-  [SourceLanguage.CHINESE]: "contain",
-  [SourceLanguage.SANSKRIT]: "contain",
-  [SourceLanguage.PALI]: "contain",
+  bo: "contain",
+  zh: "contain",
+  pa: "contain",
+  sa: "contain",
   welcome: "cover",
 };
 

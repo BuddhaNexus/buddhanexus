@@ -1,6 +1,6 @@
-import { SourceLanguage as Lang } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
-export type UnavailableLanguages = Lang[] | "allLangs";
+export type UnavailableLanguages = DbLanguage[] | "allLangs";
 
 type LanguageUnavailableSettings<T extends string> = Partial<
   Record<T, UnavailableLanguages>
@@ -9,11 +9,11 @@ type LanguageUnavailableSettings<T extends string> = Partial<
 export const getAvailableSettings = <T extends string>({
   unavailableSettingsForView,
   uiSettings,
-  sourceLanguage,
+  dbLanguage,
 }: {
   unavailableSettingsForView: LanguageUnavailableSettings<T>;
   uiSettings: T[];
-  sourceLanguage: Lang;
+  dbLanguage: DbLanguage;
 }) => {
   const availableSettings: T[] = [];
 
@@ -27,7 +27,7 @@ export const getAvailableSettings = <T extends string>({
       continue;
     }
 
-    if (!unavailableSettingsForView[settingName].includes(sourceLanguage)) {
+    if (!unavailableSettingsForView[settingName].includes(dbLanguage)) {
       availableSettings.push(settingName);
     }
   }

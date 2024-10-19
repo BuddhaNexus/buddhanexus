@@ -589,16 +589,48 @@ export interface components {
       /** Category */
       category?: string;
     };
+    /**
+     * SearchFilters
+     * @description Filters for search
+     */
+    SearchFilters: {
+      languages?: components["schemas"]["Languages"][];
+      /**
+       * Include Files
+       * @default []
+       */
+      include_files: string[];
+      /**
+       * Exclude Files
+       * @default []
+       */
+      exclude_files: string[];
+      /**
+       * Include Categories
+       * @default []
+       */
+      include_categories: string[];
+      /**
+       * Exclude Categories
+       * @default []
+       */
+      exclude_categories: string[];
+      /**
+       * Include Collections
+       * @default []
+       */
+      include_collections: string[];
+      /**
+       * Exclude Collections
+       * @default []
+       */
+      exclude_collections: string[];
+    };
     /** SearchInput */
     SearchInput: {
       /** Search String */
       search_string: string;
-      /**
-       * Language
-       * @default
-       */
-      language: string;
-      filters?: components["schemas"]["Filters"];
+      filters?: components["schemas"]["SearchFilters"];
     };
     /** SearchOutput */
     SearchOutput: {

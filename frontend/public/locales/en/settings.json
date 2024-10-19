@@ -41,7 +41,7 @@
       "quoted-text": "Position in match texts",
       "length2": "Length of character match (>)"
     },
-    "download": "Download results as xmlx file",
+    "download_data": "Download results as xmlx file",
     "wylie": "Wylie",
     "unicode": "Unicode",
     "copyQueryTitle": "Copy text title",
@@ -51,7 +51,7 @@
     "useMonochromaticSegmentColors": "Use monochromatic segment match colors"
   },
   "optionsPopperMsgs": {
-    "download": "Ooops! Something went wrong!",
+    "download_data": "Ooops! Something went wrong!",
     "copyQueryTitle": "Copied",
     "copyQueryLink": "Copied",
     "emailQueryLink": "Email opened"

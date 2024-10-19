@@ -25,7 +25,7 @@ import { useAtomValue } from "jotai";
 import {
   utilityUISettings,
   allUIComponentParamNames,
-} from "@features/sidebarSuite/uiSettingsLists";
+} from "@features/sidebarSuite/uiSettingsDefinition";
 import {
   UtilityUISettingName,
   SidebarSuitePageContext,
@@ -70,7 +70,7 @@ export const UtilityOptionsSection = ({
 }) => {
   const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentDbViewAtom);
-  const { fileName, sourceLanguage } = useDbRouterParams();
+  const { fileName, dbLanguage } = useDbRouterParams();
   let href: string;
 
   if (typeof window !== "undefined") {
@@ -90,12 +90,12 @@ export const UtilityOptionsSection = ({
     }
 
     return getAvailableSettings<UtilityUISettingName>({
-      sourceLanguage,
+      dbLanguage,
       uiSettings: utilityUISettings,
       unavailableSettingsForView:
         UNAVAILABLE_DB_SOURCE_PAGE_SETTINGS[currentView],
     });
-  }, [sourceLanguage, currentView, pageType]);
+  }, [dbLanguage, currentView, pageType]);
 
   if (uiSettings.length === 0) {
     return null;

@@ -12,7 +12,7 @@ import {
 import {
   allUIComponentParamNames,
   sortMethods,
-} from "@features/sidebarSuite/uiSettingsLists";
+} from "@features/sidebarSuite/uiSettingsDefinition";
 
 export default function SortOption() {
   const { t } = useTranslation("settings");

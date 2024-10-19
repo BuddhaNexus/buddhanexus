@@ -8,10 +8,10 @@ import {
 } from "@mui/material/styles";
 
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
 
   const MUITheme = responsiveFontSizes(
-    extendTheme(getDesignTokens({ sourceLanguage }))
+    extendTheme(getDesignTokens({ dbLanguage }))
   );
 
   // @ts-expect-error type issue with responsiveFontSizes not being ready for the experimental CSSVars API, but it works file.

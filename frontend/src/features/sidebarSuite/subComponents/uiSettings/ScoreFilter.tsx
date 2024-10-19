@@ -4,7 +4,12 @@ import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { debounce } from "lodash";
 import { NumberParam, useQueryParam } from "use-query-params";
-import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
+import {
+  allUIComponentParamNames,
+  DEFAULT_PARAM_VALUES,
+} from "@features/sidebarSuite/uiSettingsDefinition";
+
+import { useFilterParam } from "@components/hooks/params/filters";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -25,32 +30,30 @@ function normalizeValue(value: number | null | undefined) {
 export default function ScoreFilter() {
   const { t } = useTranslation("settings");
 
-  const defaultParamConfig = {
-    score: 50,
-  };
-
-  const [scoreParam, setScoreParam] = useQueryParam(
-    allUIComponentParamNames.score,
-    NumberParam
-  );
+  const [filtersParam, setFiltersParam] = useFilterParam();
   const [scoreValue, setScoreValue] = useState(
-    scoreParam ?? defaultParamConfig.score
+    filtersParam?.score || DEFAULT_PARAM_VALUES.score
   );
 
   useEffect(() => {
-    setScoreValue(scoreParam ?? defaultParamConfig.score);
-  }, [defaultParamConfig, scoreParam]);
+    setScoreValue(filtersParam?.score ?? DEFAULT_PARAM_VALUES.score);
+  }, [filtersParam?.score]);
 
   const setDebouncedScoreParam = useMemo(
-    () => debounce(setScoreParam, 600),
-    [setScoreParam]
+    () => debounce(setFiltersParam, 600),
+    [setFiltersParam]
   );
 
   const handleChange = useCallback(
     (value: number) => {
       const normalizedValue = normalizeValue(value);
       setScoreValue(value);
-      setDebouncedScoreParam(normalizedValue);
+      setDebouncedScoreParam((prev) => {
+        return {
+          ...prev,
+          score: normalizedValue,
+        };
+      });
     },
     [setScoreValue, setDebouncedScoreParam]
   );

@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-import type { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
 export const queryCacheTimeDefaults = {
   // 1 hour
@@ -10,7 +10,7 @@ export const queryCacheTimeDefaults = {
 };
 
 export async function prefetchDefaultDbPageData(
-  sourceLanguage: SourceLanguage
+  dbLanguage: DbLanguage
 ): Promise<QueryClient> {
   const queryClient = new QueryClient({
     // https://www.codemzy.com/blog/react-query-cachetime-staletime
@@ -22,15 +22,15 @@ export async function prefetchDefaultDbPageData(
   });
 
   await queryClient.prefetchQuery({
-    queryKey: DbApi.DbSourcesMenu.makeQueryKey(sourceLanguage),
-    queryFn: () => DbApi.DbSourcesMenu.call({ language: sourceLanguage }),
+    queryKey: DbApi.DbSourcesMenu.makeQueryKey(dbLanguage),
+    queryFn: () => DbApi.DbSourcesMenu.call({ language: dbLanguage }),
   });
 
   return queryClient;
 }
 
 export async function prefetchDbResultsPageData(
-  sourceLanguage: SourceLanguage,
+  dbLanguage: DbLanguage,
   fileName: string
 ): Promise<QueryClient> {
   const queryClient = new QueryClient({
@@ -49,8 +49,8 @@ export async function prefetchDbResultsPageData(
 
   // TODO: review. disabled for now to lighten build burden.
   // await queryClient.prefetchQuery({
-  //   queryKey: DbApi.DbSourcesMenu.makeQueryKey(sourceLanguage),
-  //   queryFn: () => DbApi.DbSourcesMenu.call(sourceLanguage),
+  //   queryKey: DbApi.DbSourcesMenu.makeQueryKey(dbLanguage),
+  //   queryFn: () => DbApi.DbSourcesMenu.call(dbLanguage),
   // });
 
   // TODO: confirm spec for multi_lingal query param. For discussion see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/117

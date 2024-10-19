@@ -3,7 +3,7 @@ import {
   // GetStaticProps,
   GetServerSideProps,
 } from "next";
-// import type { SourceLanguage } from "@utils/constants";
+// import { getValidDbLanguage } from "@utils/validators";
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -28,7 +28,7 @@ import { DbApi } from "@utils/api/dbApi";
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 export default function NumbersPage() {
-  const { sourceLanguage, fileName } = useDbRouterParams();
+  const { dbLanguage, fileName } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
@@ -96,14 +96,14 @@ export default function NumbersPage() {
   const isError = isHeadersError || isTableContentError;
 
   if (isError) {
-    return <ErrorPage backgroundName={sourceLanguage} />;
+    return <ErrorPage backgroundName={dbLanguage} />;
   }
 
   const isLoading = isTableContentLoading || areHeadersLoading;
 
   if (isFallback || isLoading || !data) {
     return (
-      <PageContainer backgroundName={sourceLanguage}>
+      <PageContainer backgroundName={dbLanguage}>
         <CenteredProgress />
       </PageContainer>
     );
@@ -112,7 +112,7 @@ export default function NumbersPage() {
   return (
     <PageContainer
       maxWidth={false}
-      backgroundName={sourceLanguage}
+      backgroundName={dbLanguage}
       isQueryResultsPage
     >
       <DbViewPageHead />
@@ -124,7 +124,7 @@ export default function NumbersPage() {
         fetchNextPage={fetchNextPage}
         isFetching={isFetching}
         isLoading={isLoading}
-        language={sourceLanguage}
+        language={dbLanguage}
         fileName={fileName}
       />
       <DbSourceBrowserDrawer />
@@ -145,7 +145,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
 //   ]);
 //
 //   const queryClient = await prefetchDbResultsPageData(
-//     params?.language as SourceLanguage,
+//     getValidLanguage(params?.language),
 //     params?.file as string,
 //   );
 //

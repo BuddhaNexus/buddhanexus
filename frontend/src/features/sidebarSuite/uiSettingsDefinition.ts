@@ -6,6 +6,7 @@ import {
   UtilityUISettingName,
   AllUIComponentParamNames,
 } from "./types";
+import { DbLanguage } from "@utils/api/types";
 
 import { exhaustiveStringTuple } from "@utils/validators";
 
@@ -47,8 +48,8 @@ export const utilityUISettings = exhaustiveStringTuple<UtilityUISettingName>()(
 );
 
 export const allUIComponentParamNames: AllUIComponentParamNames = {
-  par_length: "par_length",
   score: "score",
+  par_length: "par_length",
   languages: "languages",
   exclude_categories: "exclude_categories",
   exclude_collections: "exclude_collections",
@@ -72,4 +73,31 @@ export const allUIComponentParamNames: AllUIComponentParamNames = {
   search_string: "search_string",
   segmentnr: "segmentnr",
   filters: "filters",
+};
+
+export const DEFAULT_PARAM_VALUES = {
+  score: 30,
+  // par_length is given a dummy value of 25 (lowest value applicable to all languages). The true value is initated when src lang value is available.
+  par_length: 25,
+  folio: undefined,
+  sort_method: undefined,
+  limits: undefined,
+  target_collection: undefined,
+  multi_lingual: undefined,
+  language: undefined,
+  search_string: undefined,
+};
+
+export const MIN_PAR_LENGTH_VALUES: Record<DbLanguage, number> = {
+  zh: 5,
+  pa: 25,
+  sa: 25,
+  bo: 7,
+};
+
+export const DEFAULT_PAR_LENGTH_VALUES: Record<DbLanguage, number> = {
+  zh: 7,
+  pa: 30,
+  sa: 30,
+  bo: 14,
 };

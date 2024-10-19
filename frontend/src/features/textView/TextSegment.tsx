@@ -35,7 +35,7 @@ export const TextSegment = ({
     "selectedSegmentIndex",
     NumberParam
   );
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
 
   const shouldUseMonochromaticSegmentColors = useAtomValue(
     shouldUseMonochromaticSegmentColorsAtom
@@ -82,7 +82,7 @@ export const TextSegment = ({
         const textContent = enscriptText({
           text,
           script: scriptSelection,
-          language: sourceLanguage,
+          language: dbLanguage,
         });
         const isSegmentPartSelected =
           isSegmentSelected && selectedSegmentIndex === i;

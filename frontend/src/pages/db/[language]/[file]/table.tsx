@@ -3,7 +3,7 @@ import {
   // GetStaticProps,
   GetServerSideProps,
 } from "next";
-// import type { SourceLanguage } from "@utils/constants";
+// import {getValidDbLanguage } from "@utils/validators";
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -26,7 +26,7 @@ import { DbApi } from "@utils/api/dbApi";
 
 // TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
-  const { sourceLanguage, fileName } = useDbRouterParams();
+  const { dbLanguage, fileName } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
@@ -68,7 +68,7 @@ export default function TablePage() {
 
   if (isFallback) {
     return (
-      <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
+      <PageContainer maxWidth="xl" backgroundName={dbLanguage}>
         <DbViewPageHead />
         <CenteredProgress />
       </PageContainer>
@@ -76,11 +76,7 @@ export default function TablePage() {
   }
 
   return (
-    <PageContainer
-      maxWidth="xl"
-      backgroundName={sourceLanguage}
-      isQueryResultsPage
-    >
+    <PageContainer maxWidth="xl" backgroundName={dbLanguage} isQueryResultsPage>
       <DbViewPageHead />
 
       {isLoading || !data ? (
@@ -107,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
 //   const i18nProps = await getI18NextStaticProps({ locale }, ["settings"]);
 //
 //   const queryClient = await prefetchDbResultsPageData(
-//     params?.language as SourceLanguage,
+//     getValidDbLanguage(params?.language),
 //     params?.file as string,
 //   );
 //

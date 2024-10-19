@@ -25,7 +25,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   const router = useRouter();
   const isSearchRoute = router.route.startsWith("/search");
 
-  const { fileName, sourceLanguage } = useDbRouterParams();
+  const { fileName, dbLanguage } = useDbRouterParams();
   const dbView = useAtomValue(currentDbViewAtom);
 
   const setIsSourceTreeOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);
@@ -41,7 +41,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
           query: { search_string: searchTerm },
         }
       : {
-          pathname: getTextPath({ sourceLanguage, fileName, dbView }),
+          pathname: getTextPath({ dbLanguage, fileName, dbView }),
           query: {},
         };
 

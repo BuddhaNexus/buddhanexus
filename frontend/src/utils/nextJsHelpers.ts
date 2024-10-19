@@ -1,12 +1,10 @@
 import type { GetStaticPaths } from "next";
 import type { UserConfig } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { dbLanguages } from "@utils/api/constants";
+// TODO: getTextFileMenuData function removed with api update dropping the relevant menu endpoints. This needs to be refactored for the "metadata" endpoint
 
-import {
-  SOURCE_LANGUAGES,
-  // SourceLanguage,
-  SUPPORTED_LOCALES,
-} from "./constants";
+import {  SUPPORTED_LOCALES } from "./constants";
 
 interface I18nProps {
   props: {
@@ -23,10 +21,10 @@ type Locale = { locale: string | undefined };
 
 export const getI18NextStaticProps: (
   { locale }: Locale,
-  extraNamespaces?: string[],
+  extraNamespaces?: string[]
 ) => Promise<I18nProps> = async (
   { locale }: Locale,
-  extraNamespaces: string[] = [],
+  extraNamespaces: string[] = []
 ) => {
   return {
     props: {
@@ -38,51 +36,56 @@ export const getI18NextStaticProps: (
   };
 };
 
-const sourceLanguagePaths = SOURCE_LANGUAGES.flatMap((language) =>
+const dbLanguagePaths = dbLanguages.flatMap((language) =>
   Object.keys(SUPPORTED_LOCALES).map((locale) => ({
     params: { language },
     locale,
-  })),
+  }))
 );
 
-export const getSourceLanguageStaticPaths: GetStaticPaths = () => ({
-  paths: sourceLanguagePaths,
+export const getDbLanguageStaticPaths: GetStaticPaths = () => ({
+  paths: dbLanguagePaths,
   fallback: false,
 });
 
+
 // export const getDbViewFileStaticPaths: GetStaticPaths = async () => {
 //   const pliMenuData = await getTextFileMenuData({
-//     language: SourceLanguage.PALI,
+//     language: "pa",
 //   });
 //   const paliFilenames = pliMenuData.map((menuData) => menuData.fileName);
 //   const chineseMenuData = await getTextFileMenuData({
-//     language: SourceLanguage.CHINESE,
+//     language: "zh",
 //   });
 //   const chineseFilenames = chineseMenuData.map((menuData) => menuData.fileName);
 //   const sanskritMenuData = await getTextFileMenuData({
-//     language: SourceLanguage.SANSKRIT,
+//     language: "sa",
 //   });
 //   const sanskritFilenames = sanskritMenuData.map(
 //     (menuData) => menuData.fileName,
 //   );
 //   const tibetanMenuData = await getTextFileMenuData({
-//     language: SourceLanguage.TIBETAN,
+//     language: "bo",
 //   });
 //   const tibetanFilenames = tibetanMenuData.map((menuData) => menuData.fileName);
 
 //   const allFilenames = [
-//     { language: SourceLanguage.TIBETAN, filenames: tibetanFilenames },
-//     { language: SourceLanguage.CHINESE, filenames: chineseFilenames },
-//     { language: SourceLanguage.SANSKRIT, filenames: sanskritFilenames },
-//     { language: SourceLanguage.PALI, filenames: paliFilenames },
+//     { language: "bo", filenames: tibetanFilenames },
+//     { language: "zh", filenames: chineseFilenames },
+//     { language: "sa", filenames: sanskritFilenames },
+//     { language: "pa", filenames: paliFilenames },
 //   ];
 
 //   /**
 //    * Returns object like:
 //    * [
-//    *   { params: { language: 'pli', file: 'dn1' }, locale: 'en' },
-//    *   { params: { language: 'pli', file: 'dn1' }, locale: 'de' },
-//    *   { params: { language: 'pli', file: 'dn2' }, locale: 'en' },
+//    *   As part of getTextFileMenuData refactor consider if the 
+//    *   reutrned language value should be full name rather than
+//    *   language code.
+//    *
+//    *   { params: { language: 'pa', file: 'dn1' }, locale: 'en' },
+//    *   { params: { language: 'pa', file: 'dn1' }, locale: 'de' },
+//    *   { params: { language: 'pa', file: 'dn2' }, locale: 'en' },
 //    *   ...
 //    * ]
 //    */

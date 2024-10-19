@@ -27,7 +27,7 @@ export default function SearchPage() {
   const { t } = useTranslation();
   const { isReady } = useRouter();
 
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
   const { isFallback } = useSourceFile();
   const { handleSearchAction, searchParam } = useGlobalSearch();
 
@@ -35,7 +35,7 @@ export default function SearchPage() {
 
   const queryParams = {
     filters: undefined,
-    language: sourceLanguage,
+    language: dbLanguage,
   };
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function SearchPage() {
 
   if (isFallback) {
     return (
-      <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
+      <PageContainer maxWidth="xl" backgroundName={dbLanguage}>
         <Typography variant="h2" component="h1" mb={1}>
           {t("search.pageTitle")}
         </Typography>
@@ -83,11 +83,7 @@ export default function SearchPage() {
   }
 
   return (
-    <PageContainer
-      maxWidth="xl"
-      backgroundName={sourceLanguage}
-      isQueryResultsPage
-    >
+    <PageContainer maxWidth="xl" backgroundName={dbLanguage} isQueryResultsPage>
       <Typography variant="h2" component="h1" mb={1}>
         {t("search.pageTitle")}
       </Typography>

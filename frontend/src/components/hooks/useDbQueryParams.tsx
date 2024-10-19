@@ -4,18 +4,18 @@ import {
   DEFAULT_QUERY_PARAMS_VALUES,
   MIN_PAR_LENGTH_VALUES,
 } from "@features/sidebarSuite/config";
-import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsDefinition";
 
 import { useDbRouterParams } from "./useDbRouterParams";
 
 export const useDbQueryParams = () => {
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
   const searchParams = useSearchParams();
   // TODO: See default params need to be set here
   const defaultQueryParams: DefaultQueryParams = {
     score: DEFAULT_QUERY_PARAMS_VALUES.score,
-    par_length: sourceLanguage
-      ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
+    par_length: dbLanguage
+      ? DEFAULT_PAR_LENGTH_VALUES[dbLanguage]
       : DEFAULT_QUERY_PARAMS_VALUES.par_length,
     multi_lingual: DEFAULT_QUERY_PARAMS_VALUES.multi_lingual,
     sort_method: DEFAULT_QUERY_PARAMS_VALUES.sort_method,
@@ -23,11 +23,11 @@ export const useDbQueryParams = () => {
 
   // Chinese is used as fallback min par length as it has the lowest min par length value.
   const parLengthConfig = {
-    default: sourceLanguage
-      ? DEFAULT_PAR_LENGTH_VALUES[sourceLanguage]
+    default: dbLanguage
+      ? DEFAULT_PAR_LENGTH_VALUES[dbLanguage]
       : DEFAULT_QUERY_PARAMS_VALUES.par_length,
-    min: sourceLanguage
-      ? MIN_PAR_LENGTH_VALUES[sourceLanguage]
+    min: dbLanguage
+      ? MIN_PAR_LENGTH_VALUES[dbLanguage]
       : MIN_PAR_LENGTH_VALUES.chn,
   };
 

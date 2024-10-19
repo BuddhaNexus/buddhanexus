@@ -1,19 +1,19 @@
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { currentDbViewAtom } from "@atoms";
-import { DbViewEnum, DEFAULT_DB_VIEW, SourceLanguage } from "@utils/constants";
+import { DbViewEnum, DEFAULT_DB_VIEW } from "@utils/constants";
 import { getValidDbView } from "@utils/validators";
 import { useSetAtom } from "jotai";
+import { DbLanguage } from "@utils/api/types";
 
 import { useDbRouterParams } from "./useDbRouterParams";
 
-export const UNAVAILABLE_VIEWS: Partial<Record<SourceLanguage, DbViewEnum[]>> =
-  {
-    [SourceLanguage.SANSKRIT]: [DbViewEnum.NUMBERS],
-    [SourceLanguage.TIBETAN]: [DbViewEnum.NUMBERS],
-  };
+export const UNAVAILABLE_VIEWS: Partial<Record<DbLanguage, DbViewEnum[]>> = {
+  sa: [DbViewEnum.NUMBERS],
+  bo: [DbViewEnum.NUMBERS],
+};
 
-export const getAvailableDBViews = (language: SourceLanguage) => {
+export const getAvailableDBViews = (language: DbLanguage) => {
   const allViews = Object.values(DbViewEnum);
   const unavailableDbViews = UNAVAILABLE_VIEWS[language];
 
@@ -23,11 +23,11 @@ export const getAvailableDBViews = (language: SourceLanguage) => {
 };
 
 export const useAvailableDbViews = () => {
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
 
   return useMemo(() => {
-    return getAvailableDBViews(sourceLanguage);
-  }, [sourceLanguage]);
+    return getAvailableDBViews(dbLanguage);
+  }, [dbLanguage]);
 };
 
 // This allows two-way view setting: url <--> view selector

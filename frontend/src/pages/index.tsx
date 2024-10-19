@@ -11,9 +11,16 @@ import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
-import { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import merge from "lodash/merge";
+
+const dbLanguagePaths: Record<DbLanguage, string> = {
+  bo: "/db/bo",
+  pa: "/db/pa",
+  sa: "/db/sa",
+  zh: "/db/zh",
+};
 
 export default function Home() {
   const { t } = useTranslation();
@@ -75,22 +82,22 @@ export default function Home() {
         >
           <ContentLanguageSelector
             title="Pāli"
-            href={`/db/${SourceLanguage.PALI}`}
+            href={dbLanguagePaths.pa}
             color={materialTheme.palette.common.pali}
           />
           <ContentLanguageSelector
             title="Sanskrit"
-            href={`/db/${SourceLanguage.SANSKRIT}`}
+            href={dbLanguagePaths.sa}
             color={materialTheme.palette.common.sanskrit}
           />
           <ContentLanguageSelector
             title="Tibetan"
-            href={`/db/${SourceLanguage.TIBETAN}`}
+            href={dbLanguagePaths.bo}
             color={materialTheme.palette.common.tibetan}
           />
           <ContentLanguageSelector
             title="Chinese"
-            href={`/db/${SourceLanguage.CHINESE}`}
+            href={dbLanguagePaths.zh}
             color={materialTheme.palette.common.chinese}
           />
         </Box>

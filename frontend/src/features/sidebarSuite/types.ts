@@ -6,17 +6,18 @@ export type AppResultPageView = DbViewEnum | "search";
 
 type APIRequestPropsName = keyof AllAPIRequestProps;
 
-/**
-const example: AllAPIRequestProps = {
+// `EXAMPLE` is an `at a glance` ref that catches any model changes pulled from the API
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const EXAMPLE: AllAPIRequestProps = {
   filters: {
-    exclude_categories: [],
-    exclude_collections: [],
-    exclude_files: [],
-    include_categories: [],
-    include_collections: [],
-    include_files: [],
-    par_length: 0,
     score: 0,
+    par_length: 0,
+    exclude_collections: [],
+    exclude_categories: [],
+    exclude_files: [],
+    include_collections: [],
+    include_categories: [],
+    include_files: [],
     languages: ["all"],
   },
   active_segment: "",
@@ -30,7 +31,6 @@ const example: AllAPIRequestProps = {
   search_string: "",
   segmentnr: "",
 };
-*/
 
 /**
  *
@@ -39,14 +39,16 @@ const example: AllAPIRequestProps = {
  *
  */
 
-export type RequestFilters = NonNullable<AllAPIRequestProps["filters"]> & {
+type WorkingAPIFilters = NonNullable<AllAPIRequestProps["filters"]>;
+
+export type RequestFilters = WorkingAPIFilters & {
   language: APISchemas["Languages"]; // TODO: DUE TO BE DEFINED ON API SO SHOULD BE REMOVED WHEN AVAILABLE.
 };
 
 export type RequestFilterName = keyof RequestFilters;
 
 export type FilterUISettings = Omit<
-  NonNullable<AllAPIRequestProps["filters"]>,
+  WorkingAPIFilters,
   | "exclude_categories"
   | "exclude_collections"
   | "exclude_files"
@@ -93,15 +95,17 @@ export type RequestDisplayUISettingName = Extract<
   "folio" | "sort_method"
 >;
 
-export type SortMethod = "position" | "quoted-text" | "length2"; // TODO: DUE TO BE DEFINED ON API SO SHOULD BE CONVERTED TO TYPE DERIVED FROM API AllAPIRequestProps
-
 export type LocalDisplayUISettingName = "script" | "showSegmentNrs";
-
-export type Script = "Unicode" | "Wylie";
 
 export type DisplayUISettingName =
   | RequestDisplayUISettingName
   | LocalDisplayUISettingName;
+
+// --- DISPLAY TYPES VALUES
+
+export type SortMethod = "position" | "quoted-text" | "length2"; // TODO: DUE TO BE DEFINED ON API SO SHOULD BE CONVERTED TO TYPE DERIVED FROM API APISchemas
+
+export type Script = "Unicode" | "Wylie";
 
 /**
  *

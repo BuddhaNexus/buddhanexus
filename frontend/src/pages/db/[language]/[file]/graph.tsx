@@ -4,7 +4,7 @@ import {
   GetServerSideProps,
 } from "next";
 import { useTranslation } from "next-i18next";
-// import { SourceLanguage } from "@utils/constants";
+// import { getValidDbLanguage } from "@utils/validators";
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
@@ -35,7 +35,7 @@ const GraphContainer: React.FC<{ children: React.ReactNode }> = ({
 }) => <Paper sx={{ my: 2, minHeight: "500px", flex: 1 }}>{children}</Paper>;
 
 export default function GraphPage() {
-  const { sourceLanguage, fileName } = useDbRouterParams();
+  const { dbLanguage, fileName } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
@@ -73,23 +73,19 @@ export default function GraphPage() {
   );
 
   if (isError) {
-    return <ErrorPage backgroundName={sourceLanguage} />;
+    return <ErrorPage backgroundName={dbLanguage} />;
   }
 
   if (isFallback) {
     return (
-      <PageContainer backgroundName={sourceLanguage}>
+      <PageContainer backgroundName={dbLanguage}>
         <CenteredProgress />
       </PageContainer>
     );
   }
 
   return (
-    <PageContainer
-      maxWidth="xl"
-      backgroundName={sourceLanguage}
-      isQueryResultsPage
-    >
+    <PageContainer maxWidth="xl" backgroundName={dbLanguage} isQueryResultsPage>
       <DbViewPageHead />
 
       {isLoading ? (
@@ -155,7 +151,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
 //   ]);
 //
 //   const queryClient = await prefetchDbResultsPageData(
-//     params?.language as SourceLanguage,
+//     getValidLanguage(params?.language),
 //     params?.file as string,
 //   );
 //

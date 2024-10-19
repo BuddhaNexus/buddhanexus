@@ -8,7 +8,7 @@ function parseAPITableData(
 ) {
   return data && Array.isArray(data)
     ? data.map((p) => ({
-        sourceLanguage: getValidDbLanguage(p.src_lang),
+        dbLanguage: getValidDbLanguage(p.src_lang),
         targetLanguage: getValidDbLanguage(p.tgt_lang),
         // fileName: p.file_name,
         fileName: "",

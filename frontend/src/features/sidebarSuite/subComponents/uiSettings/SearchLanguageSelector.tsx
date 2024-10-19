@@ -1,8 +1,8 @@
 import { useTranslation } from "next-i18next";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { SourceLanguage as SourceLanguageEnum } from "@utils/constants";
+import { dbLanguages } from "@utils/api/constants";
 import { StringParam, useQueryParam } from "use-query-params";
-import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsDefinition";
 
 const SearchLanguageSelector = () => {
   const { t } = useTranslation(["common", "settings"]);
@@ -31,7 +31,7 @@ const SearchLanguageSelector = () => {
         <MenuItem key="all" value="all">
           {t(`language.all`)}
         </MenuItem>
-        {Object.values(SourceLanguageEnum).map((option) => (
+        {dbLanguages.map((option) => (
           <MenuItem key={option} value={option}>
             {t(`language.${option}`)}
           </MenuItem>

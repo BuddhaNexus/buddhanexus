@@ -2,49 +2,49 @@ import { Noto_Serif, Source_Sans_3 } from "next/font/google";
 import { grey } from "@mui/material/colors";
 // eslint-disable-next-line no-restricted-imports
 import type { CssVarsThemeOptions } from "@mui/material/styles/experimental_extendTheme";
-import { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
 export const sourceSerif = Noto_Serif({ subsets: ["latin", "latin-ext"] });
 export const sourceSans = Source_Sans_3({ subsets: ["latin", "latin-ext"] });
 
 interface DesignTokenParams {
   // some theme elements depend on the source language selected
-  sourceLanguage: SourceLanguage;
+  dbLanguage: DbLanguage;
 }
 
-const SOURCE_LANG_COLORS = {
-  chn: "#4F2B56",
-  pli: "#7C3A00",
-  skt: "#2C284C",
-  tib: "#66160E",
+const DB_LANGUAGE_COLORS_LIGHT: Record<DbLanguage, string> = {
+  zh: "#4F2B56",
+  pa: "#7C3A00",
+  sa: "#2C284C",
+  bo: "#66160E",
 };
 
-const SOURCE_LANG_DARK_COLORS = {
-  main: { chn: "#270431", pli: "#371f00", skt: "#0F0B2B", tib: "#260b08" },
+const DB_LANGUAGE_COLORS_DARK = {
+  main: { zh: "#270431", pa: "#371f00", sa: "#0F0B2B", bo: "#260b08" },
   accent: {
-    chn: "#f0c8d1",
-    pli: "#f5e5d1",
-    skt: "#d0cde0",
-    tib: "#f0cdd1",
+    zh: "#f0c8d1",
+    pa: "#f5e5d1",
+    sa: "#d0cde0",
+    bo: "#f0cdd1",
   },
 };
 
 const commonPaletteColors = {
-  pali: SOURCE_LANG_COLORS[SourceLanguage.PALI],
-  sanskrit: SOURCE_LANG_COLORS[SourceLanguage.SANSKRIT],
-  tibetan: SOURCE_LANG_COLORS[SourceLanguage.TIBETAN],
-  chinese: SOURCE_LANG_COLORS[SourceLanguage.CHINESE],
+  pali: DB_LANGUAGE_COLORS_LIGHT.pa,
+  sanskrit: DB_LANGUAGE_COLORS_LIGHT.sa,
+  tibetan: DB_LANGUAGE_COLORS_LIGHT.bo,
+  chinese: DB_LANGUAGE_COLORS_LIGHT.zh,
 };
 
 export const getDesignTokens = ({
-  sourceLanguage,
+  dbLanguage,
 }: DesignTokenParams): CssVarsThemeOptions => ({
   colorSchemes: {
     light: {
       palette: {
         common: commonPaletteColors,
         primary: {
-          main: sourceLanguage ? SOURCE_LANG_COLORS[sourceLanguage] : "#29262d",
+          main: dbLanguage ? DB_LANGUAGE_COLORS_LIGHT[dbLanguage] : "#29262d",
         },
         secondary: {
           main: "#C23211",
@@ -64,9 +64,7 @@ export const getDesignTokens = ({
         background: {
           default: "#efe0c2",
           paper: "#ffffff",
-          header: sourceLanguage
-            ? SOURCE_LANG_COLORS[sourceLanguage]
-            : "#29262d",
+          header: dbLanguage ? DB_LANGUAGE_COLORS_LIGHT[dbLanguage] : "#29262d",
           accent: grey[50],
           card: grey[100],
           selected: grey[300],
@@ -85,8 +83,8 @@ export const getDesignTokens = ({
       palette: {
         common: commonPaletteColors,
         primary: {
-          main: sourceLanguage
-            ? SOURCE_LANG_DARK_COLORS.accent[sourceLanguage]
+          main: dbLanguage
+            ? DB_LANGUAGE_COLORS_DARK.accent[dbLanguage]
             : "#E1BD97",
           contrastText: "#fff",
         },
@@ -108,8 +106,8 @@ export const getDesignTokens = ({
         background: {
           default: "#201c22",
           paper: "#29262d",
-          header: sourceLanguage
-            ? SOURCE_LANG_DARK_COLORS.main[sourceLanguage]
+          header: dbLanguage
+            ? DB_LANGUAGE_COLORS_DARK.main[dbLanguage]
             : "#29262d",
           accent: grey[900],
           card: "#29262d",

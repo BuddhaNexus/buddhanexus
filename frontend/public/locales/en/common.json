@@ -9,10 +9,10 @@
   },
   "language": {
     "all": "All",
-    "pli": "Pāli",
-    "chn": "Chinese",
-    "skt": "Sanskrit",
-    "tib": "Tibetan"
+    "pa": "Pāli",
+    "zh": "Chinese",
+    "sa": "Sanskrit",
+    "bo": "Tibetan"
   },
   "footer": {
     "about": "About",

@@ -22,7 +22,7 @@ import { TextView } from "@features/textView/TextView";
 import { useInfiniteQuery } from "@tanstack/react-query";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-// import type { SourceLanguage } from "@utils/constants";
+// import { getValidDbLanguage } from "@utils/validators";
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 
@@ -55,7 +55,7 @@ const START_INDEX = 1_000_000;
 //   - https://github.com/vercel/next.js/issues/53543
 
 export default function TextPage() {
-  const { sourceLanguage, fileName } = useDbRouterParams();
+  const { dbLanguage, fileName } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
@@ -206,12 +206,12 @@ export default function TextPage() {
   );
 
   if (isError) {
-    return <ErrorPage backgroundName={sourceLanguage} />;
+    return <ErrorPage backgroundName={dbLanguage} />;
   }
 
   if (isFallback) {
     return (
-      <PageContainer backgroundName={sourceLanguage}>
+      <PageContainer backgroundName={dbLanguage}>
         <CenteredProgress />
       </PageContainer>
     );
@@ -220,7 +220,7 @@ export default function TextPage() {
   return (
     <PageContainer
       maxWidth="xl"
-      backgroundName={sourceLanguage}
+      backgroundName={dbLanguage}
       isLoading={isLoading || isFetching}
       isQueryResultsPage
     >
@@ -256,7 +256,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
 //   ]);
 //
 //   const queryClient = await prefetchDbResultsPageData(
-//     params?.language as SourceLanguage,
+//     getValidLanguage(params?.language),
 //     params?.file as string,
 //   );
 //

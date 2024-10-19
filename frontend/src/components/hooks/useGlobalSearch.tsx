@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import {
   allUIComponentParamNames,
   searchRequestFilters,
-} from "@features/sidebarSuite/uiSettingsLists";
+} from "@features/sidebarSuite/uiSettingsDefinition";
 
 export type InputKeyDown = React.KeyboardEvent<HTMLInputElement>;
 

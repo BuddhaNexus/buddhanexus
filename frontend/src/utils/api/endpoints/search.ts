@@ -1,7 +1,7 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
 import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
-import type { SourceLanguage } from "@utils/constants";
+import { getValidDbLanguage } from "@utils/validators";
 
 function parseAPISearchData(data: APIPostResponse<"/search/">) {
   const searchResults = [];
@@ -19,7 +19,7 @@ function parseAPISearchData(data: APIPostResponse<"/search/">) {
     searchResults.push({
       id: text_name ?? "",
       category,
-      language: language as SourceLanguage,
+      language: getValidDbLanguage(language),
       segmentNumber: segment_nr,
       displayName: display_name ?? "",
       links: [`${link1}`, `${link2}`],

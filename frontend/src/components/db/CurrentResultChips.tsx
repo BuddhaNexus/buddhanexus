@@ -4,7 +4,7 @@ import { useTranslation } from "next-i18next";
 import ParallelsChip from "@components/db/ParallelsChip";
 import SearchMatchesChip from "@components/db/SearchMatchesChip";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
-import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsLists";
+import { allUIComponentParamNames } from "@features/sidebarSuite/uiSettingsDefinition";
 import type {
   DefaultQueryParams,
   QueryParams,

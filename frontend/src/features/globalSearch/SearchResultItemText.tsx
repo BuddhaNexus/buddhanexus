@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const SearchResultItemText = ({ id, textParts }: Props) => {
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
   const script = useAtomValue(scriptSelectionAtom);
 
   return (
@@ -28,7 +28,7 @@ export const SearchResultItemText = ({ id, textParts }: Props) => {
             {enscriptText({
               text: text ?? "",
               script,
-              language: sourceLanguage,
+              language: dbLanguage,
             })}
           </Typography>
         );

@@ -1,5 +1,5 @@
 import type { APIGetRequestQuery, APIPostRequestBody } from "@utils/api/types";
-import type { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
 import { getGraphData } from "./endpoints/graph-view/graph";
 import { getExternalLinksData } from "./endpoints/links";
@@ -16,6 +16,7 @@ import { getCountMatches } from "./endpoints/utils/count-matches";
 import { getTextDisplayName } from "./endpoints/utils/displayname";
 import { getFolios } from "./endpoints/utils/folios";
 
+
 export const DbApi = {
   //* VIEWS
   GraphView: {
@@ -27,7 +28,7 @@ export const DbApi = {
   },
   TableView: {
     makeQueryKey: (
-      params: Omit<APIPostRequestBody<"/table-view/table">, "page">
+      params: Omit<APIPostRequestBody<"/table-view/table/">, "page">
     ) => ["tableView", params],
     call: getTableData,
   },
@@ -57,7 +58,7 @@ export const DbApi = {
   },
   //* MENUS
   DbSourcesMenu: {
-    makeQueryKey: (language: SourceLanguage) => [
+    makeQueryKey: (language: DbLanguage) => [
       "textCollectionsData",
       language,
     ],
@@ -84,7 +85,7 @@ export const DbApi = {
     call: getExternalLinksData,
   },
   DownloadResults: {
-    makeQueryKey: (params: APIPostRequestBody<"/table-view/download">) => [
+    makeQueryKey: (params: APIPostRequestBody<"/table-view/download/">) => [
       "downloadData",
       params,
     ],

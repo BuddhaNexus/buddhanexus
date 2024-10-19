@@ -6,11 +6,11 @@ import { PageContainer } from "@components/layout/PageContainer";
 // import { dehydrate } from "@tanstack/react-query";
 import { Box, Paper, Typography } from "@mui/material";
 // import { prefetchDefaultDbPageData } from "@utils/api/apiQueryUtils";
-// import type { SourceLanguage } from "@utils/constants";
+// import  { getValidDbLanguage } from "@utils/validators";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import merge from "lodash/merge";
 
-export { getSourceLanguageStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
+export { getDbLanguageStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 import useDimensions from "react-cool-dimensions";
 import {
@@ -19,11 +19,11 @@ import {
 } from "@components/db/SearchableDbSourceTree";
 
 export default function DbIndexPage() {
-  const { sourceLanguageName, sourceLanguage } = useDbRouterParams();
+  const { dbLanguageName, dbLanguage } = useDbRouterParams();
   const { observe, height, width } = useDimensions();
 
   return (
-    <PageContainer backgroundName={sourceLanguage}>
+    <PageContainer backgroundName={dbLanguage}>
       <Paper
         elevation={1}
         sx={{
@@ -32,7 +32,7 @@ export default function DbIndexPage() {
           minHeight: "85dvh",
         }}
       >
-        <Typography variant="h1">{sourceLanguageName}</Typography>
+        <Typography variant="h1">{dbLanguageName}</Typography>
 
         <Box
           ref={observe}
@@ -63,15 +63,15 @@ export const getStaticProps: GetStaticProps = async ({
     {
       locale,
     },
-    ["db", "settings"],
+    ["db", "settings"]
   );
 
   // const queryClient = await prefetchDefaultDbPageData(
-  //   params?.language as SourceLanguage,
+  //   getValidDbLanguage(params?.language),
   // );
 
   return merge(
     // { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps,
+    i18nProps
   );
 };

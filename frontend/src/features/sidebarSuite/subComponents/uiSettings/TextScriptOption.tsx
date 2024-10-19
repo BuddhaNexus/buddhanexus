@@ -9,17 +9,17 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import type { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 import { useAtom } from "jotai";
 
 import type { Script } from "@features/sidebarSuite/types";
 
-const SCRIPT_OPTIONS: Partial<Record<SourceLanguage, Script[]>> = {
-  tib: ["Unicode", "Wylie"],
+const SCRIPT_OPTIONS: Partial<Record<DbLanguage, Script[]>> = {
+  bo: ["Unicode", "Wylie"],
 };
 
 export default function TextScriptOption() {
-  const { sourceLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
   const { t } = useTranslation("settings");
 
   const [scriptSelection, setScriptSelection] = useAtom(scriptSelectionAtom);
@@ -41,7 +41,7 @@ export default function TextScriptOption() {
         value={scriptSelection}
         onChange={(e) => setScriptSelection(e.target.value as Script)}
       >
-        {SCRIPT_OPTIONS[sourceLanguage]?.map((script) => {
+        {SCRIPT_OPTIONS[dbLanguage]?.map((script) => {
           return (
             <MenuItem key={script} value={script}>
               {script}

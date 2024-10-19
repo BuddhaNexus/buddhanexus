@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
-import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
+import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import PercentIcon from "@mui/icons-material/Percent";
 import StraightenIcon from "@mui/icons-material/Straighten";
@@ -15,7 +15,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
-import type { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
 
@@ -24,7 +24,7 @@ export const makeTextViewSegmentPath = ({
   language,
 }: {
   segmentNumber: string;
-  language: SourceLanguage;
+  language: DbLanguage;
 }) => {
   // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
   const [fileName] = segmentNumber.split(":");
@@ -35,7 +35,7 @@ export const makeTextViewSegmentPath = ({
 };
 
 interface ParallelSegmentProps {
-  language: SourceLanguage;
+  language: DbLanguage;
   displayName: string;
   length: number;
 
@@ -55,7 +55,7 @@ export const ParallelSegment = ({
 }: ParallelSegmentProps) => {
   const { t } = useTranslation();
 
-  const sourceLanguageName = t(`language.${language}`);
+  const dbLanguageName = t(`language.${language}`);
 
   const infoToCopy = `${textSegmentNumberRange}: ${displayName}`;
 
@@ -80,7 +80,7 @@ export const ParallelSegment = ({
       >
         <Box sx={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}>
           {/* Language name */}
-          <SourceLanguageChip label={sourceLanguageName} language={language} />
+          <DbLanguageChip label={dbLanguageName} language={language} />
 
           {/* File Name */}
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>

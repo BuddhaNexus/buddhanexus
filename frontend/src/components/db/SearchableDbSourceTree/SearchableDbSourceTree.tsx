@@ -50,7 +50,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
     } = props;
 
     const [searchTerm, setSearchTerm] = useState("");
-    const { sourceLanguage } = useDbRouterParams();
+    const { dbLanguage } = useDbRouterParams();
     const { observe, height: inputHeight } = useDimensions();
 
     const activeTree = useAtomValue(activeDbSourceTreeAtom);
@@ -76,15 +76,15 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
     const { t } = useTranslation(["common"]);
 
     const { data, isLoading, isError, error } = useQuery<DbSourceTreeNode[]>({
-      queryKey: DbApi.DbSourcesMenu.makeQueryKey(sourceLanguage),
-      queryFn: () => DbApi.DbSourcesMenu.call({ language: sourceLanguage }),
+      queryKey: DbApi.DbSourcesMenu.makeQueryKey(dbLanguage),
+      queryFn: () => DbApi.DbSourcesMenu.call({ language: dbLanguage }),
     });
 
     if (isLoading) {
       return (
         <LoadingTree
           hasHeading={hasHeading}
-          sourceLanguage={sourceLanguage}
+          dbLanguage={dbLanguage}
           padding={padding}
         />
       );
@@ -94,7 +94,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
       return (
         <TreeException
           hasHeading={hasHeading}
-          sourceLanguage={sourceLanguage}
+          dbLanguage={dbLanguage}
           padding={padding}
           message={error ? error.message : t("prompts.noResults")}
         />
@@ -103,7 +103,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
 
     return (
       <>
-        <TreeHeading isRendered={hasHeading} sourceLanguage={sourceLanguage} />
+        <TreeHeading isRendered={hasHeading} dbLanguage={dbLanguage} />
 
         <Box ref={observe} sx={{ p: padding, pb: 0 }}>
           {/* Search input */}
