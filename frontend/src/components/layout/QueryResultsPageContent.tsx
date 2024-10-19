@@ -1,6 +1,6 @@
 import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import { Main } from "@features/sidebarSuite/common/MuiStyledSidebarComponents";
 import { SidebarSuite } from "@features/sidebarSuite/SidebarSuite";
@@ -22,7 +22,7 @@ export const QueryResultsPageContent: FC<Props> = ({
   containerStyles,
 }) => {
   const { t } = useTranslation();
-  const { fileName } = useDbRouterParams();
+  const { fileName } = useNullableDbRouterParams();
 
   const lgWidth = useMaterialTheme().breakpoints.values.lg;
 

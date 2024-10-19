@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import useDownloader from "react-use-downloader";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   defaultAnchorEls,
   type PopperAnchorState,
@@ -12,7 +12,19 @@ import {
   PopperMsgBox,
 } from "@features/sidebarSuite/common/MuiStyledSidebarComponents";
 import PanelHeading from "@features/sidebarSuite/common/PanelHeading";
-
+import { utilityComponents } from "@features/sidebarSuite/subComponents/uiSettings";
+import {
+  SidebarSuitePageContext,
+  UtilityUISettingName,
+} from "@features/sidebarSuite/types";
+import {
+  allUIComponentParamNames,
+  utilityUISettings,
+} from "@features/sidebarSuite/uiSettingsDefinition";
+import {
+  getAvailableSettings,
+  type UnavailableLanguages,
+} from "@features/sidebarSuite/utils";
 import {
   Fade,
   List,
@@ -21,23 +33,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { useAtomValue } from "jotai";
-import {
-  utilityUISettings,
-  allUIComponentParamNames,
-} from "@features/sidebarSuite/uiSettingsDefinition";
-import {
-  UtilityUISettingName,
-  SidebarSuitePageContext,
-} from "@features/sidebarSuite/types";
-
-import {
-  getAvailableSettings,
-  type UnavailableLanguages,
-} from "@features/sidebarSuite/utils";
-
-import { utilityComponents } from "@features/sidebarSuite/subComponents/uiSettings";
 import { DbViewEnum } from "@utils/constants";
+import { useAtomValue } from "jotai";
 
 type LanguageUnabvailableSettings = Partial<
   Record<UtilityUISettingName, UnavailableLanguages>
@@ -70,7 +67,7 @@ export const UtilityOptionsSection = ({
 }) => {
   const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentDbViewAtom);
-  const { fileName, dbLanguage } = useDbRouterParams();
+  const { fileName, dbLanguage } = useNullableDbRouterParams();
   let href: string;
 
   if (typeof window !== "undefined") {
@@ -85,8 +82,13 @@ export const UtilityOptionsSection = ({
   const uiSettings = useMemo(() => {
     if (pageType === "search") {
       return utilityUISettings.filter(
-        (setting) => !UNAVAILABLE_SEARCH_PAGE_SETTINGS.includes(setting)
+        (setting) => !UNAVAILABLE_SEARCH_PAGE_SETTINGS.includes(setting),
       );
+    }
+
+    if (!dbLanguage) {
+      // TODO: create error component
+      return [];
     }
 
     return getAvailableSettings<UtilityUISettingName>({

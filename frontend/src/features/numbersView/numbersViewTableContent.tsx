@@ -20,10 +20,11 @@ import type {
   APISchemas,
 } from "@utils/api/types";
 import { DbLanguage } from "@utils/api/types";
+
 import type { NumbersSegment } from "./NumbersTable";
 
 export const createTableRows = (
-  rowData: APIPostResponse<"/numbers-view/numbers/">
+  rowData: APIPostResponse<"/numbers-view/numbers/">,
 ) =>
   rowData.map((item) => {
     const row: any = { segment: item.segmentnr };
@@ -139,18 +140,18 @@ export const createTableColumns = ({
 const ScrollerRef = React.forwardRef<HTMLDivElement>(
   function ScrollerRef(props, ref) {
     return <TableContainer component={Paper} {...props} ref={ref} />;
-  }
+  },
 );
 const TableHeadRef = React.forwardRef<HTMLTableSectionElement>(
   function TableHeadRef(props, ref) {
     return <TableHead {...props} ref={ref} sx={{ zIndex: "2 !important" }} />;
-  }
+  },
 );
 
 const TableBodyRef = React.forwardRef<HTMLTableSectionElement>(
   function TableBodyRef(props, ref) {
     return <TableBody {...props} ref={ref} />;
-  }
+  },
 );
 
 export const getVirtuosoTableComponents = (): TableComponents => ({

@@ -34,7 +34,7 @@ export function DbLanguageChip({
 
   const languageBadgeColor = useCallback(
     () => getLanguageColor(language, materialTheme),
-    [language, materialTheme]
+    [language, materialTheme],
   );
 
   return (

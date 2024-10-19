@@ -1,19 +1,20 @@
 import { FilterUISettings } from "@features/sidebarSuite/types";
 import {
-  parseAsJson,
-  parseAsString,
-  parseAsInteger,
-  parseAsStringLiteral,
-  parseAsArrayOf,
-  useQueryState,
-} from "nuqs";
-import {
   allUIComponentParamNames,
   DEFAULT_PARAM_VALUES,
   sortMethods,
 } from "@features/sidebarSuite/uiSettingsDefinition";
-import { useDbRouterParams } from "./useDbRouterParams";
 import { dbLanguages } from "@utils/api/constants";
+import {
+  parseAsArrayOf,
+  parseAsInteger,
+  parseAsJson,
+  parseAsString,
+  parseAsStringLiteral,
+  useQueryState,
+} from "nuqs";
+
+import { useDbRouterParams } from "./useDbRouterParams";
 
 export const useScoreParam = () => {
   return useQueryState(allUIComponentParamNames.score, {

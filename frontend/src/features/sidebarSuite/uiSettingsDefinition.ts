@@ -1,15 +1,15 @@
-import {
-  SortMethod,
-  DBSourceFilePageFilterUISettingName,
-  SearchPageFilterUISettingName,
-  DisplayUISettingName,
-  UtilityUISettingName,
-  AllUIComponentParamNames,
-  RequestFilterName,
-} from "./types";
 import { DbLanguage } from "@utils/api/types";
+import { exhaustiveStringTuple } from "@utils/helpers";
 
-import { exhaustiveStringTuple } from "@utils/validators";
+import {
+  AllUIComponentParamNames,
+  DBSourceFilePageFilterUISettingName,
+  DisplayUISettingName,
+  RequestFilterName,
+  SearchPageFilterUISettingName,
+  SortMethod,
+  UtilityUISettingName,
+} from "./types";
 
 export const allRequestFilters = exhaustiveStringTuple<RequestFilterName>()(
   "languages",
@@ -21,7 +21,7 @@ export const allRequestFilters = exhaustiveStringTuple<RequestFilterName>()(
   "exclude_collections",
   "par_length",
   "score",
-  "language"
+  "language",
 );
 
 // order sets appearance in sidebar
@@ -32,33 +32,33 @@ export const dbSoureFileRequestFilters =
     "par_length",
     "exclude_sources",
     "include_sources",
-    "languages"
+    "languages",
   );
 export const searchRequestFilters =
   exhaustiveStringTuple<SearchPageFilterUISettingName>()(
     "language",
     "exclude_sources",
-    "include_sources"
+    "include_sources",
   );
 
 export const displayUISettings = exhaustiveStringTuple<DisplayUISettingName>()(
   "folio",
   "sort_method",
   "script",
-  "showSegmentNrs"
+  "showSegmentNrs",
 );
 
 export const sortMethods = exhaustiveStringTuple<SortMethod>()(
   "position",
   "quoted-text",
-  "length2"
+  "length2",
 );
 
 export const utilityUISettings = exhaustiveStringTuple<UtilityUISettingName>()(
   "download_data",
   "copyQueryTitle",
   "copyQueryLink",
-  "emailQueryLink"
+  "emailQueryLink",
 );
 
 export const allUIComponentParamNames: AllUIComponentParamNames = {

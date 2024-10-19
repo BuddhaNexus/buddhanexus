@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
+import { useScoreParam } from "@components/hooks/params";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { debounce } from "lodash";
-
-import { useScoreParam } from "@components/hooks/params";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -33,7 +32,7 @@ export default function ScoreFilter() {
 
   const setDebouncedScoreParam = useMemo(
     () => debounce(setScoreParam, 600),
-    [setScoreParam]
+    [setScoreParam],
   );
 
   const handleChange = useCallback(
@@ -42,7 +41,7 @@ export default function ScoreFilter() {
       setScoreValue(value);
       setDebouncedScoreParam(normalizedValue);
     },
-    [setScoreValue, setDebouncedScoreParam]
+    [setScoreValue, setDebouncedScoreParam],
   );
 
   const handleBlur = () => {

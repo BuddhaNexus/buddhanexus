@@ -1,5 +1,7 @@
+import React from "react";
 import { useTranslation } from "next-i18next";
-import { getValidSortMethod } from "@utils/validators";
+import { useSortMethodParam } from "@components/hooks/params";
+import { sortMethods } from "@features/sidebarSuite/uiSettingsDefinition";
 import {
   Box,
   FormControl,
@@ -9,10 +11,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { sortMethods } from "@features/sidebarSuite/uiSettingsDefinition";
-
-import { useSortMethodParam } from "@components/hooks/params";
-import React from "react";
+import { getValidSortMethod } from "@utils/validators";
 
 export default function SortOption() {
   const { t } = useTranslation("settings");
@@ -23,7 +22,7 @@ export default function SortOption() {
     (event: SelectChangeEvent) => {
       setSortMethod(getValidSortMethod(event.target.value));
     },
-    [setSortMethod]
+    [setSortMethod],
   );
 
   return (

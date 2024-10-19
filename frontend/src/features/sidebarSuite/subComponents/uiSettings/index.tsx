@@ -5,7 +5,13 @@ import {
   onEmailQueryLink,
   type UtilityOptionProps,
 } from "@features/sidebarSuite/common/dbSidebarHelpers";
-
+import { SegmentOptions } from "@features/sidebarSuite/subComponents/uiSettings/SegmentOptions";
+import {
+  DisplayUISettingName,
+  RequestFilterUISettingName,
+  SidebarSuitePageContext,
+  UtilityUISettingName,
+} from "@features/sidebarSuite/types";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
@@ -19,16 +25,6 @@ import { default as ScoreFilter } from "./ScoreFilter";
 import { default as SearchLanguageSelector } from "./SearchLanguageSelector";
 import { default as SortOption } from "./SortOption";
 import { default as TextScriptOption } from "./TextScriptOption";
-import { SegmentOptions } from "@features/sidebarSuite/subComponents/uiSettings/SegmentOptions";
-import {
-  UtilityUISettingName,
-  SidebarSuitePageContext,
-} from "@features/sidebarSuite/types";
-
-import {
-  RequestFilterUISettingName,
-  DisplayUISettingName,
-} from "@features/sidebarSuite/types";
 
 export const filterComponents: Record<
   RequestFilterUISettingName,

@@ -1,8 +1,8 @@
 import React, { memo } from "react";
 import {
+  DbSourceFilters,
   // FilterUISettings,
   DbSourceFilterUISetting,
-  DbSourceFilters,
 } from "@features/sidebarSuite/types";
 import { Box } from "@mui/material";
 import { parseAsJson, useQueryState } from "nuqs";
@@ -22,7 +22,7 @@ const DbSourceFilter = ({
 
   const [filterParam] = useQueryState(
     "filters",
-    parseAsJson<DbSourceFilters>()
+    parseAsJson<DbSourceFilters>(),
   );
 
   const selectedSourceFilterIds = React.useMemo(
@@ -37,9 +37,9 @@ const DbSourceFilter = ({
             }),
           };
         },
-        {} as Record<DbSourceFilterUISetting, string[]>
+        {} as Record<DbSourceFilterUISetting, string[]>,
       ),
-    [filterParam]
+    [filterParam],
   );
 
   return (

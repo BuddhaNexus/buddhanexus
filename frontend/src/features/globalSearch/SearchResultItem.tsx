@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
-import { Link } from "@components/common/Link";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
+import { Link } from "@components/common/Link";
 import { makeTextViewSegmentPath } from "@features/tableView/ParallelSegment";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";

@@ -14,13 +14,13 @@ import {
   DbSourceTreeNodeDataType as NodeType,
 } from "@components/db/SearchableDbSourceTree/types";
 import {
-  DbSourceFilters,
-  DbSourceFilterUISetting,
-} from "@features/sidebarSuite/types";
-import {
   DB_SOURCE_UPDATE_MAPPING,
   updateFilterParamArray,
 } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
+import {
+  DbSourceFilters,
+  DbSourceFilterUISetting,
+} from "@features/sidebarSuite/types";
 import { Box, Checkbox, Tooltip, Typography } from "@mui/material";
 import { parseAsJson, useQueryState } from "nuqs";
 
@@ -58,7 +58,7 @@ export function DbSourceFilterTreeNode({
 
   const [, setFilterParam] = useQueryState(
     "filters",
-    parseAsJson<DbSourceFilters>()
+    parseAsJson<DbSourceFilters>(),
   );
 
   let elementWidth = DEFAULT_NODE_WIDTH;
@@ -94,7 +94,7 @@ export function DbSourceFilterTreeNode({
         return updatedFilterParam;
       });
     },
-    [setFilterParam]
+    [setFilterParam],
   );
 
   return (

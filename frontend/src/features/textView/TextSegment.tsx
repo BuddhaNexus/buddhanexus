@@ -29,16 +29,16 @@ export const TextSegment = ({
 
   const [selectedSegmentId, setSelectedSegmentId] = useQueryParam(
     "selectedSegment",
-    StringParam
+    StringParam,
   );
   const [selectedSegmentIndex, setSelectedSegmentIndex] = useQueryParam(
     "selectedSegmentIndex",
-    NumberParam
+    NumberParam,
   );
   const { dbLanguage } = useDbRouterParams();
 
   const shouldUseMonochromaticSegmentColors = useAtomValue(
-    shouldUseMonochromaticSegmentColorsAtom
+    shouldUseMonochromaticSegmentColorsAtom,
   );
   const shouldShowSegmentNumbers = useAtomValue(shouldShowSegmentNumbersAtom);
   const scriptSelection = useAtomValue(scriptSelectionAtom);
@@ -51,7 +51,7 @@ export const TextSegment = ({
       setSelectedSegmentId(location.id);
       setSelectedSegmentIndex(location.index);
     },
-    [setSelectedSegmentId, setSelectedSegmentIndex]
+    [setSelectedSegmentId, setSelectedSegmentIndex],
   );
 
   // find matches for the selected segment when the page is first rendered

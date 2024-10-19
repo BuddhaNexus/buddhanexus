@@ -63,7 +63,7 @@ export default function TablePage() {
 
   const allData = useMemo(
     () => (data ? data.pages.flatMap((page) => page.data) : []),
-    [data]
+    [data],
   );
 
   if (isFallback) {

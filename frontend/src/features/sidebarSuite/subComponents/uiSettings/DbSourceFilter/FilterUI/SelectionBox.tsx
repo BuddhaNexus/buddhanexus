@@ -1,15 +1,15 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
-import type {
-  DbSourceFilters,
-  DbSourceFilterUISetting,
-} from "@features/sidebarSuite/types";
 import {
   InputOutlineBox,
   MultiSelectionBox,
   SelectionChipsBox,
 } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/styledComponents";
 import { removeItemsById } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
+import type {
+  DbSourceFilters,
+  DbSourceFilterUISetting,
+} from "@features/sidebarSuite/types";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Button, Chip, IconButton } from "@mui/material";
 import { parseAsJson, useQueryState } from "nuqs";
@@ -37,7 +37,7 @@ const DbSourceFilterInput = ({
 
   const [, setFilterParam] = useQueryState(
     "filters",
-    parseAsJson<DbSourceFilters>()
+    parseAsJson<DbSourceFilters>(),
   );
 
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -99,7 +99,7 @@ const DbSourceFilterInput = ({
         });
       });
     },
-    [setFilterParam]
+    [setFilterParam],
   );
 
   return (

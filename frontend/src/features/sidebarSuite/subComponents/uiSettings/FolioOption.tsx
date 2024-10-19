@@ -1,4 +1,5 @@
 import { useTranslation } from "next-i18next";
+import { useFolioParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   CircularProgress,
@@ -13,8 +14,6 @@ import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import type { ParsedFolio } from "@utils/api/endpoints/utils/folios";
-
-import { useFolioParam } from "@components/hooks/params";
 
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
@@ -31,7 +30,7 @@ export default function FolioOption() {
   const showAll = t("optionsLabels.folioShowAll");
 
   const handleSelectChange = (event: SelectChangeEvent) => {
-    const value = event.target.value;
+    const { value } = event.target;
     setFolioParam(value === showAll ? null : value);
   };
 

@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import { filterComponents } from "@features/sidebarSuite/subComponents/uiSettings";
-
 import { RequestFilterUISettingName } from "@features/sidebarSuite/types";
 
 type Props = {

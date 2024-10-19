@@ -3,7 +3,7 @@ import {
   DbSourceFilters,
   DbSourceFilterUISetting,
 } from "@features/sidebarSuite/types";
-import { exhaustiveStringTuple } from "@utils/validators";
+import { exhaustiveStringTuple } from "@utils/helpers";
 
 export const DB_SOURCE_UPDATE_MAPPING: Record<
   NodeType,
@@ -124,5 +124,5 @@ export const clearAllFilterParams = ({
 export const dbSourceFilterSelectors =
   exhaustiveStringTuple<DbSourceFilterUISetting>()(
     "exclude_sources",
-    "include_sources"
+    "include_sources",
   );

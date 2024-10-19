@@ -40,7 +40,7 @@ export type ParsedSearchResult = ReturnType<typeof parseAPISearchData>[number];
  * @see https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/122#issuecomment-1925895599
  */
 export async function getGlobalSearchData(
-  body: APIPostRequestBody<"/search/">
+  body: APIPostRequestBody<"/search/">,
 ) {
   if (!body.search_string) {
     return [];

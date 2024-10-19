@@ -10,7 +10,7 @@ export const queryCacheTimeDefaults = {
 };
 
 export async function prefetchDefaultDbPageData(
-  dbLanguage: DbLanguage
+  dbLanguage: DbLanguage,
 ): Promise<QueryClient> {
   const queryClient = new QueryClient({
     // https://www.codemzy.com/blog/react-query-cachetime-staletime
@@ -31,7 +31,7 @@ export async function prefetchDefaultDbPageData(
 
 export async function prefetchDbResultsPageData(
   dbLanguage: DbLanguage,
-  fileName: string
+  fileName: string,
 ): Promise<QueryClient> {
   const queryClient = new QueryClient({
     // https://www.codemzy.com/blog/react-query-cachetime-staletime

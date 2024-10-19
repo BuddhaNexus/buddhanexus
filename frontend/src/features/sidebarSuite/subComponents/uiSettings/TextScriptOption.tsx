@@ -2,6 +2,7 @@ import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { scriptSelectionAtom } from "@atoms";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import type { Script } from "@features/sidebarSuite/types";
 import {
   FormControl,
   InputLabel,
@@ -11,8 +12,6 @@ import {
 } from "@mui/material";
 import { DbLanguage } from "@utils/api/types";
 import { useAtom } from "jotai";
-
-import type { Script } from "@features/sidebarSuite/types";
 
 const SCRIPT_OPTIONS: Partial<Record<DbLanguage, Script[]>> = {
   bo: ["Unicode", "Wylie"],

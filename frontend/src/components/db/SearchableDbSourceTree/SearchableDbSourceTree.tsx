@@ -70,7 +70,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           setBreadcrumbs([]);
         }
       },
-      [setSearchTerm, setBreadcrumbs, activeTree]
+      [setSearchTerm, setBreadcrumbs, activeTree],
     );
 
     const { t } = useTranslation(["common"]);
@@ -136,5 +136,5 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
         </Box>
       </>
     );
-  }
+  },
 );

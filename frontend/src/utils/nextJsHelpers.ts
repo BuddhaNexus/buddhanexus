@@ -2,9 +2,9 @@ import type { GetStaticPaths } from "next";
 import type { UserConfig } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { dbLanguages } from "@utils/api/constants";
-// TODO: getTextFileMenuData function removed with api update dropping the relevant menu endpoints. This needs to be refactored for the "metadata" endpoint
 
-import {  SUPPORTED_LOCALES } from "./constants";
+// TODO: getTextFileMenuData function removed with api update dropping the relevant menu endpoints. This needs to be refactored for the "metadata" endpoint
+import { SUPPORTED_LOCALES } from "./constants";
 
 interface I18nProps {
   props: {
@@ -21,10 +21,10 @@ type Locale = { locale: string | undefined };
 
 export const getI18NextStaticProps: (
   { locale }: Locale,
-  extraNamespaces?: string[]
+  extraNamespaces?: string[],
 ) => Promise<I18nProps> = async (
   { locale }: Locale,
-  extraNamespaces: string[] = []
+  extraNamespaces: string[] = [],
 ) => {
   return {
     props: {
@@ -40,14 +40,13 @@ const dbLanguagePaths = dbLanguages.flatMap((language) =>
   Object.keys(SUPPORTED_LOCALES).map((locale) => ({
     params: { language },
     locale,
-  }))
+  })),
 );
 
 export const getDbLanguageStaticPaths: GetStaticPaths = () => ({
   paths: dbLanguagePaths,
   fallback: false,
 });
-
 
 // export const getDbViewFileStaticPaths: GetStaticPaths = async () => {
 //   const pliMenuData = await getTextFileMenuData({
@@ -79,7 +78,7 @@ export const getDbLanguageStaticPaths: GetStaticPaths = () => ({
 //   /**
 //    * Returns object like:
 //    * [
-//    *   As part of getTextFileMenuData refactor consider if the 
+//    *   As part of getTextFileMenuData refactor consider if the
 //    *   reutrned language value should be full name rather than
 //    *   language code.
 //    *

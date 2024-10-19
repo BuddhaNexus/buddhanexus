@@ -1,7 +1,7 @@
 import { NodeApi, TreeApi } from "react-arborist";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
-import { DbSourceFiltersSelectedIds } from "@features/sidebarSuite/types";
 import type { Script } from "@features/sidebarSuite/types";
+import { DbSourceFiltersSelectedIds } from "@features/sidebarSuite/types";
 import { DbViewEnum, DEFAULT_DB_VIEW } from "@utils/constants";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
@@ -32,7 +32,7 @@ export const focusedDbSourceTreeNodeAtom = atom<
  */
 export const scriptSelectionAtom = atomWithStorage<Script>(
   "text-script-selection",
-  "Unicode"
+  "Unicode",
 );
 export const isSettingsOpenAtom = atom(true);
 export const dbSourceFiltersSelectedIdsAtom = atom<DbSourceFiltersSelectedIds>({

@@ -1,6 +1,6 @@
-import type { AllUIComponentParamNames } from "@features/sidebarSuite/types";
-import type { AppResultPageView } from "@features/sidebarSuite/types";
 import type {
+  AllUIComponentParamNames,
+  AppResultPageView,
   Script,
   UtilityUISettingName,
 } from "@features/sidebarSuite/types";
@@ -40,7 +40,6 @@ export type UtilityOptionProps = {
   callback: (props: UtilityClickHandlerProps) => void;
   icon: OverridableComponent<SvgIconTypeMap>;
 };
-
 
 export const defaultAnchorEls = {
   download_data: null,
@@ -147,7 +146,7 @@ export const enscriptText = ({
   script,
 }: {
   text?: string;
-  language: DbLanguage;
+  language: DbLanguage | undefined;
   script: Script;
 }) => {
   return script === "Unicode" && language === "bo"

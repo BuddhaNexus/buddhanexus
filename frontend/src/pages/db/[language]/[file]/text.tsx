@@ -92,7 +92,7 @@ export default function TextPage() {
     (segmentId: string | null): boolean =>
       segmentId !== null &&
       Boolean(previouslySelectedSegmentsMap.current[segmentId]),
-    []
+    [],
   );
 
   const {
@@ -110,7 +110,7 @@ export default function TextPage() {
     initialPageParam: selectedSegment ? undefined : 0,
     queryKey: DbApi.TextView.makeQueryKey(
       { filename: fileName, ...apiQueryParams },
-      selectedSegment ?? undefined
+      selectedSegment ?? undefined,
     ),
     queryFn: ({ pageParam }) => {
       // We pass the active_segment, but only on the first page load :/
@@ -161,7 +161,7 @@ export default function TextPage() {
       if (isSuccess && selectedSegment)
         previouslySelectedSegmentsMap.current[selectedSegment] = true;
     },
-    [isSuccess, selectedSegment]
+    [isSuccess, selectedSegment],
   );
 
   useEffect(
@@ -176,7 +176,7 @@ export default function TextPage() {
         paginationState.current[1] = data?.pages[0].data.page;
       }
     },
-    [data?.pages]
+    [data?.pages],
   );
 
   const handleFetchingPreviousPage = useCallback(async () => {
@@ -202,7 +202,7 @@ export default function TextPage() {
 
   const allParallels = useMemo(
     () => (data?.pages ? data.pages.flatMap((page) => page.data.items) : []),
-    [data?.pages]
+    [data?.pages],
   );
 
   if (isError) {

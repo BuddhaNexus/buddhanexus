@@ -5,7 +5,7 @@ import { useTranslation } from "next-i18next";
 import { currentDbViewAtom, isDbSourceBrowserDrawerOpenAtom } from "@atoms";
 import { getTextPath } from "@components/common/utils";
 import CurrentResultChips from "@components/db/CurrentResultChips";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
@@ -25,7 +25,7 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   const router = useRouter();
   const isSearchRoute = router.route.startsWith("/search");
 
-  const { fileName, dbLanguage } = useDbRouterParams();
+  const { fileName, dbLanguage } = useNullableDbRouterParams();
   const dbView = useAtomValue(currentDbViewAtom);
 
   const setIsSourceTreeOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);

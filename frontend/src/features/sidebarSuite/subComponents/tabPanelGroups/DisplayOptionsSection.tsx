@@ -4,17 +4,15 @@ import { currentDbViewAtom } from "@atoms";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import PanelHeading from "@features/sidebarSuite/common/PanelHeading";
 import { displaySettingComponents } from "@features/sidebarSuite/subComponents/uiSettings";
-
-import { Box } from "@mui/material";
-import { useAtomValue } from "jotai";
-import { displayUISettings } from "@features/sidebarSuite/uiSettingsDefinition";
-
 import { DisplayUISettingName } from "@features/sidebarSuite/types";
+import { displayUISettings } from "@features/sidebarSuite/uiSettingsDefinition";
 import {
   getAvailableSettings,
   type UnavailableLanguages,
 } from "@features/sidebarSuite/utils";
+import { Box } from "@mui/material";
 import { DbViewEnum } from "@utils/constants";
+import { useAtomValue } from "jotai";
 
 type LanguageUnabvailableSettings = Partial<
   Record<DisplayUISettingName, UnavailableLanguages>

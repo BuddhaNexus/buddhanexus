@@ -3,7 +3,7 @@ import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   type InputKeyDown,
   useGlobalSearch,
@@ -27,7 +27,7 @@ export default function SearchPage() {
   const { t } = useTranslation();
   const { isReady } = useRouter();
 
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useNullableDbRouterParams();
   const { isFallback } = useSourceFile();
   const { handleSearchAction, searchParam } = useGlobalSearch();
 

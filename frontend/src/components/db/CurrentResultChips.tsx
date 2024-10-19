@@ -1,20 +1,20 @@
 import React from "react";
+import { ReadonlyURLSearchParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import ParallelsChip from "@components/db/ParallelsChip";
 import SearchMatchesChip from "@components/db/SearchMatchesChip";
 import {
-  dbSoureFileRequestFilters,
-  searchRequestFilters,
-  displayUISettings,
-} from "@features/sidebarSuite/uiSettingsDefinition";
-import {
-  SearchPageFilterUISettingName,
   DBSourceFilePageFilterUISettingName,
   DisplayUISettingName,
+  SearchPageFilterUISettingName,
 } from "@features/sidebarSuite/types";
+import {
+  dbSoureFileRequestFilters,
+  displayUISettings,
+  searchRequestFilters,
+} from "@features/sidebarSuite/uiSettingsDefinition";
 import Chip from "@mui/material/Chip";
-import { ReadonlyURLSearchParams, useSearchParams } from "next/navigation";
 
 const searchFilterSet = new Set(searchRequestFilters);
 const dbSourceFileFilterSet = new Set(dbSoureFileRequestFilters);
@@ -53,7 +53,10 @@ function getSettingCounts({
       continue;
     }
 
-    if (route === "dbSourcePage" && displayParamSet.has(key as DisplayUISettingName)) {
+    if (
+      route === "dbSourcePage" &&
+      displayParamSet.has(key as DisplayUISettingName)
+    ) {
       display += 1;
       continue;
     }

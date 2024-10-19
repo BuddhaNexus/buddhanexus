@@ -31,7 +31,7 @@ const FilterUI = ({
   };
 
   const setDbSourceFiltersSelectedIds = useSetAtom(
-    dbSourceFiltersSelectedIdsAtom
+    dbSourceFiltersSelectedIdsAtom,
   );
 
   React.useEffect(() => {

@@ -6,7 +6,7 @@ import {
 import type { ParsedStructuredDbSourceMenuData } from "@utils/api/endpoints/menus/sources";
 
 export function transformDataForTreeView(
-  data: ParsedStructuredDbSourceMenuData
+  data: ParsedStructuredDbSourceMenuData,
 ) {
   /**
    * TODO - check if:
@@ -29,7 +29,7 @@ export function transformDataForTreeView(
           fileName,
           dataType: DbSourceTreeNodeDataType.Text,
           searchField,
-        })
+        }),
       ),
     })),
   }));

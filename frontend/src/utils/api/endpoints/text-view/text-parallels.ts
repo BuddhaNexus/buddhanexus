@@ -3,7 +3,7 @@ import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
 import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
 function parseTextViewParallelsData(
-  data: APIPostResponse<"/text-view/text-parallels/">
+  data: APIPostResponse<"/text-view/text-parallels/">,
 ) {
   return {
     page: data.page,
@@ -30,7 +30,7 @@ export type ParsedTextViewParallels = ParsedTextViewParallelsData["items"];
 export type ParsedTextViewParallel = ParsedTextViewParallelsData["items"][0];
 
 export async function getTextViewParallelsData(
-  body: APIPostRequestBody<"/text-view/text-parallels/">
+  body: APIPostRequestBody<"/text-view/text-parallels/">,
 ) {
   const { page = 0, ...params } = body;
 

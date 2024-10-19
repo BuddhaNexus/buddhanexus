@@ -9,12 +9,12 @@ export type NumbersViewData = {
 };
 
 export async function getNumbersViewData(
-  body: APIPostRequestBody<"/numbers-view/numbers/">
+  body: APIPostRequestBody<"/numbers-view/numbers/">,
 ): Promise<NumbersViewData> {
   const { data } = await apiClient.POST("/numbers-view/numbers/", {
     body: parseAPIRequestBody(body),
   });
 
   const hasNextPage = Boolean(data && data.length < 100);
-  return { data: data ?? [], pageNumber: body.page!, hasNextPage };
+  return { data: data ?? [], pageNumber: body.page, hasNextPage };
 }

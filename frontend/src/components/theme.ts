@@ -9,7 +9,7 @@ export const sourceSans = Source_Sans_3({ subsets: ["latin", "latin-ext"] });
 
 interface DesignTokenParams {
   // some theme elements depend on the source language selected
-  dbLanguage: DbLanguage;
+  dbLanguage?: DbLanguage;
 }
 
 const DB_LANGUAGE_COLORS_LIGHT: Record<DbLanguage, string> = {

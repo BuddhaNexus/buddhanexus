@@ -12,7 +12,8 @@
     "pa": "Pāli",
     "zh": "Chinese",
     "sa": "Sanskrit",
-    "bo": "Tibetan"
+    "bo": "Tibetan",
+    "undefined": ""
   },
   "footer": {
     "about": "About",

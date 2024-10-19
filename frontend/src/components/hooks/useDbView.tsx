@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { currentDbViewAtom } from "@atoms";
+import { DbLanguage } from "@utils/api/types";
 import { DbViewEnum, DEFAULT_DB_VIEW } from "@utils/constants";
 import { getValidDbView } from "@utils/validators";
 import { useSetAtom } from "jotai";
-import { DbLanguage } from "@utils/api/types";
 
 import { useDbRouterParams } from "./useDbRouterParams";
 

@@ -31,7 +31,7 @@ interface NumbersTableProps {
   data: APIPostResponse<"/numbers-view/numbers/">;
   hasNextPage: boolean;
   fetchNextPage: (
-    options?: FetchNextPageOptions | undefined
+    options?: FetchNextPageOptions | undefined,
   ) => Promise<
     InfiniteQueryObserverResult<InfiniteData<NumbersViewData, unknown>, Error>
   >;
@@ -63,7 +63,7 @@ export default function NumbersTable({
 
   const columns = React.useMemo<ColumnDef<NumbersSegment>[]>(
     () => createTableColumns({ categories, language, fileName }),
-    [categories, language, fileName]
+    [categories, language, fileName],
   );
 
   const table = useReactTable({
@@ -77,7 +77,7 @@ export default function NumbersTable({
 
   const components = React.useMemo(
     () => getVirtuosoTableComponents() as TableComponents<any>,
-    []
+    [],
   );
 
   const FixedHeaderContent = React.memo(() => {

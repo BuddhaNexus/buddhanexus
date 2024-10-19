@@ -3,7 +3,7 @@ import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 import { getValidDbLanguage } from "@utils/validators";
 
 function parseAPITextViewMiddleParallelsData(
-  data: APIPostResponse<"/text-view/middle/">
+  data: APIPostResponse<"/text-view/middle/">,
 ) {
   return data.map((p) => ({
     displayName: p.display_name ?? "",
@@ -17,7 +17,7 @@ function parseAPITextViewMiddleParallelsData(
 }
 
 export async function getTextViewMiddleParallelsData(
-  body: APIPostRequestBody<"/text-view/middle/">
+  body: APIPostRequestBody<"/text-view/middle/">,
 ) {
   const { data } = await apiClient.POST("/text-view/middle/", {
     body,

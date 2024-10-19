@@ -1,5 +1,5 @@
 import { scriptSelectionAtom } from "@atoms";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import { Typography } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
@@ -11,7 +11,8 @@ interface Props {
 }
 
 export const SearchResultItemText = ({ id, textParts }: Props) => {
-  const { dbLanguage } = useDbRouterParams();
+  // TODO: See if language is available from data rather than hook
+  const { dbLanguage } = useNullableDbRouterParams();
   const script = useAtomValue(scriptSelectionAtom);
 
   return (

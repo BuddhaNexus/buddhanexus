@@ -1,4 +1,6 @@
+import React from "react";
 import { useTranslation } from "next-i18next";
+import { useLanguageParam } from "@components/hooks/params";
 import {
   FormControl,
   InputLabel,
@@ -7,11 +9,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { dbLanguages } from "@utils/api/constants";
-
 import { getValidDbLanguage } from "@utils/validators";
-
-import { useLanguageParam } from "@components/hooks/params";
-import React from "react";
 
 const SearchLanguageSelector = () => {
   const { t } = useTranslation(["common", "settings"]);
@@ -20,10 +18,10 @@ const SearchLanguageSelector = () => {
 
   const handleChange = React.useCallback(
     (event: SelectChangeEvent) => {
-      const value = event.target.value;
+      const { value } = event.target;
       setLanguage(value === "all" ? null : getValidDbLanguage(value));
     },
-    [setLanguage]
+    [setLanguage],
   );
 
   return (

@@ -1,5 +1,6 @@
+import { exhaustiveStringTuple } from "@utils/helpers";
+
 import { DbLanguage } from "./types";
-import { exhaustiveStringTuple } from "@utils/validators";
 
 export const API_ROOT_URL = process.env.NEXT_PUBLIC_API_URL;
 export const RESULTS_DOWNLOAD_ROOT_URL = process.env.NEXT_PUBLIC_DOWNLOAD_URL;
@@ -11,6 +12,7 @@ export const dbLanguages = exhaustiveStringTuple<DbLanguage>()(
   "pa",
   "sa",
   "bo",
-  "zh"
+  "zh",
 );
-export type { DbLanguage };
+
+export { type DbLanguage } from "./types";

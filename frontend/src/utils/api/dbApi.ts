@@ -16,7 +16,6 @@ import { getCountMatches } from "./endpoints/utils/count-matches";
 import { getTextDisplayName } from "./endpoints/utils/displayname";
 import { getFolios } from "./endpoints/utils/folios";
 
-
 export const DbApi = {
   //* VIEWS
   GraphView: {
@@ -28,13 +27,13 @@ export const DbApi = {
   },
   TableView: {
     makeQueryKey: (
-      params: Omit<APIPostRequestBody<"/table-view/table/">, "page">
+      params: Omit<APIPostRequestBody<"/table-view/table/">, "page">,
     ) => ["tableView", params],
     call: getTableData,
   },
   NumbersView: {
     makeQueryKey: (
-      params: Omit<APIPostRequestBody<"/numbers-view/numbers/">, "page">
+      params: Omit<APIPostRequestBody<"/numbers-view/numbers/">, "page">,
     ) => ["numbersView", params],
     call: getNumbersViewData,
   },
@@ -48,7 +47,7 @@ export const DbApi = {
   TextView: {
     makeQueryKey: (
       params: APIPostRequestBody<"/text-view/text-parallels/">,
-      selectedSegment?: string
+      selectedSegment?: string,
     ) => ["textView", params, selectedSegment],
     call: getTextViewParallelsData,
   },
@@ -58,10 +57,7 @@ export const DbApi = {
   },
   //* MENUS
   DbSourcesMenu: {
-    makeQueryKey: (language: DbLanguage) => [
-      "textCollectionsData",
-      language,
-    ],
+    makeQueryKey: (language: DbLanguage) => ["textCollectionsData", language],
     call: getDbSourceMenuData,
   },
   //* UTILS / SETTINGS

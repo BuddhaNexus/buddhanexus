@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
+import { useParLengthParam } from "@components/hooks/params";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { MIN_PAR_LENGTH_VALUES } from "@features/sidebarSuite/uiSettingsDefinition";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import { debounce } from "lodash";
-
-import { useParLengthParam } from "@components/hooks/params";
-import { MIN_PAR_LENGTH_VALUES } from "@features/sidebarSuite/uiSettingsDefinition";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 
 function valueToString(value: number) {
   return `${value}`;
@@ -40,7 +39,7 @@ export default function ParLengthFilter() {
 
   const setDebouncedParLengthParam = useMemo(
     () => debounce(setParLengthParam, 600),
-    [setParLengthParam]
+    [setParLengthParam],
   );
 
   const handleChange = useCallback(
@@ -49,7 +48,7 @@ export default function ParLengthFilter() {
       setparLengthValue(value);
       setDebouncedParLengthParam(normalizedValue);
     },
-    [minValue, setparLengthValue, setDebouncedParLengthParam]
+    [minValue, setparLengthValue, setDebouncedParLengthParam],
   );
 
   const marks = [

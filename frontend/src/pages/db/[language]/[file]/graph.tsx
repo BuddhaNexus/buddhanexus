@@ -16,10 +16,9 @@ import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
-import { DbSourceBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
-
 import { HistogramDataChart } from "@features/graphView/HistogramDataChart";
 import { PieDataChart } from "@features/graphView/PieDataChart";
+import { DbSourceBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import { Box, Paper, Typography } from "@mui/material";
 import {
   // dehydrate,
@@ -69,7 +68,7 @@ export default function GraphPage() {
 
   const filteredHistogramData = useMemo(
     () => data?.histogramgraphdata.slice(0, HISTOGRAM_DATA_MATCH_LIMIT) ?? [],
-    [data?.histogramgraphdata]
+    [data?.histogramgraphdata],
   );
 
   if (isError) {

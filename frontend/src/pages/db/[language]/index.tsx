@@ -63,7 +63,7 @@ export const getStaticProps: GetStaticProps = async ({
     {
       locale,
     },
-    ["db", "settings"]
+    ["db", "settings"],
   );
 
   // const queryClient = await prefetchDefaultDbPageData(
@@ -72,6 +72,6 @@ export const getStaticProps: GetStaticProps = async ({
 
   return merge(
     // { props: { dehydratedState: dehydrate(queryClient) } },
-    i18nProps
+    i18nProps,
   );
 };

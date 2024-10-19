@@ -1,11 +1,11 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
+import { SelectionHeadBox } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/styledComponents";
+import { clearAllFilterParams } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
 import type {
   DbSourceFilters,
   DbSourceFilterUISetting,
 } from "@features/sidebarSuite/types";
-import { SelectionHeadBox } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/styledComponents";
-import { clearAllFilterParams } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { FormLabel, IconButton } from "@mui/material";
 import { parseAsJson, useQueryState } from "nuqs";
@@ -20,7 +20,7 @@ const SelectionHead = ({ filterName, selectionIds }: SelectionHeadProps) => {
 
   const [, setFilterParam] = useQueryState(
     "filters",
-    parseAsJson<DbSourceFilters>()
+    parseAsJson<DbSourceFilters>(),
   );
 
   const handleClearSources = React.useCallback(
@@ -32,7 +32,7 @@ const SelectionHead = ({ filterName, selectionIds }: SelectionHeadProps) => {
         });
       });
     },
-    [setFilterParam]
+    [setFilterParam],
   );
 
   return (

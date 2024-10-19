@@ -2,21 +2,20 @@ import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
 import PanelHeading from "@features/sidebarSuite/common/PanelHeading";
 import { DbViewSelector } from "@features/sidebarSuite/subComponents/uiSettings/DbViewSelector";
+import { DBSourceFilePageFilterUISettingName } from "@features/sidebarSuite/types";
+import { dbSoureFileRequestFilters } from "@features/sidebarSuite/uiSettingsDefinition";
 import { Box } from "@mui/material";
+import { DbViewEnum } from "@utils/constants";
 import { useAtomValue } from "jotai";
 
 import FilterUISettings from "./FilterUISettings";
-
-import { dbSoureFileRequestFilters } from "@features/sidebarSuite/uiSettingsDefinition";
-import { DBSourceFilePageFilterUISettingName } from "@features/sidebarSuite/types";
-import { DbViewEnum } from "@utils/constants";
 
 const AVAILABLE_FILTERS: Record<
   DbViewEnum,
   DBSourceFilePageFilterUISettingName[]
 > = {
   [DbViewEnum.GRAPH]: dbSoureFileRequestFilters.filter(
-    (filterName) => filterName !== "exclude_sources"
+    (filterName) => filterName !== "exclude_sources",
   ),
   [DbViewEnum.NUMBERS]: dbSoureFileRequestFilters,
   [DbViewEnum.TABLE]: dbSoureFileRequestFilters,
