@@ -23,6 +23,8 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
+import { useStandardViewBaseQueryParams } from "@components/hooks/useStandardViewBaseQueryParams";
+import { useSortMethodParam } from "@components/hooks/params";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
@@ -32,6 +34,9 @@ export default function NumbersPage() {
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
+
+  const requestBodyBase = useStandardViewBaseQueryParams();
+  const [sort_method] = useSortMethodParam();
 
   const {
     data: headerCollections,
@@ -44,22 +49,6 @@ export default function NumbersPage() {
     queryFn: () => DbApi.NumbersViewCategories.call({ filename: fileName }),
   });
 
-  // const requestBody = React.useMemo(
-  //   () => ({
-  //     file_name: fileName,
-  //     ...defaultQueryParams,
-  //     ...queryParams,
-  //   }),
-  //   [fileName, defaultQueryParams, queryParams]
-  // );
-
-  const requestBody = {
-    filename: fileName,
-    filters: undefined,
-    sort_method: "position",
-    folio: "",
-  };
-
   const {
     data,
     fetchNextPage,
@@ -68,11 +57,15 @@ export default function NumbersPage() {
     isError: isTableContentError,
   } = useInfiniteQuery({
     initialPageParam: 0,
-    queryKey: DbApi.NumbersView.makeQueryKey(requestBody),
+    queryKey: DbApi.NumbersView.makeQueryKey({
+      ...requestBodyBase,
+      sort_method,
+    }),
     queryFn: ({ pageParam = 0 }) =>
       DbApi.NumbersView.call({
-        ...requestBody,
-        page: Number(pageParam),
+        ...requestBodyBase,
+        sort_method,
+        page: pageParam,
       }),
     getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
     getPreviousPageParam: (lastPage) =>

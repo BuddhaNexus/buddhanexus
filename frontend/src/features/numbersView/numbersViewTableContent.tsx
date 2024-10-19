@@ -69,7 +69,7 @@ export const createTableColumns = ({
         <Typography sx={{ fontWeight: 500 }}>
           <Link
             // TODO: make sure this links to the correct segment
-            href={`/db/${language}/${fileName}/text?selectedSegment=${segmentnr}`}
+            href={`/db/${language}/${fileName}/text?active_segment=${segmentnr}`}
             target="_blank"
             rel="noreferrer noopenner"
           >
@@ -120,7 +120,7 @@ export const createTableColumns = ({
                 <Typography>
                   <Link
                     // TODO: make sure this links to the correct segment
-                    href={`/db/${language}/${parallelFileName}/text?selectedSegment=${segmentnr}`}
+                    href={`/db/${language}/${parallelFileName}/text?active_segment=${segmentnr}`}
                     color="text.primary"
                     target="_blank"
                     rel="noreferrer noopenner"

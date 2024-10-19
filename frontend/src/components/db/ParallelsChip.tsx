@@ -16,7 +16,7 @@ export default function ParallelsChip() {
 
   // ignore some params that shouldn't result in refetching this query
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const { selectedSegment, ...restOfQueryParams } = queryParams;
+  // const { activeSegment, ...restOfQueryParams } = queryParams;
 
   // const { data, isLoading } = useQuery({
   //   // TODO: - see if the query can return result before main results
@@ -38,7 +38,7 @@ export default function ParallelsChip() {
   const isLoading = false;
 
   const [parallelCount, setParallelCount] = useState(
-    isLoading ? 0 : data?.parallel_count,
+    isLoading ? 0 : data?.parallel_count
   );
 
   useEffect(() => {

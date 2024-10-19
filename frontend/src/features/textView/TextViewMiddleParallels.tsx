@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
-import { selectedSegmentMatchesAtom } from "@atoms";
+import { activeSegmentMatchesAtom } from "@atoms";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { Numbers } from "@mui/icons-material";
 import { Chip, CircularProgress } from "@mui/material";
@@ -15,15 +15,15 @@ import { ClearSelectedSegmentButton } from "./ClearSelectedSegmentButton";
 export default function TextViewMiddleParallels() {
   const { t } = useTranslation();
 
-  const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
+  const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
 
   const theme = useTheme();
 
   const { data, isLoading } = useQuery({
-    queryKey: DbApi.TextViewMiddle.makeQueryKey(selectedSegmentMatches),
+    queryKey: DbApi.TextViewMiddle.makeQueryKey(activeSegmentMatches),
     queryFn: () =>
-      DbApi.TextViewMiddle.call({ parallel_ids: selectedSegmentMatches }),
-    enabled: selectedSegmentMatches.length > 0,
+      DbApi.TextViewMiddle.call({ parallel_ids: activeSegmentMatches }),
+    enabled: activeSegmentMatches.length > 0,
   });
 
   const parallelsToDisplay = useMemo(
@@ -50,9 +50,9 @@ export default function TextViewMiddleParallels() {
               score={score}
               textSegmentNumberRange={parallelSegmentNumberRange}
             />
-          ),
+          )
         ),
-    [data],
+    [data]
   );
 
   return (
@@ -88,7 +88,7 @@ export default function TextViewMiddleParallels() {
         }}
       >
         <Chip
-          label={`${selectedSegmentMatches.length} ${t("db.segmentMatches")}`}
+          label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
           variant="outlined"
           icon={<Numbers />}
         />

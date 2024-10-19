@@ -28,6 +28,9 @@ import { DbApi } from "@utils/api/dbApi";
 
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
+import { useStandardViewBaseQueryParams } from "@components/hooks/useStandardViewBaseQueryParams";
+import { useActiveSegmentParam } from "@components/hooks/params";
+
 type QueryParams = Record<string, string>;
 
 const cleanUpQueryParams = (queryParams: QueryParams): QueryParams => {
@@ -35,9 +38,9 @@ const cleanUpQueryParams = (queryParams: QueryParams): QueryParams => {
     // changing these properties (by selecting the segments)
     // should not reload the page.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    selectedSegment,
+    activeSegment,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    selectedSegmentIndex,
+    activeSegmentIndex,
     ...apiQueryParams
   } = queryParams;
   return apiQueryParams;
@@ -49,7 +52,7 @@ const START_INDEX = 1_000_000;
 // open bugs:
 // 1. Selecting a segment reloads the page
 //   - it's caused by the queryKey param changing. Connected to issue 2
-// 2. On the first page load, the `selectedSegment` search param is not defined.
+// 2. On the first page load, the `activeSegment` search param is not defined.
 //   - experiment with suspense and async components to fix it
 //   - migrating to the app router may also solve it
 //   - https://github.com/vercel/next.js/issues/53543
@@ -60,20 +63,8 @@ export default function TextPage() {
 
   useSetDbViewFromPath();
 
-  const defaultQueryParams = {
-    filters: undefined,
-    sort_method: "position",
-    folio: "",
-    active_segment: "",
-    page: 0,
-  };
-  const apiQueryParams = {
-    filters: undefined,
-    sort_method: "position",
-    folio: "",
-    active_segment: "",
-    page: 0,
-  };
+  const requestBodyBase = useStandardViewBaseQueryParams();
+  const [active_segment] = useActiveSegmentParam();
 
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
@@ -83,16 +74,11 @@ export default function TextPage() {
     [startEdgePage?: number, endEdgePage?: number]
   >([0, 0]);
 
-  const searchParams = useSearchParams();
-  const selectedSegment = searchParams.get("selectedSegment");
-
-  // const apiQueryParams = cleanUpQueryParams(queryParams);
-
   const hasSegmentBeenSelected = useCallback(
     (segmentId: string | null): boolean =>
       segmentId !== null &&
       Boolean(previouslySelectedSegmentsMap.current[segmentId]),
-    [],
+    []
   );
 
   const {
@@ -107,11 +93,11 @@ export default function TextPage() {
     isError,
   } = useInfiniteQuery({
     enabled: Boolean(fileName),
-    initialPageParam: selectedSegment ? undefined : 0,
-    queryKey: DbApi.TextView.makeQueryKey(
-      { filename: fileName, ...apiQueryParams },
-      selectedSegment ?? undefined,
-    ),
+    initialPageParam: active_segment ? undefined : 0,
+    queryKey: DbApi.TextView.makeQueryKey({
+      ...requestBodyBase,
+      active_segment: active_segment ?? "",
+    }),
     queryFn: ({ pageParam }) => {
       // We pass the active_segment, but only on the first page load :/
       //
@@ -125,16 +111,14 @@ export default function TextPage() {
 
       // if the `active_segment` param was already sent for this segment,
       // don't send it anymore.
-      const active_segment = hasSegmentBeenSelected(selectedSegment)
+      const activeSegmentParam = hasSegmentBeenSelected(active_segment)
         ? undefined
-        : selectedSegment;
+        : active_segment;
 
       return DbApi.TextView.call({
-        filename: fileName,
-        ...defaultQueryParams,
-        ...apiQueryParams,
-        // page: pageParam,
-        // active_segment: active_segment ?? undefined,
+        ...requestBodyBase,
+        page: pageParam ?? 0,
+        active_segment: activeSegmentParam ?? "",
       });
     },
 
@@ -158,10 +142,10 @@ export default function TextPage() {
   // see queryFn comment above
   useEffect(
     function updatePreviouslySelectedSegmentsMap() {
-      if (isSuccess && selectedSegment)
-        previouslySelectedSegmentsMap.current[selectedSegment] = true;
+      if (isSuccess && active_segment)
+        previouslySelectedSegmentsMap.current[active_segment] = true;
     },
-    [isSuccess, selectedSegment],
+    [isSuccess, active_segment]
   );
 
   useEffect(
@@ -176,7 +160,7 @@ export default function TextPage() {
         paginationState.current[1] = data?.pages[0].data.page;
       }
     },
-    [data?.pages],
+    [data?.pages]
   );
 
   const handleFetchingPreviousPage = useCallback(async () => {
@@ -202,7 +186,7 @@ export default function TextPage() {
 
   const allParallels = useMemo(
     () => (data?.pages ? data.pages.flatMap((page) => page.data.items) : []),
-    [data?.pages],
+    [data?.pages]
   );
 
   if (isError) {

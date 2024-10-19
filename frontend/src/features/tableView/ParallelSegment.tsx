@@ -31,7 +31,7 @@ export const makeTextViewSegmentPath = ({
 
   const urlEncodedSegmentNumber = encodeURIComponent(segmentNumber);
 
-  return `/db/${language}/${fileName}/text?selectedSegment=${urlEncodedSegmentNumber}&selectedSegmentIndex=0`;
+  return `/db/${language}/${fileName}/text?active_segment=${urlEncodedSegmentNumber}&active_segment_index=0`;
 };
 
 interface ParallelSegmentProps {

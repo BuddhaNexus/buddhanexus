@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect } from "react";
 import {
   scriptSelectionAtom,
-  selectedSegmentMatchesAtom,
+  activeSegmentMatchesAtom,
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
 } from "@atoms";
@@ -12,7 +12,9 @@ import { useColorScheme } from "@mui/material/styles";
 import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";
 import type { Scale } from "chroma-js";
 import { useAtomValue, useSetAtom } from "jotai";
-import { NumberParam, StringParam, useQueryParam } from "use-query-params";
+import { useActiveSegmentParam } from "@components/hooks/params";
+
+import { parseAsInteger, useQueryState } from "nuqs";
 
 import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
 import styles from "./textSegment.module.scss";
@@ -27,44 +29,42 @@ export const TextSegment = ({
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
 
-  const [selectedSegmentId, setSelectedSegmentId] = useQueryParam(
-    "selectedSegment",
-    StringParam,
+  const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
+  const [activeSegmentIndex, setActiveSegmentIndex] = useQueryState(
+    "active_segment_index",
+    parseAsInteger
   );
-  const [selectedSegmentIndex, setSelectedSegmentIndex] = useQueryParam(
-    "selectedSegmentIndex",
-    NumberParam,
-  );
+
   const { dbLanguage } = useDbRouterParams();
 
   const shouldUseMonochromaticSegmentColors = useAtomValue(
-    shouldUseMonochromaticSegmentColorsAtom,
+    shouldUseMonochromaticSegmentColorsAtom
   );
   const shouldShowSegmentNumbers = useAtomValue(shouldShowSegmentNumbersAtom);
-  const scriptSelection = useAtomValue(scriptSelectionAtom);
-  const setSelectedSegmentMatches = useSetAtom(selectedSegmentMatchesAtom);
+  const setSelectedSegmentMatches = useSetAtom(activeSegmentMatchesAtom);
+  const isSegmentSelected = activeSegmentId === data?.segmentNumber;
 
-  const isSegmentSelected = selectedSegmentId === data?.segmentNumber;
+  const scriptSelection = useAtomValue(scriptSelectionAtom);
 
   const updateSelectedLocationInGlobalState = useCallback(
     (location: { id: string; index: number; matches: string[] }) => {
-      setSelectedSegmentId(location.id);
-      setSelectedSegmentIndex(location.index);
+      setActiveSegmentId(location.id);
+      setActiveSegmentIndex(location.index);
     },
-    [setSelectedSegmentId, setSelectedSegmentIndex],
+    [setActiveSegmentId, setActiveSegmentIndex]
   );
 
   // find matches for the selected segment when the page is first rendered
   useLayoutEffect(() => {
-    if (!isSegmentSelected || typeof selectedSegmentIndex !== "number") return;
-    const locationFromQueryParams = data?.segmentText[selectedSegmentIndex];
+    if (!isSegmentSelected || typeof activeSegmentIndex !== "number") return;
+    const locationFromQueryParams = data?.segmentText[activeSegmentIndex];
     if (!locationFromQueryParams) return;
     setSelectedSegmentMatches(locationFromQueryParams.matches as string[]);
   }, [
     isSegmentSelected,
     data?.segmentText,
-    selectedSegmentId,
-    selectedSegmentIndex,
+    activeSegmentId,
+    activeSegmentIndex,
     setSelectedSegmentMatches,
   ]);
 
@@ -85,7 +85,7 @@ export const TextSegment = ({
           language: dbLanguage,
         });
         const isSegmentPartSelected =
-          isSegmentSelected && selectedSegmentIndex === i;
+          isSegmentSelected && activeSegmentIndex === i;
 
         if (!matches || matches.length === 0) {
           return (

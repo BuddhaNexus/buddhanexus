@@ -2,10 +2,10 @@ import React from "react";
 import { useTranslation } from "next-i18next";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { IconButton, Tooltip } from "@mui/material";
-import { useQueryParam } from "use-query-params";
+import { useActiveSegmentParam } from "@components/hooks/params";
 
 export function ClearSelectedSegmentButton() {
-  const [, setSelectedSegmentId] = useQueryParam("selectedSegment");
+  const [, setActiveSegment] = useActiveSegmentParam();
 
   const { t } = useTranslation();
 
@@ -14,10 +14,7 @@ export function ClearSelectedSegmentButton() {
       title={t("common:db.clearSelectedSegment")}
       PopperProps={{ disablePortal: true }}
     >
-      <IconButton
-        color="inherit"
-        onClick={() => setSelectedSegmentId(undefined)}
-      >
+      <IconButton color="inherit" onClick={() => setActiveSegment(null)}>
         <HighlightOffIcon aria-label={t("common:db.clearSelectedSegment")} />
       </IconButton>
     </Tooltip>

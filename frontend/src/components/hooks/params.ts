@@ -1,4 +1,3 @@
-import { FilterUISettings } from "@features/sidebarSuite/types";
 import {
   allUIComponentParamNames,
   DEFAULT_PARAM_VALUES,
@@ -8,7 +7,6 @@ import { dbLanguages } from "@utils/api/constants";
 import {
   parseAsArrayOf,
   parseAsInteger,
-  parseAsJson,
   parseAsString,
   parseAsStringLiteral,
   useQueryState,

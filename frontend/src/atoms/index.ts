@@ -53,4 +53,4 @@ export const shouldUseMonochromaticSegmentColorsAtom = atomWithStorage<boolean>(
   false,
 );
 
-export const selectedSegmentMatchesAtom = atom<string[]>([]);
+export const activeSegmentMatchesAtom = atom<string[]>([]);

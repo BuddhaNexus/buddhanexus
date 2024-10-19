@@ -21,39 +21,32 @@ import {
 } from "@tanstack/react-query";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
+import { useStandardViewBaseQueryParams } from "@components/hooks/useStandardViewBaseQueryParams";
+import { useSortMethodParam } from "@components/hooks/params";
 
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 // TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
-  const { dbLanguage, fileName } = useDbRouterParams();
+  const { dbLanguage } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
 
-  // const requestBody = React.useMemo(
-  //   () => ({
-  //     filename: fileName,
-  //     ...defaultQueryParams,
-  //     ...queryParams,
-  //   }),
-  //   [fileName, defaultQueryParams, queryParams]
-  // );
-
-  const requestBody = {
-    filename: fileName,
-    filters: undefined,
-    sort_method: "position",
-    folio: "",
-  };
+  const requestBodyBase = useStandardViewBaseQueryParams();
+  const [sort_method] = useSortMethodParam();
 
   const { data, fetchNextPage, fetchPreviousPage, isLoading } =
     useInfiniteQuery({
       initialPageParam: 0,
-      queryKey: DbApi.TableView.makeQueryKey(requestBody),
+      queryKey: DbApi.TableView.makeQueryKey({
+        ...requestBodyBase,
+        sort_method,
+      }),
       queryFn: ({ pageParam }) =>
         DbApi.TableView.call({
-          ...requestBody,
+          ...requestBodyBase,
+          sort_method,
           page: pageParam,
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
@@ -63,7 +56,7 @@ export default function TablePage() {
 
   const allData = useMemo(
     () => (data ? data.pages.flatMap((page) => page.data) : []),
-    [data],
+    [data]
   );
 
   if (isFallback) {
