@@ -1,12 +1,11 @@
 import type {
   AllUIComponentParamNames,
-  AppResultPageView,
   Script,
   UtilityUISettingName,
 } from "@features/sidebarSuite/types";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
-import { getParallelDownloadData } from "@utils/api/endpoints/table-view/downloads";
+// import { getParallelDownloadData } from "@utils/api/endpoints/table-view/downloads";
 import { DbLanguage } from "@utils/api/types";
 import { EwtsConverter } from "tibetan-ewts-converter";
 
@@ -55,7 +54,7 @@ export const onDownload = async ({
 }: UtilityClickHandlerProps) => {
   const [anchorEl, setAnchorEl] = popperAnchorStateHandler;
 
-  const { fileName, queryParams } = download;
+  const { fileName /*queryParams*/ } = download;
 
   // const file = await getParallelDownloadData({
   //   filename: fileName,

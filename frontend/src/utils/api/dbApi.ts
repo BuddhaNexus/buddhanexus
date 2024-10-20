@@ -27,13 +27,13 @@ export const DbApi = {
   },
   TableView: {
     makeQueryKey: (
-      params: Omit<APIPostRequestBody<"/table-view/table/">, "page">
+      params: Omit<APIPostRequestBody<"/table-view/table/">, "page">,
     ) => ["tableView", params],
     call: getTableData,
   },
   NumbersView: {
     makeQueryKey: (
-      params: Omit<APIPostRequestBody<"/numbers-view/numbers/">, "page">
+      params: Omit<APIPostRequestBody<"/numbers-view/numbers/">, "page">,
     ) => ["numbersView", params],
     call: getNumbersViewData,
   },
@@ -46,7 +46,7 @@ export const DbApi = {
   },
   TextView: {
     makeQueryKey: (
-      params: Omit<APIPostRequestBody<"/text-view/text-parallels/">, "page">
+      params: Omit<APIPostRequestBody<"/text-view/text-parallels/">, "page">,
     ) => ["textView", params],
     call: getTextViewParallelsData,
   },

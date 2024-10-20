@@ -9,6 +9,8 @@ import {
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
+import { useStandardViewBaseQueryParams } from "@components/hooks/commonQueryParams";
+import { useSortMethodParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -23,8 +25,6 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-import { useStandardViewBaseQueryParams } from "@components/hooks/commonQueryParams";
-import { useSortMethodParam } from "@components/hooks/params";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";

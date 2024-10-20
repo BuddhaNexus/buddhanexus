@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
+import { useDbQueryFilters } from "@components/hooks/commonQueryParams";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
 import { BD_RESULTS_LIMIT } from "@utils/api/constants";
-
 import { DbApi } from "@utils/api/dbApi";
 
 import CappedMatchesChip from "./CappedMatchesChip";
-import { useDbQueryFilters } from "@components/hooks/commonQueryParams";
 
 export default function ParallelsChip() {
   const { t } = useTranslation("settings");
@@ -30,7 +29,7 @@ export default function ParallelsChip() {
   });
 
   const [parallelCount, setParallelCount] = useState(
-    isLoading ? 0 : data?.parallel_count
+    isLoading ? 0 : data?.parallel_count,
   );
 
   useEffect(() => {

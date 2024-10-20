@@ -11,6 +11,11 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
+import {
+  useIncludeCollectionsParam,
+  useParLengthParam,
+  useScoreParam,
+} from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -26,11 +31,6 @@ import {
 } from "@tanstack/react-query";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-import {
-  useScoreParam,
-  useParLengthParam,
-  useIncludeCollectionsParam,
-} from "@components/hooks/params";
 
 const HISTOGRAM_DATA_MATCH_LIMIT = 50;
 
@@ -66,7 +66,7 @@ export default function GraphPage() {
 
   const filteredHistogramData = useMemo(
     () => data?.histogramgraphdata.slice(0, HISTOGRAM_DATA_MATCH_LIMIT) ?? [],
-    [data?.histogramgraphdata]
+    [data?.histogramgraphdata],
   );
 
   if (isError) {

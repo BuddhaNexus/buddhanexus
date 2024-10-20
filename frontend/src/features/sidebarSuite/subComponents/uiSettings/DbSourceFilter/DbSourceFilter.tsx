@@ -1,15 +1,13 @@
 import React, { memo } from "react";
+import { useDbQueryFilters } from "@components/hooks/commonQueryParams";
 import {
-  DbSourceFilters,
   // FilterUISettings,
   DbSourceFilterUISetting,
 } from "@features/sidebarSuite/types";
 import { Box } from "@mui/material";
-import { parseAsJson, useQueryState } from "nuqs";
 
 import FilterUI from "./FilterUI";
 import { dbSourceFilterSelectors, getFilterIds } from "./utils";
-import { useDbQueryFilters } from "@components/hooks/commonQueryParams";
 
 const DbSourceFilter = ({
   filterName,
@@ -35,9 +33,9 @@ const DbSourceFilter = ({
             }),
           };
         },
-        {} as Record<DbSourceFilterUISetting, string[]>
+        {} as Record<DbSourceFilterUISetting, string[]>,
       ),
-    [filtersParam]
+    [filtersParam],
   );
 
   return (

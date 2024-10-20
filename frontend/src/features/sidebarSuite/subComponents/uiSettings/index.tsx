@@ -9,7 +9,6 @@ import { SegmentOptions } from "@features/sidebarSuite/subComponents/uiSettings/
 import {
   DisplayUISettingName,
   RequestFilterUISettingName,
-  SidebarSuitePageContext,
   UtilityUISettingName,
 } from "@features/sidebarSuite/types";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -19,7 +18,7 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 
 import { default as DbSourceFilter } from "./DbSourceFilter";
 import { default as FolioOption } from "./FolioOption";
-import { default as MultiLingualSelector } from "./MultiLingualSelector";
+// import { default as MultiLingualSelector } from "./MultiLingualSelector";
 import { default as ParLengthFilter } from "./ParLengthFilter";
 import { default as ScoreFilter } from "./ScoreFilter";
 import { default as SearchLanguageSelector } from "./SearchLanguageSelector";

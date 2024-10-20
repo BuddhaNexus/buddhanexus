@@ -19,8 +19,8 @@ export default function SortOption() {
   const [sortMethod, setSortMethod] = useSortMethodParam();
 
   const handleSelectChange = React.useCallback(
-    (event: SelectChangeEvent) => {
-      setSortMethod(getValidSortMethod(event.target.value));
+    async (event: SelectChangeEvent) => {
+      await setSortMethod(getValidSortMethod(event.target.value));
     },
     [setSortMethod],
   );

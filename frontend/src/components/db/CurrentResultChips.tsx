@@ -91,7 +91,7 @@ export default function CurrentResultChips({
         route: isSearchRoute ? "search" : "dbSourcePage",
         searchParams,
       }),
-    [isSearchRoute, searchParams]
+    [isSearchRoute, searchParams],
   );
 
   return (

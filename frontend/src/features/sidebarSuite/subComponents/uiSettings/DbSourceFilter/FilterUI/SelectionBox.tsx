@@ -1,6 +1,14 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
 import {
+  useExcludeCategoriesParam,
+  useExcludeCollectionsParam,
+  useExcludeFilesParam,
+  useIncludeCategoriesParam,
+  useIncludeCollectionsParam,
+  useIncludeFilesParam,
+} from "@components/hooks/params";
+import {
   InputOutlineBox,
   MultiSelectionBox,
   SelectionChipsBox,
@@ -8,15 +16,6 @@ import {
 import type { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Button, Chip, IconButton } from "@mui/material";
-
-import {
-  useExcludeCollectionsParam,
-  useExcludeCategoriesParam,
-  useExcludeFilesParam,
-  useIncludeCollectionsParam,
-  useIncludeCategoriesParam,
-  useIncludeFilesParam,
-} from "@components/hooks/params";
 
 const CHIP_GAP = 6;
 const MAX_CHIP_ROW_WIDTH = 253;
@@ -99,25 +98,25 @@ const DbSourceFilterInput = ({
     async (id: string, filterSettingName: DbSourceFilterUISetting) => {
       if (filterSettingName.startsWith("exclude")) {
         await setExcludeCollections((prev) =>
-          prev ? prev.filter((target) => target !== id) : prev
+          prev ? prev.filter((target) => target !== id) : prev,
         );
         await setExcludeCategories((prev) =>
-          prev ? prev.filter((target) => target !== id) : prev
+          prev ? prev.filter((target) => target !== id) : prev,
         );
         await setExcludeFiles((prev) =>
-          prev ? prev.filter((target) => target !== id) : prev
+          prev ? prev.filter((target) => target !== id) : prev,
         );
       }
 
       if (filterSettingName.startsWith("include")) {
         await setIncludeCollections((prev) =>
-          prev ? prev.filter((target) => target !== id) : prev
+          prev ? prev.filter((target) => target !== id) : prev,
         );
         await setIncludeCategories((prev) =>
-          prev ? prev.filter((target) => target !== id) : prev
+          prev ? prev.filter((target) => target !== id) : prev,
         );
         await setIncludeFiles((prev) =>
-          prev ? prev.filter((target) => target !== id) : prev
+          prev ? prev.filter((target) => target !== id) : prev,
         );
       }
     },
@@ -128,7 +127,7 @@ const DbSourceFilterInput = ({
       setIncludeCollections,
       setIncludeCategories,
       setIncludeFiles,
-    ]
+    ],
   );
 
   return (

@@ -14,20 +14,19 @@ import {
   DbSourceTreeNodeDataType as NodeType,
 } from "@components/db/SearchableDbSourceTree/types";
 import {
+  useExcludeCategoriesParam,
+  useExcludeCollectionsParam,
+  useExcludeFilesParam,
+  useIncludeCategoriesParam,
+  useIncludeCollectionsParam,
+  useIncludeFilesParam,
+} from "@components/hooks/params";
+import {
   DB_SOURCE_UPDATE_MAPPING,
   updateFilterParamArray,
 } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
 import { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
 import { Box, Checkbox, Tooltip, Typography } from "@mui/material";
-
-import {
-  useExcludeCollectionsParam,
-  useExcludeCategoriesParam,
-  useExcludeFilesParam,
-  useIncludeCollectionsParam,
-  useIncludeCategoriesParam,
-  useIncludeFilesParam,
-} from "@components/hooks/params";
 
 const CHARACTER_WIDTH = 6.5;
 const INDENTATION_WIDTH = 90;
@@ -90,44 +89,43 @@ export function DbSourceFilterTreeNode({
 
       if (targetFilter === "exclude_collections") {
         await setExcludeCollections((prev) =>
-          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action }),
         );
         return;
       }
 
       if (targetFilter === "exclude_categories") {
         await setExcludeCategories((prev) =>
-          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action }),
         );
         return;
       }
 
       if (targetFilter === "exclude_files") {
         await setExcludeFiles((prev) =>
-          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action }),
         );
         return;
       }
 
       if (targetFilter === "include_collections") {
         await setIncludeCollections((prev) =>
-          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action }),
         );
         return;
       }
 
       if (targetFilter === "include_categories") {
         await setIncludeCategories((prev) =>
-          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action }),
         );
         return;
       }
 
       if (targetFilter === "include_files") {
         await setIncludeFiles((prev) =>
-          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action }),
         );
-        return;
       }
     },
     [
@@ -137,7 +135,7 @@ export function DbSourceFilterTreeNode({
       setIncludeCollections,
       setIncludeCategories,
       setIncludeFiles,
-    ]
+    ],
   );
 
   return (

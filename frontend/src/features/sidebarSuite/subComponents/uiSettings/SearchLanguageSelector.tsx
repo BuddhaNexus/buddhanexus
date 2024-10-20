@@ -17,9 +17,9 @@ const SearchLanguageSelector = () => {
   const [language, setLanguage] = useLanguageParam();
 
   const handleChange = React.useCallback(
-    (event: SelectChangeEvent) => {
+    async (event: SelectChangeEvent) => {
       const { value } = event.target;
-      setLanguage(value === "all" ? null : getValidDbLanguage(value));
+      await setLanguage(value === "all" ? null : getValidDbLanguage(value));
     },
     [setLanguage],
   );

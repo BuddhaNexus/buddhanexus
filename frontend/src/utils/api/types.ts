@@ -59,20 +59,18 @@ type APIResponse<operation> = "responses" extends keyof operation
     : never
   : never;
 
-export type APIPostRequestBody<Endpoint extends PostEndpoint> = RequestBody<
-  paths[Endpoint]["post"]
+export type APIPostRequestBody<RequestEndpoint extends PostEndpoint> =
+  RequestBody<paths[RequestEndpoint]["post"]>;
+
+export type APIPostResponse<RequestEndpoint extends PostEndpoint> = APIResponse<
+  paths[RequestEndpoint]["post"]
 >;
 
-export type APIPostResponse<Endpoint extends PostEndpoint> = APIResponse<
-  paths[Endpoint]["post"]
->;
+export type APIGetRequestQuery<RequestEndpoint extends GetEndpoint> =
+  RequestQuery<paths[RequestEndpoint]["get"]>;
 
-export type APIGetRequestQuery<Endpoint extends GetEndpoint> = RequestQuery<
-  paths[Endpoint]["get"]
->;
-
-export type APIGetResponse<Endpoint extends GetEndpoint> = APIResponse<
-  paths[Endpoint]["get"]
+export type APIGetResponse<RequestEndpoint extends GetEndpoint> = APIResponse<
+  paths[RequestEndpoint]["get"]
 >;
 
 /**

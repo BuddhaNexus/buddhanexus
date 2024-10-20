@@ -36,10 +36,10 @@ export default function ScoreFilter() {
   );
 
   const handleChange = useCallback(
-    (value: number) => {
+    async (value: number) => {
       const normalizedValue = normalizeValue(value);
       setScoreValue(value);
-      setDebouncedScoreParam(normalizedValue);
+      await setDebouncedScoreParam(normalizedValue);
     },
     [setScoreValue, setDebouncedScoreParam],
   );

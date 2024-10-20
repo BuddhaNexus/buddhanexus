@@ -50,9 +50,9 @@ export default function TextViewMiddleParallels() {
               score={score}
               textSegmentNumberRange={parallelSegmentNumberRange}
             />
-          )
+          ),
         ),
-    [data]
+    [data],
   );
 
   return (

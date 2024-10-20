@@ -43,10 +43,10 @@ export default function ParLengthFilter() {
   );
 
   const handleChange = useCallback(
-    (value: number) => {
+    async (value: number) => {
       const normalizedValue = normalizeValue(value, minValue);
       setparLengthValue(value);
-      setDebouncedParLengthParam(normalizedValue);
+      await setDebouncedParLengthParam(normalizedValue);
     },
     [minValue, setparLengthValue, setDebouncedParLengthParam],
   );

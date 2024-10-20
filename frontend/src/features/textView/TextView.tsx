@@ -7,6 +7,7 @@ import {
   EmptyPlaceholder,
   ListLoadingIndicator,
 } from "@components/db/ListComponents";
+import { useActiveSegmentParam } from "@components/hooks/params";
 import { Paper } from "@mui/material";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
 import { Allotment } from "allotment";
@@ -15,7 +16,6 @@ import { useAtomValue } from "jotai/index";
 
 import { TextSegment } from "./TextSegment";
 import TextViewMiddleParallels from "./TextViewMiddleParallels";
-import { useActiveSegmentParam } from "@components/hooks/params";
 
 interface Props {
   data: ParsedTextViewParallels;
@@ -57,7 +57,7 @@ export const TextView = ({
   const activeSegmentIndexInData = useMemo(() => {
     if (!hasData) return 0;
     const index = data.findIndex(
-      (element) => element.segmentNumber === activeSegmentId
+      (element) => element.segmentNumber === activeSegmentId,
     );
     if (index === -1) return 0;
     return index;

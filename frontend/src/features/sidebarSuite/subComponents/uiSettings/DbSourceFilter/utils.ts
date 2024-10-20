@@ -1,8 +1,8 @@
 import { DbSourceTreeNodeDataType as NodeType } from "@components/db/SearchableDbSourceTree/types";
 import {
+  APIFilterName,
   DbSourceFilterUISetting,
   WorkingAPIFilters,
-  APIFilterName,
 } from "@features/sidebarSuite/types";
 import { exhaustiveStringTuple } from "@utils/helpers";
 
@@ -76,5 +76,5 @@ export const updateFilterParamArray = ({
 export const dbSourceFilterSelectors =
   exhaustiveStringTuple<DbSourceFilterUISetting>()(
     "exclude_sources",
-    "include_sources"
+    "include_sources",
   );

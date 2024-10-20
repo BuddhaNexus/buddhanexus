@@ -1,10 +1,11 @@
 import { useCallback, useLayoutEffect } from "react";
 import {
-  scriptSelectionAtom,
   activeSegmentMatchesAtom,
+  scriptSelectionAtom,
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
 } from "@atoms";
+import { useActiveSegmentParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { sourceSans } from "@components/theme";
 import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
@@ -12,8 +13,6 @@ import { useColorScheme } from "@mui/material/styles";
 import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";
 import type { Scale } from "chroma-js";
 import { useAtomValue, useSetAtom } from "jotai";
-import { useActiveSegmentParam } from "@components/hooks/params";
-
 import { parseAsInteger, useQueryState } from "nuqs";
 
 import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
@@ -32,13 +31,13 @@ export const TextSegment = ({
   const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
   const [activeSegmentIndex, setActiveSegmentIndex] = useQueryState(
     "active_segment_index",
-    parseAsInteger
+    parseAsInteger,
   );
 
   const { dbLanguage } = useDbRouterParams();
 
   const shouldUseMonochromaticSegmentColors = useAtomValue(
-    shouldUseMonochromaticSegmentColorsAtom
+    shouldUseMonochromaticSegmentColorsAtom,
   );
   const shouldShowSegmentNumbers = useAtomValue(shouldShowSegmentNumbersAtom);
   const setSelectedSegmentMatches = useSetAtom(activeSegmentMatchesAtom);
@@ -47,11 +46,11 @@ export const TextSegment = ({
   const scriptSelection = useAtomValue(scriptSelectionAtom);
 
   const updateSelectedLocationInGlobalState = useCallback(
-    (location: { id: string; index: number; matches: string[] }) => {
-      setActiveSegmentId(location.id);
-      setActiveSegmentIndex(location.index);
+    async (location: { id: string; index: number; matches: string[] }) => {
+      await setActiveSegmentId(location.id);
+      await setActiveSegmentIndex(location.index);
     },
-    [setActiveSegmentId, setActiveSegmentIndex]
+    [setActiveSegmentId, setActiveSegmentIndex],
   );
 
   // find matches for the selected segment when the page is first rendered

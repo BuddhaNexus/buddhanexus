@@ -1,18 +1,17 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
+import {
+  useExcludeCategoriesParam,
+  useExcludeCollectionsParam,
+  useExcludeFilesParam,
+  useIncludeCategoriesParam,
+  useIncludeCollectionsParam,
+  useIncludeFilesParam,
+} from "@components/hooks/params";
 import { SelectionHeadBox } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/styledComponents";
 import type { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { FormLabel, IconButton } from "@mui/material";
-
-import {
-  useExcludeCollectionsParam,
-  useExcludeCategoriesParam,
-  useExcludeFilesParam,
-  useIncludeCollectionsParam,
-  useIncludeCategoriesParam,
-  useIncludeFilesParam,
-} from "@components/hooks/params";
 
 type SelectionHeadProps = {
   filterName: DbSourceFilterUISetting;

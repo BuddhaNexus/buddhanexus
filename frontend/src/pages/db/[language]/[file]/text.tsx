@@ -7,10 +7,15 @@ import React, {
 } from "react";
 import { GetServerSideProps } from "next";
 // import type { GetStaticProps } from "next";
-import { useSearchParams } from "next/navigation";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
+// import { getValidDbLanguage } from "@utils/validators";
+// import { getI18NextStaticProps } from "@utils/nextJsHelpers";
+// import merge from "lodash/merge";
+// export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
+import { useStandardViewBaseQueryParams } from "@components/hooks/commonQueryParams";
+import { useActiveSegmentParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -22,29 +27,6 @@ import { TextView } from "@features/textView/TextView";
 import { useInfiniteQuery } from "@tanstack/react-query";
 // import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
 import { DbApi } from "@utils/api/dbApi";
-// import { getValidDbLanguage } from "@utils/validators";
-// import { getI18NextStaticProps } from "@utils/nextJsHelpers";
-// import merge from "lodash/merge";
-
-// export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
-
-import { useStandardViewBaseQueryParams } from "@components/hooks/commonQueryParams";
-import { useActiveSegmentParam } from "@components/hooks/params";
-
-type QueryParams = Record<string, string>;
-
-const cleanUpQueryParams = (queryParams: QueryParams): QueryParams => {
-  const {
-    // changing these properties (by selecting the segments)
-    // should not reload the page.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    activeSegment,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    activeSegmentIndex,
-    ...apiQueryParams
-  } = queryParams;
-  return apiQueryParams;
-};
 
 // arbitrarily high number, as per virtuoso docs
 const START_INDEX = 1_000_000;
@@ -78,7 +60,7 @@ export default function TextPage() {
     (segmentId: string | null): boolean =>
       segmentId !== null &&
       Boolean(previouslySelectedSegmentsMap.current[segmentId]),
-    []
+    [],
   );
 
   const {
@@ -145,7 +127,7 @@ export default function TextPage() {
       if (isSuccess && active_segment)
         previouslySelectedSegmentsMap.current[active_segment] = true;
     },
-    [isSuccess, active_segment]
+    [isSuccess, active_segment],
   );
 
   useEffect(
@@ -160,7 +142,7 @@ export default function TextPage() {
         paginationState.current[1] = data?.pages[0].data.page;
       }
     },
-    [data?.pages]
+    [data?.pages],
   );
 
   const handleFetchingPreviousPage = useCallback(async () => {
@@ -186,7 +168,7 @@ export default function TextPage() {
 
   const allParallels = useMemo(
     () => (data?.pages ? data.pages.flatMap((page) => page.data.items) : []),
-    [data?.pages]
+    [data?.pages],
   );
 
   if (isError) {

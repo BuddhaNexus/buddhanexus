@@ -15,6 +15,44 @@ import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import type { ParsedFolio } from "@utils/api/endpoints/utils/folios";
 
+function SelectorFrame({
+  children,
+  label,
+}: {
+  children: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <Box sx={{ width: 1, my: 2 }}>
+      <FormControl sx={{ width: 1 }} title={label}>
+        <InputLabel id="folio-option-selector-label">{label}</InputLabel>
+        {children}
+      </FormControl>
+    </Box>
+  );
+}
+
+function Loading({ showAll, label }: { showAll: string; label: string }) {
+  return (
+    <Select
+      labelId="folio-option-selector-label"
+      value={showAll}
+      inputProps={{
+        id: "folio-option-selector",
+      }}
+      input={<OutlinedInput label={label} />}
+      displayEmpty
+    >
+      <MenuItem value={showAll}>
+        <em>{showAll}</em>
+      </MenuItem>
+      <MenuItem value="loading">
+        <CircularProgress color="inherit" size={20} />
+      </MenuItem>
+    </Select>
+  );
+}
+
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
   const { t } = useTranslation("settings");
@@ -29,9 +67,9 @@ export default function FolioOption() {
 
   const showAll = t("optionsLabels.folioShowAll");
 
-  const handleSelectChange = (event: SelectChangeEvent) => {
+  const handleSelectChange = async (event: SelectChangeEvent) => {
     const { value } = event.target;
-    setFolioParam(value === showAll ? null : value);
+    await setFolioParam(value === showAll ? null : value);
   };
 
   const label = t("optionsLabels.folioAsLimit");
@@ -70,43 +108,5 @@ export default function FolioOption() {
           })}
       </Select>
     </SelectorFrame>
-  );
-}
-
-function SelectorFrame({
-  children,
-  label,
-}: {
-  children: React.ReactNode;
-  label: string;
-}) {
-  return (
-    <Box sx={{ width: 1, my: 2 }}>
-      <FormControl sx={{ width: 1 }} title={label}>
-        <InputLabel id="folio-option-selector-label">{label}</InputLabel>
-        {children}
-      </FormControl>
-    </Box>
-  );
-}
-
-function Loading({ showAll, label }: { showAll: string; label: string }) {
-  return (
-    <Select
-      labelId="folio-option-selector-label"
-      value={showAll}
-      inputProps={{
-        id: "folio-option-selector",
-      }}
-      input={<OutlinedInput label={label} />}
-      displayEmpty
-    >
-      <MenuItem value={showAll}>
-        <em>{showAll}</em>
-      </MenuItem>
-      <MenuItem value="loading">
-        <CircularProgress color="inherit" size={20} />
-      </MenuItem>
-    </Select>
   );
 }

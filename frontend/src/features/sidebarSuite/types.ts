@@ -52,7 +52,6 @@ export type DbSourceFilters = Omit<WorkingAPIFilters, IndividualFilterName>;
 
 export type DbSourceFilterName = keyof DbSourceFilters;
 
-
 export type RequestFilters = WorkingAPIFilters & {
   language: APISchemas["Languages"]; // TODO: DUE TO BE DEFINED ON API SO SHOULD BE REMOVED WHEN AVAILABLE.
 };
@@ -94,7 +93,6 @@ export type DbSourceFiltersSelectedIds = Record<
   DbSourceFilterUISetting,
   string[]
 >;
-
 
 /**
  *
