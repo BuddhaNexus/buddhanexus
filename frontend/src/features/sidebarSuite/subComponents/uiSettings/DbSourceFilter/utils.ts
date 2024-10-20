@@ -1,13 +1,14 @@
 import { DbSourceTreeNodeDataType as NodeType } from "@components/db/SearchableDbSourceTree/types";
 import {
-  DbSourceFilters,
   DbSourceFilterUISetting,
+  WorkingAPIFilters,
+  APIFilterName,
 } from "@features/sidebarSuite/types";
 import { exhaustiveStringTuple } from "@utils/helpers";
 
 export const DB_SOURCE_UPDATE_MAPPING: Record<
   NodeType,
-  Record<DbSourceFilterUISetting, keyof DbSourceFilters>
+  Record<DbSourceFilterUISetting, APIFilterName>
 > = {
   [NodeType.Collection]: {
     include_sources: "include_collections",
@@ -24,10 +25,10 @@ export const DB_SOURCE_UPDATE_MAPPING: Record<
 };
 
 export const getFilterIds = ({
-  filterParam,
+  filtersParam,
   filterSettingName,
 }: {
-  filterParam: DbSourceFilters | null;
+  filtersParam: WorkingAPIFilters | null;
   filterSettingName: DbSourceFilterUISetting;
 }) => {
   const {
@@ -37,7 +38,7 @@ export const getFilterIds = ({
     include_collections = [],
     include_categories = [],
     include_files = [],
-  } = filterParam ?? {};
+  } = filtersParam ?? {};
 
   const idMapping = {
     include_sources: [
@@ -72,57 +73,8 @@ export const updateFilterParamArray = ({
   return array;
 };
 
-export const removeItemsById = ({
-  filterParam,
-  id,
-  filterSettingName,
-}: {
-  filterParam: DbSourceFilters;
-  id: string;
-  filterSettingName: DbSourceFilterUISetting;
-}) => {
-  let updatedParams = { ...filterParam };
-
-  for (const [key, filterValue] of Object.entries(filterParam)) {
-    let updatedFilterValue = filterValue;
-    if (key.startsWith(filterSettingName)) {
-      updatedFilterValue = updateFilterParamArray({
-        array: filterValue ?? [],
-        id,
-        action: "remove",
-      });
-    }
-
-    updatedParams = {
-      ...updatedParams,
-      [key]: updatedFilterValue.length > 0 ? updatedFilterValue : undefined,
-    };
-  }
-
-  return updatedParams;
-};
-
-export const clearAllFilterParams = ({
-  filterParam,
-  filterSettingName,
-}: {
-  filterParam: DbSourceFilters;
-  filterSettingName: DbSourceFilterUISetting;
-}) => {
-  let updatedParams = { ...filterParam };
-  for (const [key] of Object.entries(filterParam)) {
-    if (key.startsWith(filterSettingName)) {
-      updatedParams = {
-        ...updatedParams,
-        [key]: undefined,
-      };
-    }
-  }
-  return updatedParams;
-};
-
 export const dbSourceFilterSelectors =
   exhaustiveStringTuple<DbSourceFilterUISetting>()(
     "exclude_sources",
-    "include_sources",
+    "include_sources"
   );

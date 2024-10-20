@@ -39,7 +39,19 @@ const AllAPIRequestPropModel: AllAPIRequestProps = {
  *
  */
 
-type WorkingAPIFilters = NonNullable<AllAPIRequestProps["filters"]>;
+export type WorkingAPIFilters = NonNullable<AllAPIRequestProps["filters"]>;
+
+export type APIFilterName = keyof WorkingAPIFilters;
+
+export type IndividualFilterName = Extract<
+  APIFilterName,
+  "languages" | "score" | "par_length"
+>;
+
+export type DbSourceFilters = Omit<WorkingAPIFilters, IndividualFilterName>;
+
+export type DbSourceFilterName = keyof DbSourceFilters;
+
 
 export type RequestFilters = WorkingAPIFilters & {
   language: APISchemas["Languages"]; // TODO: DUE TO BE DEFINED ON API SO SHOULD BE REMOVED WHEN AVAILABLE.
@@ -83,15 +95,6 @@ export type DbSourceFiltersSelectedIds = Record<
   string[]
 >;
 
-//TODO: Remove after filter refactor
-export type DbSourceFilters = {
-  include_files?: string[];
-  include_categories?: string[];
-  include_collections?: string[];
-  exclude_files?: string[];
-  exclude_categories?: string[];
-  exclude_collections?: string[];
-};
 
 /**
  *

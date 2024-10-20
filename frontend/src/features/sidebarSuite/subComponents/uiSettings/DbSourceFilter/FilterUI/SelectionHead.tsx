@@ -1,14 +1,18 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
 import { SelectionHeadBox } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/styledComponents";
-import { clearAllFilterParams } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
-import type {
-  DbSourceFilters,
-  DbSourceFilterUISetting,
-} from "@features/sidebarSuite/types";
+import type { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { FormLabel, IconButton } from "@mui/material";
-import { parseAsJson, useQueryState } from "nuqs";
+
+import {
+  useExcludeCollectionsParam,
+  useExcludeCategoriesParam,
+  useExcludeFilesParam,
+  useIncludeCollectionsParam,
+  useIncludeCategoriesParam,
+  useIncludeFilesParam,
+} from "@components/hooks/params";
 
 type SelectionHeadProps = {
   filterName: DbSourceFilterUISetting;
@@ -18,32 +22,35 @@ type SelectionHeadProps = {
 const SelectionHead = ({ filterName, selectionIds }: SelectionHeadProps) => {
   const { t } = useTranslation("settings");
 
-  const [, setFilterParam] = useQueryState(
-    "filters",
-    parseAsJson<DbSourceFilters>(),
-  );
+  const [, setExcludeCollections] = useExcludeCollectionsParam();
+  const [, setExcludeCategories] = useExcludeCategoriesParam();
+  const [, setExcludeFiles] = useExcludeFilesParam();
+  const [, setIncludeCollections] = useIncludeCollectionsParam();
+  const [, setIncludeCategories] = useIncludeCategoriesParam();
+  const [, setIncludeFiles] = useIncludeFilesParam();
 
-  const handleClearSources = React.useCallback(
-    async (filterSettingName: DbSourceFilterUISetting) => {
-      await setFilterParam((filterParam) => {
-        return clearAllFilterParams({
-          filterParam: filterParam ?? {},
-          filterSettingName,
-        });
-      });
-    },
-    [setFilterParam],
-  );
+  const handleClearSources = React.useCallback(async () => {
+    await setExcludeCollections(null);
+    await setExcludeCategories(null);
+    await setExcludeFiles(null);
+    await setIncludeCollections(null);
+    await setIncludeCategories(null);
+    await setIncludeFiles(null);
+  }, [
+    setExcludeCollections,
+    setExcludeCategories,
+    setExcludeFiles,
+    setIncludeCollections,
+    setIncludeCategories,
+    setIncludeFiles,
+  ]);
 
   return (
     <SelectionHeadBox>
       <FormLabel>{t(`filtersLabels.${filterName}`)}</FormLabel>
 
       {selectionIds.length > 0 ? (
-        <IconButton
-          aria-label="clear"
-          onClick={() => handleClearSources(filterName)}
-        >
+        <IconButton aria-label="clear" onClick={handleClearSources}>
           <CancelOutlinedIcon fontSize="small" />
         </IconButton>
       ) : null}

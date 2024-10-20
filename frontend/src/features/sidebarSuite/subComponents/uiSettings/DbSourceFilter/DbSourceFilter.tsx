@@ -9,6 +9,7 @@ import { parseAsJson, useQueryState } from "nuqs";
 
 import FilterUI from "./FilterUI";
 import { dbSourceFilterSelectors, getFilterIds } from "./utils";
+import { useDbQueryFilters } from "@components/hooks/commonQueryParams";
 
 const DbSourceFilter = ({
   filterName,
@@ -20,10 +21,7 @@ const DbSourceFilter = ({
    * - add render condition on search page if language is not set
    * */
 
-  const [filterParam] = useQueryState(
-    "filters",
-    parseAsJson<DbSourceFilters>(),
-  );
+  const filtersParam = useDbQueryFilters();
 
   const selectedSourceFilterIds = React.useMemo(
     () =>
@@ -32,14 +30,14 @@ const DbSourceFilter = ({
           return {
             ...selectedIds,
             [filterSettingName]: getFilterIds({
-              filterParam,
+              filtersParam,
               filterSettingName,
             }),
           };
         },
-        {} as Record<DbSourceFilterUISetting, string[]>,
+        {} as Record<DbSourceFilterUISetting, string[]>
       ),
-    [filterParam],
+    [filtersParam]
   );
 
   return (

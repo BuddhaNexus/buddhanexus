@@ -5,14 +5,18 @@ import {
   MultiSelectionBox,
   SelectionChipsBox,
 } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/styledComponents";
-import { removeItemsById } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
-import type {
-  DbSourceFilters,
-  DbSourceFilterUISetting,
-} from "@features/sidebarSuite/types";
+import type { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Button, Chip, IconButton } from "@mui/material";
-import { parseAsJson, useQueryState } from "nuqs";
+
+import {
+  useExcludeCollectionsParam,
+  useExcludeCategoriesParam,
+  useExcludeFilesParam,
+  useIncludeCollectionsParam,
+  useIncludeCategoriesParam,
+  useIncludeFilesParam,
+} from "@components/hooks/params";
 
 const CHIP_GAP = 6;
 const MAX_CHIP_ROW_WIDTH = 253;
@@ -35,10 +39,12 @@ const DbSourceFilterInput = ({
 }: DbSourceFilterInputProps) => {
   const { t } = useTranslation("common");
 
-  const [, setFilterParam] = useQueryState(
-    "filters",
-    parseAsJson<DbSourceFilters>(),
-  );
+  const [, setExcludeCollections] = useExcludeCollectionsParam();
+  const [, setExcludeCategories] = useExcludeCategoriesParam();
+  const [, setExcludeFiles] = useExcludeFilesParam();
+  const [, setIncludeCollections] = useIncludeCollectionsParam();
+  const [, setIncludeCategories] = useIncludeCategoriesParam();
+  const [, setIncludeFiles] = useIncludeFilesParam();
 
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [showButton, setShowButton] = React.useState(false);
@@ -91,15 +97,38 @@ const DbSourceFilterInput = ({
 
   const handleClearSourcesById = React.useCallback(
     async (id: string, filterSettingName: DbSourceFilterUISetting) => {
-      await setFilterParam((filterParam) => {
-        return removeItemsById({
-          filterParam: filterParam ?? {},
-          id,
-          filterSettingName,
-        });
-      });
+      if (filterSettingName.startsWith("exclude")) {
+        await setExcludeCollections((prev) =>
+          prev ? prev.filter((target) => target !== id) : prev
+        );
+        await setExcludeCategories((prev) =>
+          prev ? prev.filter((target) => target !== id) : prev
+        );
+        await setExcludeFiles((prev) =>
+          prev ? prev.filter((target) => target !== id) : prev
+        );
+      }
+
+      if (filterSettingName.startsWith("include")) {
+        await setIncludeCollections((prev) =>
+          prev ? prev.filter((target) => target !== id) : prev
+        );
+        await setIncludeCategories((prev) =>
+          prev ? prev.filter((target) => target !== id) : prev
+        );
+        await setIncludeFiles((prev) =>
+          prev ? prev.filter((target) => target !== id) : prev
+        );
+      }
     },
-    [setFilterParam],
+    [
+      setExcludeCollections,
+      setExcludeCategories,
+      setExcludeFiles,
+      setIncludeCollections,
+      setIncludeCategories,
+      setIncludeFiles,
+    ]
   );
 
   return (
@@ -122,7 +151,7 @@ const DbSourceFilterInput = ({
         >
           <ArrowDropDownIcon
             sx={{
-              transform: open ? "rotate(180deg)" : undefined,
+              traacnsform: open ? "rotate(180deg)" : undefined,
               transition: "transform 200ms",
             }}
           />

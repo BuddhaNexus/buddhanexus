@@ -17,12 +17,17 @@ import {
   DB_SOURCE_UPDATE_MAPPING,
   updateFilterParamArray,
 } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/utils";
-import {
-  DbSourceFilters,
-  DbSourceFilterUISetting,
-} from "@features/sidebarSuite/types";
+import { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
 import { Box, Checkbox, Tooltip, Typography } from "@mui/material";
-import { parseAsJson, useQueryState } from "nuqs";
+
+import {
+  useExcludeCollectionsParam,
+  useExcludeCategoriesParam,
+  useExcludeFilesParam,
+  useIncludeCollectionsParam,
+  useIncludeCategoriesParam,
+  useIncludeFilesParam,
+} from "@components/hooks/params";
 
 const CHARACTER_WIDTH = 6.5;
 const INDENTATION_WIDTH = 90;
@@ -56,10 +61,12 @@ export function DbSourceFilterTreeNode({
 }: DbSourceFilterTreeNodeProps) {
   const { name, id, dataType } = node.data;
 
-  const [, setFilterParam] = useQueryState(
-    "filters",
-    parseAsJson<DbSourceFilters>(),
-  );
+  const [, setExcludeCollections] = useExcludeCollectionsParam();
+  const [, setExcludeCategories] = useExcludeCategoriesParam();
+  const [, setExcludeFiles] = useExcludeFilesParam();
+  const [, setIncludeCollections] = useIncludeCollectionsParam();
+  const [, setIncludeCategories] = useIncludeCategoriesParam();
+  const [, setIncludeFiles] = useIncludeFilesParam();
 
   let elementWidth = DEFAULT_NODE_WIDTH;
   const nameWidth = name.length * CHARACTER_WIDTH;
@@ -79,22 +86,58 @@ export function DbSourceFilterTreeNode({
       filterName: DbSourceFilterUISetting;
     }) => {
       const { id: itemId, dataType: type } = item;
+      const targetFilter = DB_SOURCE_UPDATE_MAPPING[type][filterName];
 
-      await setFilterParam((currentFilterParam) => {
-        const updatedFilterParam = { ...currentFilterParam };
+      if (targetFilter === "exclude_collections") {
+        await setExcludeCollections((prev) =>
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+        );
+        return;
+      }
 
-        const updateKey = DB_SOURCE_UPDATE_MAPPING[type][filterName];
+      if (targetFilter === "exclude_categories") {
+        await setExcludeCategories((prev) =>
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+        );
+        return;
+      }
 
-        updatedFilterParam[updateKey] = updateFilterParamArray({
-          array: currentFilterParam?.[updateKey] ?? [],
-          id: itemId,
-          action,
-        });
+      if (targetFilter === "exclude_files") {
+        await setExcludeFiles((prev) =>
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+        );
+        return;
+      }
 
-        return updatedFilterParam;
-      });
+      if (targetFilter === "include_collections") {
+        await setIncludeCollections((prev) =>
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+        );
+        return;
+      }
+
+      if (targetFilter === "include_categories") {
+        await setIncludeCategories((prev) =>
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+        );
+        return;
+      }
+
+      if (targetFilter === "include_files") {
+        await setIncludeFiles((prev) =>
+          updateFilterParamArray({ array: prev ?? [], id: itemId, action })
+        );
+        return;
+      }
     },
-    [setFilterParam],
+    [
+      setExcludeCollections,
+      setExcludeCategories,
+      setExcludeFiles,
+      setIncludeCollections,
+      setIncludeCategories,
+      setIncludeFiles,
+    ]
   );
 
   return (
