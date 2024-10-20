@@ -38,10 +38,10 @@ class Filters(BaseModel):
 
 class GeneralInput(BaseModel):
     filename: str
-    filters: Optional[Filters]
+    filters: Filters
     page: int = 0
     sort_method: Sortmethod = Sortmethod.position
-    folio: str = ""
+    folio: Optional[str] = ""
 
 
 class FullText(BaseModel):
