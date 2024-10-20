@@ -100,11 +100,23 @@ export interface paths {
      * @description Endpoint for the table view. Accepts filters.
      *     :return: List of segments and parallels for the table view.
      *
-     *     sort_method can be:
-     *         "position": matches sorted by segment number position in the root text (default)
-     *         "quoted-text": matches sorted by segment number position in the target/quoted text
-     *         "length": matches sorted by match-length in the root text
-     *         "length2": matches sorted by match-length in the target/quoted text
+     *     sort_method options:
+     *
+     *         "position": "By Position in Inquiry Text"
+     *
+     *             (matches sorted by segment number position in the root text (default))
+     *
+     *         "quotedtext": "By Position in Hit Text(s)"
+     *
+     *             (matches sorted by segment number position in the target/quoted text)
+     *
+     *         "length": "By Length of match in Inquiry Text (beginning with the longest)"
+     *
+     *             (matches sorted by match-length in the root text
+     *
+     *         "length2": "By Length of match in Hit Text (beginning with the longest)"
+     *
+     *             (matches sorted by match-length in the target/quoted text)
      */
     post: operations["get_table_view_table_view_table__post"];
     delete?: never;
@@ -129,7 +141,7 @@ export interface paths {
      *
      *     "sort_method" can be:
      *         "position": matches sorted by segment number position in the root text (default).
-     *         "quoted-text": matches sorted by segment number position in the target/quoted text.
+     *         "quotedtext": matches sorted by segment number position in the target/quoted text.
      *         "length": matches sorted by match-length in the root text.
      *         "length2": matches sorted by match-length in the target/quoted text.
      *
@@ -485,11 +497,8 @@ export interface components {
        * @default 0
        */
       page: number;
-      /**
-       * Sort Method
-       * @default position
-       */
-      sort_method: string;
+      /** @default position */
+      sort_method: components["schemas"]["Sortmethod"];
       /**
        * Folio
        * @default
@@ -651,6 +660,12 @@ export interface components {
       /** Segtext */
       segtext: components["schemas"]["FullText"][];
     };
+    /**
+     * Sortmethod
+     * @description An enumeration.
+     * @enum {string}
+     */
+    Sortmethod: "position" | "quotedtext" | "length" | "length2";
     /** TableDownloadInput */
     TableDownloadInput: {
       /** Filename */
@@ -661,11 +676,8 @@ export interface components {
        * @default 0
        */
       page: number;
-      /**
-       * Sort Method
-       * @default position
-       */
-      sort_method: string;
+      /** @default position */
+      sort_method: components["schemas"]["Sortmethod"];
       /**
        * Folio
        * @default

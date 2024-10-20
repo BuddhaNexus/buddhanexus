@@ -38,7 +38,8 @@
     "sort": {
       "selector": "Sortiermethode",
       "position": "Standard – Position im Anfragetext",
-      "quoted-text": "Position in passenden Texten",
+      "quotedtext": "Position in passenden Texten",
+      "length": "Länge des übereinstimmenden Zeichens (<)",
       "length2": "Länge des übereinstimmenden Zeichens (>)"
     },
     "wylie": "Wylie",

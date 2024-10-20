@@ -38,7 +38,8 @@
     "sort": {
       "selector": "Sorting Method",
       "position": "Default – Position in inquiry text",
-      "quoted-text": "Position in match texts",
+      "quotedtext": "Position in match texts",
+      "length": "Length of character match (<)",
       "length2": "Length of character match (>)"
     },
     "download_data": "Download results as xmlx file",

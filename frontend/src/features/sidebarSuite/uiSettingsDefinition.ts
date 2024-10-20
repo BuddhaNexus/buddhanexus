@@ -50,8 +50,9 @@ export const displayUISettings = exhaustiveStringTuple<DisplayUISettingName>()(
 
 export const sortMethods = exhaustiveStringTuple<SortMethod>()(
   "position",
-  "quoted-text",
-  "length2",
+  "quotedtext",
+  "length",
+  "length2"
 );
 
 export const utilityUISettings = exhaustiveStringTuple<UtilityUISettingName>()(

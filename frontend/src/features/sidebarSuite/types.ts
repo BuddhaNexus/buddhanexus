@@ -114,7 +114,7 @@ export type DisplayUISettingName =
 
 // --- DISPLAY TYPES VALUES
 
-export type SortMethod = "position" | "quoted-text" | "length2"; // TODO: DUE TO BE DEFINED ON API SO SHOULD BE CONVERTED TO TYPE DERIVED FROM API APISchemas
+export type SortMethod = APISchemas["Sortmethod"];
 
 export type Script = "Unicode" | "Wylie";
 
