@@ -35,6 +35,9 @@ const DbSourceBrowserTree = memo(function DbSourceBrowserTree({
         handleTreeChange({ activeTree, setActiveTree, setBreadcrumbs });
       }}
       searchTerm={searchTerm}
+      searchMatch={(node, term) =>
+        node.data.searchField.toLocaleLowerCase().includes(term)
+      }
       initialData={data}
       openByDefault={false}
       disableDrag={true}

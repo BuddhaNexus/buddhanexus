@@ -18,6 +18,7 @@ const AllAPIRequestPropModel: AllAPIRequestProps = {
     include_collections: [],
     include_categories: [],
     include_files: [],
+    language: "all",
     languages: ["all"],
   },
   active_segment: "",

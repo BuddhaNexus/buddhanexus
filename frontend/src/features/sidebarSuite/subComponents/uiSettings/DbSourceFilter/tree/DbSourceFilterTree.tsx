@@ -41,6 +41,9 @@ export const DbSourceFilterSelectorTree = memo(
           handleTreeChange({ activeTree, setActiveTree, setBreadcrumbs });
         }}
         searchTerm={searchTerm}
+        searchMatch={(node, term) =>
+          node.data.searchField.toLocaleLowerCase().includes(term)
+        }
         initialData={data}
         openByDefault={false}
         rowHeight={46}

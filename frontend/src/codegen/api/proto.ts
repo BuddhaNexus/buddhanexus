@@ -317,7 +317,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/menus/metadata/": {
+  "/menu/menudata/": {
     parameters: {
       query?: never;
       header?: never;
@@ -326,9 +326,9 @@ export interface paths {
     };
     /**
      * Get Data For Sidebar Menu
-     * @description Endpoint for Metadata, formerly known as the sidebar menu.
+     * @description Endpoint for Menudata, formerly known as the sidebar menu.
      */
-    get: operations["get_data_for_sidebar_menu_menus_metadata__get"];
+    get: operations["get_data_for_sidebar_menu_menu_menudata__get"];
     put?: never;
     post?: never;
     delete?: never;
@@ -458,7 +458,7 @@ export interface components {
     /** FullMatchText */
     FullMatchText: {
       /** Text */
-      text?: string;
+      text: string;
       /**
        * Highlightcolor
        * @default 0
@@ -473,14 +473,14 @@ export interface components {
     /** FullNames */
     FullNames: {
       /** Display Name */
-      display_name?: string;
+      display_name: string;
       /** Text Name */
-      text_name?: string;
+      text_name: string;
     };
     /** FullText */
     FullText: {
       /** Text */
-      text?: string;
+      text: string;
       /**
        * Highlightcolor
        * @default 0
@@ -491,7 +491,7 @@ export interface components {
     GeneralInput: {
       /** Filename */
       filename: string;
-      filters?: components["schemas"]["Filters"];
+      filters: components["schemas"]["Filters"];
       /**
        * Page
        * @default 0
@@ -537,7 +537,7 @@ export interface components {
     GraphInput: {
       /** Filename */
       filename: string;
-      filters?: components["schemas"]["GraphFilters"];
+      filters: components["schemas"]["GraphFilters"];
     };
     /** GraphViewOutput */
     GraphViewOutput: components["schemas"]["GraphData"];
@@ -580,30 +580,30 @@ export interface components {
     };
     /** MenuOutput */
     MenuOutput: components["schemas"]["MenuItem"][];
-    /** MetadataOutput */
-    MetadataOutput: {
-      /** Metadata */
-      metadata: components["schemas"]["Collection"][];
+    /** MenudataOutput */
+    MenudataOutput: {
+      /** Menudata */
+      menudata: components["schemas"]["Collection"][];
     };
     /** NumbersViewOutput */
     NumbersViewOutput: components["schemas"]["api__endpoints__models__numbers_view_models__Segment"][];
     /** Parallel */
     Parallel: {
       /** Segmentnr */
-      segmentnr?: string;
+      segmentnr: string;
       /** Displayname */
-      displayName?: string;
+      displayName: string;
       /** Filename */
-      fileName?: string;
+      fileName: string;
       /** Category */
-      category?: string;
+      category: string;
     };
     /**
      * SearchFilters
      * @description Filters for search
      */
     SearchFilters: {
-      languages?: components["schemas"]["Languages"][];
+      language: components["schemas"]["Languages"];
       /**
        * Include Files
        * @default []
@@ -639,7 +639,7 @@ export interface components {
     SearchInput: {
       /** Search String */
       search_string: string;
-      filters?: components["schemas"]["SearchFilters"];
+      filters: components["schemas"]["SearchFilters"];
     };
     /** SearchOutput */
     SearchOutput: {
@@ -670,7 +670,7 @@ export interface components {
     TableDownloadInput: {
       /** Filename */
       filename: string;
-      filters?: components["schemas"]["Filters"];
+      filters: components["schemas"]["Filters"];
       /**
        * Page
        * @default 0
@@ -759,11 +759,11 @@ export interface components {
     /** Segment */
     api__endpoints__models__table_view_models__Segment: {
       /** Par Segnr Range */
-      par_segnr_range?: string;
+      par_segnr_range: string;
       par_full_names: components["schemas"]["FullNames"];
       root_full_names: components["schemas"]["FullNames"];
       /** Root Segnr Range */
-      root_segnr_range?: string;
+      root_segnr_range: string;
       /** Par Length */
       par_length: number;
       /** Root Length */
@@ -1164,7 +1164,7 @@ export interface operations {
       };
     };
   };
-  get_data_for_sidebar_menu_menus_metadata__get: {
+  get_data_for_sidebar_menu_menu_menudata__get: {
     parameters: {
       query: {
         /** @description language to be used */
@@ -1180,7 +1180,7 @@ export interface operations {
       200: {
         headers: Record<string, unknown>;
         content: {
-          "application/json": components["schemas"]["MetadataOutput"];
+          "application/json": components["schemas"]["MenudataOutput"];
         };
       };
       /** @description Validation Error */

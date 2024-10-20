@@ -11,8 +11,7 @@ function parseAPISearchData(data: APIPostResponse<"/search/">) {
       category,
       language,
       segment_nr,
-      // TODO: check links are to be removed
-      full_names: { display_name, text_name /*link1, link2*/ },
+      full_names: { display_name, text_name },
       similarity,
       segtext,
     } = result;
