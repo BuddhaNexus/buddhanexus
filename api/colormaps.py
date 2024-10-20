@@ -111,8 +111,8 @@ def calculate_color_maps_text_view(data):
 
 def calculate_color_maps_table_view(data):
     """calculates the color maps for the table view"""
-    # it is _not_ nice that we need to test for the length of these elements;
-    # it should be dealt with at data-loader level...
+    # The below length testing is only needed as long as the database is not
+    # completely loaded. After that it should be removed.
     data[:] = [
         x for x in data if len(x["root_seg_text"]) > 0 and len(x["par_segment"]) > 0
     ]

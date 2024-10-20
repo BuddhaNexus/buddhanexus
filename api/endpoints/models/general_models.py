@@ -11,11 +11,17 @@ class Languages(str, Enum):
     chinese = "zh"
 
 
+class Sortmethod(str, Enum):
+    position = "position"
+    quotedtext = "quotedtext"
+    length = "length"
+    length2 = "length2"
+
+
 class Filters(BaseModel):
     """
     Filters for matches
     """
-
     par_length: int = 0
     score: int = 0
     languages: Optional[List[Languages]]
@@ -34,7 +40,7 @@ class GeneralInput(BaseModel):
     filename: str
     filters: Optional[Filters]
     page: int = 0
-    sort_method: str = "position"
+    sort_method: Sortmethod = Sortmethod.position
     folio: str = ""
 
 

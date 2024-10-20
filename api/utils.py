@@ -52,7 +52,7 @@ def get_sort_key(sort_method) -> str:
     sort_key = "parallels_sorted_by_src_pos"
     if sort_method == "position":
         sort_key = "parallels_sorted_by_src_pos"
-    elif sort_method == "quoted-text":
+    elif sort_method == "quotedtext":
         sort_key = "parallels_sorted_by_tgt_pos"
     elif sort_method == "length":
         sort_key = "parallels_sorted_by_length_src"

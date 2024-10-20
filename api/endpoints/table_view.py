@@ -44,13 +44,13 @@ async def get_table_view(input: GeneralInput) -> Any:
     Endpoint for the table view. Accepts filters.
     :return: List of segments and parallels for the table view.
 
-    sort_method can be:
+    sort_method options:
 
         "position": "By Position in Inquiry Text"
 
             (matches sorted by segment number position in the root text (default))
 
-        "quoted-text": "By Position in Hit Text(s)"
+        "quotedtext": "By Position in Hit Text(s)"
 
             (matches sorted by segment number position in the target/quoted text)
 
@@ -90,7 +90,7 @@ async def get_table_download(input: TableDownloadInput) -> Any:
 
     "sort_method" can be:
         "position": matches sorted by segment number position in the root text (default).
-        "quoted-text": matches sorted by segment number position in the target/quoted text.
+        "quotedtext": matches sorted by segment number position in the target/quoted text.
         "length": matches sorted by match-length in the root text.
         "length2": matches sorted by match-length in the target/quoted text.
 
