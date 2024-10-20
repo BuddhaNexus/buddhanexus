@@ -3,10 +3,13 @@ import { useSearchParams } from "next/navigation";
 import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
 import { SourceLanguage } from "@utils/constants";
+
+type PaginationState = [startEdgePage?: number, endEdgePage?: number];
+type QueryParams = Record<string, string>;
 
 const cleanUpQueryParams = (queryParams: QueryParams): QueryParams => {
   const {
@@ -20,10 +23,6 @@ const cleanUpQueryParams = (queryParams: QueryParams): QueryParams => {
   } = queryParams;
   return apiQueryParams;
 };
-
-type PaginationState = [startEdgePage?: number, endEdgePage?: number];
-
-type QueryParams = Record<string, string>;
 
 // arbitrarily high number, as per virtuoso docs
 const START_INDEX = 1_000_000;
@@ -39,7 +38,6 @@ interface UseTextPageReturn {
   isFetching: boolean;
   isFetchingNextPage: boolean;
   isFetchingPreviousPage: boolean;
-  isLoading: boolean;
   sourceLanguage: SourceLanguage;
 }
 
@@ -81,11 +79,11 @@ export function useTextPage(): UseTextPageReturn {
     fetchPreviousPage,
     isFetchingPreviousPage,
     isFetchingNextPage,
-    isLoading,
     isFetching,
     isError,
   } = useInfiniteQuery({
     enabled: Boolean(fileName),
+    placeholderData: keepPreviousData,
     initialPageParam: selectedSegment ? undefined : 0,
     queryKey: DbApi.TextView.makeQueryKey(
       { file_name: fileName, ...apiQueryParams },
@@ -184,18 +182,19 @@ export function useTextPage(): UseTextPageReturn {
     [data?.pages],
   );
 
+  const hasData = Boolean(data);
+
   return {
     allParallels,
     firstItemIndex,
     handleFetchingNextPage,
     handleFetchingPreviousPage,
-    hasData: Boolean(data),
+    hasData,
     isError,
     isFallback,
     isFetching,
     isFetchingNextPage,
     isFetchingPreviousPage,
-    isLoading,
     sourceLanguage,
   };
 }

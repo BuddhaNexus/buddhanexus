@@ -14,7 +14,6 @@ export default function TextPage() {
     isError,
     sourceLanguage,
     isFallback,
-    isLoading,
     isFetching,
     hasData,
     allParallels,
@@ -41,7 +40,7 @@ export default function TextPage() {
     <PageContainer
       maxWidth="xl"
       backgroundName={sourceLanguage}
-      isLoading={isLoading || isFetching}
+      isLoading={isFetching}
       isQueryResultsPage
     >
       <DbViewPageHead />
