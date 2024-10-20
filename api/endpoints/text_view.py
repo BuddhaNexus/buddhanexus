@@ -59,7 +59,6 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
         text_view_queries.QUERY_TEXT_AND_PARALLELS,
         bind_vars=current_bind_vars,
     )
-    print(text_segments_query_result.result)
     data_with_colormaps = calculate_color_maps_text_view(
         text_segments_query_result.result[0]
     )
