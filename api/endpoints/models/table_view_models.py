@@ -1,19 +1,13 @@
 from pydantic import BaseModel
 from typing import List
-from .general_models import GeneralInput, FullNames, FullText, Filters, Union
-
-"""
-The table view has a problem with null integers being returned
-for Pali as long as the wrong dataset still exists.
-The `Union[str, None] = None` can be replaced by `str` when this is resolved.
-"""
+from .general_models import GeneralInput, FullNames, FullText, Filters
 
 
 class Segment(BaseModel):
-    par_segnr_range: Union[str, None] = None
+    par_segnr_range: str
     par_full_names: FullNames
     root_full_names: FullNames
-    root_segnr_range: Union[str, None] = None
+    root_segnr_range: str
     par_length: int
     root_length: int
     score: int

@@ -25,5 +25,5 @@ class Collection(CollectionBase):
     categories: List[Category]
 
 
-class MetadataOutput(BaseModel):
-    metadata: List[Collection]
+class MenudataOutput(BaseModel):
+    menudata: List[Collection]

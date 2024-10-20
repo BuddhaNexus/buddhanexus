@@ -14,7 +14,7 @@ class GraphFilters(BaseModel):
 
 class GraphInput(BaseModel):
     filename: str
-    filters: Optional[GraphFilters]
+    filters: GraphFilters
 
 
 class GraphData(BaseModel):

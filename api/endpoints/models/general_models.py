@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, Union, List
+from typing import Optional, List
 from enum import Enum
 
 
@@ -45,10 +45,10 @@ class GeneralInput(BaseModel):
 
 
 class FullText(BaseModel):
-    text: Union[str, None] = None
-    highlightColor: Union[int, None] = 0
+    text: str
+    highlightColor: int = 0
 
 
 class FullNames(BaseModel):
-    display_name: Union[str, None] = None
-    text_name: Union[str, None] = None
+    display_name: str
+    text_name: str

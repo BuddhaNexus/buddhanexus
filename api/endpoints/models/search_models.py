@@ -7,13 +7,11 @@ Search results are not yet working so the below needs to
 be updated accordingly
 """
 
-
 class SearchFilters(BaseModel):
     """
     Filters for search
     """
-
-    languages: Optional[List[Languages]]
+    language: Languages
     include_files: Optional[List[str]] = []
     exclude_files: Optional[List[str]] = []
 
@@ -26,7 +24,7 @@ class SearchFilters(BaseModel):
 
 class SearchInput(BaseModel):
     search_string: str
-    filters: Optional[SearchFilters]
+    filters: SearchFilters
 
 
 class SearchResults(BaseModel):

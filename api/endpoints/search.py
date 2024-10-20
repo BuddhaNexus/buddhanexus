@@ -19,7 +19,7 @@ async def get_search_results(input: SearchInput) -> Any:
     result = []
     search_string = input.search_string.lower()
     search_strings = search_utils.preprocess_search_string(
-        search_string[:300], input.filters.languages
+        search_string[:300], input.filters.language
     )
     print("SEARCH STRINGS", search_strings)
     query_search = execute_query(

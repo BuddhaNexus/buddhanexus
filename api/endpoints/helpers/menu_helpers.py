@@ -1,6 +1,6 @@
 import unidecode
 from collections import defaultdict
-from ..models.menus_models import Collection, Category, File
+from ..models.menu_models import Collection, Category, File
 
 
 def create_searchfield(result):

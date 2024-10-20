@@ -9,7 +9,7 @@ bo_converter = pyewts.pyewts()
 from aksharamukha import transliterate
 
 
-def preprocess_search_string(search_string, languages):
+def preprocess_search_string(search_string, language):
     bo = ""
     zh = ""
     sa = ""
@@ -49,13 +49,13 @@ def preprocess_search_string(search_string, languages):
     else:
         sa = search_string
 
-    if "sa" in languages:
+    if language == "sa":
         bo = zh = pa = ""
-    elif "bo" in languages:
+    elif language == "bo":
         zh = pa = ""
-    elif "zh" in languages:
+    elif language == "zh":
         bo = pa = ""
-    elif "pa" in languages:
+    elif language == "pa":
         bo = zh = ""
     return {"sa": sa, "sa_fuzzy": sa_fuzzy, "bo": bo, "pa": pa, "zh": zh}
 
