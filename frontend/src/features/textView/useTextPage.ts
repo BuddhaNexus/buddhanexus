@@ -41,13 +41,6 @@ interface UseTextPageReturn {
   sourceLanguage: SourceLanguage;
 }
 
-// open bugs:
-// 1. Selecting a segment reloads the page
-//   - it's caused by the queryKey param changing. Connected to issue 2
-// 2. On the first page load, the `selectedSegment` search param is not defined.
-//   - experiment with suspense and async components to fix it
-//   - migrating to the app router may also solve it
-//   - https://github.com/vercel/next.js/issues/53543
 export function useTextPage(): UseTextPageReturn {
   const { sourceLanguage, fileName, queryParams, defaultQueryParams } =
     useDbQueryParams();
