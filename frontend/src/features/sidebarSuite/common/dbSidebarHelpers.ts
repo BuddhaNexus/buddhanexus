@@ -47,7 +47,7 @@ export const defaultAnchorEls = {
   emailQueryLink: null,
 };
 
-export const onDownload = async ({
+export const onDownload = /*async*/ ({
   download,
   event,
   popperAnchorStateHandler,

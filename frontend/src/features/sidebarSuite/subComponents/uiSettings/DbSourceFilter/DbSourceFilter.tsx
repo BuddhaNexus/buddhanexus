@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { useDbQueryFilters } from "@components/hooks/commonQueryParams";
+import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
 import {
   // FilterUISettings,
   DbSourceFilterUISetting,

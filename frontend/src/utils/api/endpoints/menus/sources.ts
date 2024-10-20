@@ -3,7 +3,7 @@ import { transformDataForTreeView } from "@components/db/SearchableDbSourceTree/
 import type { APIGetRequestQuery, APIGetResponse } from "@utils/api/types";
 
 function parseStructuredDbSourceMenuData(
-  data: APIGetResponse<"/menu/menudata/">
+  data: APIGetResponse<"/menu/menudata/">,
 ) {
   return data.menudata.map(({ collection, categories }) => ({
     collection,
@@ -17,7 +17,7 @@ function parseStructuredDbSourceMenuData(
         })),
         name: categoryName,
         displayName: categorydisplayname,
-      })
+      }),
     ),
   }));
 }
@@ -27,7 +27,7 @@ export type ParsedStructuredDbSourceMenuData = ReturnType<
 >;
 
 export async function getDbSourceMenuData(
-  query: APIGetRequestQuery<"/menu/menudata/">
+  query: APIGetRequestQuery<"/menu/menudata/">,
 ) {
   const { data } = await apiClient.GET("/menu/menudata/", {
     params: { query },

@@ -1,5 +1,4 @@
 import { scriptSelectionAtom } from "@atoms";
-import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
 import { Typography } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
@@ -8,11 +7,10 @@ import { useAtomValue } from "jotai";
 interface Props {
   id: string;
   textParts: APISchemas["FullText"][];
+  language: Exclude<APISchemas["Languages"], "all">;
 }
 
-export const SearchResultItemText = ({ id, textParts }: Props) => {
-  // TODO: See if language is available from data rather than hook
-  const { dbLanguage } = useNullableDbRouterParams();
+export const SearchResultItemText = ({ id, textParts, language }: Props) => {
   const script = useAtomValue(scriptSelectionAtom);
 
   return (
@@ -29,7 +27,7 @@ export const SearchResultItemText = ({ id, textParts }: Props) => {
             {enscriptText({
               text: text ?? "",
               script,
-              language: dbLanguage,
+              language,
             })}
           </Typography>
         );

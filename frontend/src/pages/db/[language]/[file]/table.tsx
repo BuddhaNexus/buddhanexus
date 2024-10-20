@@ -8,7 +8,7 @@ import {
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
-import { useStandardViewBaseQueryParams } from "@components/hooks/commonQueryParams";
+import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useSortMethodParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";

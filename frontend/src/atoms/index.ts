@@ -13,6 +13,12 @@ import { atomWithStorage } from "jotai/utils";
 export const currentDbViewAtom = atom<DbViewEnum>(DEFAULT_DB_VIEW);
 
 /**
+ * SEARCH
+ */
+
+export const isSearchTriggeredAtom = atom(false);
+
+/**
  * SOURCE DATA TREE
  */
 

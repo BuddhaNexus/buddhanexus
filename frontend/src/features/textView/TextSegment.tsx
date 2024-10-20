@@ -112,19 +112,19 @@ export const TextSegment = ({
               fontFamily: sourceSans.style.fontFamily,
               color,
             }}
-            onClick={() => {
+            onClick={async () => {
               if (!matches) return;
-              updateSelectedLocationInGlobalState({
+              await updateSelectedLocationInGlobalState({
                 id: data?.segmentNumber,
                 matches: matches as string[],
                 index: i,
               });
             }}
-            onKeyDown={(event) => {
+            onKeyDown={async (event) => {
               // allow selecting the segments by pressing space or enter
               if (event.key !== " " && event.key !== "Enter") return;
               event.preventDefault();
-              updateSelectedLocationInGlobalState({
+              await updateSelectedLocationInGlobalState({
                 id: data?.segmentNumber,
                 matches: matches as string[],
                 index: i,

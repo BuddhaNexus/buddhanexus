@@ -55,10 +55,12 @@
     "showLess": "Show Less",
     "showAll": "Show All ({{count}})",
     "openAll": "Open All",
-    "closeAll": "Close All"
+    "closeAll": "Close All",
+    "close": "Close"
   },
   "search": {
     "pageTitle": "Search Results",
+    "dialogTitle": "BudhhaNexus Global Search",
     "inputPlaceholder": "Enter exact search term (whole words only)",
     "search": "Search",
     "runSearch": "Run search",

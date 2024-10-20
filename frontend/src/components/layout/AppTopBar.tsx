@@ -4,10 +4,7 @@ import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
 import LocaleSelector from "@components/layout/LocaleSelector";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
-import {
-  GlobalSearchDesktop,
-  GlobalSearchMobile,
-} from "@features/globalSearch";
+import { GlobalSearch } from "@features/globalSearch";
 import Brightness1Icon from "@mui/icons-material/Brightness4";
 import Brightness2Icon from "@mui/icons-material/Brightness7";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
@@ -52,115 +49,108 @@ export const AppTopBar = memo(function AppTopBar() {
   }, []);
 
   return (
-    <>
-      <AppBar
-        position="sticky"
-        elevation={0}
-        sx={{
-          zIndex: materialTheme.zIndex.drawer + 1,
-          borderBottom: `1px solid ${materialTheme.palette.background.accent}`,
-        }}
-        data-testid="app-bar"
-      >
-        <Toolbar>
-          <Box
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{
+        zIndex: materialTheme.zIndex.drawer + 1,
+        borderBottom: `1px solid ${materialTheme.palette.background.accent}`,
+      }}
+      data-testid="app-bar"
+    >
+      <Toolbar>
+        <Box
+          sx={{
+            display: "flex",
+            flex: 1,
+            grow: 1,
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <Link
+            color="inherit"
             sx={{
-              display: "flex",
-              flex: 1,
-              grow: 1,
-              justifyContent: "flex-start",
+              display: "inline-flex",
               alignItems: "center",
             }}
+            href="/"
+            underline="none"
+            noWrap
           >
-            <Link
-              color="inherit"
+            <Box
               sx={{
-                display: "inline-flex",
+                display: "flex",
                 alignItems: "center",
+                [materialTheme.breakpoints.up("sm")]: {
+                  pr: 1,
+                },
               }}
-              href="/"
-              underline="none"
-              noWrap
             >
               <Box
+                component="img"
+                src="/assets/logos/bn_tree_only.svg"
+                width={68}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  [materialTheme.breakpoints.up("sm")]: {
-                    pr: 1,
+                  maxHeight: 48,
+                  minWidth: 48,
+                  [materialTheme.breakpoints.down("sm")]: {
+                    maxHeight: 36,
                   },
                 }}
-              >
+                alt="logo"
+              />
+              {!isHomeRoute && (
                 <Box
                   component="img"
-                  src="/assets/logos/bn_tree_only.svg"
-                  width={68}
+                  src="/assets/logos/bn_text_only.svg"
+                  width={144}
                   sx={{
-                    maxHeight: 48,
-                    minWidth: 48,
+                    maxHeight: 24,
                     [materialTheme.breakpoints.down("sm")]: {
-                      maxHeight: 36,
+                      display: "none",
                     },
                   }}
-                  alt="logo"
+                  alt="BuddhaNexus"
                 />
-                {!isHomeRoute && (
-                  <Box
-                    component="img"
-                    src="/assets/logos/bn_text_only.svg"
-                    width={144}
-                    sx={{
-                      maxHeight: 24,
-                      [materialTheme.breakpoints.down("sm")]: {
-                        display: "none",
-                      },
-                    }}
-                    alt="BuddhaNexus"
-                  />
-                )}
-              </Box>
-            </Link>
+              )}
+            </Box>
+          </Link>
 
-            {!isSearchRoute && <GlobalSearchDesktop />}
-          </Box>
-          <Box
-            component="nav"
-            sx={{
-              display: "flex",
-              overflow: "auto",
-            }}
-          >
-            <>
-              <DatabaseMenu />
-              <AppBarLink title={t("header.guide")} href="/guide" />
-            </>
-          </Box>
-          <IconButton
-            sx={{ mr: 1 }}
-            color="inherit"
-            // TODO i18n
-            aria-label="Toggle theme"
-            data-testid="theme-toggle"
-            onClick={() => setMode(mode === "light" ? "dark" : "light")}
-          >
-            {isMounted ? (
-              mode === "dark" ? (
-                <Brightness1Icon fontSize="inherit" />
-              ) : (
-                <Brightness2Icon fontSize="inherit" />
-              )
+          {!isSearchRoute && <GlobalSearch />}
+        </Box>
+        <Box
+          component="nav"
+          sx={{
+            display: "flex",
+            overflow: "auto",
+          }}
+        >
+          <>
+            <DatabaseMenu />
+            <AppBarLink title={t("header.guide")} href="/guide" />
+          </>
+        </Box>
+        <IconButton
+          sx={{ mr: 1 }}
+          color="inherit"
+          // TODO i18n
+          aria-label="Toggle theme"
+          data-testid="theme-toggle"
+          onClick={() => setMode(mode === "light" ? "dark" : "light")}
+        >
+          {isMounted ? (
+            mode === "dark" ? (
+              <Brightness1Icon fontSize="inherit" />
             ) : (
-              <HourglassEmptyIcon fontSize="inherit" />
-            )}
-          </IconButton>
-          <LocaleSelector />
-        </Toolbar>
-      </AppBar>
-      {!isSearchRoute && (
-        <aside id="mobile-search" aria-label={t("search.search")}>
-          <GlobalSearchMobile />
-        </aside>
-      )}
-    </>
+              <Brightness2Icon fontSize="inherit" />
+            )
+          ) : (
+            <HourglassEmptyIcon fontSize="inherit" />
+          )}
+        </IconButton>
+        <LocaleSelector />
+      </Toolbar>
+    </AppBar>
   );
 });

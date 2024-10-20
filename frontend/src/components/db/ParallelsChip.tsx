@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbQueryFilters } from "@components/hooks/commonQueryParams";
+import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";

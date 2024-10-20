@@ -10,9 +10,9 @@ import { styled } from "@mui/material/styles";
 interface AppTopBarSearchBoxWrapperProps extends BoxProps {
   isOpen: boolean;
 }
-export const AppTopBarSearchBoxWrapper = styled(
-  "form",
-)<AppTopBarSearchBoxWrapperProps>(({ theme, isOpen }) => ({
+export const AppTopBarSearchBoxWrapper = styled("form", {
+  shouldForwardProp: (prop) => prop !== "isOpen",
+})<AppTopBarSearchBoxWrapperProps>(({ theme, isOpen }) => ({
   width: "100%",
   marginTop: theme.spacing(1),
   marginBottom: theme.spacing(1),
@@ -29,6 +29,13 @@ export const AppTopBarSearchBoxWrapper = styled(
   }`,
   overflow: "hidden",
 }));
+
+export const GlobalSearchBox = styled(Box)({
+  position: "relative",
+  display: "flex",
+  flexGrow: 1,
+  marginRight: 3,
+});
 
 export const SearchBoxWrapper = styled("form")(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,

@@ -14,7 +14,7 @@ import { ErrorPage } from "@components/db/ErrorPage";
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
-import { useStandardViewBaseQueryParams } from "@components/hooks/commonQueryParams";
+import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useActiveSegmentParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";

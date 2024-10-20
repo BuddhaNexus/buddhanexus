@@ -26,7 +26,6 @@ export type APISchemas = components["schemas"];
 export type Endpoint = keyof paths;
 export type DbLanguage = Exclude<APISchemas["Languages"], "all">;
 
-
 /**
  * *********************
  * CREATOR TYPE HELPERS

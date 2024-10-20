@@ -6,6 +6,7 @@ import {
   useIncludeCategoriesParam,
   useIncludeCollectionsParam,
   useIncludeFilesParam,
+  useLanguageParam,
   useParLengthParam,
   useScoreParam,
 } from "@components/hooks/params";
@@ -13,10 +14,10 @@ import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { AllAPIRequestProps } from "@utils/api/types";
 
 const nullToUndefined = <T>(value: T | null): T | undefined => {
-  return value === null ? undefined : value;
+  return value ?? undefined;
 };
 const nullToArray = <T>(value: T | null): T | [] => {
-  return value === null ? [] : value;
+  return value ?? [];
 };
 
 export const useDbQueryFilters = () => {
@@ -28,6 +29,7 @@ export const useDbQueryFilters = () => {
   const [include_collections] = useIncludeCollectionsParam();
   const [include_categories] = useIncludeCategoriesParam();
   const [include_files] = useIncludeFilesParam();
+  const [language] = useLanguageParam();
 
   const filters: AllAPIRequestProps["filters"] = {
     score,
@@ -39,6 +41,7 @@ export const useDbQueryFilters = () => {
     include_categories: nullToArray(include_categories),
     include_files: nullToArray(include_files),
     languages: ["all"],
+    language,
   };
 
   return filters;

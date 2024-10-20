@@ -84,6 +84,7 @@ export const SearchResultItem = ({ result }: Props) => {
               {segmentNumber}
             </Link>
           </Tooltip>
+
           <IconButton
             aria-label="copy"
             size="small"
@@ -97,7 +98,11 @@ export const SearchResultItem = ({ result }: Props) => {
       <Divider />
 
       <CardContent>
-        <SearchResultItemText id={id} textParts={matchTextParts} />
+        <SearchResultItemText
+          id={id}
+          textParts={matchTextParts}
+          language={language}
+        />
       </CardContent>
     </SearchResultCard>
   );

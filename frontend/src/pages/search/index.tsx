@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import type { GetStaticProps } from "next";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { isSearchTriggeredAtom } from "@atoms";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
+import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
+import { useSearchStringParam } from "@components/hooks/params";
 import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
-import {
-  type InputKeyDown,
-  useGlobalSearch,
-} from "@components/hooks/useGlobalSearch";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SearchResults } from "@features/globalSearch";
@@ -21,40 +19,45 @@ import { CircularProgress, IconButton, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
+import { useAtom } from "jotai";
 import _ from "lodash";
 
 export default function SearchPage() {
   const { t } = useTranslation();
-  const { isReady } = useRouter();
 
   const { dbLanguage } = useNullableDbRouterParams();
   const { isFallback } = useSourceFile();
-  const { handleSearchAction, searchParam } = useGlobalSearch();
 
-  const [searchTerm, setSearchTerm] = useState(searchParam);
+  const [search_string, setSearchStringParam] = useSearchStringParam();
+  const filters = useDbQueryFilters();
 
-  const queryParams = {
-    filters: undefined,
-    language: dbLanguage,
-  };
+  const [isSearchTriggered, setIsSearchTriggered] = useAtom(
+    isSearchTriggeredAtom,
+  );
 
-  useEffect(() => {
-    if (isReady) {
-      // enables search term to be set from URL if user accesses the site via a results page link
-      setSearchTerm(searchParam);
-    }
-  }, [isReady, setSearchTerm, searchParam]);
+  const handleKeydown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        setIsSearchTriggered(true);
+      }
+    },
+    [setIsSearchTriggered],
+  );
 
   const { data: rawData, isLoading } = useQuery({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
-      search_string: searchParam,
-      ...queryParams,
+      search_string,
+      filters,
     }),
-    queryFn: () =>
-      DbApi.GlobalSearchData.call({
-        search_string: searchParam,
-        ...queryParams,
-      }),
+    queryFn: () => {
+      setIsSearchTriggered(false);
+      return DbApi.GlobalSearchData.call({
+        search_string,
+        filters,
+      });
+    },
+    enabled: isSearchTriggered,
   });
 
   const data = React.useMemo(() => {
@@ -91,31 +94,30 @@ export default function SearchPage() {
       <SearchBoxWrapper sx={{ mb: 5 }}>
         <SearchBoxInput
           placeholder={t("search.inputPlaceholder")}
-          value={searchTerm ?? ""}
+          value={search_string}
           variant="outlined"
           InputProps={{
             startAdornment: (
               <IconButton
-                aria-label={t("search.runSearch")}
-                onClick={() => handleSearchAction({ searchTerm })}
-              >
-                <Search />
-              </IconButton>
-            ),
-            endAdornment: (
-              <IconButton
                 aria-label={t("search.clearSearch")}
-                onClick={() => setSearchTerm("")}
+                onClick={() => setSearchStringParam(null)}
               >
                 <Close />
               </IconButton>
             ),
+            endAdornment: (
+              <IconButton
+                aria-label={t("search.runSearch")}
+                disabled={!search_string}
+                onClick={() => setIsSearchTriggered(true)}
+              >
+                <Search />
+              </IconButton>
+            ),
           }}
           fullWidth
-          onChange={(event) => setSearchTerm(event.target.value)}
-          onKeyDown={(e: InputKeyDown) =>
-            handleSearchAction({ searchTerm, event: e })
-          }
+          onChange={(event) => setSearchStringParam(event.target.value)}
+          onKeyDown={handleKeydown}
         />
       </SearchBoxWrapper>
 

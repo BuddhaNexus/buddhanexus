@@ -4,7 +4,7 @@ import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 import { getValidDbLanguage } from "@utils/validators";
 
 function parseAPITableData(
-  data: APIPostResponse<"/table-view/table/"> | undefined
+  data: APIPostResponse<"/table-view/table/"> | undefined,
 ) {
   return data && Array.isArray(data)
     ? data.map((p) => ({
@@ -38,7 +38,9 @@ export type ParsedTableViewParallel = ReturnType<
 >[number];
 export type ParsedTableViewData = ParsedTableViewParallel[];
 
-export async function getTableData(body: APIPostRequestBody<"/table-view/table/">) {
+export async function getTableData(
+  body: APIPostRequestBody<"/table-view/table/">,
+) {
   const { page = 0, ...params } = body;
 
   const { data } = await apiClient.POST("/table-view/table/", {

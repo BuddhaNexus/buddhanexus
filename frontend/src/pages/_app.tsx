@@ -27,7 +27,7 @@ function MyApp(props: AppProps) {
         defaultOptions: {
           queries: { refetchOnWindowFocus: false, ...queryCacheTimeDefaults },
         },
-      })
+      }),
   );
 
   return (

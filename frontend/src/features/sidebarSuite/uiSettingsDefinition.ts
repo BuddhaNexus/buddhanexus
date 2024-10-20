@@ -52,7 +52,7 @@ export const sortMethods = exhaustiveStringTuple<SortMethod>()(
   "position",
   "quotedtext",
   "length",
-  "length2"
+  "length2",
 );
 
 export const utilityUISettings = exhaustiveStringTuple<UtilityUISettingName>()(
@@ -97,8 +97,10 @@ export const DEFAULT_PARAM_VALUES = {
     pa: 30,
     sa: 30,
     bo: 14,
+    all: 25,
   },
   sort_method: "position",
+  language: "all",
 } as const;
 
 export const MIN_PAR_LENGTH_VALUES: Record<DbLanguage, number> = {

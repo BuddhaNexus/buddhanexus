@@ -12,7 +12,7 @@ import {
   useQueryState,
 } from "nuqs";
 
-import { useDbRouterParams } from "./useDbRouterParams";
+import { useNullableDbRouterParams } from "./useDbRouterParams";
 
 export const useScoreParam = () => {
   return useQueryState(allUIComponentParamNames.score, {
@@ -22,9 +22,11 @@ export const useScoreParam = () => {
 };
 
 export const useParLengthParam = () => {
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useNullableDbRouterParams();
   return useQueryState(allUIComponentParamNames.par_length, {
-    ...parseAsInteger.withDefault(DEFAULT_PARAM_VALUES.par_length[dbLanguage]),
+    ...parseAsInteger.withDefault(
+      DEFAULT_PARAM_VALUES.par_length[dbLanguage ?? "all"],
+    ),
     clearOnDefault: true,
   });
 };
@@ -71,11 +73,11 @@ export const useIncludeFilesParam = () => {
   });
 };
 
-const parseAsDbLanguage = parseAsStringLiteral(dbLanguages);
+const parseAsDbLanguage = parseAsStringLiteral([...dbLanguages, "all"]);
 
 export const useLanguageParam = () => {
   return useQueryState(allUIComponentParamNames.languages, {
-    ...parseAsDbLanguage,
+    ...parseAsDbLanguage.withDefault(DEFAULT_PARAM_VALUES.language),
     clearOnDefault: true,
   });
 };
@@ -112,7 +114,7 @@ export const useFolioParam = () => {
 
 export const useSearchStringParam = () => {
   return useQueryState(allUIComponentParamNames.search_string, {
-    ...parseAsString,
+    ...parseAsString.withDefault(""),
     clearOnDefault: true,
   });
 };
