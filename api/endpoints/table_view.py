@@ -46,13 +46,21 @@ async def get_table_view(input: GeneralInput) -> Any:
 
     sort_method can be:
 
-        "position": matches sorted by segment number position in the root text (default)
+        "position": "By Position in Inquiry Text"
 
-        "quoted-text": matches sorted by segment number position in the target/quoted text
+            (matches sorted by segment number position in the root text (default))
 
-        "length": matches sorted by match-length in the root text
+        "quoted-text": "By Position in Hit Text(s)"
 
-        "length2": matches sorted by match-length in the target/quoted text
+            (matches sorted by segment number position in the target/quoted text)
+
+        "length": "By Length of match in Inquiry Text (beginning with the longest)"
+
+            (matches sorted by match-length in the root text
+
+        "length2": "By Length of match in Hit Text (beginning with the longest)"
+
+            (matches sorted by match-length in the target/quoted text)
     """
     query_result = execute_query(
         table_view_queries.QUERY_TABLE_VIEW,
