@@ -3287,13 +3287,11 @@ __metadata:
     next: "npm:^14.2.10"
     next-i18next: "npm:^15.3.0"
     next-mdx-remote: "npm:^4.4.1"
-    next-query-params: "npm:^5.0.0"
     next-seo: "npm:^6.5.0"
     nuqs: "npm:^1.19.3"
     openapi-fetch: "npm:^0.9.5"
     openapi-typescript: "npm:^7.4.1"
     prettier: "npm:^3.2.5"
-    query-string: "npm:^9.0.0"
     react: "npm:18.2.0"
     react-arborist: "npm:^3.4.0"
     react-cool-dimensions: "npm:^3.0.1"
@@ -3307,7 +3305,6 @@ __metadata:
     sharp: "npm:^0.33.3"
     tibetan-ewts-converter: "npm:^1.0.1"
     typescript: "npm:^5.4.5"
-    use-query-params: "npm:^2.2.1"
     yarn: "npm:^1.22.22"
   languageName: unknown
   linkType: soft
@@ -3871,13 +3868,6 @@ __metadata:
   dependencies:
     character-entities: "npm:^2.0.0"
   checksum: 10c0/66a9fc5d9b5385a2b3675c69ba0d8e893393d64057f7dbbb585265bb4fc05ec513d76943b8e5aac7d8016d20eea4499322cbf4cd6d54b466976b78f3a7587a4c
-  languageName: node
-  linkType: hard
-
-"decode-uri-component@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "decode-uri-component@npm:0.4.1"
-  checksum: 10c0/a180bbdb5398ec8270d236a3ac07cb988bbf6097428481780b85840f088951dc0318a8d8f9d56796e1a322b55b29859cea29982f22f9b03af0bc60974c54e591
   languageName: node
   linkType: hard
 
@@ -4950,13 +4940,6 @@ __metadata:
   dependencies:
     to-regex-range: "npm:^5.0.1"
   checksum: 10c0/b75b691bbe065472f38824f694c2f7449d7f5004aa950426a2c28f0306c60db9b880c0b0e4ed819997ffb882d1da02cfcfc819bddc94d71627f5269682edf018
-  languageName: node
-  linkType: hard
-
-"filter-obj@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "filter-obj@npm:5.1.0"
-  checksum: 10c0/716e8ad2bc352e206556b3e5695b3cdff8aab80c53ea4b00c96315bbf467b987df3640575100aef8b84e812cf5ea4251db4cd672bbe33b1e78afea88400c67dd
   languageName: node
   linkType: hard
 
@@ -8553,19 +8536,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-query-params@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "next-query-params@npm:5.0.0"
-  dependencies:
-    tslib: "npm:^2.0.3"
-  peerDependencies:
-    next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    use-query-params: ^2.0.0
-  checksum: 10c0/7ad9b1f2ef53ebd589e5f83f4f8acfa81e4bae713e175f7d2b4d8d9cb515626092dd28d2695398e8a0492db98700e21bd57ec812d51f9b1c14fada040658af13
-  languageName: node
-  linkType: hard
-
 "next-seo@npm:^6.5.0":
   version: 6.5.0
   resolution: "next-seo@npm:6.5.0"
@@ -9277,17 +9247,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"query-string@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "query-string@npm:9.0.0"
-  dependencies:
-    decode-uri-component: "npm:^0.4.1"
-    filter-obj: "npm:^5.1.0"
-    split-on-first: "npm:^3.0.0"
-  checksum: 10c0/6b4f2f08e5ab288088a2e5b0671be7ffb9c2de57fa12e54d8e352ce5f278a1a96235d8b8d467b8f7fea3e200f7afb7062244ac0113f291e4d6a98caeb44f235b
-  languageName: node
-  linkType: hard
-
 "queue-microtask@npm:^1.2.2":
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
@@ -9957,13 +9916,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"serialize-query-params@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "serialize-query-params@npm:2.0.2"
-  checksum: 10c0/fdef1e8eb45ce585b12535ab7e546a2583220a2deb969359ccef50519dc541dd6690c00c8de7a2465b9b0b0072a3308b55df77bd568284989df1e72869c9ee3f
-  languageName: node
-  linkType: hard
-
 "set-function-length@npm:^1.1.1":
   version: 1.1.1
   resolution: "set-function-length@npm:1.1.1"
@@ -10251,13 +10203,6 @@ __metadata:
   version: 3.0.11
   resolution: "spdx-license-ids@npm:3.0.11"
   checksum: 10c0/6c53cfdb3417e80fd612341319f1296507f797e0387e144047f547c378d9d38d6032ec342de42ef7883256f6690b2fca9889979d0dd015a61dc49b323f9b379b
-  languageName: node
-  linkType: hard
-
-"split-on-first@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "split-on-first@npm:3.0.0"
-  checksum: 10c0/a1262eae12b68de235e1a08e011bf5b42c42621985ddf807e6221fb1e2b3304824913ae7019f18436b96b8fab8aef5f1ad80dedd2385317fdc51b521c3882cd0
   languageName: node
   linkType: hard
 
@@ -10782,13 +10727,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3":
-  version: 2.5.0
-  resolution: "tslib@npm:2.5.0"
-  checksum: 10c0/e32fc99cc730dd514e53c44e668d76016e738f0bcc726aad5dbd2d335cf19b87a95a9b1e4f0a9993e370f1d702b5e471cdd4acabcac428a3099d496b9af2021e
-  languageName: node
-  linkType: hard
-
 "tslib@npm:^2.4.0":
   version: 2.4.0
   resolution: "tslib@npm:2.4.0"
@@ -11177,25 +11115,6 @@ __metadata:
   dependencies:
     punycode: "npm:^2.1.0"
   checksum: 10c0/4ef57b45aa820d7ac6496e9208559986c665e49447cb072744c13b66925a362d96dd5a46c4530a6b8e203e5db5fe849369444440cb22ecfc26c679359e5dfa3c
-  languageName: node
-  linkType: hard
-
-"use-query-params@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "use-query-params@npm:2.2.1"
-  dependencies:
-    serialize-query-params: "npm:^2.0.2"
-  peerDependencies:
-    "@reach/router": ^1.2.1
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-    react-router-dom: ">=5"
-  peerDependenciesMeta:
-    "@reach/router":
-      optional: true
-    react-router-dom:
-      optional: true
-  checksum: 10c0/79d07b1adfd67d1e56f5168cea15679cacfb14473ee50d623a6a40e6175779895336c4a447871bc5291c921ec47dfa23bdd312ec76bbd6bbe5e9ea5238ed2d08
   languageName: node
   linkType: hard
 

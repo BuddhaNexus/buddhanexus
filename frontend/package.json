@@ -46,11 +46,9 @@
     "next": "^14.2.10",
     "next-i18next": "^15.3.0",
     "next-mdx-remote": "^4.4.1",
-    "next-query-params": "^5.0.0",
     "next-seo": "^6.5.0",
     "nuqs": "^1.19.3",
     "openapi-fetch": "^0.9.5",
-    "query-string": "^9.0.0",
     "react": "18.2.0",
     "react-arborist": "^3.4.0",
     "react-cool-dimensions": "^3.0.1",
@@ -62,7 +60,6 @@
     "react-window": "^1.8.10",
     "sharp": "^0.33.3",
     "tibetan-ewts-converter": "^1.0.1",
-    "use-query-params": "^2.2.1",
     "yarn": "^1.22.22"
   },
   "devDependencies": {
