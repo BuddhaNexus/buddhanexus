@@ -33,47 +33,50 @@ export const useParLengthParam = () => {
 
 export const useExcludeCollectionsParam = () => {
   return useQueryState(allUIComponentParamNames.exclude_collections, {
-    ...parseAsArrayOf(parseAsString),
+    ...parseAsArrayOf(parseAsString).withDefault([]),
     clearOnDefault: true,
   });
 };
 
 export const useExcludeCategoriesParam = () => {
   return useQueryState(allUIComponentParamNames.exclude_categories, {
-    ...parseAsArrayOf(parseAsString),
+    ...parseAsArrayOf(parseAsString).withDefault([]),
     clearOnDefault: true,
   });
 };
 
 export const useExcludeFilesParam = () => {
   return useQueryState(allUIComponentParamNames.exclude_files, {
-    ...parseAsArrayOf(parseAsString),
+    ...parseAsArrayOf(parseAsString).withDefault([]),
     clearOnDefault: true,
   });
 };
 
 export const useIncludeCollectionsParam = () => {
   return useQueryState(allUIComponentParamNames.include_collections, {
-    ...parseAsArrayOf(parseAsString),
+    ...parseAsArrayOf(parseAsString).withDefault([]),
     clearOnDefault: true,
   });
 };
 
 export const useIncludeCategoriesParam = () => {
   return useQueryState(allUIComponentParamNames.include_categories, {
-    ...parseAsArrayOf(parseAsString),
+    ...parseAsArrayOf(parseAsString).withDefault([]),
     clearOnDefault: true,
   });
 };
 
 export const useIncludeFilesParam = () => {
   return useQueryState(allUIComponentParamNames.include_files, {
-    ...parseAsArrayOf(parseAsString),
+    ...parseAsArrayOf(parseAsString).withDefault([]),
     clearOnDefault: true,
   });
 };
 
-const parseAsDbLanguage = parseAsStringLiteral([...dbLanguages, "all"]);
+const parseAsDbLanguage = parseAsStringLiteral([
+  ...dbLanguages,
+  DEFAULT_PARAM_VALUES.language,
+]);
 
 export const useLanguageParam = () => {
   return useQueryState(allUIComponentParamNames.languages, {
@@ -84,7 +87,7 @@ export const useLanguageParam = () => {
 
 export const useLanguagesParam = () => {
   return useQueryState(allUIComponentParamNames.languages, {
-    ...parseAsArrayOf(parseAsDbLanguage),
+    ...parseAsArrayOf(parseAsDbLanguage).withDefault([]),
     clearOnDefault: true,
   });
 };

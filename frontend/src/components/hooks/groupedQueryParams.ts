@@ -7,6 +7,7 @@ import {
   useIncludeCollectionsParam,
   useIncludeFilesParam,
   useLanguageParam,
+  useLanguagesParam,
   useParLengthParam,
   useScoreParam,
 } from "@components/hooks/params";
@@ -15,9 +16,6 @@ import { AllAPIRequestProps } from "@utils/api/types";
 
 const nullToUndefined = <T>(value: T | null): T | undefined => {
   return value ?? undefined;
-};
-const nullToArray = <T>(value: T | null): T | [] => {
-  return value ?? [];
 };
 
 export const useDbQueryFilters = () => {
@@ -30,17 +28,18 @@ export const useDbQueryFilters = () => {
   const [include_categories] = useIncludeCategoriesParam();
   const [include_files] = useIncludeFilesParam();
   const [language] = useLanguageParam();
+  const [languages] = useLanguagesParam();
 
   const filters: AllAPIRequestProps["filters"] = {
     score,
     par_length,
-    exclude_collections: nullToArray(exclude_collections),
-    exclude_categories: nullToArray(exclude_categories),
-    exclude_files: nullToArray(exclude_files),
-    include_collections: nullToArray(include_collections),
-    include_categories: nullToArray(include_categories),
-    include_files: nullToArray(include_files),
-    languages: ["all"],
+    exclude_collections: nullToUndefined(exclude_collections),
+    exclude_categories: nullToUndefined(exclude_categories),
+    exclude_files: nullToUndefined(exclude_files),
+    include_collections: nullToUndefined(include_collections),
+    include_categories: nullToUndefined(include_categories),
+    include_files: nullToUndefined(include_files),
+    languages: nullToUndefined(languages),
     language,
   };
 

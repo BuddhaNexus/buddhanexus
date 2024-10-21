@@ -139,15 +139,29 @@ export interface paths {
      * @description Endpoint for the download table. Accepts filters.
      *     :return: List of segments and parallels for the downloaded table view.
      *
-     *     "sort_method" can be:
-     *         "position": matches sorted by segment number position in the root text (default).
-     *         "quotedtext": matches sorted by segment number position in the target/quoted text.
-     *         "length": matches sorted by match-length in the root text.
-     *         "length2": matches sorted by match-length in the target/quoted text.
+     *     sort_method options:
      *
-     *     "download_data" is either "table" or "numbers" depending on the type of output required.
-     *     When a download is requested in table-view mode, this should be set to "table" (default).
-     *     When a download is requested in numbers-view mode, this should be set to "numbers".
+     *         "position": "By Position in Inquiry Text"
+     *
+     *             (matches sorted by segment number position in the root text (default))
+     *
+     *         "quotedtext": "By Position in Hit Text(s)"
+     *
+     *             (matches sorted by segment number position in the target/quoted text)
+     *
+     *         "length": "By Length of match in Inquiry Text (beginning with the longest)"
+     *
+     *             (matches sorted by match-length in the root text
+     *
+     *         "length2": "By Length of match in Hit Text (beginning with the longest)"
+     *
+     *             (matches sorted by match-length in the target/quoted text)
+     *
+     *     "download_data" options:
+     *
+     *         "table": a download is requested in table-view mode. (default)
+     *
+     *         "numbers": a download is requested in numbers-view mode.
      */
     post: operations["get_table_download_table_view_download__post"];
     delete?: never;
@@ -394,6 +408,12 @@ export interface components {
       /** Displayname */
       displayname: string[];
     };
+    /**
+     * DownloadData
+     * @description An enumeration.
+     * @enum {string}
+     */
+    DownloadData: "table" | "numbers";
     /** File */
     File: {
       /** Displayname */
@@ -419,36 +439,18 @@ export interface components {
        */
       score: number;
       languages?: components["schemas"]["Languages"][];
-      /**
-       * Include Files
-       * @default []
-       */
-      include_files: string[];
-      /**
-       * Exclude Files
-       * @default []
-       */
-      exclude_files: string[];
-      /**
-       * Include Categories
-       * @default []
-       */
-      include_categories: string[];
-      /**
-       * Exclude Categories
-       * @default []
-       */
-      exclude_categories: string[];
-      /**
-       * Include Collections
-       * @default []
-       */
-      include_collections: string[];
-      /**
-       * Exclude Collections
-       * @default []
-       */
-      exclude_collections: string[];
+      /** Include Files */
+      include_files?: string[];
+      /** Exclude Files */
+      exclude_files?: string[];
+      /** Include Categories */
+      include_categories?: string[];
+      /** Exclude Categories */
+      exclude_categories?: string[];
+      /** Include Collections */
+      include_collections?: string[];
+      /** Exclude Collections */
+      exclude_collections?: string[];
     };
     /** FolioOutput */
     FolioOutput: {
@@ -498,7 +500,7 @@ export interface components {
        */
       page: number;
       /** @default position */
-      sort_method: components["schemas"]["Sortmethod"];
+      sort_method: components["schemas"]["SortMethod"];
       /**
        * Folio
        * @default
@@ -527,11 +529,8 @@ export interface components {
        * @default 0
        */
       score: number;
-      /**
-       * Include Collections
-       * @default []
-       */
-      include_collections: string[];
+      /** Include Collections */
+      include_collections?: string[];
     };
     /** GraphInput */
     GraphInput: {
@@ -604,36 +603,18 @@ export interface components {
      */
     SearchFilters: {
       language: components["schemas"]["Languages"];
-      /**
-       * Include Files
-       * @default []
-       */
-      include_files: string[];
-      /**
-       * Exclude Files
-       * @default []
-       */
-      exclude_files: string[];
-      /**
-       * Include Categories
-       * @default []
-       */
-      include_categories: string[];
-      /**
-       * Exclude Categories
-       * @default []
-       */
-      exclude_categories: string[];
-      /**
-       * Include Collections
-       * @default []
-       */
-      include_collections: string[];
-      /**
-       * Exclude Collections
-       * @default []
-       */
-      exclude_collections: string[];
+      /** Include Files */
+      include_files?: string[];
+      /** Exclude Files */
+      exclude_files?: string[];
+      /** Include Categories */
+      include_categories?: string[];
+      /** Exclude Categories */
+      exclude_categories?: string[];
+      /** Include Collections */
+      include_collections?: string[];
+      /** Exclude Collections */
+      exclude_collections?: string[];
     };
     /** SearchInput */
     SearchInput: {
@@ -661,11 +642,11 @@ export interface components {
       segtext: components["schemas"]["FullText"][];
     };
     /**
-     * Sortmethod
+     * SortMethod
      * @description An enumeration.
      * @enum {string}
      */
-    Sortmethod: "position" | "quotedtext" | "length" | "length2";
+    SortMethod: "position" | "quotedtext" | "length" | "length2";
     /** TableDownloadInput */
     TableDownloadInput: {
       /** Filename */
@@ -677,17 +658,14 @@ export interface components {
        */
       page: number;
       /** @default position */
-      sort_method: components["schemas"]["Sortmethod"];
+      sort_method: components["schemas"]["SortMethod"];
       /**
        * Folio
        * @default
        */
       folio: string;
-      /**
-       * Download Data
-       * @default table
-       */
-      download_data: string;
+      /** @default table */
+      download_data: components["schemas"]["DownloadData"];
     };
     /**
      * TableDownloadOutput
@@ -774,15 +752,9 @@ export interface components {
       src_lang: string;
       /** Tgt Lang */
       tgt_lang: string;
-      /**
-       * Root Fulltext
-       * @default []
-       */
+      /** Root Fulltext */
       root_fulltext: components["schemas"]["FullText"][];
-      /**
-       * Par Fulltext
-       * @default []
-       */
+      /** Par Fulltext */
       par_fulltext: components["schemas"]["FullText"][];
     };
     /** Segment */
