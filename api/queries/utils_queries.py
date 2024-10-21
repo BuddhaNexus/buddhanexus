@@ -4,10 +4,9 @@ Contains all database queries for various utils.
 """
 
 QUERY_FOLIOS = """
-FOR segment in segments
-    FILTER segment.filename == @filename
-    COLLECT folio = segment.folio
-    RETURN folio
+FOR file in files
+    FILTER file._key == @filename
+    RETURN file.folios
 """
 
 QUERY_PAGE_FOR_SEGMENT = """
@@ -16,13 +15,15 @@ FOR segment IN segments_pages
     return segment.page
 """
 
-QUERY_SEGMENT_FOR_FOLIO = """
-RETURN FIRST(
-    FOR segment IN segments
-        FILTER segment.folio == @folio
-        RETURN segment.segmentnr
-)
-"""
+# Is the below query still needed?
+
+# QUERY_SEGMENT_FOR_FOLIO = """
+# RETURN FIRST(
+#     FOR segment IN segments
+#         FILTER segment.folio == @folio
+#         RETURN segment.segmentnr
+# )
+# """
 
 
 QUERY_COUNT_MATCHES = """
@@ -48,7 +49,7 @@ FOR p IN parallels
 QUERY_DISPLAYNAME = """
 FOR file IN files
     FILTER file.filename == @filename
-    RETURN [file.displayName, file.textname, file.link, file.link2]
+    RETURN [file.displayName, file.textname]
 """
 
 QUERY_LINK = """
@@ -57,11 +58,13 @@ FOR file IN files
     RETURN [file.link, file.link2]
 """
 
-QUERY_SOURCE = """
-FOR file IN files
-    FILTER file._key == @filename
-    RETURN {
-        source_id: file.source,
-        source_string: file.source_string
-   }
-"""
+# Is the below query still needed?
+
+# QUERY_SOURCE = """
+# FOR file IN files
+#     FILTER file._key == @filename
+#     RETURN {
+#         source_id: file.source,
+#         source_string: file.source_string
+#    }
+# """

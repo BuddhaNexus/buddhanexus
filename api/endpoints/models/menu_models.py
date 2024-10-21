@@ -1,11 +1,10 @@
 from pydantic import BaseModel
-from typing import List, Union
+from typing import List
 
 
 class File(BaseModel):
     displayName: str
     filename: str
-    category: str
     search_field: str
 
 
@@ -20,20 +19,11 @@ class Category(CategoryBase):
 
 class CollectionBase(BaseModel):
     collection: str
-    collectiondisplayname: str
 
 
 class Collection(CollectionBase):
     categories: List[Category]
 
 
-class GraphCollection(CollectionBase):
-    collectiondisplayname: Union[str, None] = None
-
-
-class GraphCollectionOutput(BaseModel):
-    result: List[GraphCollection]
-
-
-class MetadataOutput(BaseModel):
-    metadata: List[Collection]
+class MenudataOutput(BaseModel):
+    menudata: List[Collection]

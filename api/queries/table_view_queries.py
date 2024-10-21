@@ -43,17 +43,13 @@ FOR f IN parallels_sorted_file
                 FOR file in files
                     FILTER file.filename == p.par_filename
                     RETURN {"display_name": file.displayName,
-                    "text_name": file.textname,
-                    "link1": file.link,
-                    "link2": file.link2}
+                    "text_name": file.textname}
                 )
             LET root_full_names = (
                 FOR file in files
                     FILTER file.filename == p.root_filename
                     RETURN {"display_name": file.displayName,
-                    "text_name": file.textname,
-                    "link1": file.link,
-                    "link2": file.link2}
+                    "text_name": file.textname}
                 )
             LIMIT 100 * @page,100
             RETURN {
@@ -65,7 +61,6 @@ FOR f IN parallels_sorted_file
                 par_segment: par_segment,
                 par_full_names: par_full_names[0] || {},
                 root_full_names: root_full_names[0],
-                filename: p.id,
                 root_segnr: p.root_segnr,
                 root_seg_text: root_seg_text,
                 par_length: p.par_length,
@@ -101,7 +96,7 @@ FOR f IN parallels_sorted_file
 
             FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
             FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
-            
+
             LET root_seg_text = (
                 FOR segnr IN p.root_segnr
                     FOR segment IN segments
@@ -114,18 +109,18 @@ FOR f IN parallels_sorted_file
                         FILTER segment.segmentnr == segnr
                         RETURN segment.original
             )
-            LET filename1 = REGEX_REPLACE(p.par_segnr[0],":.*","")
-            LET filename = REGEX_REPLACE(filename1,"_[0-9]+","")
+            LET filename = REGEX_REPLACE(p.par_segnr[0],":.*","")
             let displayname = (
                 FOR file IN files
                     FILTER file._key == filename
-                    return file.displayName
+                    return [file.displayName, file.textname]
             )
             LIMIT 20000
             RETURN {
                 par_segnr: p.par_segnr,
                 par_segment: par_segment,
-                par_displayname: displayname,
+                par_displayname: displayname[0][0],
+                par_textname: displayname[0][1],
                 root_segnr: p.root_segnr,
                 root_seg_text: root_seg_text,
                 root_offset_beg: p.root_offset_beg,
@@ -143,10 +138,11 @@ QUERY_NUMBERS_VIEW = """
 FOR file IN files
     FILTER file._key == @filename
     LET selected_folio_segmentnr = (
-        FOR segmentnr in segments
-            FILTER segmentnr.filename == @filename
-            FILTER segmentnr.folio == @folio
-            RETURN segmentnr.segmentnr
+        FOR segmentnr in file.segment_keys
+            FOR segment in segments
+                FILTER segment.segmentnr == segmentnr
+                FILTER segment.folio == @folio
+            RETURN segment.segmentnr
     )
 
     LET current_segments = (
@@ -157,7 +153,8 @@ FOR file IN files
                 FILTER segment.segmentnr == segmentnr
                 LET parallel_ids = (
                     FOR p IN parallels
-                        FILTER segmentnr IN p.root_segnr
+                        FILTER p.root_filename == @filename
+                        FILTER segment.segmentnr IN p.root_segnr
                         RETURN p._key
                         )
                 FILTER LENGTH(parallel_ids) > 0
@@ -178,7 +175,6 @@ FOR file IN files
                             FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
                             FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
 
-
                             LET par_full_names = (
                                 FOR f in files
                                     FILTER f._key == p.par_filename
@@ -188,8 +184,9 @@ FOR file IN files
                                 )
                             RETURN {
                                 par_segnr: p.par_segnr,
-                                par_full_names: par_full_names[0] || {}
+                                par_full_names: par_full_names
                             }
+
                 )
                 FILTER LENGTH(parallels) > 0
                 RETURN {
@@ -209,7 +206,8 @@ FOR file IN files
                 FILTER segment.segmentnr == segmentnr
                 LET parallel_ids = (
                     FOR p IN parallels
-                        FILTER segmentnr IN p.root_segnr
+                        FILTER p.root_filename == @filename
+                        FILTER segment.segmentnr IN p.root_segnr
                         RETURN p._key
                         )
                 FILTER LENGTH(parallel_ids) > 0
