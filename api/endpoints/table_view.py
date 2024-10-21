@@ -88,15 +88,30 @@ async def get_table_download(input: TableDownloadInput) -> Any:
     Endpoint for the download table. Accepts filters.
     :return: List of segments and parallels for the downloaded table view.
 
-    "sort_method" can be:
-        "position": matches sorted by segment number position in the root text (default).
-        "quotedtext": matches sorted by segment number position in the target/quoted text.
-        "length": matches sorted by match-length in the root text.
-        "length2": matches sorted by match-length in the target/quoted text.
+    sort_method options:
 
-    "download_data" is either "table" or "numbers" depending on the type of output required.
-    When a download is requested in table-view mode, this should be set to "table" (default).
-    When a download is requested in numbers-view mode, this should be set to "numbers".
+        "position": "By Position in Inquiry Text"
+
+            (matches sorted by segment number position in the root text (default))
+
+        "quotedtext": "By Position in Hit Text(s)"
+
+            (matches sorted by segment number position in the target/quoted text)
+
+        "length": "By Length of match in Inquiry Text (beginning with the longest)"
+
+            (matches sorted by match-length in the root text
+
+        "length2": "By Length of match in Hit Text (beginning with the longest)"
+
+            (matches sorted by match-length in the target/quoted text)
+
+    "download_data" options:
+
+        "table": a download is requested in table-view mode. (default)
+
+        "numbers": a download is requested in numbers-view mode.
+
     """
     filters_display = arrange_filter_data(input.filters)
     language = get_language_from_filename(input.filename)

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List
+from enum import Enum
 from .general_models import GeneralInput, FullNames, FullText, Filters
 
 
@@ -13,16 +14,21 @@ class Segment(BaseModel):
     score: int
     src_lang: str
     tgt_lang: str
-    root_fulltext: List[FullText] = []
-    par_fulltext: List[FullText] = []
+    root_fulltext: List[FullText]
+    par_fulltext: List[FullText]
 
 
 class TableViewOutput(BaseModel):
     __root__: List[Segment]
 
 
+class DownloadData(str, Enum):
+    table = "table"
+    numbers = "numbers"
+
+
 class TableDownloadInput(GeneralInput):
-    download_data: str = "table"
+    download_data: DownloadData = DownloadData.table
 
 
 class TableDownloadOutput(BaseModel):

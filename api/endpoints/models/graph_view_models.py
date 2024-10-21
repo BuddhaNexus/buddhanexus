@@ -9,7 +9,7 @@ class GraphFilters(BaseModel):
 
     par_length: int = 0
     score: int = 0
-    include_collections: Optional[List[str]] = []
+    include_collections: Optional[List[str]]
 
 
 class GraphInput(BaseModel):

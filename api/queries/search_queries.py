@@ -15,7 +15,7 @@ LET chinese_results = (
     )
 
 let tibetan_fuzzy_results = (
-    FOR d IN search_index_bo_fuzzy
+    FOR d IN search_index_bo
         SEARCH PHRASE(d.analyzed, @search_string_bo, 'tibetan_fuzzy_analyzer')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
