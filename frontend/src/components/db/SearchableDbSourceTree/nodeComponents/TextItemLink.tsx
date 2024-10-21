@@ -10,6 +10,7 @@ import { useAtomValue } from "jotai";
 import { SourceTypeIcon } from "./SourceTypeIcon";
 import { RowBox, TextNameTypography, TextNodeLink } from "./styledComponents";
 import styles from "./TextItemLink.module.css";
+import { Link } from "@components/common/Link";
 
 const CHARACTER_WIDTH = 8;
 const INDENTATION_WIDTH = 90;
@@ -26,8 +27,9 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
 
   const { dbLanguage } = useDbRouterParams();
   const dbView = useAtomValue(currentDbViewAtom);
+
   return (
-    <TextNodeLink
+    <Link
       className={styles.textNodeLink}
       href={getTextPath({ dbLanguage, fileName, dbView })}
     >
@@ -54,6 +56,6 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
           </TextNameTypography>
         </Tooltip>
       </div>
-    </TextNodeLink>
+    </Link>
   );
 }

@@ -10,7 +10,10 @@ import { atomWithStorage } from "jotai/utils";
  * GENERAL
  */
 
-export const currentDbViewAtom = atom<DbViewEnum>(DEFAULT_DB_VIEW);
+export const currentDbViewAtom = atomWithStorage<DbViewEnum>(
+  "db-view",
+  DEFAULT_DB_VIEW
+);
 
 /**
  * SEARCH
