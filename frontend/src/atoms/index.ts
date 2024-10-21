@@ -1,7 +1,7 @@
 import { NodeApi, TreeApi } from "react-arborist";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
-import type { Script } from "@features/sidebarSuite/types";
-import { DbSourceFiltersSelectedIds } from "@features/sidebarSuite/types";
+import type { Script } from "@features/SidebarSuite/types";
+import { DbSourceFiltersSelectedIds } from "@features/SidebarSuite/types";
 import { DbViewEnum, DEFAULT_DB_VIEW } from "@utils/constants";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
@@ -12,7 +12,7 @@ import { atomWithStorage } from "jotai/utils";
 
 export const currentDbViewAtom = atomWithStorage<DbViewEnum>(
   "db-view",
-  DEFAULT_DB_VIEW
+  DEFAULT_DB_VIEW,
 );
 
 /**

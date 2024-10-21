@@ -2,8 +2,8 @@ import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
-import { Main } from "@features/sidebarSuite/common/MuiStyledSidebarComponents";
-import { SidebarSuite } from "@features/sidebarSuite/SidebarSuite";
+import { SidebarSuite } from "@features/SidebarSuite";
+import { Main } from "@features/SidebarSuite/common/MuiStyledSidebarComponents";
 import type { Breakpoint, SxProps } from "@mui/material";
 import {
   Container,

@@ -1,5 +1,5 @@
 import { scriptSelectionAtom } from "@atoms";
-import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
+import { enscriptText } from "@features/SidebarSuite/utils";
 import { Typography } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
 import { useAtomValue } from "jotai";

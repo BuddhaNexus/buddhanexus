@@ -8,7 +8,7 @@ import {
 import { useActiveSegmentParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { sourceSans } from "@components/theme";
-import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
+import { enscriptText } from "@features/SidebarSuite/utils";
 import { useColorScheme } from "@mui/material/styles";
 import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";
 import type { Scale } from "chroma-js";

@@ -1,8 +1,8 @@
-import { SortMethod } from "@features/sidebarSuite/types";
+import { SortMethod } from "@features/SidebarSuite/types";
 import {
   DEFAULT_PARAM_VALUES,
   sortMethods,
-} from "@features/sidebarSuite/uiSettingsDefinition";
+} from "@features/SidebarSuite/uiSettings/config";
 
 import { DbLanguage, dbLanguages } from "./api/constants";
 import { DbViewEnum, DEFAULT_DB_VIEW } from "./constants";

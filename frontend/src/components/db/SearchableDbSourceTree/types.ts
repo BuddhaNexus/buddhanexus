@@ -1,4 +1,4 @@
-import { DbSourceFilterUISetting } from "@features/sidebarSuite/types";
+import { DbSourceFilterUISetting } from "@features/SidebarSuite/types";
 
 export enum DbSourceTreeNodeDataType {
   Category = "category",

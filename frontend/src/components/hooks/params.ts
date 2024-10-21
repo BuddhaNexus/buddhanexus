@@ -2,7 +2,7 @@ import {
   allUIComponentParamNames,
   DEFAULT_PARAM_VALUES,
   sortMethods,
-} from "@features/sidebarSuite/uiSettingsDefinition";
+} from "@features/SidebarSuite/uiSettings/config";
 import { dbLanguages } from "@utils/api/constants";
 import {
   parseAsArrayOf,

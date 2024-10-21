@@ -2,7 +2,7 @@ import {
   DbSourceTreeProps,
   DbSourceTreeType,
 } from "@components/db/SearchableDbSourceTree/types";
-import { DbSourceFilterSelectorTree } from "@features/sidebarSuite/subComponents/uiSettings/DbSourceFilter/tree/DbSourceFilterTree";
+import { DbSourceFilterSelectorTree } from "@features/SidebarSuite/uiSettings/DbSourceFilter/tree/DbSourceFilterTree";
 
 import DbSourceBrowserTree from "./DbSourceBrowserTree";
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { NodeApi } from "react-arborist";
 import { currentDbViewAtom } from "@atoms";
+import { Link } from "@components/common/Link";
 import { getTextPath } from "@components/common/utils";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
@@ -8,9 +9,8 @@ import { Chip, Tooltip, Typography } from "@mui/material";
 import { useAtomValue } from "jotai";
 
 import { SourceTypeIcon } from "./SourceTypeIcon";
-import { RowBox, TextNameTypography, TextNodeLink } from "./styledComponents";
+import { RowBox, TextNameTypography } from "./styledComponents";
 import styles from "./TextItemLink.module.css";
-import { Link } from "@components/common/Link";
 
 const CHARACTER_WIDTH = 8;
 const INDENTATION_WIDTH = 90;

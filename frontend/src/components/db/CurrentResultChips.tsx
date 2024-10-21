@@ -8,12 +8,12 @@ import {
   DBSourceFilePageFilterUISettingName,
   DisplayUISettingName,
   SearchPageFilterUISettingName,
-} from "@features/sidebarSuite/types";
+} from "@features/SidebarSuite/types";
 import {
   dbSoureFileRequestFilters,
   displayUISettings,
   searchRequestFilters,
-} from "@features/sidebarSuite/uiSettingsDefinition";
+} from "@features/SidebarSuite/uiSettings/config";
 import Chip from "@mui/material/Chip";
 
 const searchFilterSet = new Set(searchRequestFilters);
