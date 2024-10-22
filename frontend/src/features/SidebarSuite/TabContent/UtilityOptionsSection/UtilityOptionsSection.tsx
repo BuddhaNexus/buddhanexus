@@ -3,19 +3,21 @@ import useDownloader from "react-use-downloader";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
 import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useResultPageType } from "@components/hooks/useResultPageType";
 import {
   Popper,
   PopperMsgBox,
 } from "@features/SidebarSuite/common/MuiStyledSidebarComponents";
 import PanelHeading from "@features/SidebarSuite/common/PanelHeading";
 import {
+  UNAVAILABLE_DB_SOURCE_PAGE_UI_UTILITIES,
+  UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES,
+} from "@features/SidebarSuite/TabContent/config";
+import {
   defaultAnchorEls,
   type PopperAnchorState,
-} from "@features/SidebarSuite/tabPanelGroups/UtilityOptionsSection/utils";
-import {
-  SidebarSuitePageContext,
-  UtilityUISettingName,
-} from "@features/SidebarSuite/types";
+} from "@features/SidebarSuite/TabContent/UtilityOptionsSection/utils";
+import { UtilityUISettingName } from "@features/SidebarSuite/types";
 import { utilityComponents } from "@features/SidebarSuite/uiSettings";
 import {
   allUIComponentParamNames,
@@ -31,24 +33,14 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useAtomValue } from "jotai";
-import {
-  UNAVAILABLE_DB_SOURCE_PAGE_UI_UTILITIES,
-  UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES,
-} from "src/features/SidebarSuite/tabPanelGroups/config";
 
-export const UtilityOptionsSection = ({
-  pageType = "dbSourceFile",
-}: {
-  pageType: SidebarSuitePageContext;
-}) => {
+export const UtilityOptionsSection = () => {
   const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentDbViewAtom);
   const { fileName, dbLanguage } = useNullableDbRouterParams();
   let href: string;
 
-  if (typeof window !== "undefined") {
-    href = window.location.toString();
-  }
+  const pageType = useResultPageType();
 
   const { download, error } = useDownloader();
 
@@ -56,24 +48,28 @@ export const UtilityOptionsSection = ({
     useState<PopperAnchorState>(defaultAnchorEls);
 
   const uiSettings = useMemo(() => {
-    if (pageType === "search") {
+    if (pageType.isSearchPage) {
       return utilityUISettings.filter(
         (setting) => !UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES.includes(setting),
       );
     }
 
-    if (!dbLanguage) {
-      // TODO: create error component
-      return [];
+    if (dbLanguage && pageType.isDbFilePage) {
+      return getAvailableSettings<UtilityUISettingName>({
+        dbLanguage,
+        uiSettings: utilityUISettings,
+        unavailableSettingsForViewOrLang:
+          UNAVAILABLE_DB_SOURCE_PAGE_UI_UTILITIES[currentView],
+      });
     }
 
-    return getAvailableSettings<UtilityUISettingName>({
-      dbLanguage,
-      uiSettings: utilityUISettings,
-      unavailableSettingsForViewOrLang:
-        UNAVAILABLE_DB_SOURCE_PAGE_UI_UTILITIES[currentView],
-    });
+    // TODO: create error component
+    return [];
   }, [dbLanguage, currentView, pageType]);
+
+  if (typeof window !== "undefined") {
+    href = window.location.toString();
+  }
 
   if (uiSettings.length === 0) {
     return null;

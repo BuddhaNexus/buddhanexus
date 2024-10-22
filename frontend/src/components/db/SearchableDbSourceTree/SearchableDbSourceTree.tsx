@@ -12,8 +12,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Box, FormControl, InputAdornment, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-import { useAtomValue, useSetAtom } from "jotai";
 import { DbViewEnum } from "@utils/constants";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { DbSourceTree } from "./treeComponents/DbSourceTree";
 import { LoadingTree } from "./treeComponents/LoadingTree";
@@ -73,7 +73,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           setBreadcrumbs([]);
         }
       },
-      [setSearchTerm, setBreadcrumbs, activeTree]
+      [setSearchTerm, setBreadcrumbs, activeTree],
     );
 
     const { t } = useTranslation(["common"]);
@@ -90,12 +90,13 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
       }
 
       const graphFilterData = data?.map((node) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { children, ...rest } = node;
         return { ...rest };
       });
 
       return graphFilterData;
-    }, [treeTypeProps.type, data, dbView]);
+    }, [treeTypeProps, data, dbView]);
 
     if (isLoading) {
       return (
@@ -153,5 +154,5 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
         </Box>
       </>
     );
-  }
+  },
 );

@@ -35,11 +35,11 @@ export const DisplayOptionsSection = () => {
     <Box>
       <PanelHeading heading={t("headings.display")} sx={{ mb: 2 }} />
       {uiSettings.map((setting) => {
-        const Component = displaySettingComponents[setting];
+        const component = displaySettingComponents[setting];
         const key = `display-setting-${setting}`;
 
-        if (!Component) return null;
-        return React.cloneElement(Component, { key });
+        if (!component) return null;
+        return <div key={key}>{component}</div>;
       })}
     </Box>
   );

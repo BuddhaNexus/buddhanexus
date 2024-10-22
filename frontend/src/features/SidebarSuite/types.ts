@@ -1,7 +1,6 @@
 import { AllAPIRequestProps, APISchemas } from "@utils/api/types";
 import type { DbViewEnum } from "@utils/constants";
 
-export type SidebarSuitePageContext = "dbSourceFile" | "search";
 export type AppResultPageView = DbViewEnum | "search";
 
 type APIRequestPropsName = keyof AllAPIRequestProps;

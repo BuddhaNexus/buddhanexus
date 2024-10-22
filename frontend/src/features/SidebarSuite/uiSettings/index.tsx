@@ -4,7 +4,7 @@ import {
   onDownload,
   onEmailQueryLink,
   type UtilityOptionProps,
-} from "@features/SidebarSuite/tabPanelGroups/UtilityOptionsSection/utils";
+} from "@features/SidebarSuite/TabContent/UtilityOptionsSection/utils";
 import {
   DisplayUISettingName,
   RequestFilterUISettingName,

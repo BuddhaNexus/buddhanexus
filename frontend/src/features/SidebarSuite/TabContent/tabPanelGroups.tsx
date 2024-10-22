@@ -3,12 +3,12 @@ import { useTranslation } from "next-i18next";
 import { TabList, TabPanel } from "@mui/lab/";
 import { Tab } from "@mui/material";
 import isFeatureEnabled from "@utils/featureControls";
+import { Info } from "src/features/SidebarSuite/Info";
 
-import { DisplayOptionsSection } from "./tabPanelGroups/DisplayOptionsSection";
-import { ExternalLinksSection } from "./tabPanelGroups/ExternalLinksSection";
-import { PrimaryUISettings } from "./tabPanelGroups/PrimaryUISettings";
-import { UtilityOptionsSection } from "./tabPanelGroups/UtilityOptionsSection";
-import { Info } from "./Info";
+import { DisplayOptionsSection } from "./DisplayOptionsSection";
+import { ExternalLinksSection } from "./ExternalLinksSection";
+import { PrimaryUISettings } from "./PrimaryUISettings";
+import { UtilityOptionsSection } from "./UtilityOptionsSection";
 
 interface SettingTabListProps {
   onTabChange: (event: React.SyntheticEvent, newValue: string) => void;
@@ -43,8 +43,8 @@ export const SearchPageSidebarTabPanels = () => {
   return (
     <>
       <TabPanel value="0" sx={{ px: 2 }}>
-        <PrimaryUISettings pageType="search" />
-        <UtilityOptionsSection pageType="search" />
+        <PrimaryUISettings />
+        <UtilityOptionsSection />
       </TabPanel>
 
       {isFeatureEnabled.infoTabs ? (
@@ -60,12 +60,12 @@ export const DbFilePageSidebarTabPanels = () => {
   return (
     <>
       <TabPanel value="0" sx={{ px: 2 }}>
-        <PrimaryUISettings pageType="dbSourceFile" />
+        <PrimaryUISettings />
       </TabPanel>
 
       <TabPanel value="1" sx={{ px: 2, pt: 2 }}>
         <DisplayOptionsSection />
-        <UtilityOptionsSection pageType="dbSourceFile" />
+        <UtilityOptionsSection />
         <ExternalLinksSection />
       </TabPanel>
 

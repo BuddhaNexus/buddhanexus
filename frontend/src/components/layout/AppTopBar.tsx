@@ -2,6 +2,7 @@ import React, { memo, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
+import { useResultPageType } from "@components/hooks/useResultPageType";
 import LocaleSelector from "@components/layout/LocaleSelector";
 import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import { GlobalSearch } from "@features/globalSearch";
@@ -42,7 +43,7 @@ export const AppTopBar = memo(function AppTopBar() {
   const [isMounted, setIsMounted] = useState(false);
 
   const isHomeRoute = route === "/";
-  const isSearchRoute = route.startsWith("/search");
+  const { isSearchPage } = useResultPageType();
 
   useEffect(() => {
     setIsMounted(true);
@@ -117,7 +118,7 @@ export const AppTopBar = memo(function AppTopBar() {
             </Box>
           </Link>
 
-          {!isSearchRoute && <GlobalSearch />}
+          {!isSearchPage && <GlobalSearch />}
         </Box>
         <Box
           component="nav"

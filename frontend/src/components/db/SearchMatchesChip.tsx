@@ -7,13 +7,13 @@ import CappedMatchesChip from "./CappedMatchesChip";
 
 export default function SearchMatchesChip({
   matches,
-  isSearchRoute,
+  isSearchPage,
 }: {
   matches: number;
-  isSearchRoute: boolean;
+  isSearchPage: boolean;
 }) {
   const { t } = useTranslation("settings");
-  const isMatchesCapped = isSearchRoute && matches >= SEARCH_RESULTS_LIMIT;
+  const isMatchesCapped = isSearchPage && matches >= SEARCH_RESULTS_LIMIT;
 
   if (isMatchesCapped) {
     return (

@@ -1,9 +1,12 @@
 import React from "react";
 import { ReadonlyURLSearchParams, useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import ParallelsChip from "@components/db/ParallelsChip";
 import SearchMatchesChip from "@components/db/SearchMatchesChip";
+import {
+  ResultPageType,
+  useResultPageType,
+} from "@components/hooks/useResultPageType";
 import {
   DBSourceFilePageFilterUISettingName,
   DisplayUISettingName,
@@ -21,10 +24,10 @@ const dbSourceFileFilterSet = new Set(dbSoureFileRequestFilters);
 const displayParamSet = new Set(displayUISettings);
 
 function getSettingCounts({
-  route,
+  resultPageType,
   searchParams,
 }: {
-  route: "search" | "dbSourcePage";
+  resultPageType: ResultPageType;
   searchParams: ReadonlyURLSearchParams;
 }) {
   let display = 0;
@@ -48,7 +51,7 @@ function getSettingCounts({
     }
 
     if (
-      route === "search" &&
+      resultPageType === "search" &&
       searchFilterSet.has(key as SearchPageFilterUISettingName)
     ) {
       filter += 1;
@@ -56,7 +59,7 @@ function getSettingCounts({
     }
 
     if (
-      route === "dbSourcePage" &&
+      resultPageType === "dbFile" &&
       displayParamSet.has(key as DisplayUISettingName)
     ) {
       display += 1;
@@ -64,7 +67,7 @@ function getSettingCounts({
     }
 
     if (
-      route === "dbSourcePage" &&
+      resultPageType === "dbFile" &&
       dbSourceFileFilterSet.has(key as DBSourceFilePageFilterUISettingName)
     ) {
       filter += 1;
@@ -79,25 +82,25 @@ export default function CurrentResultChips({
 }: {
   matches?: number;
 }) {
-  const router = useRouter();
   const { t } = useTranslation("settings");
 
-  const isSearchRoute = router.route.startsWith("/search");
+  const { isSearchPage, resultPageType } = useResultPageType();
+
   const searchParams = useSearchParams();
 
   const count = React.useMemo(
     () =>
       getSettingCounts({
-        route: isSearchRoute ? "search" : "dbSourcePage",
+        resultPageType,
         searchParams,
       }),
-    [isSearchRoute, searchParams],
+    [searchParams, resultPageType],
   );
 
   return (
     <>
-      {isSearchRoute ? (
-        <SearchMatchesChip matches={matches} isSearchRoute />
+      {isSearchPage ? (
+        <SearchMatchesChip matches={matches} isSearchPage />
       ) : (
         <ParallelsChip />
       )}

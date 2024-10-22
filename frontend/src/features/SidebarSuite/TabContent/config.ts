@@ -1,13 +1,14 @@
 import {
   DBSourceFilePageFilterUISettingName,
   DisplayUISettingName,
+  SearchPageFilterUISettingName,
   UtilityUISettingName,
 } from "@features/SidebarSuite/types";
 import { dbSoureFileRequestFilters } from "@features/SidebarSuite/uiSettings/config";
 import { APISchemas } from "@utils/api/types";
 import { DbViewEnum } from "@utils/constants";
 
-export const AVAILABLE_UI_FILTERS: Record<
+export const AVAILABLE_DB_FILE_PAGE_FILTERS: Record<
   DbViewEnum,
   DBSourceFilePageFilterUISettingName[]
 > = {
@@ -17,6 +18,15 @@ export const AVAILABLE_UI_FILTERS: Record<
   [DbViewEnum.NUMBERS]: dbSoureFileRequestFilters,
   [DbViewEnum.TABLE]: dbSoureFileRequestFilters,
   [DbViewEnum.TEXT]: dbSoureFileRequestFilters,
+};
+
+export const AVAILABLE_SEARCH_PAGE_FILTERS: Record<
+  SearchPageFilterUISettingName,
+  Set<APISchemas["Languages"]>
+> = {
+  language: new Set(["all", "bo", "zh", "pa", "sa"]),
+  exclude_sources: new Set(["bo", "zh", "pa", "sa"]),
+  include_sources: new Set(["bo", "zh", "pa", "sa"]),
 };
 
 type LanguageUnabvailableUtilities = Partial<

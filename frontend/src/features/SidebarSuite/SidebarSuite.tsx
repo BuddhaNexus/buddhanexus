@@ -1,24 +1,16 @@
 import { useCallback, useState } from "react";
-import { useRouter } from "next/router";
+import { useResultPageType } from "@components/hooks/useResultPageType";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { TabContext } from "@mui/lab/";
-import { Box, Drawer, IconButton, Toolbar } from "@mui/material";
+import { Box, Drawer, Toolbar } from "@mui/material";
 
-import { DrawerHeader } from "./common/MuiStyledSidebarComponents";
-import {
-  DbFilePageSidebarTabPanels,
-  SearchPageSidebarTabPanels,
-  SidebarTabListDbPage,
-  SidebarTabListSearch,
-} from "./SidebarTabs";
+import { TabContent } from "./TabContent";
 
 export function SidebarSuite() {
-  const router = useRouter();
   const { isSettingsOpen, setIsSettingsOpen, drawerWidth } =
     useSettingsDrawer();
   const [activeTab, setActiveTab] = useState("0");
-  const isSearchRoute = router.route.startsWith("/search");
+  const { isSearchPage } = useResultPageType();
 
   const handleTabChange = useCallback(
     (event: React.SyntheticEvent, newValue: string) => {
@@ -47,28 +39,11 @@ export function SidebarSuite() {
       >
         <Box sx={{ width: 1 }}>
           <TabContext value={activeTab}>
-            <DrawerHeader>
-              <Box sx={{ width: 1, borderBottom: 1, borderColor: "divider" }}>
-                {isSearchRoute ? (
-                  <SidebarTabListSearch onTabChange={handleTabChange} />
-                ) : (
-                  <SidebarTabListDbPage onTabChange={handleTabChange} />
-                )}
-              </Box>
-
-              <IconButton
-                aria-label="close settings"
-                onClick={() => setIsSettingsOpen(false)}
-              >
-                <CloseRoundedIcon />
-              </IconButton>
-            </DrawerHeader>
-
-            {isSearchRoute ? (
-              <SearchPageSidebarTabPanels />
-            ) : (
-              <DbFilePageSidebarTabPanels />
-            )}
+            <TabContent
+              isSearchPage={isSearchPage}
+              handleTabChange={handleTabChange}
+              setIsSettingsOpen={setIsSettingsOpen}
+            />
           </TabContext>
         </Box>
       </aside>
