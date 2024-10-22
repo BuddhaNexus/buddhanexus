@@ -1,4 +1,5 @@
 import {
+  nullToUndefined,
   useExcludeCategoriesParam,
   useExcludeCollectionsParam,
   useExcludeFilesParam,
@@ -13,10 +14,6 @@ import {
 } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { AllAPIRequestProps } from "@utils/api/types";
-
-const nullToUndefined = <T>(value: T | null): T | undefined => {
-  return value ?? undefined;
-};
 
 export const useDbQueryFilters = () => {
   const [score] = useScoreParam();

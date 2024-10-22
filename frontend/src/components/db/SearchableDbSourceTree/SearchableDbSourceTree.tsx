@@ -4,6 +4,7 @@ import { useTranslation } from "next-i18next";
 import {
   activeDbSourceTreeAtom,
   activeDbSourceTreeBreadcrumbsAtom,
+  currentDbViewAtom,
 } from "@atoms";
 import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
@@ -12,6 +13,7 @@ import { Box, FormControl, InputAdornment, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue, useSetAtom } from "jotai";
+import { DbViewEnum } from "@utils/constants";
 
 import { DbSourceTree } from "./treeComponents/DbSourceTree";
 import { LoadingTree } from "./treeComponents/LoadingTree";
@@ -55,6 +57,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
 
     const activeTree = useAtomValue(activeDbSourceTreeAtom);
     const setBreadcrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
+    const dbView = useAtomValue(currentDbViewAtom);
 
     const handleSearchChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +73,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           setBreadcrumbs([]);
         }
       },
-      [setSearchTerm, setBreadcrumbs, activeTree],
+      [setSearchTerm, setBreadcrumbs, activeTree]
     );
 
     const { t } = useTranslation(["common"]);
@@ -79,6 +82,20 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
       queryKey: DbApi.DbSourcesMenu.makeQueryKey(dbLanguage),
       queryFn: () => DbApi.DbSourcesMenu.call({ language: dbLanguage }),
     });
+
+    const menuData = React.useMemo(() => {
+      const { type } = treeTypeProps;
+      if (type === DbSourceTreeType.Browser || dbView !== DbViewEnum.GRAPH) {
+        return data;
+      }
+
+      const graphFilterData = data?.map((node) => {
+        const { children, ...rest } = node;
+        return { ...rest };
+      });
+
+      return graphFilterData;
+    }, [treeTypeProps.type, data, dbView]);
 
     if (isLoading) {
       return (
@@ -90,7 +107,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
       );
     }
 
-    if (isError || !data) {
+    if (isError || !menuData) {
       return (
         <TreeException
           hasHeading={hasHeading}
@@ -127,7 +144,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
         {/* Tree view - text browser */}
         <Box sx={{ pl: padding }}>
           <DbSourceTree
-            data={data}
+            data={menuData}
             height={parentHeight - inputHeight}
             width={parentWidth}
             searchTerm={searchTerm}
@@ -136,5 +153,5 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
         </Box>
       </>
     );
-  },
+  }
 );

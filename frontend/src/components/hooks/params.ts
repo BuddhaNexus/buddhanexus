@@ -14,6 +14,10 @@ import {
 
 import { useNullableDbRouterParams } from "./useDbRouterParams";
 
+export const nullToUndefined = <T>(value: T | null): T | undefined => {
+  return value ?? undefined;
+};
+
 export const useScoreParam = () => {
   return useQueryState(allUIComponentParamNames.score, {
     ...parseAsInteger.withDefault(DEFAULT_PARAM_VALUES.score),

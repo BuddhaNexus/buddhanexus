@@ -331,7 +331,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/menu/menudata/": {
+  "/menudata/": {
     parameters: {
       query?: never;
       header?: never;
@@ -342,7 +342,7 @@ export interface paths {
      * Get Data For Sidebar Menu
      * @description Endpoint for Menudata, formerly known as the sidebar menu.
      */
-    get: operations["get_data_for_sidebar_menu_menu_menudata__get"];
+    get: operations["get_data_for_sidebar_menu_menudata__get"];
     put?: never;
     post?: never;
     delete?: never;
@@ -1136,7 +1136,7 @@ export interface operations {
       };
     };
   };
-  get_data_for_sidebar_menu_menu_menudata__get: {
+  get_data_for_sidebar_menu_menudata__get: {
     parameters: {
       query: {
         /** @description language to be used */

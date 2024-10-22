@@ -12,6 +12,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
 import {
+  nullToUndefined,
   useIncludeCollectionsParam,
   useParLengthParam,
   useScoreParam,
@@ -55,7 +56,7 @@ export default function GraphPage() {
     filters: {
       score,
       par_length,
-      include_collections: include_collections ?? [],
+      include_collections: nullToUndefined(include_collections),
     },
   };
 

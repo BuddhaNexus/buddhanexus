@@ -54,7 +54,7 @@ export const DbApi = {
     makeQueryKey: (parallelIds: string[]) => parallelIds,
     call: getTextViewMiddleParallelsData,
   },
-  //* MENUS
+  //* MENU
   DbSourcesMenu: {
     makeQueryKey: (language: DbLanguage) => ["textCollectionsData", language],
     call: getDbSourceMenuData,
