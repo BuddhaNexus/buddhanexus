@@ -7,7 +7,7 @@ from ..utils import (
 )
 from .endpoint_utils import execute_query
 
-from ..queries import table_view_queries, menu_queries
+from ..queries import numbers_view_queries
 
 from .models.general_models import GeneralInput
 from .models.numbers_view_models import MenuOutput, NumbersViewOutput
@@ -56,7 +56,7 @@ async def get_numbers_view(input: GeneralInput) -> Any:
         folio = 0
 
     query_result = execute_query(
-        table_view_queries.QUERY_NUMBERS_VIEW,
+        numbers_view_queries.QUERY_NUMBERS_VIEW,
         bind_vars={
             "filename": input.filename,
             "score": input.filters.score,
@@ -86,7 +86,7 @@ async def get_categories_for_numbers_view(
     """
     language = get_language_from_filename(filename)
     query_result = execute_query(
-        menu_queries.QUERY_CATEGORIES_PER_LANGUAGE,
+        numbers_view_queries.QUERY_CATEGORIES_PER_LANGUAGE,
         bind_vars={"language": language},
     )
     return query_result.result

@@ -1,5 +1,5 @@
 """
-Contains query for the total menudata and for the numbers view category list.
+Contains query for the total menudata.
 
 """
 
@@ -15,14 +15,4 @@ FOR file IN files
     RETURN MERGE(file_without_segment_keys, { 
         category_display_name: category_info || file.category 
     })
-"""
-
-
-QUERY_CATEGORIES_PER_LANGUAGE = """
-FOR cat IN category_names
-    FILTER cat.lang == @language
-    RETURN {
-        id: cat.category,
-        displayName: cat.displayName
-    }
 """

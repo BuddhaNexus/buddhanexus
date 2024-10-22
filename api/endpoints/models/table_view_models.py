@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from typing import List
-from enum import Enum
 from .general_models import GeneralInput, FullNames, FullText, Filters
 
 
@@ -20,16 +19,3 @@ class Segment(BaseModel):
 
 class TableViewOutput(BaseModel):
     __root__: List[Segment]
-
-
-class DownloadData(str, Enum):
-    table = "table"
-    numbers = "numbers"
-
-
-class TableDownloadInput(GeneralInput):
-    download_data: DownloadData = DownloadData.table
-
-
-class TableDownloadOutput(BaseModel):
-    __root__: bytes
