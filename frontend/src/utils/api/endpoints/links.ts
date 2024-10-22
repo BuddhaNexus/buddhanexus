@@ -1,8 +1,8 @@
 import apiClient from "@api";
-import { APIExternalLinksRequestQuery } from "@utils/api/types";
+import { APIGetRequestQuery } from "@utils/api/types";
 
 export async function getExternalLinksData(
-  query: APIExternalLinksRequestQuery,
+  query: APIGetRequestQuery<"/links/external/">,
 ) {
   const { data } = await apiClient.GET("/links/external/", {
     params: { query },

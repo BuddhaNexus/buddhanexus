@@ -1,15 +1,9 @@
-import type {
-  APIGeneralInput,
-  APINumbersViewCategoryRequestQuery,
-  APISearchRequestBody,
-} from "@utils/api/types";
-import type { SourceLanguage } from "@utils/constants";
+import type { APIGetRequestQuery, APIPostRequestBody } from "@utils/api/types";
+import { DbLanguage } from "@utils/api/types";
 
 import { getGraphData } from "./endpoints/graph-view/graph";
 import { getExternalLinksData } from "./endpoints/links";
-import { getCategoryMenuData } from "./endpoints/menus/category";
-import { getTextFileMenuData } from "./endpoints/menus/files";
-import { getSidebarTextCollectionsMenuData } from "./endpoints/menus/sidebar";
+import { getDbSourceMenuData } from "./endpoints/menus/sources";
 import { getNumbersViewCategories } from "./endpoints/numbers-view/categories";
 import { getNumbersViewData } from "./endpoints/numbers-view/numbers";
 import { getGlobalSearchData } from "./endpoints/search";
@@ -25,58 +19,52 @@ import { getFolios } from "./endpoints/utils/folios";
 export const DbApi = {
   //* VIEWS
   GraphView: {
-    makeQueryKey: (params: APIGeneralInput) => ["graphView", params],
+    makeQueryKey: (params: APIPostRequestBody<"/graph-view/">) => [
+      "graphView",
+      params,
+    ],
     call: getGraphData,
   },
   TableView: {
-    makeQueryKey: (params: APIGeneralInput) => ["tableView", params],
+    makeQueryKey: (
+      params: Omit<APIPostRequestBody<"/table-view/table/">, "page">,
+    ) => ["tableView", params],
     call: getTableData,
   },
   NumbersView: {
-    makeQueryKey: (params: APIGeneralInput) => ["numbersView", params],
+    makeQueryKey: (
+      params: Omit<APIPostRequestBody<"/numbers-view/numbers/">, "page">,
+    ) => ["numbersView", params],
     call: getNumbersViewData,
   },
   NumbersViewCategories: {
-    makeQueryKey: (query: APINumbersViewCategoryRequestQuery) => [
+    makeQueryKey: (query: APIGetRequestQuery<"/numbers-view/categories/">) => [
       "numbersViewCategories",
       query,
     ],
     call: getNumbersViewCategories,
   },
   TextView: {
-    makeQueryKey: (params: APIGeneralInput, selectedSegment?: string) => [
-      "textView",
-      params,
-      selectedSegment,
-    ],
+    makeQueryKey: (
+      params: Omit<APIPostRequestBody<"/text-view/text-parallels/">, "page">,
+    ) => ["textView", params],
     call: getTextViewParallelsData,
   },
   TextViewMiddle: {
     makeQueryKey: (parallelIds: string[]) => parallelIds,
     call: getTextViewMiddleParallelsData,
   },
-  //* MENUS
-  DbSourceMenu: {
-    makeQueryKey: (language: SourceLanguage) => [
-      "sourceTextMenuData",
-      language,
-    ],
-    call: getTextFileMenuData,
-  },
-  CategoryMenu: {
-    makeQueryKey: (language: SourceLanguage) => ["categoryMenuData", language],
-    call: getCategoryMenuData,
-  },
+  //* MENU
   DbSourcesMenu: {
-    makeQueryKey: (language: SourceLanguage) => [
-      "textCollectionsData",
-      language,
-    ],
-    call: getSidebarTextCollectionsMenuData,
+    makeQueryKey: (language: DbLanguage) => ["textCollectionsData", language],
+    call: getDbSourceMenuData,
   },
   //* UTILS / SETTINGS
   ParallelCount: {
-    makeQueryKey: (params: APIGeneralInput) => ["parallelCountData", params],
+    makeQueryKey: (params: APIPostRequestBody<"/utils/count-matches/">) => [
+      "parallelCountData",
+      params,
+    ],
     call: getCountMatches,
   },
   FolioData: {
@@ -92,11 +80,17 @@ export const DbApi = {
     call: getExternalLinksData,
   },
   DownloadResults: {
-    makeQueryKey: (params: APIGeneralInput) => ["downloadData", params],
+    makeQueryKey: (params: APIPostRequestBody<"/table-view/download/">) => [
+      "downloadData",
+      params,
+    ],
     call: getParallelDownloadData,
   },
   GlobalSearchData: {
-    makeQueryKey: (query: APISearchRequestBody) => ["globalSearchData", query],
+    makeQueryKey: (query: APIPostRequestBody<"/search/">) => [
+      "globalSearchData",
+      query,
+    ],
     call: getGlobalSearchData,
   },
   TextDisplayName: {

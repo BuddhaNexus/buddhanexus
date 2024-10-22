@@ -59,15 +59,13 @@ yarn openapi-ts
 **note:** at the time of writing, there is still some inconsistency in BE naming conventions. Some FE parsing needs may be eliminated with BE consistency. Review an update accordingly.
 
 - `utils/api/types.ts`:
-  - this is the **source of truth** for BE<>FE typing
-  - it contains codegen derivate types **only** to create shortened, standardized API type aliases
-  - all types begin with `API`
-  - all endpoints should have corresponding  `API<endpoint-name>RequestQuery` (for `GET` requests), or `API<endpoint-name>RequestBody` (for `POST` requests), and `API<endpoint-name>ResponseData` types
 
-- `utils/api/endpoints/<endpoint-name>.ts`: 
+This is **source of truth** for BE<>FE communication. It exports `APISchemas`, `Endpoints` and api request and response generics dynamically mapped to available endpoints.
+
+- `utils/api/endpoints/<endpoint-name>.ts`:
   - co-locates endpoint fetch function and, **if** required, its return type.
   - [inferred return types are favoured](https://www.youtube.com/watch?v=I6V2FkW1ozQ)
-    - in most cases this should be possible, but if eg. doing some complicated mutation, or using the `fetchNextPage` prop from `useInfiniteQuery` it might be necessary to add a `Promise<DataType>` return type. 
+    - in most cases this should be possible, but if eg. doing some complicated mutation, or using the `fetchNextPage` prop from `useInfiniteQuery` it might be necessary to add a `Promise<DataType>` return type.
   - if needed, parsed return types should
     - be created from the parser's `ReturnType` if possible
     - follow the `Parsed<endpoint-name>Data` naming convention (parsed return consituent item types should begin with `Parsed`, eg. `ParsedSearchResult`)
@@ -178,4 +176,3 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-

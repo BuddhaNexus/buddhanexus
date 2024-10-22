@@ -3,13 +3,15 @@ import {
   // GetStaticProps,
   GetServerSideProps,
 } from "next";
-// import type { SourceLanguage } from "@utils/constants";
+// import { getValidDbLanguage } from "@utils/validators";
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
+import { useSortMethodParam } from "@components/hooks/params";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
@@ -28,11 +30,13 @@ import { DbApi } from "@utils/api/dbApi";
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 export default function NumbersPage() {
-  const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
-    useDbQueryParams();
+  const { dbLanguage, fileName } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
+
+  const requestBodyBase = useStandardViewBaseQueryParams();
+  const [sort_method] = useSortMethodParam();
 
   const {
     data: headerCollections,
@@ -40,19 +44,10 @@ export default function NumbersPage() {
     isError: isHeadersError,
   } = useQuery({
     queryKey: DbApi.NumbersViewCategories.makeQueryKey({
-      file_name: fileName,
+      filename: fileName,
     }),
-    queryFn: () => DbApi.NumbersViewCategories.call({ file_name: fileName }),
+    queryFn: () => DbApi.NumbersViewCategories.call({ filename: fileName }),
   });
-
-  const requestBody = React.useMemo(
-    () => ({
-      file_name: fileName,
-      ...defaultQueryParams,
-      ...queryParams,
-    }),
-    [fileName, defaultQueryParams, queryParams],
-  );
 
   const {
     data,
@@ -62,11 +57,15 @@ export default function NumbersPage() {
     isError: isTableContentError,
   } = useInfiniteQuery({
     initialPageParam: 0,
-    queryKey: DbApi.NumbersView.makeQueryKey(requestBody),
+    queryKey: DbApi.NumbersView.makeQueryKey({
+      ...requestBodyBase,
+      sort_method,
+    }),
     queryFn: ({ pageParam = 0 }) =>
       DbApi.NumbersView.call({
-        ...requestBody,
-        page: Number(pageParam),
+        ...requestBodyBase,
+        sort_method,
+        page: pageParam,
       }),
     getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
     getPreviousPageParam: (lastPage) =>
@@ -90,14 +89,14 @@ export default function NumbersPage() {
   const isError = isHeadersError || isTableContentError;
 
   if (isError) {
-    return <ErrorPage backgroundName={sourceLanguage} />;
+    return <ErrorPage backgroundName={dbLanguage} />;
   }
 
   const isLoading = isTableContentLoading || areHeadersLoading;
 
   if (isFallback || isLoading || !data) {
     return (
-      <PageContainer backgroundName={sourceLanguage}>
+      <PageContainer backgroundName={dbLanguage}>
         <CenteredProgress />
       </PageContainer>
     );
@@ -106,7 +105,7 @@ export default function NumbersPage() {
   return (
     <PageContainer
       maxWidth={false}
-      backgroundName={sourceLanguage}
+      backgroundName={dbLanguage}
       isQueryResultsPage
     >
       <DbViewPageHead />
@@ -118,7 +117,7 @@ export default function NumbersPage() {
         fetchNextPage={fetchNextPage}
         isFetching={isFetching}
         isLoading={isLoading}
-        language={sourceLanguage}
+        language={dbLanguage}
         fileName={fileName}
       />
       <DbSourceBrowserDrawer />
@@ -139,7 +138,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
 //   ]);
 //
 //   const queryClient = await prefetchDbResultsPageData(
-//     params?.language as SourceLanguage,
+//     getValidLanguage(params?.language),
 //     params?.file as string,
 //   );
 //

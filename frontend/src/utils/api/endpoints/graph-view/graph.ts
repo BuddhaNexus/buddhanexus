@@ -1,8 +1,5 @@
 import apiClient from "@api";
-import type {
-  APIGraphViewRequestBody,
-  APIGraphViewResponseData,
-} from "@utils/api/types";
+import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
 export type GraphPageGraphData = [name: string, count: number][];
 
@@ -11,7 +8,7 @@ const defaultReturnValue = {
   piegraphdata: [],
 };
 
-function parseAPIGraphData(data: APIGraphViewResponseData | undefined) {
+function parseAPIGraphData(data: APIPostResponse<"/graph-view/"> | undefined) {
   return data
     ? Object.entries(data).reduce((acc, [key, value]) => {
         return {
@@ -24,7 +21,7 @@ function parseAPIGraphData(data: APIGraphViewResponseData | undefined) {
     : defaultReturnValue;
 }
 
-export async function getGraphData(body: APIGraphViewRequestBody) {
+export async function getGraphData(body: APIPostRequestBody<"/graph-view/">) {
   const { data } = await apiClient.POST("/graph-view/", {
     body,
   });

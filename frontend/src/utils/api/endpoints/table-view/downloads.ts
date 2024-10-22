@@ -1,13 +1,10 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
 import { RESULTS_DOWNLOAD_ROOT_URL } from "@utils/api/constants";
-import type {
-  APITableViewDownloadRequestBody,
-  APITableViewDownloadResponseData,
-} from "@utils/api/types";
+import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
 const parseAPITableDownloadData = (
-  filePath: APITableViewDownloadResponseData,
+  filePath: APIPostResponse<"/table-view/download/">,
   fileName: string,
 ) => {
   return {
@@ -27,7 +24,7 @@ export type ParsedTableDownloadData = ReturnType<
 >;
 
 export async function getParallelDownloadData(
-  body: APITableViewDownloadRequestBody,
+  body: APIPostRequestBody<"/table-view/download/">,
 ) {
   // this triggers the creation of an excel sheet of the data for the current view (table & number only) for the user to download. The sheet is generated on the backend and lives in a folder on the HDD of the server for a while and gets removed after a few days.
   const { data: filePath } = await apiClient.POST("/table-view/download/", {
@@ -38,5 +35,5 @@ export async function getParallelDownloadData(
     throw new Error("Table View download file path is undefined");
   }
 
-  return parseAPITableDownloadData(filePath, body.file_name);
+  return parseAPITableDownloadData(filePath, body.filename);
 }

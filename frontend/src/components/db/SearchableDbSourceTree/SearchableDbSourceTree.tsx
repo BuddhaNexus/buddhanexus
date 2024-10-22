@@ -4,13 +4,15 @@ import { useTranslation } from "next-i18next";
 import {
   activeDbSourceTreeAtom,
   activeDbSourceTreeBreadcrumbsAtom,
+  currentDbViewAtom,
 } from "@atoms";
 import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, FormControl, InputAdornment, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
+import { DbViewEnum } from "@utils/constants";
 import { useAtomValue, useSetAtom } from "jotai";
 
 import { DbSourceTree } from "./treeComponents/DbSourceTree";
@@ -50,11 +52,12 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
     } = props;
 
     const [searchTerm, setSearchTerm] = useState("");
-    const { sourceLanguage } = useDbQueryParams();
+    const { dbLanguage } = useDbRouterParams();
     const { observe, height: inputHeight } = useDimensions();
 
     const activeTree = useAtomValue(activeDbSourceTreeAtom);
     const setBreadcrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
+    const dbView = useAtomValue(currentDbViewAtom);
 
     const handleSearchChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,25 +79,40 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
     const { t } = useTranslation(["common"]);
 
     const { data, isLoading, isError, error } = useQuery<DbSourceTreeNode[]>({
-      queryKey: DbApi.DbSourcesMenu.makeQueryKey(sourceLanguage),
-      queryFn: () => DbApi.DbSourcesMenu.call({ language: sourceLanguage }),
+      queryKey: DbApi.DbSourcesMenu.makeQueryKey(dbLanguage),
+      queryFn: () => DbApi.DbSourcesMenu.call({ language: dbLanguage }),
     });
+
+    const menuData = React.useMemo(() => {
+      const { type } = treeTypeProps;
+      if (type === DbSourceTreeType.Browser || dbView !== DbViewEnum.GRAPH) {
+        return data;
+      }
+
+      const graphFilterData = data?.map((node) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { children, ...rest } = node;
+        return { ...rest };
+      });
+
+      return graphFilterData;
+    }, [treeTypeProps, data, dbView]);
 
     if (isLoading) {
       return (
         <LoadingTree
           hasHeading={hasHeading}
-          sourceLanguage={sourceLanguage}
+          dbLanguage={dbLanguage}
           padding={padding}
         />
       );
     }
 
-    if (isError || !data) {
+    if (isError || !menuData) {
       return (
         <TreeException
           hasHeading={hasHeading}
-          sourceLanguage={sourceLanguage}
+          dbLanguage={dbLanguage}
           padding={padding}
           message={error ? error.message : t("prompts.noResults")}
         />
@@ -103,7 +121,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
 
     return (
       <>
-        <TreeHeading isRendered={hasHeading} sourceLanguage={sourceLanguage} />
+        <TreeHeading isRendered={hasHeading} dbLanguage={dbLanguage} />
 
         <Box ref={observe} sx={{ p: padding, pb: 0 }}>
           {/* Search input */}
@@ -127,7 +145,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
         {/* Tree view - text browser */}
         <Box sx={{ pl: padding }}>
           <DbSourceTree
-            data={data}
+            data={menuData}
             height={parentHeight - inputHeight}
             width={parentWidth}
             searchTerm={searchTerm}

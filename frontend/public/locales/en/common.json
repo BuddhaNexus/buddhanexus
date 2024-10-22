@@ -9,10 +9,11 @@
   },
   "language": {
     "all": "All",
-    "pli": "Pāli",
-    "chn": "Chinese",
-    "skt": "Sanskrit",
-    "tib": "Tibetan"
+    "pa": "Pāli",
+    "zh": "Chinese",
+    "sa": "Sanskrit",
+    "bo": "Tibetan",
+    "undefined": ""
   },
   "footer": {
     "about": "About",
@@ -54,10 +55,12 @@
     "showLess": "Show Less",
     "showAll": "Show All ({{count}})",
     "openAll": "Open All",
-    "closeAll": "Close All"
+    "closeAll": "Close All",
+    "close": "Close"
   },
   "search": {
     "pageTitle": "Search Results",
+    "dialogTitle": "BudhhaNexus Global Search",
     "inputPlaceholder": "Enter exact search term (whole words only)",
     "search": "Search",
     "runSearch": "Run search",

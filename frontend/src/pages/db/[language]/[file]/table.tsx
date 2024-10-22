@@ -3,12 +3,14 @@ import {
   // GetStaticProps,
   GetServerSideProps,
 } from "next";
-// import type { SourceLanguage } from "@utils/constants";
+// import {getValidDbLanguage } from "@utils/validators";
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
+import { useSortMethodParam } from "@components/hooks/params";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
@@ -26,28 +28,25 @@ import { DbApi } from "@utils/api/dbApi";
 
 // TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
-  const { sourceLanguage, fileName, defaultQueryParams, queryParams } =
-    useDbQueryParams();
+  const { dbLanguage } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
 
-  const requestBody = React.useMemo(
-    () => ({
-      file_name: fileName,
-      ...defaultQueryParams,
-      ...queryParams,
-    }),
-    [fileName, defaultQueryParams, queryParams],
-  );
+  const requestBodyBase = useStandardViewBaseQueryParams();
+  const [sort_method] = useSortMethodParam();
 
   const { data, fetchNextPage, fetchPreviousPage, isLoading } =
     useInfiniteQuery({
       initialPageParam: 0,
-      queryKey: DbApi.TableView.makeQueryKey(requestBody),
+      queryKey: DbApi.TableView.makeQueryKey({
+        ...requestBodyBase,
+        sort_method,
+      }),
       queryFn: ({ pageParam }) =>
         DbApi.TableView.call({
-          ...requestBody,
+          ...requestBodyBase,
+          sort_method,
           page: pageParam,
         }),
       getNextPageParam: (lastPage) => lastPage.pageNumber + 1,
@@ -62,7 +61,7 @@ export default function TablePage() {
 
   if (isFallback) {
     return (
-      <PageContainer maxWidth="xl" backgroundName={sourceLanguage}>
+      <PageContainer maxWidth="xl" backgroundName={dbLanguage}>
         <DbViewPageHead />
         <CenteredProgress />
       </PageContainer>
@@ -70,11 +69,7 @@ export default function TablePage() {
   }
 
   return (
-    <PageContainer
-      maxWidth="xl"
-      backgroundName={sourceLanguage}
-      isQueryResultsPage
-    >
+    <PageContainer maxWidth="xl" backgroundName={dbLanguage} isQueryResultsPage>
       <DbViewPageHead />
 
       {isLoading || !data ? (
@@ -101,7 +96,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
 //   const i18nProps = await getI18NextStaticProps({ locale }, ["settings"]);
 //
 //   const queryClient = await prefetchDbResultsPageData(
-//     params?.language as SourceLanguage,
+//     getValidDbLanguage(params?.language),
 //     params?.file as string,
 //   );
 //

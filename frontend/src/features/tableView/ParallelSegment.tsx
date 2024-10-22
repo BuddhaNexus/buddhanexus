@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
-import { SourceLanguageChip } from "@components/common/SourceLanguageChip";
+import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import PercentIcon from "@mui/icons-material/Percent";
 import StraightenIcon from "@mui/icons-material/Straighten";
@@ -14,8 +14,8 @@ import {
   Link,
   Tooltip,
 } from "@mui/material";
-import type { APIFullText } from "@utils/api/types";
-import type { SourceLanguage } from "@utils/constants";
+import type { APISchemas } from "@utils/api/types";
+import { DbLanguage } from "@utils/api/types";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
 
@@ -24,22 +24,22 @@ export const makeTextViewSegmentPath = ({
   language,
 }: {
   segmentNumber: string;
-  language: SourceLanguage;
+  language: DbLanguage;
 }) => {
   // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
   const [fileName] = segmentNumber.split(":");
 
   const urlEncodedSegmentNumber = encodeURIComponent(segmentNumber);
 
-  return `/db/${language}/${fileName}/text?selectedSegment=${urlEncodedSegmentNumber}&selectedSegmentIndex=0`;
+  return `/db/${language}/${fileName}/text?active_segment=${urlEncodedSegmentNumber}&active_segment_index=0`;
 };
 
 interface ParallelSegmentProps {
-  language: SourceLanguage;
+  language: DbLanguage;
   displayName: string;
   length: number;
 
-  text: APIFullText[];
+  text: APISchemas["FullText"][];
   textSegmentNumberRange: string;
 
   score?: number;
@@ -55,7 +55,7 @@ export const ParallelSegment = ({
 }: ParallelSegmentProps) => {
   const { t } = useTranslation();
 
-  const sourceLanguageName = t(`language.${language}`);
+  const dbLanguageName = t(`language.${language}`);
 
   const infoToCopy = `${textSegmentNumberRange}: ${displayName}`;
 
@@ -80,7 +80,7 @@ export const ParallelSegment = ({
       >
         <Box sx={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}>
           {/* Language name */}
-          <SourceLanguageChip label={sourceLanguageName} language={language} />
+          <DbLanguageChip label={dbLanguageName} language={language} />
 
           {/* File Name */}
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>

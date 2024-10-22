@@ -15,7 +15,7 @@ export const TableViewRow = ({
     rootFullNames,
     rootFullText,
     rootLength,
-    sourceLanguage,
+    dbLanguage,
     targetLanguage,
     score,
   },
@@ -45,7 +45,7 @@ export const TableViewRow = ({
         {/* PARALLEL SEGMENT*/}
         <ParallelSegment
           displayName={parallelFullNames.displayName}
-          language={sourceLanguage}
+          language={dbLanguage}
           length={parallelLength}
           text={parallelFullText}
           score={score}

@@ -1,30 +1,33 @@
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { currentDbViewAtom } from "@atoms";
-import { SETTINGS_OMISSIONS_CONFIG } from "@features/sidebarSuite/config";
-import { DbViewEnum, DEFAULT_DB_VIEW, SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
+import { DbViewEnum, DEFAULT_DB_VIEW } from "@utils/constants";
 import { getValidDbView } from "@utils/validators";
 import { useSetAtom } from "jotai";
 
-import { useDbQueryParams } from "./useDbQueryParams";
+import { useDbRouterParams } from "./useDbRouterParams";
 
-const { viewSelector: omittedViews } = SETTINGS_OMISSIONS_CONFIG;
+export const UNAVAILABLE_VIEWS: Partial<Record<DbLanguage, DbViewEnum[]>> = {
+  sa: [DbViewEnum.NUMBERS],
+  bo: [DbViewEnum.NUMBERS],
+};
 
-export const getAvailableDBViews = (language: SourceLanguage) => {
+export const getAvailableDBViews = (language: DbLanguage) => {
   const allViews = Object.values(DbViewEnum);
-  const unavailableViews = omittedViews[language];
+  const unavailableDbViews = UNAVAILABLE_VIEWS[language];
 
-  if (!unavailableViews) return allViews;
+  if (!unavailableDbViews) return allViews;
 
-  return allViews.filter((view) => !unavailableViews.includes(view));
+  return allViews.filter((view) => !unavailableDbViews.includes(view));
 };
 
 export const useAvailableDbViews = () => {
-  const { sourceLanguage } = useDbQueryParams();
+  const { dbLanguage } = useDbRouterParams();
 
   return useMemo(() => {
-    return getAvailableDBViews(sourceLanguage);
-  }, [sourceLanguage]);
+    return getAvailableDBViews(dbLanguage);
+  }, [dbLanguage]);
 };
 
 // This allows two-way view setting: url <--> view selector

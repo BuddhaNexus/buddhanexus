@@ -15,14 +15,17 @@ import {
 } from "@mui/material";
 import type { CellContext, ColumnDef } from "@tanstack/react-table";
 import type {
-  APINumbersSegment,
-  APINumbersViewCategoryResponseData,
-  APINumbersViewResponseData,
-  APIParallel,
+  APIGetResponse,
+  APIPostResponse,
+  APISchemas,
 } from "@utils/api/types";
-import { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
-export const createTableRows = (rowData: APINumbersViewResponseData) =>
+import type { NumbersSegment } from "./NumbersTable";
+
+export const createTableRows = (
+  rowData: APIPostResponse<"/numbers-view/numbers/">,
+) =>
   rowData.map((item) => {
     const row: any = { segment: item.segmentnr };
 
@@ -40,15 +43,15 @@ export const createTableRows = (rowData: APINumbersViewResponseData) =>
   });
 
 interface CreateTableColumnProps {
-  categories: APINumbersViewCategoryResponseData;
-  language: SourceLanguage;
+  categories: APIGetResponse<"/numbers-view/categories/">;
+  language: DbLanguage;
   fileName: string;
 }
 export const createTableColumns = ({
   categories,
   language,
   fileName,
-}: CreateTableColumnProps): ColumnDef<APINumbersSegment>[] => [
+}: CreateTableColumnProps): ColumnDef<NumbersSegment>[] => [
   {
     accessorKey: "segment",
     header: () => (
@@ -66,7 +69,7 @@ export const createTableColumns = ({
         <Typography sx={{ fontWeight: 500 }}>
           <Link
             // TODO: make sure this links to the correct segment
-            href={`/db/${language}/${fileName}/text?selectedSegment=${segmentnr}`}
+            href={`/db/${language}/${fileName}/text?active_segment=${segmentnr}`}
             target="_blank"
             rel="noreferrer noopenner"
           >
@@ -88,8 +91,8 @@ export const createTableColumns = ({
         <Typography textTransform="uppercase">{header.id}</Typography>
       </div>
     ),
-    cell: (info: CellContext<APINumbersSegment, unknown>) => {
-      const parallels = info?.getValue<APIParallel[]>() || [];
+    cell: (info: CellContext<NumbersSegment, unknown>) => {
+      const parallels = info?.getValue<APISchemas["Parallel"][]>() || [];
       return (
         <div
           style={{
@@ -117,7 +120,7 @@ export const createTableColumns = ({
                 <Typography>
                   <Link
                     // TODO: make sure this links to the correct segment
-                    href={`/db/${language}/${parallelFileName}/text?selectedSegment=${segmentnr}`}
+                    href={`/db/${language}/${parallelFileName}/text?active_segment=${segmentnr}`}
                     color="text.primary"
                     target="_blank"
                     rel="noreferrer noopenner"

@@ -4,14 +4,20 @@ import {
   GetServerSideProps,
 } from "next";
 import { useTranslation } from "next-i18next";
-// import { SourceLanguage } from "@utils/constants";
+// import { getValidDbLanguage } from "@utils/validators";
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { ErrorPage } from "@components/db/ErrorPage";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import {
+  nullToUndefined,
+  useIncludeCollectionsParam,
+  useParLengthParam,
+  useScoreParam,
+} from "@components/hooks/params";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
@@ -34,30 +40,25 @@ const GraphContainer: React.FC<{ children: React.ReactNode }> = ({
 }) => <Paper sx={{ my: 2, minHeight: "500px", flex: 1 }}>{children}</Paper>;
 
 export default function GraphPage() {
-  const {
-    sourceLanguage,
-    fileName,
-    queryParams: { score, par_length },
-    defaultQueryParams,
-  } = useDbQueryParams();
+  const { dbLanguage, fileName: filename } = useDbRouterParams();
   const { isFallback } = useSourceFile();
 
   useSetDbViewFromPath();
 
+  const [score] = useScoreParam();
+  const [par_length] = useParLengthParam();
+  const [include_collections] = useIncludeCollectionsParam();
+
   const { t } = useTranslation();
 
-  const requestBody = React.useMemo(
-    () => ({
-      file_name: fileName,
-      score: score ? Number(score) : defaultQueryParams.score,
-      par_length: par_length
-        ? Number(par_length)
-        : defaultQueryParams.par_length,
-      // TODO: Add target_collection when available / or remove
-      target_collection: undefined,
-    }),
-    [fileName, score, par_length, defaultQueryParams],
-  );
+  const requestBody = {
+    filename,
+    filters: {
+      score,
+      par_length,
+      include_collections: nullToUndefined(include_collections),
+    },
+  };
 
   const { data, isLoading, isError } = useQuery({
     queryKey: DbApi.GraphView.makeQueryKey(requestBody),
@@ -70,23 +71,19 @@ export default function GraphPage() {
   );
 
   if (isError) {
-    return <ErrorPage backgroundName={sourceLanguage} />;
+    return <ErrorPage backgroundName={dbLanguage} />;
   }
 
   if (isFallback) {
     return (
-      <PageContainer backgroundName={sourceLanguage}>
+      <PageContainer backgroundName={dbLanguage}>
         <CenteredProgress />
       </PageContainer>
     );
   }
 
   return (
-    <PageContainer
-      maxWidth="xl"
-      backgroundName={sourceLanguage}
-      isQueryResultsPage
-    >
+    <PageContainer maxWidth="xl" backgroundName={dbLanguage} isQueryResultsPage>
       <DbViewPageHead />
 
       {isLoading ? (
@@ -121,13 +118,6 @@ export default function GraphPage() {
 
           <GraphContainer>
             <HistogramDataChart
-              chartType="Histogram"
-              data={filteredHistogramData}
-            />
-          </GraphContainer>
-
-          <GraphContainer>
-            <HistogramDataChart
               chartType="ScatterChart"
               data={filteredHistogramData}
             />
@@ -152,7 +142,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
 //   ]);
 //
 //   const queryClient = await prefetchDbResultsPageData(
-//     params?.language as SourceLanguage,
+//     getValidLanguage(params?.language),
 //     params?.file as string,
 //   );
 //

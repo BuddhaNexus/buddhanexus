@@ -1,14 +1,15 @@
 import React from "react";
 import { NodeApi } from "react-arborist";
 import { currentDbViewAtom } from "@atoms";
+import { Link } from "@components/common/Link";
 import { getTextPath } from "@components/common/utils";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Chip, Tooltip, Typography } from "@mui/material";
 import { useAtomValue } from "jotai";
 
 import { SourceTypeIcon } from "./SourceTypeIcon";
-import { RowBox, TextNameTypography, TextNodeLink } from "./styledComponents";
+import { RowBox, TextNameTypography } from "./styledComponents";
 import styles from "./TextItemLink.module.css";
 
 const CHARACTER_WIDTH = 8;
@@ -24,12 +25,13 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
     elementWidth = node.tree.props.width - INDENTATION_WIDTH;
   }
 
-  const { sourceLanguage } = useDbQueryParams();
+  const { dbLanguage } = useDbRouterParams();
   const dbView = useAtomValue(currentDbViewAtom);
+
   return (
-    <TextNodeLink
+    <Link
       className={styles.textNodeLink}
-      href={getTextPath({ sourceLanguage, fileName, dbView })}
+      href={getTextPath({ dbLanguage, fileName, dbView })}
     >
       <div>
         <Chip
@@ -54,6 +56,6 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
           </TextNameTypography>
         </Tooltip>
       </div>
-    </TextNodeLink>
+    </Link>
   );
 }

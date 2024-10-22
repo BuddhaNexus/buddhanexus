@@ -12,7 +12,7 @@ import { useTextPage } from "@features/textView/useTextPage";
 export default function TextPage() {
   const {
     isError,
-    sourceLanguage,
+    dbLanguage,
     isFallback,
     isFetching,
     hasData,
@@ -25,12 +25,12 @@ export default function TextPage() {
   } = useTextPage();
 
   if (isError) {
-    return <ErrorPage backgroundName={sourceLanguage} />;
+    return <ErrorPage backgroundName={dbLanguage} />;
   }
 
   if (isFallback) {
     return (
-      <PageContainer backgroundName={sourceLanguage}>
+      <PageContainer backgroundName={dbLanguage}>
         <CenteredProgress />
       </PageContainer>
     );
@@ -39,7 +39,7 @@ export default function TextPage() {
   return (
     <PageContainer
       maxWidth="xl"
-      backgroundName={sourceLanguage}
+      backgroundName={dbLanguage}
       isLoading={isFetching}
       isQueryResultsPage
     >
