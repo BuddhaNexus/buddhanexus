@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
+import { useActiveSegmentParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -7,9 +8,6 @@ import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
 import { DbLanguage } from "@utils/api/types";
-
-import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
-import { useActiveSegmentParam } from "@components/hooks/params";
 
 type PaginationState = [startEdgePage?: number, endEdgePage?: number];
 
