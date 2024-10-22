@@ -33,7 +33,7 @@ APP.include_router(text_view.router, prefix="/text-view")
 APP.include_router(numbers_view.router, prefix="/numbers-view")
 APP.include_router(links.router, prefix="/links")
 APP.include_router(utils.router, prefix="/utils")
-APP.include_router(menu.router, prefix="/menu")
+APP.include_router(menu.router)
 
 
 @APP.get("/")

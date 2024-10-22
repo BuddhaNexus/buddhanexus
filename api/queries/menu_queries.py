@@ -1,15 +1,7 @@
-# QUERY_FILES_FOR_LANGUAGE = """
-# FOR file IN files
-#     FILTER file.lang == @language
-#     FILTER file.displayName != null
-#     SORT file.filenr
-#     RETURN {
-#         displayName: file.displayName,
-#         textname: file.textname,
-#         filename: file.filename,
-#         category: file.category
-#     }
-# """
+"""
+Contains query for the total menudata and for the numbers view category list.
+
+"""
 
 QUERY_TOTAL_DATA = """
 FOR file IN files
@@ -25,19 +17,6 @@ FOR file IN files
     })
 """
 
-
-# QUERY_ALL_COLLECTIONS = """
-# FOR file IN files
-#     FILTER file.lang != null
-#     COLLECT collection = file.collection, language = file.lang
-#     RETURN {
-#         collectionname: collection,
-#         collectionlanguage: language,
-#         collectionkey: language + "_" + collection
-#     }
-# """
-
-# QUERY_COLLECTION_NAMES = "RETURN category_names"
 
 QUERY_CATEGORIES_PER_LANGUAGE = """
 FOR cat IN category_names
