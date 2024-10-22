@@ -46,7 +46,7 @@ export function useTextPage(): UseTextPageReturn {
     (segmentId: string | null): boolean =>
       segmentId !== null &&
       Boolean(previouslySelectedSegmentsMap.current[segmentId]),
-    []
+    [],
   );
 
   const {
@@ -113,7 +113,7 @@ export function useTextPage(): UseTextPageReturn {
       if (isSuccess && active_segment)
         previouslySelectedSegmentsMap.current[active_segment] = true;
     },
-    [isSuccess, active_segment]
+    [isSuccess, active_segment],
   );
 
   useEffect(
@@ -128,7 +128,7 @@ export function useTextPage(): UseTextPageReturn {
         paginationState.current[1] = data?.pages[0].data.page;
       }
     },
-    [data?.pages]
+    [data?.pages],
   );
 
   const handleFetchingPreviousPage = useCallback(async () => {
@@ -154,7 +154,7 @@ export function useTextPage(): UseTextPageReturn {
 
   const allParallels = useMemo(
     () => (data?.pages ? data.pages.flatMap((page) => page.data.items) : []),
-    [data?.pages]
+    [data?.pages],
   );
 
   const hasData = Boolean(data);
