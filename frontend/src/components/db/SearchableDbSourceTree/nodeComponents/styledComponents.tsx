@@ -1,6 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { lighten } from "@mui/material/styles";
-import { styled } from "@mui/system";
+import { lighten, styled } from "@mui/material/styles";
 
 export const NodeBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== "isSelected",
