@@ -1,6 +1,6 @@
 QUERY_SEARCH = """
 LET chinese_results = (
-    FOR d IN search_index_zh
+    FOR d IN search_index_zh_view
         SEARCH PHRASE(d.original, @search_string_zh, 'text_zh')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
@@ -15,7 +15,7 @@ LET chinese_results = (
     )
 
 let tibetan_fuzzy_results = (
-    FOR d IN search_index_bo
+    FOR d IN search_index_bo_view
         SEARCH PHRASE(d.analyzed, @search_string_bo, 'tibetan_fuzzy_analyzer')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
@@ -29,7 +29,7 @@ let tibetan_fuzzy_results = (
         RETURN d
     )
 let sanskrit_results = (
-    FOR d IN search_index_sa
+    FOR d IN search_index_sa_view
         SEARCH PHRASE(d.analyzed, @search_string_sa, 'sanskrit_analyzer')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
@@ -43,7 +43,7 @@ let sanskrit_results = (
         RETURN d
     )
 let sanskrit_results_fuzzy = (
-    FOR d IN search_index_sa
+    FOR d IN search_index_sa_view
         SEARCH PHRASE(d.analyzed, @search_string_sa_fuzzy, 'sanskrit_analyzer')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
@@ -58,7 +58,7 @@ let sanskrit_results_fuzzy = (
     )
 
 let pali_results = (
-    FOR d IN search_index_pa
+    FOR d IN search_index_pa_view
         SEARCH PHRASE(d.analyzed, @search_string_pa, 'pali_analyzer')
         LIMIT 1000
         FILTER LENGTH(@filter_include_files) == 0 OR d.par_filename IN @filter_include_files
