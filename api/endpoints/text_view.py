@@ -1,19 +1,10 @@
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter
 from ..queries import text_view_queries
 from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_middle_view
 from .endpoint_utils import execute_query
 from typing import Any
-from ..utils import (
-    get_page_for_segment,
-    get_filename_from_segmentnr,
-    get_segment_for_folio,
-)
-from .models.text_view_models import (
-    TextViewLeftOutputV2,
-    TextParallelsInput,
-    TextViewMiddleInput,
-    TextViewMiddleOutput,
-)
+from ..utils import get_page_for_segment, get_filename_from_segmentnr
+from .models.text_view_models import *
 
 router = APIRouter()
 
@@ -30,16 +21,16 @@ async def get_parallels_for_middle(input: TextViewMiddleInput) -> Any:
     return calculate_color_maps_middle_view(query_result.result[0])
 
 
-@router.post("/text-parallels/", response_model=TextViewLeftOutputV2)
+@router.post("/text-parallels/", response_model=TextViewLeftOutput)
 async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any:
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
     """
     filename = input.filename
     parallel_ids_type = "parallel_ids"
-    page_number = input.page_number
+    page = input.page
     if input.active_segment != "none":
-        page_number = get_page_for_segment(input.active_segment)
+        page = get_page_for_segment(input.active_segment)
         filename = get_filename_from_segmentnr(input.active_segment)
 
     number_of_total_pages = execute_query(
@@ -48,11 +39,11 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
             "filename": filename,
         },
     ).result[0]
-    if page_number >= number_of_total_pages:
-        return {"page": page_number, "total_pages": number_of_total_pages, "items": []}
+    if page >= number_of_total_pages:
+        return {"page": page, "total_pages": number_of_total_pages, "items": []}
     current_bind_vars = {
         "filename": filename,
-        "page_number": page_number,
+        "page": page,
         "score": input.filters.score,
         "parlength": input.filters.par_length,
         "multi_lingual": input.filters.languages,
@@ -68,13 +59,12 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
         text_view_queries.QUERY_TEXT_AND_PARALLELS,
         bind_vars=current_bind_vars,
     )
-    print(text_segments_query_result.result)
     data_with_colormaps = calculate_color_maps_text_view(
         text_segments_query_result.result[0]
     )
 
     return {
-        "page": page_number,
+        "page": page,
         "total_pages": number_of_total_pages,
         "items": data_with_colormaps,
     }

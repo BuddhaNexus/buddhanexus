@@ -223,11 +223,11 @@ def get_segment_field(lang, filename):
     The segment field is named differently for different languages
     """
     segment_field = "Segments"
-    if lang == "tib":
+    if lang == "bo":
         segment_field = "Folio"
-    if lang == "pli" and not re.search(r"^(anya|tika|atk)", filename):
+    elif lang == "pa" and not re.search(r"^(anya|tika|atk)", filename):
         segment_field = "PTS nr"
-    if lang == "chn":
+    elif lang == "zh":
         segment_field = "Facsimile"
 
     return segment_field
@@ -260,17 +260,14 @@ def get_spreadsheet_values(parallel):
     except IndexError:
         par_segment_text = par_segment_text_joined
 
-    par_text_name = parallel["par_displayname"]
-    if len(par_text_name) > 0:
-        par_text_name = par_text_name[0]
-    else:
-        par_text_name = "NA"
+    par_displayname = parallel["par_displayname"]
+    par_textname = parallel["par_textname"]
 
     return (
         root_segment_nr,
         root_segment_text,
-        parallel["par_segnr"][0].split(":")[0],
-        par_text_name,
+        par_textname,
+        par_displayname,
         par_segment_nr,
         par_segment_text,
     )

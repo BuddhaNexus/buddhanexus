@@ -1,12 +1,12 @@
 from pydantic import BaseModel
-from typing import List, Union
+from typing import List
 
 
 class Parallel(BaseModel):
-    segmentnr: Union[str, None] = None
-    displayName: Union[str, None] = None
-    fileName: Union[str, None] = None
-    category: Union[str, None] = None
+    segmentnr: str
+    displayName: str
+    fileName: str
+    category: str
 
 
 class Segment(BaseModel):
