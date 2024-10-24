@@ -9,14 +9,22 @@ def create_searchfield(result):
         + " "
         + unidecode.unidecode(result["displayName"]).lower()
         + " "
+        + result["category_display_name"]
+        + " "
+        + unidecode.unidecode(result["category_display_name"]).lower()
+        + " "
         + result["textname"]
     )
 
 
-def add_searchfield(results):
-    for result in results:
-        result["search_field"] = create_searchfield(result)
-    return results
+def create_cat_searchfield(result):
+    return (
+        result["category_display_name"]
+        + " "
+        + unidecode.unidecode(result["category_display_name"]).lower()
+        + " "
+        + result["category"]
+    )
 
 
 def structure_menu_data(query_result):
@@ -34,6 +42,9 @@ def structure_menu_data(query_result):
 
         result[collection][category]["category"] = category
         result[collection][category]["categorydisplayname"] = category_display_name
+        result[collection][category]["categorysearchfield"] = create_cat_searchfield(
+            file
+        )
         result[collection][category]["files"].append(file_info)
 
     navigation_menu_data = [
@@ -43,6 +54,7 @@ def structure_menu_data(query_result):
                 Category(
                     category=cat_info["category"],
                     categorydisplayname=cat_info["categorydisplayname"],
+                    categorysearch_field=cat_info["categorysearchfield"],
                     files=cat_info["files"],
                 )
                 for cat_info in categories.values()

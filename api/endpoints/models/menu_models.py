@@ -11,6 +11,7 @@ class File(BaseModel):
 class CategoryBase(BaseModel):
     category: str
     categorydisplayname: str
+    categorysearch_field: str
 
 
 class Category(CategoryBase):
