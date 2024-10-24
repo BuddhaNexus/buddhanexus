@@ -3,12 +3,16 @@ from typing import List, Union
 
 
 class GraphInput(BaseModel):
-    file_name: str = ""
+    filename: str = ""
     score: int = 0
     par_length: int = 0
-    target_collection: list = []
+    target_collection: List[str] = []
+
+
+class GraphData(BaseModel):
+    piegraphdata: List[List[Union[str, int]]]
+    histogramgraphdata: List[List[Union[str, int]]] = None
 
 
 class GraphViewOutput(BaseModel):
-    piegraphdata: List[List[Union[str, int]]]
-    histogramgraphdata: List[List[Union[str, int]]]
+    __root__: GraphData

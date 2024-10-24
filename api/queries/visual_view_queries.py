@@ -3,7 +3,6 @@ Contains all database queries related to visual view.
 
 """
 
-
 QUERY_VISUAL_CATEGORY_VIEW = """
 LET hitcollection_details = (
     FOR item IN @hitcollections

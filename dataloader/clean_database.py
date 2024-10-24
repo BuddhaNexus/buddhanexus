@@ -13,13 +13,10 @@ from dataloader_constants import (
     COLLECTION_NAMES,
     INDEX_COLLECTION_NAMES,
     INDEX_VIEW_NAMES,
-    DEFAULT_SOURCE_URL,
     COLLECTION_SEGMENTS,
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_FILES,
-    COLLECTION_MENU_COLLECTIONS,
-    COLLECTION_MENU_CATEGORIES,
     COLLECTION_LANGUAGES,
     GLOBAL_STATS_CATEGORIES,
     GLOBAL_STATS_FILES,
@@ -55,6 +52,7 @@ def clean_all_collections_db():
     try:
         for name in COLLECTION_NAMES:
             current_name = name
+            print("deleting collection", name)
             db.delete_collection(name)
     except CollectionDeleteError as e:
         print("Error deleting collection %s: " % current_name, e)
@@ -103,19 +101,13 @@ def clean_segment_collections_db():
     print("segment collections cleaned.")
 
 
-def clean_menu_collections_db():
+def clean_metadata_db():
     """
-    Clear the menu database collections completely.
+    Clear the metadata database collections completely.
     """
     db = get_database()
-    db.delete_graph(GRAPH_COLLECTIONS_CATEGORIES)
-    for name in (
-        COLLECTION_MENU_COLLECTIONS,
-        COLLECTION_MENU_CATEGORIES,
-        COLLECTION_LANGUAGES,
-    ):
-        empty_collection(name, db)
-    print("menu data collections cleaned.")
+    db.delete_collection(COLLECTION_METADATA)
+    print("metadata data collection cleaned.")
 
 
 def clean_all_lang_db(current_lang):
@@ -143,6 +135,7 @@ def clean_all_lang_db(current_lang):
     files_collection = db.collection(COLLECTION_FILES)
     files_collection.delete_match({"language": current_lang})
     print("Cleaning data done.")
+
 
 def clean_paralels_lang_db(current_lang):
     print("Cleaning data for language", current_lang)
