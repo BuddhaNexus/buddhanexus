@@ -2,7 +2,6 @@ from fastapi import APIRouter, Query
 from typing import Any
 from .endpoint_utils import execute_query
 from ..queries import utils_queries
-from ..search import search_utils
 from .models.utils_models import *
 
 router = APIRouter()
@@ -70,25 +69,3 @@ async def get_displayname_for_segmentnr(
     Returns the displayname for a given segmentnr or filename
     """
     return {"displayname": get_displayname(segmentnr)}
-
-
-# Is the below still needed? Right now it doesn't work as the query doesn't exist.
-
-# @router.get("/available-languages/", response_model=LanguageOutput)
-# async def get_multilingual(
-#     filename: str = Query(
-#         ...,
-#         description="File name of the text for which the available languages should be fetched.",
-#     )
-# ) -> Any:
-#     """
-#     Returns a list of the available languages of matches for the given file.
-#     """
-#     query_result = {"langList": []}
-#     query_displayname = execute_query(
-#         utils_queries.QUERY_MULTILINGUAL_LANGS,
-#         bind_vars={"filename": filename},
-#         raw_results=True,
-#     )
-#     query_result = {"langList": query_displayname.result[0]}
-#     return query_result

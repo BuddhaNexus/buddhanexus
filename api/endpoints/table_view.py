@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter
 from typing import Any
 from ..colormaps import calculate_color_maps_table_view
 from ..utils import get_sort_key

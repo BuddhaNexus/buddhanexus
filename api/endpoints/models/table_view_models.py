@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List
-from .general_models import GeneralInput, FullNames, FullText, Filters
+from .general_models import FullNames, FullText
 
 
 class Segment(BaseModel):

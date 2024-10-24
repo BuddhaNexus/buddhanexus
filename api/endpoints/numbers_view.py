@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Query
-import re
 from typing import Any
 from ..utils import (
     get_language_from_filename,

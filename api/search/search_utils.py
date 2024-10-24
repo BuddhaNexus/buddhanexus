@@ -1,7 +1,6 @@
 import re
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
 from fuzzysearch import levenshtein_ngram
-from ..utils import shorten_segment_names
 import pyewts
 
 bn_analyzer = bn_translate.analyzer()
@@ -58,10 +57,6 @@ def preprocess_search_string(search_string, language):
     elif language == "pa":
         bo = zh = ""
     return {"sa": sa, "sa_fuzzy": sa_fuzzy, "bo": bo, "pa": pa, "zh": zh}
-
-
-def tag_sanskrit(sanskrit_string):
-    return bn_analyzer.tag_sanskrit(sanskrit_string[:150].lower())
 
 
 def get_offsets(search_string, segment_text):

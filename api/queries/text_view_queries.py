@@ -2,23 +2,6 @@
 Contains all database queries for text-view and middle text view.
 """
 
-QUERY_FILE_TEXT = """
-FOR file IN files
-    FILTER file.filename == @filename
-    LET segments = (
-        FOR segmentnr IN file.segment_keys
-            FOR segment in segments
-                FILTER segment.segmentnr == segmentnr
-                RETURN {
-                    segnr: segment.segmentnr,
-                    segtext: segment.segtext
-                }
-        )
-RETURN {
-    filetext: segments
-}
-"""
-
 QUERY_GET_NUMBER_OF_PAGES = """
 FOR file IN files
     FILTER file.filename == @filename
@@ -29,7 +12,7 @@ FOR file IN files
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files
     FILTER file.filename == @filename
-    LET page_segments = (        
+    LET page_segments = (
         LENGTH(file.segment_pages[@page] ? file.segment_pages[@page] : []) > 0 ?
         (
             FOR segmentnr IN file.segment_pages[@page]
@@ -49,7 +32,7 @@ FOR file IN files
 
                             FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
                             FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
-                            
+
                             FILTER POSITION(@multi_lingual, p.tgt_lang)
                             RETURN p._key
                     )
@@ -74,7 +57,7 @@ LET parallels = (
             FILTER p.filename == parallel_id
             FILTER p.score * 100 >= @score
             FILTER p.par_length >= @parlength
-            
+
             FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
             FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
 

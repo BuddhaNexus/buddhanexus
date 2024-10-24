@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from typing import Any
-from ..db_connection import get_db
 from ..search import search_utils
 from ..queries import search_queries
 from .models.search_models import SearchOutput, SearchInput

@@ -81,55 +81,6 @@ def get_language_from_filename(filename) -> str:
     return lang
 
 
-def number_exists(input_string) -> bool:
-    """
-    Simple utility to check if string has number characters.
-    :param input_string: the string to test
-    :return: `True` if the string contains numbers.
-    """
-    return any(char.isdigit() for char in input_string)
-
-
-# Is the below function still needed?
-
-# def add_source_information(filename, query_result):
-#     """
-#     Checks if a special source string is stored in the database.
-#     If not, it will return a generic message based on a regex pattern.
-#     Currently only works for SKT.
-#     TODO: We might want to add this to Pali/Chn/Tib as well in the future!
-#     """
-#     lang = get_language_from_filename(filename)
-#     if lang == "sa":
-#         query_source_information = get_db().AQLQuery(
-#             query=utils_queries.QUERY_SOURCE,
-#             bindVars={"filename": filename},
-#             rawResults=True,
-#         )
-#         source_id = query_source_information.result[0]["source_id"]
-#         source_string = query_source_information.result[0]["source_string"]
-#         if source_id == "GRETIL":
-#             source_string = """The source of this text is GRETIL
-#                                (Göttingen Register of Electronic Texts in Indian Languages).
-#                                Click on the link above to access the original etext
-#                                with full header Information."""
-#         if source_id == "DSBC":
-#             source_string = """The source of this text is the Digital
-#                                Sanskrit Buddhist Canon project at the University of the West.
-#                                Click on the link above to access the
-#                                original etext with full header Information."""
-#         source_segment = {
-#             "segnr": "source:0",
-#             "segtext": source_string,
-#             "position": -1,
-#             "lang": "eng",
-#             "parallel_ids": [],
-#         }
-#         query_result["textleft"].insert(0, source_segment)
-#         query_result["textleft"] = query_result["textleft"][:800]
-#     return query_result
-
-
 def get_page_for_segment(active_segment):
     """
     Gets the page number for a given segment.
@@ -140,47 +91,6 @@ def get_page_for_segment(active_segment):
         bindVars={"segmentnr": active_segment},
     )
     return page_for_segment.result[0]
-
-
-# Is the below function still needed?
-
-# def get_segment_for_folio(folio):
-#     """
-#     Gets the segment number for a given folio.
-#     """
-#     segment_for_folio = get_db().AQLQuery(
-#         query=utils_queries.QUERY_SEGMENT_FOR_FOLIO,
-#         bindVars={"folio": folio},
-#     )
-#     return segment_for_folio.result
-
-
-def get_file_text(filename):
-    """
-    Gets file segments and numbers only from start_int onwards with max 800 segments.
-    """
-    try:
-        text_segments_query_result = get_db().AQLQuery(
-            query=text_view_queries.QUERY_FILE_TEXT,
-            bindVars={"filename": filename},
-        )
-
-        if text_segments_query_result.result:
-            return text_segments_query_result.result[0]["filetext"]
-
-        return []
-
-    except DocumentNotFoundError as error:
-        print(error)
-        raise HTTPException(
-            status_code=404, detail="QUERY_FILE_TEXT Item not found"
-        ) from error
-    except AQLQueryError as error:
-        print("AQLQueryError: ", error)
-        raise HTTPException(status_code=400, detail=error.errors) from error
-    except KeyError as error:
-        print("KeyError: ", error)
-        raise HTTPException(status_code=400) from error
 
 
 def get_cat_from_segmentnr(segmentnr):

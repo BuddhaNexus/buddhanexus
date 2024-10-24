@@ -1,11 +1,6 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter
 from .endpoint_utils import execute_query
-from ..queries import graph_view_queries, menu_queries, utils_queries
-from ..utils import (
-    get_language_from_filename,
-    get_cat_from_segmentnr,
-)
-import re
+from ..queries import graph_view_queries
 from typing import Any
 from .models.graph_view_models import *
 
