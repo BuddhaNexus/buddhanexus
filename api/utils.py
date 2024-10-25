@@ -4,9 +4,7 @@ Various utilities for interacting with data in API queries.
 
 import re
 from urllib.parse import unquote
-from fastapi import HTTPException
-from pyArango.theExceptions import DocumentNotFoundError, AQLQueryError
-from .queries import utils_queries, text_view_queries
+from .queries import utils_queries
 from .db_connection import get_db
 
 
