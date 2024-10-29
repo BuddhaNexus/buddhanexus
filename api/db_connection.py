@@ -15,9 +15,9 @@ def get_db() -> Database:
     Returns database instance
     """
     return Connection(
-        username=os.environ["ARANGO_USER"],
-        password=os.environ["ARANGO_ROOT_PASSWORD"],
-        arangoURL=f"http://{os.environ['ARANGO_HOST']}:{os.environ['ARANGO_PORT']}",
+        username=os.environ["ARANGO_USER_API"],
+        password=os.environ["ARANGO_ROOT_PASSWORD_API"],
+        arangoURL=f"http://{os.environ['ARANGO_HOST_API']}:{os.environ['ARANGO_PORT_API']}",
     )[DB_NAME]
 
 
