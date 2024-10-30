@@ -1,0 +1,72 @@
+{
+  "generic": {
+    "selectLanguage": "Select language",
+    "noSelection": "None selected",
+    "default": "Default",
+    "resutsSubject": "BuddhaNexus search results link"
+  },
+  "resultsHead": {
+    "matches": "Matches: ",
+    "filters": "Custom filters: {{value}}",
+    "options": "Custom options: {{value}}",
+    "settings": "Settings",
+    "settingsTip": "Toggle settings panel",
+    "reset": "Reset Filters",
+    "resetTip": "Resort default settings",
+    "textSelect": "Change text",
+    "textSelectTip": "Select a new inquiry text",
+    "cappedMessage": "Results exceeded maximum of {{max}} matches."
+  },
+  "tabs": {
+    "settings": "Settings",
+    "options": "Options",
+    "info": "Info"
+  },
+  "headings": {
+    "filters": "Filters",
+    "display": "Display",
+    "tools": "Tools",
+    "links": "Links"
+  },
+  "optionsLabels": {
+    "script": "Select text script",
+    "folioAsGoTo": "Go to selected text section",
+    "folioAsLimit": "Show matches from selected text section",
+    "folioShowAll": "Whole text",
+    "multiLingual": "Match text Languages",
+    "multiLingualError": "At least one language needs to be selected. Showing default results.",
+    "sort": {
+      "selector": "Sorting Method",
+      "position": "Default – Position in inquiry text",
+      "quoted-text": "Position in match texts",
+      "length2": "Length of character match (>)"
+    },
+    "download": "Download results as xmlx file",
+    "wylie": "Wylie",
+    "unicode": "Unicode",
+    "copyQueryTitle": "Copy text title",
+    "copyQueryLink": "Copy results page link",
+    "emailQueryLink": "Email results page link",
+    "showSegmentNumbers": "Show segment numbers",
+    "useMonochromaticSegmentColors": "Use monochromatic segment match colors"
+  },
+  "optionsPopperMsgs": {
+    "download": "Ooops! Something went wrong!",
+    "copyQueryTitle": "Copied",
+    "copyQueryLink": "Copied",
+    "emailQueryLink": "Email opened"
+  },
+  "filtersLabels": {
+    "score": "Similarity Score:",
+    "minMatch": "Minimum character/syllable matches length:",
+    "source_exclude": "Exclude sources:",
+    "source_include": "Only include sources:"
+  },
+  "dbViewLabels": {
+    "view": "View",
+    "graph": "Graph",
+    "numbers": "Numbers",
+    "table": "Table",
+    "text": "Text"
+  }
+}

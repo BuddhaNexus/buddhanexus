@@ -1,0 +1,72 @@
+{
+  "generic": {
+    "selectLanguage": "Sprache auswählen",
+    "noSelection": "Nichts ausgewählt",
+    "default": "Standard",
+    "resutsSubject": "BuddhaNexus Suchergebnisse-Link"
+  },
+  "resultsHead": {
+    "matches": "Übereinstimmungen:",
+    "filters": "Benutzerdefinierte Filter: {{value}}",
+    "options": "Benutzerdefinierte Optionen: {{value}}",
+    "settings": "Einstellungen",
+    "settingsTip": "Einstellungsfeld umschalten",
+    "reset": "Zurücksetzen",
+    "resetTip": "Standardeinstellungen des Resorts",
+    "textSelect": "Text ändern",
+    "textSelectTip": "Wählen Sie einen neuen Anfragetext",
+    "cappedMessage": "Übereinstimmungen: {{max}} oder mehr."
+  },
+  "tabs": {
+    "settings": "Einstellungen",
+    "options": "Optionen",
+    "info": "Info"
+  },
+  "headings": {
+    "filters": "Filter",
+    "display": "Anzeigen",
+    "tools": "Werkzeuge",
+    "links": "Links"
+  },
+  "optionsLabels": {
+    "script": "Textskript auswählen",
+    "folioAsGoTo": "Gehe zum ausgewählten Textabschnitt",
+    "folioAsLimit": "Übereinstimmungen aus ausgewähltem Textabschnitt anzeigen",
+    "folioShowAll": "Hele tekst",
+    "multiLingual": "Textsprachen zuordnen",
+    "multiLingualError": "Es muss mindestens eine Sprache ausgewählt werden. Standardergebnisse werden angezeigt.",
+    "sort": {
+      "selector": "Sortiermethode",
+      "position": "Standard – Position im Anfragetext",
+      "quoted-text": "Position in passenden Texten",
+      "length2": "Länge des übereinstimmenden Zeichens (>)"
+    },
+    "wylie": "Wylie",
+    "unicode": "Unicode",
+    "download": "Ergebnisse als xmlx-Datei herunterladen",
+    "copyQueryTitle": "Texttitel kopieren",
+    "copyQueryLink": "Link der Ergebnisseite kopieren",
+    "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden",
+    "hideSegmentNumbers": "Segmentnummern anzeigen",
+    "useMonochromaticSegmentColors": "Verwenden Sie monochromatische Farbkombinationen"
+  },
+  "optionsPopperMsgs": {
+    "download": "Hoppla! Etwas ist schief gelaufen!",
+    "copyQueryTitle": "Kopiert",
+    "copyQueryLink": "Kopiert",
+    "emailQueryLink": "E-Mail geöffnet"
+  },
+  "filtersLabels": {
+    "score": "Similarity Score:",
+    "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
+    "source_exclude": "Exclude sources:",
+    "source_include": "Only include sources:"
+  },
+  "dbViewLabels": {
+    "view": "Sicht",
+    "graph": "Diagramm",
+    "numbers": "Zahlen",
+    "table": "Tabelle",
+    "text": "Text"
+  }
+}

@@ -1,0 +1,52 @@
+---
+title: "Introduction"
+date: ""
+keywords: []
+description: ""
+---
+
+The evolution of Buddhist scriptures and the formation of the various Buddhist canons are complex processes that often stretch over a long period of time and involve numerous aspects of the societies in which they take place. Understanding these two related processes is crucial to our study of the history of Buddhism in general and of Buddhist ideas in particular. It is also instrumental in gaining an appreciation for the impact of social and cultural phenomena on intellectual and religio-philosophical developments and vice versa. It will necessarily mean at times shedding light on various issues related to these two processes, both on the macro and micro levels, such as the existence of intellectual networks, various stages in the evolution of a specific scripture, intertextuality between various scriptures, the linkage between treatises and scriptures, and the impact of various social and political aspects of society on both the evolution of scriptures and the formation of canons.
+
+The first step towards a better understanding of the history of composition of individual texts, on the one hand, and the emergence of entire corpora of Buddhist works, on the other, is to locate in the various texts and textual corpora (approximate) textual matches and to study them from various angles. These textual matches may be cases of either acknowledged citations or “borrowed” textual passages with no attribution. Until not very long ago, such matches were searched for manually, but with the advent of computer technology, coupled with the ongoing digitization of Buddhist texts, faster and more accurate methods have been developed. BuddhaNexus is a powerful tool aimed at facilitating the study of the evolution of Buddhist scriptures and the formation of the various Buddhist canons by exploiting artificial neural networks in order to locate (approximate) textual matches.
+
+## Chinese
+
+The textual corpus used in BuddhaNexus was obtained from the [Chinese Buddhist Electronic Text Association](https://www.cbeta.org/) (CBETA).
+
+The minimum length for a match has been set to six characters. However, five-character matches are occasionally also detected due to our policy of “approximate matches” rather than exact ones. Matches consisting to a large degree of frequent fixed terms have been filtered out from the results.
+
+Background image: Courtesy of the International College for Postgraduate Buddhist Studies (ICABS), Tokyo.
+
+## Pāli
+
+The Pāli textual corpus used in BuddhaNexus was obtained from the Mahāsaṅgīti Tipiṭaka Buddhavasse 2500: World Tipiṭaka Edition in Roman Script. Edited and published by The M.L. Maniratana Bunnag Dhamma Society Fund, 2005. Based on the digital edition of the Chaṭṭha Saṅgāyana published by the [Vipassana Research Institute](https://tipitaka.org/) (VRI), with corrections and proofreading by the Dhamma Society.
+
+The Sutta, Vinaya, and Abhidhamma texts have been sourced from [Bilara](https://github.com/suttacentral/bilara-data), SuttaCentral’s JSON-based segmented texts, which have been extensively tested to ensure integrity and correctness.
+
+The remaining commentary texts of the Aṭṭhakathā, Tikā, and Anya have been sourced from the Chaṭṭha Saṅgāyana as published by the Vipassana Research Institute.
+
+Background image: Courtesy of the Fragile Palm Leaves Collection, Bangkok.
+
+## Sanskrit
+
+The Sanskrit textual corpus used in BuddhaNexus was obtained from the Göttingen Register of Electronic Texts in Indian Languages ([GRETIL](http://gretil.sub.uni-goettingen.de/gretil.html), Georg-August-Universität Göttingen), the Digital Sanskrit Buddhist Canon ([DSBC](https://www.dsbcproject.org/), University of the West), some files from [SuttaCentral](https://www.suttacentral.net/) (SC), and a couple of files obtained from individual researchers.
+
+Due to the huge amount of material, some texts from the original databases have been omitted (cumulative pāda indexes and duplicate texts from the same source). Moreover, there has been no attempt by BuddhaNexus to improve the quality of the texts (e.g. removing typos, introducing identical conventions, and the like). Some minor changes have, nonetheless, been made for the sake of standardization. In order to make the matching process feasible, some markup information of the original files has been neglected.
+
+The Buddhist Sanskrit files are structured in accordance with the organizational scheme of the Tibetan Buddhist Canon, whereas “Buddhist Scriptures” corresponds to the Kangyur and “Buddhist Non-Scriptures” to the Tengyur. For the non-Buddhist material taken over from GRETIL, the data structure has been slightly altered. The folders 4_rellit/buddh and 6_sastra/3_phil/buddh/ have been removed and their content divided under “Buddhist Scriptures” and “Buddhist Non-Scriptures.” Moreover, a numbering scheme was introduced to simplify the access to the different GRETIL categories. For example, \"GV01\" represents GRETIL Veda 1.
+
+For the calculation of the Sanskrit matches and for the global search function, a stemming algorithm has been used. The stemming algorithm is accessible as a [standalone application](https://buddhanexus.net/sanskrit-tools).
+
+The minimum possible length for a match has been set to 25 characters.
+
+Background image: Courtesy of the Nepal-German Manuscript Preservation Project (NGMPP).
+
+## Tibetan
+
+The Tibetan textual corpora used in BuddhaNexus were obtained from various sources, including [Asian Classics Input Projects](https://asianclassics.org/) (ACIP) for the Tibetan Buddhist Canon, [Buddhist Digital Resource Center](https://www.tbrc.org/) (BDRC) for the rNying ma bka’ ma, and Karma Delek for the rNying ma rgyud ’bum. As a result the digital texts might occasionally differ in their conventions. Moreover, due to the huge amount of material, there has been no attempt by BuddhaNexus to improve the quality of the texts (e.g. removing typos, introducing identical conventions, and the like). Occasionally, however, some minor changes to the texts were made for technical reasons (e.g. standardization of transliterations or formats). Since our algorithms search for approximate (and not exact) matches, we believe that in most cases variants resulting from typos, or from different orthographies and the like, should not pose major problems in detecting textual matches.
+
+Regarding matches involving the Prajñāpāramitā Section of the bKa’ ’gyur, due to the extremely repetitive nature of this corpus within itself, all matches among files of this section have been excluded from the results for the sake of a better performance.
+
+The minimum match length is 14 syllables. Shorter matches are also displayed if the match in either the Inquiry or Hit text is a verse line consisting of a precise length of 7, 9, or 11 syllables. The verse lines are only detected if they are placed between a pair of either a single or double stroke (shad) at the beginning and a double stroke at the end. Matches that are longer than 13 syllables but consist to a large degree of stop words, grammatical particles, and the like have been filtered out from the results.
+
+Background image: Courtesy of Burkhard Quessel.
