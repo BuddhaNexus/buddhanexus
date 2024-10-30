@@ -152,6 +152,7 @@ class LoadSegmentsBase:
         db = get_database()
         try:
             file_df = pd.read_json(os.path.join(self.DATA_PATH, file))
+            file_df['_key'] = file_df['segmentnr']
             file_df["lang"] = self.LANG
             file_df["filename"] = metadata_reference_filename
             file_df["category"] = self.metadata[metadata_reference_filename]["category"]

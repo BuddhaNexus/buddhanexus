@@ -4,9 +4,7 @@ from .general_models import Filters
 
 
 class CountMatchesInput(BaseModel):
-    filename: str = ""
-    score = 0
-    par_length = 0
+    filename: str
     filters: Optional[Filters]
 
 
@@ -19,7 +17,7 @@ class FolioOutput(BaseModel):
 
 
 class DisplayNameOutput(BaseModel):
-    displayname: list
+    displayname: List[str]
 
 
 class LanguageOutput(BaseModel):

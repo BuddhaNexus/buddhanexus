@@ -22,7 +22,7 @@ LET fileslist = (
     FOR p IN current_parallels
         FOR file IN files
             FILTER file.filename == p.par_filename
-            FILTER LENGTH(@targetcollection) == 0 OR file.collection IN @targetcollection
+            FILTER LENGTH(@filter_include_collections) == 0 OR file.collection IN @filter_include_collections
             FOR cat in category_names
                 FILTER cat.category == file.category
                 FILTER cat.lang == file.lang

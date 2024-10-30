@@ -1,12 +1,20 @@
 from pydantic import BaseModel
-from typing import List, Union
+from typing import List, Union, Optional
+
+
+class GraphFilters(BaseModel):
+    """
+    Filters for graph
+    """
+
+    par_length: int = 0
+    score: int = 0
+    include_collections: Optional[List[str]]
 
 
 class GraphInput(BaseModel):
-    filename: str = ""
-    score: int = 0
-    par_length: int = 0
-    target_collection: List[str] = []
+    filename: str
+    filters: GraphFilters
 
 
 class GraphData(BaseModel):

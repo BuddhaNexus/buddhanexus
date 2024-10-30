@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, Union, List
+from typing import Optional, List
 from enum import Enum
 
 
@@ -11,6 +11,13 @@ class Languages(str, Enum):
     chinese = "zh"
 
 
+class SortMethod(str, Enum):
+    position = "position"
+    quotedtext = "quotedtext"
+    length = "length"
+    length2 = "length2"
+
+
 class Filters(BaseModel):
     """
     Filters for matches
@@ -20,31 +27,29 @@ class Filters(BaseModel):
     score: int = 0
     languages: Optional[List[Languages]]
 
-    include_files: Optional[List[str]] = []
-    exclude_files: Optional[List[str]] = []
+    include_files: Optional[List[str]]
+    exclude_files: Optional[List[str]]
 
-    include_categories: Optional[List[str]] = []
-    exclude_categories: Optional[List[str]] = []
+    include_categories: Optional[List[str]]
+    exclude_categories: Optional[List[str]]
 
-    include_collections: Optional[List[str]] = []
-    exclude_collections: Optional[List[str]] = []
+    include_collections: Optional[List[str]]
+    exclude_collections: Optional[List[str]]
 
 
 class GeneralInput(BaseModel):
     filename: str
-    filters: Optional[Filters]
+    filters: Filters
     page: int = 0
-    sort_method: str = "position"
-    folio: str = ""
+    sort_method: SortMethod = SortMethod.position
+    folio: Optional[str] = ""
 
 
 class FullText(BaseModel):
-    text: Union[str, None] = None
-    highlightColor: Union[int, None] = 0
+    text: str
+    highlightColor: int = 0
 
 
 class FullNames(BaseModel):
-    display_name: Union[str, None] = None
-    text_name: Union[str, None] = None
-    link1: Union[str, None] = None
-    link2: Union[str, None] = None
+    display_name: str
+    text_name: str

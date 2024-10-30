@@ -6,9 +6,9 @@ from .general_models import Filters, FullText
 class TextParallelsInput(BaseModel):
     filename: str
     folio: str = ""
-    active_segment: str = "none"
+    active_segment: Optional[str] = "none"
     filters: Optional[Filters]
-    page_number: int = 0
+    page: int = 0
 
 
 class FullMatchText(FullText):
@@ -16,25 +16,14 @@ class FullMatchText(FullText):
 
 
 class TextItem(BaseModel):
-    page: int
-    total_pages: int
-    segnr: str
-    segtext: List[FullMatchText]
-
-
-class TextItemNew(BaseModel):
     segnr: str
     segtext: List[FullMatchText]
 
 
 class TextViewLeftOutput(BaseModel):
-    __root__: List[TextItem]
-
-
-class TextViewLeftOutputV2(BaseModel):
     page: int
     total_pages: int
-    items: List[TextItemNew]
+    items: List[TextItem]
 
 
 class TextViewMiddleInput(BaseModel):

@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Query
-import re
 from typing import Any
 from ..utils import (
     get_language_from_filename,
@@ -7,7 +6,7 @@ from ..utils import (
 )
 from .endpoint_utils import execute_query
 
-from ..queries import table_view_queries, menu_queries
+from ..queries import numbers_view_queries
 
 from .models.general_models import GeneralInput
 from .models.numbers_view_models import MenuOutput, NumbersViewOutput
@@ -25,16 +24,16 @@ def create_numbers_view_data(table_results):
         parallels_list = []
         if result["parallels"]:
             for parallel in result["parallels"]:
-                if parallel["par_full_names"]:
+                if parallel["par_full_names"][0]:
                     parallel_dic = {}
                     parallel_dic["segmentnr"] = shorten_segment_names(
                         parallel["par_segnr"]
                     )
-                    parallel_dic["displayName"] = parallel["par_full_names"][
+                    parallel_dic["displayName"] = parallel["par_full_names"][0][
                         "displayName"
                     ]
-                    parallel_dic["fileName"] = parallel["par_full_names"]["fileName"]
-                    parallel_dic["category"] = parallel["par_full_names"]["category"]
+                    parallel_dic["fileName"] = parallel["par_full_names"][0]["fileName"]
+                    parallel_dic["category"] = parallel["par_full_names"][0]["category"]
                     parallels_list.append(parallel_dic)
 
             if parallels_list:
@@ -56,11 +55,11 @@ async def get_numbers_view(input: GeneralInput) -> Any:
         folio = 0
 
     query_result = execute_query(
-        table_view_queries.QUERY_NUMBERS_VIEW,
+        numbers_view_queries.QUERY_NUMBERS_VIEW,
         bind_vars={
             "filename": input.filename,
-            "score": input.score,
-            "parlength": input.par_length,
+            "score": input.filters.score,
+            "parlength": input.filters.par_length,
             "filter_include_files": input.filters.include_files,
             "filter_exclude_files": input.filters.exclude_files,
             "filter_include_categories": input.filters.include_categories,
@@ -86,7 +85,7 @@ async def get_categories_for_numbers_view(
     """
     language = get_language_from_filename(filename)
     query_result = execute_query(
-        menu_queries.QUERY_CATEGORIES_PER_LANGUAGE,
+        numbers_view_queries.QUERY_CATEGORIES_PER_LANGUAGE,
         bind_vars={"language": language},
     )
     return query_result.result
