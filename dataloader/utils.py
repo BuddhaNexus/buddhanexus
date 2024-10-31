@@ -139,19 +139,6 @@ def get_categories_for_language_collection(
             return target_col_dict
 
 
-def get_language_name(language_key):
-    if language_key == LANG_CHINESE:
-        return "Chinese"
-    elif language_key == LANG_TIBETAN:
-        return "Tibetan"
-    elif language_key == LANG_PALI:
-        return "Pali"
-    elif language_key == LANG_SANSKRIT:
-        return "Sanskrit"
-    else:
-        return "Unknown"
-
-
 def atoi(text):
     return int(text) if text.isdigit() else text
 

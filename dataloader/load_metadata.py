@@ -9,7 +9,7 @@ from dataloader_constants import COLLECTION_FILES, COLLECTION_CATEGORY_NAMES
 from utils import (
     should_download_file,
 )
-from api.utils import (
+from shared.utils import (
     get_language_from_filename,
     get_filename_from_segmentnr
 )

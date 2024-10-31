@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Query
 from typing import Any
-from ..utils import (
-    get_language_from_filename,
+from ..utils import (    
     shorten_segment_names,
 )
+from shared.utils import get_language_from_filename
 from .endpoint_utils import execute_query
-
 from ..queries import numbers_view_queries
-
 from .models.general_models import GeneralInput
 from .models.numbers_view_models import MenuOutput, NumbersViewOutput
 

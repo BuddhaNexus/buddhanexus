@@ -37,7 +37,7 @@ from utils import (
     should_download_file,
     sliding_window,
 )
-from api.utils import (
+from shared.utils import (
     get_cat_from_segmentnr,
     get_language_from_filename,
     get_filename_from_segmentnr,
