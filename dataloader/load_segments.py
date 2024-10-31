@@ -49,20 +49,20 @@ def process_file_group_helper(args):
     for file in file_group:
         loader_instance._process_file(file)
 
-def sort_file_segments(filename, segments_and_folios):        
+
+def sort_file_segments(filename, segments_and_folios):
     print("Sorting segments for file", filename)
-    segments_and_folios = segments_and_folios[filename]    
-    segments_and_folios = natsort.natsorted(segments_and_folios, key=lambda x: x['segmentnr'])
-    segments = [seg['segmentnr'] for seg in segments_and_folios]
-    folios = [seg['folio'] for seg in segments_and_folios]
+    segments_and_folios = segments_and_folios[filename]
+    segments_and_folios = natsort.natsorted(
+        segments_and_folios, key=lambda x: x["segmentnr"]
+    )
+    segments = [seg["segmentnr"] for seg in segments_and_folios]
+    folios = [seg["folio"] for seg in segments_and_folios]
     lang = get_language_from_filename(filename)
     segments_paginated = [
-        segments[i : i + PAGE_SIZE]
-        for i in range(0, len(segments), PAGE_SIZE)
+        segments[i : i + PAGE_SIZE] for i in range(0, len(segments), PAGE_SIZE)
     ]
-    segments_paginated = {
-        count: page for count, page in enumerate(segments_paginated)
-    }    
+    segments_paginated = {count: page for count, page in enumerate(segments_paginated)}
     folios = list(dict.fromkeys(folios))
     return filename, segments, folios, segments_paginated, lang
 
@@ -152,7 +152,7 @@ class LoadSegmentsBase:
         db = get_database()
         try:
             file_df = pd.read_json(os.path.join(self.DATA_PATH, file))
-            file_df['_key'] = file_df['segmentnr']
+            file_df["_key"] = file_df["segmentnr"]
             file_df["lang"] = self.LANG
             file_df["filename"] = metadata_reference_filename
             file_df["category"] = self.metadata[metadata_reference_filename]["category"]
@@ -212,7 +212,7 @@ class LoadSegmentsBase:
         collection_segments = db.collection(COLLECTION_SEGMENTS)
         collection_segments_pages = db.collection(COLLECTION_SEGMENTS_PAGES)
         collection_files = db.collection(COLLECTION_FILES)
-        
+
         segments_and_folios_by_file = {}
 
         segments = collection_segments.find({"lang": self.LANG})
@@ -221,29 +221,39 @@ class LoadSegmentsBase:
             if filename not in segments_and_folios_by_file:
                 segments_and_folios_by_file[filename] = []
             segments_and_folios_by_file[filename].append(
-                {"segmentnr": segment["segmentnr"], "folio": segment["folio"]})
-                
-
+                {"segmentnr": segment["segmentnr"], "folio": segment["folio"]}
+            )
 
         # Parallel sorting
         print("Now parallel sorting")
         with multiprocessing.Pool(processes=multiprocessing.cpu_count()) as pool:
-            sorted_results = pool.map(partial(sort_file_segments, segments_and_folios=segments_and_folios_by_file), segments_and_folios_by_file.keys())
-            
+            sorted_results = pool.map(
+                partial(
+                    sort_file_segments, segments_and_folios=segments_and_folios_by_file
+                ),
+                segments_and_folios_by_file.keys(),
+            )
+
         # Prepare data for bulk insert
         segments_pages_to_insert = []
         files_to_update = []
 
-        for filename, segments_sorted, folios_sorted, segments_paginated, lang in sorted_results:            
+        for (
+            filename,
+            segments_sorted,
+            folios_sorted,
+            segments_paginated,
+            lang,
+        ) in sorted_results:
             # Prepare segments pages for bulk insert
             for page, segs in segments_paginated.items():
-                segments_pages_to_insert.extend([
-                    {"segmentnr": seg, "page": page} for seg in segs
-                ])
+                segments_pages_to_insert.extend(
+                    [{"segmentnr": seg, "page": page} for seg in segs]
+                )
 
             # Prepare file updates
             file = collection_files.get(filename)
-            
+
             if file:
                 file["segment_keys"] = segments_sorted
                 file["segment_pages"] = segments_paginated
@@ -253,20 +263,22 @@ class LoadSegmentsBase:
 
             else:
                 print(f"Could not find file {filename} in db.")
-                files_to_update.append({
-                    "_key": filename,
-                    "filename": filename,
-                    "lang": lang,
-                    "folios": folios_sorted,
-                    "segment_keys": segments_sorted,
-                    "segment_pages": segments_paginated,
-                })
+                files_to_update.append(
+                    {
+                        "_key": filename,
+                        "filename": filename,
+                        "lang": lang,
+                        "folios": folios_sorted,
+                        "segment_keys": segments_sorted,
+                        "segment_pages": segments_paginated,
+                    }
+                )
 
         # Bulk insert and update
         if segments_pages_to_insert:
             collection_segments_pages.insert_many(segments_pages_to_insert)
-        
-        for file in files_to_update:            
+
+        for file in files_to_update:
             collection_files.update(file)
 
     def clean(self):

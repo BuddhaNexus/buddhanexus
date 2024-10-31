@@ -16,7 +16,6 @@ from dataloader_constants import (
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_FILES,
     MATCH_LIMIT,
-    
 )
 from utils import should_download_file
 from api.utils import (
@@ -33,6 +32,7 @@ SCRIPT_DIR = os.path.dirname(
 sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 
 from api.queries import menu_queries
+
 
 def load_parallels(parallels, db: StandardDatabase) -> None:
     """
@@ -51,13 +51,13 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         category_root = get_cat_from_segmentnr(parallel["root_segnr"][0])
         category_parallel = get_cat_from_segmentnr(parallel["par_segnr"][0])
         root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0])
-        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])        
-        parallel["_id"] = parallel['id']
-        parallel["_key"] = parallel['id']
+        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])
+        parallel["_id"] = parallel["id"]
+        parallel["_key"] = parallel["id"]
         parallel["root_category"] = category_root
         parallel["par_category"] = category_parallel
-        parallel['root_collection'] = files_lookup[root_filename]
-        parallel['par_collection'] = files_lookup[par_filename]
+        parallel["root_collection"] = files_lookup[root_filename]
+        parallel["par_collection"] = files_lookup[par_filename]
         parallel["par_filename"] = par_filename
         # here we delete some things that we don't need in the DB:
         del parallel["id"]
@@ -102,7 +102,7 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     # delete all parallels for this language
     db_collection.delete_many({"src_lang": lang})
     folder = os.path.join(folder, lang)
-    files_db = db_collection_files.find({"lang": lang})    
+    files_db = db_collection_files.find({"lang": lang})
     global files_lookup
     files_lookup = {file["_key"]: file["collection"] for file in files_db}
     print("FILES LOOKUP", files_lookup)
@@ -112,7 +112,7 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     pool = multiprocessing.Pool(number_of_threads)
     for file in files:
         pool.apply_async(process_file, args=(os.path.join(folder, file), db))
-        #process_file(os.path.join(folder, file), db)
+        # process_file(os.path.join(folder, file), db)
 
     db_collection.add_hash_index(
         fields=[
@@ -160,13 +160,13 @@ def load_sorted_parallels_for_language(folder, lang, db):
     :param folder: Folder with parallel json files
     :param db: ArangoDB connection object
     :param number_of_threads: Number of threads to use for parallel loading
-    """    
+    """
     # create a dictionary with filename as key and collection as value for all files of current language
     print("Loading sorted parallels for language: ", lang)
     db_collection = db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)
     # delete all parallels for this language
     db_collection.delete_many({"lang": lang})
-    
+
     folder = os.path.join(folder, lang, "stats")
 
     files = os.listdir(folder)

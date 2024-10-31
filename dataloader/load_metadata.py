@@ -9,11 +9,11 @@ from dataloader_constants import COLLECTION_FILES, COLLECTION_CATEGORY_NAMES
 from utils import (
     should_download_file,
 )
+
 from shared.utils import (
     get_language_from_filename,
     get_filename_from_segmentnr
 )
-
 
 def load_metadata_from_files(paths: List[str], db: StandardDatabase) -> None:
     """
@@ -23,7 +23,9 @@ def load_metadata_from_files(paths: List[str], db: StandardDatabase) -> None:
     paths (List[str]): List of file paths to load metadata from.
     db (StandardDatabase): Database instance to load data into.
     """
-    db.delete_collection(COLLECTION_FILES) # just in case it already exists, we want to start fresh
+    db.delete_collection(
+        COLLECTION_FILES
+    )  # just in case it already exists, we want to start fresh
     collection = db.collection(COLLECTION_FILES)
     collection = db.create_collection(COLLECTION_FILES)
     for path in paths:
@@ -32,17 +34,25 @@ def load_metadata_from_files(paths: List[str], db: StandardDatabase) -> None:
             df = pd.read_json(path)
             df["filename"] = df["filename"].apply(
                 get_filename_from_segmentnr
-            )  # this is to remove duplicate parts of the same file            
+            )  # this is to remove duplicate parts of the same file
             df = df.drop_duplicates(subset=["filename"])
             if "link" not in df.columns:
                 df["link"] = ""
             if "link2" not in df.columns:
                 df["link2"] = ""
             df = df[
-                ["filename", "displayName", "category", "collection", "textname", "link", "link2"]                
+                [
+                    "filename",
+                    "displayName",
+                    "category",
+                    "collection",
+                    "textname",
+                    "link",
+                    "link2",
+                ]
             ]  # metadata might contain more data; we are only interested in these columns
             # set link and link2 to empty string if they are NaN
-            df['_key'] = df['filename']
+            df["_key"] = df["filename"]
             df["link"] = df["link"].fillna("")
             df["link2"] = df["link2"].fillna("")
             df["lang"] = df["filename"].apply(get_language_from_filename)
