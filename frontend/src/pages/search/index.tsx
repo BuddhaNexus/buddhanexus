@@ -3,49 +3,51 @@ import type { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
 import { isSearchTriggeredAtom } from "@atoms";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
+import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
 import { useSearchStringParam } from "@components/hooks/params";
-import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSourceFile } from "@components/hooks/useSourceFile";
+import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SearchResults } from "@features/globalSearch";
-import {
-  SearchBoxInput,
-  SearchBoxWrapper,
-} from "@features/globalSearch/GlobalSearchStyledMuiComponents";
 import NoSearchResultsFound from "@features/globalSearch/NoSearchResultsFound";
-import { Close, Search } from "@mui/icons-material";
-import { CircularProgress, IconButton, Typography } from "@mui/material";
+import SearchPageInputBox from "@features/globalSearch/SearchPageInputBox";
+import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import { useAtom } from "jotai";
 import _ from "lodash";
 
-export default function SearchPage() {
+const SearchPageHeader = ({ matches }: { matches: number }) => {
   const { t } = useTranslation();
+  return (
+    <>
+      <Typography variant="h2" component="h1" mb={2}>
+        {t("search.pageTitle")}
+      </Typography>
+      <SearchPageInputBox />
+      <QueryPageTopStack matches={matches} />
+    </>
+  );
+};
 
-  const { dbLanguage } = useNullableDbRouterParams();
+export default function SearchPage() {
   const { isFallback } = useSourceFile();
 
-  const [search_string, setSearchStringParam] = useSearchStringParam();
+  const [search_string] = useSearchStringParam();
   const filters = useDbQueryFilters();
 
   const [isSearchTriggered, setIsSearchTriggered] = useAtom(
     isSearchTriggeredAtom,
   );
 
-  const handleKeydown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        setIsSearchTriggered(true);
-      }
-    },
-    [setIsSearchTriggered],
-  );
-
-  const { data: rawData, isLoading } = useQuery({
+  const {
+    data: rawData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
       search_string,
       filters,
@@ -68,77 +70,34 @@ export default function SearchPage() {
     return _.chunk(sortedData, 3);
   }, [rawData]);
 
-  if (isFallback) {
+  const matches = rawData?.length ?? 0;
+
+  if (isError) {
     return (
-      <PageContainer maxWidth="xl" backgroundName={dbLanguage}>
-        <Typography variant="h2" component="h1" mb={1}>
-          {t("search.pageTitle")}
-        </Typography>
-        <div>
-          <CircularProgress
-            aria-label={t("prompts.loading")}
-            color="inherit"
-            sx={{ flex: 1 }}
-          />
-        </div>
+      <PageContainer maxWidth="xl" isQueryResultsPage>
+        <SearchPageHeader matches={matches} />
+        <ResultQueryError errorMessage={error?.message} />
+      </PageContainer>
+    );
+  }
+
+  if (isFallback || isLoading) {
+    return (
+      <PageContainer maxWidth="xl" isQueryResultsPage>
+        <SearchPageHeader matches={matches} />
+        <CenteredProgress />
       </PageContainer>
     );
   }
 
   return (
-    <PageContainer maxWidth="xl" backgroundName={dbLanguage} isQueryResultsPage>
-      <Typography variant="h2" component="h1" mb={1}>
-        {t("search.pageTitle")}
-      </Typography>
+    <PageContainer maxWidth="xl" isQueryResultsPage>
+      <SearchPageHeader matches={matches} />
 
-      <SearchBoxWrapper sx={{ mb: 5 }}>
-        <SearchBoxInput
-          placeholder={t("search.inputPlaceholder")}
-          value={search_string}
-          variant="outlined"
-          InputProps={{
-            startAdornment: (
-              <IconButton
-                aria-label={t("search.clearSearch")}
-                onClick={() => setSearchStringParam(null)}
-              >
-                <Close />
-              </IconButton>
-            ),
-            endAdornment: (
-              <IconButton
-                aria-label={t("search.runSearch")}
-                disabled={!search_string}
-                onClick={() => setIsSearchTriggered(true)}
-              >
-                <Search />
-              </IconButton>
-            ),
-          }}
-          fullWidth
-          onChange={(event) => setSearchStringParam(event.target.value)}
-          onKeyDown={handleKeydown}
-        />
-      </SearchBoxWrapper>
-
-      <QueryPageTopStack matches={rawData?.length} />
-
-      {isLoading ? (
-        <div>
-          <CircularProgress
-            aria-label={t("prompts.loading")}
-            color="inherit"
-            sx={{ flex: 1 }}
-          />
-        </div>
+      {data.length > 0 ? (
+        <SearchResults data={data} />
       ) : (
-        <>
-          {data.length > 0 ? (
-            <SearchResults data={data} />
-          ) : (
-            <NoSearchResultsFound />
-          )}
-        </>
+        <NoSearchResultsFound />
       )}
     </PageContainer>
   );

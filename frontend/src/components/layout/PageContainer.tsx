@@ -86,11 +86,13 @@ export const PageContainer: FC<Props> = ({
           {children}
         </QueryResultsPageContent>
       ) : (
-        <Container component="main" maxWidth={maxWidth} sx={containerStyles}>
-          {children}
-        </Container>
+        <>
+          <Container component="main" maxWidth={maxWidth} sx={containerStyles}>
+            {children}
+          </Container>
+          {isLoading ? <LinearProgress /> : <Box sx={{ height: 4 }} />}
+        </>
       )}
-      {isLoading ? <LinearProgress /> : <Box sx={{ height: 4 }} />}
     </>
   );
 };

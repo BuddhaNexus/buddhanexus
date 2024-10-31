@@ -27,7 +27,7 @@ export function ResultQueryError({ errorMessage }: { errorMessage?: string }) {
 
         {errorMessage && (
           <Typography variant="h5" component="p" sx={{ pb: 0.75 }}>
-            {t("prompts.fetchError")}: {errorMessage}.
+            {t("prompts.fetchError")}: {errorMessage}
           </Typography>
         )}
 

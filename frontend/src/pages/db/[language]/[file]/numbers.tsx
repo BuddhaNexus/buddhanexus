@@ -7,8 +7,9 @@ import {
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { DbViewPageHead } from "@components/db/DbViewPageHead";
-import { ErrorPage } from "@components/db/ErrorPage";
+// import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
+// export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
+import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useSortMethodParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
@@ -25,9 +26,6 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-// import { prefetchDbResultsPageData } from "@utils/api/apiQueryUtils";
-
-// export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 export default function NumbersPage() {
   const { dbLanguage, fileName } = useDbRouterParams();
@@ -42,6 +40,7 @@ export default function NumbersPage() {
     data: headerCollections,
     isLoading: areHeadersLoading,
     isError: isHeadersError,
+    error: headersError,
   } = useQuery({
     queryKey: DbApi.NumbersViewCategories.makeQueryKey({
       filename: fileName,
@@ -55,6 +54,7 @@ export default function NumbersPage() {
     isLoading: isTableContentLoading,
     isFetching,
     isError: isTableContentError,
+    error: tableContentError,
   } = useInfiniteQuery({
     initialPageParam: 0,
     queryKey: DbApi.NumbersView.makeQueryKey({
@@ -89,14 +89,28 @@ export default function NumbersPage() {
   const isError = isHeadersError || isTableContentError;
 
   if (isError) {
-    return <ErrorPage backgroundName={dbLanguage} />;
+    return (
+      <PageContainer
+        maxWidth={false}
+        backgroundName={dbLanguage}
+        isQueryResultsPage
+      >
+        <ResultQueryError
+          errorMessage={tableContentError?.message ?? headersError?.message}
+        />
+      </PageContainer>
+    );
   }
 
   const isLoading = isTableContentLoading || areHeadersLoading;
 
-  if (isFallback || isLoading || !data) {
+  if (isFallback || isLoading) {
     return (
-      <PageContainer backgroundName={dbLanguage}>
+      <PageContainer
+        maxWidth={false}
+        backgroundName={dbLanguage}
+        isQueryResultsPage
+      >
         <CenteredProgress />
       </PageContainer>
     );
@@ -108,8 +122,6 @@ export default function NumbersPage() {
       backgroundName={dbLanguage}
       isQueryResultsPage
     >
-      <DbViewPageHead />
-
       <NumbersTable
         categories={headerCollections ?? []}
         data={allFetchedPages.data}

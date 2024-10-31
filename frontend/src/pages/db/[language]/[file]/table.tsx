@@ -7,7 +7,7 @@ import {
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { DbViewPageHead } from "@components/db/DbViewPageHead";
+import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useSortMethodParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
@@ -36,7 +36,7 @@ export default function TablePage() {
   const requestBodyBase = useStandardViewBaseQueryParams();
   const [sort_method] = useSortMethodParam();
 
-  const { data, fetchNextPage, fetchPreviousPage, isLoading } =
+  const { data, fetchNextPage, fetchPreviousPage, isLoading, isError, error } =
     useInfiniteQuery({
       initialPageParam: 0,
       queryKey: DbApi.TableView.makeQueryKey({
@@ -59,10 +59,25 @@ export default function TablePage() {
     [data],
   );
 
-  if (isFallback) {
+  if (isError) {
     return (
-      <PageContainer maxWidth="xl" backgroundName={dbLanguage}>
-        <DbViewPageHead />
+      <PageContainer
+        maxWidth="xl"
+        backgroundName={dbLanguage}
+        isQueryResultsPage
+      >
+        <ResultQueryError errorMessage={error?.message} />
+      </PageContainer>
+    );
+  }
+
+  if (isFallback || isLoading) {
+    return (
+      <PageContainer
+        maxWidth="xl"
+        backgroundName={dbLanguage}
+        isQueryResultsPage
+      >
         <CenteredProgress />
       </PageContainer>
     );
@@ -70,17 +85,11 @@ export default function TablePage() {
 
   return (
     <PageContainer maxWidth="xl" backgroundName={dbLanguage} isQueryResultsPage>
-      <DbViewPageHead />
-
-      {isLoading || !data ? (
-        <CenteredProgress />
-      ) : (
-        <TableView
-          data={allData}
-          onEndReached={fetchNextPage}
-          onStartReached={fetchPreviousPage}
-        />
-      )}
+      <TableView
+        data={allData}
+        onEndReached={fetchNextPage}
+        onStartReached={fetchPreviousPage}
+      />
       <DbSourceBrowserDrawer />
     </PageContainer>
   );

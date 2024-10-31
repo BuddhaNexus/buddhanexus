@@ -26,6 +26,7 @@ interface UseTextPageReturn {
   isFetchingNextPage: boolean;
   isFetchingPreviousPage: boolean;
   dbLanguage: DbLanguage;
+  error: Error | null;
 }
 
 export function useTextPage(): UseTextPageReturn {
@@ -58,6 +59,7 @@ export function useTextPage(): UseTextPageReturn {
     isFetchingNextPage,
     isFetching,
     isError,
+    error,
   } = useInfiniteQuery({
     enabled: Boolean(fileName),
     placeholderData: keepPreviousData,
@@ -171,5 +173,6 @@ export function useTextPage(): UseTextPageReturn {
     isFetchingNextPage,
     isFetchingPreviousPage,
     dbLanguage,
+    error,
   };
 }
