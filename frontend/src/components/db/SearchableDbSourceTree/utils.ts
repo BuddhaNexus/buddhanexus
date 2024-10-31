@@ -82,3 +82,7 @@ export const handleTreeChange = ({
 
   setBreadcrumbs(crumbs);
 };
+
+export function isSearchMatch(searchField: string, searchTerm: string) {
+  return searchField.toLowerCase().includes(searchTerm.toLowerCase());
+}

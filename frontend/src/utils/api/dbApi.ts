@@ -1,13 +1,13 @@
 import type { APIGetRequestQuery, APIPostRequestBody } from "@utils/api/types";
 import { DbLanguage } from "@utils/api/types";
 
+import { getParallelDownloadData } from "./endpoints/download";
 import { getGraphData } from "./endpoints/graph-view/graph";
 import { getExternalLinksData } from "./endpoints/links";
 import { getDbSourceMenuData } from "./endpoints/menus/sources";
 import { getNumbersViewCategories } from "./endpoints/numbers-view/categories";
 import { getNumbersViewData } from "./endpoints/numbers-view/numbers";
 import { getGlobalSearchData } from "./endpoints/search";
-import { getParallelDownloadData } from "./endpoints/download";
 import { getTableData } from "./endpoints/table-view/table";
 import { getTextViewMiddleParallelsData } from "./endpoints/text-view/middle";
 import { getTextViewParallelsData } from "./endpoints/text-view/text-parallels";
@@ -27,13 +27,13 @@ export const DbApi = {
   },
   TableView: {
     makeQueryKey: (
-      params: Omit<APIPostRequestBody<"/table-view/table/">, "page">
+      params: Omit<APIPostRequestBody<"/table-view/table/">, "page">,
     ) => ["tableView", params],
     call: getTableData,
   },
   NumbersView: {
     makeQueryKey: (
-      params: Omit<APIPostRequestBody<"/numbers-view/numbers/">, "page">
+      params: Omit<APIPostRequestBody<"/numbers-view/numbers/">, "page">,
     ) => ["numbersView", params],
     call: getNumbersViewData,
   },
@@ -46,7 +46,7 @@ export const DbApi = {
   },
   TextView: {
     makeQueryKey: (
-      params: Omit<APIPostRequestBody<"/text-view/text-parallels/">, "page">
+      params: Omit<APIPostRequestBody<"/text-view/text-parallels/">, "page">,
     ) => ["textView", params],
     call: getTextViewParallelsData,
   },

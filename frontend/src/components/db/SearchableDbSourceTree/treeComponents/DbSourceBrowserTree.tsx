@@ -11,6 +11,7 @@ import { DbSourceTreeBaseProps } from "@components/db/SearchableDbSourceTree/typ
 import {
   getTreeKeyFromPath,
   handleTreeChange,
+  isSearchMatch,
 } from "@components/db/SearchableDbSourceTree/utils";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetAtom } from "jotai";
@@ -35,9 +36,7 @@ const DbSourceBrowserTree = memo(function DbSourceBrowserTree({
         handleTreeChange({ activeTree, setActiveTree, setBreadcrumbs });
       }}
       searchTerm={searchTerm}
-      searchMatch={(node, term) =>
-        node.data.searchField.toLocaleLowerCase().includes(term)
-      }
+      searchMatch={(node, term) => isSearchMatch(node.data.searchField, term)}
       initialData={data}
       openByDefault={false}
       disableDrag={true}

@@ -61,7 +61,7 @@
     "score": "Similarity Score:",
     "minMatch": "Minimum character/syllable matches length:",
     "exclude_sources": "Exclude sources:",
-    "include_sources": "Include sources:"
+    "include_sources": "Only include sources:"
   },
   "dbViewLabels": {
     "view": "View",

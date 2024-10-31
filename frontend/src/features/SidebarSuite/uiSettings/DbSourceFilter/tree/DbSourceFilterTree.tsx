@@ -13,6 +13,7 @@ import type {
 import {
   getTreeKeyFromPath,
   handleTreeChange,
+  isSearchMatch,
 } from "@components/db/SearchableDbSourceTree/utils";
 import { useAtomValue, useSetAtom } from "jotai";
 
@@ -41,9 +42,7 @@ export const DbSourceFilterSelectorTree = memo(
           handleTreeChange({ activeTree, setActiveTree, setBreadcrumbs });
         }}
         searchTerm={searchTerm}
-        searchMatch={(node, term) =>
-          node.data.searchField.toLocaleLowerCase().includes(term)
-        }
+        searchMatch={(node, term) => isSearchMatch(node.data.searchField, term)}
         initialData={data}
         openByDefault={false}
         rowHeight={46}

@@ -13,15 +13,15 @@ import {
   SearchPageFilterUISettingName,
 } from "@features/SidebarSuite/types";
 import {
-  dbSoureFileRequestFilters,
+  dbSourceFileRequestFilters,
   displayUISettings,
   searchRequestFilters,
 } from "@features/SidebarSuite/uiSettings/config";
 import Chip from "@mui/material/Chip";
 
 const searchFilterSet = new Set(searchRequestFilters);
-const dbSourceFileFilterSet = new Set(dbSoureFileRequestFilters);
-const displayParamSet = new Set(displayUISettings);
+const dbSourceFileFilterSet = new Set(dbSourceFileRequestFilters);
+const displayUISettingsSet = new Set(displayUISettings);
 
 function getSettingCounts({
   resultPageType,
@@ -60,7 +60,7 @@ function getSettingCounts({
 
     if (
       resultPageType === "dbFile" &&
-      displayParamSet.has(key as DisplayUISettingName)
+      displayUISettingsSet.has(key as DisplayUISettingName)
     ) {
       display += 1;
       continue;

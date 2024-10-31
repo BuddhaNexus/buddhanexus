@@ -4,7 +4,7 @@ import {
   SearchPageFilterUISettingName,
   UtilityUISettingName,
 } from "@features/SidebarSuite/types";
-import { dbSoureFileRequestFilters } from "@features/SidebarSuite/uiSettings/config";
+import { dbSourceFileRequestFilters } from "@features/SidebarSuite/uiSettings/config";
 import { APISchemas } from "@utils/api/types";
 import { DbViewEnum } from "@utils/constants";
 
@@ -12,12 +12,12 @@ export const AVAILABLE_DB_FILE_PAGE_FILTERS: Record<
   DbViewEnum,
   DBSourceFilePageFilterUISettingName[]
 > = {
-  [DbViewEnum.GRAPH]: dbSoureFileRequestFilters.filter(
+  [DbViewEnum.GRAPH]: dbSourceFileRequestFilters.filter(
     (filterName) => filterName !== "exclude_sources",
   ),
-  [DbViewEnum.NUMBERS]: dbSoureFileRequestFilters,
-  [DbViewEnum.TABLE]: dbSoureFileRequestFilters,
-  [DbViewEnum.TEXT]: dbSoureFileRequestFilters,
+  [DbViewEnum.NUMBERS]: dbSourceFileRequestFilters,
+  [DbViewEnum.TABLE]: dbSourceFileRequestFilters,
+  [DbViewEnum.TEXT]: dbSourceFileRequestFilters,
 };
 
 export const AVAILABLE_SEARCH_PAGE_FILTERS: Record<
