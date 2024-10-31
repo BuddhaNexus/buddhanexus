@@ -4,15 +4,13 @@ This code loads the segments for the files into the database.
 
 from collections import defaultdict
 import os
+import sys
 import natsort
 import multiprocessing
 from functools import partial
-import re
 import time
 import pandas as pd
 from tqdm import tqdm as tqdm
-from arango.database import StandardDatabase
-from dataloader_models import Segment, validate_df
 
 from dataloader_constants import (
     PAGE_SIZE,
@@ -37,6 +35,7 @@ from utils import (
     should_download_file,
     sliding_window,
 )
+
 from shared.utils import (
     get_cat_from_segmentnr,
     get_language_from_filename,

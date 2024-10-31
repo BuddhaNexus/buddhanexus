@@ -6,10 +6,6 @@ import pandas as pd
 from typing import List
 from arango.database import StandardDatabase
 from dataloader_constants import COLLECTION_FILES, COLLECTION_CATEGORY_NAMES
-from utils import (
-    should_download_file,
-)
-
 from shared.utils import (
     get_language_from_filename,
     get_filename_from_segmentnr
