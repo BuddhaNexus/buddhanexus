@@ -3,7 +3,3 @@ apis:
     root: https://dharmamitra.org/api-db/openapi.json
     x-openapi-ts:
       output: ./src/codegen/api/v2.ts
-  bn@v2-proto:
-    root: http://dharmamitra.org:8001/api-db/openapi.json
-    x-openapi-ts:
-      output: ./src/codegen/api/proto.ts

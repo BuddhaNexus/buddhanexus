@@ -38,28 +38,6 @@ export interface paths {
      * Get Graph For File
      * @description Endpoint for graph view.
      *
-     *     Input fields are:
-     *
-     *     ```
-     *         {
-     *           "file_name": "",
-     *           "score": 0,
-     *           "par_length": 0,
-     *           "target_collection": []
-     *         }
-     *     ```
-     *
-     *     The "target_collection" input comes from a dropdown list that lists collections only.
-     *     This comes from the `/menus/graphcollections/` endpoint. It is possible to choose
-     *     more than one option, hence it is a list. F.i.
-     *
-     *     ```
-     *         ...
-     *         "target_collection": ["pli_Suttas-Early-1", "pli_Vinaya"]
-     *     ```
-     *
-     *     "score", "par_length" and "file_name" are the same as for the other views.
-     *
      *     Output is f.i.:
      *
      *     ```
@@ -97,6 +75,9 @@ export interface paths {
      *             ],
      *             etc.
      *     ```
+     *
+     *     If the histogramgraphdata is null, it means that the dataset is too large to display the histogram.
+     *     Please display a message asking the user to use the filters to reduce the dataset size.
      */
     post: operations["get_graph_for_file_graph_view__post"];
     delete?: never;
@@ -105,7 +86,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/visual-view/": {
+  "/download/": {
     parameters: {
       query?: never;
       header?: never;
@@ -115,96 +96,35 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * Get Visual View
-     * @description Endpoint for visual view.
+     * Get Table Download
+     * @description Endpoint for the download table & numbers view. Accepts filters.
+     *     :return: List of segments and parallels for the downloaded table- and numbers view.
      *
-     *     Input is as follows:
+     *     sort_method options:
      *
-     *     ```
-     *         {
-     *           "inquiry_collection": "",
-     *           "hit_collections": []
-     *         }
-     *     ```
+     *         "position": "By Position in Inquiry Text"
      *
-     *     "inquiry_collection" input comes from a dropdown list that lists collections only.
-     *     This comes from the `/menus/graphcollections/` endpoint.
+     *             (matches sorted by segment number position in the root text (default))
      *
-     *     "hit_collections" also uses the same `/menus/graphcollections/` input but here it is
-     *     possible to choose more than one option, hence it is a list.
+     *         "quotedtext": "By Position in Hit Text(s)"
      *
-     *     F.i
+     *             (matches sorted by segment number position in the target/quoted text)
      *
-     *     ```
-     *         {
-     *           "inquiry_collection": "pli_Suttas-Early-1",
-     *           "hit_collections": ["pli_Suttas-Early-2"]
-     *         }
-     *     ```
+     *         "length": "By Length of match in Inquiry Text (beginning with the longest)"
      *
-     *     Generates an output:
+     *             (matches sorted by match-length in the root text
      *
-     *     ```
-     *         [
-     *           [
-     *             "Dīghanikāya (dn)",
-     *             "Khuddakapāṭha (kp)",
-     *             "49864"
-     *           ],
-     *           [
-     *             "Dīghanikāya (dn)",
-     *             "Dhammapada (dhp)",
-     *             "52645"
-     *           ],
-     *           etc.
-     *     ```
+     *         "length2": "By Length of match in Hit Text (beginning with the longest)"
      *
-     *     When the first sankey-chart is generated, you can click on the collections on the left
-     *     top open them. The "hit_collections" remain the same but the "inquiry_collection" changes
-     *     to the value of the clicked item (between brackets). F.i. in the above example, clicking on
-     *     "Dīghanikāya (dn)" will generate the request for:
+     *             (matches sorted by match-length in the target/quoted text)
      *
-     *     ```
-     *         {
-     *           "inquiry_collection": "dn",
-     *           "hit_collections": ["pli_Suttas-Early-2"]
-     *         }
-     *     ```
+     *     "download_data" options:
      *
-     *     Which outputs:
+     *         "table": a download is requested in table-view mode. (default)
      *
-     *     ```
-     *         [
-     *           [
-     *             "Brahmajāla Sutta (dn1)",
-     *             "Khuddakapāṭha (kp)",
-     *             "55916"
-     *           ],
-     *           [
-     *             "Brahmajāla Sutta (dn1)",
-     *             "Udāna (ud)",
-     *             "57381"
-     *           ],
-     *           etc.
-     *     ```
-     *
-     *     The sankey-chart is then updated with the new data.
-     *
-     *     Then clicking on "Brahmajāla Sutta (dn1)" generates the request for:
-     *
-     *     ```
-     *         {
-     *           "inquiry_collection": "dn1",
-     *           "hit_collections": ["pli_Suttas-Early-2"]
-     *         }
-     *     ```
-     *
-     *     Which provides the next dataset for the new updated sankey-chart.
-     *
-     *     When then clicking on "Brahmajāla Sutta (dn1)" again opens the file "dn1" in
-     *     text-view mode.
+     *         "numbers": a download is requested in numbers-view mode.
      */
-    post: operations["get_visual_view_visual_view__post"];
+    post: operations["get_table_download_download__post"];
     delete?: never;
     options?: never;
     head?: never;
@@ -224,29 +144,26 @@ export interface paths {
      * Get Table View
      * @description Endpoint for the table view. Accepts filters.
      *     :return: List of segments and parallels for the table view.
+     *
+     *     sort_method options:
+     *
+     *         "position": "By Position in Inquiry Text"
+     *
+     *             (matches sorted by segment number position in the root text (default))
+     *
+     *         "quotedtext": "By Position in Hit Text(s)"
+     *
+     *             (matches sorted by segment number position in the target/quoted text)
+     *
+     *         "length": "By Length of match in Inquiry Text (beginning with the longest)"
+     *
+     *             (matches sorted by match-length in the root text
+     *
+     *         "length2": "By Length of match in Hit Text (beginning with the longest)"
+     *
+     *             (matches sorted by match-length in the target/quoted text)
      */
     post: operations["get_table_view_table_view_table__post"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/table-view/download/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * Get Table Download
-     * @description Endpoint for the download table. Accepts filters.
-     *     :return: List of segments and parallels for the downloaded table view.
-     */
-    post: operations["get_table_download_table_view_download__post"];
     delete?: never;
     options?: never;
     head?: never;
@@ -287,26 +204,6 @@ export interface paths {
      * @description Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
      */
     post: operations["get_file_text_segments_and_parallels_text_view_text_parallels__post"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/text-view/text-parallels-v2/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * Get File Text Segments And Parallels
-     * @description Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
-     */
-    post: operations["get_file_text_segments_and_parallels_text_view_text_parallels_v2__post"];
     delete?: never;
     options?: never;
     head?: never;
@@ -362,7 +259,7 @@ export interface paths {
     };
     /**
      * Get External Links
-     * @description Returns the external links for a given file_name or segmentnr.
+     * @description Returns the external links for a given filename or segmentnr.
      */
     get: operations["get_external_links_links_external__get"];
     put?: never;
@@ -423,7 +320,7 @@ export interface paths {
     };
     /**
      * Get Displayname For Segmentnr
-     * @description Returns the displayname for a given segmentnr
+     * @description Returns the displayname for a given segmentnr or filename
      */
     get: operations["get_displayname_for_segmentnr_utils_displayname__get"];
     put?: never;
@@ -434,163 +331,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/utils/sanskrittagger/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Tag Sanskrit
-     * @description IS THIS FUNCTION BEING USED?
-     *     Stemming + Tagging for Sanskrit
-     *     :return: String with tagged Sanskrit
-     */
-    get: operations["tag_sanskrit_utils_sanskrittagger__get"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/utils/available-languages/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get Multilingual
-     * @description Returns a list of the available languages of matches for the given file.
-     */
-    get: operations["get_multilingual_utils_available_languages__get"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/menus/files/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get Files For Menu
-     * @description Endpoint that returns list of file IDs in a given language or
-     *     all files available in multilang if the language is multi.
-     */
-    get: operations["get_files_for_menu_menus_files__get"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/menus/filter/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get Files For Filter Menu
-     * @description Given a language, return list of files for the category menu
-     */
-    get: operations["get_files_for_filter_menu_menus_filter__get"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/menus/category/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get Categories For Filter Menu
-     * @description Given a language, return list of categories for the filter menu
-     *     in text view, table view and numbers view.
-     *
-     *     Input is the language string like "pli".
-     *     Output is:
-     *
-     *     ```
-     *         {
-     *           "categoryitems": [
-     *             {
-     *               "category": "pli_Suttas-Early-1",
-     *               "categoryname": "SUTTAS-EARLY-1 (ALL)"
-     *             },
-     *             {
-     *               "category": "dn",
-     *               "categoryname": "• Dīghanikāya (DN)"
-     *             },
-     *             {
-     *               "category": "mn",
-     *               "categoryname": "• Majjhimanikāya (MN)"
-     *             },
-     *             etc.
-     *     ```
-     *
-     *     Where "category" is the value that needs to be returns to the backend once
-     *     selected and "categoryname" is what displays in the dropdown menu:
-     *
-     *     ```
-     *         SUTTAS-EARLY-1 (ALL)
-     *         • Dīghanikāya (DN)
-     *         • Majjhimanikāya (MN)
-     *         etc.
-     *
-     *     ```
-     */
-    get: operations["get_categories_for_filter_menu_menus_category__get"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/menus/collections/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get All Collections
-     * @description Returns list of all available collections.
-     */
-    get: operations["get_all_collections_menus_collections__get"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/menus/sidebar/": {
+  "/menudata/": {
     parameters: {
       query?: never;
       header?: never;
@@ -599,58 +340,9 @@ export interface paths {
     };
     /**
      * Get Data For Sidebar Menu
-     * @description Endpoint for sidebar menu
+     * @description Endpoint for Menudata, formerly known as the sidebar menu.
      */
-    get: operations["get_data_for_sidebar_menu_menus_sidebar__get"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/menus/graphcollections/": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get Categories For Filter Menu
-     * @description Given a language, return list of collections for the filter menu
-     *     of graph view and the input menus of the visual view.
-     *
-     *     Input is the language string like "pli".
-     *     Output is:
-     *
-     *     ```
-     *         {
-     *           "result": [
-     *             {
-     *               "collection": "pli_Suttas-Early-1",
-     *               "collectiondisplayname": "Suttas-Early-1"
-     *             },
-     *             {
-     *               "collection": "pli_Suttas-Early-2",
-     *               "collectiondisplayname": "Suttas-Early-2"
-     *             },
-     *             etc.
-     *     ```
-     *
-     *     Where "collection" is the value that needs to be returns to the backend once
-     *     selected and "collectiondisplayname" is what displays in the dropdown menu:
-     *
-     *     ```
-     *         Suttas-Early-1
-     *         Suttas-Early-2
-     *         Suttas-Late-1
-     *         etc.
-     *
-     *     ```
-     */
-    get: operations["get_categories_for_filter_menu_menus_graphcollections__get"];
+    get: operations["get_data_for_sidebar_menu_menudata__get"];
     put?: never;
     post?: never;
     delete?: never;
@@ -684,81 +376,29 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
-    /** AllCategories */
-    AllCategories: {
-      /** Categoryname */
-      categoryname: string;
-      /** Categorydisplayname */
-      categorydisplayname: string;
-      /** Files */
-      files: components["schemas"]["AllFilesForCategory"][];
-    };
-    /** AllFilesForCategory */
-    AllFilesForCategory: {
-      /** File Name */
-      file_name: string;
-      /** Textname */
-      textname: string;
-      /** Displayname */
-      displayname: string;
-      /** Available Lang */
-      available_lang?: string;
-    };
     /** Category */
     Category: {
       /** Category */
-      category?: string;
-      /** Categoryname */
-      categoryname?: string;
-    };
-    /** CategoryFiles */
-    CategoryFiles: {
-      /** Filename */
-      filename: string;
-      /** Categoryname */
-      categoryname?: string;
-      /** Displayname */
-      displayname?: string;
-      /** Search Field */
-      search_field?: string;
-    };
-    /** CategoryOutput */
-    CategoryOutput: {
-      /** Categoryitems */
-      categoryitems: components["schemas"]["Category"][];
+      category: string;
+      /** Categorydisplayname */
+      categorydisplayname: string;
+      /** Categorysearch Field */
+      categorysearch_field: string;
+      /** Files */
+      files: components["schemas"]["File"][];
     };
     /** Collection */
     Collection: {
-      /** Collectionname */
-      collectionname: string;
-      /** Collectionlanguage */
-      collectionlanguage: string;
-      /** Collectionkey */
-      collectionkey: string;
-    };
-    /** CollectionsOutput */
-    CollectionsOutput: {
-      /** Result */
-      result: components["schemas"]["Collection"][];
+      /** Collection */
+      collection: string;
+      /** Categories */
+      categories: components["schemas"]["Category"][];
     };
     /** CountMatchesInput */
     CountMatchesInput: {
-      /**
-       * File Name
-       * @default
-       */
-      file_name: string;
-      limits?: components["schemas"]["Limits"];
-      /**
-       * Score
-       * @default 0
-       */
-      score: number;
-      /**
-       * Par Length
-       * @default 0
-       */
-      par_length: number;
+      /** Filename */
+      filename: string;
+      filters?: components["schemas"]["Filters"];
     };
     /** CountMatchesOutput */
     CountMatchesOutput: {
@@ -768,42 +408,86 @@ export interface components {
     /** DisplayNameOutput */
     DisplayNameOutput: {
       /** Displayname */
-      displayname: unknown[];
+      displayname: string[];
     };
-    /** Files */
-    Files: {
-      /** Displayname */
-      displayName: string;
-      /** Textname */
-      textname: string;
+    /**
+     * DownloadData
+     * @description An enumeration.
+     * @enum {string}
+     */
+    DownloadData: "table" | "numbers";
+    /** DownloadInput */
+    DownloadInput: {
       /** Filename */
       filename: string;
-      /** Category */
-      category: string;
-      /** Available Lang */
-      available_lang?: string;
+      filters: components["schemas"]["Filters"];
+      /**
+       * Page
+       * @default 0
+       */
+      page: number;
+      /** @default position */
+      sort_method: components["schemas"]["SortMethod"];
+      /**
+       * Folio
+       * @default
+       */
+      folio: string;
+      /** @default table */
+      download_data: components["schemas"]["DownloadData"];
+    };
+    /**
+     * DownloadOutput
+     * Format: binary
+     */
+    DownloadOutput: string;
+    /** File */
+    File: {
+      /** Displayname */
+      displayName: string;
+      /** Filename */
+      filename: string;
       /** Search Field */
       search_field: string;
     };
-    /** FilesOutput */
-    FilesOutput: {
-      /** Results */
-      results: components["schemas"]["Files"][];
-    };
-    /** FilterOutput */
-    FilterOutput: {
-      /** Filteritems */
-      filteritems: components["schemas"]["CategoryFiles"][];
+    /**
+     * Filters
+     * @description Filters for matches
+     */
+    Filters: {
+      /**
+       * Par Length
+       * @default 0
+       */
+      par_length: number;
+      /**
+       * Score
+       * @default 0
+       */
+      score: number;
+      languages?: components["schemas"]["Languages"][];
+      /** Include Files */
+      include_files?: string[];
+      /** Exclude Files */
+      exclude_files?: string[];
+      /** Include Categories */
+      include_categories?: string[];
+      /** Exclude Categories */
+      exclude_categories?: string[];
+      /** Include Collections */
+      include_collections?: string[];
+      /** Exclude Collections */
+      exclude_collections?: string[];
     };
     /** FolioOutput */
     FolioOutput: {
       /** Folios */
-      folios: components["schemas"]["api__endpoints__models__utils_models__Segment"][];
+      folios: unknown[];
     };
     /** FullMatchText */
     FullMatchText: {
       /** Text */
-      text?: string;
+      text: string;
       /**
        * Highlightcolor
        * @default 0
@@ -818,18 +502,14 @@ export interface components {
     /** FullNames */
     FullNames: {
       /** Display Name */
-      display_name?: string;
+      display_name: string;
       /** Text Name */
-      text_name?: string;
-      /** Link1 */
-      link1?: string;
-      /** Link2 */
-      link2?: string;
+      text_name: string;
     };
     /** FullText */
     FullText: {
       /** Text */
-      text?: string;
+      text: string;
       /**
        * Highlightcolor
        * @default 0
@@ -838,113 +518,66 @@ export interface components {
     };
     /** GeneralInput */
     GeneralInput: {
-      /** File Name */
-      file_name: string;
-      /**
-       * Score
-       * @default 0
-       */
-      score: number;
-      /**
-       * Par Length
-       * @default 0
-       */
-      par_length: number;
-      limits?: components["schemas"]["Limits"];
+      /** Filename */
+      filename: string;
+      filters: components["schemas"]["Filters"];
       /**
        * Page
        * @default 0
        */
       page: number;
-      /**
-       * Sort Method
-       * @default position
-       */
-      sort_method: string;
+      /** @default position */
+      sort_method: components["schemas"]["SortMethod"];
       /**
        * Folio
        * @default
        */
       folio: string;
     };
-    /** GraphCollection */
-    GraphCollection: {
-      /** Collection */
-      collection?: string;
-      /** Collectiondisplayname */
-      collectiondisplayname?: string;
+    /** GraphData */
+    GraphData: {
+      /** Piegraphdata */
+      piegraphdata: (string | number)[][];
+      /** Histogramgraphdata */
+      histogramgraphdata?: (string | number)[][];
     };
-    /** GraphCollectionOutput */
-    GraphCollectionOutput: {
-      /** Result */
-      result: components["schemas"]["GraphCollection"][];
-    };
-    /** GraphInput */
-    GraphInput: {
-      /**
-       * File Name
-       * @default
-       */
-      file_name: string;
-      /**
-       * Score
-       * @default 0
-       */
-      score: number;
+    /**
+     * GraphFilters
+     * @description Filters for graph
+     */
+    GraphFilters: {
       /**
        * Par Length
        * @default 0
        */
       par_length: number;
       /**
-       * Target Collection
-       * @default []
+       * Score
+       * @default 0
        */
-      target_collection: unknown[];
+      score: number;
+      /** Include Collections */
+      include_collections?: string[];
+    };
+    /** GraphInput */
+    GraphInput: {
+      /** Filename */
+      filename: string;
+      filters: components["schemas"]["GraphFilters"];
     };
     /** GraphViewOutput */
-    GraphViewOutput: {
-      /** Piegraphdata */
-      piegraphdata: (string | number)[][];
-      /** Histogramgraphdata */
-      histogramgraphdata: (string | number)[][];
-    };
+    GraphViewOutput: components["schemas"]["GraphData"];
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
       detail?: components["schemas"]["ValidationError"][];
     };
-    /** LanguageOutput */
-    LanguageOutput: {
-      /** Langlist */
-      langList: unknown[];
-    };
     /**
-     * Limits
-     * @description Limits for parallels
+     * Languages
+     * @description An enumeration.
+     * @enum {string}
      */
-    Limits: {
-      /**
-       * Category Include
-       * @default []
-       */
-      category_include: unknown[];
-      /**
-       * Category Exclude
-       * @default []
-       */
-      category_exclude: unknown[];
-      /**
-       * File Include
-       * @default []
-       */
-      file_include: unknown[];
-      /**
-       * File Exclude
-       * @default []
-       */
-      file_exclude: unknown[];
-    };
+    Languages: "all" | "bo" | "sa" | "pa" | "zh";
     /** LinksOutput */
     LinksOutput: {
       /** Bdrc */
@@ -973,29 +606,48 @@ export interface components {
     };
     /** MenuOutput */
     MenuOutput: components["schemas"]["MenuItem"][];
+    /** MenudataOutput */
+    MenudataOutput: {
+      /** Menudata */
+      menudata: components["schemas"]["Collection"][];
+    };
     /** NumbersViewOutput */
     NumbersViewOutput: components["schemas"]["api__endpoints__models__numbers_view_models__Segment"][];
     /** Parallel */
     Parallel: {
       /** Segmentnr */
-      segmentnr?: string;
+      segmentnr: string;
       /** Displayname */
-      displayName?: string;
+      displayName: string;
       /** Filename */
-      fileName?: string;
+      fileName: string;
       /** Category */
-      category?: string;
+      category: string;
+    };
+    /**
+     * SearchFilters
+     * @description Filters for search
+     */
+    SearchFilters: {
+      language: components["schemas"]["Languages"];
+      /** Include Files */
+      include_files?: string[];
+      /** Exclude Files */
+      exclude_files?: string[];
+      /** Include Categories */
+      include_categories?: string[];
+      /** Exclude Categories */
+      exclude_categories?: string[];
+      /** Include Collections */
+      include_collections?: string[];
+      /** Exclude Collections */
+      exclude_collections?: string[];
     };
     /** SearchInput */
     SearchInput: {
       /** Search String */
       search_string: string;
-      /**
-       * Language
-       * @default
-       */
-      language: string;
-      limits?: components["schemas"]["Limits"];
+      filters: components["schemas"]["SearchFilters"];
     };
     /** SearchOutput */
     SearchOutput: {
@@ -1016,71 +668,16 @@ export interface components {
       /** Segtext */
       segtext: components["schemas"]["FullText"][];
     };
-    /** SideBar */
-    SideBar: {
-      /** Collection */
-      collection: string;
-      /** Categories */
-      categories: components["schemas"]["AllCategories"][];
-    };
-    /** SideBarOutput */
-    SideBarOutput: {
-      /** Navigationmenudata */
-      navigationmenudata: components["schemas"]["SideBar"][];
-    };
-    /** TableDownloadInput */
-    TableDownloadInput: {
-      /** File Name */
-      file_name: string;
-      /**
-       * Score
-       * @default 0
-       */
-      score: number;
-      /**
-       * Par Length
-       * @default 0
-       */
-      par_length: number;
-      limits?: components["schemas"]["Limits"];
-      /**
-       * Page
-       * @default 0
-       */
-      page: number;
-      /**
-       * Sort Method
-       * @default position
-       */
-      sort_method: string;
-      /**
-       * Folio
-       * @default
-       */
-      folio: string;
-      /** Download Data */
-      download_data: string;
-    };
     /**
-     * TableDownloadOutput
-     * Format: binary
+     * SortMethod
+     * @description An enumeration.
+     * @enum {string}
      */
-    TableDownloadOutput: string;
+    SortMethod: "position" | "quotedtext" | "length" | "length2";
     /** TableViewOutput */
     TableViewOutput: components["schemas"]["api__endpoints__models__table_view_models__Segment"][];
     /** TextItem */
     TextItem: {
-      /** Page */
-      page: number;
-      /** Total Pages */
-      total_pages: number;
-      /** Segnr */
-      segnr: string;
-      /** Segtext */
-      segtext: components["schemas"]["FullMatchText"][];
-    };
-    /** TextItemNew */
-    TextItemNew: {
       /** Segnr */
       segnr: string;
       /** Segtext */
@@ -1088,45 +685,33 @@ export interface components {
     };
     /** TextParallelsInput */
     TextParallelsInput: {
-      /** File Name */
-      file_name: string;
+      /** Filename */
+      filename: string;
+      /**
+       * Folio
+       * @default
+       */
+      folio: string;
       /**
        * Active Segment
        * @default none
        */
       active_segment: string;
+      filters?: components["schemas"]["Filters"];
       /**
-       * Score
+       * Page
        * @default 0
        */
-      score: number;
-      /**
-       * Par Length
-       * @default 0
-       */
-      par_length: number;
-      limits?: components["schemas"]["Limits"];
-      /**
-       * Multi Lingual
-       * @default []
-       */
-      multi_lingual: unknown[];
-      /**
-       * Page Number
-       * @default 0
-       */
-      page_number: number;
+      page: number;
     };
     /** TextViewLeftOutput */
-    TextViewLeftOutput: components["schemas"]["TextItem"][];
-    /** TextViewLeftOutputV2 */
-    TextViewLeftOutputV2: {
+    TextViewLeftOutput: {
       /** Page */
       page: number;
       /** Total Pages */
       total_pages: number;
       /** Items */
-      items: components["schemas"]["TextItemNew"][];
+      items: components["schemas"]["TextItem"][];
     };
     /** TextViewMiddleInput */
     TextViewMiddleInput: {
@@ -1144,21 +729,6 @@ export interface components {
       /** Error Type */
       type: string;
     };
-    /** VisualViewInput */
-    VisualViewInput: {
-      /**
-       * Inquiry Collection
-       * @default
-       */
-      inquiry_collection: string;
-      /**
-       * Hit Collections
-       * @default []
-       */
-      hit_collections: unknown[];
-    };
-    /** VisualViewOutput */
-    VisualViewOutput: (string | number)[][];
     /** Segment */
     api__endpoints__models__numbers_view_models__Segment: {
       /** Segmentnr */
@@ -1172,8 +742,6 @@ export interface components {
       par_segnr_range: string;
       par_full_names: components["schemas"]["FullNames"];
       root_full_names: components["schemas"]["FullNames"];
-      /** File Name */
-      file_name: string;
       /** Root Segnr Range */
       root_segnr_range: string;
       /** Par Length */
@@ -1186,15 +754,9 @@ export interface components {
       src_lang: string;
       /** Tgt Lang */
       tgt_lang: string;
-      /**
-       * Root Fulltext
-       * @default []
-       */
+      /** Root Fulltext */
       root_fulltext: components["schemas"]["FullText"][];
-      /**
-       * Par Fulltext
-       * @default []
-       */
+      /** Par Fulltext */
       par_fulltext: components["schemas"]["FullText"][];
     };
     /** Segment */
@@ -1214,21 +776,14 @@ export interface components {
        * @default []
        */
       par_segtext: unknown[];
-      /** File Name */
-      file_name: string;
+      /** Filename */
+      filename: string;
       /** Score */
       score: number;
       /** Length */
       length: number;
       /** Par Fulltext */
       par_fulltext?: components["schemas"]["FullText"][];
-    };
-    /** Segment */
-    api__endpoints__models__utils_models__Segment: {
-      /** Num */
-      num: string;
-      /** Segment Nr */
-      segment_nr: string;
     };
   };
   responses: never;
@@ -1297,7 +852,7 @@ export interface operations {
       };
     };
   };
-  get_visual_view_visual_view__post: {
+  get_table_download_download__post: {
     parameters: {
       query?: never;
       header?: never;
@@ -1306,7 +861,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["VisualViewInput"];
+        "application/json": components["schemas"]["DownloadInput"];
       };
     };
     responses: {
@@ -1314,7 +869,7 @@ export interface operations {
       200: {
         headers: Record<string, unknown>;
         content: {
-          "application/json": components["schemas"]["VisualViewOutput"];
+          "application/json": components["schemas"]["DownloadOutput"];
         };
       };
       /** @description Validation Error */
@@ -1344,35 +899,6 @@ export interface operations {
         headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["TableViewOutput"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  get_table_download_table_view_download__post: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TableDownloadInput"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["TableDownloadOutput"];
         };
       };
       /** @description Validation Error */
@@ -1442,35 +968,6 @@ export interface operations {
       };
     };
   };
-  get_file_text_segments_and_parallels_text_view_text_parallels_v2__post: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["TextParallelsInput"];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["TextViewLeftOutputV2"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
   get_numbers_view_numbers_view_numbers__post: {
     parameters: {
       query?: never;
@@ -1504,7 +1001,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description Filename to be used */
-        file_name: string;
+        filename: string;
       };
       header?: never;
       path?: never;
@@ -1531,8 +1028,7 @@ export interface operations {
   get_external_links_links_external__get: {
     parameters: {
       query: {
-        file_name: string;
-        segmentnr?: string;
+        filename: string;
       };
       header?: never;
       path?: never;
@@ -1589,7 +1085,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description File name of the text for which folios should be fetched. */
-        file_name: string;
+        filename: string;
       };
       header?: never;
       path?: never;
@@ -1641,63 +1137,7 @@ export interface operations {
       };
     };
   };
-  tag_sanskrit_utils_sanskrittagger__get: {
-    parameters: {
-      query: {
-        /** @description Sanskrit string to be tagged. */
-        sanskrit_string: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": unknown;
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  get_multilingual_utils_available_languages__get: {
-    parameters: {
-      query: {
-        /** @description File name of the text for which the available languages should be fetched. */
-        file_name: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["LanguageOutput"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  get_files_for_menu_menus_files__get: {
+  get_data_for_sidebar_menu_menudata__get: {
     parameters: {
       query: {
         /** @description language to be used */
@@ -1713,137 +1153,7 @@ export interface operations {
       200: {
         headers: Record<string, unknown>;
         content: {
-          "application/json": components["schemas"]["FilesOutput"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  get_files_for_filter_menu_menus_filter__get: {
-    parameters: {
-      query: {
-        /** @description language to be used */
-        language: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["FilterOutput"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  get_categories_for_filter_menu_menus_category__get: {
-    parameters: {
-      query: {
-        /** @description language to be used */
-        language: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["CategoryOutput"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  get_all_collections_menus_collections__get: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["CollectionsOutput"];
-        };
-      };
-    };
-  };
-  get_data_for_sidebar_menu_menus_sidebar__get: {
-    parameters: {
-      query: {
-        /** @description language to be used */
-        language: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["SideBarOutput"];
-        };
-      };
-      /** @description Validation Error */
-      422: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
-        };
-      };
-    };
-  };
-  get_categories_for_filter_menu_menus_graphcollections__get: {
-    parameters: {
-      query: {
-        /** @description language to be used */
-        language: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: Record<string, unknown>;
-        content: {
-          "application/json": components["schemas"]["GraphCollectionOutput"];
+          "application/json": components["schemas"]["MenudataOutput"];
         };
       };
       /** @description Validation Error */
