@@ -12,7 +12,7 @@ export const buttonWrapperStyles = {
   gap: 1,
 };
 
-export const ButtonsRenderer = ({
+export const QueryPageButtons = ({
   children,
 }: {
   children: React.ReactNode;

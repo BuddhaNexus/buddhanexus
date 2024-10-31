@@ -44,7 +44,7 @@ export const DbSourceBrowserDrawer = memo(function DbSourceBrowserDrawer() {
       onClose={() => setIsDrawerOpen(false)}
     >
       <SearchableDbSourceTree
-        type={DbSourceTreeType.Browser}
+        type={DbSourceTreeType.BROWSER}
         parentHeight={height}
         parentWidth={width}
       />

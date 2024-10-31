@@ -42,7 +42,7 @@ export default function DbIndexPage() {
           }}
         >
           <SearchableDbSourceTree
-            type={DbSourceTreeType.Browser}
+            type={DbSourceTreeType.BROWSER}
             parentHeight={height}
             parentWidth={width}
             hasHeading={false}

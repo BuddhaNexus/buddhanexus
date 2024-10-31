@@ -70,7 +70,7 @@ const TreeBreadcrumbs = ({ type }: { type: DbSourceTreeType }) => {
               display: "block",
               height: "100%",
               paddingInline:
-                type === DbSourceTreeType.Browser ? "1.5rem" : "1.25rem",
+                type === DbSourceTreeType.BROWSER ? "1.5rem" : "1.25rem",
               ...(node.level === 0 && {
                 paddingInline: "0.5rem 1.25rem",
               }),
@@ -89,10 +89,10 @@ const TreeBreadcrumbs = ({ type }: { type: DbSourceTreeType }) => {
                 alignItems: "center",
                 gap: "0.35rem",
                 fontSize:
-                  type === DbSourceTreeType.Browser ? "0.85rem" : "0.7rem",
+                  type === DbSourceTreeType.BROWSER ? "0.85rem" : "0.7rem",
               }}
             >
-              {type === DbSourceTreeType.Browser ? (
+              {type === DbSourceTreeType.BROWSER ? (
                 <SourceTypeIcon
                   dataType={node.data.dataType}
                   color="action"

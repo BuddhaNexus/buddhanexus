@@ -50,7 +50,7 @@ const DbSourceFilterTreePopper = ({
           }}
         >
           <SearchableDbSourceTree
-            type={DbSourceTreeType.FilterSelector}
+            type={DbSourceTreeType.FILTER_SELECTOR}
             filterSettingName={filterSettingName}
             parentHeight={height}
             parentWidth={width}

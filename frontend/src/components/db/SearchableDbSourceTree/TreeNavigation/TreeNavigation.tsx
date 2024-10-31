@@ -23,7 +23,7 @@ export default function TreeNavigation({ type }: TreeNavigationProps) {
       justifyContent="space-between"
       gap="0.5rem"
       minHeight="1.75rem"
-      mt={type === DbSourceTreeType.Browser ? 2 : 1}
+      mt={type === DbSourceTreeType.BROWSER ? 2 : 1}
       mb={1}
     >
       <TreeBreadcrumbs type={type} />

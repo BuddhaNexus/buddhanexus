@@ -35,9 +35,9 @@ type SearchableDbSourceTreeBaseProps = {
 
 type SearchableDbSourceTreeProps = SearchableDbSourceTreeBaseProps &
   (
-    | ({ type: DbSourceTreeType.Browser } & BrowserTreeProps)
+    | ({ type: DbSourceTreeType.BROWSER } & BrowserTreeProps)
     | ({
-        type: DbSourceTreeType.FilterSelector;
+        type: DbSourceTreeType.FILTER_SELECTOR;
       } & DbSourceFilterSelectorTreeProps)
   );
 
@@ -85,7 +85,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
 
     const menuData = React.useMemo(() => {
       const { type } = treeTypeProps;
-      if (type === DbSourceTreeType.Browser || dbView !== DbViewEnum.GRAPH) {
+      if (type === DbSourceTreeType.BROWSER || dbView !== DbViewEnum.GRAPH) {
         return data;
       }
 

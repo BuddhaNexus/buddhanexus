@@ -12,7 +12,7 @@ import { Box, Button, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import { buttonWrapperStyles } from "./ButtonsRenderer";
+import { buttonWrapperStyles } from "./QueryPageButtons";
 
 export const DbFileButtons = () => {
   const { t } = useTranslation("settings");

@@ -16,8 +16,8 @@ export type DbSourceTreeNode = {
 };
 
 export enum DbSourceTreeType {
-  Browser = "browser",
-  FilterSelector = "filter-selector",
+  BROWSER = "browser",
+  FILTER_SELECTOR = "filter-selector",
 }
 
 export type DbSourceTreeBaseProps = {
@@ -28,18 +28,18 @@ export type DbSourceTreeBaseProps = {
 };
 
 export type BrowserTreeProps = {
-  type: DbSourceTreeType.Browser;
+  type: DbSourceTreeType.BROWSER;
 };
 
 export type DbSourceFilterSelectorTreeProps = {
-  type: DbSourceTreeType.FilterSelector;
+  type: DbSourceTreeType.FILTER_SELECTOR;
   filterSettingName: DbSourceFilterUISetting;
 };
 
 export type DbSourceTreeProps = DbSourceTreeBaseProps &
   (
-    | ({ type: DbSourceTreeType.Browser } & BrowserTreeProps)
+    | ({ type: DbSourceTreeType.BROWSER } & BrowserTreeProps)
     | ({
-        type: DbSourceTreeType.FilterSelector;
+        type: DbSourceTreeType.FILTER_SELECTOR;
       } & DbSourceFilterSelectorTreeProps)
   );

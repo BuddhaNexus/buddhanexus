@@ -9,7 +9,7 @@ import DbSourceBrowserTree from "./DbSourceBrowserTree";
 export function DbSourceTree(props: DbSourceTreeProps) {
   const { type, data, height, width, searchTerm } = props;
 
-  if (type === DbSourceTreeType.FilterSelector) {
+  if (type === DbSourceTreeType.FILTER_SELECTOR) {
     return (
       <DbSourceFilterSelectorTree
         data={data}

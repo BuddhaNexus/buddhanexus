@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useResultPageType } from "@components/hooks/useResultPageType";
 
-import { ButtonsRenderer } from "./ButtonsRenderer";
 import { DbFileButtons } from "./DbFileButtons";
+import { QueryPageButtons } from "./QueryPageButtons";
 import { QueryPageTopStackFrame } from "./QueryPageTopStackFrame";
 import { SearchButtons } from "./SearchButtons";
 
@@ -12,18 +12,18 @@ export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
   if (isSearchPage) {
     return (
       <QueryPageTopStackFrame matches={matches}>
-        <ButtonsRenderer>
+        <QueryPageButtons>
           <SearchButtons />
-        </ButtonsRenderer>
+        </QueryPageButtons>
       </QueryPageTopStackFrame>
     );
   }
 
   return (
     <QueryPageTopStackFrame matches={matches}>
-      <ButtonsRenderer>
+      <QueryPageButtons>
         <DbFileButtons />
-      </ButtonsRenderer>
+      </QueryPageButtons>
     </QueryPageTopStackFrame>
   );
 };
