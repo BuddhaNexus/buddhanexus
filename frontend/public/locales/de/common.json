@@ -50,6 +50,8 @@
   "prompts": {
     "genericErrorTitle": "Etwas ist schiefgelaufen.",
     "genericErrorDescription": "Bitte kontaktieren Sie uns, wenn das Problem weiterhin besteht.",
+    "fetchError": "Error fetching result data",
+    "queryWarning": "Unable to display results. Please use the filters to adjust your query.",
     "loading": "Wird geladen...",
     "noResults": "Keine Ergebnisse gefunden.",
     "showLess": "Weniger anzeigen",

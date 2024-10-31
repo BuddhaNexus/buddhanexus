@@ -1,6 +1,8 @@
 import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
+import { DbViewPageHead } from "@components/db/DbViewPageHead";
 import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useResultPageType } from "@components/hooks/useResultPageType";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import { SidebarSuite } from "@features/SidebarSuite";
 import { Main } from "@features/SidebarSuite/common/MuiStyledSidebarComponents";
@@ -28,6 +30,7 @@ export const QueryResultsPageContent: FC<Props> = ({
 
   const [isInitialized, setIsInitialized] = useState(false);
   const { isSettingsOpen, setIsSettingsOpen } = useSettingsDrawer();
+  const { isDbFilePage } = useResultPageType();
 
   useEffect(() => {
     if (!isInitialized) {
@@ -41,6 +44,7 @@ export const QueryResultsPageContent: FC<Props> = ({
       {isInitialized ? (
         <Main open={isSettingsOpen}>
           <Container maxWidth={maxWidth} sx={containerStyles}>
+            {isDbFilePage ? <DbViewPageHead /> : null}
             {children}
           </Container>
           <SidebarSuite />
