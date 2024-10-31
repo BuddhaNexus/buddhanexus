@@ -1,6 +1,6 @@
 import unidecode
 from collections import defaultdict
-from ..models.menus_models import Collection, Category, File
+from ..models.menu_models import Collection, Category, File
 
 
 def create_searchfield(result):
@@ -9,14 +9,22 @@ def create_searchfield(result):
         + " "
         + unidecode.unidecode(result["displayName"]).lower()
         + " "
+        + result["category_display_name"]
+        + " "
+        + unidecode.unidecode(result["category_display_name"]).lower()
+        + " "
         + result["textname"]
     )
 
 
-def add_searchfield(results):
-    for result in results:
-        result["search_field"] = create_searchfield(result)
-    return results
+def create_cat_searchfield(result):
+    return (
+        result["category_display_name"]
+        + " "
+        + unidecode.unidecode(result["category_display_name"]).lower()
+        + " "
+        + result["category"]
+    )
 
 
 def structure_menu_data(query_result):
@@ -26,26 +34,27 @@ def structure_menu_data(query_result):
         collection = file["collection"]
         category = file["category"]
         category_display_name = file["category_display_name"]
-        print(file)
         file_info = File(
             filename=file.get("filename"),
             displayName=file.get("displayName"),
-            category=category,
             search_field=create_searchfield(file),
         )
 
-        result[collection][category]["categoryname"] = category
+        result[collection][category]["category"] = category
         result[collection][category]["categorydisplayname"] = category_display_name
+        result[collection][category]["categorysearchfield"] = create_cat_searchfield(
+            file
+        )
         result[collection][category]["files"].append(file_info)
 
     navigation_menu_data = [
         Collection(
-            collectionname=collection,
-            collectiondisplayname=collection,
+            collection=collection,
             categories=[
                 Category(
-                    categoryname=cat_info["categoryname"],
+                    category=cat_info["category"],
                     categorydisplayname=cat_info["categorydisplayname"],
+                    categorysearch_field=cat_info["categorysearchfield"],
                     files=cat_info["files"],
                 )
                 for cat_info in categories.values()

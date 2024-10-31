@@ -1,0 +1,23 @@
+name: Build Frontend project
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "yarn"
+          cache-dependency-path: ./frontend/yarn.lock
+      - name: Install modules
+        run: yarn
+      - name: Run TypeScript compiler
+        run: tsc
+      - name: Run ESLint
+        run: yarn eslint .

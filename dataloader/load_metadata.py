@@ -18,8 +18,10 @@ sys.path.append(os.path.normpath(os.path.join(SCRIPT_DIR, PACKAGE_PARENT)))
 from api.utils import (
     get_language_from_filename,
     get_filename_from_segmentnr,
-)
 
+from utils import (
+    should_download_file,
+)
 
 def load_metadata_from_files(paths: List[str], db: StandardDatabase) -> None:
     """
@@ -29,8 +31,11 @@ def load_metadata_from_files(paths: List[str], db: StandardDatabase) -> None:
     paths (List[str]): List of file paths to load metadata from.
     db (StandardDatabase): Database instance to load data into.
     """
+    db.delete_collection(
+        COLLECTION_FILES
+    )  # just in case it already exists, we want to start fresh
     collection = db.collection(COLLECTION_FILES)
-
+    collection = db.create_collection(COLLECTION_FILES)
     for path in paths:
         try:
             print(f"Loading metadata from {path}...")
@@ -39,9 +44,25 @@ def load_metadata_from_files(paths: List[str], db: StandardDatabase) -> None:
                 get_filename_from_segmentnr
             )  # this is to remove duplicate parts of the same file
             df = df.drop_duplicates(subset=["filename"])
+            if "link" not in df.columns:
+                df["link"] = ""
+            if "link2" not in df.columns:
+                df["link2"] = ""
             df = df[
-                ["filename", "displayName", "category", "collection", "textname"]
+                [
+                    "filename",
+                    "displayName",
+                    "category",
+                    "collection",
+                    "textname",
+                    "link",
+                    "link2",
+                ]
             ]  # metadata might contain more data; we are only interested in these columns
+            # set link and link2 to empty string if they are NaN
+            df["_key"] = df["filename"]
+            df["link"] = df["link"].fillna("")
+            df["link2"] = df["link2"].fillna("")
             df["lang"] = df["filename"].apply(get_language_from_filename)
             df["filenr"] = df.index
             df["segment_keys"] = df["filenr"].apply(lambda x: [])
@@ -72,7 +93,8 @@ def load_category_names(paths: List[str], db: StandardDatabase) -> None:
     for path in paths:
         try:
             df = pd.read_json(path)
-            df["lang"] = get_language_from_filename(path)
+            basename = path.split("/")[-1]
+            df["lang"] = get_language_from_filename(basename)
             collection.import_bulk(df.to_dict("records"))
             print(f"Loaded {len(df)} category names from {path}.")
 

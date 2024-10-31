@@ -1,7 +1,7 @@
 COMPOSE := docker compose -f docker-compose.yml
 COMPOSEPROD := $(COMPOSE) -f docker-compose.prod.yml
 
-SERVICES := dataloader arangodb fastapi
+SERVICES := dataloader arangodb fastapi frontend
 
 run-dev:
 	$(COMPOSE) up $(SERVICES)

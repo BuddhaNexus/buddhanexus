@@ -1,6 +1,7 @@
 services:
   arangodb:
     image: arangodb:3.8.4
+    platform: linux/amd64
     expose:
       - "8529"
     container_name: "arangodb"
@@ -18,6 +19,7 @@ services:
     build:
       context: .
       dockerfile: ./setup/Dockerfile-dataloader
+    platform: linux/amd64
     container_name: "dataloader"
     volumes:
       - .:/opt/buddhanexus
@@ -39,6 +41,7 @@ services:
     build:
       context: .
       dockerfile: ./setup/Dockerfile-fastapi
+    platform: linux/amd64
     container_name: "fastapi"
     ports:
       - "8000:8000"
@@ -55,6 +58,27 @@ services:
     restart: always
     depends_on:
       - arangodb
+
+  frontend:
+    container_name: frontend
+    build:
+      context: frontend
+      dockerfile: dev.Dockerfile
+
+    # Set environment variables directly in the docker-compose file
+    environment:
+      NEXT_PUBLIC_DOWNLOAD_URL: ${NEXT_PUBLIC_DOWNLOAD_URL}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+
+    # Set environment variables based on the .env file
+    env_file:
+      - .env
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    restart: always
+    ports:
+      - "3000:3000"
 
 volumes:
   dbdata:

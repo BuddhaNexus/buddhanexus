@@ -8,6 +8,10 @@ Includes:
 
 ## Guide:
 
+### 0. Frontend
+
+The frontend README can be found inside `./frontend/README.md`. The rest of this file concerns the python backend (dataloader+api+db)
+
 ### 1. Setup:
 
 #### 1.1: Install `docker` and `docker-compose`:

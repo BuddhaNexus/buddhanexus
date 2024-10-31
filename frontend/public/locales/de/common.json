@@ -1,0 +1,79 @@
+{
+  "global": {
+    "siteTitle": "BuddhaNexus",
+    "language": "Sprache"
+  },
+  "header": {
+    "guide": "Richtlinien",
+    "database": "Datenbank"
+  },
+  "language": {
+    "all": "Alle",
+    "pli": "Pāli",
+    "chn": "Chinesisch",
+    "skt": "Sanskrit",
+    "tib": "Tibetisch"
+  },
+  "footer": {
+    "about": "Über",
+    "introduction": "Einführung",
+    "history": "Geschichte",
+    "guide": "Richtlinien",
+    "community": "Gemeinschaft",
+    "institutions": "Institutionen",
+    "people": "Personen",
+    "news": "Nachrichten",
+    "activities": "Aktivitäten",
+    "publications": "Veröffentlichungen",
+    "events": "Veranstaltungen",
+    "projects": "Projekte",
+    "presentations": "Präsentationen",
+    "contact": "Kontakt"
+  },
+  "db": {
+    "searchInputPlaceholder": "Quelltext auswählen",
+    "length": "Länge",
+    "score": "Punktzahl",
+    "matches": "Übereinstimmungen",
+    "clearSelectedSegment": "Ausgewähltes Segment löschen",
+    "segmentMatches": "Segmentübereinstimmungen"
+  },
+  "news": {
+    "title": "Nachrichten",
+    "readMore": "Weiterlesen",
+    "backToNews": "Zurück zu Neuigkeiten"
+  },
+  "textBrowser": {
+    "label": "Quelltext-Browser"
+  },
+  "prompts": {
+    "genericErrorTitle": "Etwas ist schiefgelaufen.",
+    "genericErrorDescription": "Bitte kontaktieren Sie uns, wenn das Problem weiterhin besteht.",
+    "loading": "Wird geladen...",
+    "noResults": "Keine Ergebnisse gefunden.",
+    "showLess": "Weniger anzeigen",
+    "showAll": "Alle anzeigen ({{count}})",
+    "openAll": "Alle öffnen",
+    "closeAll": "Alle schließen"
+  },
+  "search": {
+    "pageTitle": "Suchergebnisse",
+    "inputPlaceholder": "Geben Sie den genauen Suchbegriff ein (nur ganze Wörter)",
+    "search": "Suchen",
+    "runSearch": "Suche ausführen",
+    "toggleSearch": "Toggle search box",
+    "clearSearch": "Suchbegriff löschen",
+    "openSearch": "Suchfeld öffnen",
+    "closeSearch": "Suchfeld schließen",
+    "noResultsHeading": "keine Ergebnisse gefunden",
+    "noResultsTip": "Versuchen Sie, nach einem exakten Begriff mit ganzen Wörtern, korrekten Interpunktionen und diakretischen Markierungen zu suchen, wo relevant:"
+  },
+  "graph": {
+    "histogramDataTitle": "Verteilung der Top-Dateien, die Übereinstimmungen mit dem Anfragetext haben:",
+    "histogramDataSubtitle": "Das Histogramm zeigt die Verteilung der wichtigsten Dateien, die mit dem Suchtext übereinstimmen, basierend auf der kumulierten Länge der Treffer. Es werden maximal 50 Treffertexte angezeigt.",
+    "pieDataTitle": "Verteilung aller mit den aktuellen Filtern gefundenen Übereinstimmungen auf die verschiedenen Sammlungen und ihre Unterabschnitte.",
+    "pieDataSubtitle": "Die Verteilung ist nach der Länge der gefundenen Übereinstimmungen gewichtet:",
+    "collection": "Kollektion",
+    "matchLengths": "Übereinstimmungslängen"
+  }
+}
