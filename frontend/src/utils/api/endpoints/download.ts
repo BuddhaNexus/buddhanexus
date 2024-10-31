@@ -4,8 +4,8 @@ import { RESULTS_DOWNLOAD_ROOT_URL } from "@utils/api/constants";
 import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
 const parseAPITableDownloadData = (
-  filePath: APIPostResponse<"/table-view/download/">,
-  fileName: string,
+  filePath: APIPostResponse<"/download/">,
+  fileName: string
 ) => {
   return {
     // example filePath: download/dn2_download.xlsx
@@ -24,10 +24,10 @@ export type ParsedTableDownloadData = ReturnType<
 >;
 
 export async function getParallelDownloadData(
-  body: APIPostRequestBody<"/table-view/download/">,
+  body: APIPostRequestBody<"/download/">
 ) {
   // this triggers the creation of an excel sheet of the data for the current view (table & number only) for the user to download. The sheet is generated on the backend and lives in a folder on the HDD of the server for a while and gets removed after a few days.
-  const { data: filePath } = await apiClient.POST("/table-view/download/", {
+  const { data: filePath } = await apiClient.POST("/download/", {
     body: parseAPIRequestBody(body),
   });
 
