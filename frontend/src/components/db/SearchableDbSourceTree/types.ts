@@ -1,9 +1,9 @@
 import { DbSourceFilterUISetting } from "@features/SidebarSuite/types";
 
 export enum DbSourceTreeNodeDataType {
-  Category = "category",
-  Collection = "collection",
-  Text = "text",
+  CATEGORY = "category",
+  COLLECTION = "collection",
+  TEXT = "text",
 }
 
 export type DbSourceTreeNode = {
@@ -13,6 +13,10 @@ export type DbSourceTreeNode = {
   children?: DbSourceTreeNode[];
   fileName?: string;
   searchField: string;
+};
+
+export type DbSourceTreeLeafNode = Omit<DbSourceTreeNode, "fileName"> & {
+  fileName: string;
 };
 
 export enum DbSourceTreeType {

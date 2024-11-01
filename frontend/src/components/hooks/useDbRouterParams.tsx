@@ -9,7 +9,12 @@ export const useDbRouterParams = () => {
   const { file, language } = router.query;
 
   const dbLanguage = getValidDbLanguage(language);
-  const fileName = Array.isArray(file) ? file.join("/") : `${file}`;
+  let fileName = Array.isArray(file) ? file.join("/") : file;
+
+  if (!fileName) {
+    // TODO: proper error handling
+    fileName = "";
+  }
 
   return {
     dbLanguage,
@@ -24,7 +29,7 @@ export const useNullableDbRouterParams = () => {
 
   const { file, language } = router.query;
 
-  const fileName = Array.isArray(file) ? file.join("/") : `${file}`;
+  const fileName = Array.isArray(file) ? file.join("/") : file;
 
   const nullableDbLanguage = getDbLanguage(language);
   return {

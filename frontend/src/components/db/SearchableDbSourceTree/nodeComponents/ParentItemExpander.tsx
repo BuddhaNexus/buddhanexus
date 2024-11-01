@@ -11,10 +11,10 @@ export function ParentItemExpander({ node }: { node: NodeApi<any> }) {
 
   return (
     <>
-      {dataType === NodeType.Collection && (
+      {dataType === NodeType.COLLECTION && (
         <SourceTypeIcon dataType={dataType} fontSize="inherit" />
       )}
-      {dataType === NodeType.Category && (
+      {dataType === NodeType.CATEGORY && (
         <Chip
           label={
             <RowBox sx={{ gap: "0.5rem" }}>

@@ -12,10 +12,10 @@ export function SourceTypeIcon({
   dataType: NodeType;
 }) {
   switch (dataType) {
-    case NodeType.Text: {
+    case NodeType.TEXT: {
       return <ShortTextIcon {...iconProps} />;
     }
-    case NodeType.Category: {
+    case NodeType.CATEGORY: {
       return <MenuBookIcon {...iconProps} />;
     }
     default: {

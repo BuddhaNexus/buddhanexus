@@ -6,8 +6,8 @@ export const getTextPath = ({
   fileName,
   dbView,
 }: {
-  fileName?: string;
-  dbLanguage: DbLanguage | undefined;
+  fileName: string;
+  dbLanguage: DbLanguage;
   dbView: DbViewEnum;
 }) => {
   return `/db/${dbLanguage}/${fileName}/${dbView}`;

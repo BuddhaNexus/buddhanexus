@@ -35,7 +35,7 @@ import {
 import { useAtomValue } from "jotai";
 
 export const UtilityOptionsSection = () => {
-  const { t } = useTranslation("settings");
+  const { t } = useTranslation(["settings", "common"]);
   const currentView = useAtomValue(currentDbViewAtom);
   const { fileName, dbLanguage } = useNullableDbRouterParams();
   let href: string;
@@ -74,6 +74,9 @@ export const UtilityOptionsSection = () => {
   if (uiSettings.length === 0) {
     return null;
   }
+
+  // TODO: update ui utils to hanlde undefined fileName
+  if (!fileName) return null;
 
   return (
     <>

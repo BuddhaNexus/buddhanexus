@@ -52,6 +52,8 @@
     "genericErrorDescription": "Bitte kontaktieren Sie uns, wenn das Problem weiterhin besteht.",
     "fetchError": "Error fetching result data",
     "queryWarning": "Unable to display results. Please use the filters to adjust your query.",
+    "noFile": "No file selected.",
+    "fileUndefined": "File undefined.",
     "loading": "Wird geladen...",
     "noResults": "Keine Ergebnisse gefunden.",
     "showLess": "Weniger anzeigen",

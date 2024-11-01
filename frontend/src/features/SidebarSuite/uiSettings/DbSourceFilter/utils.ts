@@ -10,15 +10,15 @@ export const DB_SOURCE_UPDATE_MAPPING: Record<
   NodeType,
   Record<DbSourceFilterUISetting, APIFilterName>
 > = {
-  [NodeType.Collection]: {
+  [NodeType.COLLECTION]: {
     include_sources: "include_collections",
     exclude_sources: "exclude_collections",
   },
-  [NodeType.Category]: {
+  [NodeType.CATEGORY]: {
     include_sources: "include_categories",
     exclude_sources: "exclude_categories",
   },
-  [NodeType.Text]: {
+  [NodeType.TEXT]: {
     include_sources: "include_files",
     exclude_sources: "exclude_files",
   },

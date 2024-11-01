@@ -1,5 +1,6 @@
 import { NodeApi, TreeApi } from "react-arborist";
 import {
+  DbSourceTreeLeafNode,
   DbSourceTreeNode,
   DbSourceTreeNodeDataType,
 } from "@components/db/SearchableDbSourceTree/types";
@@ -16,18 +17,18 @@ export function transformDataForTreeView(
     id: collection.collection,
     name: collection.collection,
     searchField: collection.collection,
-    dataType: DbSourceTreeNodeDataType.Collection,
+    dataType: DbSourceTreeNodeDataType.COLLECTION,
     children: collection.categories.map(({ name, displayName, files }) => ({
       id: name,
       name: displayName,
-      dataType: DbSourceTreeNodeDataType.Category,
+      dataType: DbSourceTreeNodeDataType.CATEGORY,
       searchField: `${displayName}/${name}`,
       children: files.map(
         ({ fileName, displayName: fileDisplayName, searchField }) => ({
           id: fileName,
           name: fileDisplayName,
           fileName,
-          dataType: DbSourceTreeNodeDataType.Text,
+          dataType: DbSourceTreeNodeDataType.TEXT,
           searchField,
         }),
       ),
@@ -85,4 +86,10 @@ export const handleTreeChange = ({
 
 export function isSearchMatch(searchField: string, searchTerm: string) {
   return searchField.toLowerCase().includes(searchTerm.toLowerCase());
+}
+
+export function isDbSourceTreeLeafNodeData(
+  node: DbSourceTreeNode | DbSourceTreeLeafNode,
+): node is DbSourceTreeLeafNode {
+  return (node as DbSourceTreeLeafNode).fileName !== undefined;
 }

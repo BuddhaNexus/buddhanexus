@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom, isDbSourceBrowserDrawerOpenAtom } from "@atoms";
 import { getTextPath } from "@components/common/utils";
-import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
@@ -18,7 +18,7 @@ export const DbFileButtons = () => {
   const { t } = useTranslation("settings");
   const router = useRouter();
 
-  const { fileName, dbLanguage } = useNullableDbRouterParams();
+  const { fileName, dbLanguage } = useDbRouterParams();
   const dbView = useAtomValue(currentDbViewAtom);
 
   const theme = useTheme();

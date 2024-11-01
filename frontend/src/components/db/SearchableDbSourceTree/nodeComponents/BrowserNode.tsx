@@ -24,7 +24,7 @@ export function BrowserNode({ node, style }: BrowserNodeProps) {
     >
       <ExpanderArrow node={node} />
 
-      {dataType === NodeType.Text ? (
+      {dataType === NodeType.TEXT ? (
         <TextItemLink node={node} />
       ) : (
         <ParentItemExpander node={node} />

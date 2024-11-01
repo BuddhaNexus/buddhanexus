@@ -143,7 +143,7 @@ export function DbSourceFilterTreeNode({
       key={`${id}-${filterSettingName}`}
       style={style}
       sx={{
-        ml: dataType === NodeType.Text ? 1.1 : undefined,
+        ml: dataType === NodeType.TEXT ? 1.1 : undefined,
       }}
       role="option"
       isSelected={node.isSelected}
