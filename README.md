@@ -23,7 +23,19 @@ The frontend README can be found inside `./frontend/README.md`. The rest of this
 Clone the project repository:
 
 ```shell
-git clone https://github.com/ayya-vimala/buddhanexus.git && cd buddhanexus
+git clone ThisRepository && cd buddhanexus
+```
+(substitute ThisRepository with the corect filepath)
+
+Also, in order to load the segment data, it is necessary to create the segment docker volume beforehand: 
+```
+git clone https://github.com/dharmamitra/dharmanexus-data ; cd dharmanexus-data; make build; make init
+```
+This will make sure that the database loads segment files that are valid and up to date.
+
+The match data is a lot and cannot be stored on github. It should be placed in a folder outside of the backend repository. The following variable in the .env configuration needs to point to the local folder with the match data (bo, sa, zh, pa):
+```
+LOCAL_MATCHES_PATH=/patch/to/matches/
 ```
 
 #### 1.3 Install our githooks:

@@ -1,16 +1,14 @@
 from pydantic import BaseModel
 from typing import List, Union, Optional
-from .general_models import Limits, FullText
+from .general_models import Filters, FullText
 
 
 class TextParallelsInput(BaseModel):
-    file_name: str
-    active_segment: str = "none"
-    score: int = 0
-    par_length: int = 0
-    limits: Optional[Limits]
-    multi_lingual: list = []
-    page_number: int = 0    
+    filename: str
+    folio: str = ""
+    active_segment: Optional[str] = "none"
+    filters: Optional[Filters]
+    page: int = 0
 
 
 class FullMatchText(FullText):
@@ -18,22 +16,15 @@ class FullMatchText(FullText):
 
 
 class TextItem(BaseModel):
-    page: int
-    total_pages: int
     segnr: str
     segtext: List[FullMatchText]
 
-class TextItemNew(BaseModel):
-    segnr: str
-    segtext: List[FullMatchText]
 
 class TextViewLeftOutput(BaseModel):
-    __root__: List[TextItem]
-
-class TextViewLeftOutputV2(BaseModel):
     page: int
     total_pages: int
-    items: List[TextItemNew]
+    items: List[TextItem]
+
 
 class TextViewMiddleInput(BaseModel):
     parallel_ids: list
@@ -54,7 +45,7 @@ class Segment(BaseModel):
     par_offset_beg: Optional[int]
     par_offset_end: Optional[int]
     par_segtext: list = []
-    file_name: str
+    filename: str
     score: int
     length: int
     par_fulltext: Optional[List[FullText]]

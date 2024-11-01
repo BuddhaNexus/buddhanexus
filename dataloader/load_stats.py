@@ -1,9 +1,7 @@
 import json
-import os
 import gzip
-import sys
 from tqdm import tqdm as tqdm
-from arango import DocumentInsertError, IndexCreateError
+from arango import DocumentInsertError
 
 from dataloader_constants import (
     GLOBAL_STATS_CATEGORIES,
