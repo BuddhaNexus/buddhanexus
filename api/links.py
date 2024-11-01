@@ -1,6 +1,5 @@
 """ This module provides the links for each filename """
 
-import re
 from .utils import get_language_from_filename
 
 
