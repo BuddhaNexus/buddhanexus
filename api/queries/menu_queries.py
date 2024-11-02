@@ -6,6 +6,7 @@ Contains query for the total menudata.
 QUERY_TOTAL_DATA = """
 FOR file IN files
     FILTER file.lang == @lang
+    SORT file.filenr
     LET category_info = FIRST(
         FOR cat IN category_names
         FILTER cat.category == file.category AND cat.lang == @lang
