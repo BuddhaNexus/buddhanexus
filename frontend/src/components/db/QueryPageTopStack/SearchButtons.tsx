@@ -23,7 +23,7 @@ export const SearchButtons = () => {
       query: { search_string },
     };
 
-    await router.push(url, undefined, { shallow: true });
+    await router.push(url, undefined);
   }, [search_string, router]);
 
   return (

@@ -25,7 +25,7 @@ export function TextItemLinkBody({
 }: {
   data: DbSourceTreeNode;
   children: React.ReactNode;
-  treeWidth: unknown;
+  treeWidth: string | number | undefined;
 }) {
   const { name, id, dataType } = data;
   let elementWidth = DEFAULT_NODE_WIDTH;
