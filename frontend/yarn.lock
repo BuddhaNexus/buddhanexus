@@ -3381,7 +3381,7 @@ __metadata:
     next-i18next: "npm:^15.3.0"
     next-mdx-remote: "npm:^4.4.1"
     next-seo: "npm:^6.5.0"
-    nuqs: "npm:^1.19.3"
+    nuqs: "npm:^2.1.1"
     openapi-fetch: "npm:^0.9.5"
     openapi-typescript: "npm:^7.4.1"
     prettier: "npm:^3.2.5"
@@ -8801,14 +8801,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuqs@npm:^1.19.3":
-  version: 1.19.3
-  resolution: "nuqs@npm:1.19.3"
+"nuqs@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "nuqs@npm:2.1.1"
   dependencies:
     mitt: "npm:^3.0.1"
   peerDependencies:
-    next: ">=13.4 <14.0.2 || ^14.0.3"
-  checksum: 10c0/e2dc4241626181cf78edba6816c60a17a6dab9bcecb326c0ddeb0c030e2ff66d8409ee74b0112509efc5645641f9e7c271abcf4cb2f389459efeb5f8ace3e1b9
+    "@remix-run/react": ">= 2"
+    next: ">= 14.2.0"
+    react: ">= 18.2.0"
+    react-router-dom: ">= 6"
+  peerDependenciesMeta:
+    "@remix-run/react":
+      optional: true
+    next:
+      optional: true
+    react-router-dom:
+      optional: true
+  checksum: 10c0/ceb674c1bf106db27f1f16494d70baa93f962da16b94a2ddd18a18cffa122560ad28dae2be3affbecd802e0c73d8eaa95d580a1dcd1a4e395bea4c81651ea90b
   languageName: node
   linkType: hard
 

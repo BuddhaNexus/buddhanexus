@@ -18,6 +18,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryCacheTimeDefaults } from "@utils/api/apiQueryUtils";
 import { ThemeProvider } from "@utils/ThemeProvider";
+import { NuqsAdapter } from "nuqs/adapters/react";
 
 function MyApp(props: AppProps) {
   const { Component, pageProps } = props;
@@ -32,24 +33,26 @@ function MyApp(props: AppProps) {
 
   return (
     <AppCacheProvider {...props}>
-      <QueryClientProvider client={queryClient}>
-        <HydrationBoundary state={pageProps.dehydratedState}>
-          <DefaultSeo {...SEO} />
-          <Head>
-            <meta
-              name="viewport"
-              content="initial-scale=1, width=device-width"
-            />
-          </Head>
+      <NuqsAdapter>
+        <QueryClientProvider client={queryClient}>
+          <HydrationBoundary state={pageProps.dehydratedState}>
+            <DefaultSeo {...SEO} />
+            <Head>
+              <meta
+                name="viewport"
+                content="initial-scale=1, width=device-width"
+              />
+            </Head>
 
-          <ThemeProvider>
-            <CssBaseline />
-            <AppTopBar />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </HydrationBoundary>
-        <ReactQueryDevtools />
-      </QueryClientProvider>
+            <ThemeProvider>
+              <CssBaseline />
+              <AppTopBar />
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </HydrationBoundary>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      </NuqsAdapter>
     </AppCacheProvider>
   );
 }

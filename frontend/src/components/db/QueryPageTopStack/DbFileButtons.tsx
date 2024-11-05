@@ -1,25 +1,30 @@
 import * as React from "react";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { currentDbViewAtom, isDbSourceBrowserDrawerOpenAtom } from "@atoms";
-import { getTextPath } from "@components/common/utils";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { isDbSourceBrowserDrawerOpenAtom } from "@atoms";
+import {
+  useExcludeCategoriesParam,
+  useExcludeCollectionsParam,
+  useExcludeFilesParam,
+  useIncludeCategoriesParam,
+  useIncludeCollectionsParam,
+  useIncludeFilesParam,
+  useLanguageParam,
+  useLanguagesParam,
+  useParLengthParam,
+  useScoreParam,
+} from "@components/hooks/params";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
 import { Box, Button, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 
 import { buttonWrapperStyles } from "./QueryPageButtons";
 
 export const DbFileButtons = () => {
   const { t } = useTranslation("settings");
-  const router = useRouter();
-
-  const { fileName, dbLanguage } = useDbRouterParams();
-  const dbView = useAtomValue(currentDbViewAtom);
 
   const theme = useTheme();
   const isLg = useMediaQuery(theme.breakpoints.up("lg"));
@@ -27,13 +32,40 @@ export const DbFileButtons = () => {
   const setIsSourceTreeOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);
   const { setIsSettingsOpen } = useSettingsDrawer();
 
+  const [, setScoreParam] = useScoreParam();
+  const [, setParLengthParam] = useParLengthParam();
+  const [, setExcludeCollectionsParam] = useExcludeCollectionsParam();
+  const [, setExcludeCategoriesParam] = useExcludeCategoriesParam();
+  const [, setExcludeFilesParam] = useExcludeFilesParam();
+  const [, setIncludeCollectionsParam] = useIncludeCollectionsParam();
+  const [, setIncludeCategoriesParam] = useIncludeCategoriesParam();
+  const [, setIncludeFilesParam] = useIncludeFilesParam();
+  const [, setLanguageParam] = useLanguageParam();
+  const [, setLanguagesParam] = useLanguagesParam();
+
   const handleReset = React.useCallback(async () => {
-    const url = {
-      pathname: getTextPath({ dbLanguage, fileName, dbView }),
-      query: {},
-    };
-    await router.push(url, undefined, { shallow: true });
-  }, [dbLanguage, fileName, dbView, router]);
+    await setScoreParam(null);
+    await setParLengthParam(null);
+    await setExcludeCollectionsParam(null);
+    await setExcludeCategoriesParam(null);
+    await setExcludeFilesParam(null);
+    await setIncludeCollectionsParam(null);
+    await setIncludeCategoriesParam(null);
+    await setIncludeFilesParam(null);
+    await setLanguageParam(null);
+    await setLanguagesParam(null);
+  }, [
+    setScoreParam,
+    setParLengthParam,
+    setExcludeCollectionsParam,
+    setExcludeCategoriesParam,
+    setExcludeFilesParam,
+    setIncludeCollectionsParam,
+    setIncludeCategoriesParam,
+    setIncludeFilesParam,
+    setLanguageParam,
+    setLanguagesParam,
+  ]);
 
   return (
     <Box sx={buttonWrapperStyles}>
