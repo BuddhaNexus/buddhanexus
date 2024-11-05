@@ -1,7 +1,14 @@
 import * as React from "react";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { useSearchStringParam } from "@components/hooks/params";
+import {
+  useExcludeCategoriesParam,
+  useExcludeCollectionsParam,
+  useExcludeFilesParam,
+  useIncludeCategoriesParam,
+  useIncludeCollectionsParam,
+  useIncludeFilesParam,
+  useLanguageParam,
+} from "@components/hooks/params";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
@@ -11,20 +18,34 @@ import { buttonWrapperStyles } from "./QueryPageButtons";
 
 export const SearchButtons = () => {
   const { t } = useTranslation("settings");
-  const router = useRouter();
 
   const { setIsSettingsOpen } = useSettingsDrawer();
 
-  const [search_string] = useSearchStringParam();
+  const [, setExcludeCollectionsParam] = useExcludeCollectionsParam();
+  const [, setExcludeCategoriesParam] = useExcludeCategoriesParam();
+  const [, setExcludeFilesParam] = useExcludeFilesParam();
+  const [, setIncludeCollectionsParam] = useIncludeCollectionsParam();
+  const [, setIncludeCategoriesParam] = useIncludeCategoriesParam();
+  const [, setIncludeFilesParam] = useIncludeFilesParam();
+  const [, setLanguageParam] = useLanguageParam();
 
   const handleReset = React.useCallback(async () => {
-    const url = {
-      pathname: "/search",
-      query: { search_string },
-    };
-
-    await router.push(url, undefined);
-  }, [search_string, router]);
+    await setExcludeCollectionsParam(null);
+    await setExcludeCategoriesParam(null);
+    await setExcludeFilesParam(null);
+    await setIncludeCollectionsParam(null);
+    await setIncludeCategoriesParam(null);
+    await setIncludeFilesParam(null);
+    await setLanguageParam(null);
+  }, [
+    setExcludeCollectionsParam,
+    setExcludeCategoriesParam,
+    setExcludeFilesParam,
+    setIncludeCollectionsParam,
+    setIncludeCategoriesParam,
+    setIncludeFilesParam,
+    setLanguageParam,
+  ]);
 
   return (
     <Box sx={buttonWrapperStyles}>
