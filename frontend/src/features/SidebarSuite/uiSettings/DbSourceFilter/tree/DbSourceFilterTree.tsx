@@ -1,9 +1,10 @@
-import { memo } from "react";
+import React, { memo } from "react";
 import { Tree } from "react-arborist";
 import { useRouter } from "next/router";
 import {
   activeDbSourceTreeAtom,
   activeDbSourceTreeBreadcrumbsAtom,
+  currentDbViewAtom,
   dbSourceFiltersSelectedIdsAtom,
 } from "@atoms";
 import type {
@@ -15,6 +16,7 @@ import {
   handleTreeChange,
   isSearchMatch,
 } from "@components/db/SearchableDbSourceTree/utils";
+import { DbViewEnum } from "@utils/constants";
 import { useAtomValue, useSetAtom } from "jotai";
 
 import { DbSourceFilterTreeNode } from "./DbSourceFilterTreeNode";
@@ -35,6 +37,22 @@ export const DbSourceFilterSelectorTree = memo(
       dbSourceFiltersSelectedIdsAtom,
     );
 
+    const dbView = useAtomValue(currentDbViewAtom);
+
+    const menuData = React.useMemo(() => {
+      if (dbView === DbViewEnum.GRAPH) {
+        const graphFilterData = data?.map((node) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { children, ...rest } = node;
+          return { ...rest };
+        });
+
+        return graphFilterData;
+      }
+
+      return data;
+    }, [data, dbView]);
+
     return (
       <Tree
         key={getTreeKeyFromPath(router.asPath, filterSettingName)}
@@ -43,7 +61,7 @@ export const DbSourceFilterSelectorTree = memo(
         }}
         searchTerm={searchTerm}
         searchMatch={(node, term) => isSearchMatch(node.data.searchField, term)}
-        initialData={data}
+        initialData={menuData}
         openByDefault={false}
         rowHeight={46}
         disableDrag={true}
