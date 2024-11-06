@@ -31,8 +31,6 @@ def structure_menu_data(query_result):
     result = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
 
     for file in query_result:
-        if not "collection" in file or not "category" in file: 
-            continue
         collection = file["collection"]
         category = file["category"]
         category_display_name = file["category_display_name"]
@@ -56,7 +54,8 @@ def structure_menu_data(query_result):
                 Category(
                     category=cat_info["category"],
                     categorydisplayname=cat_info["categorydisplayname"],
-                    categorysearch_field=cat_info["categorysearchfield"],                    
+                    categorysearch_field=cat_info["categorysearchfield"],
+                    files=cat_info["files"],
                 )
                 for cat_info in categories.values()
             ],

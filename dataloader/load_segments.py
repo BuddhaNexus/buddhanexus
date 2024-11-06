@@ -143,7 +143,7 @@ class LoadSegmentsBase:
         )
 
     def _process_file(self, file):
-        metadata_reference_filename = file.replace(".json", "")
+        metadata_reference_filename = get_filename_from_segmentnr(file)
         if metadata_reference_filename not in self.metadata:
             print(f"ERROR: file not in metadata: { file }")
             print(f"metadata_reference_filename: {metadata_reference_filename}")
@@ -153,7 +153,8 @@ class LoadSegmentsBase:
         try:
             file_df = pd.read_json(os.path.join(self.DATA_PATH, file))
             file_df["_key"] = file_df["segmentnr"]
-            file_df["lang"] = self.LANG
+            file_df["lang"] = self.LANG            
+            file_df['folio'] = file_df['folio'].astype(str)
             file_df["filename"] = metadata_reference_filename
             file_df["category"] = self.metadata[metadata_reference_filename]["category"]
             file_df["collection"] = self.metadata[metadata_reference_filename][
@@ -237,6 +238,7 @@ class LoadSegmentsBase:
         # Prepare data for bulk insert
         segments_pages_to_insert = []
         files_to_update = []
+        files_to_insert = []
 
         for (
             filename,
@@ -263,7 +265,7 @@ class LoadSegmentsBase:
 
             else:
                 print(f"Could not find file {filename} in db.")
-                files_to_update.append(
+                files_to_insert.append(
                     {
                         "_key": filename,
                         "filename": filename,
@@ -277,6 +279,8 @@ class LoadSegmentsBase:
         # Bulk insert and update
         if segments_pages_to_insert:
             collection_segments_pages.insert_many(segments_pages_to_insert)
+        #if files_to_insert:
+        #    collection_files.insert_many(files_to_insert)
 
         for file in files_to_update:
             collection_files.update(file)
