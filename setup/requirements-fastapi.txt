@@ -13,3 +13,4 @@ https://buddhanexus.kc-tbts.uni-hamburg.de/packages/buddhanexus_lang_analyzer-0.
 pyewts
 unidecode
 natsort
+dharmamitra_sanskrit_grammar
