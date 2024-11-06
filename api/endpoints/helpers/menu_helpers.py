@@ -1,4 +1,5 @@
 import unidecode
+from natsort import natsorted
 from collections import defaultdict
 from ..models.menu_models import Collection, Category, File
 
@@ -55,7 +56,7 @@ def structure_menu_data(query_result):
                     category=cat_info["category"],
                     categorydisplayname=cat_info["categorydisplayname"],
                     categorysearch_field=cat_info["categorysearchfield"],
-                    files=cat_info["files"],
+                    files=natsorted(cat_info["files"], key=lambda x: x.filename.lower())
                 )
                 for cat_info in categories.values()
             ],

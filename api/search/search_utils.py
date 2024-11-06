@@ -1,7 +1,11 @@
 import re
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
+from dharmamitra_sanskrit_grammar import DharmamitraSanskritProcessor
+import buddhanexus_lang_analyzer.translate_for_website as bn_translate
 from fuzzysearch import levenshtein_ngram
 import pyewts
+
+sanskrit_processor = DharmamitraSanskritProcessor()
 
 bn_analyzer = bn_translate.analyzer()
 bo_converter = pyewts.pyewts()
@@ -36,8 +40,8 @@ def preprocess_search_string(search_string, language):
         sa = sa.lower()
 
     # sa_fuzzy also tests if a string contains bo/zh letters; if so, it returns an empty string
-    sa_fuzzy = bn_analyzer.stem_sanskrit(sa)
-    pa = bn_analyzer.stem_pali(search_string)
+    sa_fuzzy = sanskrit_processor.process_batch([sa], mode="unsandhied", output_forma="string")[0]
+    pa = sa_fuzzy
     # if sa_fuzzy detected the string to be Tibetan/Chinese or the unicode2wylie transliteration was successful, do this:
     if sa_fuzzy == "" or bo != "":
         if bo == "":
