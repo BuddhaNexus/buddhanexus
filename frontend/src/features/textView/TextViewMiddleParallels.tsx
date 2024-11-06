@@ -32,17 +32,20 @@ export default function TextViewMiddleParallels() {
         // hide empty parallels
         ?.filter((parallel) => parallel.parallelFullText)
         .map(
-          ({
-            fileName,
-            displayName,
-            parallelLength,
-            parallelFullText,
-            parallelSegmentNumberRange,
-            score,
-            targetLanguage,
-          }) => (
+          (
+            {
+              fileName,
+              displayName,
+              parallelLength,
+              parallelFullText,
+              parallelSegmentNumberRange,
+              score,
+              targetLanguage,
+            },
+            index,
+          ) => (
             <ParallelSegment
-              key={fileName + score + parallelLength}
+              key={fileName + score + parallelLength + index}
               displayName={displayName}
               language={targetLanguage}
               length={parallelLength}

@@ -51,7 +51,7 @@ export const DbApi = {
     call: getTextViewParallelsData,
   },
   TextViewMiddle: {
-    makeQueryKey: (parallelIds: string[]) => parallelIds,
+    makeQueryKey: (parallelIds: string[]) => ["textMiddleView", parallelIds],
     call: getTextViewMiddleParallelsData,
   },
   //* MENU

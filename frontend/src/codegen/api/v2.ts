@@ -493,11 +493,8 @@ export interface components {
        * @default 0
        */
       highlightColor: number;
-      /**
-       * Matches
-       * @default []
-       */
-      matches: unknown[];
+      /** Matches */
+      matches: string[];
     };
     /** FullNames */
     FullNames: {

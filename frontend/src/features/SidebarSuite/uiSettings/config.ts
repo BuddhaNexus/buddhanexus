@@ -90,6 +90,8 @@ export const allUIComponentParamNames: AllUIComponentParamNames = {
   filters: "filters",
 };
 
+export const DEFAULT_LANGUAGE = "all";
+
 export const DEFAULT_PARAM_VALUES = {
   score: 30,
   par_length: {
@@ -100,7 +102,7 @@ export const DEFAULT_PARAM_VALUES = {
     all: 25,
   },
   sort_method: "position",
-  language: "all",
+  language: DEFAULT_LANGUAGE,
   active_segment: "none",
 } as const;
 

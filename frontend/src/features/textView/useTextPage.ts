@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
-import { useActiveSegmentParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { useSourceFile } from "@components/hooks/useSourceFile";
@@ -37,7 +37,13 @@ export function useTextPage(): UseTextPageReturn {
   useSetDbViewFromPath();
 
   const requestBodyBase = useStandardViewBaseQueryParams();
-  const [active_segment] = useActiveSegmentParam();
+
+  const searchParams = useSearchParams();
+  const active_segment =
+    searchParams.get("active_segment") ?? DEFAULT_PARAM_VALUES.active_segment;
+
+  const initialPageParam =
+    active_segment === DEFAULT_PARAM_VALUES.active_segment ? 0 : undefined;
 
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
@@ -64,7 +70,7 @@ export function useTextPage(): UseTextPageReturn {
   } = useInfiniteQuery({
     enabled: Boolean(fileName),
     placeholderData: keepPreviousData,
-    initialPageParam: active_segment ? undefined : 0,
+    initialPageParam,
     queryKey: DbApi.TextView.makeQueryKey({
       ...requestBodyBase,
       active_segment,
@@ -113,6 +119,7 @@ export function useTextPage(): UseTextPageReturn {
   // see queryFn comment above
   useEffect(
     function updatePreviouslySelectedSegmentsMap() {
+      // console.log("useTextPage", active_segment);
       if (isSuccess && active_segment)
         previouslySelectedSegmentsMap.current[active_segment] = true;
     },

@@ -1,5 +1,6 @@
 import {
   allUIComponentParamNames,
+  DEFAULT_LANGUAGE,
   DEFAULT_PARAM_VALUES,
   sortMethods,
 } from "@features/SidebarSuite/uiSettings/config";
@@ -28,7 +29,7 @@ export const useParLengthParam = () => {
   const { dbLanguage } = useNullableDbRouterParams();
   return useQueryState(allUIComponentParamNames.par_length, {
     ...parseAsInteger.withDefault(
-      DEFAULT_PARAM_VALUES.par_length[dbLanguage ?? "all"],
+      DEFAULT_PARAM_VALUES.par_length[dbLanguage ?? DEFAULT_LANGUAGE],
     ),
   });
 };
@@ -71,7 +72,7 @@ export const useIncludeFilesParam = () => {
 
 const parseAsDbLanguage = parseAsStringLiteral([
   ...dbLanguages,
-  DEFAULT_PARAM_VALUES.language,
+  DEFAULT_LANGUAGE,
 ]);
 
 export const useLanguageParam = () => {
@@ -82,7 +83,7 @@ export const useLanguageParam = () => {
 
 export const useLanguagesParam = () => {
   return useQueryState(allUIComponentParamNames.languages, {
-    ...parseAsArrayOf(parseAsDbLanguage).withDefault([]),
+    ...parseAsArrayOf(parseAsDbLanguage).withDefault([DEFAULT_LANGUAGE]),
   });
 };
 
@@ -90,6 +91,10 @@ export const useActiveSegmentParam = () => {
   return useQueryState(allUIComponentParamNames.active_segment, {
     ...parseAsString.withDefault(DEFAULT_PARAM_VALUES.active_segment),
   });
+};
+
+export const useActiveSegmentIndexParam = () => {
+  return useQueryState("active_segment_index", parseAsInteger);
 };
 
 const parseAsSortMethod = parseAsStringLiteral(sortMethods);

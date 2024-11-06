@@ -5,7 +5,10 @@ import {
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
 } from "@atoms";
-import { useActiveSegmentParam } from "@components/hooks/params";
+import {
+  useActiveSegmentIndexParam,
+  useActiveSegmentParam,
+} from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { sourceSans } from "@components/theme";
 import { enscriptText } from "@features/SidebarSuite/utils";
@@ -13,7 +16,6 @@ import { useColorScheme } from "@mui/material/styles";
 import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";
 import type { Scale } from "chroma-js";
 import { useAtomValue, useSetAtom } from "jotai";
-import { parseAsInteger, useQueryState } from "nuqs";
 
 import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
 import styles from "./textSegment.module.scss";
@@ -29,10 +31,8 @@ export const TextSegment = ({
   const isDarkTheme = mode === "dark";
 
   const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
-  const [activeSegmentIndex, setActiveSegmentIndex] = useQueryState(
-    "active_segment_index",
-    parseAsInteger,
-  );
+  const [activeSegmentIndex, setActiveSegmentIndex] =
+    useActiveSegmentIndexParam();
 
   const { dbLanguage } = useDbRouterParams();
 
@@ -58,7 +58,7 @@ export const TextSegment = ({
     if (!isSegmentSelected || typeof activeSegmentIndex !== "number") return;
     const locationFromQueryParams = data?.segmentText[activeSegmentIndex];
     if (!locationFromQueryParams) return;
-    setSelectedSegmentMatches(locationFromQueryParams.matches as string[]);
+    setSelectedSegmentMatches(locationFromQueryParams.matches);
   }, [
     isSegmentSelected,
     data?.segmentText,
@@ -86,7 +86,7 @@ export const TextSegment = ({
         const isSegmentPartSelected =
           isSegmentSelected && activeSegmentIndex === i;
 
-        if (!matches || matches.length === 0) {
+        if (matches.length === 0) {
           return (
             <span key={segmentKey} className={styles.segment}>
               {textContent}
@@ -113,10 +113,9 @@ export const TextSegment = ({
               color,
             }}
             onClick={async () => {
-              if (!matches) return;
               await updateSelectedLocationInGlobalState({
                 id: data?.segmentNumber,
-                matches: matches as string[],
+                matches,
                 index: i,
               });
             }}
@@ -126,7 +125,7 @@ export const TextSegment = ({
               event.preventDefault();
               await updateSelectedLocationInGlobalState({
                 id: data?.segmentNumber,
-                matches: matches as string[],
+                matches,
                 index: i,
               });
             }}
