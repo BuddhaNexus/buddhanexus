@@ -101,6 +101,7 @@ export const DEFAULT_PARAM_VALUES = {
   },
   sort_method: "position",
   language: "all",
+  active_segment: "none",
 } as const;
 
 export const MIN_PAR_LENGTH_VALUES: Record<DbLanguage, number> = {

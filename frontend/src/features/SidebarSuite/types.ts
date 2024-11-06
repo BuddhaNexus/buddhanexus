@@ -20,7 +20,7 @@ const AllAPIRequestPropModel: AllAPIRequestProps = {
     language: "all",
     languages: ["all"],
   },
-  active_segment: "",
+  active_segment: "none",
   sort_method: "position",
   folio: "",
   page: 0,

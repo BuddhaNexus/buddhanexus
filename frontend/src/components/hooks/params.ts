@@ -88,7 +88,7 @@ export const useLanguagesParam = () => {
 
 export const useActiveSegmentParam = () => {
   return useQueryState(allUIComponentParamNames.active_segment, {
-    ...parseAsString,
+    ...parseAsString.withDefault(DEFAULT_PARAM_VALUES.active_segment),
   });
 };
 
