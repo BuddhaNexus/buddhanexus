@@ -59,7 +59,7 @@ export const DbViewSelector = () => {
       });
       setCurrentDbView(newView);
     },
-    [currentView, router, setCurrentDbView]
+    [currentView, router, setCurrentDbView],
   );
 
   return (
