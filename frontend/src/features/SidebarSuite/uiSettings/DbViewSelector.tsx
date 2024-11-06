@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
 import { useAvailableDbViews } from "@components/hooks/useDbView";
+import { allUIComponentParamNames } from "@features/SidebarSuite/uiSettings/config";
 import {
   FormControl,
   InputLabel,
@@ -10,8 +11,31 @@ import {
   Select,
   type SelectChangeEvent,
 } from "@mui/material";
+import { DbViewEnum } from "@utils/constants";
 import { getValidDbView } from "@utils/validators";
 import { useAtom } from "jotai";
+
+const {
+  exclude_collections,
+  exclude_categories,
+  exclude_files,
+  include_categories,
+  include_files,
+} = allUIComponentParamNames;
+
+const getViewQueryParams = (view: DbViewEnum) => {
+  const params: URLSearchParams = new URLSearchParams(window.location.search);
+
+  if (view === DbViewEnum.GRAPH) {
+    params.delete(exclude_collections);
+    params.delete(exclude_categories);
+    params.delete(exclude_files);
+    params.delete(include_categories);
+    params.delete(include_files);
+  }
+
+  return Object.fromEntries(params);
+};
 
 export const DbViewSelector = () => {
   const { t } = useTranslation("settings");
@@ -22,14 +46,21 @@ export const DbViewSelector = () => {
 
   const availableViews = useAvailableDbViews();
 
-  const handleChange = async (e: SelectChangeEvent) => {
-    const newView = getValidDbView(e.target.value);
-    await router.push({
-      pathname: router.pathname.replace(currentView, newView),
-      query: { ...router.query },
-    });
-    setCurrentDbView(newView);
-  };
+  const handleChange = React.useCallback(
+    async (e: SelectChangeEvent) => {
+      const newView = getValidDbView(e.target.value);
+      const queryParams = getViewQueryParams(newView);
+
+      const { language, file } = router.query;
+
+      await router.push({
+        pathname: router.pathname.replace(currentView, newView),
+        query: { language, file, ...queryParams },
+      });
+      setCurrentDbView(newView);
+    },
+    [currentView, router, setCurrentDbView]
+  );
 
   return (
     <FormControl variant="filled" sx={{ width: 1, mb: 2 }}>
