@@ -1,3 +1,5 @@
+import re
+
 def get_cat_from_segmentnr(segmentnr):
     """
     retrieves the category code from the segmentnumber
