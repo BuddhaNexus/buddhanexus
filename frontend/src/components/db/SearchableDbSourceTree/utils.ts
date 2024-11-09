@@ -91,5 +91,5 @@ export function isSearchMatch(searchField: string, searchTerm: string) {
 export function isDbSourceTreeLeafNodeData(
   node: DbSourceTreeNode | DbSourceTreeLeafNode,
 ): node is DbSourceTreeLeafNode {
-  return (node as DbSourceTreeLeafNode).fileName !== undefined;
+  return node.fileName !== undefined;
 }

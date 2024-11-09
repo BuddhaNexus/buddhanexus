@@ -2,15 +2,15 @@ import { DbLanguage } from "@utils/api/types";
 import { exhaustiveStringTuple } from "@utils/helpers";
 import {
   AllUIComponentParamNames,
+  APIRequestFilterName,
   DBSourceFilePageFilterUISettingName,
   DisplayUISettingName,
-  RequestFilterName,
   SearchPageFilterUISettingName,
   SortMethod,
   UtilityUISettingName,
 } from "src/features/SidebarSuite/types";
 
-export const allRequestFilters = exhaustiveStringTuple<RequestFilterName>()(
+export const allRequestFilters = exhaustiveStringTuple<APIRequestFilterName>()(
   "languages",
   "include_files",
   "exclude_files",

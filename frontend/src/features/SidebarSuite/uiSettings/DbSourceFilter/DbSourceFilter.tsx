@@ -1,9 +1,6 @@
 import React, { memo } from "react";
 import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
-import {
-  // FilterUISettings,
-  DbSourceFilterUISetting,
-} from "@features/SidebarSuite/types";
+import { DbSourceFilterUISetting } from "@features/SidebarSuite/types";
 import { Box } from "@mui/material";
 
 import FilterUI from "./FilterUI";

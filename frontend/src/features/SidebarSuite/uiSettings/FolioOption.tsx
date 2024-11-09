@@ -13,7 +13,6 @@ import {
 import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-import type { ParsedFolio } from "@utils/api/endpoints/utils/folios";
 
 function SelectorFrame({
   children,
@@ -97,15 +96,13 @@ export default function FolioOption() {
         <MenuItem value={showAll}>
           <em>{showAll}</em>
         </MenuItem>
-        {data &&
-          data.length > 1 &&
-          data.map((folio: ParsedFolio) => {
-            return (
-              <MenuItem key={folio.segmentNr} value={folio.number}>
-                {folio.number}
-              </MenuItem>
-            );
-          })}
+        {data?.map((folio) => {
+          return (
+            <MenuItem key={folio} value={folio}>
+              {folio}
+            </MenuItem>
+          );
+        })}
       </Select>
     </SelectorFrame>
   );

@@ -150,7 +150,7 @@ const DbSourceFilterInput = ({
         >
           <ArrowDropDownIcon
             sx={{
-              traacnsform: open ? "rotate(180deg)" : undefined,
+              transform: open ? "rotate(180deg)" : undefined,
               transition: "transform 200ms",
             }}
           />

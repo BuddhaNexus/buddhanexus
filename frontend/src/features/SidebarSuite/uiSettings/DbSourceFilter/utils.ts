@@ -1,14 +1,14 @@
 import { DbSourceTreeNodeDataType as NodeType } from "@components/db/SearchableDbSourceTree/types";
 import {
-  APIFilterName,
+  APIRequestFilterName,
+  APIRequestFilters,
   DbSourceFilterUISetting,
-  WorkingAPIFilters,
 } from "@features/SidebarSuite/types";
 import { exhaustiveStringTuple } from "@utils/helpers";
 
 export const DB_SOURCE_UPDATE_MAPPING: Record<
   NodeType,
-  Record<DbSourceFilterUISetting, APIFilterName>
+  Record<DbSourceFilterUISetting, APIRequestFilterName>
 > = {
   [NodeType.COLLECTION]: {
     include_sources: "include_collections",
@@ -28,7 +28,7 @@ export const getFilterIds = ({
   filtersParam,
   filterSettingName,
 }: {
-  filtersParam: WorkingAPIFilters | null;
+  filtersParam: APIRequestFilters | null;
   filterSettingName: DbSourceFilterUISetting;
 }) => {
   const {
