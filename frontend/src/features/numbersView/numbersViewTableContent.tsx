@@ -23,11 +23,10 @@ import { DbLanguage } from "@utils/api/types";
 
 import type { NumbersSegment } from "./NumbersTable";
 
-export const createTableRows = (
-  rowData: APIPostResponse<"/numbers-view/numbers/">,
-) =>
+export const createTableRows = (rowData: APIPostResponse<"/numbers-view/numbers/">) =>
   rowData.map((item) => {
-    const row: any = { segment: item.segmentnr };
+    // hyphen replaced with soft-hyphen (U+00AD) for better overflow wrap readability
+    const row: any = { segment: item.segmentnr.replace("-", "­") };
 
     item.parallels.forEach((parallel) => {
       // TODO: - clear undefined check onee Pali data is updated to BE.
@@ -57,7 +56,8 @@ export const createTableColumns = ({
     header: () => (
       <div
         style={{
-          width: "150px",
+          // determins width for whole column
+          minWidth: "150px",
         }}
       >
         <Typography textTransform="uppercase">segment</Typography>
@@ -66,7 +66,7 @@ export const createTableColumns = ({
     cell: (info) => {
       const segmentnr = info.getValue<string>();
       return (
-        <Typography sx={{ fontWeight: 500 }}>
+        <Typography sx={{ fontWeight: 500, lineHeight: 1.25 }}>
           <Link
             // TODO: make sure this links to the correct segment
             href={`/db/${language}/${fileName}/text?active_segment=${segmentnr}`}
@@ -117,7 +117,7 @@ export const createTableColumns = ({
                 placement="top"
                 enterDelay={1200}
               >
-                <Typography>
+                <Typography sx={{ lineHeight: 1.25 }}>
                   <Link
                     // TODO: make sure this links to the correct segment
                     href={`/db/${language}/${parallelFileName}/text?active_segment=${segmentnr}`}

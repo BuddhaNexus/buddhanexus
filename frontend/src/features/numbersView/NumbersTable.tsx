@@ -138,12 +138,18 @@ export default function NumbersTable({
                 backgroundColor: "background.paper",
                 borderRight: "1px solid #e0e0e0",
                 paddingLeft: "1rem",
+                overflowWrap: "anywhere",
               }),
             }}
           >
             {cell.column.getIsFirstColumn() ? (
               <Box sx={{ position: "absolute", top: 0, bottom: 0 }}>
-                <Box sx={{ position: "sticky", top: "54px" }}>
+                <Box
+                  sx={{
+                    position: "sticky",
+                    top: "54px",
+                  }}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Box>
               </Box>
