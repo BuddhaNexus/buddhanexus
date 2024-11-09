@@ -23,7 +23,9 @@ import { DbLanguage } from "@utils/api/types";
 
 import type { NumbersSegment } from "./NumbersTable";
 
-export const createTableRows = (rowData: APIPostResponse<"/numbers-view/numbers/">) =>
+export const createTableRows = (
+  rowData: APIPostResponse<"/numbers-view/numbers/">,
+) =>
   rowData.map((item) => {
     // hyphen replaced with soft-hyphen (U+00AD) for better overflow wrap readability
     const row: any = { segment: item.segmentnr.replace("-", "­") };

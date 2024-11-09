@@ -38,7 +38,7 @@ const GlobalSearchMobileInput = ({
             ref={inputRef}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            triggerAdormentIcon={<KeyboardReturnIcon />}
+            triggerAdornmentIcon={<KeyboardReturnIcon />}
           />
         </AppTopBarSearchBoxWrapper>
       </DialogContent>

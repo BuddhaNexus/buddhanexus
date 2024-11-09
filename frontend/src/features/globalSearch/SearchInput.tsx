@@ -12,11 +12,11 @@ import { SearchBoxInput } from "./GlobalSearchStyledMuiComponents";
 
 type SearchInputProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  triggerAdormentIcon?: React.ReactNode;
+  triggerAdornmentIcon?: React.ReactNode;
 };
 
 const SearchInput = React.forwardRef(function SearchInput(
-  { setIsOpen, triggerAdormentIcon }: SearchInputProps,
+  { setIsOpen, triggerAdornmentIcon }: SearchInputProps,
   ref,
 ) {
   const { t } = useTranslation();
@@ -84,7 +84,7 @@ const SearchInput = React.forwardRef(function SearchInput(
             disabled={!search_string}
             onClick={() => triggerSearchAndNavigate(search_string)}
           >
-            {triggerAdormentIcon ?? <SearchIcon fontSize="inherit" />}
+            {triggerAdornmentIcon ?? <SearchIcon fontSize="inherit" />}
           </IconButton>
         ),
       }}
@@ -105,7 +105,7 @@ const SearchInput = React.forwardRef(function SearchInput(
 type SearchInputRendererProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  triggerAdormentIcon?: React.ReactNode;
+  triggerAdornmentIcon?: React.ReactNode;
 };
 
 const SearchInputRenderer = React.forwardRef(function SearchInputRenderer(

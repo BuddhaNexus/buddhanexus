@@ -27,7 +27,7 @@ const GlobalSearchDesktopInput = ({
         ref={inputRef}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        triggerAdormentIcon={<KeyboardReturnIcon />}
+        triggerAdornmentIcon={<KeyboardReturnIcon />}
       />
     </AppTopBarSearchBoxWrapper>
   );
