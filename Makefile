@@ -118,9 +118,6 @@ lint-dataloader:
 lint-api:
 	@docker exec -t fastapi bash -c 'pylint ./api/*.py'
 
-clean-frontend-dev:
-	$(COMPOSE) down --rmi all frontend
-
 clean-frontend:
 	$(COMPOSEPROD) down --rmi all frontend
 
