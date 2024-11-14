@@ -18,7 +18,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryCacheTimeDefaults } from "@utils/api/apiQueryUtils";
 import { ThemeProvider } from "@utils/ThemeProvider";
-import { NuqsAdapter } from "nuqs/adapters/react";
+import { NuqsAdapter } from "nuqs/adapters/next/pages";
 
 function MyApp(props: AppProps) {
   const { Component, pageProps } = props;

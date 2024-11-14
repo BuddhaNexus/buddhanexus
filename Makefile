@@ -4,12 +4,14 @@ COMPOSEPROD := $(COMPOSE) -f docker-compose.prod.yml
 SERVICES := dataloader arangodb fastapi frontend
 
 run-dev:
+	$(COMPOSE) down --rmi all frontend
 	$(COMPOSE) up $(SERVICES)
 
 run-dev-no-logs:
 	$(COMPOSE) up -d $(SERVICES)
 
 run-prod:
+	@$(COMPOSEPROD) down --rmi all frontend
 	@$(COMPOSEPROD) up $(SERVICES)
 
 run-prod-no-logs:
@@ -115,3 +117,15 @@ lint-dataloader:
 
 lint-api:
 	@docker exec -t fastapi bash -c 'pylint ./api/*.py'
+
+clean-frontend-dev:
+	$(COMPOSE) down --rmi all frontend
+
+clean-frontend:
+	$(COMPOSEPROD) down --rmi all frontend
+
+run-frontend-dev:
+	$(COMPOSE) up frontend
+
+run-frontend:
+	$(COMPOSEPROD) up frontend
