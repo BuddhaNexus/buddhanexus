@@ -11,8 +11,8 @@ class TextParallelsInput(BaseModel):
     page: int = 0
 
 
-class FullMatchText(FullText):
-    matches: list = []
+class FullMatchText(FullText):    
+    matches: List[str]
 
 
 class TextItem(BaseModel):

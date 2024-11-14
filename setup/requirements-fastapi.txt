@@ -12,3 +12,5 @@ aksharamukha==2.0.4
 https://buddhanexus.kc-tbts.uni-hamburg.de/packages/buddhanexus_lang_analyzer-0.1-py3-none-any.whl
 pyewts
 unidecode
+natsort
+dharmamitra_sanskrit_grammar
