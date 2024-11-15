@@ -6,12 +6,14 @@ from tqdm import tqdm as tqdm
 from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 import multiprocessing
+from utils import should_download_file
 
 from dataloader_models import Match, validate_dict_list
 from dataloader_constants import (
     COLLECTION_PARALLELS,
     COLLECTION_PARALLELS_SORTED_BY_FILE,
     COLLECTION_FILES,
+)
 
 from shared.utils import (
     get_cat_from_segmentnr,

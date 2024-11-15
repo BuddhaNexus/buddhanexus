@@ -75,6 +75,8 @@ class LoadSegmentsBase:
 
     def _init_metadata(self):
         df = pd.read_json(METADATA_URLS[self.LANG])
+        df["filename"] = df["filename"].apply(get_filename_from_segmentnr)
+        df = df.drop_duplicates(subset="filename")
         return df.set_index("filename").to_dict(orient="index")
 
     def _load_segments(self, segments_df, db) -> None:
