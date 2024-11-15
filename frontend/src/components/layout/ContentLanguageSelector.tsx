@@ -1,8 +1,10 @@
 import type { FC } from "react";
 import React from "react";
+import Image from "next/image";
 import { Link } from "@components/common/Link";
 import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import treeIcon from "@public/assets/logos/bn_tree_only.svg";
 
 interface Props {
   title: string;
@@ -34,8 +36,8 @@ export const ContentLanguageSelector: FC<Props> = ({ title, href, color }) => {
       data-testid="db-language-tile"
     >
       <Box
-        component="img"
-        src="/assets/logos/bn_tree_only.svg"
+        component={Image}
+        src={treeIcon}
         sx={{
           height: 120,
           width: 120,

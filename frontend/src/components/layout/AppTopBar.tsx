@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { Link } from "@components/common/Link";
@@ -14,6 +15,8 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import { useColorScheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
+import treeTextIcon from "@public/assets/logos/bn_text_only.svg";
+import treeIcon from "@public/assets/logos/bn_tree_only.svg";
 
 interface AppBarLinkProps {
   title: string;
@@ -89,8 +92,8 @@ export const AppTopBar = memo(function AppTopBar() {
               }}
             >
               <Box
-                component="img"
-                src="/assets/logos/bn_tree_only.svg"
+                component={Image}
+                src={treeIcon}
                 width={68}
                 sx={{
                   maxHeight: 48,
@@ -103,8 +106,8 @@ export const AppTopBar = memo(function AppTopBar() {
               />
               {!isHomeRoute && (
                 <Box
-                  component="img"
-                  src="/assets/logos/bn_text_only.svg"
+                  component={Image}
+                  src={treeTextIcon}
                   width={144}
                   sx={{
                     maxHeight: 24,

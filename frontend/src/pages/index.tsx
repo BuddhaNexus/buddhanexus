@@ -1,5 +1,6 @@
 import React from "react";
 import type { GetStaticProps } from "next";
+import Image from "next/image";
 import { useTranslation } from "next-i18next";
 import { ContentLanguageSelector } from "@components/layout/ContentLanguageSelector";
 import { Footer } from "@components/layout/Footer";
@@ -10,6 +11,7 @@ import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
+import treeIcon from "@public/assets/logos/bn_full_logo.svg";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
 import { DbLanguage } from "@utils/api/types";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
@@ -30,9 +32,10 @@ export default function Home() {
   return (
     <PageContainer backgroundName="welcome">
       <Box
-        component="img"
-        src="/assets/logos/bn_full_logo.svg"
+        component={Image}
+        src={treeIcon}
         height="30vh"
+        width="100%"
         alt="buddhanexus logo"
         sx={{
           p: 4,
