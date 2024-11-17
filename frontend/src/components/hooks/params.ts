@@ -94,7 +94,16 @@ export const useActiveSegmentParam = () => {
 };
 
 export const useActiveSegmentIndexParam = () => {
-  return useQueryState("active_segment_index", parseAsInteger);
+  return useQueryState(
+    allUIComponentParamNames.active_segment_index,
+    parseAsInteger,
+  );
+};
+
+export const useRightPaneActiveSegmentParam = () => {
+  return useQueryState(allUIComponentParamNames.right_pane_active_segment, {
+    ...parseAsString.withDefault(DEFAULT_PARAM_VALUES.active_segment),
+  });
 };
 
 const parseAsSortMethod = parseAsStringLiteral(sortMethods);

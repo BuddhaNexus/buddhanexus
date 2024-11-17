@@ -82,6 +82,8 @@ export const allUIComponentParamNames: AllUIComponentParamNames = {
   copyQueryLink: "copyQueryLink",
   emailQueryLink: "emailQueryLink",
   active_segment: "active_segment",
+  active_segment_index: "active_segment_index",
+  right_pane_active_segment: "right_pane_active_segment",
   page: "page",
   filename: "filename",
   parallel_ids: "parallel_ids",

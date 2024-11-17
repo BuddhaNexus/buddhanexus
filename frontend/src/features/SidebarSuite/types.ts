@@ -12,6 +12,8 @@ type APIRequestPropsName = keyof AllAPIRequestProps;
  *
  */
 
+type FeStateParams = "active_segment_index" | "right_pane_active_segment";
+
 export type APIRequestFilters = NonNullable<AllAPIRequestProps["filters"]>;
 
 export type APIRequestFilterName = keyof APIRequestFilters;
@@ -113,6 +115,7 @@ export type UtilityUISettingName =
  */
 
 export type UIComponentParamName =
+  | FeStateParams
   | APIRequestPropsName
   | APIRequestFilterName
   | DisplayUISettingName

@@ -1,13 +1,17 @@
 import "allotment/dist/style.css";
 
 import React, { useMemo } from "react";
-import { LogLevel, Virtuoso } from "react-virtuoso";
+import { Virtuoso } from "react-virtuoso";
 import { activeSegmentMatchesAtom } from "@atoms";
 import {
   EmptyPlaceholder,
   ListLoadingIndicator,
 } from "@components/db/ListComponents";
-import { useActiveSegmentParam } from "@components/hooks/params";
+import {
+  useActiveSegmentParam,
+  useRightPaneActiveSegmentParam,
+} from "@components/hooks/params";
+import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { useTextViewRightPane } from "@features/textView/useTextViewRightPane";
 import { Paper } from "@mui/material";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
@@ -37,6 +41,7 @@ export const TextView = ({
   isFetchingNextPage,
 }: Props) => {
   const [activeSegmentId] = useActiveSegmentParam();
+  const [rightPaneActiveSegmentId] = useRightPaneActiveSegmentParam();
   const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
 
   const colorScale = useMemo(() => {
@@ -53,7 +58,8 @@ export const TextView = ({
   const shouldShowMiddlePane =
     activeSegmentId !== "none" && activeSegmentMatches.length > 0;
 
-  const shouldShowRightPane = true;
+  const shouldShowRightPane =
+    rightPaneActiveSegmentId !== DEFAULT_PARAM_VALUES.active_segment;
 
   // make sure the selected segment is at the top when the page is opened
   const activeSegmentIndexInData = useMemo(() => {
@@ -77,8 +83,6 @@ export const TextView = ({
     isError: isRightPaneError,
     firstItemIndex: rightPaneFirstItemIndex,
   } = useTextViewRightPane(shouldShowRightPane);
-
-  console.log({ rightPaneData, data });
 
   return (
     <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
@@ -120,7 +124,6 @@ export const TextView = ({
           {/* TODO: plug different data in here */}
           <Virtuoso
             id="2"
-            logLevel={LogLevel.DEBUG}
             firstItemIndex={rightPaneFirstItemIndex}
             // initialTopMostItemIndex={activeSegmentIndexInData}
             data={rightPaneData.length > 0 ? rightPaneData : undefined}

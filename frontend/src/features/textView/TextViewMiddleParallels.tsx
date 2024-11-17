@@ -40,6 +40,7 @@ export default function TextViewMiddleParallels() {
               displayName,
               parallelLength,
               parallelFullText,
+              parallelSegmentNumber,
               parallelSegmentNumberRange,
               score,
               targetLanguage,
@@ -54,6 +55,7 @@ export default function TextViewMiddleParallels() {
               length={parallelLength}
               text={parallelFullText}
               score={score}
+              textSegmentNumber={parallelSegmentNumber}
               textSegmentNumberRange={parallelSegmentNumberRange}
               onHover={setHoveredOverParallelId}
             />

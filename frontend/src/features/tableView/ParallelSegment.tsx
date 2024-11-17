@@ -1,7 +1,9 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
+import { useRightPaneActiveSegmentParam } from "@components/hooks/params";
 import CopyIcon from "@mui/icons-material/ContentCopy";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PercentIcon from "@mui/icons-material/Percent";
 import StraightenIcon from "@mui/icons-material/Straighten";
 import {
@@ -41,6 +43,7 @@ interface ParallelSegmentProps {
   length: number;
 
   text: APISchemas["FullText"][];
+  textSegmentNumber: string;
   textSegmentNumberRange: string;
 
   score?: number;
@@ -49,6 +52,7 @@ interface ParallelSegmentProps {
 
 export const ParallelSegment = ({
   id,
+  textSegmentNumber,
   textSegmentNumberRange,
   text,
   score,
@@ -59,6 +63,9 @@ export const ParallelSegment = ({
 }: ParallelSegmentProps) => {
   const { t } = useTranslation();
 
+  const [rightPaneActiveSegmentId, setRightPaneActiveSegmentId] =
+    useRightPaneActiveSegmentParam();
+
   const dbLanguageName = t(`language.${language}`);
 
   const infoToCopy = `${textSegmentNumberRange}: ${displayName}`;
@@ -67,6 +74,14 @@ export const ParallelSegment = ({
   const copyTextInfoToClipboard = useCallback(async () => {
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
+
+  const openRightPane = useCallback(
+    (language: DbLanguage, segmentNumber: string) => {
+      setRightPaneActiveSegmentId(segmentNumber);
+      console.log({ language, segmentNumber });
+    },
+    [],
+  );
 
   const linkSegmentNumber =
     textSegmentNumberRange.split("-")[0] ?? textSegmentNumberRange;
@@ -111,6 +126,13 @@ export const ParallelSegment = ({
             onClick={copyTextInfoToClipboard}
           >
             <CopyIcon fontSize="inherit" />
+          </IconButton>
+          <IconButton
+            aria-label="Open in new pane"
+            size="small"
+            onClick={() => openRightPane(language, textSegmentNumber)}
+          >
+            <OpenInNewIcon fontSize="inherit" />
           </IconButton>
         </Box>
 
