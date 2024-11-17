@@ -6,21 +6,15 @@ setup(
     version="0.1.0",
     packages=find_packages(),
     install_requires=[
+        "fastapi>=0.109.1",
+        "pytest>=8.0.0",
+        "pytest-asyncio>=0.23.5",
+        "httpx>=0.26.0",
         "pandas",
         "natsort",
         "tqdm",
-        # Add other dependencies from your project here
+        "pyarango>=1.3.3",
+        "uvicorn>=0.11.7"
     ],
-    author="Your Name",
-    author_email="your.email@example.com",
-    description="BuddhaNexus data processing and analysis tools",
-    long_description=open("README.md").read() if os.path.exists("README.md") else "",
-    long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/buddhanexus",  # If applicable
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",  # Adjust license as needed
-        "Operating System :: OS Independent",
-    ],
-    python_requires=">=3.6",
+    python_requires=">=3.7",
 )

@@ -59,6 +59,26 @@ services:
     depends_on:
       - arangodb
 
+  tests:
+    build:
+      context: .
+      dockerfile: ./setup/Dockerfile-fastapi
+    platform: linux/amd64
+    container_name: "tests"
+    volumes:
+      - .:/opt/buddhanexus
+      - type: volume
+        source: dharmanexus-data
+        target: /data
+    env_file:
+      - .env
+    environment:
+      - PROD=0
+      - PYTHONPATH=/opt/buddhanexus
+    command: pytest -v
+    depends_on:
+      - arangodb
+
   frontend:
     container_name: frontend
     build:

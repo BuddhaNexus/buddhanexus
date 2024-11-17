@@ -38,13 +38,15 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         category_root = get_cat_from_segmentnr(parallel["root_segnr"][0])
         category_parallel = get_cat_from_segmentnr(parallel["par_segnr"][0])
         root_filename = get_filename_from_segmentnr(parallel["root_segnr"][0])
-        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])        
+        par_filename = get_filename_from_segmentnr(parallel["par_segnr"][0])                
         parallel["_id"] = parallel['id']
         parallel["_key"] = parallel['id']
         parallel["root_category"] = category_root
-        parallel["par_category"] = category_parallel
-        parallel['root_collection'] = files_lookup[root_filename]
-        parallel['par_collection'] = files_lookup[par_filename]
+        parallel["par_category"] = category_parallel        
+        if root_filename in files_lookup:
+            parallel['root_collection'] = files_lookup[root_filename]
+        if par_filename in files_lookup:
+            parallel['par_collection'] = files_lookup[par_filename]
         parallel["par_filename"] = par_filename
         # here we delete some things that we don't need in the DB:
         del parallel["id"]
@@ -91,8 +93,8 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     folder = os.path.join(folder, lang)
     files_db = db_collection_files.find({"lang": lang})    
     global files_lookup
-    files_lookup = {file["_key"]: file["collection"] for file in files_db}
-    print("FILES LOOKUP", files_lookup)
+    files_lookup = {file["_key"]: file["collection"] for file in files_db if "collection" in file}
+    
 
     files = os.listdir(folder)
     files = list(filter(lambda f: f.endswith(".json.gz"), files))

@@ -92,6 +92,7 @@ LET parallels = (
         
         // Return processed parallel data
         RETURN {
+            id: p._key,
             par_segnr: p.par_segnr,
             display_name: par_full_name,
             tgt_lang: p.tgt_lang,
