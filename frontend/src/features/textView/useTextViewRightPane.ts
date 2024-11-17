@@ -1,14 +1,19 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
+import { PaginationState } from "@features/textView/useTextPage";
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
+
+// arbitrarily high number, as per virtuoso docs
+const START_INDEX = 1_000_000;
 
 export function useTextViewRightPane(shouldShowRightPane: boolean) {
   const paginationState = useRef<PaginationState>([0, 0]);
 
   const searchParams = useSearchParams();
+  const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
   const active_segment_right =
     searchParams.get("active_segment_right") ??
@@ -131,5 +136,6 @@ export function useTextViewRightPane(shouldShowRightPane: boolean) {
     isError,
     isFetching,
     error,
+    firstItemIndex,
   };
 }

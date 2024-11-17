@@ -10,7 +10,7 @@ import { DbApi } from "@utils/api/dbApi";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
 import { DbLanguage } from "@utils/api/types";
 
-type PaginationState = [startEdgePage?: number, endEdgePage?: number];
+export type PaginationState = [startEdgePage?: number, endEdgePage?: number];
 
 // arbitrarily high number, as per virtuoso docs
 const START_INDEX = 1_000_000;

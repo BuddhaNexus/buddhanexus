@@ -8,15 +8,8 @@ import {
   ListLoadingIndicator,
 } from "@components/db/ListComponents";
 import { useActiveSegmentParam } from "@components/hooks/params";
-import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { useTextViewRightPane } from "@features/textView/useTextViewRightPane";
 import { Paper } from "@mui/material";
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  useQuery,
-} from "@tanstack/react-query";
-import { DbApi } from "@utils/api/dbApi";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
 import { Allotment } from "allotment";
 import chroma from "chroma-js";
@@ -82,6 +75,7 @@ export const TextView = ({
     fetchNextPage: fetchRightPaneNextPage,
     isFetching: isRightPaneFetching,
     isError: isRightPaneError,
+    firstItemIndex: rightPaneFirstItemIndex,
   } = useTextViewRightPane(shouldShowRightPane);
 
   console.log({ rightPaneData, data });
@@ -127,7 +121,7 @@ export const TextView = ({
           <Virtuoso
             id="2"
             logLevel={LogLevel.DEBUG}
-            // firstItemIndex={firstItemIndex}
+            firstItemIndex={rightPaneFirstItemIndex}
             // initialTopMostItemIndex={activeSegmentIndexInData}
             data={rightPaneData.length > 0 ? rightPaneData : undefined}
             startReached={fetchRightPanePreviousPage}
@@ -145,10 +139,9 @@ export const TextView = ({
                 : undefined,
               EmptyPlaceholder,
             }}
-            itemContent={(_, dataSegment) => {
-              console.log("hmmm");
-              return <TextSegment data={dataSegment} colorScale={colorScale} />;
-            }}
+            itemContent={(_, dataSegment) => (
+              <TextSegment data={dataSegment} colorScale={colorScale} />
+            )}
           />
         </Allotment.Pane>
       </Allotment>
