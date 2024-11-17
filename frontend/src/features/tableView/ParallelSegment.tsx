@@ -35,6 +35,7 @@ export const makeTextViewSegmentPath = ({
 };
 
 interface ParallelSegmentProps {
+  id?: string;
   language: DbLanguage;
   displayName: string;
   length: number;
@@ -47,6 +48,7 @@ interface ParallelSegmentProps {
 }
 
 export const ParallelSegment = ({
+  id,
   textSegmentNumberRange,
   text,
   score,
@@ -73,7 +75,7 @@ export const ParallelSegment = ({
     <Card
       sx={{ flex: 1, wordBreak: "break-all", my: 1 }}
       elevation={1}
-      onMouseEnter={() => onHover?.(textSegmentNumberRange)}
+      onMouseEnter={() => id && onHover?.(id)}
       onMouseLeave={() => onHover?.("")}
     >
       <CardContent

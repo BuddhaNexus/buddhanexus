@@ -69,12 +69,13 @@ export const TextSegment = ({
     setSelectedSegmentMatches,
   ]);
 
-  if (!data) return null;
+  const matchSets = useMemo(() => {
+    // optimisation - don't run the map function if there are no active segments (middle view is closed)
+    if (activeSegmentId === "none") return undefined;
+    return data?.segmentText.map((textChunk) => new Set(textChunk.matches));
+  }, [activeSegmentId, data?.segmentText]);
 
-  const matchSets = useMemo(
-    () => data?.segmentText.map((textChunk) => new Set(textChunk.matches)),
-    [data?.segmentText],
-  );
+  if (!data) return null;
 
   return (
     <div className={styles.segmentWrapper}>
@@ -94,6 +95,10 @@ export const TextSegment = ({
         });
         const isSegmentPartSelected =
           isSegmentSelected && activeSegmentIndex === i;
+
+        const isSegmentPartHoveredOverInMiddleView = matchSets
+          ? matchSets[i]?.has(hoveredOverParallelId)
+          : false;
 
         if (matches.length === 0) {
           return (
@@ -116,7 +121,7 @@ export const TextSegment = ({
             tabIndex={0}
             className={`${styles.segment} ${styles.segment__button} ${
               isDarkTheme && styles["segment--dark"]
-            } ${isSegmentPartSelected && styles["segment--selected"]}`}
+            } ${isSegmentPartSelected && styles["segment--selected"]} ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`}
             style={{
               fontFamily: sourceSans.style.fontFamily,
               color,

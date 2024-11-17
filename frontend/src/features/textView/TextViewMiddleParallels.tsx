@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { activeSegmentMatchesAtom, hoveredOverParallelIdAtom } from "@atoms";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
@@ -27,13 +27,6 @@ export default function TextViewMiddleParallels() {
     enabled: activeSegmentMatches.length > 0,
   });
 
-  const onParallelHover = useCallback(
-    (parallelId: string) => {
-      setHoveredOverParallelId(parallelId);
-    },
-    [setHoveredOverParallelId],
-  );
-
   const parallelsToDisplay = useMemo(
     () =>
       data
@@ -42,6 +35,7 @@ export default function TextViewMiddleParallels() {
         .map(
           (
             {
+              id,
               fileName,
               displayName,
               parallelLength,
@@ -54,17 +48,18 @@ export default function TextViewMiddleParallels() {
           ) => (
             <ParallelSegment
               key={fileName + score + parallelLength + index}
+              id={id}
               displayName={displayName}
               language={targetLanguage}
               length={parallelLength}
               text={parallelFullText}
               score={score}
               textSegmentNumberRange={parallelSegmentNumberRange}
-              onHover={onParallelHover}
+              onHover={setHoveredOverParallelId}
             />
           ),
         ),
-    [data],
+    [data, setHoveredOverParallelId],
   );
 
   return (
