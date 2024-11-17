@@ -43,6 +43,7 @@ interface ParallelSegmentProps {
   textSegmentNumberRange: string;
 
   score?: number;
+  onHover?: (parallelId: string) => void;
 }
 
 export const ParallelSegment = ({
@@ -52,6 +53,7 @@ export const ParallelSegment = ({
   length,
   displayName,
   language,
+  onHover,
 }: ParallelSegmentProps) => {
   const { t } = useTranslation();
 
@@ -68,7 +70,12 @@ export const ParallelSegment = ({
     textSegmentNumberRange.split("-")[0] ?? textSegmentNumberRange;
 
   return (
-    <Card sx={{ flex: 1, wordBreak: "break-all", my: 1 }} elevation={1}>
+    <Card
+      sx={{ flex: 1, wordBreak: "break-all", my: 1 }}
+      elevation={1}
+      onMouseEnter={() => onHover?.(textSegmentNumberRange)}
+      onMouseLeave={() => onHover?.("")}
+    >
       <CardContent
         sx={{
           display: "flex",

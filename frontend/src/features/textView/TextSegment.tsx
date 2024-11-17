@@ -1,6 +1,7 @@
-import { useCallback, useLayoutEffect } from "react";
+import { useCallback, useLayoutEffect, useMemo } from "react";
 import {
   activeSegmentMatchesAtom,
+  hoveredOverParallelIdAtom,
   scriptSelectionAtom,
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
@@ -40,6 +41,7 @@ export const TextSegment = ({
     shouldUseMonochromaticSegmentColorsAtom,
   );
   const shouldShowSegmentNumbers = useAtomValue(shouldShowSegmentNumbersAtom);
+  const hoveredOverParallelId = useAtomValue(hoveredOverParallelIdAtom);
   const setSelectedSegmentMatches = useSetAtom(activeSegmentMatchesAtom);
   const isSegmentSelected = activeSegmentId === data?.segmentNumber;
 
@@ -67,17 +69,24 @@ export const TextSegment = ({
     setSelectedSegmentMatches,
   ]);
 
+  if (!data) return null;
+
+  const matchSets = useMemo(
+    () => data?.segmentText.map((textChunk) => new Set(textChunk.matches)),
+    [data?.segmentText],
+  );
+
   return (
     <div className={styles.segmentWrapper}>
       <span
         className={`${styles.segmentNumber} ${
           isSegmentSelected && styles["segmentNumber--selected"]
         } ${!shouldShowSegmentNumbers && styles["segmentNumber--hidden"]}`}
-        data-segmentnumber={data?.segmentNumber}
+        data-segmentnumber={data.segmentNumber}
       />
 
-      {data?.segmentText.map(({ text, highlightColor, matches }, i) => {
-        const segmentKey = data?.segmentNumber + i;
+      {data.segmentText.map(({ text, highlightColor, matches }, i) => {
+        const segmentKey = data.segmentNumber + i;
         const textContent = enscriptText({
           text,
           script: scriptSelection,
@@ -114,7 +123,7 @@ export const TextSegment = ({
             }}
             onClick={async () => {
               await updateSelectedLocationInGlobalState({
-                id: data?.segmentNumber,
+                id: data.segmentNumber,
                 matches,
                 index: i,
               });
@@ -124,7 +133,7 @@ export const TextSegment = ({
               if (event.key !== " " && event.key !== "Enter") return;
               event.preventDefault();
               await updateSelectedLocationInGlobalState({
-                id: data?.segmentNumber,
+                id: data.segmentNumber,
                 matches,
                 index: i,
               });
