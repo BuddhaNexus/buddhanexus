@@ -13,8 +13,8 @@ export function ClearSelectedSegmentButton() {
   const [, setActiveSegment] = useActiveSegmentParam();
   const [, setActiveSegmentIndex] = useActiveSegmentIndexParam();
 
-  const hanldeClear = async () => {
-    await setActiveSegment(null);
+  const handleClear = async () => {
+    await setActiveSegment("none");
     await setActiveSegmentIndex(null);
   };
 
@@ -23,7 +23,7 @@ export function ClearSelectedSegmentButton() {
       title={t("common:db.clearSelectedSegment")}
       PopperProps={{ disablePortal: true }}
     >
-      <IconButton color="inherit" onClick={hanldeClear}>
+      <IconButton color="inherit" onClick={handleClear}>
         <HighlightOffIcon aria-label={t("common:db.clearSelectedSegment")} />
       </IconButton>
     </Tooltip>
