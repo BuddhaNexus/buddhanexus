@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { lighten, styled } from "@mui/material/styles";
 
 export const NodeBox = styled(Box, {
@@ -18,17 +18,6 @@ export const NodeBox = styled(Box, {
     fontWeight: 500,
   },
 }));
-
-export const TextNodeLink = styled(Link)({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  width: "100%",
-  height: "100%",
-  paddingTop: "0.75rem",
-  fontSize: "inherit",
-  textDecoration: "none",
-});
 
 export const RowBox = styled(Box)({
   display: "flex",

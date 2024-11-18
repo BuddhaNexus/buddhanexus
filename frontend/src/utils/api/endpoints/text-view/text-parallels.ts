@@ -1,11 +1,10 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
-import type {
-  APITextViewParallelsV2RequestBody,
-  APITextViewParallelsV2ResponseData,
-} from "@utils/api/types";
+import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
-function parseTextViewParallelsData(data: APITextViewParallelsV2ResponseData) {
+function parseTextViewParallelsData(
+  data: APIPostResponse<"/text-view/text-parallels/">,
+) {
   return {
     page: data.page,
     totalPages: data.total_pages,
@@ -31,15 +30,13 @@ export type ParsedTextViewParallels = ParsedTextViewParallelsData["items"];
 export type ParsedTextViewParallel = ParsedTextViewParallelsData["items"][0];
 
 export async function getTextViewParallelsData(
-  body: APITextViewParallelsV2RequestBody,
+  body: APIPostRequestBody<"/text-view/text-parallels/">,
 ) {
-  const { page_number = 0, ...params } = body;
+  const { page = 0, ...params } = body;
 
-  const { data } = await apiClient.POST("/text-view/text-parallels-v2/", {
+  const { data } = await apiClient.POST("/text-view/text-parallels/", {
     body: {
-      ...parseAPIRequestBody({ ...params, page_number }),
-      // TODO: remove once backend model is updated
-      multi_lingual: ["skt", "pli", "chn", "tib"],
+      ...parseAPIRequestBody({ ...params, page }),
     },
   });
 
@@ -49,6 +46,6 @@ export async function getTextViewParallelsData(
 
   return {
     data: parseTextViewParallelsData(data ?? []),
-    pageNumber: page_number,
+    pageNumber: page,
   };
 }

@@ -1,8 +1,8 @@
 import { NodeApi, TreeApi } from "react-arborist";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
-import { DbSourceFiltersSelectedIds } from "@features/sidebarSuite/config/types";
-import type { Script } from "@features/sidebarSuite/subComponents/settings/TextScriptOption";
-import { DbViewEnum, DEFAULT_DB_VIEW, SourceLanguage } from "@utils/constants";
+import type { Script } from "@features/SidebarSuite/types";
+import { DbSourceFiltersSelectedIds } from "@features/SidebarSuite/types";
+import { DbViewEnum, DEFAULT_DB_VIEW } from "@utils/constants";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
@@ -10,7 +10,16 @@ import { atomWithStorage } from "jotai/utils";
  * GENERAL
  */
 
-export const currentDbViewAtom = atom<DbViewEnum>(DEFAULT_DB_VIEW);
+export const currentDbViewAtom = atomWithStorage<DbViewEnum>(
+  "db-view",
+  DEFAULT_DB_VIEW,
+);
+
+/**
+ * SEARCH
+ */
+
+export const isSearchTriggeredAtom = atom(false);
 
 /**
  * SOURCE DATA TREE
@@ -35,10 +44,9 @@ export const scriptSelectionAtom = atomWithStorage<Script>(
   "Unicode",
 );
 export const isSettingsOpenAtom = atom(true);
-export const defaultSourceLanguagesSelection = atom<SourceLanguage[]>([]);
 export const dbSourceFiltersSelectedIdsAtom = atom<DbSourceFiltersSelectedIds>({
-  exclude: [],
-  include: [],
+  exclude_sources: [],
+  include_sources: [],
 });
 
 /**
@@ -54,4 +62,4 @@ export const shouldUseMonochromaticSegmentColorsAtom = atomWithStorage<boolean>(
   false,
 );
 
-export const selectedSegmentMatchesAtom = atom<string[]>([]);
+export const activeSegmentMatchesAtom = atom<string[]>([]);

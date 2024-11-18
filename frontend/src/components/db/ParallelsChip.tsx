@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
@@ -12,23 +13,18 @@ import CappedMatchesChip from "./CappedMatchesChip";
 export default function ParallelsChip() {
   const { t } = useTranslation("settings");
 
-  const { fileName, defaultQueryParams, queryParams } = useDbQueryParams();
-
-  // ignore some params that shouldn't result in refetching this query
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { selectedSegment, ...restOfQueryParams } = queryParams;
+  const { fileName } = useDbRouterParams();
+  const filters = useDbQueryFilters();
 
   const { data, isLoading } = useQuery({
-    // TODO: - see if the query can return result before main results
     queryKey: DbApi.ParallelCount.makeQueryKey({
-      file_name: fileName,
-      ...restOfQueryParams,
+      filename: fileName,
+      filters,
     }),
     queryFn: () =>
       DbApi.ParallelCount.call({
-        file_name: fileName,
-        ...defaultQueryParams,
-        ...queryParams,
+        filename: fileName,
+        filters,
       }),
   });
 

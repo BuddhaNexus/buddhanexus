@@ -5,8 +5,10 @@ import { PIE_COLOUR_SCALE } from "@features/graphView/constants";
 import { useTheme } from "@mui/material";
 import { GraphPageGraphData } from "@utils/api/endpoints/graph-view/graph";
 
+import { DatasetWarning } from "./DatasetWarning";
+
 interface Props {
-  data?: GraphPageGraphData;
+  data?: GraphPageGraphData | null;
   chartType?: GoogleChartWrapperChartType;
 }
 
@@ -17,10 +19,14 @@ export const PieDataChart = memo<Props>(function PieDataChart({
   const { t } = useTranslation();
   const { palette } = useTheme();
 
+  if (!data || data.length === 0) {
+    return <DatasetWarning />;
+  }
+
   return (
     <Chart
       chartType={chartType}
-      data={[[t("graph.collection"), t("graph.matchLengths")], ...(data ?? [])]}
+      data={[[t("graph.collection"), t("graph.matchLengths")], ...data]}
       graph_id="pie-chart"
       options={{
         is3D: true,

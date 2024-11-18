@@ -1,0 +1,5 @@
+apis:
+  bn@v2:
+    root: https://dharmamitra.org/api-db/openapi.json
+    x-openapi-ts:
+      output: ./src/codegen/api/v2.ts

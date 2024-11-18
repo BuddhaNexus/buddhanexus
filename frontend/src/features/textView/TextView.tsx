@@ -2,17 +2,17 @@ import "allotment/dist/style.css";
 
 import React, { useMemo } from "react";
 import { Virtuoso } from "react-virtuoso";
-import { selectedSegmentMatchesAtom } from "@atoms";
+import { activeSegmentMatchesAtom } from "@atoms";
 import {
   EmptyPlaceholder,
   ListLoadingIndicator,
 } from "@components/db/ListComponents";
+import { useActiveSegmentParam } from "@components/hooks/params";
 import { Paper } from "@mui/material";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
 import { Allotment } from "allotment";
 import chroma from "chroma-js";
 import { useAtomValue } from "jotai/index";
-import { useQueryParam } from "use-query-params";
 
 import { TextSegment } from "./TextSegment";
 import TextViewMiddleParallels from "./TextViewMiddleParallels";
@@ -35,8 +35,8 @@ export const TextView = ({
   isFetchingPreviousPage,
   isFetchingNextPage,
 }: Props) => {
-  const [selectedSegmentId] = useQueryParam("selectedSegment");
-  const selectedSegmentMatches = useAtomValue(selectedSegmentMatchesAtom);
+  const [activeSegmentId] = useActiveSegmentParam();
+  const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
 
   const colorScale = useMemo(() => {
     const colors = data.map((item) => item.segmentText[0]?.highlightColor ?? 0);
@@ -51,17 +51,17 @@ export const TextView = ({
 
   const hasData = data.length > 0;
   const shouldShowMiddlePane =
-    Boolean(selectedSegmentId) && selectedSegmentMatches.length > 0;
+    Boolean(activeSegmentId) && activeSegmentMatches.length > 0;
 
   // make sure the selected segment is at the top when the page is opened
-  const selectedSegmentIndexInData = useMemo(() => {
+  const activeSegmentIndexInData = useMemo(() => {
     if (!hasData) return 0;
     const index = data.findIndex(
-      (element) => element.segmentNumber === selectedSegmentId,
+      (element) => element.segmentNumber === activeSegmentId,
     );
     if (index === -1) return 0;
     return index;
-  }, [data, hasData, selectedSegmentId]);
+  }, [data, hasData, activeSegmentId]);
 
   return (
     <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
@@ -70,7 +70,7 @@ export const TextView = ({
         <Allotment.Pane>
           <Virtuoso
             firstItemIndex={firstItemIndex}
-            initialTopMostItemIndex={selectedSegmentIndexInData}
+            initialTopMostItemIndex={activeSegmentIndexInData}
             data={hasData && data.length > 0 ? data : undefined}
             startReached={onStartReached}
             endReached={onEndReached}

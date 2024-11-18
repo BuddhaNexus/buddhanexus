@@ -15,12 +15,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import type { NumbersViewData } from "@utils/api/endpoints/numbers-view/numbers";
-import type {
-  APINumbersSegment,
-  APINumbersViewCategoryResponseData,
-  APINumbersViewResponseData,
-} from "@utils/api/types";
-import { SourceLanguage } from "@utils/constants";
+import type { APIGetResponse, APIPostResponse } from "@utils/api/types";
+import { DbLanguage } from "@utils/api/types";
 
 import {
   createTableColumns,
@@ -28,9 +24,11 @@ import {
   getVirtuosoTableComponents,
 } from "./numbersViewTableContent";
 
+export type NumbersSegment = APIPostResponse<"/numbers-view/numbers/">[number];
+
 interface NumbersTableProps {
-  categories: APINumbersViewCategoryResponseData;
-  data: APINumbersViewResponseData;
+  categories: APIGetResponse<"/numbers-view/categories/">;
+  data: APIPostResponse<"/numbers-view/numbers/">;
   hasNextPage: boolean;
   fetchNextPage: (
     options?: FetchNextPageOptions | undefined,
@@ -39,7 +37,7 @@ interface NumbersTableProps {
   >;
   isFetching: boolean;
   isLoading: boolean;
-  language: SourceLanguage;
+  language: DbLanguage;
   fileName: string;
 }
 
@@ -63,7 +61,7 @@ export default function NumbersTable({
 
   const rowData = React.useMemo(() => createTableRows(data), [data]);
 
-  const columns = React.useMemo<ColumnDef<APINumbersSegment>[]>(
+  const columns = React.useMemo<ColumnDef<NumbersSegment>[]>(
     () => createTableColumns({ categories, language, fileName }),
     [categories, language, fileName],
   );
@@ -140,12 +138,18 @@ export default function NumbersTable({
                 backgroundColor: "background.paper",
                 borderRight: "1px solid #e0e0e0",
                 paddingLeft: "1rem",
+                overflowWrap: "anywhere",
               }),
             }}
           >
             {cell.column.getIsFirstColumn() ? (
               <Box sx={{ position: "absolute", top: 0, bottom: 0 }}>
-                <Box sx={{ position: "sticky", top: "54px" }}>
+                <Box
+                  sx={{
+                    position: "sticky",
+                    top: "54px",
+                  }}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Box>
               </Box>

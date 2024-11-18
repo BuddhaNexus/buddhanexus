@@ -1,33 +1,35 @@
 import { NodeApi, TreeApi } from "react-arborist";
 import {
+  DbSourceTreeLeafNode,
   DbSourceTreeNode,
   DbSourceTreeNodeDataType,
 } from "@components/db/SearchableDbSourceTree/types";
-import type { ParsedStructuredDbSourceMenuData } from "@utils/api/endpoints/menus/sidebar";
+import type { ParsedStructuredDbSourceMenuData } from "@utils/api/endpoints/menus/sources";
 
 export function transformDataForTreeView(
   data: ParsedStructuredDbSourceMenuData,
 ) {
   /**
    * TODO - check if:
-   *  - BE prop naming is correct (fileName vs textName)
    *  - if it's possible to enforce id uniqueness on BE - duplicate `id`s (eg. dhp) cause react-arborist to trigger key errors and rendering issues. Creating unique ids on FE breaks currnet file selection.
    * */
   return data.map((collection) => ({
     id: collection.collection,
     name: collection.collection,
-    dataType: DbSourceTreeNodeDataType.Collection,
+    searchField: collection.collection,
+    dataType: DbSourceTreeNodeDataType.COLLECTION,
     children: collection.categories.map(({ name, displayName, files }) => ({
       id: name,
       name: displayName,
-      dataType: DbSourceTreeNodeDataType.Category,
+      dataType: DbSourceTreeNodeDataType.CATEGORY,
+      searchField: `${displayName}/${name}`,
       children: files.map(
-        ({ fileName, displayName: fileDisplayName, availableLanguages }) => ({
+        ({ fileName, displayName: fileDisplayName, searchField }) => ({
           id: fileName,
           name: fileDisplayName,
           fileName,
-          availableLanguages,
-          dataType: DbSourceTreeNodeDataType.Text,
+          dataType: DbSourceTreeNodeDataType.TEXT,
+          searchField,
         }),
       ),
     })),
@@ -81,3 +83,13 @@ export const handleTreeChange = ({
 
   setBreadcrumbs(crumbs);
 };
+
+export function isSearchMatch(searchField: string, searchTerm: string) {
+  return searchField.toLowerCase().includes(searchTerm.toLowerCase());
+}
+
+export function isDbSourceTreeLeafNodeData(
+  node: DbSourceTreeNode | DbSourceTreeLeafNode,
+): node is DbSourceTreeLeafNode {
+  return node.fileName !== undefined;
+}

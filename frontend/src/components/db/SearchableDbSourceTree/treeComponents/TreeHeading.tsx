@@ -1,17 +1,17 @@
 import { useTranslation } from "next-i18next";
 import { Typography } from "@mui/material";
-import { SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
 
 type HeadingProps = {
   isRendered: boolean;
-  sourceLanguage: SourceLanguage;
+  dbLanguage: DbLanguage;
 };
 
-export function TreeHeading({ isRendered, sourceLanguage }: HeadingProps) {
+export function TreeHeading({ isRendered, dbLanguage }: HeadingProps) {
   const { t } = useTranslation("common");
   if (!isRendered) return null;
 
-  const languageName = t(`language.${sourceLanguage}`);
+  const languageName = t(`language.${dbLanguage}`);
   return (
     <Typography variant="h5" component="h2" sx={{ px: 2, pt: 2 }}>
       {t("textBrowser.mainPrompt", { languageName })}

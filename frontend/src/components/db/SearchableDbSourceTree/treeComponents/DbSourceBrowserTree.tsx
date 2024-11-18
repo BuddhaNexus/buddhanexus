@@ -11,8 +11,9 @@ import { DbSourceTreeBaseProps } from "@components/db/SearchableDbSourceTree/typ
 import {
   getTreeKeyFromPath,
   handleTreeChange,
+  isSearchMatch,
 } from "@components/db/SearchableDbSourceTree/utils";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetAtom } from "jotai";
 
 const DbSourceBrowserTree = memo(function DbSourceBrowserTree({
@@ -22,7 +23,7 @@ const DbSourceBrowserTree = memo(function DbSourceBrowserTree({
   searchTerm,
 }: DbSourceTreeBaseProps) {
   const router = useRouter();
-  const { fileName } = useDbQueryParams();
+  const { fileName } = useDbRouterParams();
 
   const setActiveTree = useSetAtom(activeDbSourceTreeAtom);
   const setBreadcrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
@@ -35,6 +36,7 @@ const DbSourceBrowserTree = memo(function DbSourceBrowserTree({
         handleTreeChange({ activeTree, setActiveTree, setBreadcrumbs });
       }}
       searchTerm={searchTerm}
+      searchMatch={(node, term) => isSearchMatch(node.data.searchField, term)}
       initialData={data}
       openByDefault={false}
       disableDrag={true}

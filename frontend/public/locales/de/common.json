@@ -9,10 +9,11 @@
   },
   "language": {
     "all": "Alle",
-    "pli": "Pāli",
-    "chn": "Chinesisch",
-    "skt": "Sanskrit",
-    "tib": "Tibetisch"
+    "pa": "Pāli",
+    "zh": "Chinesisch",
+    "sa": "Sanskrit",
+    "bo": "Tibetisch",
+    "undefined": ""
   },
   "footer": {
     "about": "Über",
@@ -49,15 +50,21 @@
   "prompts": {
     "genericErrorTitle": "Etwas ist schiefgelaufen.",
     "genericErrorDescription": "Bitte kontaktieren Sie uns, wenn das Problem weiterhin besteht.",
+    "fetchError": "Error fetching result data",
+    "queryWarning": "Unable to display results. Please use the filters to adjust your query.",
+    "noFile": "No file selected.",
+    "fileUndefined": "File undefined.",
     "loading": "Wird geladen...",
     "noResults": "Keine Ergebnisse gefunden.",
     "showLess": "Weniger anzeigen",
     "showAll": "Alle anzeigen ({{count}})",
     "openAll": "Alle öffnen",
-    "closeAll": "Alle schließen"
+    "closeAll": "Alle schließen",
+    "close": "Close"
   },
   "search": {
     "pageTitle": "Suchergebnisse",
+    "dialogTitle": "BudhhaNexus Global Search",
     "inputPlaceholder": "Geben Sie den genauen Suchbegriff ein (nur ganze Wörter)",
     "search": "Suchen",
     "runSearch": "Suche ausführen",

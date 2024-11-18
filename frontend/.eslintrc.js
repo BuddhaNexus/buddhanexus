@@ -53,6 +53,7 @@ const rules = {
   "prefer-named-capture-group": "off",
   // https://github.com/typescript-eslint/typescript-eslint/issues/2483
   "no-shadow": "off",
+  "prefer-regex-literals": "off",
 
   // @typescript-eslint
   "@typescript-eslint/prefer-readonly-parameter-types": "off",
@@ -210,6 +211,12 @@ module.exports = {
       rules,
       parserOptions: {
         project: true, // Specify it only for TypeScript files
+      },
+    },
+    {
+      files: ["./src/codegen/api/*ts"],
+      rules: {
+        "no-use-before-define": "off",
       },
     },
   ],

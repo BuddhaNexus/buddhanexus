@@ -2,14 +2,14 @@ import {
   DbSourceTreeProps,
   DbSourceTreeType,
 } from "@components/db/SearchableDbSourceTree/types";
-import { DbSourceFilterSelectorTree } from "@features/sidebarSuite/subComponents/settings/DbSourceFilters/tree/DbSourceFilterTree";
+import { DbSourceFilterSelectorTree } from "@features/SidebarSuite/uiSettings/DbSourceFilter/tree/DbSourceFilterTree";
 
 import DbSourceBrowserTree from "./DbSourceBrowserTree";
 
 export function DbSourceTree(props: DbSourceTreeProps) {
   const { type, data, height, width, searchTerm } = props;
 
-  if (type === DbSourceTreeType.FilterSelector) {
+  if (type === DbSourceTreeType.FILTER_SELECTOR) {
     return (
       <DbSourceFilterSelectorTree
         data={data}

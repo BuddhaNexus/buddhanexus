@@ -1,18 +1,21 @@
 import { useCallback, useLayoutEffect } from "react";
 import {
+  activeSegmentMatchesAtom,
   scriptSelectionAtom,
-  selectedSegmentMatchesAtom,
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
 } from "@atoms";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import {
+  useActiveSegmentIndexParam,
+  useActiveSegmentParam,
+} from "@components/hooks/params";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { sourceSans } from "@components/theme";
-import { enscriptText } from "@features/sidebarSuite/common/dbSidebarHelpers";
+import { enscriptText } from "@features/SidebarSuite/utils";
 import { useColorScheme } from "@mui/material/styles";
 import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";
 import type { Scale } from "chroma-js";
 import { useAtomValue, useSetAtom } from "jotai";
-import { NumberParam, StringParam, useQueryParam } from "use-query-params";
 
 import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
 import styles from "./textSegment.module.scss";
@@ -27,44 +30,40 @@ export const TextSegment = ({
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
 
-  const [selectedSegmentId, setSelectedSegmentId] = useQueryParam(
-    "selectedSegment",
-    StringParam,
-  );
-  const [selectedSegmentIndex, setSelectedSegmentIndex] = useQueryParam(
-    "selectedSegmentIndex",
-    NumberParam,
-  );
-  const { sourceLanguage } = useDbQueryParams();
+  const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
+  const [activeSegmentIndex, setActiveSegmentIndex] =
+    useActiveSegmentIndexParam();
+
+  const { dbLanguage } = useDbRouterParams();
 
   const shouldUseMonochromaticSegmentColors = useAtomValue(
     shouldUseMonochromaticSegmentColorsAtom,
   );
   const shouldShowSegmentNumbers = useAtomValue(shouldShowSegmentNumbersAtom);
-  const scriptSelection = useAtomValue(scriptSelectionAtom);
-  const setSelectedSegmentMatches = useSetAtom(selectedSegmentMatchesAtom);
+  const setSelectedSegmentMatches = useSetAtom(activeSegmentMatchesAtom);
+  const isSegmentSelected = activeSegmentId === data?.segmentNumber;
 
-  const isSegmentSelected = selectedSegmentId === data?.segmentNumber;
+  const scriptSelection = useAtomValue(scriptSelectionAtom);
 
   const updateSelectedLocationInGlobalState = useCallback(
-    (location: { id: string; index: number; matches: string[] }) => {
-      setSelectedSegmentId(location.id);
-      setSelectedSegmentIndex(location.index);
+    async (location: { id: string; index: number; matches: string[] }) => {
+      await setActiveSegmentId(location.id);
+      await setActiveSegmentIndex(location.index);
     },
-    [setSelectedSegmentId, setSelectedSegmentIndex],
+    [setActiveSegmentId, setActiveSegmentIndex],
   );
 
   // find matches for the selected segment when the page is first rendered
   useLayoutEffect(() => {
-    if (!isSegmentSelected || typeof selectedSegmentIndex !== "number") return;
-    const locationFromQueryParams = data?.segmentText[selectedSegmentIndex];
+    if (!isSegmentSelected || typeof activeSegmentIndex !== "number") return;
+    const locationFromQueryParams = data?.segmentText[activeSegmentIndex];
     if (!locationFromQueryParams) return;
-    setSelectedSegmentMatches(locationFromQueryParams.matches as string[]);
+    setSelectedSegmentMatches(locationFromQueryParams.matches);
   }, [
     isSegmentSelected,
     data?.segmentText,
-    selectedSegmentId,
-    selectedSegmentIndex,
+    activeSegmentId,
+    activeSegmentIndex,
     setSelectedSegmentMatches,
   ]);
 
@@ -82,12 +81,12 @@ export const TextSegment = ({
         const textContent = enscriptText({
           text,
           script: scriptSelection,
-          language: sourceLanguage,
+          language: dbLanguage,
         });
         const isSegmentPartSelected =
-          isSegmentSelected && selectedSegmentIndex === i;
+          isSegmentSelected && activeSegmentIndex === i;
 
-        if (!matches || matches.length === 0) {
+        if (matches.length === 0) {
           return (
             <span key={segmentKey} className={styles.segment}>
               {textContent}
@@ -113,21 +112,20 @@ export const TextSegment = ({
               fontFamily: sourceSans.style.fontFamily,
               color,
             }}
-            onClick={() => {
-              if (!matches) return;
-              updateSelectedLocationInGlobalState({
+            onClick={async () => {
+              await updateSelectedLocationInGlobalState({
                 id: data?.segmentNumber,
-                matches: matches as string[],
+                matches,
                 index: i,
               });
             }}
-            onKeyDown={(event) => {
+            onKeyDown={async (event) => {
               // allow selecting the segments by pressing space or enter
               if (event.key !== " " && event.key !== "Enter") return;
               event.preventDefault();
-              updateSelectedLocationInGlobalState({
+              await updateSelectedLocationInGlobalState({
                 id: data?.segmentNumber,
-                matches: matches as string[],
+                matches,
                 index: i,
               });
             }}

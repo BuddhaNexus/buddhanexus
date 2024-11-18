@@ -4,8 +4,10 @@ import { useTranslation } from "next-i18next";
 import { useTheme } from "@mui/material/styles";
 import { GraphPageGraphData } from "@utils/api/endpoints/graph-view/graph";
 
+import { DatasetWarning } from "./DatasetWarning";
+
 interface Props {
-  data: GraphPageGraphData;
+  data?: GraphPageGraphData | null;
   chartType?: GoogleChartWrapperChartType;
 }
 
@@ -17,6 +19,10 @@ export const HistogramDataChart = memo<Props>(function HistogramDataChart({
   const { t } = useTranslation();
 
   const isScatterChart = chartType === "ScatterChart";
+
+  if (!data || data.length === 0) {
+    return <DatasetWarning />;
+  }
 
   return (
     <Chart

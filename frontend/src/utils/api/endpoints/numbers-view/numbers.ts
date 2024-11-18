@@ -1,23 +1,23 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
-import type {
-  APINumbersViewRequestBody,
-  APINumbersViewResponseData,
-} from "@utils/api/types";
+import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
 export type NumbersViewData = {
-  data: APINumbersViewResponseData;
+  data: APIPostResponse<"/numbers-view/numbers/">;
   hasNextPage: boolean;
   pageNumber: number;
 };
 
 export async function getNumbersViewData(
-  body: APINumbersViewRequestBody,
+  body: APIPostRequestBody<"/numbers-view/numbers/">,
 ): Promise<NumbersViewData> {
   const { data } = await apiClient.POST("/numbers-view/numbers/", {
     body: parseAPIRequestBody(body),
   });
 
-  const hasNextPage = Boolean(data && data.length < 100);
-  return { data: data ?? [], pageNumber: body.page!, hasNextPage };
+  // TODO: https://github.com/BuddhaNexus/buddhanexus/issues/336
+  // numbers view will currently only fetch one page of data until the issue is resolved.
+  // const hasNextPage = Boolean(data && data.length < 100);
+  const hasNextPage = false;
+  return { data: data ?? [], pageNumber: body.page, hasNextPage };
 }

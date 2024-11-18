@@ -1,8 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { DbViewPageHead } from "@components/db/DbViewPageHead";
-import { ErrorPage } from "@components/db/ErrorPage";
+import { ResultQueryError } from "@components/db/ResultQueryError";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { DbSourceBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
@@ -12,7 +11,8 @@ import { useTextPage } from "@features/textView/useTextPage";
 export default function TextPage() {
   const {
     isError,
-    sourceLanguage,
+    error,
+    dbLanguage,
     isFallback,
     isFetching,
     hasData,
@@ -25,12 +25,24 @@ export default function TextPage() {
   } = useTextPage();
 
   if (isError) {
-    return <ErrorPage backgroundName={sourceLanguage} />;
+    return (
+      <PageContainer
+        maxWidth="xl"
+        backgroundName={dbLanguage}
+        isQueryResultsPage
+      >
+        <ResultQueryError errorMessage={error?.message} />
+      </PageContainer>
+    );
   }
 
   if (isFallback) {
     return (
-      <PageContainer backgroundName={sourceLanguage}>
+      <PageContainer
+        maxWidth="xl"
+        backgroundName={dbLanguage}
+        isQueryResultsPage
+      >
         <CenteredProgress />
       </PageContainer>
     );
@@ -39,12 +51,10 @@ export default function TextPage() {
   return (
     <PageContainer
       maxWidth="xl"
-      backgroundName={sourceLanguage}
+      backgroundName={dbLanguage}
       isLoading={isFetching}
       isQueryResultsPage
     >
-      <DbViewPageHead />
-
       {hasData ? (
         <TextView
           data={allParallels}

@@ -38,10 +38,11 @@
     "sort": {
       "selector": "Sorting Method",
       "position": "Default – Position in inquiry text",
-      "quoted-text": "Position in match texts",
+      "quotedtext": "Position in match texts",
+      "length": "Length of character match (<)",
       "length2": "Length of character match (>)"
     },
-    "download": "Download results as xmlx file",
+    "download_data": "Download results as xmlx file",
     "wylie": "Wylie",
     "unicode": "Unicode",
     "copyQueryTitle": "Copy text title",
@@ -51,7 +52,7 @@
     "useMonochromaticSegmentColors": "Use monochromatic segment match colors"
   },
   "optionsPopperMsgs": {
-    "download": "Ooops! Something went wrong!",
+    "download_data": "Ooops! Something went wrong!",
     "copyQueryTitle": "Copied",
     "copyQueryLink": "Copied",
     "emailQueryLink": "Email opened"
@@ -59,8 +60,8 @@
   "filtersLabels": {
     "score": "Similarity Score:",
     "minMatch": "Minimum character/syllable matches length:",
-    "source_exclude": "Exclude sources:",
-    "source_include": "Only include sources:"
+    "exclude_sources": "Exclude sources:",
+    "include_sources": "Only include sources:"
   },
   "dbViewLabels": {
     "view": "View",

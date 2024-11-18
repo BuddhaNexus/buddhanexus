@@ -3,6 +3,7 @@ const { i18n } = require("./next-i18next.config");
 const nextMDX = require("@next/mdx");
 
 const NODE_ENV = process.env.NODE_ENV;
+const SKIP_LINT = process.env.SKIP_LINT;
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
@@ -10,7 +11,10 @@ const nextConfig = {
   reactStrictMode: true,
   compiler: { emotion: true },
   output: "standalone",
-
+  eslint: {
+    ignoreDuringBuilds: SKIP_LINT === "true",
+  },
+  basePath: NODE_ENV === "production" ? '/nexus' : undefined,
   // todo: remove after turbopack is stable
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
   webpack(config, { isServer }) {

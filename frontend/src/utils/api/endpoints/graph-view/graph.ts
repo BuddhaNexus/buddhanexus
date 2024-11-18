@@ -1,30 +1,33 @@
 import apiClient from "@api";
-import type {
-  APIGraphViewRequestBody,
-  APIGraphViewResponseData,
-} from "@utils/api/types";
+import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
-export type GraphPageGraphData = [name: string, count: number][];
+type GraphDataEntry = [name: string, count: number];
+export type GraphPageGraphData = GraphDataEntry[];
 
 const defaultReturnValue = {
-  histogramgraphdata: [],
-  piegraphdata: [],
+  histogramgraphdata: null,
+  piegraphdata: null,
 };
 
-function parseAPIGraphData(data: APIGraphViewResponseData | undefined) {
+function parseAPIGraphData(data: APIPostResponse<"/graph-view/"> | undefined): {
+  histogramgraphdata: GraphPageGraphData | null;
+  piegraphdata: GraphPageGraphData | null;
+} {
   return data
     ? Object.entries(data).reduce((acc, [key, value]) => {
         return {
           ...acc,
-          [key]: value.map((item) => {
-            return [item[0], Number(item[1])];
-          }) as GraphPageGraphData,
+          [key]: Array.isArray(value)
+            ? value.map((item) => {
+                return [item[0], Number(item[1])];
+              })
+            : null,
         };
       }, defaultReturnValue)
     : defaultReturnValue;
 }
 
-export async function getGraphData(body: APIGraphViewRequestBody) {
+export async function getGraphData(body: APIPostRequestBody<"/graph-view/">) {
   const { data } = await apiClient.POST("/graph-view/", {
     body,
   });

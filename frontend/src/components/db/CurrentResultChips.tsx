@@ -1,112 +1,106 @@
 import React from "react";
-import { useRouter } from "next/router";
+import { ReadonlyURLSearchParams, useSearchParams } from "next/navigation";
 import { useTranslation } from "next-i18next";
 import ParallelsChip from "@components/db/ParallelsChip";
 import SearchMatchesChip from "@components/db/SearchMatchesChip";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
 import {
-  customFiltersChipQueryExclusions,
-  customOptionsChipQueries,
-} from "@features/sidebarSuite/config";
-import { uniqueSettings } from "@features/sidebarSuite/config/settings";
-import type {
-  DefaultQueryParams,
-  LimitsFilterValue,
-  MultiLingalParam,
-  QueryParams,
-} from "@features/sidebarSuite/config/types";
+  ResultPageType,
+  useResultPageType,
+} from "@components/hooks/useResultPageType";
+import {
+  DBSourceFilePageFilterUISettingName,
+  DisplayUISettingName,
+  SearchPageFilterUISettingName,
+} from "@features/SidebarSuite/types";
+import {
+  dbSourceFileRequestFilters,
+  displayUISettings,
+  searchRequestFilters,
+} from "@features/SidebarSuite/uiSettings/config";
 import Chip from "@mui/material/Chip";
-import { useQuery } from "@tanstack/react-query";
-import { DbApi } from "@utils/api/dbApi";
 
-type ParamValues = string | number | LimitsFilterValue | MultiLingalParam;
-
-function getFilterCount(key: string) {
-  return customFiltersChipQueryExclusions.includes(key) ? 0 : 1;
-}
-function getDisplayOptionCount(key: string) {
-  return customOptionsChipQueries.includes(key) ? 1 : 0;
-}
-
-function isDefaultValue({
-  defaultQueries,
-  queryKey,
-  value,
-}: {
-  defaultQueries: DefaultQueryParams;
-  queryKey: keyof typeof defaultQueries;
-  value: ParamValues;
-}) {
-  // `defaultQueries` correspond to params that must be set for API calls. The `defaults` variable here defines the default settings used in API results, but aren't necessarily set on the FE (eg. `multi_lingual`)
-  // TODO: handling here is being reviewed for refactoring and this may be removable.
-  const defaults = {
-    ...defaultQueries,
-    [uniqueSettings.queryParams.sortMethod]: "position",
-    [uniqueSettings.queryParams.folio]: null,
-  };
-  return defaults[queryKey]?.toString() === value;
-}
+const searchFilterSet = new Set(searchRequestFilters);
+const dbSourceFileFilterSet = new Set(dbSourceFileRequestFilters);
+const displayUISettingsSet = new Set(displayUISettings);
 
 function getSettingCounts({
-  isSearchRoute,
-  currentQueries,
-  defaultQueries,
+  resultPageType,
+  searchParams,
 }: {
-  isSearchRoute: boolean;
-  currentQueries: Partial<QueryParams>;
-  defaultQueries: DefaultQueryParams;
+  resultPageType: ResultPageType;
+  searchParams: ReadonlyURLSearchParams;
 }) {
   let display = 0;
   let filter = 0;
+  let isExcludeSet = false;
+  let isIncludeSet = false;
 
-  for (const [key, value] of Object.entries(currentQueries)) {
-    const queryKey = key as keyof typeof defaultQueries;
+  const params = Object.fromEntries(searchParams.entries());
 
-    if (isSearchRoute) {
-      filter += getFilterCount(key);
+  for (const key of Object.keys(params)) {
+    if (key.startsWith("exclude_") && !isExcludeSet) {
+      filter += 1;
+      isExcludeSet = true;
       continue;
     }
 
-    // default params only apply to source text results pages
-    if (isDefaultValue({ defaultQueries, queryKey, value })) {
+    if (key.startsWith("include_") && !isIncludeSet) {
+      filter += 1;
+      isIncludeSet = true;
       continue;
     }
 
-    display += getDisplayOptionCount(key);
-    filter += getFilterCount(key);
+    if (
+      resultPageType === "search" &&
+      searchFilterSet.has(key as SearchPageFilterUISettingName)
+    ) {
+      filter += 1;
+      continue;
+    }
+
+    if (
+      resultPageType === "dbFile" &&
+      displayUISettingsSet.has(key as DisplayUISettingName)
+    ) {
+      display += 1;
+      continue;
+    }
+
+    if (
+      resultPageType === "dbFile" &&
+      dbSourceFileFilterSet.has(key as DBSourceFilePageFilterUISettingName)
+    ) {
+      filter += 1;
+    }
   }
 
   return { display, filter };
 }
+
 export default function CurrentResultChips({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   matches = 0,
 }: {
   matches?: number;
 }) {
-  const router = useRouter();
   const { t } = useTranslation("settings");
 
-  const isSearchRoute = router.route.startsWith("/search");
-  const { fileName, queryParams, defaultQueryParams } = useDbQueryParams();
-  const { data: multiLangParamData } = useQuery({
-    queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),
-    queryFn: () => DbApi.AvailableLanguagesData.call({ file_name: fileName }),
-  });
+  const { isSearchPage, resultPageType } = useResultPageType();
 
-  const count = getSettingCounts({
-    isSearchRoute,
-    currentQueries: queryParams,
-    defaultQueries: {
-      ...defaultQueryParams,
-      [uniqueSettings.queryParams.multiLingual]: multiLangParamData,
-    },
-  });
+  const searchParams = useSearchParams();
+
+  const count = React.useMemo(
+    () =>
+      getSettingCounts({
+        resultPageType,
+        searchParams,
+      }),
+    [searchParams, resultPageType],
+  );
 
   return (
     <>
-      {isSearchRoute ? (
-        <SearchMatchesChip matches={matches} isSearchRoute />
+      {isSearchPage ? (
+        <SearchMatchesChip matches={matches} isSearchPage />
       ) : (
         <ParallelsChip />
       )}

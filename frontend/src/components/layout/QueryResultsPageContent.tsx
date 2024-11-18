@@ -1,9 +1,11 @@
 import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useDbQueryParams } from "@components/hooks/useDbQueryParams";
+import { DbViewPageHead } from "@components/db/DbViewPageHead";
+import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useResultPageType } from "@components/hooks/useResultPageType";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
-import { Main } from "@features/sidebarSuite/common/MuiStyledSidebarComponents";
-import { SidebarSuite } from "@features/sidebarSuite/SidebarSuite";
+import { SidebarSuite } from "@features/SidebarSuite";
+import { Main } from "@features/SidebarSuite/common/MuiStyledSidebarComponents";
 import type { Breakpoint, SxProps } from "@mui/material";
 import {
   Container,
@@ -22,12 +24,13 @@ export const QueryResultsPageContent: FC<Props> = ({
   containerStyles,
 }) => {
   const { t } = useTranslation();
-  const { fileName } = useDbQueryParams();
+  const { fileName } = useNullableDbRouterParams();
 
   const lgWidth = useMaterialTheme().breakpoints.values.lg;
 
   const [isInitialized, setIsInitialized] = useState(false);
   const { isSettingsOpen, setIsSettingsOpen } = useSettingsDrawer();
+  const { isDbFilePage } = useResultPageType();
 
   useEffect(() => {
     if (!isInitialized) {
@@ -41,6 +44,7 @@ export const QueryResultsPageContent: FC<Props> = ({
       {isInitialized ? (
         <Main open={isSettingsOpen}>
           <Container maxWidth={maxWidth} sx={containerStyles}>
+            {isDbFilePage ? <DbViewPageHead /> : null}
             {children}
           </Container>
           <SidebarSuite />

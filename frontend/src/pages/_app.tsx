@@ -5,7 +5,6 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { appWithTranslation } from "next-i18next";
 import nextI18NextConfig from "next-i18next.config";
-import { NextAdapter } from "next-query-params";
 import { DefaultSeo } from "next-seo";
 import SEO from "next-seo.config";
 import { AppTopBar } from "@components/layout/AppTopBar";
@@ -19,8 +18,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryCacheTimeDefaults } from "@utils/api/apiQueryUtils";
 import { ThemeProvider } from "@utils/ThemeProvider";
-import queryString from "query-string";
-import { QueryParamProvider } from "use-query-params";
+import { NuqsAdapter } from "nuqs/adapters/next/pages";
 
 function MyApp(props: AppProps) {
   const { Component, pageProps } = props;
@@ -35,15 +33,7 @@ function MyApp(props: AppProps) {
 
   return (
     <AppCacheProvider {...props}>
-      <QueryParamProvider
-        adapter={NextAdapter}
-        options={{
-          searchStringToObject: queryString.parse,
-          objectToSearchString: queryString.stringify,
-          updateType: "replaceIn",
-          enableBatching: true,
-        }}
-      >
+      <NuqsAdapter>
         <QueryClientProvider client={queryClient}>
           <HydrationBoundary state={pageProps.dehydratedState}>
             <DefaultSeo {...SEO} />
@@ -62,7 +52,7 @@ function MyApp(props: AppProps) {
           </HydrationBoundary>
           <ReactQueryDevtools />
         </QueryClientProvider>
-      </QueryParamProvider>
+      </NuqsAdapter>
     </AppCacheProvider>
   );
 }

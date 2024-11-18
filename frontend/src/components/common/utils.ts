@@ -1,13 +1,14 @@
-import type { DbViewEnum, SourceLanguage } from "@utils/constants";
+import { DbLanguage } from "@utils/api/types";
+import type { DbViewEnum } from "@utils/constants";
 
 export const getTextPath = ({
-  sourceLanguage,
+  dbLanguage,
   fileName,
   dbView,
 }: {
-  fileName?: string;
-  sourceLanguage: SourceLanguage;
+  fileName: string;
+  dbLanguage: DbLanguage;
   dbView: DbViewEnum;
 }) => {
-  return `/db/${sourceLanguage}/${fileName}/${dbView}`;
+  return `/db/${dbLanguage}/${fileName}/${dbView}`;
 };
