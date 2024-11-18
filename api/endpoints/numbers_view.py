@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
 from typing import Any
-from ..utils import (    
+from ..utils import (
     shorten_segment_names,
 )
 from shared.utils import get_language_from_filename

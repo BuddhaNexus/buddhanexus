@@ -51,7 +51,7 @@ export const TextView = ({
 
   const hasData = data.length > 0;
   const shouldShowMiddlePane =
-    Boolean(activeSegmentId) && activeSegmentMatches.length > 0;
+    activeSegmentId !== "none" && activeSegmentMatches.length > 0;
 
   // make sure the selected segment is at the top when the page is opened
   const activeSegmentIndexInData = useMemo(() => {

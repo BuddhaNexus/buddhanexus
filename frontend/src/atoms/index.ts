@@ -63,3 +63,5 @@ export const shouldUseMonochromaticSegmentColorsAtom = atomWithStorage<boolean>(
 );
 
 export const activeSegmentMatchesAtom = atom<string[]>([]);
+
+export const hoveredOverParallelIdAtom = atom<string>("");

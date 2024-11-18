@@ -36,6 +36,11 @@ span.segment {
     background: #eeeeee !important;
     text-decoration: underline;
   }
+
+  &--parallel-hovered {
+    background: var(--mui-palette-common-black) !important;
+    color: var(--mui-palette-common-white) !important;
+  }
 }
 
 .segmentNumber {

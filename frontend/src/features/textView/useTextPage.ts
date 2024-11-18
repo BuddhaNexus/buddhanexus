@@ -119,7 +119,6 @@ export function useTextPage(): UseTextPageReturn {
   // see queryFn comment above
   useEffect(
     function updatePreviouslySelectedSegmentsMap() {
-      // console.log("useTextPage", active_segment);
       if (isSuccess && active_segment)
         previouslySelectedSegmentsMap.current[active_segment] = true;
     },

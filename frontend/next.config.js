@@ -14,6 +14,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: SKIP_LINT === "true",
   },
+  basePath: NODE_ENV === "production" ? '/nexus' : undefined,
   // todo: remove after turbopack is stable
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
   webpack(config, { isServer }) {
