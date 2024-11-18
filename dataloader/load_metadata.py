@@ -6,10 +6,8 @@ import pandas as pd
 from typing import List
 from arango.database import StandardDatabase
 from dataloader_constants import COLLECTION_FILES, COLLECTION_CATEGORY_NAMES
-from shared.utils import (
-    get_language_from_filename,
-    get_filename_from_segmentnr
-)
+from shared.utils import get_language_from_filename, get_filename_from_segmentnr
+
 
 def load_metadata_from_files(paths: List[str], db: StandardDatabase) -> None:
     """
