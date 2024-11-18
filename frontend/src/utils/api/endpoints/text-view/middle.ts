@@ -6,6 +6,7 @@ function parseAPITextViewMiddleParallelsData(
   data: APIPostResponse<"/text-view/middle/">,
 ) {
   return data.map((p) => ({
+    id: p.id,
     displayName: p.display_name ?? "",
     fileName: p.filename ?? "",
     parallelLength: p.length,

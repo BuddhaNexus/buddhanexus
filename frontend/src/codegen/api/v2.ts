@@ -758,6 +758,8 @@ export interface components {
     };
     /** Segment */
     api__endpoints__models__text_view_models__Segment: {
+      /** Id */
+      id: string;
       /** Par Segnr Range */
       par_segnr_range: string;
       /** Display Name */

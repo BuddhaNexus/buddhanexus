@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
-import { activeSegmentMatchesAtom } from "@atoms";
+import { activeSegmentMatchesAtom, hoveredOverParallelIdAtom } from "@atoms";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { Numbers } from "@mui/icons-material";
 import { Chip, CircularProgress } from "@mui/material";
@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { ClearSelectedSegmentButton } from "./ClearSelectedSegmentButton";
 
@@ -16,6 +16,7 @@ export default function TextViewMiddleParallels() {
   const { t } = useTranslation();
 
   const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
+  const setHoveredOverParallelId = useSetAtom(hoveredOverParallelIdAtom);
 
   const theme = useTheme();
 
@@ -34,6 +35,7 @@ export default function TextViewMiddleParallels() {
         .map(
           (
             {
+              id,
               fileName,
               displayName,
               parallelLength,
@@ -46,16 +48,18 @@ export default function TextViewMiddleParallels() {
           ) => (
             <ParallelSegment
               key={fileName + score + parallelLength + index}
+              id={id}
               displayName={displayName}
               language={targetLanguage}
               length={parallelLength}
               text={parallelFullText}
               score={score}
               textSegmentNumberRange={parallelSegmentNumberRange}
+              onHover={setHoveredOverParallelId}
             />
           ),
         ),
-    [data],
+    [data, setHoveredOverParallelId],
   );
 
   return (

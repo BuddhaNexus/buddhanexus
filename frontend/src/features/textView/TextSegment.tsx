@@ -1,6 +1,7 @@
-import { useCallback, useLayoutEffect } from "react";
+import { useCallback, useLayoutEffect, useMemo } from "react";
 import {
   activeSegmentMatchesAtom,
+  hoveredOverParallelIdAtom,
   scriptSelectionAtom,
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
@@ -40,6 +41,7 @@ export const TextSegment = ({
     shouldUseMonochromaticSegmentColorsAtom,
   );
   const shouldShowSegmentNumbers = useAtomValue(shouldShowSegmentNumbersAtom);
+  const hoveredOverParallelId = useAtomValue(hoveredOverParallelIdAtom);
   const setSelectedSegmentMatches = useSetAtom(activeSegmentMatchesAtom);
   const isSegmentSelected = activeSegmentId === data?.segmentNumber;
 
@@ -67,17 +69,25 @@ export const TextSegment = ({
     setSelectedSegmentMatches,
   ]);
 
+  const matchSets = useMemo(() => {
+    // optimisation - don't run the map function if there are no active segments (middle view is closed)
+    if (activeSegmentId === "none") return undefined;
+    return data?.segmentText.map((textChunk) => new Set(textChunk.matches));
+  }, [activeSegmentId, data?.segmentText]);
+
+  if (!data) return null;
+
   return (
     <div className={styles.segmentWrapper}>
       <span
         className={`${styles.segmentNumber} ${
           isSegmentSelected && styles["segmentNumber--selected"]
         } ${!shouldShowSegmentNumbers && styles["segmentNumber--hidden"]}`}
-        data-segmentnumber={data?.segmentNumber}
+        data-segmentnumber={data.segmentNumber}
       />
 
-      {data?.segmentText.map(({ text, highlightColor, matches }, i) => {
-        const segmentKey = data?.segmentNumber + i;
+      {data.segmentText.map(({ text, highlightColor, matches }, i) => {
+        const segmentKey = data.segmentNumber + i;
         const textContent = enscriptText({
           text,
           script: scriptSelection,
@@ -85,6 +95,10 @@ export const TextSegment = ({
         });
         const isSegmentPartSelected =
           isSegmentSelected && activeSegmentIndex === i;
+
+        const isSegmentPartHoveredOverInMiddleView = matchSets
+          ? matchSets[i]?.has(hoveredOverParallelId)
+          : false;
 
         if (matches.length === 0) {
           return (
@@ -107,14 +121,14 @@ export const TextSegment = ({
             tabIndex={0}
             className={`${styles.segment} ${styles.segment__button} ${
               isDarkTheme && styles["segment--dark"]
-            } ${isSegmentPartSelected && styles["segment--selected"]}`}
+            } ${isSegmentPartSelected && styles["segment--selected"]} ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`}
             style={{
               fontFamily: sourceSans.style.fontFamily,
               color,
             }}
             onClick={async () => {
               await updateSelectedLocationInGlobalState({
-                id: data?.segmentNumber,
+                id: data.segmentNumber,
                 matches,
                 index: i,
               });
@@ -124,7 +138,7 @@ export const TextSegment = ({
               if (event.key !== " " && event.key !== "Enter") return;
               event.preventDefault();
               await updateSelectedLocationInGlobalState({
-                id: data?.segmentNumber,
+                id: data.segmentNumber,
                 matches,
                 index: i,
               });
