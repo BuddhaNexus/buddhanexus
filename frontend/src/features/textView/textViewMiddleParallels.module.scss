@@ -6,19 +6,10 @@
 }
 
 .container {
+  height: 100%;
+}
+
+.cardContent {
   overflow: auto;
   height: 100%;
-  flex: 1;
-  padding-right: 8px;
-  padding-left: 8px;
-
-  &__header {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background-color: var(--mui-palette-common-white);
-  }
 }

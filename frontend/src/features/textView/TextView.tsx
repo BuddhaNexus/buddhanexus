@@ -64,7 +64,7 @@ export const TextView = ({
 
   return (
     <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
-      <Allotment defaultSizes={[4, 3]}>
+      <Allotment defaultSizes={[4, 3, 3]}>
         {/* Left pane - text (main view) */}
         <Allotment.Pane>
           <Virtuoso
@@ -94,7 +94,6 @@ export const TextView = ({
         </Allotment.Pane>
 
         {/* Right Pane - shown after a parallel is selected in middle pane */}
-        {/* There's some initial rendering issue here, not sure why key prop: */}
         <Allotment.Pane visible={shouldShowRightPane}>
           <TextViewRightPane />
         </Allotment.Pane>

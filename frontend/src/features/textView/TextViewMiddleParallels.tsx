@@ -7,7 +7,13 @@ import {
 } from "@components/hooks/params";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { Numbers } from "@mui/icons-material";
-import { Chip, CircularProgress } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Chip,
+  CircularProgress,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
@@ -75,26 +81,28 @@ export default function TextViewMiddleParallels() {
   );
 
   return (
-    <div className={styles.container}>
+    <Card className={styles.container}>
       <CircularProgress
         className={styles.circularProgress}
         style={{ display: isLoading ? "block" : "none" }}
       />
-      <Box
-        data-testid="middle-view-header"
-        className={styles.container__header}
-      >
-        <Chip
-          label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
-          variant="outlined"
-          icon={<Numbers />}
-        />
-        <div>
-          <CloseTextViewPaneButton handlePress={handleClear} />
-        </div>
-      </Box>
 
-      <div>{parallelsToDisplay}</div>
-    </div>
+      <CardHeader
+        data-testid="middle-view-header"
+        sx={{ position: "sticky" }}
+        action={<CloseTextViewPaneButton handlePress={handleClear} />}
+        subheader={
+          <Chip
+            label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
+            variant="outlined"
+            icon={<Numbers />}
+          />
+        }
+      />
+
+      <CardContent className={styles.cardContent}>
+        {parallelsToDisplay}
+      </CardContent>
+    </Card>
   );
 }
