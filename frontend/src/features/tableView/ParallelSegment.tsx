@@ -76,11 +76,10 @@ export const ParallelSegment = ({
   }, [infoToCopy]);
 
   const openRightPane = useCallback(
-    (language: DbLanguage, segmentNumber: string) => {
-      setRightPaneActiveSegmentId(segmentNumber);
-      console.log({ language, segmentNumber });
+    async (language: DbLanguage, segmentNumber: string) => {
+      await setRightPaneActiveSegmentId(segmentNumber);
     },
-    [],
+    [setRightPaneActiveSegmentId],
   );
 
   const linkSegmentNumber =

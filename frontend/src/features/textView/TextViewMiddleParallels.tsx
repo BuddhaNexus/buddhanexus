@@ -1,16 +1,20 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { activeSegmentMatchesAtom, hoveredOverParallelIdAtom } from "@atoms";
+import {
+  useActiveSegmentIndexParam,
+  useActiveSegmentParam,
+} from "@components/hooks/params";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { Numbers } from "@mui/icons-material";
 import { Chip, CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import { ClearSelectedSegmentButton } from "./ClearSelectedSegmentButton";
+import { CloseTextViewPaneButton } from "./CloseTextViewPaneButton";
+import styles from "./textViewMiddleParallels.module.scss";
 
 export default function TextViewMiddleParallels() {
   const { t } = useTranslation();
@@ -18,14 +22,20 @@ export default function TextViewMiddleParallels() {
   const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
   const setHoveredOverParallelId = useSetAtom(hoveredOverParallelIdAtom);
 
-  const theme = useTheme();
-
   const { data, isLoading } = useQuery({
     queryKey: DbApi.TextViewMiddle.makeQueryKey(activeSegmentMatches),
     queryFn: () =>
       DbApi.TextViewMiddle.call({ parallel_ids: activeSegmentMatches }),
     enabled: activeSegmentMatches.length > 0,
   });
+
+  const [, setActiveSegment] = useActiveSegmentParam();
+  const [, setActiveSegmentIndex] = useActiveSegmentIndexParam();
+
+  const handleClear = async () => {
+    await setActiveSegment("none");
+    await setActiveSegmentIndex(null);
+  };
 
   const parallelsToDisplay = useMemo(
     () =>
@@ -65,36 +75,14 @@ export default function TextViewMiddleParallels() {
   );
 
   return (
-    <div
-      style={{
-        overflow: "auto",
-        height: "100%",
-        flex: 1,
-        paddingRight: 8,
-        paddingLeft: 8,
-      }}
-    >
+    <div className={styles.container}>
       <CircularProgress
-        style={{
-          display: isLoading ? "block" : "none",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
+        className={styles.circularProgress}
+        style={{ display: isLoading ? "block" : "none" }}
       />
       <Box
         data-testid="middle-view-header"
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          position: "sticky",
-          backgroundColor: theme.palette.background.paper,
-          top: 0,
-          zIndex: 1,
-          padding: 4,
-        }}
+        className={styles.container__header}
       >
         <Chip
           label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
@@ -102,7 +90,7 @@ export default function TextViewMiddleParallels() {
           icon={<Numbers />}
         />
         <div>
-          <ClearSelectedSegmentButton />
+          <CloseTextViewPaneButton handlePress={handleClear} />
         </div>
       </Box>
 

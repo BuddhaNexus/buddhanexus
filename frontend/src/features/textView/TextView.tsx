@@ -12,11 +12,11 @@ import {
   useRightPaneActiveSegmentParam,
 } from "@components/hooks/params";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
-import { useTextViewRightPane } from "@features/textView/useTextViewRightPane";
+import { TextViewRightPane } from "@features/textView/TextViewRightPane";
+import { getTextViewColorScale } from "@features/textView/utils";
 import { Paper } from "@mui/material";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
 import { Allotment } from "allotment";
-import chroma from "chroma-js";
 import { useAtomValue } from "jotai/index";
 
 import { TextSegment } from "./TextSegment";
@@ -44,22 +44,13 @@ export const TextView = ({
   const [rightPaneActiveSegmentId] = useRightPaneActiveSegmentParam();
   const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
 
-  const colorScale = useMemo(() => {
-    const colors = data.map((item) => item.segmentText[0]?.highlightColor ?? 0);
-    const [minColor, maxColor] = [Math.min(...colors), Math.max(...colors)];
-
-    return chroma
-      .scale("Reds")
-      .padding([0.6, 0])
-      .domain([maxColor, minColor])
-      .correctLightness(true);
-  }, [data]);
-
   const shouldShowMiddlePane =
     activeSegmentId !== "none" && activeSegmentMatches.length > 0;
 
   const shouldShowRightPane =
     rightPaneActiveSegmentId !== DEFAULT_PARAM_VALUES.active_segment;
+
+  const colorScale = useMemo(() => getTextViewColorScale(data), [data]);
 
   // make sure the selected segment is at the top when the page is opened
   const activeSegmentIndexInData = useMemo(() => {
@@ -70,19 +61,6 @@ export const TextView = ({
     if (index === -1) return 0;
     return index;
   }, [data, activeSegmentId]);
-
-  const {
-    data: rightPaneData,
-    isFetchingPreviousPage: isFetchingRightPanePreviousPage,
-    isFetchingNextPage: isFetchingRightPaneNextPage,
-    error: rightPaneError,
-    isSuccess: isRightPaneSuccess,
-    fetchPreviousPage: fetchRightPanePreviousPage,
-    fetchNextPage: fetchRightPaneNextPage,
-    isFetching: isRightPaneFetching,
-    isError: isRightPaneError,
-    firstItemIndex: rightPaneFirstItemIndex,
-  } = useTextViewRightPane(shouldShowRightPane);
 
   return (
     <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
@@ -117,35 +95,8 @@ export const TextView = ({
 
         {/* Right Pane - shown after a parallel is selected in middle pane */}
         {/* There's some initial rendering issue here, not sure why key prop: */}
-        <Allotment.Pane
-          key={String(rightPaneData)}
-          visible={shouldShowRightPane}
-        >
-          {/* TODO: plug different data in here */}
-          <Virtuoso
-            id="2"
-            firstItemIndex={rightPaneFirstItemIndex}
-            // initialTopMostItemIndex={activeSegmentIndexInData}
-            data={rightPaneData.length > 0 ? rightPaneData : undefined}
-            startReached={fetchRightPanePreviousPage}
-            endReached={fetchRightPaneNextPage}
-            totalCount={rightPaneData.length}
-            overscan={900} // pixel value
-            increaseViewportBy={500} // solves empty content at start/end of list issue
-            initialItemCount={5} // for SSR
-            components={{
-              Header: isFetchingRightPanePreviousPage
-                ? ListLoadingIndicator
-                : undefined,
-              Footer: isFetchingRightPaneNextPage
-                ? ListLoadingIndicator
-                : undefined,
-              EmptyPlaceholder,
-            }}
-            itemContent={(_, dataSegment) => (
-              <TextSegment data={dataSegment} colorScale={colorScale} />
-            )}
-          />
+        <Allotment.Pane visible={shouldShowRightPane}>
+          <TextViewRightPane />
         </Allotment.Pane>
       </Allotment>
     </Paper>

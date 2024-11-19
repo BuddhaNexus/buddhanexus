@@ -9,7 +9,7 @@ import { DbApi } from "@utils/api/dbApi";
 // arbitrarily high number, as per virtuoso docs
 const START_INDEX = 1_000_000;
 
-export function useTextViewRightPane(shouldShowRightPane: boolean) {
+export function useTextViewRightPane() {
   const paginationState = useRef<PaginationState>([0, 0]);
 
   const searchParams = useSearchParams();
@@ -37,7 +37,6 @@ export function useTextViewRightPane(shouldShowRightPane: boolean) {
     isError,
     error,
   } = useInfiniteQuery({
-    enabled: shouldShowRightPane,
     placeholderData: keepPreviousData,
     initialPageParam,
     queryKey: DbApi.TextView.makeQueryKey({
