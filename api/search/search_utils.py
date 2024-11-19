@@ -40,7 +40,9 @@ def preprocess_search_string(search_string, language):
         sa = sa.lower()
 
     # sa_fuzzy also tests if a string contains bo/zh letters; if so, it returns an empty string
-    sa_fuzzy = sanskrit_processor.process_batch([sa], mode="unsandhied", output_forma="string")[0]
+    sa_fuzzy = sanskrit_processor.process_batch(
+        [sa], mode="unsandhied", output_forma="string"
+    )[0]
     pa = sa_fuzzy
     # if sa_fuzzy detected the string to be Tibetan/Chinese or the unicode2wylie transliteration was successful, do this:
     if sa_fuzzy == "" or bo != "":

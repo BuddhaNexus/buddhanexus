@@ -57,31 +57,27 @@ clean-db:
 # @Vladimir this is all you need for now, use 'make run-dev' to start the docker image and then run 'make load-tibetan-data'. If you want to remove data, run 'make clean-db'
 load-tibetan-data:
 	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-metadata"
 	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=bo"
-	#@docker exec -t dataloader bash -c "invoke load-parallels --lang=bo"
-	#@docker exec -t dataloader bash -c "invoke load-global-stats --lang=bo"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=bo"
+	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=bo"
 
 load-pali-data:
 	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-metadata"
 	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=pa"
-	#@docker exec -t dataloader bash -c "invoke load-parallels --lang=pa"
-	#@docker exec -t dataloader bash -c "invoke load-global-stats --lang=pa"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=pa"
+	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=pa"
 
 load-chinese-data:
 	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-metadata"
 	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=zh"
-	#@docker exec -t dataloader bash -c "invoke load-parallels --lang=zh"
-	#@docker exec -t dataloader bash -c "invoke load-global-stats --lang=zh"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=zh"
+	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=zh"
 
 load-sanskrit-data:
 	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-metadata"
 	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=sa"
-	#@docker exec -t dataloader bash -c "invoke load-parallels --lang=sa"
-	#@docker exec -t dataloader bash -c "invoke load-global-stats --lang=sa"
+	@docker exec -t dataloader bash -c "invoke load-parallels --lang=sa"
+	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=sa"
 
 clean-tibetan-data:
 	@docker exec -t dataloader bash -c "invoke clean-text-segments --lang=bo"
@@ -126,3 +122,7 @@ run-frontend-dev:
 
 run-frontend:
 	$(COMPOSEPROD) up frontend
+
+
+run-tests:
+	$(COMPOSE) run tests pytest -v

@@ -75,23 +75,24 @@ QUERY_PARALLELS_FOR_MIDDLE_TEXT = """
 LET parallels = (
     FOR p IN parallels
         FILTER p._key IN @parallel_ids
-        
+
         // Get segment texts in a single subquery
         LET par_segtext = (
             FOR segment IN segments
                 FILTER segment.segmentnr IN p.par_segnr
                 RETURN segment.original
         )
-        
+
         // Get file display name in a single subquery
         LET par_full_name = FIRST(
             FOR file IN files
                 FILTER file._key == p.par_filename
                 RETURN file.displayName
         )
-        
+
         // Return processed parallel data
         RETURN {
+            id: p._key,
             par_segnr: p.par_segnr,
             display_name: par_full_name,
             tgt_lang: p.tgt_lang,
@@ -111,4 +112,3 @@ RETURN (
         RETURN p
 )
 """
-
