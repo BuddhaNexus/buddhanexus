@@ -7,7 +7,7 @@ import { useAtomValue } from "jotai";
 const TEMP_VIEW_INFO: Record<DbViewEnum, string> = {
   graph: `The pie-chart displays the distribution of all the matches found with the current filters across the various collections and their subsections. The distribution is weighted by length of matches found.
 
-  The distribution chart displays the distribution of the files that have matches with the Inquiry Text based on the accumulated length of the matches.
+  The distribution chart displays the distribution of the top files that have matches with the Inquiry Text based on the accumulated length of the approximate matches. A maximum of 50 Hit Texts are shown.
   `,
   numbers:
     "Displays potential parallels by numbers sorted by segment as they appear in the text. ",
