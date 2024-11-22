@@ -13,9 +13,9 @@ LET target_file = FIRST(
 LET current_parallels = (
         FOR current_parallel IN target_file.parallels_randomized
             LET p = DOCUMENT(parallels, current_parallel)
+                FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
                 FILTER p.score * 100 >= @score
                 FILTER p.par_length >= @parlength
-                FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
                 LIMIT 2500
                 RETURN p
 )
@@ -49,6 +49,7 @@ LET histogramgraphdata = (
         COLLECT displayname = item.displayname
         AGGREGATE total_length = SUM(item.parlength)
         SORT total_length DESC
+        LIMIT 50
         RETURN [displayname, total_length]
     )
     : null
