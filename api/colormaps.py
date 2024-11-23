@@ -179,9 +179,9 @@ def calculate_color_maps_middle_view(data):
             entry["par_fulltext"] = par_fulltext
             entry["score"] = prettify_score(entry["score"])
             entry["par_segnr_range"] = shorten_segment_names(entry["par_segnr"])
+            entry["par_segnr"] = entry["par_segnr"][0]
             del entry["par_offset_beg"]
             del entry["par_offset_end"]
-            del entry["par_segnr"]
         else:
             print(entry)
     return data

@@ -73,71 +73,42 @@ FOR file IN files
 
 QUERY_PARALLELS_FOR_MIDDLE_TEXT = """
 LET parallels = (
-    FOR parallel_id IN @parallel_ids
-        FOR p IN parallels
-            FILTER p.filename == parallel_id
+    FOR p IN parallels
+        FILTER p._key IN @parallel_ids
 
-            LET par_segtext = (
-                FOR segnr IN p.par_segnr
-                    FOR segment IN segments
-                        FILTER segment.segmentnr == segnr
-                        RETURN segment.original
-               )
+        // Get segment texts in a single subquery
+        LET par_segtext = (
+            FOR segment IN segments
+                FILTER segment.segmentnr IN p.par_segnr
+                RETURN segment.original
+        )
 
-            LET par_full_name = (
-                FOR file in files
-                    FILTER file._key == p.par_filename
-                    RETURN file.displayName
-                )
+        // Get file display name in a single subquery
+        LET par_full_name = FIRST(
+            FOR file IN files
+                FILTER file._key == p.par_filename
+                RETURN file.displayName
+        )
 
-            RETURN {
-                par_segnr: p.par_segnr,
-                display_name: par_full_name[0],
-                tgt_lang: p.tgt_lang,
-                par_offset_beg: p.par_offset_beg,
-                par_offset_end: p.par_offset_end,
-                par_segtext: par_segtext,
-                filename: p.id,
-                score: p.score * 100,
-                length: p.par_length
-            }
+        // Return processed parallel data
+        RETURN {
+            id: p._key,
+            par_segnr: p.par_segnr,
+            display_name: par_full_name,
+            tgt_lang: p.tgt_lang,
+            par_offset_beg: p.par_offset_beg,
+            par_offset_end: p.par_offset_end,
+            par_segtext: par_segtext,
+            filename: p.par_filename,
+            score: p.score * 100,
+            length: p.par_length
+        }
 )
 
-LET parallels_multi = (
-    FOR parallel_id IN @parallel_ids
-        FOR p IN parallels_multi
-            FILTER p._key == parallel_id
-            LET par_segtext = (
-                FOR segnr IN p.par_segnr
-                    FOR segment IN segments
-                        FILTER segment.segmentnr == segnr
-                        RETURN segment.segtext
-            )
-
-            LET par_full_name = (
-                FOR file in files
-                    FILTER file._key == p.par_filename
-                    RETURN file.displayName
-                )
-
-            RETURN {
-                par_segnr: p.par_segnr,
-                display_name: par_full_name[0],
-                tgt_lang: p.tgt_lang,
-                par_offset_beg: p.par_offset_beg,
-                par_offset_end: p.par_offset_end,
-                par_segtext: par_segtext,
-                filename: p.id,
-                score: p.score * 100,
-                length: p.par_length
-            }
-)
-
-LET return_parallels = (
-    for p in parallels
+// Sort and return final results
+RETURN (
+    FOR p IN parallels
         SORT p.score DESC, p.length DESC
-        return p
-    )
-
-RETURN APPEND(parallels_multi,return_parallels)
+        RETURN p
+)
 """

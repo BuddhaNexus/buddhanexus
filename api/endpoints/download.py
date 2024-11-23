@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from typing import Any
-from ..utils import (    
+from ..utils import (
     get_sort_key,
     arrange_filter_data,
 )

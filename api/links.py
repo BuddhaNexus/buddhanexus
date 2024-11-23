@@ -1,23 +1,10 @@
 """ This module provides the links for each filename """
 
-import re
 from .utils import get_language_from_filename
 
 
 def get_links(filename, links_query):
     """get links for each file name"""
-    if len(links_query.result) < 1:
-        return {
-            "bdrc": False,
-            "rkts": False,
-            "gretil": False,
-            "dsbc": False,
-            "cbeta": False,
-            "suttacentral": False,
-            "cbc": False,
-            "vri": False,
-        }
-
     links_query_result = links_query.result[0]
     link1 = links_query_result[0]
     link2 = links_query_result[1]
@@ -32,9 +19,7 @@ def get_links(filename, links_query):
     lang = get_language_from_filename(filename)
 
     # for Tibetan, we serve links to BDRC and RKTS
-    if lang == "bo" and not filename.startswith(
-        "BO_N"
-    ):  # We exclude N files from external linking
+    if lang == "bo" and link1:
         bdrc = link1
         rkts = bdrc.replace(
             "http://purl.bdrc.io/resource/WA0RK", "http://purl.rkts.eu/resource/WKT"
@@ -45,26 +30,25 @@ def get_links(filename, links_query):
         )
 
     # for Sanskrit, we serve links to Gretil and DSBC and SC
-    if lang == "sa":
+    if lang == "sa" and link1:
         if "gretil" in link1:
             gretil = link1
         elif "dsbc" in link1:
             dsbc = link1
-        sc_link = link2
+        if link2:
+            sc_link = link2
 
     # for Chinese, we serve links to CBETA, SC and CBC
     if lang == "zh":
-        cbeta = (
-            "https://cbetaonline.dila.edu.tw/" + filename + "_001"
-        )  # why did we do this on the frontend:  re.sub(filename, "_[TX]", "n")
-        sc_link = link2
-        cbc_filename = filename[0] + filename[4:]
-        cbc = "https://dazangthings.nz/cbc/text/" + cbc_filename
+        if link1:
+            cbeta = link1
+        if link2:
+            sc_link = link2
 
     if lang == "pa":
         vri = link1 or "https://tipitaka.org/romn/"
-        if not re.search("^tika|^anya|^atk", filename):
-            sc_link = "https://suttacentral.net/" + filename
+        if link2:
+            sc_link = link2
 
     return {
         "bdrc": bdrc,
