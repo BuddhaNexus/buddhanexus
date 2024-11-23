@@ -11,27 +11,15 @@ export const QueryPageTopStackFrame = ({
 }) => {
   return (
     <Stack
-      direction={{ xs: "row", lg: "row-reverse" }}
+      direction={{ xs: "row", sm: "row-reverse" }}
       justifyContent="space-between"
       alignItems="center"
       spacing={2}
       sx={{ pt: 2, pb: 3 }}
     >
-      <Box
-        sx={{ display: "flex", flexWrap: "wrap", gap: 1, alignItems: "center" }}
-      >
-        {children}
-      </Box>
+      <Box>{children}</Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: 1,
-        }}
-      >
+      <Box>
         <CurrentResultChips matches={matches} />
       </Box>
     </Stack>

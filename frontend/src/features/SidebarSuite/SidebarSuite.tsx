@@ -1,8 +1,9 @@
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useResultPageType } from "@components/hooks/useResultPageType";
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import { TabContext } from "@mui/lab/";
-import { Box, Drawer, Toolbar } from "@mui/material";
+import { Box, Drawer, Toolbar, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 import { TabContent } from "./TabContent";
 
@@ -11,6 +12,9 @@ export function SidebarSuite() {
     useSettingsDrawer();
   const [activeTab, setActiveTab] = useState("0");
   const { isSearchPage } = useResultPageType();
+
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.up("md"));
 
   const handleTabChange = useCallback(
     (event: React.SyntheticEvent, newValue: string) => {
@@ -28,9 +32,13 @@ export function SidebarSuite() {
           width: drawerWidth,
         },
       }}
-      variant="persistent"
+      ModalProps={{
+        keepMounted: true, // Better open performance on mobile.
+      }}
+      variant={isMd ? "persistent" : "temporary"}
       anchor="right"
       open={isSettingsOpen}
+      onClose={() => setIsSettingsOpen(false)}
     >
       <Toolbar />
       <aside
