@@ -13,7 +13,7 @@ import { CloseTextViewPaneButton } from "@features/textView/CloseTextViewPaneBut
 import { TextSegment } from "@features/textView/TextSegment";
 import { useTextViewRightPane } from "@features/textView/useTextViewRightPane";
 import { getTextViewColorScale } from "@features/textView/utils";
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 
 export const TextViewRightPane = () => {
   const {
@@ -41,6 +41,11 @@ export const TextViewRightPane = () => {
   return (
     <Card key={String(data)} style={{ height: "100%" }}>
       <CardHeader
+        // subheader={
+        //   <Typography sx={{ textWrap: "wrap", wordBreak: "break-word" }}>
+        //     {activeSegment}
+        //   </Typography>
+        // }
         action={<CloseTextViewPaneButton handlePress={handleClear} />}
       />
       {/* TODO: plug different data in here */}

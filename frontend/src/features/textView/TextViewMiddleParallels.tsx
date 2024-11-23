@@ -13,8 +13,8 @@ import {
   CardHeader,
   Chip,
   CircularProgress,
+  Stack,
 } from "@mui/material";
-import Box from "@mui/material/Box";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -35,8 +35,9 @@ export default function TextViewMiddleParallels() {
     enabled: activeSegmentMatches.length > 0,
   });
 
-  const [, setActiveSegment] = useActiveSegmentParam();
-  const [, setActiveSegmentIndex] = useActiveSegmentIndexParam();
+  const [activeSegment, setActiveSegment] = useActiveSegmentParam();
+  const [activeSegmentIndex, setActiveSegmentIndex] =
+    useActiveSegmentIndexParam();
 
   const handleClear = async () => {
     await setActiveSegment("none");
@@ -89,14 +90,20 @@ export default function TextViewMiddleParallels() {
 
       <CardHeader
         data-testid="middle-view-header"
-        sx={{ position: "sticky" }}
         action={<CloseTextViewPaneButton handlePress={handleClear} />}
-        subheader={
-          <Chip
-            label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
-            variant="outlined"
-            icon={<Numbers />}
-          />
+        title={
+          <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
+            <Chip
+              label={`${activeSegment} / ${activeSegmentIndex}`}
+              variant="filled"
+              color="secondary"
+            />
+            <Chip
+              label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
+              variant="outlined"
+              icon={<Numbers />}
+            />
+          </Stack>
         }
       />
 

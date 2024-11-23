@@ -64,7 +64,7 @@ export const TextView = ({
 
   return (
     <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
-      <Allotment defaultSizes={[4, 3, 3]}>
+      <Allotment>
         {/* Left pane - text (main view) */}
         <Allotment.Pane>
           <Virtuoso
