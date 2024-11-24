@@ -9,12 +9,10 @@ import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { Numbers } from "@mui/icons-material";
 import {
   Box,
-  Card,
   CardContent,
   CardHeader,
   Chip,
   CircularProgress,
-  Paper,
   Stack,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";

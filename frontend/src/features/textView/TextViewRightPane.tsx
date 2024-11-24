@@ -1,10 +1,18 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import LoadingSpinner from "@components/common/LoadingSpinner";
 import {
   EmptyPlaceholder,
   ListLoadingIndicator,
 } from "@components/db/ListComponents";
 import { useRightPaneActiveSegmentParam } from "@components/hooks/params";
+import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { CloseTextViewPaneButton } from "@features/textView/CloseTextViewPaneButton";
 import { TextSegment } from "@features/textView/TextSegment";
 import { useTextViewRightPane } from "@features/textView/useTextViewRightPane";
@@ -44,11 +52,11 @@ export const TextViewRightPane = () => {
     [data, activeSegmentId],
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!activeSegmentId) return;
     const indexInData = findSegmentIndexInData(data, activeSegmentId);
-    console.log("scrolling to index:", indexInData);
-    console.log({ activeSegmentId });
+    // console.log("scrolling to index:", indexInData);
+    // console.log({ activeSegmentId });
     virtuosoRef.current?.scrollToIndex(indexInData);
   }, [activeSegmentId, data]);
 
@@ -60,6 +68,7 @@ export const TextViewRightPane = () => {
       </Box>
       {/* TODO: plug different data in here */}
       <CardContent style={{ height: "100%" }}>
+        {isFetching && <LoadingSpinner />}
         <Virtuoso
           ref={virtuosoRef}
           firstItemIndex={firstItemIndex}

@@ -9,7 +9,7 @@ const LoadingSpinner = () => {
         alignItems: "center",
         flex: 1,
         width: "100%",
-        height: "100dvh",
+        height: "100%",
         py: 1,
         pl: 2,
         my: 1,

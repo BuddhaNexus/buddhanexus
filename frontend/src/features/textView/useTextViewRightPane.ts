@@ -16,7 +16,7 @@ export function useTextViewRightPane() {
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
   const active_segment_right =
-    searchParams.get("active_segment_right") ??
+    searchParams.get("right_pane_active_segment") ??
     DEFAULT_PARAM_VALUES.active_segment;
 
   const initialPageParam =
@@ -59,7 +59,6 @@ export function useTextViewRightPane() {
       // const activeSegmentParam = hasSegmentBeenSelected(active_segment)
       //   ? DEFAULT_PARAM_VALUES.active_segment
       //   : active_segment;
-
       return DbApi.TextView.call({
         ...requestBodyBase,
         page: pageParam ?? 0,

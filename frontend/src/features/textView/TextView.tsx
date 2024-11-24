@@ -1,25 +1,18 @@
 import "allotment/dist/style.css";
 
-import React, { useMemo } from "react";
-import { Virtuoso } from "react-virtuoso";
+import React from "react";
 import { activeSegmentMatchesAtom } from "@atoms";
-import {
-  EmptyPlaceholder,
-  ListLoadingIndicator,
-} from "@components/db/ListComponents";
 import {
   useActiveSegmentParam,
   useRightPaneActiveSegmentParam,
 } from "@components/hooks/params";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { TextViewRightPane } from "@features/textView/TextViewRightPane";
-import { getTextViewColorScale } from "@features/textView/utils";
-import { Box, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
 import { Allotment, LayoutPriority } from "allotment";
 import { useAtomValue } from "jotai/index";
 
-import { TextSegment } from "./TextSegment";
 import { TextViewLeftPane } from "./TextViewLeftPane";
 import TextViewMiddleParallels from "./TextViewMiddleParallels";
 
