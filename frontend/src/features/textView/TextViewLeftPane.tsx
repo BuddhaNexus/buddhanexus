@@ -1,55 +1,107 @@
-import React, { useMemo } from "react";
-import { Virtuoso } from "react-virtuoso";
+import React, {
+  MutableRefObject,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
+import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import LoadingSpinner from "@components/common/LoadingSpinner";
 import {
   EmptyPlaceholder,
   ListLoadingIndicator,
 } from "@components/db/ListComponents";
 import { useActiveSegmentParam } from "@components/hooks/params";
+import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { TextSegment } from "@features/textView/TextSegment";
-import { TextViewProps } from "@features/textView/TextView";
+import { useTextPageLeftPane } from "@features/textView/useTextPageLeftPane";
 import {
-  findSegmentIndexInData,
+  findSegmentIndexInParallelsData,
   getTextViewColorScale,
 } from "@features/textView/utils";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
-export const TextViewLeftPane = ({
-  data,
-  firstItemIndex,
-  isFetchingPreviousPage,
-  isFetchingNextPage,
-  onStartReached,
-  onEndReached,
-}: TextViewProps) => {
+export const TextViewLeftPane = () => {
   const [activeSegmentId] = useActiveSegmentParam();
 
-  const colorScale = useMemo(() => getTextViewColorScale(data), [data]);
+  const wasDataJustAppended: MutableRefObject<boolean> = useRef(false);
+
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
+
+  const {
+    isError,
+    error,
+    isFetching,
+    hasData,
+    allParallels,
+    firstItemIndex,
+    isFetchingPreviousPage,
+    isFetchingNextPage,
+    handleFetchingPreviousPage,
+    handleFetchingNextPage,
+  } = useTextPageLeftPane();
+
+  const colorScale = useMemo(
+    () => getTextViewColorScale(allParallels),
+    [allParallels],
+  );
+
+  const activeSegmentIndexInData = useMemo(
+    () => findSegmentIndexInParallelsData(allParallels, activeSegmentId),
+    [allParallels, activeSegmentId],
+  );
+
+  // console.log({ activeSegmentIndexInData });
 
   // make sure the selected segment is at the top when the page is opened
-  const activeSegmentIndexInData = useMemo(
-    () => findSegmentIndexInData(data, activeSegmentId),
-    [data, activeSegmentId],
-  );
+  useLayoutEffect(() => {
+    if (
+      !activeSegmentId ||
+      activeSegmentId === DEFAULT_PARAM_VALUES.active_segment
+    )
+      return;
+
+    // prevent layout jump when data is updated
+    if (wasDataJustAppended.current) {
+      wasDataJustAppended.current = false;
+      return;
+    }
+
+    const indexInData = findSegmentIndexInParallelsData(
+      allParallels,
+      activeSegmentId,
+    );
+    virtuosoRef.current?.scrollToIndex({
+      index: indexInData,
+      align: "center",
+    });
+    // previousActiveSegmentId.current = activeSegmentId;
+  }, [activeSegmentId, allParallels]);
 
   return (
     <Card sx={{ height: "100%" }}>
       <CardContent style={{ height: "100%" }}>
         <Virtuoso
+          ref={virtuosoRef}
           firstItemIndex={firstItemIndex}
-          initialTopMostItemIndex={activeSegmentIndexInData}
-          data={data.length > 0 ? data : undefined}
-          startReached={onStartReached}
+          // initialTopMostItemIndex={activeSegmentIndexInData}
+          data={allParallels}
+          startReached={async () => {
+            wasDataJustAppended.current = true;
+            await handleFetchingPreviousPage();
+          }}
           style={{ height: "100%" }}
-          endReached={onEndReached}
-          totalCount={data.length}
+          endReached={async () => {
+            wasDataJustAppended.current = true;
+            await handleFetchingNextPage();
+          }}
+          totalCount={allParallels.length}
           overscan={900} // pixel value
           increaseViewportBy={500} // solves empty content at start/end of list issue
-          initialItemCount={5} // for SSR
           components={{
             Header: isFetchingPreviousPage ? ListLoadingIndicator : undefined,
             Footer: isFetchingNextPage ? ListLoadingIndicator : undefined,
-            EmptyPlaceholder,
+            EmptyPlaceholder: isFetching ? LoadingSpinner : EmptyPlaceholder,
           }}
           itemContent={(_, dataSegment) => (
             <TextSegment data={dataSegment} colorScale={colorScale} />

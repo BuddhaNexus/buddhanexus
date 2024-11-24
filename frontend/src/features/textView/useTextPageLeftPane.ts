@@ -3,14 +3,11 @@ import { useSearchParams } from "next/navigation";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
-import { useSourceFile } from "@components/hooks/useSourceFile";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
+import { PaginationState } from "@features/textView/utils";
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
-import { DbLanguage } from "@utils/api/types";
-
-export type PaginationState = [startEdgePage?: number, endEdgePage?: number];
 
 // arbitrarily high number, as per virtuoso docs
 const START_INDEX = 1_000_000;
@@ -18,23 +15,19 @@ const START_INDEX = 1_000_000;
 interface UseTextPageReturn {
   allParallels: ParsedTextViewParallels;
   firstItemIndex: number;
-  handleFetchingNextPage: () => void;
+  handleFetchingNextPage: () => Promise<void>;
   handleFetchingPreviousPage: () => Promise<void>;
   hasData: boolean;
   isError: boolean;
-  isFallback: boolean;
   isFetching: boolean;
   isFetchingNextPage: boolean;
   isFetchingPreviousPage: boolean;
-  dbLanguage: DbLanguage;
   error: Error | null;
 }
 
-export function useTextPage(): UseTextPageReturn {
-  const { dbLanguage, fileName } = useDbRouterParams();
-  const { isFallback } = useSourceFile();
-
+export function useTextPageLeftPane(): UseTextPageReturn {
   useSetDbViewFromPath();
+  const { fileName } = useDbRouterParams();
 
   const requestBodyBase = useStandardViewBaseQueryParams();
 
@@ -175,11 +168,9 @@ export function useTextPage(): UseTextPageReturn {
     handleFetchingPreviousPage,
     hasData,
     isError,
-    isFallback,
     isFetching,
     isFetchingNextPage,
     isFetchingPreviousPage,
-    dbLanguage,
     error,
   };
 }

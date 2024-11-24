@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
-import { PaginationState } from "@features/textView/useTextPage";
+import { PaginationState } from "@features/textView/utils";
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 

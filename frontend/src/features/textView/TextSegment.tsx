@@ -49,8 +49,10 @@ export const TextSegment = ({
 
   const updateSelectedLocationInGlobalState = useCallback(
     async (location: { id: string; index: number; matches: string[] }) => {
-      await setActiveSegmentId(location.id);
-      await setActiveSegmentIndex(location.index);
+      await Promise.all([
+        setActiveSegmentId(location.id),
+        setActiveSegmentIndex(location.index),
+      ]);
     },
     [setActiveSegmentId, setActiveSegmentIndex],
   );
@@ -125,6 +127,8 @@ export const TextSegment = ({
             style={{
               fontFamily: sourceSans.style.fontFamily,
               color,
+              whiteSpace: "normal",
+              wordWrap: "break-word",
             }}
             onClick={async () => {
               await updateSelectedLocationInGlobalState({

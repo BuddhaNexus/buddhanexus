@@ -14,7 +14,7 @@ export function getTextViewColorScale(
     .correctLightness(true);
 }
 
-export function findSegmentIndexInData(
+export function findSegmentIndexInParallelsData(
   data: ParsedTextViewParallels,
   activeSegmentId: string,
 ) {
@@ -25,3 +25,5 @@ export function findSegmentIndexInData(
   if (index === -1) return 0;
   return index;
 }
+
+export type PaginationState = [startEdgePage?: number, endEdgePage?: number];
