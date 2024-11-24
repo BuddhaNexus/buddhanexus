@@ -7,12 +7,12 @@ import {
   useRightPaneActiveSegmentParam,
 } from "@components/hooks/params";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
+import { TextViewLeftPane } from "@features/textView/TextViewLeftPane";
 import { TextViewRightPane } from "@features/textView/TextViewRightPane";
 import { Paper } from "@mui/material";
 import { Allotment, LayoutPriority } from "allotment";
 import { useAtomValue } from "jotai/index";
 
-import { TextViewLeftPane } from "./TextViewLeftPane";
 import TextViewMiddleParallels from "./TextViewMiddleParallels";
 
 // todo: check other elements in segmentText

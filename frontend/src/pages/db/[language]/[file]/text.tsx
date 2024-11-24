@@ -12,18 +12,6 @@ export default function TextPage() {
   const { isFallback } = useSourceFile();
   const { dbLanguage } = useDbRouterParams();
 
-  // if (isError) {
-  //   return (
-  //     <PageContainer
-  //       maxWidth="xl"
-  //       backgroundName={dbLanguage}
-  //       isQueryResultsPage
-  //     >
-  //       <ResultQueryError errorMessage={error?.message} />
-  //     </PageContainer>
-  //   );
-  // }
-
   if (isFallback) {
     return (
       <PageContainer

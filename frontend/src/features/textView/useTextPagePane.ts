@@ -25,18 +25,20 @@ interface UseTextPageReturn {
   error: Error | null;
 }
 
-export function useTextPageLeftPane(): UseTextPageReturn {
-  useSetDbViewFromPath();
-  const { fileName } = useDbRouterParams();
+interface Props {
+  fileName: string;
+  activeSegment: string;
+}
 
+export function useTextPagePane({
+  fileName,
+  activeSegment,
+}: Props): UseTextPageReturn {
+  useSetDbViewFromPath();
   const requestBodyBase = useStandardViewBaseQueryParams();
 
-  const searchParams = useSearchParams();
-  const active_segment =
-    searchParams.get("active_segment") ?? DEFAULT_PARAM_VALUES.active_segment;
-
   const initialPageParam =
-    active_segment === DEFAULT_PARAM_VALUES.active_segment ? 0 : undefined;
+    activeSegment === DEFAULT_PARAM_VALUES.active_segment ? 0 : undefined;
 
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
@@ -66,7 +68,7 @@ export function useTextPageLeftPane(): UseTextPageReturn {
     initialPageParam,
     queryKey: DbApi.TextView.makeQueryKey({
       ...requestBodyBase,
-      active_segment,
+      active_segment: activeSegment,
     }),
     queryFn: ({ pageParam }) => {
       // We pass the active_segment, but only on the first page load :/
@@ -81,13 +83,14 @@ export function useTextPageLeftPane(): UseTextPageReturn {
 
       // if the `active_segment` param was already sent for this segment,
       // don't send it anymore.
-      const activeSegmentParam = hasSegmentBeenSelected(active_segment)
+      const activeSegmentParam = hasSegmentBeenSelected(activeSegment)
         ? DEFAULT_PARAM_VALUES.active_segment
-        : active_segment;
+        : activeSegment;
 
       return DbApi.TextView.call({
         ...requestBodyBase,
         page: pageParam ?? 0,
+        filename: fileName,
         active_segment: activeSegmentParam,
       });
     },
@@ -112,10 +115,10 @@ export function useTextPageLeftPane(): UseTextPageReturn {
   // see queryFn comment above
   useEffect(
     function updatePreviouslySelectedSegmentsMap() {
-      if (isSuccess && active_segment)
-        previouslySelectedSegmentsMap.current[active_segment] = true;
+      if (isSuccess && activeSegment)
+        previouslySelectedSegmentsMap.current[activeSegment] = true;
     },
-    [isSuccess, active_segment],
+    [isSuccess, activeSegment],
   );
 
   useEffect(
