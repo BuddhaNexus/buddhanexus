@@ -8,6 +8,7 @@ import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import {
   EmptyPlaceholder,
+  ListDivider,
   ListLoadingIndicator,
 } from "@components/db/ListComponents";
 import { useActiveSegmentParam } from "@components/hooks/params";
@@ -46,10 +47,10 @@ export const TextViewLeftPane = () => {
     [allParallels],
   );
 
-  const activeSegmentIndexInData = useMemo(
-    () => findSegmentIndexInParallelsData(allParallels, activeSegmentId),
-    [allParallels, activeSegmentId],
-  );
+  // const activeSegmentIndexInData = useMemo(
+  //   () => findSegmentIndexInParallelsData(allParallels, activeSegmentId),
+  //   [allParallels, activeSegmentId],
+  // );
 
   // console.log({ activeSegmentIndexInData });
 
@@ -75,8 +76,9 @@ export const TextViewLeftPane = () => {
       index: indexInData,
       align: "center",
     });
-    // previousActiveSegmentId.current = activeSegmentId;
   }, [activeSegmentId, allParallels]);
+
+  console.log({ firstItemIndex });
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -95,12 +97,10 @@ export const TextViewLeftPane = () => {
             wasDataJustAppended.current = true;
             await handleFetchingNextPage();
           }}
-          totalCount={allParallels.length}
-          overscan={900} // pixel value
-          increaseViewportBy={500} // solves empty content at start/end of list issue
+          // totalCount={allParallels.length}
           components={{
-            Header: isFetchingPreviousPage ? ListLoadingIndicator : undefined,
-            Footer: isFetchingNextPage ? ListLoadingIndicator : undefined,
+            Header: isFetchingPreviousPage ? ListLoadingIndicator : ListDivider,
+            Footer: isFetchingNextPage ? ListLoadingIndicator : ListDivider,
             EmptyPlaceholder: isFetching ? LoadingSpinner : EmptyPlaceholder,
           }}
           itemContent={(_, dataSegment) => (
