@@ -13,3 +13,15 @@ export function getTextViewColorScale(
     .domain([maxColor, minColor])
     .correctLightness(true);
 }
+
+export function findSegmentIndexInData(
+  data: ParsedTextViewParallels,
+  activeSegmentId: string,
+) {
+  if (data.length <= 0) return 0;
+  const index = data.findIndex(
+    (element) => element.segmentNumber === activeSegmentId,
+  );
+  if (index === -1) return 0;
+  return index;
+}

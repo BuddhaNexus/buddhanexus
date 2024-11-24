@@ -7,7 +7,10 @@ import {
 import { useActiveSegmentParam } from "@components/hooks/params";
 import { TextSegment } from "@features/textView/TextSegment";
 import { TextViewProps } from "@features/textView/TextView";
-import { getTextViewColorScale } from "@features/textView/utils";
+import {
+  findSegmentIndexInData,
+  getTextViewColorScale,
+} from "@features/textView/utils";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
@@ -24,14 +27,10 @@ export const TextViewLeftPane = ({
   const colorScale = useMemo(() => getTextViewColorScale(data), [data]);
 
   // make sure the selected segment is at the top when the page is opened
-  const activeSegmentIndexInData = useMemo(() => {
-    if (data.length <= 0) return 0;
-    const index = data.findIndex(
-      (element) => element.segmentNumber === activeSegmentId,
-    );
-    if (index === -1) return 0;
-    return index;
-  }, [data, activeSegmentId]);
+  const activeSegmentIndexInData = useMemo(
+    () => findSegmentIndexInData(data, activeSegmentId),
+    [data, activeSegmentId],
+  );
 
   return (
     <Card sx={{ height: "100%" }}>

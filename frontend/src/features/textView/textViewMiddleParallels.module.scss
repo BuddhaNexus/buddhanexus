@@ -7,9 +7,9 @@
 
 .container {
   height: 100%;
+  overflow: auto;
 }
 
 .cardContent {
-  overflow: auto;
-  height: 100%;
+  //height: 100%;
 }

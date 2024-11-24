@@ -93,9 +93,10 @@ export default function TextViewMiddleParallels() {
       <CardHeader
         data-testid="middle-view-header"
         sx={{
-          position: "absolute",
           backgroundColor: "background.paper",
-          zIndex: 10,
+          position: "sticky",
+          top: 0,
+          zIndex: 2,
           width: "100%",
         }}
         action={<CloseTextViewPaneButton handlePress={handleClear} />}
@@ -115,7 +116,7 @@ export default function TextViewMiddleParallels() {
         }
       />
 
-      <CardContent className={styles.cardContent} sx={{ pt: 8 }}>
+      <CardContent className={styles.cardContent}>
         {parallelsToDisplay}
       </CardContent>
     </Box>
