@@ -40,8 +40,7 @@ export default function TextViewMiddleParallels() {
     useActiveSegmentIndexParam();
 
   const handleClear = async () => {
-    await setActiveSegment("none");
-    await setActiveSegmentIndex(null);
+    await Promise.all([setActiveSegment("none"), setActiveSegmentIndex(null)]);
   };
 
   const parallelsToDisplay = useMemo(

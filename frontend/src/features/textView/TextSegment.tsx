@@ -127,8 +127,6 @@ export const TextSegment = ({
             style={{
               fontFamily: sourceSans.style.fontFamily,
               color,
-              whiteSpace: "normal",
-              wordWrap: "break-word",
             }}
             onClick={async () => {
               await updateSelectedLocationInGlobalState({

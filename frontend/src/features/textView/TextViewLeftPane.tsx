@@ -47,13 +47,6 @@ export const TextViewLeftPane = () => {
     [allParallels],
   );
 
-  // const activeSegmentIndexInData = useMemo(
-  //   () => findSegmentIndexInParallelsData(allParallels, activeSegmentId),
-  //   [allParallels, activeSegmentId],
-  // );
-
-  // console.log({ activeSegmentIndexInData });
-
   // make sure the selected segment is at the top when the page is opened
   useLayoutEffect(() => {
     if (
@@ -86,8 +79,8 @@ export const TextViewLeftPane = () => {
         <Virtuoso
           ref={virtuosoRef}
           firstItemIndex={firstItemIndex}
-          // initialTopMostItemIndex={activeSegmentIndexInData}
           data={allParallels}
+          increaseViewportBy={500}
           startReached={async () => {
             wasDataJustAppended.current = true;
             await handleFetchingPreviousPage();
@@ -97,7 +90,7 @@ export const TextViewLeftPane = () => {
             wasDataJustAppended.current = true;
             await handleFetchingNextPage();
           }}
-          // totalCount={allParallels.length}
+          skipAnimationFrameInResizeObserver={true}
           components={{
             Header: isFetchingPreviousPage ? ListLoadingIndicator : ListDivider,
             Footer: isFetchingNextPage ? ListLoadingIndicator : ListDivider,

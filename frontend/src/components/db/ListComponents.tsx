@@ -10,6 +10,7 @@ export const ListLoadingIndicator = () => (
       display: "flex",
       justifyContent: "center",
       position: "absolute",
+      width: "100%",
     }}
   >
     <CircularProgress />

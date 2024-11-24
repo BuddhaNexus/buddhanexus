@@ -12,7 +12,8 @@ span.segment {
   display: inline;
   text-align: start;
   // uncomment if the text should not break
-  // white-space: pre;
+  //white-space: pre;
+  white-space: normal;
   user-select: text;
   -webkit-user-select: text;
 

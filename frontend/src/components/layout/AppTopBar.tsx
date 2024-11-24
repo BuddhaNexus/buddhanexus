@@ -94,8 +94,10 @@ export const AppTopBar = memo(function AppTopBar() {
               <Box
                 component={Image}
                 src={treeIcon}
-                width={68}
+                priority={true}
                 sx={{
+                  width: "auto",
+                  height: "auto",
                   maxHeight: 48,
                   minWidth: 48,
                   [materialTheme.breakpoints.down("sm")]: {
@@ -108,9 +110,11 @@ export const AppTopBar = memo(function AppTopBar() {
                 <Box
                   component={Image}
                   src={treeTextIcon}
+                  priority={true}
                   width={144}
                   sx={{
-                    maxHeight: 24,
+                    pl: 2,
+                    height: "auto",
                     [materialTheme.breakpoints.down("sm")]: {
                       display: "none",
                     },
