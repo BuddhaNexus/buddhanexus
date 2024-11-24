@@ -13,7 +13,7 @@ import { CloseTextViewPaneButton } from "@features/textView/CloseTextViewPaneBut
 import { TextSegment } from "@features/textView/TextSegment";
 import { useTextViewRightPane } from "@features/textView/useTextViewRightPane";
 import { getTextViewColorScale } from "@features/textView/utils";
-import { Card, CardContent, CardHeader, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 
 export const TextViewRightPane = () => {
   const {
@@ -37,17 +37,12 @@ export const TextViewRightPane = () => {
     await setActiveSegment("none");
   }, [setActiveSegment]);
 
-  // There's some initial rendering issue here, not sure why the key prop is needed but it is:
+  // There's some initial rendering issue here, not sure why the key prop is needed, but it is:
   return (
     <Card key={String(data)} style={{ height: "100%" }}>
-      <CardHeader
-        // subheader={
-        //   <Typography sx={{ textWrap: "wrap", wordBreak: "break-word" }}>
-        //     {activeSegment}
-        //   </Typography>
-        // }
-        action={<CloseTextViewPaneButton handlePress={handleClear} />}
-      />
+      <Box sx={{ position: "absolute", p: 1.5, right: 0, zIndex: 10 }}>
+        <CloseTextViewPaneButton handlePress={handleClear} />{" "}
+      </Box>
       {/* TODO: plug different data in here */}
       <CardContent style={{ height: "100%" }}>
         <Virtuoso

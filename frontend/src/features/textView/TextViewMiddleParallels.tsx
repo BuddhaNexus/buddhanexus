@@ -8,11 +8,13 @@ import {
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { Numbers } from "@mui/icons-material";
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
   Chip,
   CircularProgress,
+  Paper,
   Stack,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -82,7 +84,7 @@ export default function TextViewMiddleParallels() {
   );
 
   return (
-    <Card className={styles.container}>
+    <Box className={styles.container}>
       <CircularProgress
         className={styles.circularProgress}
         style={{ display: isLoading ? "block" : "none" }}
@@ -90,6 +92,12 @@ export default function TextViewMiddleParallels() {
 
       <CardHeader
         data-testid="middle-view-header"
+        sx={{
+          position: "absolute",
+          backgroundColor: "background.paper",
+          zIndex: 10,
+          width: "100%",
+        }}
         action={<CloseTextViewPaneButton handlePress={handleClear} />}
         title={
           <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
@@ -107,9 +115,9 @@ export default function TextViewMiddleParallels() {
         }
       />
 
-      <CardContent className={styles.cardContent}>
+      <CardContent className={styles.cardContent} sx={{ pt: 8 }}>
         {parallelsToDisplay}
       </CardContent>
-    </Card>
+    </Box>
   );
 }
