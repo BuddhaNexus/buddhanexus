@@ -11,7 +11,8 @@ span.segment {
   pointer-events: auto;
   display: inline;
   text-align: start;
-  white-space: pre;
+  // uncomment if the text should not break
+  // white-space: pre;
   user-select: text;
   -webkit-user-select: text;
 
