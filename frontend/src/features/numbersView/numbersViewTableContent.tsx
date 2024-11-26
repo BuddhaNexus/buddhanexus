@@ -58,7 +58,7 @@ export const createTableColumns = ({
     header: () => (
       <div
         style={{
-          // determins width for whole column
+          // determines width for whole column
           minWidth: "150px",
         }}
       >

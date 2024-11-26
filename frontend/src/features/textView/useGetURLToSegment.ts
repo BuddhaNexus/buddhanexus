@@ -13,10 +13,7 @@ export const useGetURLToSegment = ({
   // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
   const [fileName] = segmentNumber.split(":");
 
-  const urlEncodedSegmentNumber = encodeURIComponent(segmentNumber);
-
-  // todo: fix dash in url for numbers view and here
-  const urlToSegment = `${basePath}/db/${language}/${fileName}/text?active_segment=${urlEncodedSegmentNumber}&active_segment_index=0`;
+  const urlToSegment = `${basePath}/db/${language}/${fileName}/text?active_segment=${segmentNumber}&active_segment_index=0`;
 
   return { urlToSegment };
 };

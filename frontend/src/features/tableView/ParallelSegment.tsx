@@ -68,12 +68,9 @@ export const ParallelSegment = ({
     [setRightPaneActiveSegmentId],
   );
 
-  const linkSegmentNumber =
-    textSegmentNumberRange.split("-")[0] ?? textSegmentNumberRange;
-
   const { urlToSegment } = useGetURLToSegment({
     language,
-    segmentNumber: linkSegmentNumber,
+    segmentNumber: textSegmentNumber,
   });
 
   return (
