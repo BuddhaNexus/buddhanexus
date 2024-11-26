@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import { useRightPaneActiveSegmentParam } from "@components/hooks/params";
+import { useGetURLToSegment } from "@features/textView/useGetURLToSegment";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PercentIcon from "@mui/icons-material/Percent";
@@ -20,21 +21,6 @@ import type { APISchemas } from "@utils/api/types";
 import { DbLanguage } from "@utils/api/types";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
-
-export const makeTextViewSegmentPath = ({
-  segmentNumber,
-  language,
-}: {
-  segmentNumber: string;
-  language: DbLanguage;
-}) => {
-  // Example: ["dn1:1.1.1_0", "dn1:1.1.2_0"] -> ["dn1", "1.1.1_0"]
-  const [fileName] = segmentNumber.split(":");
-
-  const urlEncodedSegmentNumber = encodeURIComponent(segmentNumber);
-
-  return `/db/${language}/${fileName}/text?active_segment=${urlEncodedSegmentNumber}&active_segment_index=0`;
-};
 
 interface ParallelSegmentProps {
   id?: string;
@@ -85,6 +71,11 @@ export const ParallelSegment = ({
   const linkSegmentNumber =
     textSegmentNumberRange.split("-")[0] ?? textSegmentNumberRange;
 
+  const { urlToSegment } = useGetURLToSegment({
+    language,
+    segmentNumber: linkSegmentNumber,
+  });
+
   return (
     <Card
       sx={{ flex: 1, wordBreak: "break-all", my: 1 }}
@@ -108,10 +99,7 @@ export const ParallelSegment = ({
           {/* File Name */}
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
             <Link
-              href={makeTextViewSegmentPath({
-                language,
-                segmentNumber: linkSegmentNumber,
-              })}
+              href={urlToSegment}
               sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
               target="_blank"
               rel="noreferrer noopenner"
