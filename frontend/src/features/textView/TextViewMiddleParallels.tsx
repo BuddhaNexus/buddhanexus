@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { activeSegmentMatchesAtom, hoveredOverParallelIdAtom } from "@atoms";
+import LoadingSpinner from "@components/common/LoadingSpinner";
 import {
   useActiveSegmentIndexParam,
   useActiveSegmentParam,
@@ -86,6 +87,8 @@ export default function TextViewMiddleParallels() {
         className={styles.circularProgress}
         style={{ display: isLoading ? "block" : "none" }}
       />
+
+      <LoadingSpinner withBackground />
 
       <CardHeader
         data-testid="middle-view-header"

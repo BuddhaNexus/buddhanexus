@@ -1,0 +1,19 @@
+.loadingSpinner {
+  width: 48px;
+  height: 48px;
+  z-index: 3;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  animation: rotating 2s ease-in-out infinite;
+}
+
+@keyframes rotating {
+  from {
+    // translate3d is to GPU accelerate this
+    transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+  }
+}
