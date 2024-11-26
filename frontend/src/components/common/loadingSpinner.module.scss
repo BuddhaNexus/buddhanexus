@@ -1,7 +1,19 @@
+.loadingSpinnerContainer {
+
+  transition: opacity 250ms;
+  opacity: 0;
+  pointer-events: none;
+
+  &Loading {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 .loadingSpinner {
   width: 48px;
   height: 48px;
-  z-index: 3;
+  z-index: 10;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -17,3 +29,4 @@
     transform: translate3d(-50%, -50%, 0) rotate(360deg);
   }
 }
+

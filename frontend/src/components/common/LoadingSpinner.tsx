@@ -1,38 +1,33 @@
 import Image from "next/image";
-import Paper from "@mui/material/Paper";
+import { Box } from "@mui/material";
 import dharmaWheelIcon from "public/assets/icons/dharmaWheel.svg";
 
 import styles from "./loadingSpinner.module.scss";
 
 interface Props {
-  withBackground?: boolean;
+  // withBackground?: boolean;
+  isLoading?: boolean;
 }
 
-const LoadingSpinner = ({ withBackground }: Props) => {
+const LoadingSpinner = ({
+  // withBackground,
+  isLoading,
+}: Props) => {
   return (
-    <Paper
-      sx={
-        withBackground
-          ? {
-              display: "flex",
-              alignItems: "center",
-              flex: 1,
-              width: "100%",
-              height: "100%",
-              py: 1,
-              pl: 2,
-              my: 1,
-            }
-          : undefined
-      }
+    <Box
+      className={`${styles.loadingSpinnerContainer} ${isLoading && styles.loadingSpinnerContainerLoading}`}
     >
       <Image
         src={dharmaWheelIcon}
         alt="loading spinner"
-        className={styles.loadingSpinner}
+        className={`${styles.loadingSpinner}`}
       />
-    </Paper>
+    </Box>
   );
 };
+
+const InfiniteLoadingSpinner = () => <LoadingSpinner isLoading={true} />;
+
+export { InfiniteLoadingSpinner };
 
 export default LoadingSpinner;

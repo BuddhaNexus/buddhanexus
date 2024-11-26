@@ -83,12 +83,7 @@ export default function TextViewMiddleParallels() {
 
   return (
     <Box className={styles.container}>
-      <CircularProgress
-        className={styles.circularProgress}
-        style={{ display: isLoading ? "block" : "none" }}
-      />
-
-      <LoadingSpinner withBackground />
+      <LoadingSpinner isLoading={isLoading} />
 
       <CardHeader
         data-testid="middle-view-header"

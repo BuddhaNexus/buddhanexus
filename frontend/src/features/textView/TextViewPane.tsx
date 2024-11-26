@@ -5,7 +5,7 @@ import React, {
   useRef,
 } from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
-import LoadingSpinner from "@components/common/LoadingSpinner";
+import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import {
   EmptyPlaceholder,
   ListDivider,
@@ -96,7 +96,9 @@ export const TextViewPane = ({
           components={{
             Header: isFetchingPreviousPage ? ListLoadingIndicator : ListDivider,
             Footer: isFetchingNextPage ? ListLoadingIndicator : ListDivider,
-            EmptyPlaceholder: isFetching ? LoadingSpinner : EmptyPlaceholder,
+            EmptyPlaceholder: isFetching
+              ? InfiniteLoadingSpinner
+              : EmptyPlaceholder,
           }}
           itemContent={(_, dataSegment) => (
             <TextSegment data={dataSegment} colorScale={colorScale} />
