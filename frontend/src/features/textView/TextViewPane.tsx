@@ -1,5 +1,6 @@
 import React, {
   MutableRefObject,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -13,7 +14,7 @@ import {
 } from "@components/db/ListComponents";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { TextSegment } from "@features/textView/TextSegment";
-import { useTextPagePane } from "@features/textView/useTextPagePane";
+import { useTextViewPane } from "@features/textView/useTextViewPane";
 import {
   findSegmentIndexInParallelsData,
   getTextViewColorScale,
@@ -45,7 +46,7 @@ export const TextViewPane = ({
     isFetchingNextPage,
     handleFetchingPreviousPage,
     handleFetchingNextPage,
-  } = useTextPagePane({ fileName, activeSegment: activeSegmentId });
+  } = useTextViewPane({ fileName, activeSegment: activeSegmentId });
 
   const colorScale = useMemo(
     () => getTextViewColorScale(allParallels),

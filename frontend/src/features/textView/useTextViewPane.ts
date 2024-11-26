@@ -30,7 +30,7 @@ interface Props {
   activeSegment: string;
 }
 
-export function useTextPagePane({
+export function useTextViewPane({
   fileName,
   activeSegment,
 }: Props): UseTextPageReturn {

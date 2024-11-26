@@ -1,5 +1,6 @@
 import { useTranslation } from "next-i18next";
-import { CircularProgress, Divider, Typography } from "@mui/material";
+import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
+import { Divider, Typography } from "@mui/material";
 
 export const ListDivider = () => <Divider />;
 
@@ -13,7 +14,7 @@ export const ListLoadingIndicator = () => (
       width: "100%",
     }}
   >
-    <CircularProgress />
+    <InfiniteLoadingSpinner />
   </div>
 );
 

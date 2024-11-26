@@ -79,6 +79,9 @@ export const TextSegment = ({
 
   if (!data) return null;
 
+  // segnr also contains the file name - we need to strip it away
+  const [, segmentNumber] = data.segmentNumber.split(":");
+
   return (
     <div className={styles.segmentWrapper}>
       <span
@@ -89,7 +92,7 @@ export const TextSegment = ({
       />
 
       {data.segmentText.map(({ text, highlightColor, matches }, i) => {
-        const segmentKey = data.segmentNumber + i;
+        const segmentKey = segmentNumber ? segmentNumber + i : undefined;
         const textContent = enscriptText({
           text,
           script: scriptSelection,
