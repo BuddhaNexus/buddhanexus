@@ -90,3 +90,4 @@ def load_category_names(paths: List[str], db: StandardDatabase) -> None:
             print(f"Error loading category names from {path}: {str(e)}")
 
     collection.add_hash_index(fields=["category"], unique=False)
+    collection.add_hash_index(fields=["lang"], unique=False)
