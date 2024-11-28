@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { Skeleton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useQuery } from "@tanstack/react-query";
@@ -28,15 +28,7 @@ export default function ParallelsChip() {
       }),
   });
 
-  const [parallelCount, setParallelCount] = useState(
-    isLoading ? 0 : data?.parallel_count,
-  );
-
-  useEffect(() => {
-    if (data) {
-      setParallelCount(data.parallel_count);
-    }
-  }, [data]);
+  const parallelCount = isLoading || !data ? 0 : data.parallel_count;
 
   const isMatchesCapped = parallelCount && parallelCount >= BD_RESULTS_LIMIT;
 
@@ -57,10 +49,16 @@ export default function ParallelsChip() {
       size="small"
       label={
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Box>{t("resultsHead.matches")}</Box>
-          <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
-            {parallelCount}
-          </Box>
+          {isLoading ? (
+            <Skeleton sx={{ minWidth: "8ch" }} animation="wave" />
+          ) : (
+            <>
+              <Box>{t("resultsHead.matches")}</Box>
+              <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
+                {parallelCount}
+              </Box>
+            </>
+          )}
         </Box>
       }
       sx={{ mx: 0.5, p: 0.5 }}

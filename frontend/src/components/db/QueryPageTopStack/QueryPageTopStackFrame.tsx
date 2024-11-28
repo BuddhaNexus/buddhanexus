@@ -13,9 +13,7 @@ export const QueryPageTopStackFrame = ({
     <Stack
       direction={{ xs: "row", sm: "row-reverse" }}
       justifyContent="space-between"
-      alignItems="center"
       spacing={2}
-      sx={{ pt: 2, pb: 3 }}
     >
       <Box>{children}</Box>
 

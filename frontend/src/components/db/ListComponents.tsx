@@ -2,7 +2,7 @@ import { useTranslation } from "next-i18next";
 import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import { Divider, Typography } from "@mui/material";
 
-export const ListDivider = () => <Divider />;
+export const ListDivider = () => <Divider variant="middle" />;
 
 export const ListLoadingIndicator = () => (
   <div
