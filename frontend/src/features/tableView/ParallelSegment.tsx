@@ -61,12 +61,9 @@ export const ParallelSegment = ({
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
 
-  const openRightPane = useCallback(
-    async (language: DbLanguage, segmentNumber: string) => {
-      await setRightPaneActiveSegmentId(segmentNumber);
-    },
-    [setRightPaneActiveSegmentId],
-  );
+  const openRightPane = useCallback(async () => {
+    await setRightPaneActiveSegmentId(textSegmentNumber);
+  }, [setRightPaneActiveSegmentId, textSegmentNumber]);
 
   const { urlToSegment } = useGetURLToSegment({
     language,
@@ -111,11 +108,7 @@ export const ParallelSegment = ({
           >
             <CopyIcon fontSize="inherit" />
           </IconButton>
-          <IconButton
-            aria-label="Open in new pane"
-            size="small"
-            onClick={() => openRightPane(language, textSegmentNumber)}
-          >
+          <IconButton aria-label="Open in new pane" size="small">
             <OpenInNewIcon fontSize="inherit" />
           </IconButton>
         </Box>
@@ -160,7 +153,7 @@ export const ParallelSegment = ({
 
       <Divider />
 
-      <CardContent>
+      <CardContent onClick={openRightPane}>
         <ParallelSegmentText text={text} />
       </CardContent>
     </Card>
