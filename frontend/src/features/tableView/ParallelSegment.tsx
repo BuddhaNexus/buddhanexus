@@ -1,5 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "next-i18next";
+import { textViewRightPaneFileNameAtom } from "@atoms";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import { useRightPaneActiveSegmentParam } from "@components/hooks/params";
 import { useGetURLToSegment } from "@features/textView/useGetURLToSegment";
@@ -19,6 +20,7 @@ import {
 } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
 import { DbLanguage } from "@utils/api/types";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
 
@@ -51,6 +53,7 @@ export const ParallelSegment = ({
 
   const [rightPaneActiveSegmentId, setRightPaneActiveSegmentId] =
     useRightPaneActiveSegmentParam();
+  const setRightPaneFileName = useSetAtom(textViewRightPaneFileNameAtom);
 
   const dbLanguageName = t(`language.${language}`);
 
@@ -71,6 +74,20 @@ export const ParallelSegment = ({
   });
 
   const isActive = rightPaneActiveSegmentId === textSegmentNumber;
+
+  useEffect(
+    function updateRightPaneFileName() {
+      if (rightPaneActiveSegmentId === textSegmentNumber) {
+        setRightPaneFileName(displayName);
+      }
+    },
+    [
+      displayName,
+      rightPaneActiveSegmentId,
+      setRightPaneFileName,
+      textSegmentNumber,
+    ],
+  );
 
   return (
     <Card
