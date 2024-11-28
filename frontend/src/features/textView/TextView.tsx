@@ -28,7 +28,7 @@ export const TextView = () => {
     rightPaneActiveSegmentId !== DEFAULT_PARAM_VALUES.active_segment;
 
   return (
-    <Paper sx={{ flex: 1, mt: 2, height: "100%" }} elevation={1}>
+    <Paper sx={{ flex: 1, mt: 2, height: "100%" }}>
       <Allotment>
         {/* Left pane - text (main view) */}
         <Allotment.Pane priority={LayoutPriority.High}>

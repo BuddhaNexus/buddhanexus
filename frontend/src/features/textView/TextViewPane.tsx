@@ -3,9 +3,12 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
-import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
+import LoadingSpinner, {
+  InfiniteLoadingSpinner,
+} from "@components/common/LoadingSpinner";
 import {
   EmptyPlaceholder,
   ListDivider,
@@ -49,6 +52,10 @@ export const TextViewPane = ({
     handleFetchingNextPage,
   } = useTextViewPane({ fileName, activeSegment: activeSegmentId });
 
+  const [isScrollingToActiveSegment, setIsScrollingToActiveSegment] = useState(
+    activeSegmentId !== DEFAULT_PARAM_VALUES.active_segment,
+  );
+
   const colorScale = useMemo(
     () => getTextViewColorScale(allParallels),
     [allParallels],
@@ -62,11 +69,13 @@ export const TextViewPane = ({
     )
       return;
 
-    // prevent layout jump when data is updated
+    // prevent layout jump when data is updated (e.g. during pagination/endless loading)
     if (wasDataJustAppended.current) {
       wasDataJustAppended.current = false;
       return;
     }
+
+    setIsScrollingToActiveSegment(true);
 
     const indexInData = findSegmentIndexInParallelsData(
       allParallels,
@@ -77,12 +86,14 @@ export const TextViewPane = ({
         index: indexInData,
         align: "center",
       });
+      setIsScrollingToActiveSegment(false);
     }, 200);
   }, [activeSegmentId, allParallels]);
 
   return (
     <Card sx={{ height: "100%" }}>
-      <CardContent style={{ height: "100%" }}>
+      <CardContent sx={{ height: "100%" }}>
+        <LoadingSpinner isLoading={isScrollingToActiveSegment} />
         <Virtuoso
           ref={virtuosoRef}
           firstItemIndex={firstItemIndex}

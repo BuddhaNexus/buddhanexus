@@ -5,17 +5,14 @@ import dharmaWheelIcon from "public/assets/icons/dharmaWheel.svg";
 import styles from "./loadingSpinner.module.scss";
 
 interface Props {
-  // withBackground?: boolean;
+  withBackground?: boolean;
   isLoading?: boolean;
 }
 
-const LoadingSpinner = ({
-  // withBackground,
-  isLoading,
-}: Props) => {
+const LoadingSpinner = ({ withBackground, isLoading }: Props) => {
   return (
     <Box
-      className={`${styles.loadingSpinnerContainer} ${isLoading && styles.loadingSpinnerContainerLoading}`}
+      className={`${styles.loadingSpinnerContainer} ${isLoading && styles.loadingSpinnerContainerLoading} ${withBackground && styles.loadingSpinnerContainerWithBackground}`}
     >
       <Image
         src={dharmaWheelIcon}

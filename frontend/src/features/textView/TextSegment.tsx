@@ -79,6 +79,7 @@ export const TextSegment = ({
     activeSegmentId,
     activeSegmentIndex,
     setSelectedSegmentMatches,
+    onClickFunction,
   ]);
 
   const matchSets = useMemo(() => {

@@ -4,7 +4,7 @@ import { useRightPaneActiveSegmentParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { CloseTextViewPaneButton } from "@features/textView/CloseTextViewPaneButton";
 import { TextViewPane } from "@features/textView/TextViewPane";
-import { CardHeader } from "@mui/material";
+import { Box, CardHeader } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 
 export const TextViewRightPane = () => {
@@ -20,7 +20,7 @@ export const TextViewRightPane = () => {
   const rightPaneFileName = useAtomValue(textViewRightPaneFileNameAtom);
 
   return (
-    <>
+    <Box sx={{ height: "100%" }}>
       <CardHeader
         data-testid="middle-view-header"
         sx={{
@@ -40,6 +40,6 @@ export const TextViewRightPane = () => {
         fileName={fileName}
         isRightPane={true}
       />
-    </>
+    </Box>
   );
 };
