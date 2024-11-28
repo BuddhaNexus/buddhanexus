@@ -24,14 +24,18 @@ import styles from "./textSegment.module.scss";
 export const TextSegment = ({
   data,
   colorScale,
+  activeSegmentId,
+  onClickFunction,
 }: {
   data?: ParsedTextViewParallel;
   colorScale: Scale;
+  activeSegmentId: string;
+  onClickFunction: "open-matches" | "";
 }) => {
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
 
-  const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
+  const [, setActiveSegmentId] = useActiveSegmentParam();
   const [activeSegmentIndex, setActiveSegmentIndex] =
     useActiveSegmentIndexParam();
 
@@ -50,6 +54,7 @@ export const TextSegment = ({
   const updateSelectedLocationInGlobalState = useCallback(
     async (location: { id: string; index: number; matches: string[] }) => {
       await Promise.all([
+        // todo: update what happens when a segment is clicked
         setActiveSegmentId(location.id),
         setActiveSegmentIndex(location.index),
       ]);
@@ -59,7 +64,12 @@ export const TextSegment = ({
 
   // find matches for the selected segment when the page is first rendered
   useLayoutEffect(() => {
-    if (!isSegmentSelected || typeof activeSegmentIndex !== "number") return;
+    if (
+      !isSegmentSelected ||
+      typeof activeSegmentIndex !== "number" ||
+      onClickFunction !== "open-matches"
+    )
+      return;
     const locationFromQueryParams = data?.segmentText[activeSegmentIndex];
     if (!locationFromQueryParams) return;
     setSelectedSegmentMatches(locationFromQueryParams.matches);

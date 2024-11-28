@@ -1,11 +1,10 @@
 import React, {
   MutableRefObject,
-  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
 } from "react";
-import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import { LogLevel, Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import {
   EmptyPlaceholder,
@@ -25,11 +24,13 @@ import CardContent from "@mui/material/CardContent";
 interface TextViewPaneProps {
   activeSegmentId: string;
   fileName: string;
+  isRightPane: boolean;
 }
 
 export const TextViewPane = ({
   activeSegmentId,
   fileName,
+  isRightPane,
 }: TextViewPaneProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const wasDataJustAppended: MutableRefObject<boolean> = useRef(false);
@@ -71,10 +72,12 @@ export const TextViewPane = ({
       allParallels,
       activeSegmentId,
     );
-    virtuosoRef.current?.scrollToIndex({
-      index: indexInData,
-      align: "center",
-    });
+    setTimeout(() => {
+      virtuosoRef.current?.scrollToIndex({
+        index: indexInData,
+        align: "center",
+      });
+    }, 200);
   }, [activeSegmentId, allParallels]);
 
   return (
@@ -89,6 +92,7 @@ export const TextViewPane = ({
             wasDataJustAppended.current = true;
             await handleFetchingPreviousPage();
           }}
+          logLevel={LogLevel.DEBUG}
           endReached={async () => {
             wasDataJustAppended.current = true;
             await handleFetchingNextPage();
@@ -102,7 +106,12 @@ export const TextViewPane = ({
               : EmptyPlaceholder,
           }}
           itemContent={(_, dataSegment) => (
-            <TextSegment data={dataSegment} colorScale={colorScale} />
+            <TextSegment
+              data={dataSegment}
+              colorScale={colorScale}
+              activeSegmentId={activeSegmentId}
+              onClickFunction={isRightPane ? "" : "open-matches"}
+            />
           )}
         />
       </CardContent>

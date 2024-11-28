@@ -6,5 +6,11 @@ export const TextViewLeftPane = () => {
   const [activeSegmentId] = useActiveSegmentParam();
   const { fileName } = useDbRouterParams();
 
-  return <TextViewPane activeSegmentId={activeSegmentId} fileName={fileName} />;
+  return (
+    <TextViewPane
+      activeSegmentId={activeSegmentId}
+      fileName={fileName}
+      isRightPane={false}
+    />
+  );
 };

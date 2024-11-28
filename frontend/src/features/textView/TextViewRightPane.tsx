@@ -19,7 +19,11 @@ export const TextViewRightPane = () => {
         <CloseTextViewPaneButton handlePress={handleClear} />{" "}
       </Box>
 
-      <TextViewPane activeSegmentId={activeSegmentId} fileName={fileName} />
+      <TextViewPane
+        activeSegmentId={activeSegmentId}
+        fileName={fileName}
+        isRightPane={true}
+      />
     </>
   );
 };
