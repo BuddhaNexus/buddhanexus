@@ -8,14 +8,7 @@ import {
 } from "@components/hooks/params";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { Numbers } from "@mui/icons-material";
-import {
-  Box,
-  CardContent,
-  CardHeader,
-  Chip,
-  CircularProgress,
-  Stack,
-} from "@mui/material";
+import { Box, CardContent, CardHeader, Chip, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue, useSetAtom } from "jotai";

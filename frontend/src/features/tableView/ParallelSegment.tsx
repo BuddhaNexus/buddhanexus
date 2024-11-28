@@ -70,10 +70,16 @@ export const ParallelSegment = ({
     segmentNumber: textSegmentNumber,
   });
 
+  const isActive = rightPaneActiveSegmentId === textSegmentNumber;
+
   return (
     <Card
-      sx={{ flex: 1, wordBreak: "break-all", my: 1 }}
-      elevation={1}
+      sx={{
+        flex: 1,
+        wordBreak: "break-all",
+        my: 1,
+      }}
+      elevation={isActive ? 5 : 1}
       onMouseEnter={() => id && onHover?.(id)}
       onMouseLeave={() => onHover?.("")}
     >
@@ -82,7 +88,7 @@ export const ParallelSegment = ({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          bgcolor: "background.card",
+          bgcolor: isActive ? "background.default" : "background.card",
           flexDirection: { xs: "column", sm: "row" },
         }}
       >
@@ -108,7 +114,11 @@ export const ParallelSegment = ({
           >
             <CopyIcon fontSize="inherit" />
           </IconButton>
-          <IconButton aria-label="Open in new pane" size="small">
+          <IconButton
+            aria-label="Open in new tab"
+            size="small"
+            onClick={() => window.open(urlToSegment, "_blank")}
+          >
             <OpenInNewIcon fontSize="inherit" />
           </IconButton>
         </Box>

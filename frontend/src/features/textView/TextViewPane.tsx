@@ -4,7 +4,7 @@ import React, {
   useMemo,
   useRef,
 } from "react";
-import { LogLevel, Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import {
   EmptyPlaceholder,
@@ -92,7 +92,6 @@ export const TextViewPane = ({
             wasDataJustAppended.current = true;
             await handleFetchingPreviousPage();
           }}
-          logLevel={LogLevel.DEBUG}
           endReached={async () => {
             wasDataJustAppended.current = true;
             await handleFetchingNextPage();
