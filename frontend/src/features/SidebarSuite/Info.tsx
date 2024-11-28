@@ -7,7 +7,7 @@ import { useAtomValue } from "jotai";
 const TEMP_VIEW_INFO: Record<DbViewEnum, string> = {
   graph: `The pie-chart displays the distribution of all the matches found with the current filters across the various collections and their subsections. The distribution is weighted by length of matches found.
 
-  The histogram displays the distribution of the top files that have matches with the Inquiry Text based on the accumulated length of the matches. A maximum of 50 Hit Texts are shown. 
+  The distribution chart displays the distribution of the top files that have matches with the Inquiry Text based on the accumulated length of the approximate matches. A maximum of 50 Hit Texts are shown.
   `,
   numbers:
     "Displays potential parallels by numbers sorted by segment as they appear in the text. ",
@@ -16,12 +16,12 @@ const TEMP_VIEW_INFO: Record<DbViewEnum, string> = {
   text: `
 
   The color coding of the syllables in the Inquiry Text indicates how many approximate matches are to be encountered at a certain syllable according to the current filter settings.
-  
+
   Color codes per number of matches:
   0 	1 	2 	3 	4 	5 	6 	7 	8 	9 	10 or more
-                      
-    
-  
+
+
+
   The minimum Match Length for Chinese texts has been set to 5 characters.
   `,
 };

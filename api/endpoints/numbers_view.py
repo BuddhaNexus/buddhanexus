@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
 from typing import Any
-from ..utils import (    
+from ..utils import (
     shorten_segment_names,
 )
 from shared.utils import get_language_from_filename
@@ -50,7 +50,7 @@ async def get_numbers_view(input: GeneralInput) -> Any:
 
     folio = input.folio
     if not input.folio:
-        folio = 0
+        folio = "0"
 
     query_result = execute_query(
         numbers_view_queries.QUERY_NUMBERS_VIEW,

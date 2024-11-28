@@ -154,8 +154,8 @@ class LoadSegmentsBase:
         try:
             file_df = pd.read_json(os.path.join(self.DATA_PATH, file))
             file_df["_key"] = file_df["segmentnr"]
-            file_df["lang"] = self.LANG            
-            file_df['folio'] = file_df['folio'].astype(str)
+            file_df["lang"] = self.LANG
+            file_df["folio"] = file_df["folio"].astype(str)
             file_df["filename"] = metadata_reference_filename
             file_df["category"] = self.metadata[metadata_reference_filename]["category"]
             file_df["collection"] = self.metadata[metadata_reference_filename][
@@ -280,7 +280,7 @@ class LoadSegmentsBase:
         # Bulk insert and update
         if segments_pages_to_insert:
             collection_segments_pages.insert_many(segments_pages_to_insert)
-        #if files_to_insert:
+        # if files_to_insert:
         #    collection_files.insert_many(files_to_insert)
 
         for file in files_to_update:
