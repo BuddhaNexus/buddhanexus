@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
 import { DbLanguage } from "@utils/api/types";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
 

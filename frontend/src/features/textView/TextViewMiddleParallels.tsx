@@ -8,7 +8,7 @@ import {
 } from "@components/hooks/params";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { Numbers } from "@mui/icons-material";
-import { Box, CardContent, CardHeader, Chip, Stack } from "@mui/material";
+import { Box, CardContent, CardHeader, Chip } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -29,9 +29,8 @@ export default function TextViewMiddleParallels() {
     enabled: activeSegmentMatches.length > 0,
   });
 
-  const [activeSegment, setActiveSegment] = useActiveSegmentParam();
-  const [activeSegmentIndex, setActiveSegmentIndex] =
-    useActiveSegmentIndexParam();
+  const [, setActiveSegment] = useActiveSegmentParam();
+  const [, setActiveSegmentIndex] = useActiveSegmentIndexParam();
 
   const handleClear = async () => {
     await Promise.all([setActiveSegment("none"), setActiveSegmentIndex(null)]);
@@ -89,18 +88,11 @@ export default function TextViewMiddleParallels() {
         }}
         action={<CloseTextViewPaneButton handlePress={handleClear} />}
         title={
-          <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
-            <Chip
-              label={`${activeSegment} / ${activeSegmentIndex}`}
-              variant="filled"
-              color="secondary"
-            />
-            <Chip
-              label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
-              variant="outlined"
-              icon={<Numbers />}
-            />
-          </Stack>
+          <Chip
+            label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
+            variant="outlined"
+            icon={<Numbers />}
+          />
         }
       />
 
