@@ -24,7 +24,7 @@ export const TextViewRightPane = () => {
       <CardHeader
         data-testid="middle-view-header"
         sx={{
-          backgroundColor: "background.paper",
+          backgroundColor: "background.card",
           position: "sticky",
           top: 0,
           zIndex: 2,

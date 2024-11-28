@@ -98,7 +98,7 @@ export const TextSegment = ({
         className={`${styles.segmentNumber} ${
           isSegmentSelected && styles["segmentNumber--selected"]
         } ${!shouldShowSegmentNumbers && styles["segmentNumber--hidden"]}`}
-        data-segmentnumber={data.segmentNumber}
+        data-segmentnumber={segmentNumber}
       />
 
       {data.segmentText.map(({ text, highlightColor, matches }, i) => {
