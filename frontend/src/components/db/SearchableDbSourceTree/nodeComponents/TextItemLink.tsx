@@ -1,14 +1,14 @@
 import React from "react";
 import { NodeApi } from "react-arborist";
 import { useTranslation } from "next-i18next";
-import { currentDbViewAtom } from "@atoms";
+import { currentDbViewAtom, isDbSourceBrowserDrawerOpenAtom } from "@atoms";
 import { Link } from "@components/common/Link";
 import { getTextPath } from "@components/common/utils";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { isDbSourceTreeLeafNodeData } from "@components/db/SearchableDbSourceTree/utils";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Chip, Tooltip, Typography } from "@mui/material";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
 import { SourceTypeIcon } from "./SourceTypeIcon";
 import { RowBox, TextNameTypography } from "./styledComponents";
@@ -66,6 +66,8 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
 
   const { t } = useTranslation();
 
+  const [, setIsDrawerOpen] = useAtom(isDbSourceBrowserDrawerOpenAtom);
+
   const { data } = node;
 
   if (!isDbSourceTreeLeafNodeData(data)) {
@@ -82,6 +84,7 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
     <Link
       className={styles.textNodeLink}
       href={getTextPath({ dbLanguage, fileName: data.fileName, dbView })}
+      onClick={() => setIsDrawerOpen(false)}
     >
       <TextItemLinkBody data={data} treeWidth={node.tree.props.width}>
         <TextNameTypography className={styles.textName}>

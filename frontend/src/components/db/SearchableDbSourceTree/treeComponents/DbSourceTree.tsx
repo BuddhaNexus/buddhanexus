@@ -14,6 +14,7 @@ export function DbSourceTree({
   searchTerm,
 }: DbSourceTreeProps) {
   if (type === DbSourceTreeType.FILTER_SELECTOR) {
+    // todo: what is this? Can it be removed? I don't see usages in code
     return (
       <DbSourceFilterSelectorTree
         data={data}
