@@ -86,6 +86,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           hasHeading={hasHeading}
           dbLanguage={dbLanguage}
           padding={padding}
+          width={parentWidth}
         />
       );
     }
@@ -97,6 +98,8 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           dbLanguage={dbLanguage}
           padding={padding}
           message={error ? error.message : t("prompts.noResults")}
+          width={parentWidth}
+          height={parentHeight}
         />
       );
     }

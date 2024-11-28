@@ -17,15 +17,8 @@ const Drawer = styled(MuiDrawer)(({ theme }) => ({
     width: "60vw",
   },
   [theme.breakpoints.up("md")]: {
-    width: "40vw",
+    width: "50vw",
   },
-  [theme.breakpoints.up("lg")]: {
-    width: "35vw",
-  },
-  [theme.breakpoints.up("xl")]: {
-    width: "30vw",
-  },
-  padding: 2,
 }));
 
 export const DbSourceBrowserDrawer = memo(function DbSourceBrowserDrawer() {

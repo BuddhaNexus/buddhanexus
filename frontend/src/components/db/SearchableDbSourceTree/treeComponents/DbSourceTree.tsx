@@ -6,9 +6,13 @@ import { DbSourceFilterSelectorTree } from "@features/SidebarSuite/uiSettings/Db
 
 import DbSourceBrowserTree from "./DbSourceBrowserTree";
 
-export function DbSourceTree(props: DbSourceTreeProps) {
-  const { type, data, height, width, searchTerm } = props;
-
+export function DbSourceTree({
+  type,
+  data,
+  height,
+  width,
+  searchTerm,
+}: DbSourceTreeProps) {
   if (type === DbSourceTreeType.FILTER_SELECTOR) {
     return (
       <DbSourceFilterSelectorTree

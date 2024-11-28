@@ -7,19 +7,22 @@ export type InactiveTreeHeadProps = {
   hasHeading: boolean;
   dbLanguage: DbLanguage;
   padding?: number;
+  width: number;
 };
 
 function InactiveTreeHead({
   hasHeading,
   dbLanguage,
   padding,
+  width,
 }: InactiveTreeHeadProps) {
   return (
     <>
       <TreeHeading isRendered={hasHeading} dbLanguage={dbLanguage} />
-      <FormControl variant="outlined" sx={{ p: padding, pb: 0 }} fullWidth>
+      <FormControl sx={{ p: padding, width }} disabled={true} fullWidth>
         <TextField
           label="Search"
+          aria-disabled={true}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
