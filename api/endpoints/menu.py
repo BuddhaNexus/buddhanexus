@@ -5,11 +5,14 @@ from ..queries import menu_queries
 from .helpers.menu_helpers import structure_menu_data
 from time import time
 from .models.menu_models import MenudataOutput
+from fastapi_cache.decorator import cache
+from ..cache_config import cached_endpoint, CACHE_TIMES
 
 router = APIRouter()
 
 
 @router.get("/menudata/", response_model=MenudataOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_data_for_sidebar_menu(
     language: str = Query(..., description="language to be used")
 ) -> Any:

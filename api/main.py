@@ -3,10 +3,15 @@ This file contains all FastAPI endpoints for Buddhanexus.
 """
 
 import os
+import json
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache.coder import JsonCoder
+from redis import asyncio as aioredis
+from .cache_config import init_cache
 from .endpoints import (
     search,
     table_view,
@@ -26,6 +31,20 @@ APP = FastAPI(title="BuddhaNexus Backend", version="0.2.1", openapi_prefix=API_P
 APP.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
+
+
+
+# Initialize cache on startup
+@APP.on_event("startup")
+async def startup():
+    # Initialize Redis with decode_responses=False to keep raw bytes
+    redis = aioredis.from_url(
+        "redis://redis:6379",
+        encoding="utf8",
+        decode_responses=False
+    )
+    backend = RedisBackend(redis)
+    FastAPICache.init(backend=backend, prefix="buddhanexus-cache")
 
 APP.include_router(search.router)
 APP.include_router(graph_view.router)
