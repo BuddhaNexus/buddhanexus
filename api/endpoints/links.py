@@ -4,11 +4,13 @@ from .endpoint_utils import execute_query
 from ..queries import utils_queries
 from ..links import get_links
 from .models.links_models import LinksOutput
+from ..cache_config import cached_endpoint, CACHE_TIMES
 
 router = APIRouter()
 
 
 @router.get("/external/", response_model=LinksOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_external_links(filename: str = Query(...)) -> Any:
     """
     Returns the external links for a given filename or segmentnr.

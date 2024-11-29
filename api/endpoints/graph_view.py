@@ -3,11 +3,13 @@ from .endpoint_utils import execute_query
 from ..queries import graph_view_queries
 from typing import Any
 from .models.graph_view_models import *
+from ..cache_config import cached_endpoint, CACHE_TIMES
 
 router = APIRouter()
 
 
 @router.post("/graph-view/", response_model=GraphViewOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_graph_for_file(input: GraphInput) -> Any:
     """
     Endpoint for graph view.

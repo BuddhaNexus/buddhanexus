@@ -6,11 +6,13 @@ from .endpoint_utils import execute_query
 from ..queries import table_view_queries
 from .models.general_models import GeneralInput
 from .models.table_view_models import *
+from ..cache_config import cached_endpoint, CACHE_TIMES
 
 router = APIRouter()
 
 
 @router.post("/table/", response_model=TableViewOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_table_view(input: GeneralInput) -> Any:
     """
     Endpoint for the table view. Accepts filters.

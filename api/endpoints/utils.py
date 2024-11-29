@@ -3,11 +3,13 @@ from typing import Any
 from .endpoint_utils import execute_query
 from ..queries import utils_queries
 from .models.utils_models import *
+from ..cache_config import cached_endpoint, CACHE_TIMES
 
 router = APIRouter()
 
 
 @router.post("/count-matches/", response_model=CountMatchesOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_counts_for_file(input: CountMatchesInput) -> Any:
     """
     Returns number of filtered parallels
@@ -31,6 +33,7 @@ async def get_counts_for_file(input: CountMatchesInput) -> Any:
 
 
 @router.get("/folios/", response_model=FolioOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_folios_for_file(
     filename: str = Query(
         ..., description="File name of the text for which folios should be fetched."
@@ -60,6 +63,7 @@ def get_displayname(segmentnr):
 
 
 @router.get("/displayname/", response_model=DisplayNameOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_displayname_for_segmentnr(
     segmentnr: str = Query(
         ..., description="Segmentnr for which the displayname should be fetched."
