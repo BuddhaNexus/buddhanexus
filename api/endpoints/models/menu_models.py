@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict, Any
 
 
 class File(BaseModel):
@@ -27,4 +27,9 @@ class Collection(CollectionBase):
 
 
 class MenudataOutput(BaseModel):
-    menudata: List[Collection]
+    menudata: List[Dict[str, Any]]
+
+    class Config:
+        json_encoders = {
+            # Add any custom encoders if needed
+        }
