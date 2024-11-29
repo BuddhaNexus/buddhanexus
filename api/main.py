@@ -32,6 +32,7 @@ APP.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
 
+
 class CacheControlMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         response = await call_next(request)
@@ -40,41 +41,42 @@ class CacheControlMiddleware(BaseHTTPMiddleware):
             response.headers["Vary"] = "Accept-Encoding"
         return response
 
+
 APP.add_middleware(CacheControlMiddleware)
 APP.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*", "Cache-Control"],
-    expose_headers=["Cache-Control"]
+    expose_headers=["Cache-Control"],
 )
 
 # Configure root logger
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    force=True
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    force=True,
 )
 
 # Create logger for this module
 logger = logging.getLogger(__name__)
+
 
 # Initialize cache on startup
 @APP.on_event("startup")
 async def startup():
     logger.info("Initializing FastAPI application...")
     redis = aioredis.from_url(
-        "redis://redis:6379",
-        encoding="utf8",
-        decode_responses=False
+        "redis://redis:6379", encoding="utf8", decode_responses=False
     )
     FastAPICache.init(
         backend=RedisBackend(redis),
         prefix="buddhanexus-cache",
         key_builder=make_cache_key_builder(),
-        coder=CustomJsonCoder()
+        coder=CustomJsonCoder(),
     )
     logger.info("Cache initialized")
+
 
 APP.include_router(search.router)
 APP.include_router(graph_view.router)
@@ -86,11 +88,13 @@ APP.include_router(links.router, prefix="/links")
 APP.include_router(utils.router, prefix="/utils")
 APP.include_router(menu.router)
 
+
 # Add a test endpoint to verify logging
 @APP.get("/test-log")
 async def test_log():
     logger.info("Test log endpoint called")
     return {"message": "Logged successfully"}
+
 
 @APP.get("/")
 def root() -> object:
@@ -99,4 +103,3 @@ def root() -> object:
     :return: The response (json object)
     """
     return {"message": "Visit /docs to view the documentation"}
-

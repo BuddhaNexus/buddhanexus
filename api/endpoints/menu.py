@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+
 @router.get("/menudata/", response_model=MenudataOutput)
 @cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_data_for_sidebar_menu(
@@ -23,7 +24,7 @@ async def get_data_for_sidebar_menu(
 
         query_result = execute_query(menu_query, current_bind_vars)
         structured_menu_data = structure_menu_data(query_result.result)
-        
+
         return MenudataOutput(menudata=structured_menu_data)
     except Exception as e:
         logger.error(f"Error in get_data_for_sidebar_menu: {str(e)}")
