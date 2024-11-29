@@ -3,14 +3,12 @@ This file contains all FastAPI endpoints for Buddhanexus.
 """
 
 import os
-import json
 import logging
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
-from fastapi_cache.coder import JsonCoder
 from redis import asyncio as aioredis
 from .cache_config import make_cache_key_builder, CustomJsonCoder
 from .endpoints import (
@@ -24,9 +22,7 @@ from .endpoints import (
     links,
     download,
 )
-from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import Response
 
 API_PREFIX = "/api-db" if os.environ["PROD"] == "1" else "/api-db"
 
@@ -104,16 +100,3 @@ def root() -> object:
     """
     return {"message": "Visit /docs to view the documentation"}
 
-# Add this to help debug caching issues
-# @APP.middleware("http")
-# async def add_cache_header(request, call_next):
-#     response = await call_next(request)
-#     if "menudata" in request.url.path:
-#         # Generate cache key without function reference
-#         cache_key = make_cache_key_builder()(
-#             func={"module": "api.endpoints.menu", "name": "get_data_for_sidebar_menu"},
-#             namespace="api",
-#             **dict(request.query_params)
-#         )
-#         response.headers["X-Cache-Key"] = cache_key
-#     return response
