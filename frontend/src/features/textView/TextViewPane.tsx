@@ -21,6 +21,7 @@ import {
   findSegmentIndexInParallelsData,
   getTextViewColorScale,
 } from "@features/textView/utils";
+import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
@@ -97,7 +98,7 @@ export const TextViewPane = ({
 
   return (
     <Card sx={{ height: "100%" }}>
-      <CardContent sx={{ height: "100%" }}>
+      <Box sx={{ height: "100%", py: 0, px: 2 }}>
         {/*{isFetchingExtraPages || isScrollingToActiveSegment ? (*/}
         {isFetchingExtraPages ? <LoadingSpinner isLoading={true} /> : null}
         <Virtuoso
@@ -131,7 +132,7 @@ export const TextViewPane = ({
             />
           )}
         />
-      </CardContent>
+      </Box>
     </Card>
   );
 };

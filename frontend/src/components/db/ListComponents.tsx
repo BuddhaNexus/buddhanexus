@@ -1,7 +1,9 @@
 import { useTranslation } from "next-i18next";
 import { Divider, LinearProgress, Typography } from "@mui/material";
 
-export const ListDivider = () => <Divider variant="middle" sx={{ m: 1 }} />;
+export const ListDivider = () => (
+  <Divider variant="middle" sx={{ m: 1, mt: 2 }} />
+);
 
 export const ListLoadingIndicator = () => <LinearProgress />;
 

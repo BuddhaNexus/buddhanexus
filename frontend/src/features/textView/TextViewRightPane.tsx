@@ -18,7 +18,7 @@ export const TextViewRightPane = () => {
   const rightPaneFileName = useAtomValue(textViewRightPaneFileNameAtom);
 
   return (
-    <Box sx={{ height: "100%" }}>
+    <Box display="flex" flexDirection="column" height="100%">
       <CardHeader
         data-testid="middle-view-header"
         sx={{
