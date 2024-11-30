@@ -35,8 +35,9 @@ span.segment {
   }
 
   &--selected {
-    background: #eeeeee !important;
-    text-decoration: underline;
+    //background: #eeeeee !important;
+    //text-decoration: underline;
+    font-weight: 900;
   }
 
   &--parallel-hovered {
@@ -55,7 +56,7 @@ span.segment {
 
   &--selected {
     text-decoration: underline;
-    font-weight: bold;
+    font-weight: 900;
   }
 
   &--hidden {
