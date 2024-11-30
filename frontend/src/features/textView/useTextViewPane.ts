@@ -26,9 +26,13 @@ interface UseTextPageReturn {
 
 interface Props {
   activeSegment: string;
+  isRightPane?: boolean;
 }
 
-export function useTextViewPane({ activeSegment }: Props): UseTextPageReturn {
+export function useTextViewPane({
+  activeSegment,
+  isRightPane,
+}: Props): UseTextPageReturn {
   useSetDbViewFromPath();
   const requestBodyBase = useStandardViewBaseQueryParams();
 
@@ -99,6 +103,11 @@ export function useTextViewPane({ activeSegment }: Props): UseTextPageReturn {
         page: pageParam ?? 0,
         filename: fileNameFromActiveSegment ?? fileNameUrlParam,
         active_segment: activeSegmentParam,
+
+        // in the right pane, everything is only filtered by active file
+        filters: isRightPane
+          ? { ...requestBodyBase.filters, include_files: [fileNameUrlParam] }
+          : requestBodyBase.filters,
       });
     },
 

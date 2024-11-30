@@ -45,7 +45,7 @@ export const TextViewPane = ({
     isFetchingNextPage,
     handleFetchingPreviousPage,
     handleFetchingNextPage,
-  } = useTextViewPane({ activeSegment: activeSegmentId });
+  } = useTextViewPane({ activeSegment: activeSegmentId, isRightPane });
 
   // const [isScrollingToActiveSegment, setIsScrollingToActiveSegment] = useState(
   //   activeSegmentId !== DEFAULT_PARAM_VALUES.active_segment,
