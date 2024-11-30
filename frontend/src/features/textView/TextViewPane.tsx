@@ -3,12 +3,9 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  // useState,
 } from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
-import LoadingSpinner, {
-  InfiniteLoadingSpinner,
-} from "@components/common/LoadingSpinner";
+import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import {
   EmptyPlaceholder,
   ListDivider,
@@ -23,7 +20,6 @@ import {
 } from "@features/textView/utils";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 
 interface TextViewPaneProps {
   activeSegmentId: string;
@@ -86,7 +82,7 @@ export const TextViewPane = ({
         align: "center",
       });
       // setIsScrollingToActiveSegment(false);
-    }, 200);
+    }, 400);
   }, [activeSegmentId, allParallels]);
 
   // const indexInData = findSegmentIndexInParallelsData(
@@ -94,13 +90,14 @@ export const TextViewPane = ({
   //   activeSegmentId,
   // );
 
-  const isFetchingExtraPages = isFetchingNextPage || isFetchingPreviousPage;
+  // const isFetchingExtraPages = isFetchingNextPage || isFetchingPreviousPage;
 
   return (
     <Card sx={{ height: "100%" }}>
       <Box sx={{ height: "100%", py: 0, px: 2 }}>
-        {/*{isFetchingExtraPages || isScrollingToActiveSegment ? (*/}
-        {isFetchingExtraPages ? <LoadingSpinner isLoading={true} /> : null}
+        {/*{isScrollingToActiveSegment ? (*/}
+        {/*  <LoadingSpinner isLoading={true} withBackground={true} />*/}
+        {/*) : null}*/}
         <Virtuoso
           ref={virtuosoRef}
           firstItemIndex={firstItemIndex}
@@ -132,6 +129,7 @@ export const TextViewPane = ({
             />
           )}
         />
+        {/*{isFetchingExtraPages ? <LoadingSpinner isLoading={true} /> : null}*/}
       </Box>
     </Card>
   );

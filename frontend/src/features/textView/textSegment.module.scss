@@ -40,6 +40,8 @@ span.segment {
     font-weight: 900;
   }
 
+  transition: background, color 150ms ease-out;
+
   &--parallel-hovered {
     background: var(--mui-palette-common-black) !important;
     color: var(--mui-palette-common-white) !important;
