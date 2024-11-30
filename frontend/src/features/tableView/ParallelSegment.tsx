@@ -91,11 +91,7 @@ export const ParallelSegment = ({
 
   return (
     <Card
-      sx={{
-        flex: 1,
-        wordBreak: "break-all",
-        my: 1,
-      }}
+      sx={{ flex: 1, wordBreak: "break-all", my: 1 }}
       elevation={isActive ? 5 : 1}
       onMouseEnter={() => id && onHover?.(id)}
       onMouseLeave={() => onHover?.("")}
@@ -131,6 +127,7 @@ export const ParallelSegment = ({
           >
             <CopyIcon fontSize="inherit" />
           </IconButton>
+
           <IconButton
             aria-label="Open in new tab"
             size="small"

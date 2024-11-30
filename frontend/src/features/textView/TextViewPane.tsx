@@ -3,7 +3,7 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  useState,
+  // useState,
 } from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import LoadingSpinner, {
@@ -26,13 +26,11 @@ import CardContent from "@mui/material/CardContent";
 
 interface TextViewPaneProps {
   activeSegmentId: string;
-  fileName: string;
   isRightPane: boolean;
 }
 
 export const TextViewPane = ({
   activeSegmentId,
-  fileName,
   isRightPane,
 }: TextViewPaneProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null);
@@ -50,11 +48,11 @@ export const TextViewPane = ({
     isFetchingNextPage,
     handleFetchingPreviousPage,
     handleFetchingNextPage,
-  } = useTextViewPane({ fileName, activeSegment: activeSegmentId });
+  } = useTextViewPane({ activeSegment: activeSegmentId });
 
-  const [isScrollingToActiveSegment, setIsScrollingToActiveSegment] = useState(
-    activeSegmentId !== DEFAULT_PARAM_VALUES.active_segment,
-  );
+  // const [isScrollingToActiveSegment, setIsScrollingToActiveSegment] = useState(
+  //   activeSegmentId !== DEFAULT_PARAM_VALUES.active_segment,
+  // );
 
   const colorScale = useMemo(
     () => getTextViewColorScale(allParallels),
@@ -75,7 +73,7 @@ export const TextViewPane = ({
       return;
     }
 
-    setIsScrollingToActiveSegment(true);
+    // setIsScrollingToActiveSegment(true);
 
     const indexInData = findSegmentIndexInParallelsData(
       allParallels,
@@ -86,17 +84,26 @@ export const TextViewPane = ({
         index: indexInData,
         align: "center",
       });
-      setIsScrollingToActiveSegment(false);
+      // setIsScrollingToActiveSegment(false);
     }, 200);
   }, [activeSegmentId, allParallels]);
+
+  // const indexInData = findSegmentIndexInParallelsData(
+  //   allParallels,
+  //   activeSegmentId,
+  // );
+
+  const isFetchingExtraPages = isFetchingNextPage || isFetchingPreviousPage;
 
   return (
     <Card sx={{ height: "100%" }}>
       <CardContent sx={{ height: "100%" }}>
-        <LoadingSpinner isLoading={isScrollingToActiveSegment} />
+        {/*{isFetchingExtraPages || isScrollingToActiveSegment ? (*/}
+        {isFetchingExtraPages ? <LoadingSpinner isLoading={true} /> : null}
         <Virtuoso
           ref={virtuosoRef}
           firstItemIndex={firstItemIndex}
+          // initialTopMostItemIndex={indexInData}
           data={allParallels}
           increaseViewportBy={500}
           startReached={async () => {

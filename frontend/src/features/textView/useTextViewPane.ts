@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
@@ -26,16 +25,18 @@ interface UseTextPageReturn {
 }
 
 interface Props {
-  fileName: string;
   activeSegment: string;
 }
 
-export function useTextViewPane({
-  fileName,
-  activeSegment,
-}: Props): UseTextPageReturn {
+export function useTextViewPane({ activeSegment }: Props): UseTextPageReturn {
   useSetDbViewFromPath();
   const requestBodyBase = useStandardViewBaseQueryParams();
+
+  const { fileName: fileNameUrlParam } = useDbRouterParams();
+
+  const [fileNameFromActiveSegment] = activeSegment.split(":");
+
+  // const previousFileName = useRef(fileName);
 
   const initialPageParam =
     activeSegment === DEFAULT_PARAM_VALUES.active_segment ? 0 : undefined;
@@ -52,6 +53,8 @@ export function useTextViewPane({
     [],
   );
 
+  // console.log({ previous: previousFileName.current, fileName });
+
   const {
     data,
     isSuccess,
@@ -63,7 +66,9 @@ export function useTextViewPane({
     isError,
     error,
   } = useInfiniteQuery({
-    enabled: Boolean(fileName),
+    enabled: Boolean(fileNameUrlParam),
+    // when within the same file, keep previous data. Otherwise, discard it when user switches to new file.
+    // previousFileName.current === fileName ? keepPreviousData : undefined,
     placeholderData: keepPreviousData,
     initialPageParam,
     queryKey: DbApi.TextView.makeQueryKey({
@@ -87,10 +92,12 @@ export function useTextViewPane({
         ? DEFAULT_PARAM_VALUES.active_segment
         : activeSegment;
 
+      // previousFileName.current = fileName;
+
       return DbApi.TextView.call({
         ...requestBodyBase,
         page: pageParam ?? 0,
-        filename: fileName,
+        filename: fileNameFromActiveSegment ?? fileNameUrlParam,
         active_segment: activeSegmentParam,
       });
     },
