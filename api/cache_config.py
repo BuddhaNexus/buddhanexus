@@ -1,13 +1,17 @@
-from typing import Dict, Any
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.redis import RedisBackend
-from fastapi_cache.decorator import cache
+"""
+Cache configuration module for the BuddhaNexus API, since we .
+Provides custom JSON encoding/decoding and Redis-based caching functionality.
+"""
+
+import json
+import logging
+from functools import wraps
+from typing import Any
+
 from fastapi_cache.coder import JsonCoder
 from redis import asyncio as aioredis
-import logging
+
 from .endpoints.models.menu_models import MenudataOutput
-from functools import wraps
-import json
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +24,10 @@ CACHE_TIMES = {
 
 
 class CustomJsonCoder(JsonCoder):
+    """Custom JSON encoder/decoder that handles MenudataOutput objects and Redis interactions."""
+    
     def decode(self, value: Any) -> Any:
-        logger.info(f"Starting decode of value type: {type(value)}")
+        logger.info("Starting decode of value type: %s", type(value))
         try:
             # If we got a string (due to decode_responses=True), parse it directly
             if isinstance(value, str):
@@ -29,38 +35,37 @@ class CustomJsonCoder(JsonCoder):
             else:
                 decoded = super().decode(value)
 
-            logger.info(f"Successfully decoded to type: {type(decoded)}")
+            logger.info("Successfully decoded to type: %s", type(decoded))
 
             if isinstance(decoded, dict) and "menudata" in decoded:
                 logger.info("Converting dict to MenudataOutput")
                 return MenudataOutput(**decoded)
 
-            logger.warning(f"Unexpected data format: {type(decoded)}")
+            logger.warning("Unexpected data format: %s", type(decoded))
             return decoded
 
         except Exception as e:
-            logger.error(f"Decode error: {str(e)}", exc_info=True)
+            logger.error("Decode error: %s", str(e), exc_info=True)
             raise
 
-    def encode(self, value: Any) -> str:  # Changed return type to str
-        logger.info(f"Starting encode of type: {type(value)}")
+    def encode(self, value: Any) -> str:
+        logger.info("Starting encode of type: %s", type(value))
         try:
             if isinstance(value, MenudataOutput):
                 value = value.dict()
 
-            # Return string directly since Redis is configured for decoded responses
             return json.dumps(value)
         except Exception as e:
-            logger.error(f"Encode error: {str(e)}", exc_info=True)
+            logger.error("Encode error: %s", str(e), exc_info=True)
             raise
 
 
 def make_cache_key_builder():
+    """Creates a function that builds consistent cache keys for Redis storage."""
+    
     def cache_key_builder(
         func,
         namespace: str = "",
-        request: Any = None,
-        response: Any = None,
         *args,
         **kwargs,
     ) -> str:
@@ -70,7 +75,7 @@ def make_cache_key_builder():
         namespace = namespace.replace("buddhanexus-cache:", "")
 
         components = [
-            "buddhanexus-cache",  # Only add prefix once
+            "buddhanexus-cache",
             namespace,
             (
                 func.__module__
@@ -90,9 +95,8 @@ def make_cache_key_builder():
             for k, v in sorted(actual_kwargs.items()):
                 components.append(f"{k}={v}")
 
-        # Join components and log the key
         cache_key = ":".join(str(component) for component in components)
-        logger.info(f"Cache key being used: {cache_key}")
+        logger.info("Cache key being used: %s", cache_key)
 
         return cache_key
 
@@ -100,61 +104,61 @@ def make_cache_key_builder():
 
 
 def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
+    """
+    Decorator that implements Redis-based caching for API endpoints.
+    
+    Args:
+        expire: Cache expiration time in seconds
+    """
     def wrapper(func):
         @wraps(func)
         async def debug_wrapper(*args, **kwargs):
-            # Generate cache key
             key_builder = make_cache_key_builder()
             cache_key = key_builder(func, namespace="api", kwargs=kwargs)
-            logger.info(f"Attempting to retrieve from cache: {cache_key}")
+            logger.info("Attempting to retrieve from cache: %s", cache_key)
 
             try:
-                # Connect to Redis
                 redis = await aioredis.from_url(
                     "redis://redis:6379", encoding="utf8", decode_responses=True
                 )
 
-                # Check if key exists
                 exists = await redis.exists(cache_key)
-                logger.info(f"Cache key exists: {exists}")
+                logger.info("Cache key exists: %s", exists)
 
                 if exists:
-                    # Get cached value
                     cached_value = await redis.get(cache_key)
                     logger.info(
-                        f"Retrieved cached value of length: {len(cached_value) if cached_value else 0}"
+                        "Retrieved cached value of length: %s",
+                        len(cached_value) if cached_value else 0
                     )
 
                     if cached_value:
                         try:
-                            # Attempt to decode
                             decoded = CustomJsonCoder().decode(cached_value)
                             logger.info(
-                                f"Successfully decoded cached value of type: {type(decoded)}"
+                                "Successfully decoded cached value of type: %s",
+                                type(decoded)
                             )
                             return decoded
-                        except Exception as e:
-                            logger.error(f"Failed to decode cached value: {str(e)}")
+                        except ValueError as e:
+                            logger.error("Failed to decode cached value: %s", str(e))
                     else:
                         logger.warning("Cache key exists but value is None")
 
-                # If we get here, either no cache or failed to decode
                 logger.info("Cache miss - calling original function")
                 result = await func(*args, **kwargs)
 
-                # Store in cache
                 try:
                     encoded = CustomJsonCoder().encode(result)
                     await redis.set(cache_key, encoded, ex=expire)
-                    logger.info(f"Stored new result in cache with TTL: {expire}")
-                except Exception as e:
-                    logger.error(f"Failed to store in cache: {str(e)}")
+                    logger.info("Stored new result in cache with TTL: %s", expire)
+                except ValueError as e:
+                    logger.error("Failed to store in cache: %s", str(e))
 
                 return result
 
-            except Exception as e:
-                logger.error(f"Cache operation failed: {str(e)}")
-                # Fallback to original function
+            except ConnectionError as e:
+                logger.error("Cache operation failed: %s", str(e))
                 return await func(*args, **kwargs)
 
         return debug_wrapper
