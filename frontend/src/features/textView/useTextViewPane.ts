@@ -104,7 +104,7 @@ export function useTextViewPane({
         filename:
           fileNameFromActiveSegment === "none"
             ? fileNameUrlParam
-            : fileNameFromActiveSegment,
+            : fileNameFromActiveSegment ?? "",
         active_segment: activeSegmentParam,
 
         // in the right pane, everything is only filtered by active file

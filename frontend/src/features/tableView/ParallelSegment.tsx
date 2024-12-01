@@ -89,97 +89,106 @@ export const ParallelSegment = ({
     ],
   );
 
+  // the box component exists to improve hover actions (visual flash when hovering through parallel cards)
   return (
-    <Card
-      sx={{ flex: 1, wordBreak: "break-all", my: 1 }}
-      elevation={isActive ? 5 : 1}
+    <Box
+      sx={{ py: 1 }}
       onMouseEnter={() => id && onHover?.(id)}
       onMouseLeave={() => onHover?.("")}
     >
-      <CardContent
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          bgcolor: isActive ? "background.default" : "background.card",
-          flexDirection: { xs: "column", sm: "row" },
-        }}
+      <Card
+        sx={{ flex: 1, wordBreak: "break-all" }}
+        elevation={isActive ? 6 : 1}
       >
-        <Box sx={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}>
-          {/* Language name */}
-          <DbLanguageChip label={dbLanguageName} language={language} />
-
-          {/* File Name */}
-          <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
-            <Link
-              href={urlToSegment}
-              sx={{ display: "inline-block", wordBreak: "break-word", m: 0.5 }}
-              target="_blank"
-              rel="noreferrer noopenner"
-            >
-              {textSegmentNumberRange}
-            </Link>
-          </Tooltip>
-          <IconButton
-            aria-label="copy"
-            size="small"
-            onClick={copyTextInfoToClipboard}
-          >
-            <CopyIcon fontSize="inherit" />
-          </IconButton>
-
-          <IconButton
-            aria-label="Open in new tab"
-            size="small"
-            onClick={() => window.open(urlToSegment, "_blank")}
-          >
-            <OpenInNewIcon fontSize="inherit" />
-          </IconButton>
-        </Box>
-
-        <Box
+        <CardContent
           sx={{
             display: "flex",
-            flexWrap: "wrap",
-            justifyContent: { xs: "start", sm: "end" },
-            alignItems: "center",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            bgcolor: isActive ? "background.default" : "background.card",
+            flexDirection: { xs: "column", sm: "row" },
           }}
         >
-          {score && (
+          <Box sx={{ alignItems: "center", display: "flex", flexWrap: "wrap" }}>
+            {/* Language name */}
+            <DbLanguageChip label={dbLanguageName} language={language} />
+
+            {/* File Name */}
+            <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
+              <Link
+                href={urlToSegment}
+                sx={{
+                  display: "inline-block",
+                  wordBreak: "break-word",
+                  m: 0.5,
+                }}
+                target="_blank"
+                rel="noreferrer noopenner"
+              >
+                {textSegmentNumberRange}
+              </Link>
+            </Tooltip>
+            <IconButton
+              aria-label="copy"
+              size="small"
+              onClick={copyTextInfoToClipboard}
+            >
+              <CopyIcon fontSize="inherit" />
+            </IconButton>
+
+            <IconButton
+              aria-label="Open in new tab"
+              size="small"
+              onClick={() => window.open(urlToSegment, "_blank")}
+            >
+              <OpenInNewIcon fontSize="inherit" />
+            </IconButton>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: { xs: "start", sm: "end" },
+              alignItems: "center",
+            }}
+          >
+            {score && (
+              <Tooltip
+                title={`${t("db.score")}: ${Math.round(score * 100) / 100}`}
+                PopperProps={{ disablePortal: true }}
+              >
+                <Chip
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  icon={<PercentIcon />}
+                  label={score}
+                  sx={{ m: 0.5, p: 0.5 }}
+                />
+              </Tooltip>
+            )}
+
             <Tooltip
-              title={`${t("db.score")}: ${Math.round(score * 100) / 100}`}
+              title={`${t("db.length")}: ${length}`}
               PopperProps={{ disablePortal: true }}
             >
               <Chip
                 size="small"
-                color="primary"
-                variant="outlined"
-                icon={<PercentIcon />}
-                label={score}
+                label={length}
+                icon={<StraightenIcon />}
                 sx={{ m: 0.5, p: 0.5 }}
               />
             </Tooltip>
-          )}
+          </Box>
+        </CardContent>
 
-          <Tooltip
-            title={`${t("db.length")}: ${length}`}
-            PopperProps={{ disablePortal: true }}
-          >
-            <Chip
-              size="small"
-              label={length}
-              icon={<StraightenIcon />}
-              sx={{ m: 0.5, p: 0.5 }}
-            />
-          </Tooltip>
-        </Box>
-      </CardContent>
+        <Divider />
 
-      <Divider />
-
-      <CardContent onClick={openRightPane}>
-        <ParallelSegmentText text={text} />
-      </CardContent>
-    </Card>
+        <CardContent onClick={openRightPane}>
+          <ParallelSegmentText text={text} />
+        </CardContent>
+      </Card>
+    </Box>
   );
 };

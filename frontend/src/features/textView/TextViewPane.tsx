@@ -1,9 +1,4 @@
-import React, {
-  MutableRefObject,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-} from "react";
+import React, { MutableRefObject, useEffect, useMemo, useRef } from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import {
@@ -47,62 +42,44 @@ export const TextViewPane = ({
     handleFetchingNextPage,
   } = useTextViewPane({ activeSegment: activeSegmentId, isRightPane });
 
-  // const [isScrollingToActiveSegment, setIsScrollingToActiveSegment] = useState(
-  //   activeSegmentId !== DEFAULT_PARAM_VALUES.active_segment,
-  // );
-
   const colorScale = useMemo(
     () => getTextViewColorScale(allParallels),
     [allParallels],
   );
 
   // make sure the selected segment is at the top when the page is opened
-  useLayoutEffect(() => {
-    if (
-      !activeSegmentId ||
-      activeSegmentId === DEFAULT_PARAM_VALUES.active_segment
-    )
-      return;
+  useEffect(
+    function scrollToActiveSegment() {
+      // don't scroll if there is no active segment selected
+      if (
+        !activeSegmentId ||
+        activeSegmentId === DEFAULT_PARAM_VALUES.active_segment
+      ) {
+        return;
+      }
 
-    // prevent layout jump when data is updated (e.g. during pagination/endless loading)
-    if (wasDataJustAppended.current) {
-      wasDataJustAppended.current = false;
-      return;
-    }
+      // prevent layout jump when data is updated (e.g. during pagination/endless loading)
+      if (wasDataJustAppended.current) {
+        wasDataJustAppended.current = false;
+        return;
+      }
 
-    // setIsScrollingToActiveSegment(true);
-
-    const indexInData = findSegmentIndexInParallelsData(
-      allParallels,
-      activeSegmentId,
-    );
-    setTimeout(() => {
-      virtuosoRef.current?.scrollToIndex({
-        index: indexInData,
-        align: "center",
+      requestAnimationFrame(() => {
+        virtuosoRef.current?.scrollToIndex({
+          index: findSegmentIndexInParallelsData(allParallels, activeSegmentId),
+          align: "center",
+        });
       });
-      // setIsScrollingToActiveSegment(false);
-    }, 400);
-  }, [activeSegmentId, allParallels]);
-
-  // const indexInData = findSegmentIndexInParallelsData(
-  //   allParallels,
-  //   activeSegmentId,
-  // );
-
-  // const isFetchingExtraPages = isFetchingNextPage || isFetchingPreviousPage;
+    },
+    [activeSegmentId, allParallels],
+  );
 
   return (
     <Card sx={{ height: "100%" }}>
       <Box sx={{ height: "100%", py: 0, px: 2 }}>
-        {/*{isScrollingToActiveSegment ? (*/}
-        {/*  <LoadingSpinner isLoading={true} withBackground={true} />*/}
-        {/*) : null}*/}
         <Virtuoso
           ref={virtuosoRef}
           firstItemIndex={firstItemIndex}
-          // initialTopMostItemIndex={indexInData}
-          data={allParallels}
           increaseViewportBy={500}
           startReached={async () => {
             wasDataJustAppended.current = true;
@@ -128,8 +105,8 @@ export const TextViewPane = ({
               onClickFunction={isRightPane ? "" : "open-matches"}
             />
           )}
+          data={allParallels}
         />
-        {/*{isFetchingExtraPages ? <LoadingSpinner isLoading={true} /> : null}*/}
       </Box>
     </Card>
   );
