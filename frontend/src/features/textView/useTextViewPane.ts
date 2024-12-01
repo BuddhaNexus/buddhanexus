@@ -101,7 +101,10 @@ export function useTextViewPane({
       return DbApi.TextView.call({
         ...requestBodyBase,
         page: pageParam ?? 0,
-        filename: fileNameFromActiveSegment ?? fileNameUrlParam,
+        filename:
+          fileNameFromActiveSegment === "none"
+            ? fileNameUrlParam
+            : fileNameFromActiveSegment,
         active_segment: activeSegmentParam,
 
         // in the right pane, everything is only filtered by active file
