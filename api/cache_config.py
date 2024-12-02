@@ -25,14 +25,14 @@ CACHE_TIMES = {
 
 class CustomJsonCoder(JsonCoder):
     """Custom JSON encoder/decoder that handles MenudataOutput objects and Redis interactions."""
-    def decode(self, value: Any) -> Any:
+    def decode(self, value: Any, default: Any = None) -> Any:
         logger.info("Starting decode of value type: %s", type(value))
         try:
             # If we got a string (due to decode_responses=True), parse it directly
             if isinstance(value, str):
                 decoded = json.loads(value)
             else:
-                decoded = super().decode(value)
+                decoded = super().decode(value, default)
 
             logger.info("Successfully decoded to type: %s", type(decoded))
 
@@ -47,13 +47,13 @@ class CustomJsonCoder(JsonCoder):
             logger.error("Decode error: %s", str(e), exc_info=True)
             raise
 
-    def encode(self, value: Any) -> str:
+    def encode(self, value: Any, default: Any = None) -> str:
         logger.info("Starting encode of type: %s", type(value))
         try:
             if isinstance(value, MenudataOutput):
                 value = value.dict()
 
-            return json.dumps(value)
+            return json.dumps(value, default=default)
         except Exception as e:
             logger.error("Encode error: %s", str(e), exc_info=True)
             raise
