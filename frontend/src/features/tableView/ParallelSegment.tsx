@@ -93,7 +93,9 @@ export const ParallelSegment = ({
     segmentNumber: textSegmentNumber,
   });
 
-  const isActive = rightPaneActiveSegmentId === textSegmentNumber;
+  const isActive = isMiddlePanePointingLeft
+    ? activeSegmentId === textSegmentNumber
+    : rightPaneActiveSegmentId === textSegmentNumber;
 
   useEffect(
     function updateRightPaneFileName() {

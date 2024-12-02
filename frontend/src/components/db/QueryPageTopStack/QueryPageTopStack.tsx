@@ -10,9 +10,11 @@ import { SearchButtons } from "./SearchButtons";
 export const QueryPageTopStack = ({
   matchCount = 0,
   title,
+  subtitle,
 }: {
   matchCount?: number;
   title: string;
+  subtitle: string;
 }) => {
   const { isSearchPage } = useResultPageType();
 
@@ -31,8 +33,17 @@ export const QueryPageTopStack = ({
       </Stack>
 
       <Box>
-        <Typography variant="h2" component="h1" my={1}>
+        <Typography
+          variant="h2"
+          component="h1"
+          my={1}
+          fontWeight={400}
+          color="primary"
+        >
           {title}
+        </Typography>
+        <Typography variant="h4" component="h4" mb={1}>
+          {subtitle}
         </Typography>
       </Box>
     </Stack>

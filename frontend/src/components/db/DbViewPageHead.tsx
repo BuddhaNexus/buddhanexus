@@ -17,9 +17,9 @@ export const DbViewPageHead = () => {
 
   const dbView = useAtomValue(currentDbViewAtom);
 
-  const title = isLoading
-    ? fileName?.toUpperCase()
-    : fileName?.toUpperCase() + (displayName ? `: ${displayName}` : "");
+  const title = fileName?.toUpperCase();
+
+  const subtitle = isLoading ? "..." : displayName ?? "";
 
   return (
     <>
@@ -29,7 +29,7 @@ export const DbViewPageHead = () => {
         } ${startCase(dbView)} View`}
       />
 
-      <QueryPageTopStack title={title} />
+      <QueryPageTopStack title={title} subtitle={subtitle} />
     </>
   );
 };
