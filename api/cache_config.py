@@ -171,4 +171,3 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
         return debug_wrapper
 
     return wrapper
-    
