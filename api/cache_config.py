@@ -1,3 +1,13 @@
+"""
+Configuration module for Redis-based caching in the Buddha Nexus API.
+
+This module provides custom caching functionality including:
+- Custom JSON encoding/decoding for MenudataOutput objects
+- Redis cache key management
+- Cached endpoint decorator for API routes
+- Configurable cache expiration times
+"""
+
 import json
 import logging
 from functools import wraps
