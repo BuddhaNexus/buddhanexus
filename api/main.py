@@ -68,6 +68,10 @@ logger = logging.getLogger(__name__)
 # Initialize cache on startup
 @APP.on_event("startup")
 async def startup():
+    """
+    Startup event handler that initializes the Redis cache for the FastAPI application.
+    Configures the cache with custom key builder and JSON coder.
+    """
     logger.info("Initializing FastAPI application...")
     redis = aioredis.from_url(
         "redis://redis:6379", encoding="utf8", decode_responses=False
@@ -92,11 +96,6 @@ APP.include_router(utils.router, prefix="/utils")
 APP.include_router(menu.router)
 
 
-# Add a test endpoint to verify logging
-@APP.get("/test-log")
-async def test_log():
-    logger.info("Test log endpoint called")
-    return {"message": "Logged successfully"}
 
 
 @APP.get("/")
