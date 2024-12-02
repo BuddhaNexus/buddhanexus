@@ -7,6 +7,7 @@ import logging
 
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
@@ -22,7 +23,6 @@ from .endpoints import (
     links,
     download,
 )
-from starlette.middleware.base import BaseHTTPMiddleware
 
 API_PREFIX = "/api-db" if os.environ["PROD"] == "1" else "/api-db"
 
@@ -34,6 +34,9 @@ APP.add_middleware(
 
 
 class CacheControlMiddleware(BaseHTTPMiddleware):
+    """
+    Middleware to control cache headers for GET requests.
+    """
     async def dispatch(self, request, call_next):
         response = await call_next(request)
         if request.method == "GET":

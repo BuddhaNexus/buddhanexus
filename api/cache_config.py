@@ -26,7 +26,7 @@ CACHE_TIMES = {
 class CustomJsonCoder(JsonCoder):
     """Custom JSON encoder/decoder that handles MenudataOutput objects and Redis interactions."""
     
-    def decode(self, value: Any) -> Any:
+    def decode(self, value: Any, *args) -> Any:
         logger.info("Starting decode of value type: %s", type(value))
         try:
             # If we got a string (due to decode_responses=True), parse it directly
@@ -48,7 +48,7 @@ class CustomJsonCoder(JsonCoder):
             logger.error("Decode error: %s", str(e), exc_info=True)
             raise
 
-    def encode(self, value: Any) -> str:
+    def encode(self, value: Any, *args) -> str:
         logger.info("Starting encode of type: %s", type(value))
         try:
             if isinstance(value, MenudataOutput):
@@ -65,8 +65,8 @@ def make_cache_key_builder():
     
     def cache_key_builder(
         func,
-        namespace: str = "",
         *args,
+        namespace: str = "",
         **kwargs,
     ) -> str:
         logger.info("Building cache key...")
