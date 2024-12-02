@@ -6,13 +6,10 @@ import {
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
 } from "@atoms";
-import {
-  useActiveSegmentIndexParam,
-  useActiveSegmentParam,
-} from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { sourceSans } from "@components/theme";
 import { enscriptText } from "@features/SidebarSuite/utils";
+import { TextViewPaneProps } from "@features/textView/TextViewPane";
 import { useColorScheme } from "@mui/material/styles";
 import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";
 import type { Scale } from "chroma-js";
@@ -25,19 +22,16 @@ export const TextSegment = ({
   data,
   colorScale,
   activeSegmentId,
-  onClickFunction,
+  activeSegmentIndex,
+  setActiveSegmentId,
+  setActiveSegmentIndex,
 }: {
   data?: ParsedTextViewParallel;
   colorScale: Scale;
   activeSegmentId: string;
-  onClickFunction: "open-matches" | "";
-}) => {
+} & TextViewPaneProps) => {
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
-
-  const [, setActiveSegmentId] = useActiveSegmentParam();
-  const [activeSegmentIndex, setActiveSegmentIndex] =
-    useActiveSegmentIndexParam();
 
   const { dbLanguage } = useDbRouterParams();
 
@@ -63,24 +57,21 @@ export const TextSegment = ({
   );
 
   // find matches for the selected segment when the page is first rendered
-  useLayoutEffect(() => {
-    if (
-      !isSegmentSelected ||
-      typeof activeSegmentIndex !== "number" ||
-      onClickFunction !== "open-matches"
-    )
-      return;
-    const locationFromQueryParams = data?.segmentText[activeSegmentIndex];
-    if (!locationFromQueryParams) return;
-    setSelectedSegmentMatches(locationFromQueryParams.matches);
-  }, [
-    isSegmentSelected,
-    data?.segmentText,
-    activeSegmentId,
-    activeSegmentIndex,
-    setSelectedSegmentMatches,
-    onClickFunction,
-  ]);
+  useLayoutEffect(
+    function hydrateWithMatches() {
+      if (!isSegmentSelected || typeof activeSegmentIndex !== "number") return;
+      const locationFromQueryParams = data?.segmentText[activeSegmentIndex];
+      if (!locationFromQueryParams) return;
+      setSelectedSegmentMatches(locationFromQueryParams.matches);
+    },
+    [
+      isSegmentSelected,
+      data?.segmentText,
+      activeSegmentId,
+      activeSegmentIndex,
+      setSelectedSegmentMatches,
+    ],
+  );
 
   const matchSets = useMemo(() => {
     // optimisation - don't run the map function if there are no active segments (middle view is closed)

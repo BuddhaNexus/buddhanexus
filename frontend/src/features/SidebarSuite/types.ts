@@ -12,7 +12,10 @@ type APIRequestPropsName = keyof AllAPIRequestProps;
  *
  */
 
-type FeStateParams = "active_segment_index" | "right_pane_active_segment";
+type FeStateParams =
+  | "active_segment_index"
+  | "right_pane_active_segment"
+  | "right_pane_active_segment_index";
 
 export type APIRequestFilters = NonNullable<AllAPIRequestProps["filters"]>;
 

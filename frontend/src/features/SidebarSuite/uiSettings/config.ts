@@ -84,6 +84,7 @@ export const allUIComponentParamNames: AllUIComponentParamNames = {
   active_segment: "active_segment",
   active_segment_index: "active_segment_index",
   right_pane_active_segment: "right_pane_active_segment",
+  right_pane_active_segment_index: "right_pane_active_segment_index",
   page: "page",
   filename: "filename",
   parallel_ids: "parallel_ids",

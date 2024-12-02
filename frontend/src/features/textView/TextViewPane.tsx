@@ -16,15 +16,22 @@ import {
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 
-interface TextViewPaneProps {
+export interface TextViewPaneProps {
   activeSegmentId: string;
-  isRightPane: boolean;
+  setActiveSegmentId: (id: string) => Promise<URLSearchParams>;
+  activeSegmentIndex: number | null;
+  setActiveSegmentIndex: (index: number) => Promise<URLSearchParams>;
 }
 
 export const TextViewPane = ({
-  activeSegmentId,
   isRightPane,
-}: TextViewPaneProps) => {
+  activeSegmentId,
+  setActiveSegmentId,
+  activeSegmentIndex,
+  setActiveSegmentIndex,
+}: {
+  isRightPane: boolean;
+} & TextViewPaneProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const wasDataJustAppended: MutableRefObject<boolean> = useRef(false);
 
@@ -102,7 +109,9 @@ export const TextViewPane = ({
               data={dataSegment}
               colorScale={colorScale}
               activeSegmentId={activeSegmentId}
-              onClickFunction={isRightPane ? "" : "open-matches"}
+              setActiveSegmentId={setActiveSegmentId}
+              activeSegmentIndex={activeSegmentIndex}
+              setActiveSegmentIndex={setActiveSegmentIndex}
             />
           )}
           data={allParallels}

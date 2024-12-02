@@ -1,19 +1,26 @@
 import React, { useCallback } from "react";
 import { textViewRightPaneFileNameAtom } from "@atoms";
-import { useRightPaneActiveSegmentParam } from "@components/hooks/params";
+import {
+  useRightPaneActiveSegmentIndexParam,
+  useRightPaneActiveSegmentParam,
+} from "@components/hooks/params";
 import { CloseTextViewPaneButton } from "@features/textView/CloseTextViewPaneButton";
 import { TextViewPane } from "@features/textView/TextViewPane";
 import { Box, CardHeader } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 
 export const TextViewRightPane = () => {
-  const [activeSegmentId, setActiveSegment] = useRightPaneActiveSegmentParam();
+  const [activeSegmentId, setActiveSegmentId] =
+    useRightPaneActiveSegmentParam();
+  const [activeSegmentIndex, setActiveSegmentIndex] =
+    useRightPaneActiveSegmentIndexParam();
   const setRightPaneFileName = useSetAtom(textViewRightPaneFileNameAtom);
 
   const handleClear = useCallback(async () => {
-    await setActiveSegment("none");
+    await setActiveSegmentId("none");
+    await setActiveSegmentIndex(null);
     setRightPaneFileName(undefined);
-  }, [setActiveSegment, setRightPaneFileName]);
+  }, [setActiveSegmentId, setActiveSegmentIndex, setRightPaneFileName]);
 
   const rightPaneFileName = useAtomValue(textViewRightPaneFileNameAtom);
 
@@ -33,7 +40,13 @@ export const TextViewRightPane = () => {
         subheader={activeSegmentId}
       />
 
-      <TextViewPane activeSegmentId={activeSegmentId} isRightPane={true} />
+      <TextViewPane
+        activeSegmentId={activeSegmentId}
+        setActiveSegmentIndex={setActiveSegmentIndex}
+        setActiveSegmentId={setActiveSegmentId}
+        activeSegmentIndex={activeSegmentIndex}
+        isRightPane={true}
+      />
     </Box>
   );
 };

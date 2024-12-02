@@ -106,6 +106,13 @@ export const useRightPaneActiveSegmentParam = () => {
   });
 };
 
+export const useRightPaneActiveSegmentIndexParam = () => {
+  return useQueryState(
+    allUIComponentParamNames.right_pane_active_segment_index,
+    parseAsInteger,
+  );
+};
+
 const parseAsSortMethod = parseAsStringLiteral(sortMethods);
 
 export const useSortMethodParam = () => {
