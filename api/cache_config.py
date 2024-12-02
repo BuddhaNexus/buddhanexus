@@ -22,18 +22,19 @@ CACHE_TIMES = {
     "LONG": 864000,  # 10 days
 }
 
-
 class CustomJsonCoder(JsonCoder):
     """Custom JSON encoder/decoder that handles MenudataOutput objects and Redis interactions."""
-    def decode(self, value: Any) -> Any:
-        logger.info("Starting decode of value type: %s", type(value))
+    
+    def decode(self, b: bytes) -> Any:
+        logger.info("Starting decode of value type: %s", type(b))
         try:
-            # If we got a string (due to decode_responses=True), parse it directly
-            if isinstance(value, str):
-                decoded = json.loads(value)
+            if isinstance(b, bytes):
+                decoded_str = b.decode('utf-8')
+            elif isinstance(b, str):
+                decoded_str = b
             else:
-                decoded = super().decode(value)
-
+                raise ValueError(f"Unsupported type: {type(b)}")
+            decoded = json.loads(decoded_str)
             logger.info("Successfully decoded to type: %s", type(decoded))
 
             if isinstance(decoded, dict) and "menudata" in decoded:
@@ -47,17 +48,17 @@ class CustomJsonCoder(JsonCoder):
             logger.error("Decode error: %s", str(e), exc_info=True)
             raise
 
-    def encode(self, value: Any) -> str:
-        logger.info("Starting encode of type: %s", type(value))
+    def encode(self, obj: Any) -> bytes:
+        logger.info("Starting encode of type: %s", type(obj))
         try:
-            if isinstance(value, MenudataOutput):
-                value = value.dict()
-
-            return json.dumps(value)
+            if isinstance(obj, MenudataOutput):
+                obj = obj.dict()
+            json_str = json.dumps(obj)
+            return json_str.encode('utf-8')
         except Exception as e:
             logger.error("Encode error: %s", str(e), exc_info=True)
             raise
-
+            
 
 def make_cache_key_builder():
     """Creates a function that builds consistent cache keys for Redis storage."""
