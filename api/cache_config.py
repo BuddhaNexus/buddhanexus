@@ -1,8 +1,3 @@
-"""
-Cache configuration module for the BuddhaNexus API, since we .
-Provides custom JSON encoding/decoding and Redis-based caching functionality.
-"""
-
 import json
 import logging
 from functools import wraps
@@ -22,18 +17,21 @@ CACHE_TIMES = {
     "LONG": 864000,  # 10 days
 }
 
+
 class CustomJsonCoder(JsonCoder):
     """Custom JSON encoder/decoder that handles MenudataOutput objects and Redis interactions."""
-    
-    def decode(self, b: bytes) -> Any:
-        logger.info("Starting decode of value type: %s", type(b))
+
+    @staticmethod
+    def decode(value: bytes) -> Any:
+        logger.info("Starting decode of value type: %s", type(value))
         try:
-            if isinstance(b, bytes):
-                decoded_str = b.decode('utf-8')
-            elif isinstance(b, str):
-                decoded_str = b
+            if isinstance(value, bytes):
+                decoded_str = value.decode('utf-8')
+            elif isinstance(value, str):
+                decoded_str = value
             else:
-                raise ValueError(f"Unsupported type: {type(b)}")
+                raise ValueError(f"Unsupported type: {type(value)}")
+
             decoded = json.loads(decoded_str)
             logger.info("Successfully decoded to type: %s", type(decoded))
 
@@ -48,17 +46,18 @@ class CustomJsonCoder(JsonCoder):
             logger.error("Decode error: %s", str(e), exc_info=True)
             raise
 
-    def encode(self, obj: Any) -> bytes:
-        logger.info("Starting encode of type: %s", type(obj))
+    @staticmethod
+    def encode(value: Any) -> bytes:
+        logger.info("Starting encode of type: %s", type(value))
         try:
-            if isinstance(obj, MenudataOutput):
-                obj = obj.dict()
-            json_str = json.dumps(obj)
+            if isinstance(value, MenudataOutput):
+                value = value.dict()
+            json_str = json.dumps(value)
             return json_str.encode('utf-8')
         except Exception as e:
             logger.error("Encode error: %s", str(e), exc_info=True)
             raise
-            
+
 
 def make_cache_key_builder():
     """Creates a function that builds consistent cache keys for Redis storage."""
@@ -132,7 +131,7 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
 
                     if cached_value:
                         try:
-                            decoded = CustomJsonCoder().decode(cached_value)
+                            decoded = CustomJsonCoder.decode(cached_value)
                             logger.info(
                                 "Successfully decoded cached value of type: %s",
                                 type(decoded)
@@ -147,7 +146,7 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
                 result = await func(*args, **kwargs)
 
                 try:
-                    encoded = CustomJsonCoder().encode(result)
+                    encoded = CustomJsonCoder.encode(result)
                     await redis.set(cache_key, encoded, ex=expire)
                     logger.info("Stored new result in cache with TTL: %s", expire)
                 except ValueError as e:
