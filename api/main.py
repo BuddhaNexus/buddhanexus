@@ -25,9 +25,7 @@ from .endpoints import (
 )
 
 API_PREFIX = "/api-db" if os.environ["PROD"] == "1" else "/api-db"
-
 APP = FastAPI(title="BuddhaNexus Backend", version="0.2.1", openapi_prefix=API_PREFIX)
-
 APP.add_middleware(
     CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
 )
@@ -40,7 +38,7 @@ class CacheControlMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         response = await call_next(request)
         if request.method == "GET":
-            response.headers["Cache-Control"] = "public, max-age=864000"
+            response.headers["Cache-Control"] = "public, max-age=864000, immutable"
             response.headers["Vary"] = "Accept-Encoding"
         return response
 
