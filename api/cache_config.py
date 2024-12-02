@@ -1,13 +1,3 @@
-"""
-Configuration module for Redis-based caching in the Buddha Nexus API.
-
-This module provides custom caching functionality including:
-- Custom JSON encoding/decoding for MenudataOutput objects
-- Redis cache key management
-- Cached endpoint decorator for API routes
-- Configurable cache expiration times
-"""
-
 import json
 import logging
 from functools import wraps
@@ -113,6 +103,7 @@ def make_cache_key_builder():
 def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
     """
     Decorator that implements Redis-based caching for API endpoints.
+    Ignores client cache settings.
     
     Args:
         expire: Cache expiration time in seconds
@@ -121,6 +112,13 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
         @wraps(func)
         async def debug_wrapper(*args, **kwargs):
             key_builder = make_cache_key_builder()
+            # Remove any cache-related query params from kwargs
+            if 'kwargs' in kwargs:
+                kwargs['kwargs'] = {
+                    k: v for k, v in kwargs['kwargs'].items() 
+                    if not k.lower().startswith('cache-')
+                }
+            
             cache_key = key_builder(func, namespace="api", kwargs=kwargs)
             logger.info("Attempting to retrieve from cache: %s", cache_key)
 
@@ -130,35 +128,18 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
                 )
 
                 exists = await redis.exists(cache_key)
-                logger.info("Cache key exists: %s", exists)
-
                 if exists:
                     cached_value = await redis.get(cache_key)
-                    logger.info(
-                        "Retrieved cached value of length: %s",
-                        len(cached_value) if cached_value else 0
-                    )
-
                     if cached_value:
                         try:
-                            decoded = CustomJsonCoder.decode(cached_value)
-                            logger.info(
-                                "Successfully decoded cached value of type: %s",
-                                type(decoded)
-                            )
-                            return decoded
+                            return CustomJsonCoder.decode(cached_value)
                         except ValueError as e:
                             logger.error("Failed to decode cached value: %s", str(e))
-                    else:
-                        logger.warning("Cache key exists but value is None")
 
-                logger.info("Cache miss - calling original function")
                 result = await func(*args, **kwargs)
-
                 try:
                     encoded = CustomJsonCoder.encode(result)
                     await redis.set(cache_key, encoded, ex=expire)
-                    logger.info("Stored new result in cache with TTL: %s", expire)
                 except ValueError as e:
                     logger.error("Failed to store in cache: %s", str(e))
 
@@ -169,5 +150,4 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
                 return await func(*args, **kwargs)
 
         return debug_wrapper
-
     return wrapper
