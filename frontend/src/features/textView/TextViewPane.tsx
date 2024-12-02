@@ -17,6 +17,7 @@ import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 
 export interface TextViewPaneProps {
+  isRightPane: boolean;
   activeSegmentId: string;
   setActiveSegmentId: (id: string) => Promise<URLSearchParams>;
   activeSegmentIndex: number | null;
@@ -29,9 +30,7 @@ export const TextViewPane = ({
   setActiveSegmentId,
   activeSegmentIndex,
   setActiveSegmentIndex,
-}: {
-  isRightPane: boolean;
-} & TextViewPaneProps) => {
+}: TextViewPaneProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const wasDataJustAppended: MutableRefObject<boolean> = useRef(false);
 
@@ -112,6 +111,7 @@ export const TextViewPane = ({
               setActiveSegmentId={setActiveSegmentId}
               activeSegmentIndex={activeSegmentIndex}
               setActiveSegmentIndex={setActiveSegmentIndex}
+              isRightPane={isRightPane}
             />
           )}
           data={allParallels}

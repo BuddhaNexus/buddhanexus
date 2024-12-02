@@ -21,8 +21,7 @@ export const TextView = () => {
   const [rightPaneActiveSegmentId] = useRightPaneActiveSegmentParam();
   const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
 
-  const shouldShowMiddlePane =
-    activeSegmentId !== "none" && activeSegmentMatches.length > 0;
+  const shouldShowMiddlePane = activeSegmentId !== "none";
 
   const shouldShowRightPane =
     rightPaneActiveSegmentId !== DEFAULT_PARAM_VALUES.active_segment;

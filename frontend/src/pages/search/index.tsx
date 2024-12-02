@@ -27,7 +27,7 @@ const SearchPageHeader = ({ matches }: { matches: number }) => {
         {t("search.pageTitle")}
       </Typography>
       <SearchPageInputBox />
-      <QueryPageTopStack matches={matches} />
+      <QueryPageTopStack matchCount={matches} />
     </>
   );
 };

@@ -1,19 +1,40 @@
 import * as React from "react";
+import CurrentResultChips from "@components/db/CurrentResultChips";
 import { useResultPageType } from "@components/hooks/useResultPageType";
+import { Box, Stack, Typography } from "@mui/material";
 
 import { DbFileButtons } from "./DbFileButtons";
 import { QueryPageButtons } from "./QueryPageButtons";
-import { QueryPageTopStackFrame } from "./QueryPageTopStackFrame";
 import { SearchButtons } from "./SearchButtons";
 
-export const QueryPageTopStack = ({ matches = 0 }: { matches?: number }) => {
+export const QueryPageTopStack = ({
+  matchCount = 0,
+  title,
+}: {
+  matchCount?: number;
+  title: string;
+}) => {
   const { isSearchPage } = useResultPageType();
 
   return (
-    <QueryPageTopStackFrame matches={matches}>
-      <QueryPageButtons>
-        {isSearchPage ? <SearchButtons /> : <DbFileButtons />}
-      </QueryPageButtons>
-    </QueryPageTopStackFrame>
+    <Stack
+      direction={{ xs: "row", sm: "row-reverse" }}
+      justifyContent="space-between"
+      alignItems="center"
+      spacing={2}
+    >
+      <Stack justifyContent="center" alignItems="flex-end" spacing={2}>
+        <CurrentResultChips matches={matchCount} />
+        <QueryPageButtons>
+          {isSearchPage ? <SearchButtons /> : <DbFileButtons />}
+        </QueryPageButtons>
+      </Stack>
+
+      <Box>
+        <Typography variant="h2" component="h1" my={1}>
+          {title}
+        </Typography>
+      </Box>
+    </Stack>
   );
 };

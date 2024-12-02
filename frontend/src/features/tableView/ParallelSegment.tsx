@@ -1,8 +1,14 @@
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "next-i18next";
-import { textViewRightPaneFileNameAtom } from "@atoms";
+import {
+  textViewIsMiddlePanePointingLeftAtom,
+  textViewRightPaneFileNameAtom,
+} from "@atoms";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
-import { useRightPaneActiveSegmentParam } from "@components/hooks/params";
+import {
+  useActiveSegmentParam,
+  useRightPaneActiveSegmentParam,
+} from "@components/hooks/params";
 import { useGetURLToSegment } from "@features/textView/useGetURLToSegment";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -20,7 +26,7 @@ import {
 } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
 import { DbLanguage } from "@utils/api/types";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { ParallelSegmentText } from "./ParallelSegmentText";
 
@@ -53,7 +59,12 @@ export const ParallelSegment = ({
 
   const [rightPaneActiveSegmentId, setRightPaneActiveSegmentId] =
     useRightPaneActiveSegmentParam();
+  const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
   const setRightPaneFileName = useSetAtom(textViewRightPaneFileNameAtom);
+
+  const isMiddlePanePointingLeft = useAtomValue(
+    textViewIsMiddlePanePointingLeftAtom,
+  );
 
   const dbLanguageName = t(`language.${language}`);
 
@@ -64,9 +75,18 @@ export const ParallelSegment = ({
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
 
-  const openRightPane = useCallback(async () => {
-    await setRightPaneActiveSegmentId(textSegmentNumber);
-  }, [setRightPaneActiveSegmentId, textSegmentNumber]);
+  const openTextPane = useCallback(async () => {
+    if (isMiddlePanePointingLeft) {
+      await setActiveSegmentId(textSegmentNumber);
+    } else {
+      await setRightPaneActiveSegmentId(textSegmentNumber);
+    }
+  }, [
+    isMiddlePanePointingLeft,
+    setActiveSegmentId,
+    setRightPaneActiveSegmentId,
+    textSegmentNumber,
+  ]);
 
   const { urlToSegment } = useGetURLToSegment({
     language,
@@ -185,7 +205,7 @@ export const ParallelSegment = ({
 
         <Divider />
 
-        <CardContent onClick={openRightPane}>
+        <CardContent onClick={openTextPane}>
           <ParallelSegmentText text={text} />
         </CardContent>
       </Card>

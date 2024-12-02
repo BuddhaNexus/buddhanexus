@@ -1,14 +1,18 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
-import { activeSegmentMatchesAtom, hoveredOverParallelIdAtom } from "@atoms";
+import {
+  activeSegmentMatchesAtom,
+  hoveredOverParallelIdAtom,
+  textViewIsMiddlePanePointingLeftAtom,
+} from "@atoms";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import {
   useActiveSegmentIndexParam,
   useActiveSegmentParam,
 } from "@components/hooks/params";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
-import { Numbers } from "@mui/icons-material";
-import { Box, CardContent, CardHeader, Chip } from "@mui/material";
+import { ArrowForward, Numbers } from "@mui/icons-material";
+import { Box, CardContent, CardHeader, Chip, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -21,6 +25,10 @@ export default function TextViewMiddleParallels() {
 
   const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
   const setHoveredOverParallelId = useSetAtom(hoveredOverParallelIdAtom);
+
+  const isMiddlePanePointingLeft = useAtomValue(
+    textViewIsMiddlePanePointingLeftAtom,
+  );
 
   const { data, isLoading } = useQuery({
     queryKey: DbApi.TextViewMiddle.makeQueryKey(activeSegmentMatches),
@@ -88,11 +96,21 @@ export default function TextViewMiddleParallels() {
         }}
         action={<CloseTextViewPaneButton handlePress={handleClear} />}
         title={
-          <Chip
-            label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
-            variant="outlined"
-            icon={<Numbers />}
-          />
+          <Stack direction="row" spacing={1}>
+            <Chip
+              label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
+              variant="outlined"
+              size="small"
+              icon={<Numbers fontSize="inherit" />}
+            />
+            <ArrowForward
+              sx={{
+                transition: "transform 250ms ease-out",
+                transform: `rotate(${isMiddlePanePointingLeft ? "180deg" : "0deg"})`,
+              }}
+              fontSize="inherit"
+            />
+          </Stack>
         }
       />
 

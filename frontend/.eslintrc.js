@@ -118,6 +118,7 @@ const rules = {
   "unicorn/no-useless-undefined": "off",
   "unicorn/numeric-separators-style": "off",
   "unicorn/prefer-module": "off",
+  "unicorn/prefer-ternary": "off",
   "unicorn/prefer-node-protocol": "off",
   "unicorn/prefer-regexp-test": "off",
   "unicorn/prefer-set-has": "off",

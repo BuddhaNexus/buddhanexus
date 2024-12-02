@@ -5,6 +5,7 @@ import {
   scriptSelectionAtom,
   shouldShowSegmentNumbersAtom,
   shouldUseMonochromaticSegmentColorsAtom,
+  textViewIsMiddlePanePointingLeftAtom,
 } from "@atoms";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { sourceSans } from "@components/theme";
@@ -13,12 +14,13 @@ import { TextViewPaneProps } from "@features/textView/TextViewPane";
 import { useColorScheme } from "@mui/material/styles";
 import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";
 import type { Scale } from "chroma-js";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
 import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
 import styles from "./textSegment.module.scss";
 
 export const TextSegment = ({
+  isRightPane,
   data,
   colorScale,
   activeSegmentId,
@@ -43,34 +45,42 @@ export const TextSegment = ({
   const setSelectedSegmentMatches = useSetAtom(activeSegmentMatchesAtom);
   const isSegmentSelected = activeSegmentId === data?.segmentNumber;
 
+  const [isMiddlePanePointingLeft, setIsMiddlePanePointingLeft] = useAtom(
+    textViewIsMiddlePanePointingLeftAtom,
+  );
+
   const scriptSelection = useAtomValue(scriptSelectionAtom);
 
   const updateSelectedLocationInGlobalState = useCallback(
     async (location: { id: string; index: number; matches: string[] }) => {
+      setIsMiddlePanePointingLeft(isRightPane);
       await Promise.all([
         // todo: update what happens when a segment is clicked
         setActiveSegmentId(location.id),
         setActiveSegmentIndex(location.index),
       ]);
     },
-    [setActiveSegmentId, setActiveSegmentIndex],
+    [
+      isRightPane,
+      setActiveSegmentId,
+      setActiveSegmentIndex,
+      setIsMiddlePanePointingLeft,
+    ],
   );
 
   // find matches for the selected segment when the page is first rendered
   useLayoutEffect(
-    function hydrateWithMatches() {
+    function openMiddlePaneWithMatches() {
       if (!isSegmentSelected || typeof activeSegmentIndex !== "number") return;
-      const locationFromQueryParams = data?.segmentText[activeSegmentIndex];
-      if (!locationFromQueryParams) return;
-      setSelectedSegmentMatches(locationFromQueryParams.matches);
+      const segmentInData = data?.segmentText[activeSegmentIndex];
+      if (!segmentInData) return;
+      if (isRightPane && isMiddlePanePointingLeft) {
+        setSelectedSegmentMatches(segmentInData.matches);
+      } else if (!isRightPane) {
+        setSelectedSegmentMatches(segmentInData.matches);
+      }
     },
-    [
-      isSegmentSelected,
-      data?.segmentText,
-      activeSegmentId,
-      activeSegmentIndex,
-      setSelectedSegmentMatches,
-    ],
+    [isSegmentSelected, data?.segmentText, activeSegmentId, activeSegmentIndex, setSelectedSegmentMatches, isRightPane, isMiddlePanePointingLeft],
   );
 
   const matchSets = useMemo(() => {
