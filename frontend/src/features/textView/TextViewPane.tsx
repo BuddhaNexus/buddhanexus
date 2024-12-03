@@ -86,19 +86,21 @@ export const TextViewPane = ({
 
       scrollToActiveSegment();
     },
-    [activeSegmentId, allParallels, scrollToActiveSegment],
+    [activeSegmentId, scrollToActiveSegment],
   );
 
   const handleStartReached = useCallback(async () => {
     wasDataJustAppended.current = true;
-    wasDataJustAppended.current = false;
     await handleFetchingPreviousPage();
+    // fixes issue with scrolling to segment automatically on endless scrolling
+    setTimeout(() => (wasDataJustAppended.current = false));
   }, [handleFetchingPreviousPage]);
 
   const handleEndReached = useCallback(async () => {
     wasDataJustAppended.current = true;
     await handleFetchingNextPage();
-    wasDataJustAppended.current = false;
+    // fixes issue with scrolling to segment automatically on endless scrolling
+    setTimeout(() => (wasDataJustAppended.current = false));
   }, [handleFetchingNextPage]);
 
   return (
@@ -130,7 +132,6 @@ export const TextViewPane = ({
             />
           )}
           data={allParallels}
-          onResizeCapture={scrollToActiveSegment}
         />
       </Box>
     </Card>
