@@ -5,7 +5,7 @@ import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue } from "jotai";
-import { startCase } from "lodash";
+import startCase from "lodash/startCase";
 
 export const DbViewPageHead = () => {
   const { fileName } = useDbRouterParams();

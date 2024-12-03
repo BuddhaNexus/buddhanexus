@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useScoreParam } from "@components/hooks/params";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 
 function valueToString(value: number) {
   return `${value}`;

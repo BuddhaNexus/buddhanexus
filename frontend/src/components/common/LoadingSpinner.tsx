@@ -25,10 +25,6 @@ const LoadingSpinner = ({ withBackground, isLoading }: Props) => {
 
 const InfiniteLoadingSpinner = () => <LoadingSpinner isLoading={true} />;
 
-const InfiniteLoadingSpinnerWithBackground = () => (
-  <LoadingSpinner isLoading={true} withBackground={true} />
-);
-
 export { InfiniteLoadingSpinner };
 
 export default LoadingSpinner;

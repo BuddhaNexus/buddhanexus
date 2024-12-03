@@ -12,22 +12,22 @@ import { PageContainer } from "@components/layout/PageContainer";
 import { SearchResults } from "@features/globalSearch";
 import NoSearchResultsFound from "@features/globalSearch/NoSearchResultsFound";
 import SearchPageInputBox from "@features/globalSearch/SearchPageInputBox";
-import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import { useAtom } from "jotai";
-import _ from "lodash";
+import chunk from "lodash/chunk";
 
 const SearchPageHeader = ({ matches }: { matches: number }) => {
   const { t } = useTranslation();
   return (
     <>
-      <Typography variant="h2" component="h1" mb={2}>
-        {t("search.pageTitle")}
-      </Typography>
       <SearchPageInputBox />
-      <QueryPageTopStack matchCount={matches} />
+      <QueryPageTopStack
+        matchCount={matches}
+        title={t("search.pageTitle")}
+        subtitle=""
+      />
     </>
   );
 };
@@ -67,7 +67,7 @@ export default function SearchPage() {
       ? rawData.sort((a, b) => b.similarity - a.similarity)
       : [];
     // see SearchResultsRow.tsx for explanation of workaround requiring chunked data
-    return _.chunk(sortedData, 3);
+    return chunk(sortedData, 3);
   }, [rawData]);
 
   const matches = rawData?.length ?? 0;

@@ -40,7 +40,8 @@ export function useTextViewPane({
 
   const [fileNameFromActiveSegment] = activeSegment.split(":");
 
-  // const previousFileName = useRef(fileName);
+  const fileName = fileNameFromActiveSegment ?? fileNameUrlParam;
+  const previousFileName = useRef(fileName);
 
   const initialPageParam =
     activeSegment === DEFAULT_PARAM_VALUES.active_segment ? 0 : undefined;
@@ -57,8 +58,6 @@ export function useTextViewPane({
     [],
   );
 
-  // console.log({ previous: previousFileName.current, fileName });
-
   const {
     data,
     isSuccess,
@@ -70,10 +69,10 @@ export function useTextViewPane({
     isError,
     error,
   } = useInfiniteQuery({
-    enabled: Boolean(fileNameUrlParam),
+    enabled: Boolean(fileName),
     // when within the same file, keep previous data. Otherwise, discard it when user switches to new file.
-    // previousFileName.current === fileName ? keepPreviousData : undefined,
-    placeholderData: keepPreviousData,
+    placeholderData:
+      previousFileName.current === fileName ? keepPreviousData : undefined,
     initialPageParam,
     queryKey: DbApi.TextView.makeQueryKey({
       ...requestBodyBase,
