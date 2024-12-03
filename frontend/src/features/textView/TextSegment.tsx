@@ -127,7 +127,10 @@ export const TextSegment = ({
 
         if (matches.length === 0) {
           return (
-            <span key={segmentKey} className={styles.segment}>
+            <span
+              key={segmentKey}
+              className={`${styles.segment} ${styles["segment--noMatches"]}`}
+            >
               {textContent}
             </span>
           );

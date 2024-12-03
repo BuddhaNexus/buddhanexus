@@ -3,10 +3,6 @@
   pointer-events: none;
 }
 
-span.segment {
-  cursor: not-allowed;
-}
-
 .segment {
   pointer-events: auto;
   display: inline;
@@ -18,6 +14,10 @@ span.segment {
   &__button:hover {
     cursor: text;
     text-decoration: underline;
+  }
+
+  &--noMatches {
+    cursor: not-allowed;
   }
 
   &--dark {

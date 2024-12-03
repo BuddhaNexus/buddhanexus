@@ -70,11 +70,9 @@ export const TextViewPane = ({
         return;
       }
 
-      requestAnimationFrame(() => {
-        virtuosoRef.current?.scrollToIndex({
-          index: findSegmentIndexInParallelsData(allParallels, activeSegmentId),
-          align: "center",
-        });
+      virtuosoRef.current?.scrollToIndex({
+        index: findSegmentIndexInParallelsData(allParallels, activeSegmentId),
+        align: "center",
       });
     },
     [activeSegmentId, allParallels],
