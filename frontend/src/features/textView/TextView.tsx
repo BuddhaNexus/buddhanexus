@@ -1,6 +1,6 @@
 import "allotment/dist/style.css";
 
-import React from "react";
+import React, { MutableRefObject, useEffect, useRef } from "react";
 import { activeSegmentMatchesAtom } from "@atoms";
 import {
   useActiveSegmentParam,
@@ -10,7 +10,7 @@ import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { TextViewLeftPane } from "@features/textView/TextViewLeftPane";
 import { TextViewRightPane } from "@features/textView/TextViewRightPane";
 import { Paper } from "@mui/material";
-import { Allotment, LayoutPriority } from "allotment";
+import { Allotment, AllotmentHandle, LayoutPriority } from "allotment";
 import { useAtomValue } from "jotai/index";
 
 import TextViewMiddleParallels from "./TextViewMiddleParallels";
@@ -21,14 +21,26 @@ export const TextView = () => {
   const [rightPaneActiveSegmentId] = useRightPaneActiveSegmentParam();
   const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
 
+  const allotmentRef = useRef<AllotmentHandle>(null);
+
   const shouldShowMiddlePane = activeSegmentId !== "none";
 
   const shouldShowRightPane =
     rightPaneActiveSegmentId !== DEFAULT_PARAM_VALUES.active_segment;
 
+  useEffect(
+    // when any of the panes open, resets the layout so that each pane takes a proportional amount of the screen width.
+    function resizePanesWhenOpened() {
+      if (shouldShowRightPane || shouldShowMiddlePane) {
+        allotmentRef.current?.reset();
+      }
+    },
+    [shouldShowMiddlePane, shouldShowRightPane],
+  );
+
   return (
     <Paper sx={{ flex: 1, mt: 2, height: "100%" }}>
-      <Allotment>
+      <Allotment ref={allotmentRef}>
         {/* Left pane - text (main view) */}
         <Allotment.Pane priority={LayoutPriority.High}>
           <TextViewLeftPane />
