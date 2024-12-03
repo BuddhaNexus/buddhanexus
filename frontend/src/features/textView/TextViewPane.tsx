@@ -40,15 +40,6 @@ export const TextViewPane = ({
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const wasDataJustAppended: MutableRefObject<boolean> = useRef(false);
 
-  // const hasTextMounted = useRef(false);
-  //
-  // useEffect(function setTextMounted() {
-  //   const timeout = setTimeout(() => {
-  //     hasTextMounted.current = true;
-  //   }, 2000);
-  //   return () => clearTimeout(timeout);
-  // }, []);
-
   const {
     // [TODO] add error handling
     // isError,
@@ -73,9 +64,7 @@ export const TextViewPane = ({
       allParallels,
       activeSegmentId,
     );
-
     if (index === 0) return;
-
     virtuosoRef.current?.scrollToIndex({ index, align: "center" });
   }, [activeSegmentId, allParallels]);
 
@@ -92,27 +81,24 @@ export const TextViewPane = ({
 
       // prevent layout jump when data is updated (e.g. during pagination/endless loading)
       if (wasDataJustAppended.current) {
-        wasDataJustAppended.current = false;
         return;
       }
 
       scrollToActiveSegment();
-
-      // setTimeout(() => {}, 1000);
     },
     [activeSegmentId, allParallels, scrollToActiveSegment],
   );
 
   const handleStartReached = useCallback(async () => {
-    // if (!hasTextMounted.current) return;
     wasDataJustAppended.current = true;
+    wasDataJustAppended.current = false;
     await handleFetchingPreviousPage();
   }, [handleFetchingPreviousPage]);
 
   const handleEndReached = useCallback(async () => {
-    // if (!hasTextMounted.current) return;
     wasDataJustAppended.current = true;
     await handleFetchingNextPage();
+    wasDataJustAppended.current = false;
   }, [handleFetchingNextPage]);
 
   return (
@@ -124,6 +110,7 @@ export const TextViewPane = ({
           increaseViewportBy={1000}
           startReached={handleStartReached}
           endReached={handleEndReached}
+          skipAnimationFrameInResizeObserver={true}
           components={{
             Header: isFetchingPreviousPage ? ListLoadingIndicator : ListDivider,
             Footer: isFetchingNextPage ? ListLoadingIndicator : ListDivider,
