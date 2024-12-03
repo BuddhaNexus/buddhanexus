@@ -80,7 +80,15 @@ export const TextSegment = ({
         setSelectedSegmentMatches(segmentInData.matches);
       }
     },
-    [isSegmentSelected, data?.segmentText, activeSegmentId, activeSegmentIndex, setSelectedSegmentMatches, isRightPane, isMiddlePanePointingLeft],
+    [
+      isSegmentSelected,
+      data?.segmentText,
+      activeSegmentId,
+      activeSegmentIndex,
+      setSelectedSegmentMatches,
+      isRightPane,
+      isMiddlePanePointingLeft,
+    ],
   );
 
   const matchSets = useMemo(() => {
@@ -132,9 +140,12 @@ export const TextSegment = ({
             OLD_WEBSITE_SEGMENT_COLORS.at(-1);
 
         return (
-          <button
+          // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+          <span
             key={segmentKey}
+            // @ts-expect-error this actually works.
             type="button"
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className={`${styles.segment} ${styles.segment__button} ${
               isDarkTheme && styles["segment--dark"]
@@ -162,7 +173,7 @@ export const TextSegment = ({
             }}
           >
             {textContent}
-          </button>
+          </span>
         );
       })}
     </div>

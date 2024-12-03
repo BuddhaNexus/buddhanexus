@@ -13,17 +13,7 @@ span.segment {
   text-align: start;
   // uncomment if the text should not break
   //white-space: pre;
-  white-space: normal;
   user-select: text;
-  -webkit-user-select: text;
-
-  //make button appear like span
-  background: none !important;
-  border: none;
-  padding: 0 !important;
-  font-size: 1rem;
-  user-select: text;
-  -webkit-user-select: text;
 
   &__button:hover {
     cursor: text;
