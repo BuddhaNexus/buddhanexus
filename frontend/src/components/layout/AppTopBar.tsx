@@ -110,7 +110,7 @@ export const AppTopBar = memo(function AppTopBar() {
                 <Box
                   component={Image}
                   src={treeTextIcon}
-                  priority={true}
+                  priority={false}
                   width={144}
                   sx={{
                     pl: 2,

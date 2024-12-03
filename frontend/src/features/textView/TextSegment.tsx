@@ -76,7 +76,7 @@ export const TextSegment = ({
       if (!segmentInData) return;
       if (isRightPane && isMiddlePanePointingLeft) {
         setSelectedSegmentMatches(segmentInData.matches);
-      } else if (!isRightPane) {
+      } else if (!isRightPane && !isMiddlePanePointingLeft) {
         setSelectedSegmentMatches(segmentInData.matches);
       }
     },
