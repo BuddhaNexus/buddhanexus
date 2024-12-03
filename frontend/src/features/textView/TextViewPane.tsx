@@ -1,4 +1,10 @@
-import React, { MutableRefObject, useEffect, useMemo, useRef } from "react";
+import React, {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import {
@@ -34,6 +40,15 @@ export const TextViewPane = ({
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const wasDataJustAppended: MutableRefObject<boolean> = useRef(false);
 
+  // const hasTextMounted = useRef(false);
+  //
+  // useEffect(function setTextMounted() {
+  //   const timeout = setTimeout(() => {
+  //     hasTextMounted.current = true;
+  //   }, 2000);
+  //   return () => clearTimeout(timeout);
+  // }, []);
+
   const {
     // [TODO] add error handling
     // isError,
@@ -53,9 +68,20 @@ export const TextViewPane = ({
     [allParallels],
   );
 
+  const scrollToActiveSegment = useCallback(() => {
+    const index = findSegmentIndexInParallelsData(
+      allParallels,
+      activeSegmentId,
+    );
+
+    if (index === 0) return;
+
+    virtuosoRef.current?.scrollToIndex({ index, align: "center" });
+  }, [activeSegmentId, allParallels]);
+
   // make sure the selected segment is at the top when the page is opened
   useEffect(
-    function scrollToActiveSegment() {
+    function scrollToActiveSegmentOnMount() {
       // don't scroll if there is no active segment selected
       if (
         !activeSegmentId ||
@@ -70,13 +96,24 @@ export const TextViewPane = ({
         return;
       }
 
-      virtuosoRef.current?.scrollToIndex({
-        index: findSegmentIndexInParallelsData(allParallels, activeSegmentId),
-        align: "center",
-      });
+      scrollToActiveSegment();
+
+      // setTimeout(() => {}, 1000);
     },
-    [activeSegmentId, allParallels],
+    [activeSegmentId, allParallels, scrollToActiveSegment],
   );
+
+  const handleStartReached = useCallback(async () => {
+    // if (!hasTextMounted.current) return;
+    wasDataJustAppended.current = true;
+    await handleFetchingPreviousPage();
+  }, [handleFetchingPreviousPage]);
+
+  const handleEndReached = useCallback(async () => {
+    // if (!hasTextMounted.current) return;
+    wasDataJustAppended.current = true;
+    await handleFetchingNextPage();
+  }, [handleFetchingNextPage]);
 
   return (
     <Card sx={{ height: "100%" }}>
@@ -84,16 +121,9 @@ export const TextViewPane = ({
         <Virtuoso
           ref={virtuosoRef}
           firstItemIndex={firstItemIndex}
-          increaseViewportBy={500}
-          startReached={async () => {
-            wasDataJustAppended.current = true;
-            await handleFetchingPreviousPage();
-          }}
-          endReached={async () => {
-            wasDataJustAppended.current = true;
-            await handleFetchingNextPage();
-          }}
-          skipAnimationFrameInResizeObserver={true}
+          increaseViewportBy={1000}
+          startReached={handleStartReached}
+          endReached={handleEndReached}
           components={{
             Header: isFetchingPreviousPage ? ListLoadingIndicator : ListDivider,
             Footer: isFetchingNextPage ? ListLoadingIndicator : ListDivider,
@@ -113,6 +143,7 @@ export const TextViewPane = ({
             />
           )}
           data={allParallels}
+          onResizeCapture={scrollToActiveSegment}
         />
       </Box>
     </Card>
