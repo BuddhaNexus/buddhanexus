@@ -118,18 +118,26 @@ export const TextSegment = ({
           script: scriptSelection,
           language: dbLanguage,
         });
+
         const isSegmentPartSelected =
-          isSegmentSelected && activeSegmentIndex === i;
+          (isSegmentSelected && activeSegmentIndex === i) ||
+          // [hack/workaround]: in the right pane, we don't know the correct segment index
+          // because it is opened by clicking a parallel in the middle view. We highlight the whole segment instead.
+          (isRightPane && isSegmentSelected);
 
         const isSegmentPartHoveredOverInMiddleView = matchSets
           ? matchSets[i]?.has(hoveredOverParallelId)
           : false;
 
+        const segmentClassName = `${styles.segment} ${
+          isDarkTheme && styles["segment--dark"]
+        } ${isSegmentPartSelected && styles["segment--selected"]} ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`;
+
         if (matches.length === 0) {
           return (
             <span
               key={segmentKey}
-              className={`${styles.segment} ${styles["segment--noMatches"]}`}
+              className={`${segmentClassName} ${styles["segment--noMatches"]}`}
             >
               {textContent}
             </span>
@@ -150,9 +158,7 @@ export const TextSegment = ({
             type="button"
             // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
-            className={`${styles.segment} ${styles.segment__button} ${
-              isDarkTheme && styles["segment--dark"]
-            } ${isSegmentPartSelected && styles["segment--selected"]} ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`}
+            className={`${segmentClassName} ${styles.segment__button}`}
             style={{
               fontFamily: sourceSans.style.fontFamily,
               color,
