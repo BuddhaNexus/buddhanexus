@@ -21,6 +21,7 @@ import {
 } from "@features/textView/utils";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
+import debounce from "lodash/debounce";
 
 export interface TextViewPaneProps {
   isRightPane: boolean;
@@ -103,6 +104,19 @@ export const TextViewPane = ({
     setTimeout(() => (wasDataJustAppended.current = false));
   }, [handleFetchingNextPage]);
 
+  const debounceEdgeReachedFunction = useCallback(
+    (callback: () => Promise<void>) => async (isReached: boolean) => {
+      if (!isReached) return;
+      const debouncedEdgeReachedFunction = debounce(
+        async () => await callback(),
+        1000,
+        { leading: true },
+      );
+      await debouncedEdgeReachedFunction();
+    },
+    [],
+  );
+
   return (
     <Card sx={{ height: "100%" }}>
       <Box sx={{ height: "100%", py: 0, px: 2 }}>
@@ -110,8 +124,8 @@ export const TextViewPane = ({
           ref={virtuosoRef}
           firstItemIndex={firstItemIndex}
           increaseViewportBy={1000}
-          startReached={handleStartReached}
-          endReached={handleEndReached}
+          // startReached={handleStartReached}
+          // endReached={handleEndReached}
           skipAnimationFrameInResizeObserver={true}
           components={{
             Header: isFetchingPreviousPage ? ListLoadingIndicator : ListDivider,
@@ -132,6 +146,8 @@ export const TextViewPane = ({
             />
           )}
           data={allParallels}
+          atBottomStateChange={debounceEdgeReachedFunction(handleEndReached)}
+          atTopStateChange={debounceEdgeReachedFunction(handleStartReached)}
         />
       </Box>
     </Card>
