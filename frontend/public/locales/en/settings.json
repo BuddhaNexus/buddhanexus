@@ -42,7 +42,7 @@
       "length": "Length of character match (<)",
       "length2": "Length of character match (>)"
     },
-    "download_data": "Download results as xmlx file",
+    "download_data": "Download results as xlsx file",
     "wylie": "Wylie",
     "unicode": "Unicode",
     "copyQueryTitle": "Copy text title",

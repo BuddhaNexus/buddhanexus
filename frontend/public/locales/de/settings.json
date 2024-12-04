@@ -44,7 +44,7 @@
     },
     "wylie": "Wylie",
     "unicode": "Unicode",
-    "download_data": "Ergebnisse als xmlx-Datei herunterladen",
+    "download_data": "Ergebnisse als xlsx-Datei herunterladen",
     "copyQueryTitle": "Texttitel kopieren",
     "copyQueryLink": "Link der Ergebnisseite kopieren",
     "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden",
