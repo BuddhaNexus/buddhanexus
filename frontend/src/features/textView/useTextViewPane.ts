@@ -159,15 +159,18 @@ export function useTextViewPane({
     if (paginationState.current[0] === 0) return;
 
     const { data: responseData } = await fetchPreviousPage();
-    // eslint-disable-next-line require-atomic-updates
-    paginationState.current[0] = responseData?.pages[0]?.data.page;
+
+    paginationState.current = [
+      responseData?.pages[0]?.data.page,
+      paginationState.current[1],
+    ];
 
     const fetchedPageSize = responseData?.pages[0]?.data.items?.length;
     if (!fetchedPageSize) return;
 
     // the user is scrolling up.
     // offset the new list items when prepending them to the page.
-    setFirstItemIndex((prevIndex) => prevIndex - fetchedPageSize);
+    setFirstItemIndex((prevState) => prevState - fetchedPageSize);
   }, [fetchPreviousPage]);
 
   const handleFetchingNextPage = useCallback(async () => {

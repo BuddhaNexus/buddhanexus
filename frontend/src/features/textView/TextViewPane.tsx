@@ -21,6 +21,7 @@ import {
 } from "@features/textView/utils";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
+import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";
 import debounce from "lodash/debounce";
 
 export interface TextViewPaneProps {
@@ -30,6 +31,17 @@ export interface TextViewPaneProps {
   activeSegmentIndex: number | null;
   setActiveSegmentIndex: (index: number) => Promise<URLSearchParams>;
 }
+
+const debounceEdgeReachedFunction =
+  (callback: () => Promise<void>) => async (isReached: boolean) => {
+    if (!isReached) return;
+    const debouncedEdgeReachedFunction = debounce(
+      async () => await callback(),
+      1000,
+      { leading: true },
+    );
+    await debouncedEdgeReachedFunction();
+  };
 
 export const TextViewPane = ({
   isRightPane,
@@ -97,35 +109,42 @@ export const TextViewPane = ({
     setTimeout(() => (wasDataJustAppended.current = false));
   }, [handleFetchingPreviousPage]);
 
-  const handleEndReached = useCallback(async () => {
+  const handleBottomReached = useCallback(async () => {
     wasDataJustAppended.current = true;
     await handleFetchingNextPage();
     // fixes issue with scrolling to segment automatically on endless scrolling
     setTimeout(() => (wasDataJustAppended.current = false));
   }, [handleFetchingNextPage]);
 
-  const debounceEdgeReachedFunction = useCallback(
-    (callback: () => Promise<void>) => async (isReached: boolean) => {
-      if (!isReached) return;
-      const debouncedEdgeReachedFunction = debounce(
-        async () => await callback(),
-        1000,
-        { leading: true },
-      );
-      await debouncedEdgeReachedFunction();
-    },
-    [],
+  const itemContent = useCallback(
+    (index: number, dataSegment: ParsedTextViewParallel) => (
+      <TextSegment
+        data={dataSegment}
+        colorScale={colorScale}
+        activeSegmentId={activeSegmentId}
+        setActiveSegmentId={setActiveSegmentId}
+        activeSegmentIndex={activeSegmentIndex}
+        setActiveSegmentIndex={setActiveSegmentIndex}
+        isRightPane={isRightPane}
+      />
+    ),
+    [
+      activeSegmentId,
+      activeSegmentIndex,
+      colorScale,
+      isRightPane,
+      setActiveSegmentId,
+      setActiveSegmentIndex,
+    ],
   );
 
   return (
     <Card sx={{ height: "100%" }}>
       <Box sx={{ height: "100%", py: 0, px: 2 }}>
-        <Virtuoso
+        <Virtuoso<ParsedTextViewParallel>
           ref={virtuosoRef}
           firstItemIndex={firstItemIndex}
           increaseViewportBy={1000}
-          // startReached={handleStartReached}
-          // endReached={handleEndReached}
           skipAnimationFrameInResizeObserver={true}
           components={{
             Header: isFetchingPreviousPage ? ListLoadingIndicator : ListDivider,
@@ -134,20 +153,10 @@ export const TextViewPane = ({
               ? InfiniteLoadingSpinner
               : EmptyPlaceholder,
           }}
-          itemContent={(_, dataSegment) => (
-            <TextSegment
-              data={dataSegment}
-              colorScale={colorScale}
-              activeSegmentId={activeSegmentId}
-              setActiveSegmentId={setActiveSegmentId}
-              activeSegmentIndex={activeSegmentIndex}
-              setActiveSegmentIndex={setActiveSegmentIndex}
-              isRightPane={isRightPane}
-            />
-          )}
+          itemContent={itemContent}
           data={allParallels}
-          atBottomStateChange={debounceEdgeReachedFunction(handleEndReached)}
           atTopStateChange={debounceEdgeReachedFunction(handleStartReached)}
+          atBottomStateChange={debounceEdgeReachedFunction(handleBottomReached)}
         />
       </Box>
     </Card>
