@@ -119,11 +119,13 @@ export const TextSegment = ({
           language: dbLanguage,
         });
 
+        // [hack/workaround]: in the right pane, we don't know the correct segment index
+        // because it is opened by clicking a parallel in the middle view. We highlight the whole segment instead.
         const isSegmentPartSelected =
-          (isSegmentSelected && activeSegmentIndex === i) ||
-          // [hack/workaround]: in the right pane, we don't know the correct segment index
-          // because it is opened by clicking a parallel in the middle view. We highlight the whole segment instead.
-          (isRightPane && isSegmentSelected);
+          isSegmentSelected &&
+          (activeSegmentIndex === null ||
+            activeSegmentIndex === i ||
+            activeSegmentIndex > data.segmentText.length);
 
         const isSegmentPartHoveredOverInMiddleView = matchSets
           ? matchSets[i]?.has(hoveredOverParallelId)
