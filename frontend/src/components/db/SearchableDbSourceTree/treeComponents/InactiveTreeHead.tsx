@@ -19,10 +19,9 @@ function InactiveTreeHead({
   return (
     <>
       <TreeHeading isRendered={hasHeading} dbLanguage={dbLanguage} />
-      <FormControl sx={{ p: padding, width }} disabled={true} fullWidth>
+      <FormControl sx={{ p: padding, width }} fullWidth>
         <TextField
           label="Search"
-          aria-disabled={true}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
