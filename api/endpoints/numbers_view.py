@@ -8,6 +8,7 @@ from .endpoint_utils import execute_query
 from ..queries import numbers_view_queries
 from .models.general_models import GeneralInput
 from .models.numbers_view_models import MenuOutput, NumbersViewOutput
+from ..cache_config import cached_endpoint, CACHE_TIMES
 
 router = APIRouter()
 
@@ -43,6 +44,7 @@ def create_numbers_view_data(table_results):
 
 
 @router.post("/numbers/", response_model=NumbersViewOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_numbers_view(input: GeneralInput) -> Any:
     """
     Endpoint for numbers view.
@@ -75,6 +77,7 @@ async def get_numbers_view(input: GeneralInput) -> Any:
 
 
 @router.get("/categories/", response_model=MenuOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_categories_for_numbers_view(
     filename: str = Query(..., description="Filename to be used")
 ) -> Any:

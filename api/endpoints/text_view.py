@@ -11,11 +11,13 @@ from .models.text_view_models import (
     TextViewMiddleInput,
     TextViewMiddleOutput,
 )
+from ..cache_config import cached_endpoint, CACHE_TIMES
 
 router = APIRouter()
 
 
 @router.post("/middle/", response_model=TextViewMiddleOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_parallels_for_middle(input: TextViewMiddleInput) -> Any:
     """
     :return: List of parallels for text view (middle)
@@ -28,6 +30,7 @@ async def get_parallels_for_middle(input: TextViewMiddleInput) -> Any:
 
 
 @router.post("/text-parallels/", response_model=TextViewLeftOutput)
+@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any:
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.
