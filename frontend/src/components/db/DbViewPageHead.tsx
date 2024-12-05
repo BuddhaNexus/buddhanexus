@@ -2,11 +2,10 @@ import { NextSeo } from "next-seo";
 import { currentDbViewAtom } from "@atoms";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
-import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue } from "jotai";
-import { startCase } from "lodash";
+import startCase from "lodash/startCase";
 
 export const DbViewPageHead = () => {
   const { fileName } = useDbRouterParams();
@@ -18,26 +17,19 @@ export const DbViewPageHead = () => {
 
   const dbView = useAtomValue(currentDbViewAtom);
 
+  const title = fileName?.toUpperCase();
+
+  const subtitle = isLoading ? "..." : displayName ?? "";
+
   return (
     <>
       <NextSeo
-        title={`BuddhaNexus — ${fileName} :: ${
+        title={`BuddhaNexus | ${fileName} :: ${
           displayName ? `${displayName} ::` : ""
         } ${startCase(dbView)} View`}
       />
 
-      <QueryPageTopStack />
-
-      {isLoading ? (
-        <Typography variant="h2" component="h1" mb={1}>
-          {fileName?.toUpperCase()}
-        </Typography>
-      ) : (
-        <Typography variant="h2" component="h1" mb={1}>
-          {fileName?.toUpperCase()}
-          {displayName ? `: ${displayName}` : ""}
-        </Typography>
-      )}
+      <QueryPageTopStack title={title} subtitle={subtitle} />
     </>
   );
 };

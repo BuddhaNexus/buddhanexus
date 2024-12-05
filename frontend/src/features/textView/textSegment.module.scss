@@ -3,29 +3,21 @@
   pointer-events: none;
 }
 
-span.segment {
-  cursor: not-allowed;
-}
-
 .segment {
   pointer-events: auto;
   display: inline;
   text-align: start;
-  white-space: pre;
+  // uncomment if the text should not break
+  //white-space: pre;
   user-select: text;
-  -webkit-user-select: text;
-
-  //make button appear like span
-  background: none !important;
-  border: none;
-  padding: 0 !important;
-  font-size: 1rem;
-  user-select: text;
-  -webkit-user-select: text;
 
   &__button:hover {
     cursor: text;
     text-decoration: underline;
+  }
+
+  &--noMatches {
+    cursor: not-allowed;
   }
 
   &--dark {
@@ -33,9 +25,10 @@ span.segment {
   }
 
   &--selected {
-    background: #eeeeee !important;
-    text-decoration: underline;
+    font-weight: 900;
   }
+
+  transition: background, color 150ms ease-out;
 
   &--parallel-hovered {
     background: var(--mui-palette-common-black) !important;
@@ -53,6 +46,7 @@ span.segment {
 
   &--selected {
     text-decoration: underline;
+    font-weight: 900;
   }
 
   &--hidden {

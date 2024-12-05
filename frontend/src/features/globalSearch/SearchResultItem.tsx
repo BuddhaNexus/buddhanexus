@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import { Link } from "@components/common/Link";
-import { makeTextViewSegmentPath } from "@features/tableView/ParallelSegment";
+import { useGetURLToSegment } from "@features/textView/useGetURLToSegment";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";
 import { CardContent, Chip, Divider, IconButton, Tooltip } from "@mui/material";
@@ -38,6 +38,11 @@ export const SearchResultItem = ({ result }: Props) => {
   const roundedSimilarity =
     similarity % 1 === 0 ? similarity : similarity.toFixed(2);
 
+  const { urlToSegment } = useGetURLToSegment({
+    language,
+    segmentNumber,
+  });
+
   return (
     <SearchResultCard>
       <CardContent
@@ -69,10 +74,7 @@ export const SearchResultItem = ({ result }: Props) => {
         <SearchResultHeaderTitleRow>
           <Tooltip title={displayName} PopperProps={{ disablePortal: true }}>
             <Link
-              href={makeTextViewSegmentPath({
-                language,
-                segmentNumber,
-              })}
+              href={urlToSegment}
               sx={{
                 display: "inline-block",
                 wordBreak: "break-word",

@@ -1,97 +1,56 @@
 import "allotment/dist/style.css";
 
-import React, { useMemo } from "react";
-import { Virtuoso } from "react-virtuoso";
-import { activeSegmentMatchesAtom } from "@atoms";
+import React, { useEffect, useRef } from "react";
 import {
-  EmptyPlaceholder,
-  ListLoadingIndicator,
-} from "@components/db/ListComponents";
-import { useActiveSegmentParam } from "@components/hooks/params";
+  useActiveSegmentParam,
+  useRightPaneActiveSegmentParam,
+} from "@components/hooks/params";
+import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
+import { TextViewLeftPane } from "@features/textView/TextViewLeftPane";
+import { TextViewRightPane } from "@features/textView/TextViewRightPane";
 import { Paper } from "@mui/material";
-import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
-import { Allotment } from "allotment";
-import chroma from "chroma-js";
-import { useAtomValue } from "jotai/index";
+import { Allotment, AllotmentHandle, LayoutPriority } from "allotment";
 
-import { TextSegment } from "./TextSegment";
 import TextViewMiddleParallels from "./TextViewMiddleParallels";
 
-interface Props {
-  data: ParsedTextViewParallels;
-  onEndReached: () => void;
-  onStartReached: () => Promise<void>;
-  firstItemIndex?: number;
-  isFetchingPreviousPage?: boolean;
-  isFetchingNextPage?: boolean;
-}
-
 // todo: check other elements in segmentText
-export const TextView = ({
-  data,
-  onEndReached,
-  onStartReached,
-  firstItemIndex,
-  isFetchingPreviousPage,
-  isFetchingNextPage,
-}: Props) => {
+export const TextView = () => {
   const [activeSegmentId] = useActiveSegmentParam();
-  const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
+  const [rightPaneActiveSegmentId] = useRightPaneActiveSegmentParam();
 
-  const colorScale = useMemo(() => {
-    const colors = data.map((item) => item.segmentText[0]?.highlightColor ?? 0);
-    const [minColor, maxColor] = [Math.min(...colors), Math.max(...colors)];
+  const allotmentRef = useRef<AllotmentHandle>(null);
 
-    return chroma
-      .scale("Reds")
-      .padding([0.6, 0])
-      .domain([maxColor, minColor])
-      .correctLightness(true);
-  }, [data]);
+  const shouldShowMiddlePane = activeSegmentId !== "none";
 
-  const hasData = data.length > 0;
-  const shouldShowMiddlePane =
-    activeSegmentId !== "none" && activeSegmentMatches.length > 0;
+  const shouldShowRightPane =
+    rightPaneActiveSegmentId !== DEFAULT_PARAM_VALUES.active_segment;
 
-  // make sure the selected segment is at the top when the page is opened
-  const activeSegmentIndexInData = useMemo(() => {
-    if (!hasData) return 0;
-    const index = data.findIndex(
-      (element) => element.segmentNumber === activeSegmentId,
-    );
-    if (index === -1) return 0;
-    return index;
-  }, [data, hasData, activeSegmentId]);
+  useEffect(
+    // when the right pane opens, reset the layout so that each pane takes a proportional amount of the screen width.
+    function resetPaneSize() {
+      if (shouldShowRightPane) {
+        allotmentRef.current?.reset();
+      }
+    },
+    [shouldShowRightPane],
+  );
 
   return (
-    <Paper sx={{ flex: 1, py: 1, pl: 2, my: 1 }}>
-      <Allotment defaultSizes={[4, 3]}>
+    <Paper sx={{ flex: 1, mt: 2, height: "100%" }}>
+      <Allotment ref={allotmentRef}>
         {/* Left pane - text (main view) */}
-        <Allotment.Pane>
-          <Virtuoso
-            firstItemIndex={firstItemIndex}
-            initialTopMostItemIndex={activeSegmentIndexInData}
-            data={hasData && data.length > 0 ? data : undefined}
-            startReached={onStartReached}
-            endReached={onEndReached}
-            totalCount={data.length}
-            overscan={900} // pixel value
-            increaseViewportBy={500} // solves empty content at start/end of list issue
-            initialItemCount={5} // for SSR
-            components={{
-              Header: isFetchingPreviousPage ? ListLoadingIndicator : undefined,
-              Footer: isFetchingNextPage ? ListLoadingIndicator : undefined,
-              EmptyPlaceholder,
-            }}
-            itemContent={(_, dataSegment) => (
-              <TextSegment data={dataSegment} colorScale={colorScale} />
-            )}
-          />
+        <Allotment.Pane priority={LayoutPriority.High}>
+          <TextViewLeftPane />
         </Allotment.Pane>
 
         {/* Middle pane - parallels for selected segment */}
         <Allotment.Pane visible={shouldShowMiddlePane}>
           <TextViewMiddleParallels />
+        </Allotment.Pane>
+
+        {/* Right Pane - shown after a parallel is selected in middle pane */}
+        <Allotment.Pane visible={shouldShowRightPane}>
+          <TextViewRightPane />
         </Allotment.Pane>
       </Allotment>
     </Paper>

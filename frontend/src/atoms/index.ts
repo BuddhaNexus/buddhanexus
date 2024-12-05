@@ -53,6 +53,12 @@ export const dbSourceFiltersSelectedIdsAtom = atom<DbSourceFiltersSelectedIds>({
  * TEXT VIEW
  */
 export const textViewFilterComparisonAtom = atom<string | undefined>(undefined);
+export const textViewRightPaneFileNameAtom = atom<string | undefined>(
+  undefined,
+);
+export const textViewIsMiddlePanePointingLeftAtom = atom<boolean | undefined>(
+  undefined,
+);
 export const shouldShowSegmentNumbersAtom = atomWithStorage<boolean>(
   "shouldShowSegmentNumbers",
   true,
