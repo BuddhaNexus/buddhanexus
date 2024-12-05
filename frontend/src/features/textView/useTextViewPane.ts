@@ -16,8 +16,8 @@ interface UseTextPageReturn {
   firstItemIndex: number;
   handleFetchingNextPage: () => Promise<void>;
   handleFetchingPreviousPage: () => Promise<void>;
-  hasData: boolean;
   isError: boolean;
+  isLoading: boolean;
   isFetching: boolean;
   isFetchingNextPage: boolean;
   isFetchingPreviousPage: boolean;
@@ -73,18 +73,20 @@ export function useTextViewPane({
     isFetching,
     isError,
     error,
+    isLoading,
+    isFetchedAfterMount,
   } = useInfiniteQuery({
     enabled: Boolean(fileName),
     // when within the same file, keep previous data. Otherwise, discard it when user switches to new file.
     placeholderData:
-      previousFileName.current === fileName ? keepPreviousData : undefined,
+      fileName === previousFileName.current ? keepPreviousData : undefined,
     initialPageParam,
     queryKey: DbApi.TextView.makeQueryKey({
       ...requestBodyBase,
       active_segment: activeSegment,
       filters: requestFilters,
     }),
-    queryFn: ({ pageParam }) => {
+    queryFn: async ({ pageParam }) => {
       // We pass the active_segment, but only on the first page load :/
       //
       // This is a bit of a workaround to enable scrolling up. Explanation:
@@ -100,8 +102,6 @@ export function useTextViewPane({
       const activeSegmentParam = hasSegmentBeenSelected(activeSegment)
         ? DEFAULT_PARAM_VALUES.active_segment
         : activeSegment;
-
-      previousFileName.current = fileName;
 
       return DbApi.TextView.call({
         ...requestBodyBase,
@@ -132,6 +132,12 @@ export function useTextViewPane({
       return endEdge + 1;
     },
   });
+
+  useEffect(() => {
+    if (isFetchedAfterMount) {
+      previousFileName.current = fileName;
+    }
+  }, [fileName, isFetchedAfterMount]);
 
   // see queryFn comment above
   useEffect(
@@ -186,18 +192,16 @@ export function useTextViewPane({
     [data?.pages],
   );
 
-  const hasData = Boolean(data);
-
   return {
     allParallels,
     firstItemIndex,
     handleFetchingNextPage,
     handleFetchingPreviousPage,
-    hasData,
     isError,
     isFetching,
     isFetchingNextPage,
     isFetchingPreviousPage,
+    isLoading,
     error,
   };
 }

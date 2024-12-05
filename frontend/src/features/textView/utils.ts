@@ -18,11 +18,11 @@ export function findSegmentIndexInParallelsData(
   data: ParsedTextViewParallels,
   activeSegmentId: string,
 ) {
-  if (data.length <= 0) return 0;
+  if (data.length <= 0) return -1;
   const index = data.findIndex(
     (element) => element.segmentNumber === activeSegmentId,
   );
-  if (index === -1) return 0;
+  if (index === -1) return -1;
   return index;
 }
 

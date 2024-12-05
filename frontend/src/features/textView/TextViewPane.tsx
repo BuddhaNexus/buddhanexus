@@ -2,6 +2,7 @@ import React, {
   MutableRefObject,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
 } from "react";
@@ -12,7 +13,6 @@ import {
   ListDivider,
   ListLoadingIndicator,
 } from "@components/db/ListComponents";
-import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { TextSegment } from "@features/textView/TextSegment";
 import { useTextViewPane } from "@features/textView/useTextViewPane";
 import {
@@ -21,7 +21,10 @@ import {
 } from "@features/textView/utils";
 import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
-import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-parallels";
+import {
+  ParsedTextViewParallel,
+  ParsedTextViewParallels,
+} from "@utils/api/endpoints/text-view/text-parallels";
 import debounce from "lodash/debounce";
 
 export interface TextViewPaneProps {
@@ -57,7 +60,6 @@ export const TextViewPane = ({
     // [TODO] add error handling
     // isError,
     // error,
-    // hasData,
     isFetching,
     allParallels,
     firstItemIndex,
@@ -65,7 +67,14 @@ export const TextViewPane = ({
     isFetchingNextPage,
     handleFetchingPreviousPage,
     handleFetchingNextPage,
+    isLoading,
   } = useTextViewPane({ activeSegment: activeSegmentId, isRightPane });
+
+  // assign data to a ref to avoid re-running the effect when items are appended during endless loading.
+  const allParallelsRef = useRef<ParsedTextViewParallels>(allParallels);
+  useLayoutEffect(() => {
+    allParallelsRef.current = allParallels;
+  }, [allParallels]);
 
   const colorScale = useMemo(
     () => getTextViewColorScale(allParallels),
@@ -73,38 +82,21 @@ export const TextViewPane = ({
   );
 
   const scrollToActiveSegment = useCallback(() => {
+    if (isLoading) return;
     const index = findSegmentIndexInParallelsData(
-      allParallels,
+      allParallelsRef.current,
       activeSegmentId,
     );
-    if (index === 0) return;
+    if (index === -1) return;
     virtuosoRef.current?.scrollToIndex({ index, align: "center" });
-  }, [activeSegmentId, allParallels]);
+  }, [activeSegmentId, isLoading]);
 
-  // make sure the selected segment is at the top when the page is opened
-  useEffect(
-    function scrollToActiveSegmentOnMount() {
-      // don't scroll if there is no active segment selected
-      if (
-        !activeSegmentId ||
-        activeSegmentId === DEFAULT_PARAM_VALUES.active_segment
-      ) {
-        return;
-      }
+  useEffect(() => {
+    scrollToActiveSegment();
 
-      // prevent layout jump when data is updated (e.g. during pagination/endless loading)
-      // fix: causes a bug - sometimes the segment is not scrolled to
-      if (wasDataJustAppended.current) {
-        return;
-      }
-
-      scrollToActiveSegment();
-
-      // workaround/hack for the bug described above. It doesn't fully fix the problem though.
-      setTimeout(() => scrollToActiveSegment(), 1000);
-    },
-    [activeSegmentId, scrollToActiveSegment],
-  );
+    // [workaround/hack] - it doesn't always consistently scroll to the activeSegment, even with this hack, but it helps
+    setTimeout(() => scrollToActiveSegment(), 1000);
+  }, [scrollToActiveSegment]);
 
   const handleStartReached = useCallback(async () => {
     wasDataJustAppended.current = true;
