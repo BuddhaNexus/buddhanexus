@@ -5,20 +5,13 @@ import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover";
 import { useTheme } from "@mui/material/styles";
 
-export const buttonWrapperStyles = {
-  display: "flex",
-  flexDirection: { xs: "column", md: "row" },
-  alignItems: { md: "center" },
-  gap: 1,
-};
-
 export const QueryPageButtons = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
   const theme = useTheme();
-  const isMd = useMediaQuery(theme.breakpoints.up("md"));
+  const isSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
@@ -35,7 +28,7 @@ export const QueryPageButtons = ({
   const isPopoverOpen = Boolean(anchorEl);
   const id = isPopoverOpen ? "simple-popover" : undefined;
 
-  if (isMd) {
+  if (isSm) {
     return children;
   }
 

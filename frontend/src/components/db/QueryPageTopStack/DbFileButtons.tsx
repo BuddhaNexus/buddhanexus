@@ -17,17 +17,15 @@ import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import GradingOutlinedIcon from "@mui/icons-material/GradingOutlined";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
-import { Box, Button, useMediaQuery } from "@mui/material";
+import { Button, ButtonGroup, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSetAtom } from "jotai";
-
-import { buttonWrapperStyles } from "./QueryPageButtons";
 
 export const DbFileButtons = () => {
   const { t } = useTranslation("settings");
 
   const theme = useTheme();
-  const isLg = useMediaQuery(theme.breakpoints.up("lg"));
+  const isSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   const setIsSourceTreeOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);
   const { setIsSettingsOpen } = useSettingsDrawer();
@@ -68,13 +66,13 @@ export const DbFileButtons = () => {
   ]);
 
   return (
-    <Box sx={buttonWrapperStyles}>
+    <ButtonGroup variant="outlined">
       <Button
         variant="outlined"
         data-testid="db-results-settings-button"
         aria-label={t(`resultsHead.settingsTip`)}
         title={t(`resultsHead.settingsTip`)}
-        startIcon={isLg && <TuneIcon />}
+        startIcon={isSm && <TuneIcon />}
         onClick={() => setIsSettingsOpen((prev) => !prev)}
       >
         {t(`resultsHead.settings`)}
@@ -85,7 +83,7 @@ export const DbFileButtons = () => {
         data-testid="db-results-clear-settings-button"
         aria-label={t(`resultsHead.resetTip`)}
         title={t(`resultsHead.resetTip`)}
-        startIcon={isLg && <RotateLeftOutlinedIcon />}
+        startIcon={isSm && <RotateLeftOutlinedIcon />}
         onClick={handleReset}
       >
         {t(`resultsHead.reset`)}
@@ -96,11 +94,11 @@ export const DbFileButtons = () => {
         data-testid="db-results-text-select-modal-button"
         aria-label={t(`resultsHead.textSelectTip`)}
         title={t(`resultsHead.textSelectTip`)}
-        startIcon={isLg && <GradingOutlinedIcon />}
+        startIcon={isSm && <GradingOutlinedIcon />}
         onClick={() => setIsSourceTreeOpen(true)}
       >
         {t(`resultsHead.textSelect`)}
       </Button>
-    </Box>
+    </ButtonGroup>
   );
 };

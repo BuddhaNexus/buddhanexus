@@ -6,9 +6,16 @@ import { DbSourceFilterSelectorTree } from "@features/SidebarSuite/uiSettings/Db
 
 import DbSourceBrowserTree from "./DbSourceBrowserTree";
 
-export function DbSourceTree(props: DbSourceTreeProps) {
-  const { type, data, height, width, searchTerm } = props;
-
+export function DbSourceTree({
+  type,
+  data,
+  height,
+  width,
+  searchTerm,
+  // @ts-expect-error todo: fix typings
+  filterSettingName,
+}: DbSourceTreeProps) {
+  // todo: what is this? Can it be removed? I don't see usages in code
   if (type === DbSourceTreeType.FILTER_SELECTOR) {
     return (
       <DbSourceFilterSelectorTree
@@ -16,7 +23,7 @@ export function DbSourceTree(props: DbSourceTreeProps) {
         height={height}
         width={width}
         searchTerm={searchTerm}
-        filterSettingName={props.filterSettingName}
+        filterSettingName={filterSettingName}
       />
     );
   }

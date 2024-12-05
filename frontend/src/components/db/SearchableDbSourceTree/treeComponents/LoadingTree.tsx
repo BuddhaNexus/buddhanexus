@@ -1,7 +1,6 @@
 import InactiveTreeHead, {
   InactiveTreeHeadProps,
 } from "@components/db/SearchableDbSourceTree/treeComponents/InactiveTreeHead";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Box } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 
@@ -10,8 +9,8 @@ export function LoadingTree(props: InactiveTreeHeadProps) {
     <>
       <InactiveTreeHead {...props} />
 
-      <Box sx={{ mt: 10 }}>
-        {[6, 4, 3, 5, 4].map((n, i) => (
+      <Box sx={{ width: "100%", height: "100%" }}>
+        {[6, 4, 3, 5, 4, 5, 2, 7, 4, 3, 2, 5, 4, 7, 3, 6].map((n, i) => (
           <Box
             key={`tree-skeleton-${i}`}
             sx={{
@@ -21,12 +20,12 @@ export function LoadingTree(props: InactiveTreeHeadProps) {
               maxWidth: `${n * 10}%`,
             }}
           >
-            <ChevronRightIcon sx={{ mr: 1 }} />
             <Skeleton
               sx={{
                 flexGrow: 1,
                 animationDuration: `4s`,
                 "&::after": { animationDuration: `2.${n}s` },
+                ml: 2,
               }}
             />
           </Box>

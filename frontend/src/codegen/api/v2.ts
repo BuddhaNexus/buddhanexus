@@ -762,14 +762,12 @@ export interface components {
       id: string;
       /** Par Segnr Range */
       par_segnr_range: string;
+      /** Par Segnr */
+      par_segnr: string;
       /** Display Name */
       display_name?: string;
       /** Tgt Lang */
       tgt_lang: string;
-      /** Par Offset Beg */
-      par_offset_beg?: number;
-      /** Par Offset End */
-      par_offset_end?: number;
       /**
        * Par Segtext
        * @default []

@@ -4,7 +4,7 @@ import { useParLengthParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { MIN_PAR_LENGTH_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 
 function valueToString(value: number) {
   return `${value}`;

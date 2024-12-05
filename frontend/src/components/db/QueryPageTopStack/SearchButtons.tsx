@@ -14,8 +14,6 @@ import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
 import { Box, Button } from "@mui/material";
 
-import { buttonWrapperStyles } from "./QueryPageButtons";
-
 export const SearchButtons = () => {
   const { t } = useTranslation("settings");
 
@@ -48,7 +46,7 @@ export const SearchButtons = () => {
   ]);
 
   return (
-    <Box sx={buttonWrapperStyles}>
+    <Box>
       <Button
         variant="outlined"
         data-testid="db-results-settings-button"

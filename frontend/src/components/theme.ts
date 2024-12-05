@@ -1,5 +1,6 @@
 import { Noto_Serif, Source_Sans_3 } from "next/font/google";
 import { grey } from "@mui/material/colors";
+import { lighten } from "@mui/material/styles";
 // eslint-disable-next-line no-restricted-imports
 import type { CssVarsThemeOptions } from "@mui/material/styles/experimental_extendTheme";
 import { DbLanguage } from "@utils/api/types";
@@ -62,7 +63,7 @@ export const getDesignTokens = ({
           main: "#10A60B",
         },
         background: {
-          default: "#efe0c2",
+          default: lighten("#efe0c2", 0.3),
           paper: "#ffffff",
           header: dbLanguage ? DB_LANGUAGE_COLORS_LIGHT[dbLanguage] : "#29262d",
           accent: grey[50],

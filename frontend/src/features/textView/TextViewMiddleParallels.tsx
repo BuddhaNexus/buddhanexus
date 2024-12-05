@@ -1,16 +1,24 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
-import { activeSegmentMatchesAtom, hoveredOverParallelIdAtom } from "@atoms";
+import {
+  activeSegmentMatchesAtom,
+  hoveredOverParallelIdAtom,
+  textViewIsMiddlePanePointingLeftAtom,
+} from "@atoms";
+import LoadingSpinner from "@components/common/LoadingSpinner";
+import {
+  useActiveSegmentIndexParam,
+  useActiveSegmentParam,
+} from "@components/hooks/params";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
-import { Numbers } from "@mui/icons-material";
-import { Chip, CircularProgress } from "@mui/material";
-import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material/styles";
+import { ArrowForward, Numbers } from "@mui/icons-material";
+import { Box, CardContent, CardHeader, Chip, Stack } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue, useSetAtom } from "jotai";
 
-import { ClearSelectedSegmentButton } from "./ClearSelectedSegmentButton";
+import { CloseTextViewPaneButton } from "./CloseTextViewPaneButton";
+import styles from "./textViewMiddleParallels.module.scss";
 
 export default function TextViewMiddleParallels() {
   const { t } = useTranslation();
@@ -18,7 +26,9 @@ export default function TextViewMiddleParallels() {
   const activeSegmentMatches = useAtomValue(activeSegmentMatchesAtom);
   const setHoveredOverParallelId = useSetAtom(hoveredOverParallelIdAtom);
 
-  const theme = useTheme();
+  const isMiddlePanePointingLeft = useAtomValue(
+    textViewIsMiddlePanePointingLeftAtom,
+  );
 
   const { data, isLoading } = useQuery({
     queryKey: DbApi.TextViewMiddle.makeQueryKey(activeSegmentMatches),
@@ -26,6 +36,13 @@ export default function TextViewMiddleParallels() {
       DbApi.TextViewMiddle.call({ parallel_ids: activeSegmentMatches }),
     enabled: activeSegmentMatches.length > 0,
   });
+
+  const [, setActiveSegment] = useActiveSegmentParam();
+  const [, setActiveSegmentIndex] = useActiveSegmentIndexParam();
+
+  const handleClear = async () => {
+    await Promise.all([setActiveSegment("none"), setActiveSegmentIndex(null)]);
+  };
 
   const parallelsToDisplay = useMemo(
     () =>
@@ -40,6 +57,7 @@ export default function TextViewMiddleParallels() {
               displayName,
               parallelLength,
               parallelFullText,
+              parallelSegmentNumber,
               parallelSegmentNumberRange,
               score,
               targetLanguage,
@@ -54,6 +72,7 @@ export default function TextViewMiddleParallels() {
               length={parallelLength}
               text={parallelFullText}
               score={score}
+              textSegmentNumber={parallelSegmentNumber}
               textSegmentNumberRange={parallelSegmentNumberRange}
               onHover={setHoveredOverParallelId}
             />
@@ -63,48 +82,41 @@ export default function TextViewMiddleParallels() {
   );
 
   return (
-    <div
-      style={{
-        overflow: "auto",
-        height: "100%",
-        flex: 1,
-        paddingRight: 8,
-        paddingLeft: 8,
-      }}
-    >
-      <CircularProgress
-        style={{
-          display: isLoading ? "block" : "none",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      />
-      <Box
-        data-testid="middle-view-header"
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          position: "sticky",
-          backgroundColor: theme.palette.background.paper,
-          top: 0,
-          zIndex: 1,
-          padding: 4,
-        }}
-      >
-        <Chip
-          label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
-          variant="outlined"
-          icon={<Numbers />}
-        />
-        <div>
-          <ClearSelectedSegmentButton />
-        </div>
-      </Box>
+    <Box className={styles.container}>
+      <LoadingSpinner isLoading={isLoading} />
 
-      <div>{parallelsToDisplay}</div>
-    </div>
+      <CardHeader
+        data-testid="middle-view-header"
+        sx={{
+          backgroundColor: "background.card",
+          position: "sticky",
+          top: 0,
+          zIndex: 2,
+          width: "100%",
+        }}
+        action={<CloseTextViewPaneButton handlePress={handleClear} />}
+        title={
+          <Stack direction="row" spacing={1}>
+            <Chip
+              label={`${activeSegmentMatches.length} ${t("db.segmentMatches")}`}
+              variant="outlined"
+              size="small"
+              icon={<Numbers fontSize="inherit" />}
+            />
+            <ArrowForward
+              sx={{
+                transition: "transform 250ms ease-out",
+                transform: `rotate(${isMiddlePanePointingLeft ? "180deg" : "0deg"})`,
+              }}
+              fontSize="inherit"
+            />
+          </Stack>
+        }
+      />
+
+      <CardContent className={styles.cardContent}>
+        {parallelsToDisplay}
+      </CardContent>
+    </Box>
   );
 }

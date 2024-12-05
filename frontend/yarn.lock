@@ -2857,9 +2857,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"allotment@npm:^1.20.0":
-  version: 1.20.0
-  resolution: "allotment@npm:1.20.0"
+"allotment@npm:^1.20.2":
+  version: 1.20.2
+  resolution: "allotment@npm:1.20.2"
   dependencies:
     classnames: "npm:^2.3.0"
     eventemitter3: "npm:^5.0.0"
@@ -2870,7 +2870,7 @@ __metadata:
   peerDependencies:
     react: ^17.0.0 || ^18.0.0
     react-dom: ^17.0.0 || ^18.0.0
-  checksum: 10c0/d5f2346a32d849eb8df1b32141ce96b5c653e67db705d082c4bc943744d65701b523ea92c4209730296294a03f22b130c9cab51d6690cf25d11d68691cce1b59
+  checksum: 10c0/32ee39e5d162e345729757dada8b9b565aa5b37f9ad727d1432915502763ed6e580dfd8f63b4eff622defd0f9db0239d74176dc885c8e367e1f3cf0825305d02
   languageName: node
   linkType: hard
 
@@ -3355,7 +3355,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.8.0"
     "@typescript-eslint/parser": "npm:^7.8.0"
     add: "npm:^2.0.6"
-    allotment: "npm:^1.20.0"
+    allotment: "npm:^1.20.2"
     chroma-js: "npm:^2.4.2"
     csstype: "npm:^3.1.3"
     eslint: "npm:8.57.0"
@@ -3392,7 +3392,7 @@ __metadata:
     react-google-charts: "npm:^5.1.0"
     react-i18next: "npm:^14.1.1"
     react-use-downloader: "npm:^1.2.8"
-    react-virtuoso: "npm:^4.7.12"
+    react-virtuoso: "npm:^4.12.2"
     react-window: "npm:^1.8.10"
     sass: "npm:^1.77.1"
     sharp: "npm:^0.33.3"
@@ -9501,13 +9501,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-virtuoso@npm:^4.7.12":
-  version: 4.7.12
-  resolution: "react-virtuoso@npm:4.7.12"
+"react-virtuoso@npm:^4.12.2":
+  version: 4.12.2
+  resolution: "react-virtuoso@npm:4.12.2"
   peerDependencies:
     react: ">=16 || >=17 || >= 18"
     react-dom: ">=16 || >=17 || >= 18"
-  checksum: 10c0/ad595f6a469cda30e5d0d3804c204442e55f2d4c808a2d94f776f4459179d62aad42989191ade33f99850156187086000d7fe09bd2caf4a49a900acb1b3efd1e
+  checksum: 10c0/786c6bb95e02e7cb589839916ba2b5c191b49aeab8d1f2a947155a6a1ec0a68dcfb80b942663ad16becb3bcd316c374205a8d1993c1bf55170eb67e3e8761a56
   languageName: node
   linkType: hard
 
