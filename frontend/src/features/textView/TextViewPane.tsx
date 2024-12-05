@@ -93,11 +93,15 @@ export const TextViewPane = ({
       }
 
       // prevent layout jump when data is updated (e.g. during pagination/endless loading)
+      // fix: causes a bug - sometimes the segment is not scrolled to
       if (wasDataJustAppended.current) {
         return;
       }
 
       scrollToActiveSegment();
+
+      // workaround/hack for the bug described above. It doesn't fully fix the problem though.
+      setTimeout(() => scrollToActiveSegment(), 1000);
     },
     [activeSegmentId, scrollToActiveSegment],
   );
