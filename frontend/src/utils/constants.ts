@@ -3,6 +3,7 @@ import { SupportedLocales } from "src/types/i18next";
 export const SUPPORTED_LOCALES: SupportedLocales = {
   en: "English",
   de: "Deutsch",
+  bo: "བོད་ཡིག",
 };
 
 export enum DbViewEnum {

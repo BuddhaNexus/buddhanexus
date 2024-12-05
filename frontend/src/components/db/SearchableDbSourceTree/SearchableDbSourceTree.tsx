@@ -112,7 +112,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           {/* Search input */}
           <FormControl variant="outlined" fullWidth>
             <TextField
-              label="Search"
+              label={t("search.search")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

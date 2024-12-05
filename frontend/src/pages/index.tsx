@@ -84,22 +84,22 @@ export default function Home() {
           }}
         >
           <ContentLanguageSelector
-            title="Pāli"
+            title={t("language.pa")}
             href={dbLanguagePaths.pa}
             color={materialTheme.palette.common.pali}
           />
           <ContentLanguageSelector
-            title="Sanskrit"
+            title={t("language.sa")}
             href={dbLanguagePaths.sa}
             color={materialTheme.palette.common.sanskrit}
           />
           <ContentLanguageSelector
-            title="Tibetan"
+            title={t("language.bo")}
             href={dbLanguagePaths.bo}
             color={materialTheme.palette.common.tibetan}
           />
           <ContentLanguageSelector
-            title="Chinese"
+            title={t("language.zh")}
             href={dbLanguagePaths.zh}
             color={materialTheme.palette.common.chinese}
           />
