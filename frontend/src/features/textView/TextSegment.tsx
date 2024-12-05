@@ -144,18 +144,16 @@ export const TextSegment = ({
           );
         }
 
-        const color = shouldUseMonochromaticSegmentColors
+        const color: string = shouldUseMonochromaticSegmentColors
           ? colorScale(highlightColor).hex()
-          : ((highlightColor &&
-              OLD_WEBSITE_SEGMENT_COLORS[highlightColor]) as string) ??
-            OLD_WEBSITE_SEGMENT_COLORS.at(-1);
+          : OLD_WEBSITE_SEGMENT_COLORS[highlightColor] ??
+            OLD_WEBSITE_SEGMENT_COLORS.at(-1) ??
+            "";
 
         return (
           // eslint-disable-next-line jsx-a11y/no-static-element-interactions
           <span
             key={segmentKey}
-            // @ts-expect-error this actually works.
-            type="button"
             // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
             className={`${segmentClassName} ${styles.segment__button}`}

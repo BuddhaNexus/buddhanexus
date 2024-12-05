@@ -11,4 +11,4 @@ export const OLD_WEBSITE_SEGMENT_COLORS = [
   "#D6A43E",
   "#E77A4C",
   "#ef303e",
-];
+] as const;
