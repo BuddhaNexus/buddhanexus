@@ -26,13 +26,13 @@ export const TextView = () => {
     rightPaneActiveSegmentId !== DEFAULT_PARAM_VALUES.active_segment;
 
   useEffect(
-    // when any of the panes open, resets the layout so that each pane takes a proportional amount of the screen width.
-    function resizePanesWhenOpened() {
-      if (shouldShowRightPane || shouldShowMiddlePane) {
+    // when the right pane opens, reset the layout so that each pane takes a proportional amount of the screen width.
+    function resetPaneSize() {
+      if (shouldShowRightPane) {
         allotmentRef.current?.reset();
       }
     },
-    [shouldShowMiddlePane, shouldShowRightPane],
+    [shouldShowRightPane],
   );
 
   return (

@@ -58,6 +58,11 @@ export function useTextViewPane({
     [],
   );
 
+  // in the right pane, everything is only filtered by active file
+  const requestFilters = isRightPane
+    ? { ...requestBodyBase.filters, include_files: [fileNameUrlParam] }
+    : requestBodyBase.filters;
+
   const {
     data,
     isSuccess,
@@ -77,6 +82,7 @@ export function useTextViewPane({
     queryKey: DbApi.TextView.makeQueryKey({
       ...requestBodyBase,
       active_segment: activeSegment,
+      filters: requestFilters,
     }),
     queryFn: ({ pageParam }) => {
       // We pass the active_segment, but only on the first page load :/
@@ -95,7 +101,7 @@ export function useTextViewPane({
         ? DEFAULT_PARAM_VALUES.active_segment
         : activeSegment;
 
-      // previousFileName.current = fileName;
+      previousFileName.current = fileName;
 
       return DbApi.TextView.call({
         ...requestBodyBase,
@@ -106,10 +112,7 @@ export function useTextViewPane({
             : fileNameFromActiveSegment ?? "",
         active_segment: activeSegmentParam,
 
-        // in the right pane, everything is only filtered by active file
-        filters: isRightPane
-          ? { ...requestBodyBase.filters, include_files: [fileNameUrlParam] }
-          : requestBodyBase.filters,
+        filters: requestFilters,
       });
     },
 
