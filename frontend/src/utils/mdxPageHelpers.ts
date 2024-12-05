@@ -45,7 +45,7 @@ export function getMDXContentBySlug(
   slug: string,
   locale = "en",
 ): MDXData {
-  const itemPath = path.join(`${pathBase}/${slug}/${(locale == "bo") ? "en" : locale}.mdx`);
+  const itemPath = path.join(`${pathBase}/${slug}/${(locale === "bo") ? "en" : locale}.mdx`);
   const fileContents = fs.readFileSync(itemPath, "utf8");
   const { content, data } = matter(fileContents);
   const meta = data as MDXFrontmatter;
