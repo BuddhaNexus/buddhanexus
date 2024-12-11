@@ -138,7 +138,7 @@ export const UtilityOptionsSection = () => {
                   placement="top"
                   transition
                 >
-                  {({ TransitionProps }) => (
+                  {({ TransitionProps }: { TransitionProps: any }) => (
                     <Fade {...TransitionProps} timeout={200}>
                       <PopperMsgBox>
                         {t(`optionsPopperMsgs.${utilityKey}`)}
