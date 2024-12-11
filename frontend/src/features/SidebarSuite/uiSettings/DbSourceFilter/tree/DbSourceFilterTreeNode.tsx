@@ -147,7 +147,7 @@ export function DbSourceFilterTreeNode({
       }}
       role="option"
       isSelected={node.isSelected}
-      onClick={(event: any) => handleClick({ node, event })}
+      onClick={(event) => handleClick({ node, event })}
     >
       <ExpanderArrow node={node} mr={0} />
 

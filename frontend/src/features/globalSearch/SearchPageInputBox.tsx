@@ -53,7 +53,7 @@ export default function SearchPageInputBox() {
           ),
         }}
         fullWidth
-        onChange={(event: any) => setSearchStringParam(event.target.value)}
+        onChange={(event) => setSearchStringParam(event.target.value)}
         onKeyDown={handleKeydown}
       />
     </SearchBoxWrapper>

@@ -90,8 +90,8 @@ const SearchInput = React.forwardRef(function SearchInput(
       }}
       isNarrow
       fullWidth
-      onChange={(event: any) => setSearchStringParam(event.target.value)}
-      onKeyDown={(event: any) =>
+      onChange={(event) => setSearchStringParam(event.target.value)}
+      onKeyDown={(event) =>
         handleSearchAndNavigateKeydown({
           input: search_string,
           event,
