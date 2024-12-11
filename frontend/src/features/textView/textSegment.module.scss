@@ -11,6 +11,8 @@
   //white-space: pre;
   user-select: text;
 
+  transition: background, color 150ms ease-out;
+
   &__button:hover {
     cursor: text;
     text-decoration: underline;
@@ -27,8 +29,6 @@
   &--selected {
     font-weight: 900;
   }
-
-  transition: background, color 150ms ease-out;
 
   &--parallel-hovered {
     background: var(--mui-palette-common-black) !important;

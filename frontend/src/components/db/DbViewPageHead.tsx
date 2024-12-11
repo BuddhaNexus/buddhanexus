@@ -19,7 +19,7 @@ export const DbViewPageHead = () => {
 
   const title = fileName?.toUpperCase();
 
-  const subtitle = isLoading ? "..." : displayName ?? "";
+  const subtitle = isLoading ? "..." : (displayName ?? "");
 
   return (
     <>
