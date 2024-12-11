@@ -36,7 +36,7 @@ module.exports = {
 
   reloadOnPrerender: isDev,
 
-  ns: ["common", "settings", "db", "home"],
+  ns: ["common", "settings", "home"],
   partialBundledLanguages: isBrowser,
   use: isBrowser ? [ChainedBackend] : [],
 };
