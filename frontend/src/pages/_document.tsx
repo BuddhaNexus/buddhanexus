@@ -9,6 +9,7 @@ import {
   DocumentHeadTags,
   DocumentHeadTagsProps,
 } from "@mui/material-nextjs/v14-pagesRouter";
+import InitColorSchemeScript from "@mui/system/InitColorSchemeScript";
 
 export default function MyDocument(
   props: DocumentProps & DocumentHeadTagsProps,
@@ -68,7 +69,7 @@ export default function MyDocument(
       </Head>
 
       <body>
-        {getInitColorSchemeScript()}
+        <InitColorSchemeScript />
         <Main />
         <NextScript nonce={process.env.nonce} />
       </body>

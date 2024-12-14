@@ -1,0 +1,187 @@
+[
+  {
+    "collectionname": "Taisho-1",
+    "collectionlanguage": "chn",
+    "collectionkey": "chn_Taisho-1"
+  },
+  {
+    "collectionname": "Taisho-2",
+    "collectionlanguage": "chn",
+    "collectionkey": "chn_Taisho-2"
+  },
+  {
+    "collectionname": "Shinsan",
+    "collectionlanguage": "chn",
+    "collectionkey": "chn_Shinsan"
+  },
+  {
+    "collectionname": "Buddhist_Scriptures",
+    "collectionlanguage": "skt",
+    "collectionkey": "skt_Buddhist_Scriptures"
+  },
+  {
+    "collectionname": "Buddhist_Non-Scriptures",
+    "collectionlanguage": "skt",
+    "collectionkey": "skt_Buddhist_Non-Scriptures"
+  },
+  {
+    "collectionname": "Other",
+    "collectionlanguage": "skt",
+    "collectionkey": "skt_Other"
+  },
+  {
+    "collectionname": "Veda",
+    "collectionlanguage": "skt",
+    "collectionkey": "skt_Veda"
+  },
+  {
+    "collectionname": "Epic",
+    "collectionlanguage": "skt",
+    "collectionkey": "skt_Epic"
+  },
+  {
+    "collectionname": "Purana",
+    "collectionlanguage": "skt",
+    "collectionkey": "skt_Purana"
+  },
+  {
+    "collectionname": "Rellit",
+    "collectionlanguage": "skt",
+    "collectionkey": "skt_Rellit"
+  },
+  {
+    "collectionname": "Poetry",
+    "collectionlanguage": "skt",
+    "collectionkey": "skt_Poetry"
+  },
+  {
+    "collectionname": "Treatises",
+    "collectionlanguage": "skt",
+    "collectionkey": "skt_Treatises"
+  },
+  {
+    "collectionname": "Kangyur",
+    "collectionlanguage": "tib",
+    "collectionkey": "tib_Kangyur"
+  },
+  {
+    "collectionname": "Tengyur",
+    "collectionlanguage": "tib",
+    "collectionkey": "tib_Tengyur"
+  },
+  {
+    "collectionname": "NyGB",
+    "collectionlanguage": "tib",
+    "collectionkey": "tib_NyGB"
+  },
+  {
+    "collectionname": "NyKM",
+    "collectionlanguage": "tib",
+    "collectionkey": "tib_NyKM"
+  },
+  {
+    "collectionname": "Suttas-Early-1",
+    "collectionlanguage": "pli",
+    "collectionkey": "pli_Suttas-Early-1"
+  },
+  {
+    "collectionname": "Suttas-Early-2",
+    "collectionlanguage": "pli",
+    "collectionkey": "pli_Suttas-Early-2"
+  },
+  {
+    "collectionname": "Suttas-Late-1",
+    "collectionlanguage": "pli",
+    "collectionkey": "pli_Suttas-Late-1"
+  },
+  {
+    "collectionname": "Suttas-Late-2",
+    "collectionlanguage": "pli",
+    "collectionkey": "pli_Suttas-Late-2"
+  },
+  {
+    "collectionname": "Vinaya",
+    "collectionlanguage": "pli",
+    "collectionkey": "pli_Vinaya"
+  },
+  {
+    "collectionname": "Abhidhamma",
+    "collectionlanguage": "pli",
+    "collectionkey": "pli_Abhidhamma"
+  },
+  {
+    "collectionname": "Atthakatha",
+    "collectionlanguage": "pli",
+    "collectionkey": "pli_Atthakatha"
+  },
+  {
+    "collectionname": "Tika",
+    "collectionlanguage": "pli",
+    "collectionkey": "pli_Tika"
+  },
+  {
+    "collectionname": "Anya",
+    "collectionlanguage": "pli",
+    "collectionkey": "pli_Anya"
+  },
+  {
+    "collectionname": "en-Suttas-Early-1",
+    "collectionlanguage": "en",
+    "collectionkey": "en_en-Suttas-Early-1"
+  },
+  {
+    "collectionname": "en-Suttas-Early-2",
+    "collectionlanguage": "en",
+    "collectionkey": "en_en-Suttas-Early-2"
+  },
+  {
+    "collectionname": "en-Vinaya",
+    "collectionlanguage": "en",
+    "collectionkey": "en_en-Vinaya"
+  },
+  {
+    "collectionname": "ai-Suttas-Early-1",
+    "collectionlanguage": "ai",
+    "collectionkey": "ai_ai-Suttas-Early-1"
+  },
+  {
+    "collectionname": "ai-Suttas-Early-2",
+    "collectionlanguage": "ai",
+    "collectionkey": "ai_ai-Suttas-Early-2"
+  },
+  {
+    "collectionname": "ai-Suttas-Late-1",
+    "collectionlanguage": "ai",
+    "collectionkey": "ai_ai-Suttas-Late-1"
+  },
+  {
+    "collectionname": "ai-Suttas-Late-2",
+    "collectionlanguage": "ai",
+    "collectionkey": "ai_ai-Suttas-Late-2"
+  },
+  {
+    "collectionname": "ai-Vinaya",
+    "collectionlanguage": "ai",
+    "collectionkey": "ai_ai-Vinaya"
+  },
+  {
+    "collectionname": "ai-Abhidhamma",
+    "collectionlanguage": "ai",
+    "collectionkey": "ai_ai-Abhidhamma"
+  },
+  {
+    "collectionname": "ai-Atthakatha",
+    "collectionlanguage": "ai",
+    "collectionkey": "ai_ai-Atthakatha"
+  },
+  {
+    "collectionname": "ai-Tika",
+    "collectionlanguage": "ai",
+    "collectionkey": "ai_ai-Tika"
+  },
+  {
+    "collectionname": "ai-Anya",
+    "collectionlanguage": "ai",
+    "collectionkey": "ai_ai-Anya"
+  }
+]
