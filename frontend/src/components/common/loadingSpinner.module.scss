@@ -20,7 +20,6 @@
       pointer-events: none;
     }
   }
-
 }
 
 .loadingSpinner {
@@ -30,7 +29,7 @@
   position: absolute;
   left: calc(50%);
   top: calc(50%);
-  animation: rotating 2s ease-in-out infinite;
+  animation: rotating 8s ease-in-out infinite;
 }
 
 @keyframes rotating {
@@ -42,4 +41,3 @@
     transform: translate3d(-50%, -50%, 0) rotate(360deg);
   }
 }
-
