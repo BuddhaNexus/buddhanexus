@@ -20,7 +20,7 @@ def preprocess_search_string(search_string, language):
 
     # test if string contains Tibetan characters
     search_string = search_string.strip()
-    search_string.replace("ṁ", "ṃ")
+    search_string = search_string.replace("ṁ", "ṃ")
     search_string = re.sub(
         "@[0-9a-b+]+", "", search_string
     )  # remove possible bo folio numbers
