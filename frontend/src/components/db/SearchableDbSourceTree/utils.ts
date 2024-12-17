@@ -97,12 +97,3 @@ export function isDbSourceTreeLeafNodeData(
   return node.fileName !== undefined;
 }
 
-export function getDbLanguageForQueryPageType(
-  dbFileLanguage: DbLanguage | undefined,
-  searchLanguage: DbLanguage | typeof DEFAULT_LANGUAGE
-) {
-  if (dbFileLanguage) {
-    return dbFileLanguage;
-  }
-  return getValidDbLanguage(searchLanguage);
-}
