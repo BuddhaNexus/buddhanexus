@@ -35,6 +35,7 @@ class CacheControlMiddleware(BaseHTTPMiddleware):
     """
     Middleware to control cache headers for GET requests.
     """
+
     async def dispatch(self, request, call_next):
         response = await call_next(request)
         if request.method == "GET":
@@ -92,8 +93,6 @@ APP.include_router(numbers_view.router, prefix="/numbers-view")
 APP.include_router(links.router, prefix="/links")
 APP.include_router(utils.router, prefix="/utils")
 APP.include_router(menu.router)
-
-
 
 
 @APP.get("/")
