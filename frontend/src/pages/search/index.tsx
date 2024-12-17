@@ -11,12 +11,12 @@ import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SearchResults } from "@features/globalSearch";
 import SearchPageInputBox from "@features/globalSearch/SearchPageInputBox";
+import { Box } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import { useAtom } from "jotai";
 import chunk from "lodash/chunk";
-import { Box } from "@mui/material";
 
 const InvalidatedResultsOverlay = () => {
   return (
@@ -57,7 +57,7 @@ export default function SearchPage() {
   const filters = useDbQueryFilters();
 
   const [isSearchTriggered, setIsSearchTriggered] = useAtom(
-    isSearchTriggeredAtom
+    isSearchTriggeredAtom,
   );
 
   const {
@@ -116,7 +116,7 @@ export default function SearchPage() {
 
       <Box sx={{ position: "relative", height: "100%", width: "100%" }}>
         <SearchResults data={data} />
-        {!isFetched ? <InvalidatedResultsOverlay /> : null}
+        {isFetched ? null : <InvalidatedResultsOverlay />}
       </Box>
     </PageContainer>
   );
@@ -127,7 +127,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["settings"]
+    ["settings"],
   );
 
   return {

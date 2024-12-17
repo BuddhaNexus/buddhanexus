@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
-
 import { useClearDbSourceFilterQueryParams } from "@components/hooks/groupedQueryParams";
 import type { DbSourceFilterUISetting } from "@features/SidebarSuite/types";
 import { SelectionHeadBox } from "@features/SidebarSuite/uiSettings/DbSourceFilter/styledComponents";

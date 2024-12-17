@@ -5,12 +5,9 @@ import {
   DbSourceTreeNodeDataType,
 } from "@components/db/SearchableDbSourceTree/types";
 import type { ParsedStructuredDbSourceMenuData } from "@utils/api/endpoints/menus/sources";
-import { DbLanguage } from "@utils/api/types";
-import { DEFAULT_LANGUAGE } from "@features/SidebarSuite/uiSettings/config";
-import { getValidDbLanguage } from "@utils/validators";
 
 export function transformDataForTreeView(
-  data: ParsedStructuredDbSourceMenuData
+  data: ParsedStructuredDbSourceMenuData,
 ) {
   /**
    * TODO - check if:
@@ -33,7 +30,7 @@ export function transformDataForTreeView(
           fileName,
           dataType: DbSourceTreeNodeDataType.TEXT,
           searchField,
-        })
+        }),
       ),
     })),
   }));
@@ -92,8 +89,7 @@ export function isSearchMatch(searchField: string, searchTerm: string) {
 }
 
 export function isDbSourceTreeLeafNodeData(
-  node: DbSourceTreeNode | DbSourceTreeLeafNode
+  node: DbSourceTreeNode | DbSourceTreeLeafNode,
 ): node is DbSourceTreeLeafNode {
   return node.fileName !== undefined;
 }
-

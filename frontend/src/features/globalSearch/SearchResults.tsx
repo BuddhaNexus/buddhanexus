@@ -1,9 +1,8 @@
 import { Virtuoso } from "react-virtuoso";
-
-import { SearchResultsRow } from "./SearchResultsRow";
+import NoSearchResultsFound from "@features/globalSearch/NoSearchResultsFound";
 import { ParsedSearchResult } from "@utils/api/endpoints/search";
 
-import NoSearchResultsFound from "@features/globalSearch/NoSearchResultsFound";
+import { SearchResultsRow } from "./SearchResultsRow";
 
 interface Props {
   data: ParsedSearchResult[][];

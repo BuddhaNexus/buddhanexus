@@ -1,3 +1,4 @@
+import React from "react";
 import {
   nullToUndefined,
   useExcludeCategoriesParam,
@@ -14,7 +15,6 @@ import {
 } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { AllAPIRequestProps } from "@utils/api/types";
-import React from "react";
 
 export const useDbQueryFilters = () => {
   const [score] = useScoreParam();

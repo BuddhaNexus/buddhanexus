@@ -6,6 +6,7 @@ import {
   activeDbSourceTreeBreadcrumbsAtom,
 } from "@atoms";
 import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
+import { useLanguageParam } from "@components/hooks/params";
 import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -17,6 +18,8 @@ import {
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
+import { DbLanguage } from "@utils/api/types";
+import { isValidDbLanguage } from "@utils/validators";
 import { useAtomValue, useSetAtom } from "jotai";
 
 import { DbSourceTree } from "./treeComponents/DbSourceTree";
@@ -29,9 +32,6 @@ import {
   DbSourceFilterSelectorTreeProps,
   DbSourceTreeType,
 } from "./types";
-import { useLanguageParam } from "@components/hooks/params";
-import { DbLanguage } from "@utils/api/types";
-import { isValidDbLanguage } from "@utils/validators";
 
 type SearchableDbSourceTreeBaseProps = {
   parentHeight: number;
@@ -50,7 +50,7 @@ type SearchableDbSourceTreeProps = SearchableDbSourceTreeBaseProps &
 
 const SearchableDbSourceTreeContent = memo<
   SearchableDbSourceTreeProps & { dbLanguage: DbLanguage }
->(function SearchableDbSourceTree(props) {
+>(function SearchableDbSourceTreeContent(props) {
   const {
     parentHeight,
     parentWidth,
@@ -81,7 +81,7 @@ const SearchableDbSourceTreeContent = memo<
         setBreadcrumbs([]);
       }
     },
-    [setSearchTerm, setBreadcrumbs, activeTree]
+    [setSearchTerm, setBreadcrumbs, activeTree],
   );
 
   const { t } = useTranslation(["common"]);
