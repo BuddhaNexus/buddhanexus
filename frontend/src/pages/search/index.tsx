@@ -10,13 +10,31 @@ import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SearchResults } from "@features/globalSearch";
-import NoSearchResultsFound from "@features/globalSearch/NoSearchResultsFound";
 import SearchPageInputBox from "@features/globalSearch/SearchPageInputBox";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import { useAtom } from "jotai";
 import chunk from "lodash/chunk";
+import { Box } from "@mui/material";
+
+const InvalidatedResultsOverlay = () => {
+  return (
+    <Box
+      sx={{
+        position: "absolute",
+        top: 0,
+        left: "-40rem",
+        right: "-40rem",
+        height: "100%",
+        mt: 1.5,
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        zIndex: 1,
+        pointerEvents: "none",
+      }}
+    />
+  );
+};
 
 const SearchPageHeader = ({ matches }: { matches: number }) => {
   const { t } = useTranslation();
@@ -39,7 +57,7 @@ export default function SearchPage() {
   const filters = useDbQueryFilters();
 
   const [isSearchTriggered, setIsSearchTriggered] = useAtom(
-    isSearchTriggeredAtom,
+    isSearchTriggeredAtom
   );
 
   const {
@@ -47,6 +65,7 @@ export default function SearchPage() {
     isLoading,
     isError,
     error,
+    isFetched,
   } = useQuery({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
       search_string,
@@ -59,6 +78,7 @@ export default function SearchPage() {
         filters,
       });
     },
+    placeholderData: (prev) => prev,
     enabled: isSearchTriggered,
   });
 
@@ -94,11 +114,10 @@ export default function SearchPage() {
     <PageContainer maxWidth="xl" isQueryResultsPage>
       <SearchPageHeader matches={matches} />
 
-      {data.length > 0 ? (
+      <Box sx={{ position: "relative", height: "100%", width: "100%" }}>
         <SearchResults data={data} />
-      ) : (
-        <NoSearchResultsFound />
-      )}
+        {!isFetched ? <InvalidatedResultsOverlay /> : null}
+      </Box>
     </PageContainer>
   );
 }
@@ -108,7 +127,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     {
       locale,
     },
-    ["settings"],
+    ["settings"]
   );
 
   return {

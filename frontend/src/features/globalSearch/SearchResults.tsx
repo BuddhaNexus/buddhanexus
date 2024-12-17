@@ -1,12 +1,19 @@
 import { Virtuoso } from "react-virtuoso";
 
 import { SearchResultsRow } from "./SearchResultsRow";
+import { ParsedSearchResult } from "@utils/api/endpoints/search";
+
+import NoSearchResultsFound from "@features/globalSearch/NoSearchResultsFound";
 
 interface Props {
-  data: any;
+  data: ParsedSearchResult[][];
 }
 
 export default function SearchResults({ data }: Props) {
+  if (data.length === 0) {
+    return <NoSearchResultsFound />;
+  }
+
   return (
     <Virtuoso
       totalCount={data.length}
