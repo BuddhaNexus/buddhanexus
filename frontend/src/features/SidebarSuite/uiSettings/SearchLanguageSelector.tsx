@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
 import { useLanguageParam } from "@components/hooks/params";
+import { useClearDbSourceFilterQueryParams } from "@components/hooks/groupedQueryParams";
 import {
   FormControl,
   InputLabel,
@@ -15,13 +16,15 @@ const SearchLanguageSelector = () => {
   const { t } = useTranslation(["common", "settings"]);
 
   const [language, setLanguage] = useLanguageParam();
+  const handleClearDbSourceFilterParams = useClearDbSourceFilterQueryParams();
 
   const handleChange = React.useCallback(
     async (event: SelectChangeEvent) => {
       const { value } = event.target;
       await setLanguage(value === "all" ? null : getValidDbLanguage(value));
+      handleClearDbSourceFilterParams();
     },
-    [setLanguage],
+    [setLanguage, handleClearDbSourceFilterParams]
   );
 
   return (

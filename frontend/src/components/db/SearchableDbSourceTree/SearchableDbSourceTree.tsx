@@ -6,7 +6,7 @@ import {
   activeDbSourceTreeBreadcrumbsAtom,
 } from "@atoms";
 import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import SearchIcon from "@mui/icons-material/Search";
 import { Box, FormControl, InputAdornment, TextField } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -23,6 +23,8 @@ import {
   DbSourceFilterSelectorTreeProps,
   DbSourceTreeType,
 } from "./types";
+import { useLanguageParam } from "@components/hooks/params";
+import { getDbLanguageForQueryPageType } from "./utils";
 
 type SearchableDbSourceTreeBaseProps = {
   parentHeight: number;
@@ -50,7 +52,14 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
     } = props;
 
     const [searchTerm, setSearchTerm] = useState("");
-    const { dbLanguage } = useDbRouterParams();
+
+    const { dbLanguage: dbFileLanguage } = useNullableDbRouterParams();
+    const [searchLanguage] = useLanguageParam();
+    const dbLanguage = getDbLanguageForQueryPageType(
+      dbFileLanguage,
+      searchLanguage
+    );
+
     const { observe, height: inputHeight } = useDimensions();
 
     const activeTree = useAtomValue(activeDbSourceTreeAtom);
@@ -70,7 +79,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           setBreadcrumbs([]);
         }
       },
-      [setSearchTerm, setBreadcrumbs, activeTree],
+      [setSearchTerm, setBreadcrumbs, activeTree]
     );
 
     const { t } = useTranslation(["common"]);
@@ -139,5 +148,5 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
         </Box>
       </>
     );
-  },
+  }
 );

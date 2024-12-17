@@ -14,6 +14,7 @@ import {
 } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { AllAPIRequestProps } from "@utils/api/types";
+import React from "react";
 
 export const useDbQueryFilters = () => {
   const [score] = useScoreParam();
@@ -57,4 +58,31 @@ export const useStandardViewBaseQueryParams = () => {
     folio: nullToUndefined(folio) ?? "",
     filters: useDbQueryFilters(),
   };
+};
+
+export const useClearDbSourceFilterQueryParams = () => {
+  const [, setExcludeCollections] = useExcludeCollectionsParam();
+  const [, setExcludeCategories] = useExcludeCategoriesParam();
+  const [, setExcludeFiles] = useExcludeFilesParam();
+  const [, setIncludeCollections] = useIncludeCollectionsParam();
+  const [, setIncludeCategories] = useIncludeCategoriesParam();
+  const [, setIncludeFiles] = useIncludeFilesParam();
+
+  const handleClearDbSourceFilterParams = React.useCallback(async () => {
+    await setExcludeCollections(null);
+    await setExcludeCategories(null);
+    await setExcludeFiles(null);
+    await setIncludeCollections(null);
+    await setIncludeCategories(null);
+    await setIncludeFiles(null);
+  }, [
+    setExcludeCollections,
+    setExcludeCategories,
+    setExcludeFiles,
+    setIncludeCollections,
+    setIncludeCategories,
+    setIncludeFiles,
+  ]);
+
+  return handleClearDbSourceFilterParams;
 };

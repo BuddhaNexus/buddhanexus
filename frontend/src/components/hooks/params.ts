@@ -96,7 +96,7 @@ export const useActiveSegmentParam = () => {
 export const useActiveSegmentIndexParam = () => {
   return useQueryState(
     allUIComponentParamNames.active_segment_index,
-    parseAsInteger,
+    parseAsInteger
   );
 };
 
