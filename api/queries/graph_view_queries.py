@@ -11,18 +11,19 @@ LET target_file = FIRST(
 )
 
 LET current_parallels = (
-    FOR current_parallel IN SLICE(target_file.parallels_randomized, 0, 2500)
-        LET p = DOCUMENT(parallels, current_parallel)
-            FILTER p.score * 100 >= @score
-            FILTER p.par_length >= @parlength
-            RETURN p
+        FOR current_parallel IN target_file.parallels_randomized
+            LET p = DOCUMENT(parallels, current_parallel)
+                FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
+                FILTER p.score * 100 >= @score
+                FILTER p.par_length >= @parlength
+                LIMIT 2500
+                RETURN p
 )
 
 LET fileslist = (
     FOR p IN current_parallels
         FOR file IN files
             FILTER file.filename == p.par_filename
-            FILTER LENGTH(@filter_include_collections) == 0 OR file.collection IN @filter_include_collections
             FOR cat in category_names
                 FILTER cat.category == file.category
                 FILTER cat.lang == file.lang
@@ -48,6 +49,7 @@ LET histogramgraphdata = (
         COLLECT displayname = item.displayname
         AGGREGATE total_length = SUM(item.parlength)
         SORT total_length DESC
+        LIMIT 50
         RETURN [displayname, total_length]
     )
     : null

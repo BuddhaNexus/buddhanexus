@@ -1,23 +1,30 @@
-import { CenteredProgress } from "@components/layout/CenteredProgress";
-import Paper from "@mui/material/Paper";
+import Image from "next/image";
+import { Box } from "@mui/material";
+import dharmaWheelIcon from "public/assets/icons/dharmaWheel.svg";
 
-const LoadingSpinner = () => {
+import styles from "./loadingSpinner.module.scss";
+
+interface Props {
+  withBackground?: boolean;
+  isLoading?: boolean;
+}
+
+const LoadingSpinner = ({ withBackground, isLoading }: Props) => {
   return (
-    <Paper
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        flex: 1,
-        width: "100%",
-        height: "100dvh",
-        py: 1,
-        pl: 2,
-        my: 1,
-      }}
+    <Box
+      className={`${styles.loadingSpinnerContainer} ${isLoading && styles.loadingSpinnerContainerLoading} ${withBackground && styles.loadingSpinnerContainerWithBackground}`}
     >
-      <CenteredProgress />
-    </Paper>
+      <Image
+        src={dharmaWheelIcon}
+        alt="loading spinner"
+        className={`${styles.loadingSpinner}`}
+      />
+    </Box>
   );
 };
+
+const InfiniteLoadingSpinner = () => <LoadingSpinner isLoading={true} />;
+
+export { InfiniteLoadingSpinner };
 
 export default LoadingSpinner;

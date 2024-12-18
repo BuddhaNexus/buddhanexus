@@ -1,16 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
-import { useSourceFile } from "@components/hooks/useSourceFile";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
+import { PaginationState } from "@features/textView/utils";
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { ParsedTextViewParallels } from "@utils/api/endpoints/text-view/text-parallels";
-import { DbLanguage } from "@utils/api/types";
-
-type PaginationState = [startEdgePage?: number, endEdgePage?: number];
 
 // arbitrarily high number, as per virtuoso docs
 const START_INDEX = 1_000_000;
@@ -18,32 +14,37 @@ const START_INDEX = 1_000_000;
 interface UseTextPageReturn {
   allParallels: ParsedTextViewParallels;
   firstItemIndex: number;
-  handleFetchingNextPage: () => void;
+  handleFetchingNextPage: () => Promise<void>;
   handleFetchingPreviousPage: () => Promise<void>;
-  hasData: boolean;
   isError: boolean;
-  isFallback: boolean;
+  isLoading: boolean;
   isFetching: boolean;
   isFetchingNextPage: boolean;
   isFetchingPreviousPage: boolean;
-  dbLanguage: DbLanguage;
   error: Error | null;
 }
 
-export function useTextPage(): UseTextPageReturn {
-  const { dbLanguage, fileName } = useDbRouterParams();
-  const { isFallback } = useSourceFile();
+interface Props {
+  activeSegment: string;
+  isRightPane?: boolean;
+}
 
+export function useTextViewPane({
+  activeSegment,
+  isRightPane,
+}: Props): UseTextPageReturn {
   useSetDbViewFromPath();
-
   const requestBodyBase = useStandardViewBaseQueryParams();
 
-  const searchParams = useSearchParams();
-  const active_segment =
-    searchParams.get("active_segment") ?? DEFAULT_PARAM_VALUES.active_segment;
+  const { fileName: fileNameUrlParam } = useDbRouterParams();
+
+  const [fileNameFromActiveSegment] = activeSegment.split(":");
+
+  const fileName = fileNameFromActiveSegment ?? fileNameUrlParam;
+  const previousFileName = useRef(fileName);
 
   const initialPageParam =
-    active_segment === DEFAULT_PARAM_VALUES.active_segment ? 0 : undefined;
+    activeSegment === DEFAULT_PARAM_VALUES.active_segment ? 0 : undefined;
 
   const [firstItemIndex, setFirstItemIndex] = useState(START_INDEX);
 
@@ -57,6 +58,11 @@ export function useTextPage(): UseTextPageReturn {
     [],
   );
 
+  // in the right pane, everything is only filtered by active file
+  const requestFilters = isRightPane
+    ? { ...requestBodyBase.filters, include_files: [fileNameUrlParam] }
+    : requestBodyBase.filters;
+
   const {
     data,
     isSuccess,
@@ -67,15 +73,20 @@ export function useTextPage(): UseTextPageReturn {
     isFetching,
     isError,
     error,
+    isLoading,
+    isFetchedAfterMount,
   } = useInfiniteQuery({
     enabled: Boolean(fileName),
-    placeholderData: keepPreviousData,
+    // when within the same file, keep previous data. Otherwise, discard it when user switches to new file.
+    placeholderData:
+      fileName === previousFileName.current ? keepPreviousData : undefined,
     initialPageParam,
     queryKey: DbApi.TextView.makeQueryKey({
       ...requestBodyBase,
-      active_segment,
+      active_segment: activeSegment,
+      filters: requestFilters,
     }),
-    queryFn: ({ pageParam }) => {
+    queryFn: async ({ pageParam }) => {
       // We pass the active_segment, but only on the first page load :/
       //
       // This is a bit of a workaround to enable scrolling up. Explanation:
@@ -88,14 +99,20 @@ export function useTextPage(): UseTextPageReturn {
 
       // if the `active_segment` param was already sent for this segment,
       // don't send it anymore.
-      const activeSegmentParam = hasSegmentBeenSelected(active_segment)
+      const activeSegmentParam = hasSegmentBeenSelected(activeSegment)
         ? DEFAULT_PARAM_VALUES.active_segment
-        : active_segment;
+        : activeSegment;
 
       return DbApi.TextView.call({
         ...requestBodyBase,
         page: pageParam ?? 0,
+        filename:
+          fileNameFromActiveSegment === "none"
+            ? fileNameUrlParam
+            : (fileNameFromActiveSegment ?? ""),
         active_segment: activeSegmentParam,
+
+        filters: requestFilters,
       });
     },
 
@@ -116,13 +133,19 @@ export function useTextPage(): UseTextPageReturn {
     },
   });
 
+  useEffect(() => {
+    if (isFetchedAfterMount) {
+      previousFileName.current = fileName;
+    }
+  }, [fileName, isFetchedAfterMount]);
+
   // see queryFn comment above
   useEffect(
     function updatePreviouslySelectedSegmentsMap() {
-      if (isSuccess && active_segment)
-        previouslySelectedSegmentsMap.current[active_segment] = true;
+      if (isSuccess && activeSegment)
+        previouslySelectedSegmentsMap.current[activeSegment] = true;
     },
-    [isSuccess, active_segment],
+    [isSuccess, activeSegment],
   );
 
   useEffect(
@@ -145,15 +168,18 @@ export function useTextPage(): UseTextPageReturn {
     if (paginationState.current[0] === 0) return;
 
     const { data: responseData } = await fetchPreviousPage();
-    // eslint-disable-next-line require-atomic-updates
-    paginationState.current[0] = responseData?.pages[0]?.data.page;
+
+    paginationState.current = [
+      responseData?.pages[0]?.data.page,
+      paginationState.current[1],
+    ];
 
     const fetchedPageSize = responseData?.pages[0]?.data.items?.length;
     if (!fetchedPageSize) return;
 
     // the user is scrolling up.
     // offset the new list items when prepending them to the page.
-    setFirstItemIndex((prevIndex) => prevIndex - fetchedPageSize);
+    setFirstItemIndex((prevState) => prevState - fetchedPageSize);
   }, [fetchPreviousPage]);
 
   const handleFetchingNextPage = useCallback(async () => {
@@ -166,20 +192,16 @@ export function useTextPage(): UseTextPageReturn {
     [data?.pages],
   );
 
-  const hasData = Boolean(data);
-
   return {
     allParallels,
     firstItemIndex,
     handleFetchingNextPage,
     handleFetchingPreviousPage,
-    hasData,
     isError,
-    isFallback,
     isFetching,
     isFetchingNextPage,
     isFetchingPreviousPage,
-    dbLanguage,
+    isLoading,
     error,
   };
 }

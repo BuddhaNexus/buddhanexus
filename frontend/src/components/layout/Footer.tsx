@@ -99,7 +99,7 @@ export const Footer = () => {
                 <Container
                   key={item.title}
                   component="li"
-                  sx={{ mt: { xs: 1 } }}
+                  sx={{ mt: { xs: 1 }, paddingLeft: { sm: 0 } }}
                 >
                   <Link href={item.slug}>{item.title}</Link>
                 </Container>

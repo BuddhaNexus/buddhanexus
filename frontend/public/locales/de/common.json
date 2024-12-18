@@ -77,7 +77,7 @@
   },
   "graph": {
     "histogramDataTitle": "Verteilung der Top-Dateien, die Übereinstimmungen mit dem Anfragetext haben:",
-    "histogramDataSubtitle": "Das Histogramm zeigt die Verteilung der wichtigsten Dateien, die mit dem Suchtext übereinstimmen, basierend auf der kumulierten Länge der Treffer. Es werden maximal 50 Treffertexte angezeigt.",
+    "histogramDataSubtitle": "Das Verteilungsdiagramm zeigt die Verteilung der Top-Dateien, die Übereinstimmungen mit dem Anfragetext aufweisen, basierend auf der kumulierten Länge der ungefähren Übereinstimmungen. Es werden maximal 50 Treffertexte angezeigt.",
     "pieDataTitle": "Verteilung aller mit den aktuellen Filtern gefundenen Übereinstimmungen auf die verschiedenen Sammlungen und ihre Unterabschnitte.",
     "pieDataSubtitle": "Die Verteilung ist nach der Länge der gefundenen Übereinstimmungen gewichtet:",
     "collection": "Kollektion",

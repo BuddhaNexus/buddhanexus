@@ -1,20 +1,22 @@
 import InactiveTreeHead, {
   InactiveTreeHeadProps,
 } from "@components/db/SearchableDbSourceTree/treeComponents/InactiveTreeHead";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 type TreeExceptionProps = {
   message: string;
+  height: number;
+  width: number;
 } & InactiveTreeHeadProps;
 
 export function TreeException(props: TreeExceptionProps) {
   return (
-    <>
+    <Box sx={{ width: props.width, height: props.height }}>
       <InactiveTreeHead {...props} />
 
-      <Typography sx={{ mt: 4 }} color="error.main">
-        {props.message}
+      <Typography sx={{ m: 2 }} color="error.main">
+        Error: {props.message}
       </Typography>
-    </>
+    </Box>
   );
 }

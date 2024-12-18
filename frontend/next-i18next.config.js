@@ -23,7 +23,7 @@ module.exports = {
   debug: false,
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "de"],
+    locales: ["en", "de", "bo"],
   },
 
   initImmediate: false,
@@ -36,7 +36,7 @@ module.exports = {
 
   reloadOnPrerender: isDev,
 
-  ns: ["common", "settings", "db", "home"],
+  ns: ["common", "settings", "home"],
   partialBundledLanguages: isBrowser,
   use: isBrowser ? [ChainedBackend] : [],
 };

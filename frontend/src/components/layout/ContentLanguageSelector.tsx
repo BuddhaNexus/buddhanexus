@@ -38,6 +38,7 @@ export const ContentLanguageSelector: FC<Props> = ({ title, href, color }) => {
       <Box
         component={Image}
         src={treeIcon}
+        priority={false}
         sx={{
           height: 120,
           width: 120,

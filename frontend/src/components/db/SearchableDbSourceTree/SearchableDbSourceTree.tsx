@@ -86,6 +86,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           hasHeading={hasHeading}
           dbLanguage={dbLanguage}
           padding={padding}
+          width={parentWidth}
         />
       );
     }
@@ -97,6 +98,8 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           dbLanguage={dbLanguage}
           padding={padding}
           message={error ? error.message : t("prompts.noResults")}
+          width={parentWidth}
+          height={parentHeight}
         />
       );
     }
@@ -109,7 +112,7 @@ export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
           {/* Search input */}
           <FormControl variant="outlined" fullWidth>
             <TextField
-              label="Search"
+              label={t("search.search")}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">

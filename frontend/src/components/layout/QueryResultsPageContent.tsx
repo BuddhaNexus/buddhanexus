@@ -42,7 +42,7 @@ export const QueryResultsPageContent: FC<Props> = ({
   return (
     <>
       {isInitialized ? (
-        <Main open={isSettingsOpen}>
+        <Main open={isSettingsOpen} sx={{ p: 1 }}>
           <Container maxWidth={maxWidth} sx={containerStyles}>
             {isDbFilePage ? <DbViewPageHead /> : null}
             {children}
