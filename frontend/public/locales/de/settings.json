@@ -48,7 +48,7 @@
     "copyQueryTitle": "Texttitel kopieren",
     "copyQueryLink": "Link der Ergebnisseite kopieren",
     "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden",
-    "hideSegmentNumbers": "Segmentnummern anzeigen",
+    "showSegmentNumbers": "Segmentnummern anzeigen",
     "useMonochromaticSegmentColors": "Verwenden Sie monochromatische Farbkombinationen"
   },
   "optionsPopperMsgs": {
@@ -58,7 +58,7 @@
     "emailQueryLink": "E-Mail geöffnet"
   },
   "filtersLabels": {
-    "score": "Similarity Score:",
+    "score": "Ähnlichkeitsbewertung:",
     "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
     "exclude_sources": "Quellen ausschließen:",
     "include_sources": "Nur Quellen einschließen:"
