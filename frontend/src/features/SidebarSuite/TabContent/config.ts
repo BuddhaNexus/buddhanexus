@@ -2,7 +2,7 @@ import {
   DBSourceFilePageFilterUISettingName,
   DisplayUISettingName,
   SearchPageFilterUISettingName,
-  UtilityUISettingName,
+  UtilityUIOptionName,
 } from "@features/SidebarSuite/types";
 import { dbSourceFileRequestFilters } from "@features/SidebarSuite/uiSettings/config";
 import { APISchemas } from "@utils/api/types";
@@ -13,7 +13,7 @@ export const AVAILABLE_DB_FILE_PAGE_FILTERS: Record<
   DBSourceFilePageFilterUISettingName[]
 > = {
   [DbViewEnum.GRAPH]: dbSourceFileRequestFilters.filter(
-    (filterName) => filterName !== "exclude_sources",
+    (filterName) => filterName !== "exclude_sources"
   ),
   [DbViewEnum.NUMBERS]: dbSourceFileRequestFilters,
   [DbViewEnum.TABLE]: dbSourceFileRequestFilters,
@@ -30,7 +30,7 @@ export const AVAILABLE_SEARCH_PAGE_FILTERS: Record<
 };
 
 type LanguageUnabvailableUtilities = Partial<
-  Record<UtilityUISettingName, APISchemas["Languages"][]>
+  Record<UtilityUIOptionName, APISchemas["Languages"][]>
 >;
 type UnavailableDisplayUtilities = Record<
   DbViewEnum,
@@ -43,13 +43,13 @@ export const UNAVAILABLE_DB_SOURCE_PAGE_UI_UTILITIES: UnavailableDisplayUtilitie
       download_data: ["all"],
     },
     [DbViewEnum.NUMBERS]: {},
-    [DbViewEnum.TABLE]: {
+    [DbViewEnum.TABLE]: {},
+    [DbViewEnum.TEXT]: {
       download_data: ["all"],
     },
-    [DbViewEnum.TEXT]: {},
   };
 
-export const UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES: UtilityUISettingName[] = [
+export const UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES: UtilityUIOptionName[] = [
   "download_data",
   "copyQueryTitle",
 ];

@@ -17,7 +17,7 @@ import {
   defaultAnchorEls,
   type PopperAnchorState,
 } from "@features/SidebarSuite/TabContent/UtilityOptionsSection/utils";
-import { UtilityUISettingName } from "@features/SidebarSuite/types";
+import { UtilityUIOptionName } from "@features/SidebarSuite/types";
 import { utilityComponents } from "@features/SidebarSuite/uiSettings";
 import {
   allUIComponentParamNames,
@@ -50,12 +50,12 @@ export const UtilityOptionsSection = () => {
   const uiSettings = useMemo(() => {
     if (pageType.isSearchPage) {
       return utilityUISettings.filter(
-        (setting) => !UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES.includes(setting),
+        (setting) => !UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES.includes(setting)
       );
     }
 
     if (dbLanguage && pageType.isDbFilePage) {
-      return getAvailableSettings<UtilityUISettingName>({
+      return getAvailableSettings<UtilityUIOptionName>({
         dbLanguage,
         uiSettings: utilityUISettings,
         unavailableSettingsForViewOrLang:

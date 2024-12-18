@@ -7,7 +7,7 @@ import {
   DisplayUISettingName,
   SearchPageFilterUISettingName,
   SortMethod,
-  UtilityUISettingName,
+  UtilityUIOptionName,
 } from "src/features/SidebarSuite/types";
 
 export const allRequestFilters = exhaustiveStringTuple<APIRequestFilterName>()(
@@ -55,11 +55,11 @@ export const sortMethods = exhaustiveStringTuple<SortMethod>()(
   "length2",
 );
 
-export const utilityUISettings = exhaustiveStringTuple<UtilityUISettingName>()(
+export const utilityUISettings = exhaustiveStringTuple<UtilityUIOptionName>()(
   "download_data",
   "copyQueryTitle",
   "copyQueryLink",
-  "emailQueryLink",
+  "emailQueryLink"
 );
 
 export const allUIComponentParamNames: AllUIComponentParamNames = {

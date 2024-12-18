@@ -9,7 +9,7 @@ import {
 import {
   DisplayUISettingName,
   RequestFilterUISettingName,
-  UtilityUISettingName,
+  UtilityUIOptionName,
 } from "@features/SidebarSuite/types";
 import { SegmentOptions } from "@features/SidebarSuite/uiSettings/SegmentOptions";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -48,10 +48,7 @@ export const displaySettingComponents: Record<
   showSegmentNrs: <SegmentOptions />,
 };
 
-export const utilityComponents: Record<
-  UtilityUISettingName,
-  UtilityOptionProps
-> = {
+export const utilityComponents: Record<UtilityUIOptionName, UtilityOptionProps> = {
   download_data: {
     callback: onDownload,
     icon: FileDownloadIcon,

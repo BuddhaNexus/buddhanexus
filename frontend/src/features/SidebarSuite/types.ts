@@ -96,19 +96,19 @@ export type Script = "Unicode" | "Wylie";
  *
  */
 
-export type RequestUtilityUISettingName = Extract<
+export type RequestUtilityUIOptionName = Extract<
   APIRequestPropsName,
   "download_data"
 >;
 
-export type LocalUtilityUISettingName =
+export type LocalUtilityUIOptionName =
   | "copyQueryTitle"
   | "copyQueryLink"
   | "emailQueryLink";
 
-export type UtilityUISettingName =
-  | RequestUtilityUISettingName
-  | LocalUtilityUISettingName;
+export type UtilityUIOptionName =
+  | RequestUtilityUIOptionName
+  | LocalUtilityUIOptionName;
 
 /**
  *
@@ -122,7 +122,7 @@ export type UIComponentParamName =
   | APIRequestPropsName
   | APIRequestFilterName
   | DisplayUISettingName
-  | UtilityUISettingName;
+  | UtilityUIOptionName;
 
 export type AllUIComponentParamNames = Record<
   UIComponentParamName,

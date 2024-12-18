@@ -1,15 +1,12 @@
 import type {
   AllUIComponentParamNames,
-  UtilityUISettingName,
+  UtilityUIOptionName,
 } from "@features/SidebarSuite/types";
 import type { SvgIconTypeMap } from "@mui/material";
 import type { OverridableComponent } from "@mui/material/OverridableComponent";
 // import { getParallelDownloadData } from "@utils/api/endpoints/table-view/downloads";
 
-export type PopperAnchorState = Record<
-  UtilityUISettingName,
-  HTMLElement | null
->;
+export type PopperAnchorState = Record<UtilityUIOptionName, HTMLElement | null>;
 
 type PopperUtilityStates<State> = [
   State,
