@@ -1,15 +1,14 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
-import { RESULTS_DOWNLOAD_ROOT_URL } from "@utils/api/constants";
 import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
 const parseAPITableDownloadData = (
   filePath: APIPostResponse<"/download/">,
-  fileName: string,
+  fileName: string
 ) => {
   return {
     // example filePath: download/dn2_download.xlsx
-    url: `${RESULTS_DOWNLOAD_ROOT_URL}/${filePath}`,
+    url: `/${filePath}`,
     // Creates a unique, timestamped file name to avoid overwriting existing files on the user's computer.
     name: `BuddhaNexus_${fileName}_${new Date()
       .toISOString()
