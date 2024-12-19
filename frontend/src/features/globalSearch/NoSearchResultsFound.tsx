@@ -7,7 +7,7 @@ export default function NoSearchResultsFound() {
 
   return (
     <>
-      <Typography variant="h4" component="h2" mb={2}>
+      <Typography variant="h4" component="h2" mt={3} mb={2}>
         {t("search.noResultsHeading")}
       </Typography>
       <Typography>{t("search.noResultsTip")}</Typography>

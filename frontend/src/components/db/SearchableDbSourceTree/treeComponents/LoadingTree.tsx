@@ -9,7 +9,7 @@ export function LoadingTree(props: InactiveTreeHeadProps) {
     <>
       <InactiveTreeHead {...props} />
 
-      <Box sx={{ width: "100%", height: "100%" }}>
+      <Box sx={{ width: "100%", height: "100%", mt: 2 }}>
         {[6, 4, 3, 5, 4, 5, 2, 7, 4, 3, 2, 5, 4, 7, 3, 6].map((n, i) => (
           <Box
             key={`tree-skeleton-${i}`}
