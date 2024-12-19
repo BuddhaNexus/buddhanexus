@@ -74,7 +74,6 @@ export const UNAVAILABLE_DISPLAY_SETTINGS: UnavailableDisplaySettings = {
     showSegmentNrs: ["all"],
   },
   [DbViewEnum.TABLE]: {
-    sort_method: ["all"],
     script: ["pa", "zh", "sa"],
     showSegmentNrs: ["all"],
   },
