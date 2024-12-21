@@ -36,7 +36,7 @@ class CustomJsonCoder(JsonCoder):
         logger.info("Starting decode of value type: %s", type(value))
         try:
             if isinstance(value, bytes):
-                decoded_str = value.decode('utf-8')
+                decoded_str = value.decode("utf-8")
             elif isinstance(value, str):
                 decoded_str = value
             else:
@@ -63,7 +63,7 @@ class CustomJsonCoder(JsonCoder):
             if isinstance(value, MenudataOutput):
                 value = value.dict()
             json_str = json.dumps(value)
-            return json_str.encode('utf-8')
+            return json_str.encode("utf-8")
         except Exception as e:
             logger.error("Encode error: %s", str(e), exc_info=True)
             raise
@@ -71,6 +71,7 @@ class CustomJsonCoder(JsonCoder):
 
 def make_cache_key_builder():
     """Creates a function that builds consistent cache keys for Redis storage."""
+
     def cache_key_builder(
         func,
         namespace: str = "",
@@ -113,10 +114,11 @@ def make_cache_key_builder():
 def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
     """
     Decorator that implements Redis-based caching for API endpoints.
-    
+
     Args:
         expire: Cache expiration time in seconds
     """
+
     def wrapper(func):
         @wraps(func)
         async def debug_wrapper(*args, **kwargs):
@@ -136,7 +138,7 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
                     cached_value = await redis.get(cache_key)
                     logger.info(
                         "Retrieved cached value of length: %s",
-                        len(cached_value) if cached_value else 0
+                        len(cached_value) if cached_value else 0,
                     )
 
                     if cached_value:
@@ -144,7 +146,7 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
                             decoded = CustomJsonCoder.decode(cached_value)
                             logger.info(
                                 "Successfully decoded cached value of type: %s",
-                                type(decoded)
+                                type(decoded),
                             )
                             return decoded
                         except ValueError as e:
