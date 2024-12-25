@@ -109,7 +109,7 @@ export function useTextViewPane({
         filename:
           fileNameFromActiveSegment === "none"
             ? fileNameUrlParam
-            : fileNameFromActiveSegment ?? "",
+            : (fileNameFromActiveSegment ?? ""),
         active_segment: activeSegmentParam,
 
         filters: requestFilters,

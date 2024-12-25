@@ -57,4 +57,8 @@ const withMDX = nextMDX({
   options: { providerImportSource: "@mdx-js/react" },
 });
 
-module.exports = withMDX(nextConfig);
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = withBundleAnalyzer(withMDX(nextConfig));

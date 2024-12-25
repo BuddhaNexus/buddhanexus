@@ -148,9 +148,9 @@ export const TextSegment = ({
 
         const color: string = shouldUseMonochromaticSegmentColors
           ? colorScale(highlightColor).hex()
-          : OLD_WEBSITE_SEGMENT_COLORS[highlightColor] ??
+          : (OLD_WEBSITE_SEGMENT_COLORS[highlightColor] ??
             OLD_WEBSITE_SEGMENT_COLORS.at(-1) ??
-            "";
+            "");
 
         return (
           // eslint-disable-next-line jsx-a11y/no-static-element-interactions
