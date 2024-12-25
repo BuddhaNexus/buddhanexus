@@ -13,6 +13,8 @@ services:
     command: --query.optimizer-rules "-splice-subqueries"
     volumes:
       - dbdata:/var/lib/arangodb3
+    networks:
+      - app-network
     restart: always
 
   dataloader:
@@ -35,6 +37,16 @@ services:
       - "arangodb"
     depends_on:
       - arangodb
+    networks:
+      - app-network      
+    restart: always
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
     restart: always
 
   fastapi:
@@ -58,6 +70,9 @@ services:
     restart: always
     depends_on:
       - arangodb
+      - redis
+    networks:
+      - app-network
 
   tests:
     build:
@@ -78,6 +93,7 @@ services:
     command: pytest -v
     depends_on:
       - arangodb
+  
 
   frontend:
     container_name: frontend
@@ -104,3 +120,8 @@ volumes:
   dbdata:
   dharmanexus-data:
     external: true
+
+networks:
+  app-network:
+    driver: bridge
+

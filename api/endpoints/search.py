@@ -5,6 +5,7 @@ from ..queries import search_queries
 from .models.search_models import SearchOutput, SearchInput
 from .endpoint_utils import execute_query
 from ..colormaps import calculate_color_maps_search
+from time import time
 
 router = APIRouter()
 
@@ -15,12 +16,17 @@ async def get_search_results(input: SearchInput) -> Any:
     Returns search results for given search string.
     :return: List of search results
     """
-    result = []
+    start_time = time()
+
     search_string = input.search_string.lower()
     search_strings = search_utils.preprocess_search_string(
         search_string[:300], input.filters.language
     )
+    print(f"[{time() - start_time:.3f}s] Preprocessing search string completed")
+
     print("SEARCH STRINGS", search_strings)
+    
+    query_start = time()
     query_search = execute_query(
         search_queries.QUERY_SEARCH,
         bind_vars={
@@ -37,13 +43,21 @@ async def get_search_results(input: SearchInput) -> Any:
             "filter_exclude_collections": input.filters.exclude_collections,
         },
     )
+    print(f"[{time() - query_start:.3f}s] Database query completed")
+    print("LENGTH OF QUERY RESULT", len(query_search.result[0]))
     query_result = query_search.result[0]
-    # print("SEARCH RESULT BEFORE POSTPROCESSING", query_result)
+    
+    postprocess_start = time()
     result = search_utils.postprocess_results(
         search_strings,
         query_result,
     )
-    # print("SEARCH RESULT AFTER POSTPROCESSING 1", result)
+    print(f"[{time() - postprocess_start:.3f}s] Post-processing completed")
+
+    colormap_start = time()
     results = calculate_color_maps_search(result)
-    # print("SEARCH RESULT AFTER POSTPROCESSING 2", results)
+    print(f"[{time() - colormap_start:.3f}s] Color mapping completed")
+    
+    print(f"[{time() - start_time:.3f}s] Total search time")
+    
     return {"searchResults": result}
