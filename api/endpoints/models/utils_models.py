@@ -19,6 +19,8 @@ class FolioOutput(BaseModel):
 class DisplayNameOutput(BaseModel):
     displayname: List[str]
 
+class ActiveSegmentOutput(BaseModel):
+    active_segment: str
 
 class LanguageOutput(BaseModel):
     langList: list

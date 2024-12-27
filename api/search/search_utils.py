@@ -14,6 +14,7 @@ from aksharamukha import transliterate
 
 
 def preprocess_search_string(search_string, language):
+    search_string_unprocessed = search_string
     bo = ""
     zh = ""
     sa = ""
@@ -66,8 +67,8 @@ def preprocess_search_string(search_string, language):
     elif language == "zh":
         bo = pa = sa = ""
     elif language == "pa":
-        bo = zh = sa = ""
-    return {"sa": sa, "sa_fuzzy": sa_fuzzy, "bo": bo, "pa": pa, "zh": zh}
+        bo = zh = sa = ""    
+    return {"sa": sa, "sa_fuzzy": sa_fuzzy, "bo": bo, "pa": pa, "zh": zh, "search_string_unprocessed": search_string_unprocessed}
 
 
 def get_offsets(search_string, segment_text):
@@ -96,7 +97,7 @@ def remove_duplicate_results(results):
     best_results = {}
     
     # First pass - find best result for each segment number
-    for result in results:
+    for result in results:        
         segment_nrs = result["segment_nr"]
         centeredness = result["centeredness"]
         
@@ -146,39 +147,22 @@ def process_result(result, search_string):
 
 
 def postprocess_results(search_strings, results):
-    print(f"[postprocess] search_strings: {search_strings}")
-    print(f"[postprocess] results: {results}")
     total_start = time.time()
     
-    # Flatten results if it's a nested list
-    if results and isinstance(results[0], list):
-        results = results[0]
     
     cleanup_start = time.time()
     new_results = []
-    search_string = search_strings["sa"]
+    search_string = search_strings["search_string_unprocessed"]
     for result in results:        
         result["original"] = re.sub(
             "@[0-9a-b+]+", "", result["original"]
         )  # remove possible bo folio numbers
-        new_results.append(process_result(result, search_string))
-    print(f"[postprocess] initial cleanup and process_result calls took: {time.time() - cleanup_start:.4f}s")
-
-    filter_start = time.time()
+        processed = process_result(result, search_string)
+        if processed:
+            new_results.append(processed)
     results = [x for x in new_results if x is not None]
     results = [x for x in results if "centeredness" in x]
-    #print(f"[postprocess] filtering None and centeredness took: {time.time() - filter_start:.4f}s")
-
-    dedup1_start = time.time()
     results = remove_duplicate_results(results)
-    print(f"[postprocess] first deduplication took: {time.time() - dedup1_start:.4f}s")
-    
-    #dedup2_start = time.time()
-    #results = remove_duplicate_results(results)
-    #results = [i for n, i in enumerate(results) if i not in results[n + 1 :]]
-    #print(f"[postprocess] second deduplication took: {time.time() - dedup2_start:.4f}s")
-
-    #sort_start = time.time()
     results = sorted(results, key=lambda i: i["distance"])
     results = results[::-1]
     return results[:200]  # make sure we return a fixed number of results

@@ -90,6 +90,15 @@ def get_page_for_segment(active_segment):
     )
     return page_for_segment.result[0]
 
+def get_active_segment_from_folio(folio):
+    """
+    Get the active segment from a folio.
+    """
+    result = get_db().AQLQuery(
+        query=utils_queries.QUERY_SEGMENT_FOR_FOLIO,
+        bindVars={"folio": folio},
+    )
+    return result.result[0]
 
 def get_cat_from_segmentnr(segmentnr):
     """

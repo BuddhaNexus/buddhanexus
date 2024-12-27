@@ -50,6 +50,8 @@ async def get_folios_for_file(
     return {"folios": query_result.result[0]}
 
 
+
+
 def get_displayname(segmentnr):
     """
     Downloads the displaynames for the worksheet
@@ -73,3 +75,27 @@ async def get_displayname_for_segmentnr(
     Returns the displayname for a given segmentnr or filename
     """
     return {"displayname": get_displayname(segmentnr)}
+
+
+@router.get("/active-segment-for-folio/", response_model=ActiveSegmentOutput)
+async def get_active_segment_for_folio(
+    filename: str = Query(
+        default=...,
+        description="Filename for which the active segment should be fetched."
+    ),
+    folio: str = Query(
+        default=...,
+        description="Folio for which the active segment should be fetched."
+    ),
+) -> Any:
+    """
+    Returns the active segment for a given folio
+    """
+    
+    query_result = execute_query(
+        utils_queries.QUERY_SEGMENT_FOR_FOLIO,
+        bind_vars={"folio": folio, "filename": filename},
+    )
+    print(f"[utils] query_result: {query_result.result}")
+    return {"active_segment": query_result.result[0]}
+    
