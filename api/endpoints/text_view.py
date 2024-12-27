@@ -3,7 +3,7 @@ from ..queries import text_view_queries
 from ..colormaps import calculate_color_maps_text_view, calculate_color_maps_middle_view
 from .endpoint_utils import execute_query
 from typing import Any
-from ..utils import get_page_for_segment, get_active_segment_from_folio
+from ..utils import get_page_for_segment
 from shared.utils import get_filename_from_segmentnr
 from .models.text_view_models import (
     TextParallelsInput,
@@ -38,12 +38,10 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     filename = input.filename
     parallel_ids_type = "parallel_ids"
     page = input.page
-    
     if input.active_segment != "none":
         page = get_page_for_segment(input.active_segment)
         filename = get_filename_from_segmentnr(input.active_segment)
     
-
     number_of_total_pages = execute_query(
         text_view_queries.QUERY_GET_NUMBER_OF_PAGES,
         bind_vars={
