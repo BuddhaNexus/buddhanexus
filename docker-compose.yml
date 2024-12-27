@@ -1,6 +1,6 @@
 services:
   arangodb:
-    image: arangodb:3.8.4
+    image: arangodb:3.12
     platform: linux/amd64
     expose:
       - "8529"

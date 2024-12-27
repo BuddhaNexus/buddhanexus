@@ -120,3 +120,19 @@ def arrange_filter_data(filters):
     elif filter_display_exclude:
         filter_display = "Exclude: " + filter_display_exclude[:-2]
     return filter_display
+
+def view_exists(db, view_name):
+    """Check if a view exists in the database with PyArango."""
+    try:
+        db.fetchView(view_name)
+        return True
+    except:
+        # It raises an exception if the view doesn't exist
+        return False
+    
+def get_existing_views(db, view_names):
+    """Get a dictionary of view existence status."""
+    return {
+        view_name: view_exists(db, view_name)
+        for view_name in view_names
+    }

@@ -146,12 +146,18 @@ def process_result(result, search_string):
 
 
 def postprocess_results(search_strings, results):
+    print(f"[postprocess] search_strings: {search_strings}")
+    print(f"[postprocess] results: {results}")
     total_start = time.time()
+    
+    # Flatten results if it's a nested list
+    if results and isinstance(results[0], list):
+        results = results[0]
     
     cleanup_start = time.time()
     new_results = []
     search_string = search_strings["sa"]
-    for result in results:
+    for result in results:        
         result["original"] = re.sub(
             "@[0-9a-b+]+", "", result["original"]
         )  # remove possible bo folio numbers
