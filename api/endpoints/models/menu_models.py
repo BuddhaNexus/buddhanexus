@@ -5,6 +5,7 @@ from typing import List, Dict, Any
 class File(BaseModel):
     displayName: str
     filename: str
+    textname: str
     search_field: str
 
 

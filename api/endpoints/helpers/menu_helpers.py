@@ -1,6 +1,7 @@
 import unidecode
 from collections import defaultdict
 from ..models.menu_models import Collection, Category, File
+from natsort import natsorted
 
 
 def create_searchfield(result):
@@ -38,6 +39,7 @@ def structure_menu_data(query_result):
         category_display_name = file["category_display_name"]
         file_info = File(
             filename=file.get("filename"),
+            textname=file.get("textname"),
             displayName=file.get("displayName"),
             search_field=create_searchfield(file),
         )
@@ -57,12 +59,12 @@ def structure_menu_data(query_result):
                     category=cat_info["category"],
                     categorydisplayname=cat_info["categorydisplayname"],
                     categorysearch_field=cat_info["categorysearchfield"],
-                    files=cat_info["files"],
+                    files=natsorted(cat_info["files"], key=lambda x: x.filename),
                 )
-                for cat_info in categories.values()
+                for cat_info in natsorted(categories.values(), key=lambda x: x["categorydisplayname"])
             ],
         )
-        for collection, categories in result.items()
+        for collection, categories in natsorted(result.items())
     ]
 
     return navigation_menu_data
