@@ -4,7 +4,6 @@ from dharmamitra_sanskrit_grammar import DharmamitraSanskritProcessor
 import buddhanexus_lang_analyzer.translate_for_website as bn_translate
 from fuzzysearch import levenshtein_ngram
 import pyewts
-import time
 
 sanskrit_processor = DharmamitraSanskritProcessor()
 
@@ -124,14 +123,11 @@ def remove_duplicate_results(results):
 
 
 def process_result(result, search_string):
-    start_time = time.time()
     try:
-        offset_start = time.time()
         beg, end, centeredness, distance = get_offsets(
             search_string, result["original"]
         )        
 
-        assign_start = time.time()
         result["offset_beg"] = beg
         result["offset_end"] = end
         result["distance"] = distance
@@ -139,7 +135,6 @@ def process_result(result, search_string):
         result["similarity"] = 100
         if distance != 0:
             result["similarity"] = 100 - distance / len(search_string)
-        #result["segment_nr"] = result["segment_nr"][0]
     
         return result
     except (RuntimeError, TypeError, NameError):
@@ -147,10 +142,6 @@ def process_result(result, search_string):
 
 
 def postprocess_results(search_strings, results):
-    total_start = time.time()
-    
-    
-    cleanup_start = time.time()
     new_results = []
     search_string = search_strings["search_string_unprocessed"]
     for result in results:        
