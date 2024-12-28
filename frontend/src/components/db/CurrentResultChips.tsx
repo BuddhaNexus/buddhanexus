@@ -95,7 +95,7 @@ export default function CurrentResultChips({
         resultPageType,
         searchParams,
       }),
-    [searchParams, resultPageType]
+    [searchParams, resultPageType],
   );
 
   return (

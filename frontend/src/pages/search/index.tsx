@@ -11,7 +11,6 @@ import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SearchResults } from "@features/globalSearch";
 import SearchPageInputBox from "@features/globalSearch/SearchPageInputBox";
-import { DEFAULT_LANGUAGE } from "@features/SidebarSuite/uiSettings/config";
 import { Box } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
@@ -80,17 +79,19 @@ export default function SearchPage() {
   }, [setIsSearchTriggered]);
 
   React.useEffect(() => {
-    if (language === DEFAULT_LANGUAGE) return;
     setIsSearchTriggered(true);
   }, [
     setIsSearchTriggered,
     language,
-    exclude_collections?.length,
-    exclude_categories?.length,
-    exclude_files?.length,
-    include_collections?.length,
-    include_categories?.length,
-    include_files?.length,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify([
+      exclude_collections,
+      exclude_categories,
+      exclude_files,
+      include_collections,
+      include_categories,
+      include_files,
+    ]),
   ]);
 
   const { data, isLoading, isError, error, isFetching, isFetched } = useQuery({
@@ -99,7 +100,6 @@ export default function SearchPage() {
       filters,
     }),
     queryFn: () => {
-      setIsSearchTriggered(false);
       return DbApi.GlobalSearchData.call({
         search_string,
         filters,
@@ -118,6 +118,10 @@ export default function SearchPage() {
   }, [data]);
 
   const matches = data?.length ?? 0;
+
+  if (isFetched) {
+    setIsSearchTriggered(false);
+  }
 
   if (isError) {
     return (

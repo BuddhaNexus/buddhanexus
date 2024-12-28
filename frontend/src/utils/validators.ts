@@ -25,7 +25,7 @@ export const getDbLanguage = (lang: unknown) => {
 export const getValidDbLanguage = (lang: unknown) => {
   if (!isValidDbLanguage(lang)) {
     throw new Error(
-      `Invalid language: ${lang}. Valid languages are: ${dbLanguages.join(", ")}.`
+      `Invalid language: ${lang}. Valid languages are: ${dbLanguages.join(", ")}.`,
     );
   }
 
