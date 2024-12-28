@@ -69,12 +69,14 @@ export const useClearDbSourceFilterQueryParams = () => {
   const [, setIncludeFiles] = useIncludeFilesParam();
 
   const handleClearDbSourceFilterParams = React.useCallback(async () => {
-    await setExcludeCollections(null);
-    await setExcludeCategories(null);
-    await setExcludeFiles(null);
-    await setIncludeCollections(null);
-    await setIncludeCategories(null);
-    await setIncludeFiles(null);
+    await Promise.all([
+      setExcludeCollections(null),
+      setExcludeCategories(null),
+      setExcludeFiles(null),
+      setIncludeCollections(null),
+      setIncludeCategories(null),
+      setIncludeFiles(null),
+    ]);
   }, [
     setExcludeCollections,
     setExcludeCategories,
