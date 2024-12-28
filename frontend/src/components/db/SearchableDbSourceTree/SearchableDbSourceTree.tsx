@@ -6,11 +6,20 @@ import {
   activeDbSourceTreeBreadcrumbsAtom,
 } from "@atoms";
 import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useLanguageParam } from "@components/hooks/params";
+import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, FormControl, InputAdornment, TextField } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
+import { DbLanguage } from "@utils/api/types";
+import { isValidDbLanguage } from "@utils/validators";
 import { useAtomValue, useSetAtom } from "jotai";
 
 import { DbSourceTree } from "./treeComponents/DbSourceTree";
@@ -39,105 +48,130 @@ type SearchableDbSourceTreeProps = SearchableDbSourceTreeBaseProps &
       } & DbSourceFilterSelectorTreeProps)
   );
 
-export const SearchableDbSourceTree = memo<SearchableDbSourceTreeProps>(
-  function SearchableDbSourceTree(props) {
-    const {
-      parentHeight,
-      parentWidth,
-      hasHeading = true,
-      padding = 2,
-      ...treeTypeProps
-    } = props;
+const SearchableDbSourceTreeContent = memo<
+  SearchableDbSourceTreeProps & { dbLanguage: DbLanguage }
+>(function SearchableDbSourceTreeContent(props) {
+  const {
+    parentHeight,
+    parentWidth,
+    hasHeading = true,
+    padding = 2,
+    dbLanguage,
+    ...treeTypeProps
+  } = props;
 
-    const [searchTerm, setSearchTerm] = useState("");
-    const { dbLanguage } = useDbRouterParams();
-    const { observe, height: inputHeight } = useDimensions();
+  const [searchTerm, setSearchTerm] = useState("");
 
-    const activeTree = useAtomValue(activeDbSourceTreeAtom);
-    const setBreadcrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
+  const { observe, height: inputHeight } = useDimensions();
 
-    const handleSearchChange = React.useCallback(
-      (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        setSearchTerm(value);
+  const activeTree = useAtomValue(activeDbSourceTreeAtom);
+  const setBreadcrumbs = useSetAtom(activeDbSourceTreeBreadcrumbsAtom);
 
-        if (value) {
-          activeTree?.setSelection({
-            ids: null,
-            anchor: null,
-            mostRecent: activeTree.mostRecentNode,
-          });
-          setBreadcrumbs([]);
-        }
-      },
-      [setSearchTerm, setBreadcrumbs, activeTree],
-    );
+  const handleSearchChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setSearchTerm(value);
 
-    const { t } = useTranslation(["common"]);
+      if (value) {
+        activeTree?.setSelection({
+          ids: null,
+          anchor: null,
+          mostRecent: activeTree.mostRecentNode,
+        });
+        setBreadcrumbs([]);
+      }
+    },
+    [setSearchTerm, setBreadcrumbs, activeTree],
+  );
 
-    const { data, isLoading, isError, error } = useQuery<DbSourceTreeNode[]>({
-      queryKey: DbApi.DbSourcesMenu.makeQueryKey(dbLanguage),
-      queryFn: () => DbApi.DbSourcesMenu.call({ language: dbLanguage }),
-    });
+  const { t } = useTranslation(["common"]);
 
-    if (isLoading) {
-      return (
-        <LoadingTree
-          hasHeading={hasHeading}
-          dbLanguage={dbLanguage}
-          padding={padding}
-          width={parentWidth}
-        />
-      );
-    }
+  const { data, isLoading, isError, error } = useQuery<DbSourceTreeNode[]>({
+    queryKey: DbApi.DbSourcesMenu.makeQueryKey(dbLanguage),
+    queryFn: () => DbApi.DbSourcesMenu.call({ language: dbLanguage }),
+  });
 
-    if (isError || !data) {
-      return (
-        <TreeException
-          hasHeading={hasHeading}
-          dbLanguage={dbLanguage}
-          padding={padding}
-          message={error ? error.message : t("prompts.noResults")}
-          width={parentWidth}
-          height={parentHeight}
-        />
-      );
-    }
-
+  if (isLoading) {
     return (
-      <>
-        <TreeHeading isRendered={hasHeading} dbLanguage={dbLanguage} />
-
-        <Box ref={observe} sx={{ p: padding, pb: 0 }}>
-          {/* Search input */}
-          <FormControl variant="outlined" fullWidth>
-            <TextField
-              label={t("search.search")}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={handleSearchChange}
-            />
-          </FormControl>
-
-          <TreeNavigation type={treeTypeProps.type} />
-        </Box>
-
-        {/* Tree view - text browser */}
-        <Box sx={{ pl: padding }}>
-          <DbSourceTree
-            data={data}
-            height={parentHeight - inputHeight}
-            width={parentWidth}
-            searchTerm={searchTerm}
-            {...treeTypeProps}
-          />
-        </Box>
-      </>
+      <LoadingTree
+        hasHeading={hasHeading}
+        dbLanguage={dbLanguage}
+        padding={padding}
+        width={parentWidth}
+      />
     );
-  },
-);
+  }
+
+  if (isError || !data) {
+    return (
+      <TreeException
+        hasHeading={hasHeading}
+        dbLanguage={dbLanguage}
+        padding={padding}
+        message={error ? error.message : t("prompts.noResults")}
+        width={parentWidth}
+        height={parentHeight}
+      />
+    );
+  }
+
+  return (
+    <>
+      <TreeHeading isRendered={hasHeading} dbLanguage={dbLanguage} />
+
+      <Box ref={observe} sx={{ p: padding, pb: 0 }}>
+        {/* Search input */}
+        <FormControl variant="outlined" fullWidth>
+          <TextField
+            label={t("search.search")}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            onChange={handleSearchChange}
+          />
+        </FormControl>
+
+        <TreeNavigation type={treeTypeProps.type} />
+      </Box>
+
+      {/* Tree view - text browser */}
+      <Box sx={{ pl: padding }}>
+        <DbSourceTree
+          data={data}
+          height={parentHeight - inputHeight}
+          width={parentWidth}
+          searchTerm={searchTerm}
+          {...treeTypeProps}
+        />
+      </Box>
+    </>
+  );
+});
+
+export function SearchableDbSourceTree(props: SearchableDbSourceTreeProps) {
+  const { dbLanguage: dbFileLanguage } = useNullableDbRouterParams();
+  const [searchLanguage] = useLanguageParam();
+  const { t } = useTranslation("common");
+
+  if (isValidDbLanguage(dbFileLanguage)) {
+    return (
+      <SearchableDbSourceTreeContent {...props} dbLanguage={dbFileLanguage} />
+    );
+  }
+
+  if (isValidDbLanguage(searchLanguage)) {
+    return (
+      <SearchableDbSourceTreeContent {...props} dbLanguage={searchLanguage} />
+    );
+  }
+
+  return (
+    <Typography color="error">
+      {t("prompts.dbSrcMenuError")} {t("prompts.genericErrorDescription")}
+    </Typography>
+  );
+}
