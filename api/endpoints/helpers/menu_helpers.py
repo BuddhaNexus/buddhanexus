@@ -51,7 +51,6 @@ def structure_menu_data(query_result, language):
         )
         result[collection][category]["files"].append(file_info)
 
-
     navigation_menu_data = []
 
     if language == "pa":
@@ -82,7 +81,9 @@ def structure_menu_data(query_result, language):
                         categorysearch_field=cat_info["categorysearchfield"],
                         files=natsorted(cat_info["files"], key=lambda x: x.filename),
                     )
-                    for cat_info in natsorted(categories.values(), key=lambda x: x["categorydisplayname"])
+                    for cat_info in natsorted(
+                        categories.values(), key=lambda x: x["categorydisplayname"]
+                    )
                 ],
             )
             for collection, categories in natsorted(result.items())

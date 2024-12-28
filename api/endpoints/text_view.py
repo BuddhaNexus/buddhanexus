@@ -41,7 +41,7 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     if input.active_segment != "none":
         page = get_page_for_segment(input.active_segment)
         filename = get_filename_from_segmentnr(input.active_segment)
-    
+
     number_of_total_pages = execute_query(
         text_view_queries.QUERY_GET_NUMBER_OF_PAGES,
         bind_vars={

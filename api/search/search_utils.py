@@ -66,8 +66,15 @@ def preprocess_search_string(search_string, language):
     elif language == "zh":
         bo = pa = sa = ""
     elif language == "pa":
-        bo = zh = sa = ""    
-    return {"sa": sa, "sa_fuzzy": sa_fuzzy, "bo": bo, "pa": pa, "zh": zh, "search_string_unprocessed": search_string_unprocessed}
+        bo = zh = sa = ""
+    return {
+        "sa": sa,
+        "sa_fuzzy": sa_fuzzy,
+        "bo": bo,
+        "pa": pa,
+        "zh": zh,
+        "search_string_unprocessed": search_string_unprocessed,
+    }
 
 
 def get_offsets(search_string, segment_text):
@@ -94,16 +101,16 @@ def get_offsets(search_string, segment_text):
 def remove_duplicate_results(results):
     # Create a dict to track best result per segment number
     best_results = {}
-    
+
     # First pass - find best result for each segment number
-    for result in results:        
+    for result in results:
         segment_nrs = result["segment_nr"]
         centeredness = result["centeredness"]
-        
+
         for seg_nr in segment_nrs:
             if seg_nr not in best_results or centeredness < best_results[seg_nr][1]:
                 best_results[seg_nr] = (result, centeredness)
-    
+
     # Second pass - mark results as disabled if they're not the best for any of their segments
     for result in results:
         should_disable = True
@@ -113,11 +120,10 @@ def remove_duplicate_results(results):
                 break
         if should_disable:
             result["disabled"] = True
-    
-    
+
     for result in results:
         result["segment_nr"] = result["segment_nr"][0]
-    
+
     # Return only non-disabled results
     return [result for result in results if "disabled" not in result]
 
@@ -126,7 +132,7 @@ def process_result(result, search_string):
     try:
         beg, end, centeredness, distance = get_offsets(
             search_string, result["original"]
-        )        
+        )
 
         result["offset_beg"] = beg
         result["offset_end"] = end
@@ -135,7 +141,7 @@ def process_result(result, search_string):
         result["similarity"] = 100
         if distance != 0:
             result["similarity"] = 100 - distance / len(search_string)
-    
+
         return result
     except (RuntimeError, TypeError, NameError):
         pass
@@ -144,7 +150,7 @@ def process_result(result, search_string):
 def postprocess_results(search_strings, results):
     new_results = []
     search_string = search_strings["search_string_unprocessed"]
-    for result in results:        
+    for result in results:
         result["original"] = re.sub(
             "@[0-9a-b+]+", "", result["original"]
         )  # remove possible bo folio numbers

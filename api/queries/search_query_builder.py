@@ -139,4 +139,3 @@ def build_query_search(
     RETURN results_with_names
     """
     return query
-
