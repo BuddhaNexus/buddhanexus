@@ -77,7 +77,7 @@ export default function SearchPage() {
       isExternalInitialLoad.current = false;
       setIsSearchTriggered(true);
     }
-  }, [setIsSearchTriggered, isExternalInitialLoad.current]);
+  }, [setIsSearchTriggered]);
 
   React.useEffect(() => {
     if (language === DEFAULT_LANGUAGE) return;

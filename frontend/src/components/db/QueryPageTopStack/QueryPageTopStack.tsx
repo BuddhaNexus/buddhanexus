@@ -38,7 +38,7 @@ export const QueryPageTopStack = ({
           component="h1"
           my={1}
           fontWeight={400}
-          color="primary"
+          color="text.primary"
         >
           {title}
         </Typography>

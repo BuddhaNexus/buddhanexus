@@ -1,7 +1,7 @@
 import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
 import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
-import { getValidDbLanguage } from "@utils/validators";
+import { getValidDbLanguage, isCustomAPIError } from "@utils/validators";
 
 function parseAPISearchData(data: APIPostResponse<"/search/">) {
   const searchResults = [];
@@ -45,9 +45,17 @@ export async function getGlobalSearchData(
     return [];
   }
 
-  const { data } = await apiClient.POST("/search/", {
+  const { data, error } = await apiClient.POST("/search/", {
     body: parseAPIRequestBody(body),
   });
+
+  if (error) {
+    if (isCustomAPIError(error.detail)) {
+      throw new Error(error.detail.errorMessage);
+    }
+
+    throw new Error(error?.detail?.[0]?.msg);
+  }
 
   return data ? parseAPISearchData(data) : [];
 }
