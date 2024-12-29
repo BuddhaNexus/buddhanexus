@@ -5,6 +5,7 @@ import {
 } from "@features/SidebarSuite/uiSettings/config";
 
 import { DbLanguage, dbLanguages } from "./api/constants";
+import { CustomAPIError } from "./api/types";
 import { DbViewEnum, DEFAULT_DB_VIEW } from "./constants";
 
 export const isValidDbView = (view: unknown): view is DbViewEnum =>
@@ -36,4 +37,13 @@ export const isValidSortMethod = (method: unknown): method is SortMethod =>
 
 export const getValidSortMethod = (method: unknown) => {
   return isValidSortMethod(method) ? method : DEFAULT_PARAM_VALUES.sort_method;
+};
+
+export const isCustomAPIError = (error: unknown): error is CustomAPIError => {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    "errorMessage" in error
+  );
 };

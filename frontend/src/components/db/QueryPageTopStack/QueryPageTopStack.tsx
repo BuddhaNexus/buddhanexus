@@ -1,7 +1,7 @@
 import * as React from "react";
 import CurrentResultChips from "@components/db/CurrentResultChips";
 import { useResultPageType } from "@components/hooks/useResultPageType";
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 import { DbFileButtons } from "./DbFileButtons";
 import { QueryPageButtons } from "./QueryPageButtons";
@@ -14,38 +14,44 @@ export const QueryPageTopStack = ({
 }: {
   matchCount?: number;
   title: string;
-  subtitle: string;
+  subtitle?: string;
 }) => {
   const { isSearchPage } = useResultPageType();
 
   return (
     <Stack
-      direction={{ xs: "row", sm: "row-reverse" }}
+      direction={{ xs: "column", md: "row" }}
       justifyContent="space-between"
-      alignItems="center"
-      spacing={2}
+      alignItems={{ xs: "left", md: "center" }}
+      spacing={{ xs: 0, md: 2 }}
     >
-      <Stack justifyContent="center" alignItems="flex-end" spacing={2}>
+      <hgroup style={{ maxWidth: "880px" }}>
+        <Typography variant="h3" component="h1" mt={1} fontWeight={400}>
+          {title}
+        </Typography>
+        {subtitle ? (
+          <Typography
+            variant="subtitle2"
+            component="p"
+            mb={1}
+            color="text.secondary"
+          >
+            {subtitle}
+          </Typography>
+        ) : null}
+      </hgroup>
+
+      <Stack
+        direction={{ xs: "row-reverse", md: "column" }}
+        justifyContent={{ xs: "flex-end", sm: "space-between", md: "center" }}
+        alignItems={{ xs: "center", md: "flex-end" }}
+        spacing={{ xs: 0, md: 2 }}
+      >
         <CurrentResultChips matches={matchCount} />
         <QueryPageButtons>
           {isSearchPage ? <SearchButtons /> : <DbFileButtons />}
         </QueryPageButtons>
       </Stack>
-
-      <Box>
-        <Typography
-          variant="h2"
-          component="h1"
-          my={1}
-          fontWeight={400}
-          color="primary"
-        >
-          {title}
-        </Typography>
-        <Typography variant="h4" component="h4" mb={1}>
-          {subtitle}
-        </Typography>
-      </Box>
     </Stack>
   );
 };

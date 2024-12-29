@@ -29,7 +29,7 @@ const DbSourceFilterTreePopper = ({
       open={open}
       anchorEl={anchorEl}
       sx={{
-        zIndex: 1200,
+        zIndex: 1400,
         maxHeight: "424px",
         width: "100%",
         maxWidth: "340px",
@@ -38,7 +38,6 @@ const DbSourceFilterTreePopper = ({
         borderRadius: 1,
         bgcolor: "background.paper",
       }}
-      placement="top"
     >
       <ClickAwayListener onClickAway={handleClose}>
         <Box

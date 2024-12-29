@@ -51,6 +51,7 @@
     "genericErrorTitle": "ནོར་འཁྲུལ་ཞིག་བྱུང་སོང་།",
     "genericErrorDescription": "གལ་སྲིད་དཀའ་ངལ་དེ་མུ་མཐུད་ནས་བྱུང་ན་ང་ཚོར་འབྲེལ་བ་བྱོས།",
     "fetchError": "གྲུབ་འབྲས་ཀྱི་རྒྱུ་ཆ་ལེན་པར་ནོར་འཁྲུལ་བྱུང་སོང་།",
+    "dbSrcMenuError": "Error fetching database source menu. Database language is invalid.",
     "queryWarning": "གྲུབ་འབྲས་སྟོན་ཐུབ་མ་སོང་། ཚགས་བེད་སྤྱོད་གནང་སྟེ་ཁྱེད་ཀྱི་འཚོལ་ཞིབ་སྙོམ་སྒྲིག་བྱོས།",
     "noFile": "ཡིག་ཆ་འདེམས་སྒྲུག་བྱས་མི་འདུག",
     "fileUndefined": "ཡིག་ཆ་དེ་ངོས་འཛིན་མ་ཐུབ།",
@@ -73,7 +74,7 @@
     "openSearch": "འཚོལ་བཤེར་སྒམ་ཁ་ཕྱེས།",
     "closeSearch": "འཚོལ་བཤེར་སྒམ་ཁ་རྒྱོབ།",
     "noResultsHeading": "འཚོལ་བཤེར་གྱི་གྲུབ་འབྲས་རྙེད་མ་སོང་།",
-    "noResultsTip": "ཚིག་གྲུབ་ཇི་བཞིན་པའམ། ཚིག་གྲུབ་ཀྱི་ཆ་ཤས། དགོས་མཁོ་ལ་སྒྲ་རིང་ཐུང་སོགས་ཅི་རིགས་ཀྱི་སྒོ་ནས་འཚོལ་བཤེར་བྱོས།"
+    "noResultsTip": "Try adjusting your search. Making sure you use an exact search term with whole words, correct punctuation and diacretical marks where relevant may help."
   },
   "graph": {
     "histogramDataTitle": "འཚོལ་ཞིབ་བྱས་པའི་ཡིག་ཆ་དང་འདྲ་མཚུངས་ཆེ་བ་རྣམས་གོང་ལ་བགོ་འགྲེམས་བྱས་ཡོད།",
