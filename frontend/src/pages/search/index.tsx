@@ -38,11 +38,7 @@ const SearchPageHeader = ({ matches }: { matches: number }) => {
   return (
     <Box mb={2}>
       <SearchPageInputBox />
-      <QueryPageTopStack
-        matchCount={matches}
-        title={t("search.pageTitle")}
-        subtitle=""
-      />
+      <QueryPageTopStack matchCount={matches} title={t("search.pageTitle")} />
     </Box>
   );
 };

@@ -47,12 +47,6 @@ export async function prefetchDbResultsPageData(
     queryFn: () => DbApi.TextDisplayName.call({ segmentnr: fileName }),
   });
 
-  // TODO: review. disabled for now to lighten build burden.
-  // await queryClient.prefetchQuery({
-  //   queryKey: DbApi.DbSourcesMenu.makeQueryKey(dbLanguage),
-  //   queryFn: () => DbApi.DbSourcesMenu.call(dbLanguage),
-  // });
-
   // TODO: confirm spec for multi_lingal query param. For discussion see: https://github.com/BuddhaNexus/buddhanexus-frontend-next/issues/117
   // await queryClient.prefetchQuery({
   //   queryKey: DbApi.AvailableLanguagesData.makeQueryKey(fileName),

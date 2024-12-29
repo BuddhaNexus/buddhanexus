@@ -1,5 +1,5 @@
 import { NextSeo } from "next-seo";
-import { currentDbViewAtom } from "@atoms";
+import { currentDbFileAtom, currentDbViewAtom } from "@atoms";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useQuery } from "@tanstack/react-query";
@@ -8,28 +8,36 @@ import { useAtomValue } from "jotai";
 import startCase from "lodash/startCase";
 
 export const DbViewPageHead = () => {
+  const currentDbFile = useAtomValue(currentDbFileAtom);
   const { fileName } = useDbRouterParams();
 
-  const { data: displayName, isLoading } = useQuery({
+  // Used for external navigation to app when titles can't be retrieved from menudata
+  const { data, isLoading } = useQuery({
     queryKey: DbApi.TextDisplayName.makeQueryKey(fileName),
-    queryFn: () => DbApi.TextDisplayName.call({ segmentnr: fileName }),
+    queryFn: () =>
+      DbApi.TextDisplayName.call({
+        segmentnr: fileName,
+      }),
+    enabled: !currentDbFile,
   });
 
   const dbView = useAtomValue(currentDbViewAtom);
 
-  const title = fileName?.toUpperCase();
+  let title = currentDbFile?.name;
 
-  const subtitle = isLoading ? "..." : (displayName ?? "");
+  if (!title) {
+    title = isLoading ? "..." : (data?.displayName ?? "");
+  }
+
+  const displayId = currentDbFile?.displayId ?? data?.displayId ?? "";
 
   return (
     <>
       <NextSeo
-        title={`BuddhaNexus | ${fileName} :: ${
-          displayName ? `${displayName} ::` : ""
-        } ${startCase(dbView)} View`}
+        title={`BuddhaNexus | ${displayId} :: ${title} ${startCase(dbView)} View`}
       />
 
-      <QueryPageTopStack title={title} subtitle={subtitle} />
+      <QueryPageTopStack title={title} subtitle={displayId} />
     </>
   );
 };

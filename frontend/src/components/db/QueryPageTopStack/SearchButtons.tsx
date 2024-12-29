@@ -12,12 +12,16 @@ import {
 import { useSettingsDrawer } from "@components/hooks/useSettingsDrawer";
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined";
 import TuneIcon from "@mui/icons-material/Tune";
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 export const SearchButtons = () => {
   const { t } = useTranslation("settings");
 
   const { setIsSettingsOpen } = useSettingsDrawer();
+
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.up("sm"));
 
   const [, setExcludeCollectionsParam] = useExcludeCollectionsParam();
   const [, setExcludeCategoriesParam] = useExcludeCategoriesParam();
@@ -48,7 +52,10 @@ export const SearchButtons = () => {
   ]);
 
   return (
-    <ButtonGroup variant="outlined">
+    <ButtonGroup
+      variant="outlined"
+      orientation={isSm ? "horizontal" : "vertical"}
+    >
       <Button
         variant="outlined"
         data-testid="db-results-settings-button"

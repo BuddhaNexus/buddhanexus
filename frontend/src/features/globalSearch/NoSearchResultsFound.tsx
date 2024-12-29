@@ -9,10 +9,12 @@ export default function NoSearchResultsFound() {
 
   return (
     <>
-      <Typography variant="h4" component="h2" mt={3} mb={2}>
-        {t("search.noResultsHeading")}
+      <Typography>
+        <Box component="span" fontWeight="500">
+          {t("prompts.noResults")}
+        </Box>{" "}
+        {t("search.noResultsTip")}
       </Typography>
-      <Typography>{t("search.noResultsTip")}</Typography>
       {IS_DISABLED_PENDING_388 ? null : (
         <>
           <Box sx={{ mt: 2, ml: 3 }}>
