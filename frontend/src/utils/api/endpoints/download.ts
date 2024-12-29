@@ -4,7 +4,7 @@ import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
 
 const parseAPITableDownloadData = (
   filePath: APIPostResponse<"/download/">,
-  fileName: string
+  fileName: string,
 ) => {
   return {
     // example filePath: download/dn2_download.xlsx
@@ -30,9 +30,7 @@ export async function getParallelDownloadData(
     body: parseAPIRequestBody(body),
   });
 
-  if (!filePath) {
-    throw new Error("Table View download file path is undefined");
-  }
-
-  return parseAPITableDownloadData(filePath, body.filename);
+  // if (!filePath) {
+  //   throw new Error("Table View download file path is undefined");
+  // }
 }

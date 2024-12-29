@@ -45,17 +45,15 @@
     "download_data": "མཚུངས་འབྲས་རྣམས་ xlsx ཡིག་ཆའི་ནང་ཕབ་ལེན་བྱོས།",
     "wylie": "ཝེ་ལི།",
     "unicode": "གཅིག་གྱུར་ཡིག་རྟགས།",
-    "copyQueryTitle": "ཡིག་ཆའི་མཚན་བྱང་འདྲ་བཤུས།",
-    "copyQueryLink": "འཚོལ་འབྲས་དྲྭ་ཚིགས་སྦྲེལ་ཐག་འདྲ་བཤུས།",
-    "emailQueryLink": "འཚོལ་འབྲས་དྲྭ་ཚིགས་གློག་འཕྲིན་ཁ་བྱང་།",
+    "copyResultInfo": "Copy result page details",
+    "emailResultInfo": "Email result page details",
     "showSegmentNumbers": "ཚན་པའི་གྲངས་ཐོ་སྟོན།",
     "useMonochromaticSegmentColors": "ཚན་པ་མཚུངས་པ་རྣམས་ཁ་དོག་གཅིག་གྱུར་བྱོས།"
   },
   "optionsPopperMsgs": {
     "download_data": "ཨོ་ཧོ། ནོར་འཁྲུལ་ཞིག་བྱུང་སོང་།",
-    "copyQueryTitle": "འདྲ་བཤུས་བྱས་ཟིན།",
-    "copyQueryLink": "འདྲ་བཤུས་བྱས་ཟིན།",
-    "emailQueryLink": "གློག་འཕྲིན་ཁ་བྱང་ཁ་ཕྱེ་ཟིན།"
+    "copied": "འདྲ་བཤུས་བྱས་ཟིན།",
+    "emailResultInfo": "གློག་འཕྲིན་ཁ་བྱང་ཁ་ཕྱེ་ཟིན།"
   },
   "filtersLabels": {
     "score": "འདྲ་མཚུངས་ཀྱི་གྲངས་ཐོ།",

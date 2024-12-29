@@ -1,21 +1,9 @@
 import type { JSX } from "react";
 import {
-  onCopyQueryLink,
-  onCopyQueryTitle,
-  onDownload,
-  onEmailQueryLink,
-  type UtilityOptionProps,
-} from "@features/SidebarSuite/TabContent/UtilityOptionsSection/utils";
-import {
   DisplayUISettingName,
   RequestFilterUISettingName,
-  UtilityUIOptionName,
 } from "@features/SidebarSuite/types";
 import { SegmentOptions } from "@features/SidebarSuite/uiSettings/SegmentOptions";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
-import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 
 import { default as DbSourceFilter } from "./DbSourceFilter";
 import { default as FolioOption } from "./FolioOption";
@@ -46,23 +34,4 @@ export const displaySettingComponents: Record<
   sort_method: <SortOption />,
   script: <TextScriptOption />,
   showSegmentNrs: <SegmentOptions />,
-};
-
-export const utilityComponents: Record<UtilityUIOptionName, UtilityOptionProps> = {
-  download_data: {
-    callback: onDownload,
-    icon: FileDownloadIcon,
-  },
-  copyQueryTitle: {
-    callback: onCopyQueryTitle,
-    icon: LocalOfferOutlinedIcon,
-  },
-  copyQueryLink: {
-    callback: onCopyQueryLink,
-    icon: ShareOutlinedIcon,
-  },
-  emailQueryLink: {
-    callback: onEmailQueryLink,
-    icon: ForwardToInboxIcon,
-  },
 };

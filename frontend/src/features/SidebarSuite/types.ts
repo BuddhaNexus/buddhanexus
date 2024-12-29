@@ -101,10 +101,7 @@ export type RequestUtilityUIOptionName = Extract<
   "download_data"
 >;
 
-export type LocalUtilityUIOptionName =
-  | "copyQueryTitle"
-  | "copyQueryLink"
-  | "emailQueryLink";
+export type LocalUtilityUIOptionName = "copyResultInfo" | "emailResultInfo";
 
 export type UtilityUIOptionName =
   | RequestUtilityUIOptionName

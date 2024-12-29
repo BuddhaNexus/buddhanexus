@@ -13,7 +13,7 @@ export const AVAILABLE_DB_FILE_PAGE_FILTERS: Record<
   DBSourceFilePageFilterUISettingName[]
 > = {
   [DbViewEnum.GRAPH]: dbSourceFileRequestFilters.filter(
-    (filterName) => filterName !== "exclude_sources"
+    (filterName) => filterName !== "exclude_sources",
   ),
   [DbViewEnum.NUMBERS]: dbSourceFileRequestFilters,
   [DbViewEnum.TABLE]: dbSourceFileRequestFilters,
@@ -51,7 +51,7 @@ export const UNAVAILABLE_DB_SOURCE_PAGE_UI_UTILITIES: UnavailableDisplayUtilitie
 
 export const UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES: UtilityUIOptionName[] = [
   "download_data",
-  "copyQueryTitle",
+  // "copyResultInfo",
 ];
 
 type LanguageUnabvailableDisplaySettings = Partial<

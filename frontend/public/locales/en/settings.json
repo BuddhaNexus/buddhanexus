@@ -45,17 +45,15 @@
     "download_data": "Download results as xlsx file",
     "wylie": "Wylie",
     "unicode": "Unicode",
-    "copyQueryTitle": "Copy text title",
-    "copyQueryLink": "Copy results page link",
-    "emailQueryLink": "Email results page link",
+    "copyResultInfo": "Copy result page details",
+    "emailResultInfo": "Email result page details",
     "showSegmentNumbers": "Show segment numbers",
     "useMonochromaticSegmentColors": "Use monochromatic segment match colors"
   },
   "optionsPopperMsgs": {
     "download_data": "Ooops! Something went wrong!",
-    "copyQueryTitle": "Copied",
-    "copyQueryLink": "Copied",
-    "emailQueryLink": "Email opened"
+    "copied": "Copied",
+    "emailResultInfo": "Email opened"
   },
   "filtersLabels": {
     "score": "Similarity Score:",
