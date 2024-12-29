@@ -74,7 +74,7 @@
     "openSearch": "Open search box",
     "closeSearch": "Close search box",
     "noResultsHeading": "No results found",
-    "noResultsTip": "Try search for an exact term with whole words, correct punctuation and diacretical marks where relevant:"
+    "noResultsTip": "Try adjusting your search. Making sure you use an exact search term with whole words, correct punctuation and diacretical marks where relevant may help."
   },
   "graph": {
     "histogramDataTitle": "Distribution of the top files that have matches with the Inquiry Text:",
