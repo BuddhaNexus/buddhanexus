@@ -6,7 +6,7 @@ from tqdm import tqdm as tqdm
 from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 import multiprocessing
-from utils import should_download_file
+from utils import should_download_file, get_database
 
 from dataloader_models import Match, validate_dict_list
 from dataloader_constants import (
@@ -57,16 +57,19 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
         parallel["root_filename"] = root_filename
         parallels_to_be_inserted.append(parallel)
 
-    chunksize = 10000
+    chunksize = 1000
     for i in range(0, len(parallels_to_be_inserted), chunksize):
         try:
             db_collection.insert_many(parallels_to_be_inserted[i : i + chunksize])
         except (DocumentInsertError, IndexCreateError) as e:
             print(f"Could not save parallel {parallel}. Error: ", e)
+    print("Done loading parallels")
 
 
-def process_file(path, db):
+def process_file(path, _):
     print("Processing file: ", path)
+    db = get_database()
+    
     parallels = json.load(
         gzip.open(path, "rt", encoding="utf-8")
     )  # returns a list of dicts
@@ -99,10 +102,15 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
 
     files = os.listdir(folder)
     files = list(filter(lambda f: f.endswith(".json.gz"), files))
-    pool = multiprocessing.Pool(number_of_threads)
+    pool = multiprocessing.Pool(number_of_threads)    
+    async_results = []
     for file in files:
-        pool.apply_async(process_file, args=(os.path.join(folder, file), db))
-        # process_file(os.path.join(folder, file), db)
+        print(f"Looping over file {file}")
+        result = pool.apply_async(process_file, args=(os.path.join(folder, file), None))
+        async_results.append(result)
+    
+    for result in async_results:
+        result.get()
 
     db_collection.add_hash_index(
         fields=[
