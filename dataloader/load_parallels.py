@@ -69,7 +69,7 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
 def process_file(path, _):
     print("Processing file: ", path)
     db = get_database()
-    
+
     parallels = json.load(
         gzip.open(path, "rt", encoding="utf-8")
     )  # returns a list of dicts
@@ -102,13 +102,13 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
 
     files = os.listdir(folder)
     files = list(filter(lambda f: f.endswith(".json.gz"), files))
-    pool = multiprocessing.Pool(number_of_threads)    
+    pool = multiprocessing.Pool(number_of_threads)
     async_results = []
     for file in files:
         print(f"Looping over file {file}")
         result = pool.apply_async(process_file, args=(os.path.join(folder, file), None))
         async_results.append(result)
-    
+
     for result in async_results:
         result.get()
 
