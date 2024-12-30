@@ -31,7 +31,7 @@ export function TextItemLinkBody({
   children: React.ReactNode;
   treeWidth: string | number | undefined;
 }) {
-  const { name, id, dataType } = data;
+  const { name, id, displayId, dataType } = data;
   let elementWidth = DEFAULT_NODE_WIDTH;
   const nameWidth = name.length * CHARACTER_WIDTH;
 
@@ -45,7 +45,7 @@ export function TextItemLinkBody({
         label={
           <RowBox sx={{ gap: "0.25rem" }}>
             <SourceTypeIcon dataType={dataType} />
-            {id}
+            {displayId ?? id}
           </RowBox>
         }
         size="small"

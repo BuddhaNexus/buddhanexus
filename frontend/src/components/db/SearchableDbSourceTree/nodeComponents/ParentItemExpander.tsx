@@ -7,7 +7,7 @@ import { SourceTypeIcon } from "./SourceTypeIcon";
 import { RowBox } from "./styledComponents";
 
 export function ParentItemExpander({ node }: { node: NodeApi<any> }) {
-  const { dataType, name, id } = node.data;
+  const { dataType, name, displayId, id } = node.data;
 
   return (
     <>
@@ -18,7 +18,8 @@ export function ParentItemExpander({ node }: { node: NodeApi<any> }) {
         <Chip
           label={
             <RowBox sx={{ gap: "0.5rem" }}>
-              <SourceTypeIcon dataType={dataType} fontSize="inherit" /> {id}
+              <SourceTypeIcon dataType={dataType} fontSize="inherit" />
+              {displayId ?? id}
             </RowBox>
           }
           size="small"

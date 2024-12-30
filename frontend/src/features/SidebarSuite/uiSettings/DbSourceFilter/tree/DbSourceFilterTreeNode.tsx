@@ -58,7 +58,7 @@ export function DbSourceFilterTreeNode({
   filterSettingName,
   selectionIds,
 }: DbSourceFilterTreeNodeProps) {
-  const { name, id, dataType } = node.data;
+  const { name, id, displayId, dataType } = node.data;
 
   const [, setExcludeCollections] = useExcludeCollectionsParam();
   const [, setExcludeCategories] = useExcludeCategoriesParam();
@@ -182,7 +182,7 @@ export function DbSourceFilterTreeNode({
                 }}
               />
               <Typography variant="body2" component="span">
-                {id}
+                {displayId ?? id}
               </Typography>
             </RowBox>
 
