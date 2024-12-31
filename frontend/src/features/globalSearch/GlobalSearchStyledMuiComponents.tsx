@@ -17,10 +17,14 @@ export const AppTopBarSearchBoxWrapper = styled("form", {
   marginTop: theme.spacing(1),
   marginBottom: theme.spacing(1),
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.grey[100],
+  backgroundColor: theme.palette.background.card,
   "&:hover": {
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: theme.palette.background.selected,
   },
+  border:
+    theme.palette.mode === "dark"
+      ? `1px solid ${theme.palette.grey[600]}`
+      : undefined,
   transform: `scaleX(${isOpen ? 1 : 0})`,
   transformOrigin: "left",
   opacity: `${isOpen ? 1 : 0}`,
