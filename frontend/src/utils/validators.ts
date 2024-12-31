@@ -54,4 +54,3 @@ export function isValidDownloadView(
 ): value is APISchemas["DownloadData"] {
   return downloadViews.some((view) => view === value);
 }
-
