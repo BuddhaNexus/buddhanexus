@@ -18,7 +18,7 @@ const makePublicPath = (path: string) => {
 };
 
 export default function MyDocument(
-  props: DocumentProps & DocumentHeadTagsProps
+  props: DocumentProps & DocumentHeadTagsProps,
 ) {
   const currentLocale =
     // eslint-disable-next-line react/destructuring-assignment

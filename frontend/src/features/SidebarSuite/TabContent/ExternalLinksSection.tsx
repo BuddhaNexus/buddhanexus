@@ -100,7 +100,7 @@ export const ExternalLinksSection = () => {
                   )}
                 </ExternalSourceLink>
               </ListItem>
-            )
+            ),
           )}
         </List>
       </>
