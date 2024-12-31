@@ -4,7 +4,7 @@ import { DbLanguage } from "@utils/api/types";
 import { getParallelDownloadData } from "./endpoints/download";
 import { getGraphData } from "./endpoints/graph-view/graph";
 import { getExternalLinksData } from "./endpoints/links";
-import { getDbSourceMenuData } from "./endpoints/menus/sources";
+import { getDbSourceMenuData } from "./endpoints/menudata";
 import { getNumbersViewCategories } from "./endpoints/numbers-view/categories";
 import { getNumbersViewData } from "./endpoints/numbers-view/numbers";
 import { getGlobalSearchData } from "./endpoints/search";

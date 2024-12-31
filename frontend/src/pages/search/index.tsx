@@ -18,17 +18,14 @@ import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import { useAtom } from "jotai";
 import chunk from "lodash/chunk";
 
-const InvalidatedResultsOverlay = () => {
+const StaleResultsOverlay = () => {
   return (
     <Box
       sx={{
         position: "absolute",
+        inset: "-0.75rem",
         top: 0,
-        left: "-40rem",
-        right: "-40rem",
-        height: "100%",
-        mt: 1.5,
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
         zIndex: 1,
         pointerEvents: "none",
       }}
@@ -39,14 +36,10 @@ const InvalidatedResultsOverlay = () => {
 const SearchPageHeader = ({ matches }: { matches: number }) => {
   const { t } = useTranslation();
   return (
-    <>
+    <Box mb={2}>
       <SearchPageInputBox />
-      <QueryPageTopStack
-        matchCount={matches}
-        title={t("search.pageTitle")}
-        subtitle=""
-      />
-    </>
+      <QueryPageTopStack matchCount={matches} title={t("search.pageTitle")} />
+    </Box>
   );
 };
 
@@ -54,43 +47,77 @@ export default function SearchPage() {
   const { isFallback } = useSourceFile();
 
   const [search_string] = useSearchStringParam();
+
   const filters = useDbQueryFilters();
+
+  const {
+    language,
+    exclude_collections,
+    exclude_categories,
+    exclude_files,
+    include_collections,
+    include_categories,
+    include_files,
+  } = filters;
 
   const [isSearchTriggered, setIsSearchTriggered] = useAtom(
     isSearchTriggeredAtom,
   );
 
-  const {
-    data: rawData,
-    isLoading,
-    isError,
-    error,
-    isFetched,
-  } = useQuery({
+  // initializes search trigger when user navigates to search results page from outside the app
+  const isExternalInitialLoad = React.useRef(!isSearchTriggered);
+
+  React.useEffect(() => {
+    if (isExternalInitialLoad.current) {
+      isExternalInitialLoad.current = false;
+      setIsSearchTriggered(true);
+    }
+  }, [setIsSearchTriggered]);
+
+  React.useEffect(() => {
+    setIsSearchTriggered(true);
+  }, [
+    setIsSearchTriggered,
+    language,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify([
+      exclude_collections,
+      exclude_categories,
+      exclude_files,
+      include_collections,
+      include_categories,
+      include_files,
+    ]),
+  ]);
+
+  const { data, isLoading, isError, error, isFetching, isFetched } = useQuery({
     queryKey: DbApi.GlobalSearchData.makeQueryKey({
       search_string,
       filters,
     }),
     queryFn: () => {
-      setIsSearchTriggered(false);
       return DbApi.GlobalSearchData.call({
         search_string,
         filters,
       });
     },
     placeholderData: (prev) => prev,
-    enabled: isSearchTriggered,
+    enabled: Boolean(search_string && isSearchTriggered),
   });
 
-  const data = React.useMemo(() => {
-    const sortedData = rawData
-      ? rawData.sort((a, b) => b.similarity - a.similarity)
+  const chunkedData = React.useMemo(() => {
+    const sortedData = data
+      ? data.sort((a, b) => b.similarity - a.similarity)
       : [];
     // see SearchResultsRow.tsx for explanation of workaround requiring chunked data
     return chunk(sortedData, 3);
-  }, [rawData]);
+  }, [data]);
 
-  const matches = rawData?.length ?? 0;
+  const matches = data?.length ?? 0;
+
+  if (isFetched) {
+    setIsSearchTriggered(false);
+  }
 
   if (isError) {
     return (
@@ -101,7 +128,7 @@ export default function SearchPage() {
     );
   }
 
-  if (isFallback || isLoading) {
+  if (isFallback || isLoading || isFetching || isExternalInitialLoad.current) {
     return (
       <PageContainer maxWidth="xl" isQueryResultsPage>
         <SearchPageHeader matches={matches} />
@@ -113,10 +140,9 @@ export default function SearchPage() {
   return (
     <PageContainer maxWidth="xl" isQueryResultsPage>
       <SearchPageHeader matches={matches} />
-
       <Box sx={{ position: "relative", height: "100%", width: "100%" }}>
-        <SearchResults data={data} />
-        {isFetched ? null : <InvalidatedResultsOverlay />}
+        {data ? <SearchResults data={chunkedData} /> : null}
+        {data && !isFetched ? <StaleResultsOverlay /> : null}
       </Box>
     </PageContainer>
   );
