@@ -2,7 +2,7 @@ import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
 import type { APIPostRequestBody } from "@utils/api/types";
 
 export async function getParallelDownloadData(
-  body: APIPostRequestBody<"/download/">
+  body: APIPostRequestBody<"/download/">,
 ) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 9000);
@@ -24,7 +24,7 @@ export async function getParallelDownloadData(
     if (!response.ok) {
       return {
         error: new Error(
-          `HTTP ${response.status} error! ${response.statusText}`
+          `HTTP ${response.status} error! ${response.statusText}`,
         ),
         blob: null,
       };
