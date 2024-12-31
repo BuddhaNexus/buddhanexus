@@ -5,6 +5,7 @@ import {
   textViewRightPaneFileNameAtom,
 } from "@atoms";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
+import { Link } from "@components/common/Link";
 import {
   useActiveSegmentParam,
   useRightPaneActiveSegmentParam,
@@ -21,7 +22,6 @@ import {
   Chip,
   Divider,
   IconButton,
-  Link,
   Tooltip,
 } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
