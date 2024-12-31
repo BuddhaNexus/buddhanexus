@@ -3,7 +3,7 @@
     "selectLanguage": "Select language",
     "noSelection": "None selected",
     "default": "Default",
-    "resutsSubject": "BuddhaNexus search results link"
+    "resultsSubject": "BuddhaNexus search results link"
   },
   "resultsHead": {
     "matches": "Matches: ",
@@ -51,8 +51,9 @@
     "useMonochromaticSegmentColors": "Use monochromatic segment match colors"
   },
   "optionsPopperMsgs": {
-    "download_data": "Ooops! Something went wrong!",
-    "copied": "Copied",
+    "downloadStarted": "Downloading...",
+    "downloadError": "Ooops! Something went wrong!",
+    "copied": "Copied!",
     "emailResultInfo": "Email opened"
   },
   "filtersLabels": {

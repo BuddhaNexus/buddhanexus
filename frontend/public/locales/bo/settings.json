@@ -3,7 +3,7 @@
     "selectLanguage": "སྐད་ཡིག་འདེམས།",
     "noSelection": "འདེམས་སྒྲུག་བྱས་མི་འདུག",
     "default": "སྤྱིར་བཏང་།",
-    "resutsSubject": "སངས་རྒྱས་སྒྱུ་དྲྭའི་འཚོལ་འབྲས་སྦྲེལ་ཐག"
+    "resultsSubject": "སངས་རྒྱས་སྒྱུ་དྲྭའི་འཚོལ་འབྲས་སྦྲེལ་ཐག"
   },
   "resultsHead": {
     "matches": "འདྲ་མཚུངས།",
@@ -51,7 +51,8 @@
     "useMonochromaticSegmentColors": "ཚན་པ་མཚུངས་པ་རྣམས་ཁ་དོག་གཅིག་གྱུར་བྱོས།"
   },
   "optionsPopperMsgs": {
-    "download_data": "ཨོ་ཧོ། ནོར་འཁྲུལ་ཞིག་བྱུང་སོང་།",
+    "downloadStarted": "Downloading...",
+    "downloadError": "ཨོ་ཧོ། ནོར་འཁྲུལ་ཞིག་བྱུང་སོང་།",
     "copied": "འདྲ་བཤུས་བྱས་ཟིན།",
     "emailResultInfo": "གློག་འཕྲིན་ཁ་བྱང་ཁ་ཕྱེ་ཟིན།"
   },

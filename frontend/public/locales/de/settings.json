@@ -3,7 +3,7 @@
     "selectLanguage": "Sprache auswählen",
     "noSelection": "Nichts ausgewählt",
     "default": "Standard",
-    "resutsSubject": "BuddhaNexus Suchergebnisse-Link"
+    "resultsSubject": "BuddhaNexus Suchergebnisse-Link"
   },
   "resultsHead": {
     "matches": "Übereinstimmungen:",
@@ -51,7 +51,8 @@
     "useMonochromaticSegmentColors": "Verwenden Sie monochromatische Farbkombinationen"
   },
   "optionsPopperMsgs": {
-    "download_data": "Hoppla! Etwas ist schief gelaufen!",
+    "downloadStarted": "Downloading...",
+    "downloadError": "Hoppla! Etwas ist schief gelaufen!",
     "copied": "Kopiert",
     "emailResultInfo": "E-Mail geöffnet"
   },

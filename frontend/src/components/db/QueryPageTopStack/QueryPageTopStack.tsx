@@ -25,6 +25,7 @@ export const QueryPageTopStack = ({
       justifyContent="space-between"
       alignItems={{ xs: "left", md: "center" }}
       spacing={{ xs: 0, md: 2 }}
+      pb={1}
     >
       <hgroup id={RESULT_PAGE_TITLE_GROUP_ID} style={{ maxWidth: "880px" }}>
         <Typography variant="h3" component="h1" mt={1} fontWeight={400}>

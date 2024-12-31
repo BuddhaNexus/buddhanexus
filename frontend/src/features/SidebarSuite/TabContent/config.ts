@@ -41,17 +41,19 @@ export const UNAVAILABLE_DB_SOURCE_PAGE_UI_UTILITIES: UnavailableDisplayUtilitie
   {
     [DbViewEnum.GRAPH]: {
       download_data: ["all"],
+      emailResultInfo: ["all"],
     },
-    [DbViewEnum.NUMBERS]: {},
-    [DbViewEnum.TABLE]: {},
+    [DbViewEnum.NUMBERS]: { emailResultInfo: ["all"] },
+    [DbViewEnum.TABLE]: { emailResultInfo: ["all"] },
     [DbViewEnum.TEXT]: {
       download_data: ["all"],
+      emailResultInfo: ["all"],
     },
   };
 
 export const UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES: UtilityUIOptionName[] = [
   "download_data",
-  // "copyResultInfo",
+  "emailResultInfo",
 ];
 
 type LanguageUnabvailableDisplaySettings = Partial<

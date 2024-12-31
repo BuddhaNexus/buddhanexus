@@ -20,13 +20,11 @@ export const EmailResultInfoButton = () => {
 
   const { resultPageType } = useResultPageType();
 
-  // currentDbFile
-
   const [popperAnchorEl, setPopperAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
-  const handleClick = async (event: React.MouseEvent<HTMLElement>) => {
-    const subject = "";
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    const subject = t(`generic.resultsSubject`);
     let title = "";
 
     if (resultPageType === "dbFile") {

@@ -1,36 +1,39 @@
-import apiClient from "@api";
 import { parseAPIRequestBody } from "@utils/api/apiQueryUtils";
-import type { APIPostRequestBody, APIPostResponse } from "@utils/api/types";
-
-const parseAPITableDownloadData = (
-  filePath: APIPostResponse<"/download/">,
-  fileName: string,
-) => {
-  return {
-    // example filePath: download/dn2_download.xlsx
-    url: `/${filePath}`,
-    // Creates a unique, timestamped file name to avoid overwriting existing files on the user's computer.
-    name: `BuddhaNexus_${fileName}_${new Date()
-      .toISOString()
-      .replace(/\.\w+$/, "")
-      .replace(/T/, "_")
-      .replaceAll(":", "-")}.xlsx`,
-  };
-};
-
-export type ParsedTableDownloadData = ReturnType<
-  typeof parseAPITableDownloadData
->;
+import type { APIPostRequestBody } from "@utils/api/types";
 
 export async function getParallelDownloadData(
-  body: APIPostRequestBody<"/download/">,
+  body: APIPostRequestBody<"/download/">
 ) {
-  // this triggers the creation of an excel sheet of the data for the current view (table & number only) for the user to download. The sheet is generated on the backend and lives in a folder on the HDD of the server for a while and gets removed after a few days.
-  const { data: filePath } = await apiClient.POST("/download/", {
-    body: parseAPIRequestBody(body),
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 9000);
 
-  // if (!filePath) {
-  //   throw new Error("Table View download file path is undefined");
-  // }
+  try {
+    // this triggers the creation of spreadsheet data for the current page, settings and view (table & number only). The backend returns a BytesIO object for download.
+    const response = await fetch("https://dharmamitra.org/api-db/download/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parseAPIRequestBody(body)),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      return {
+        error: new Error(
+          `HTTP ${response.status} error! ${response.statusText}`
+        ),
+        blob: null,
+      };
+    }
+
+    const blob = await response.blob();
+
+    return { blob, error: null };
+  } catch (e) {
+    return { error: new Error(`Failed to fetch data: ${e}`), blob: null };
+  }
 }

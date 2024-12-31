@@ -24,6 +24,8 @@ export const CopyResultInfoButton = () => {
     React.useState<null | HTMLElement>(null);
 
   const handleClick = async (event: React.MouseEvent<HTMLElement>) => {
+    const target = event.currentTarget;
+
     let title = "";
     if (resultPageType === "dbFile") {
       title =
@@ -34,8 +36,9 @@ export const CopyResultInfoButton = () => {
 
     const { href } = window.location;
     const text = `${title}\n${decodeURI(href)}`;
-    setPopperAnchorEl(popperAnchorEl ? null : event.currentTarget);
     await navigator.clipboard.writeText(text);
+    setPopperAnchorEl((prev) => (prev ? null : target));
+    setTimeout(() => setPopperAnchorEl(null), 1500);
   };
 
   const [isPopperOpen, setIsPopperOpen] = useState(false);
@@ -47,7 +50,7 @@ export const CopyResultInfoButton = () => {
   const popperId = isPopperOpen ? `copy-popper` : undefined;
 
   return (
-    <ListItem disablePadding onMouseLeave={() => setPopperAnchorEl(null)}>
+    <ListItem disablePadding>
       <ListItemButton
         id="download-results-button"
         sx={{ px: 0 }}
@@ -76,7 +79,7 @@ export const CopyResultInfoButton = () => {
         transition
       >
         {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={200}>
+          <Fade {...TransitionProps} timeout={275}>
             <PopperMsgBox>{t(`optionsPopperMsgs.copied`)}</PopperMsgBox>
           </Fade>
         )}

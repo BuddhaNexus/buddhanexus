@@ -128,6 +128,8 @@ const rules = {
   "unicorn/text-encoding-identifier-case": "off",
   "unicorn/no-array-for-each": "off",
   "unicorn/prefer-includes": "off",
+  "unicorn/prefer-query-selector": "off",
+  "unicorn/prefer-dom-node-text-content": "off",
 
   // react
   "react/react-in-jsx-scope": "off",
