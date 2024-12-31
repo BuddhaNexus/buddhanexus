@@ -15,6 +15,14 @@ FOR segment IN segments_pages
     return segment.page
 """
 
+QUERY_SEGMENT_FOR_FOLIO = """
+FOR segment IN segments
+    FILTER segment.filename == @filename
+    FILTER segment.folio == @folio
+    LIMIT 1
+    return segment.segmentnr
+"""
+
 
 QUERY_COUNT_MATCHES = """
 FOR p IN parallels

@@ -23,7 +23,7 @@ async def get_data_for_sidebar_menu(
         current_bind_vars = {"lang": language}
 
         query_result = execute_query(menu_query, current_bind_vars)
-        structured_menu_data = structure_menu_data(query_result.result)
+        structured_menu_data = structure_menu_data(query_result.result, language)
 
         return MenudataOutput(menudata=structured_menu_data)
     except Exception as e:
