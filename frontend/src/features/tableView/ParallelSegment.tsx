@@ -65,7 +65,7 @@ export const ParallelSegment = ({
   const setRightPaneFileName = useSetAtom(textViewRightPaneFileNameAtom);
 
   const isMiddlePanePointingLeft = useAtomValue(
-    textViewIsMiddlePanePointingLeftAtom
+    textViewIsMiddlePanePointingLeftAtom,
   );
 
   const dbLanguageName = t(`language.${language}`);
@@ -110,7 +110,7 @@ export const ParallelSegment = ({
       rightPaneActiveSegmentId,
       setRightPaneFileName,
       textSegmentNumber,
-    ]
+    ],
   );
 
   // the box component exists to improve hover actions (visual flash when hovering through parallel cards)
