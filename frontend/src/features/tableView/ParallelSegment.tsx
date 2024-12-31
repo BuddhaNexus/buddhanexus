@@ -21,10 +21,10 @@ import {
   Chip,
   Divider,
   IconButton,
-  Link,
   Tooltip,
 } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
+import { Link } from "@components/common/Link";
 import { DbLanguage } from "@utils/api/types";
 import { useAtomValue, useSetAtom } from "jotai";
 
