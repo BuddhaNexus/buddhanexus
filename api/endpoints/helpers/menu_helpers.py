@@ -1,6 +1,7 @@
 import unidecode
 from collections import defaultdict
 from ..models.menu_models import Collection, Category, File
+from natsort import natsorted
 
 
 def create_searchfield(result):
@@ -27,7 +28,7 @@ def create_cat_searchfield(result):
     )
 
 
-def structure_menu_data(query_result):
+def structure_menu_data(query_result, language):
     result = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
 
     for file in query_result:
@@ -38,6 +39,7 @@ def structure_menu_data(query_result):
         category_display_name = file["category_display_name"]
         file_info = File(
             filename=file.get("filename"),
+            textname=file.get("textname"),
             displayName=file.get("displayName"),
             search_field=create_searchfield(file),
         )
@@ -49,20 +51,42 @@ def structure_menu_data(query_result):
         )
         result[collection][category]["files"].append(file_info)
 
-    navigation_menu_data = [
-        Collection(
-            collection=collection,
-            categories=[
-                Category(
-                    category=cat_info["category"],
-                    categorydisplayname=cat_info["categorydisplayname"],
-                    categorysearch_field=cat_info["categorysearchfield"],
-                    files=cat_info["files"],
-                )
-                for cat_info in categories.values()
-            ],
-        )
-        for collection, categories in result.items()
-    ]
+    navigation_menu_data = []
+
+    if language == "pa":
+        navigation_menu_data = [
+            Collection(
+                collection=collection,
+                categories=[
+                    Category(
+                        category=cat_info["category"],
+                        categorydisplayname=cat_info["categorydisplayname"],
+                        categorysearch_field=cat_info["categorysearchfield"],
+                        files=cat_info["files"],
+                    )
+                    for cat_info in categories.values()
+                ],
+            )
+            for collection, categories in result.items()
+        ]
+
+    else:
+        navigation_menu_data = [
+            Collection(
+                collection=collection,
+                categories=[
+                    Category(
+                        category=cat_info["category"],
+                        categorydisplayname=cat_info["categorydisplayname"],
+                        categorysearch_field=cat_info["categorysearchfield"],
+                        files=natsorted(cat_info["files"], key=lambda x: x.filename),
+                    )
+                    for cat_info in natsorted(
+                        categories.values(), key=lambda x: x["categorydisplayname"]
+                    )
+                ],
+            )
+            for collection, categories in natsorted(result.items())
+        ]
 
     return navigation_menu_data
