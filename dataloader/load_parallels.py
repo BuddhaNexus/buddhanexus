@@ -7,6 +7,7 @@ from arango import DocumentInsertError, IndexCreateError
 from arango.database import StandardDatabase
 import multiprocessing
 from utils import should_download_file, get_database
+from time import sleep
 
 from dataloader_models import Match, validate_dict_list
 from dataloader_constants import (
@@ -141,14 +142,30 @@ def load_sorted_parallels_file(path, lang, db_collection):
     print("Loading sorted parallels for file: ", path)
     current_files = json.load(
         gzip.open(path, "rt", encoding="utf-8")
-    )  # returns a list of dicts???
+    )
+    
+    batch_size = 100
+    batch = []
+    
     for file in tqdm(current_files):
         if not should_download_file(file["filename"]):
             continue
         filename = get_filename_from_segmentnr(file["filename"])
         file["_key"] = filename
         file["lang"] = lang
-        db_collection.insert(file, overwrite=True)
+        batch.append(file)
+        
+        if len(batch) >= batch_size:
+            try:
+                db_collection.insert_many(batch, overwrite=True)
+                batch = []
+            except DocumentInsertError as e:
+                print(f"Batch insert failed: {e}")
+                raise
+    
+    # Insert remaining documents
+    if batch:
+        db_collection.insert_many(batch, overwrite=True)
 
 
 def load_sorted_parallels_for_language(folder, lang, db):
