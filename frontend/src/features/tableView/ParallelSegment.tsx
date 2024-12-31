@@ -114,7 +114,7 @@ export const ParallelSegment = ({
   // the box component exists to improve hover actions (visual flash when hovering through parallel cards)
   return (
     <Box
-      sx={{ py: 1 }}
+      sx={{ py: 1, maxWidth: { xs: "100%", lg: "48%" } }}
       onMouseEnter={() => id && onHover?.(id)}
       onMouseLeave={() => onHover?.("")}
     >

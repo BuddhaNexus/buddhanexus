@@ -2,7 +2,7 @@ import {
   DBSourceFilePageFilterUISettingName,
   DisplayUISettingName,
   SearchPageFilterUISettingName,
-  UtilityUISettingName,
+  UtilityUIOptionName,
 } from "@features/SidebarSuite/types";
 import { dbSourceFileRequestFilters } from "@features/SidebarSuite/uiSettings/config";
 import { APISchemas } from "@utils/api/types";
@@ -30,7 +30,7 @@ export const AVAILABLE_SEARCH_PAGE_FILTERS: Record<
 };
 
 type LanguageUnabvailableUtilities = Partial<
-  Record<UtilityUISettingName, APISchemas["Languages"][]>
+  Record<UtilityUIOptionName, APISchemas["Languages"][]>
 >;
 type UnavailableDisplayUtilities = Record<
   DbViewEnum,
@@ -41,17 +41,19 @@ export const UNAVAILABLE_DB_SOURCE_PAGE_UI_UTILITIES: UnavailableDisplayUtilitie
   {
     [DbViewEnum.GRAPH]: {
       download_data: ["all"],
+      emailResultInfo: ["all"],
     },
-    [DbViewEnum.NUMBERS]: {},
-    [DbViewEnum.TABLE]: {
+    [DbViewEnum.NUMBERS]: { emailResultInfo: ["all"] },
+    [DbViewEnum.TABLE]: { emailResultInfo: ["all"] },
+    [DbViewEnum.TEXT]: {
       download_data: ["all"],
+      emailResultInfo: ["all"],
     },
-    [DbViewEnum.TEXT]: {},
   };
 
-export const UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES: UtilityUISettingName[] = [
+export const UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES: UtilityUIOptionName[] = [
   "download_data",
-  "copyQueryTitle",
+  "emailResultInfo",
 ];
 
 type LanguageUnabvailableDisplaySettings = Partial<

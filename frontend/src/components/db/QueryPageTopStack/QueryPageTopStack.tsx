@@ -2,6 +2,7 @@ import * as React from "react";
 import CurrentResultChips from "@components/db/CurrentResultChips";
 import { useResultPageType } from "@components/hooks/useResultPageType";
 import { Stack, Typography } from "@mui/material";
+import { RESULT_PAGE_TITLE_GROUP_ID } from "@utils/constants";
 
 import { DbFileButtons } from "./DbFileButtons";
 import { QueryPageButtons } from "./QueryPageButtons";
@@ -24,8 +25,9 @@ export const QueryPageTopStack = ({
       justifyContent="space-between"
       alignItems={{ xs: "left", md: "center" }}
       spacing={{ xs: 0, md: 2 }}
+      pb={1}
     >
-      <hgroup style={{ maxWidth: "880px" }}>
+      <hgroup id={RESULT_PAGE_TITLE_GROUP_ID} style={{ maxWidth: "880px" }}>
         <Typography variant="h3" component="h1" mt={1} fontWeight={400}>
           {title}
         </Typography>

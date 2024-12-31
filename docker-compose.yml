@@ -110,7 +110,6 @@ services:
 
     # Set environment variables directly in the docker-compose file
     environment:
-      NEXT_PUBLIC_DOWNLOAD_URL: ${NEXT_PUBLIC_DOWNLOAD_URL}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
 
     # Set environment variables based on the .env file

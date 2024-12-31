@@ -44,8 +44,6 @@ COPY next-seo.config.js .
 # https://github.com/vercel/next.js/discussions/14030
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ARG NEXT_PUBLIC_DOWNLOAD_URL
-ENV NEXT_PUBLIC_DOWNLOAD_URL=${NEXT_PUBLIC_DOWNLOAD_URL}
 
 # Build Next.js based on the preferred package manager
 RUN yarn build
@@ -75,8 +73,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # Environment variables must be redefined at run time
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ARG NEXT_PUBLIC_DOWNLOAD_URL
-ENV NEXT_PUBLIC_DOWNLOAD_URL=${NEXT_PUBLIC_DOWNLOAD_URL}
 
 # Uncomment the following line to disable telemetry at run time
 ENV NEXT_TELEMETRY_DISABLED 1

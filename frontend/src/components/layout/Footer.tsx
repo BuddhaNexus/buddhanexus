@@ -73,6 +73,7 @@ export const Footer = () => {
         justifyContent="space-evenly"
         rowSpacing={4}
         sx={{
+          my: 1,
           borderTop: (theme) => `1px solid ${theme.palette.divider}`,
           textAlign: {
             xs: "center",
