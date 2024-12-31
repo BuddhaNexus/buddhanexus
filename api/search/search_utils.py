@@ -13,6 +13,7 @@ from aksharamukha import transliterate
 
 
 def preprocess_search_string(search_string, language):
+    search_string_unprocessed = search_string
     bo = ""
     zh = ""
     sa = ""
@@ -41,9 +42,12 @@ def preprocess_search_string(search_string, language):
         sa = sa.lower()
 
     # sa_fuzzy also tests if a string contains bo/zh letters; if so, it returns an empty string
-    sa_fuzzy = sanskrit_processor.process_batch(
-        [sa], mode="unsandhied", output_forma="string"
-    )[0]
+    try:
+        sa_fuzzy = sanskrit_processor.process_batch(
+            [sa], mode="unsandhied", output_format="string"
+        )[0]
+    except Exception:
+        sa_fuzzy = ""
     pa = sa_fuzzy
     # if sa_fuzzy detected the string to be Tibetan/Chinese or the unicode2wylie transliteration was successful, do this:
     if sa_fuzzy == "" or bo != "":
@@ -63,7 +67,14 @@ def preprocess_search_string(search_string, language):
         bo = pa = sa = ""
     elif language == "pa":
         bo = zh = sa = ""
-    return {"sa": sa, "sa_fuzzy": sa_fuzzy, "bo": bo, "pa": pa, "zh": zh}
+    return {
+        "sa": sa,
+        "sa_fuzzy": sa_fuzzy,
+        "bo": bo,
+        "pa": pa,
+        "zh": zh,
+        "search_string_unprocessed": search_string_unprocessed,
+    }
 
 
 def get_offsets(search_string, segment_text):
@@ -88,27 +99,33 @@ def get_offsets(search_string, segment_text):
 
 
 def remove_duplicate_results(results):
-    results_by_segnr = {}
-    for current_result in results:
-        for segment_nr in current_result["segment_nr"]:
-            if not segment_nr in results_by_segnr:
-                results_by_segnr[segment_nr] = [current_result]
-            else:
-                results_by_segnr[segment_nr].append(current_result)
-    for current_result in results:
-        for current_segnr in current_result["segment_nr"]:
-            for query_result in results_by_segnr[current_segnr]:
-                if not query_result["segment_nr"][0] == current_result["segment_nr"][0]:
-                    if (
-                        current_result["centeredness"] >= query_result["centeredness"]
-                        and not "disabled" in query_result
-                    ):
-                        current_result["disabled"] = True
-    return_results = []
+    # Create a dict to track best result per segment number
+    best_results = {}
+
+    # First pass - find best result for each segment number
     for result in results:
-        if not "disabled" in result:
-            return_results.append(result)
-    return return_results
+        segment_nrs = result["segment_nr"]
+        centeredness = result["centeredness"]
+
+        for seg_nr in segment_nrs:
+            if seg_nr not in best_results or centeredness < best_results[seg_nr][1]:
+                best_results[seg_nr] = (result, centeredness)
+
+    # Second pass - mark results as disabled if they're not the best for any of their segments
+    for result in results:
+        should_disable = True
+        for seg_nr in result["segment_nr"]:
+            if best_results[seg_nr][0] is result:
+                should_disable = False
+                break
+        if should_disable:
+            result["disabled"] = True
+
+    for result in results:
+        result["segment_nr"] = result["segment_nr"][0]
+
+    # Return only non-disabled results
+    return [result for result in results if "disabled" not in result]
 
 
 def process_result(result, search_string):
@@ -116,6 +133,7 @@ def process_result(result, search_string):
         beg, end, centeredness, distance = get_offsets(
             search_string, result["original"]
         )
+
         result["offset_beg"] = beg
         result["offset_end"] = end
         result["distance"] = distance
@@ -123,7 +141,7 @@ def process_result(result, search_string):
         result["similarity"] = 100
         if distance != 0:
             result["similarity"] = 100 - distance / len(search_string)
-        result["segment_nr"] = result["segment_nr"][0]
+
         return result
     except (RuntimeError, TypeError, NameError):
         pass
@@ -131,20 +149,17 @@ def process_result(result, search_string):
 
 def postprocess_results(search_strings, results):
     new_results = []
-    search_string = search_strings["sa"]
+    search_string = search_strings["search_string_unprocessed"]
     for result in results:
         result["original"] = re.sub(
             "@[0-9a-b+]+", "", result["original"]
         )  # remove possible bo folio numbers
-        new_results.append(process_result(result, search_string))
-
+        processed = process_result(result, search_string)
+        if processed:
+            new_results.append(processed)
     results = [x for x in new_results if x is not None]
     results = [x for x in results if "centeredness" in x]
     results = remove_duplicate_results(results)
-    # results = filter_results_by_collection(results, limitcollection_include)
-    results = remove_duplicate_results(results)
-    results = [i for n, i in enumerate(results) if i not in results[n + 1 :]]
-    # First sort according to string similarity, next sort if multilang is present; the idea is that first the multilang results are shown, then the other with increasing distance
     results = sorted(results, key=lambda i: i["distance"])
     results = results[::-1]
     return results[:200]  # make sure we return a fixed number of results

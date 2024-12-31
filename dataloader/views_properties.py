@@ -28,7 +28,7 @@ PROPERTIES_SEARCH_INDEX_BO_FUZZY = {
     "links": {
         COLLECTION_SEARCH_INDEX_BO: {
             "analyzers": [TIBETAN_FUZZY_ANALYZER],
-            "fields": {"stemmed": {"analyzers": [TIBETAN_FUZZY_ANALYZER]}},
+            "fields": {"analyzed": {"analyzers": [TIBETAN_FUZZY_ANALYZER]}},
         }
     },
     "includeAllFields": True,
@@ -43,7 +43,7 @@ PROPERTIES_SEARCH_INDEX_SA = {
             "analyzers": [SANSKRIT_ANALYZER],
             "fields": {
                 "original": {"analyzers": [SANSKRIT_ANALYZER]},
-                "stemmed": {"analyzers": [SANSKRIT_ANALYZER]},
+                "analyzed": {"analyzers": [SANSKRIT_ANALYZER]},
             },
         }
     },
@@ -59,7 +59,7 @@ PROPERTIES_SEARCH_INDEX_PA = {
             "analyzers": [PALI_ANALYZER],
             "fields": {
                 "original": {"analyzers": [PALI_ANALYZER]},
-                "stemmed": {"analyzers": [PALI_ANALYZER]},
+                "analyzed": {"analyzers": [PALI_ANALYZER]},
             },
         }
     },
