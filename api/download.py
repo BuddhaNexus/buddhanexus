@@ -363,12 +363,10 @@ def get_category_dict(segment_parallels, categories_list):
     category_dict = {}
     for parallel in segment_parallels:
         if not parallel or not isinstance(parallel, dict):
-            continue
-            
+            continue            
         category = parallel.get("category")
         if not category:
-            continue
-            
+            continue            
         try:
             category_index = categories_list.index(category) + 1
         except ValueError:
@@ -380,8 +378,7 @@ def get_category_dict(segment_parallels, categories_list):
 
         par_segnr = parallel.get("par_segnr")
         if not par_segnr:
-            continue
-            
+            continue            
         category_dict[category_index].append(
             shorten_segment_names(par_segnr)
         )
