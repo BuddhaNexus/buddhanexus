@@ -362,20 +362,28 @@ def get_category_dict(segment_parallels, categories_list):
     """
     category_dict = {}
     for parallel in segment_parallels:
-        if parallel["category"]:
-            try:
-                category_index = categories_list.index(parallel["category"]) + 1
-            except:  # pylint: disable=bare-except
-                print("cannot find in categories list: ", parallel["category"])
-                continue
-        else:
+        if not parallel or not isinstance(parallel, dict):
+            continue
+            
+        category = parallel.get("category")
+        if not category:
+            continue
+            
+        try:
+            category_index = categories_list.index(category) + 1
+        except ValueError:
+            print("cannot find in categories list: ", category)
             continue
 
         if not category_index in category_dict:
             category_dict[category_index] = []
 
+        par_segnr = parallel.get("par_segnr")
+        if not par_segnr:
+            continue
+            
         category_dict[category_index].append(
-            shorten_segment_names(parallel["par_segnr"])
+            shorten_segment_names(par_segnr)
         )
 
     return category_dict
