@@ -147,7 +147,6 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
                             return decoded
                         except ValueError as e:
                             logger.error("Failed to decode cached value: %s", str(e))
-                
                 logger.info("Cache miss - calling original function")
                 result = await func(*args, **kwargs)
 
@@ -166,6 +165,5 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
             except (ConnectionError, TimeoutError) as e:
                 logger.error("Cache operation failed: %s", str(e))
                 return await func(*args, **kwargs)
-            
         return debug_wrapper
     return wrapper
