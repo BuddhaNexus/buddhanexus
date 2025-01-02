@@ -23,16 +23,14 @@ def create_numbers_view_data(table_results):
         parallels_list = []
         if result["parallels"]:
             for parallel in result["parallels"]:
-                if parallel["par_full_names"][0]:
+                if parallel:
                     parallel_dic = {}
                     parallel_dic["segmentnr"] = shorten_segment_names(
                         parallel["par_segnr"]
                     )
-                    parallel_dic["displayName"] = parallel["par_full_names"][0][
-                        "displayName"
-                    ]
-                    parallel_dic["fileName"] = parallel["par_full_names"][0]["fileName"]
-                    parallel_dic["category"] = parallel["par_full_names"][0]["category"]
+                    parallel_dic["displayName"] = parallel["displayName"]
+                    parallel_dic["fileName"] = parallel["fileName"]
+                    parallel_dic["category"] = parallel["category"]
                     parallels_list.append(parallel_dic)
 
             if parallels_list:

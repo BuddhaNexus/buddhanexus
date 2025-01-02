@@ -1,32 +1,21 @@
-def build_query_search(
-    query_languages,
-    filters=None,
-    max_limit=1000,
-):
+def build_query_search(query_languages, bind_variables, filters=None, max_limit=1000):
     """
-    Build a modular AQL search query based on requested languages.
+    Build search query for specified languages only
 
-    :param query_languages: list of language codes, e.g. ['zh', 'bo', 'sa', 'pa']
-    :param filters: dict with filter arrays if needed, e.g.
-                    {
-                      "filter_include_files": [],
-                      "filter_exclude_files": [],
-                      "filter_include_categories": [],
-                      "filter_exclude_categories": [],
-                      "filter_include_collections": [],
-                      "filter_exclude_collections": [],
-                      ...
-                    }
-    :param max_limit: max number of documents per language sub-query
-    :return: an AQL query string
+    Args:
+        query_languages: List of language codes to search
+        bind_variables: Dict of bind variables that will be available in the query
+        filters: Optional filters to apply
+        max_limit: Maximum number of results per language
     """
+    if not query_languages:
+        return "RETURN []"
 
-    # Provide default empty lists if no filters passed
-    if filters is None:
-        filters = {}
-
-    # Helper to generate the repeated filter code
+    # Helper to generate the repeated filter code - only if filters are provided
     def filter_clauses():
+        if not filters:
+            return ""
+
         return f"""
         FILTER LENGTH(@filter_include_files) == 0 OR d.filename IN @filter_include_files
         FILTER LENGTH(@filter_exclude_files) == 0 OR d.filename NOT IN @filter_exclude_files
@@ -35,29 +24,8 @@ def build_query_search(
         FILTER LENGTH(@filter_include_collections) == 0 OR d.collection IN @filter_include_collections
         FILTER LENGTH(@filter_exclude_collections) == 0 OR d.collection NOT IN @filter_exclude_collections"""
 
-    # We map each language code to:
-    # - the AQL view name
-    # - the AQL field to PHRASE-search on
-    # - the analyzer to use
-    # - possibly a second "fuzzy" version if needed
-    # Adjust this dictionary as needed for your project.
-    language_map = {
-        "zh": [
-            {
-                "view": "search_index_zh_view",
-                "phrase_field": "d.original",
-                "analyzer": "text_zh",
-                "bind_var": "@search_string_zh",
-            }
-        ],
-        "bo": [
-            {
-                "view": "search_index_bo_view",
-                "phrase_field": "d.analyzed",
-                "analyzer": "tibetan_fuzzy_analyzer",
-                "bind_var": "@search_string_bo",
-            }
-        ],
+    # Map of language configurations
+    language_configs = {
         "sa": [
             # normal Sanskrit
             {
@@ -66,13 +34,21 @@ def build_query_search(
                 "analyzer": "sanskrit_analyzer",
                 "bind_var": "@search_string_sa",
             },
-            # fuzzy Sanskrit example
+            # fuzzy Sanskrit
             {
                 "view": "search_index_sa_view",
                 "phrase_field": "d.analyzed",
                 "analyzer": "sanskrit_analyzer",
                 "bind_var": "@search_string_sa_fuzzy",
             },
+        ],
+        "bo": [
+            {
+                "view": "search_index_bo_fuzzy_view",
+                "phrase_field": "d.analyzed",
+                "analyzer": "tibetan_fuzzy_analyzer",
+                "bind_var": "@search_string_bo",
+            }
         ],
         "pa": [
             {
@@ -82,30 +58,41 @@ def build_query_search(
                 "bind_var": "@search_string_pa",
             }
         ],
+        "zh": [
+            {
+                "view": "search_index_zh_view",
+                "phrase_field": "d.original",
+                "analyzer": "text_zh",
+                "bind_var": "@search_string_zh",
+            }
+        ],
     }
 
-    # Build sub-queries only for languages actually requested
+    # Build sub-queries only for languages actually requested and have search strings
     subqueries = []
     for lang in query_languages:
-        if lang not in language_map:
+        if lang not in language_configs:
             continue
 
-        for entry in language_map[lang]:
-            # Wrap each subquery in parentheses and RETURN
+        for config in language_configs[lang]:
+            # Skip this configuration if we don't expect to have the bind variable
+            bind_var = config["bind_var"].replace(
+                "@", ""
+            )  # Remove @ from bind variable name
+            if bind_var not in bind_variables:  # Add this check
+                continue
+
             subquery = f"""(
-                FOR d IN {entry['view']}
-                    SEARCH PHRASE({entry['phrase_field']}, {entry['bind_var']}, '{entry['analyzer']}')
+                FOR d IN {config['view']}
+                    SEARCH PHRASE({config['phrase_field']}, {config['bind_var']}, '{config['analyzer']}')
                     LIMIT {max_limit}{filter_clauses()}
                     RETURN d
             )"""
             subqueries.append(subquery)
 
-    # If no subqueries were built, you might return an empty result
-    # or a fallback search, depending on your application’s needs.
+    # If no subqueries were built, return empty result
     if not subqueries:
-        return """
-        RETURN []
-        """
+        return "RETURN []"
 
     # Combine the sub-queries into a single FLATTEN
     subqueries_combined = ",\n        ".join(subqueries)
@@ -113,7 +100,7 @@ def build_query_search(
     LET combined_subqueries = FLATTEN([
         {subqueries_combined}
     ])
-    
+
     LET results_with_names = (
         FOR r IN combined_subqueries
             LET full_names = (

@@ -73,7 +73,13 @@ async def startup():
     """
     logger.info("Initializing FastAPI application...")
     redis = aioredis.from_url(
-        "redis://redis:6379", encoding="utf8", decode_responses=False
+        "redis://redis:6379",
+        encoding="utf8",
+        decode_responses=False,
+        socket_timeout=300,
+        socket_connect_timeout=300,
+        retry_on_timeout=True,
+        health_check_interval=30,
     )
     FastAPICache.init(
         backend=RedisBackend(redis),

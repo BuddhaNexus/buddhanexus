@@ -82,7 +82,7 @@ def structure_menu_data(query_result, language):
                         files=natsorted(cat_info["files"], key=lambda x: x.filename),
                     )
                     for cat_info in natsorted(
-                        categories.values(), key=lambda x: x["categorydisplayname"]
+                        categories.values(), key=lambda x: x["category"]
                     )
                 ],
             )

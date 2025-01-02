@@ -48,6 +48,9 @@ services:
     image: redis:alpine
     ports:
       - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning --appendonly yes
+    volumes:
+      - redis-data:/data
     networks:
       - app-network
     restart: always
@@ -126,6 +129,7 @@ volumes:
   dbdata:
   dharmanexus-data:
     external: true
+  redis-data:
 
 networks:
   app-network:
