@@ -75,14 +75,14 @@ FOR file IN files
                             displayName: f.displayName,
                             fileName: f.filename,
                             category: f.category,
-                            par_segnr: p.par_segnr[0]
+                            par_segnr: p.par_segnr
                         }
                 )
 
-                COLLECT segment_nr = POSITION(relevant_segments, segmentnr, true) INTO grouped_parallels
+                COLLECT segment_nr = POSITION(file.segment_keys, segmentnr, true) INTO grouped_parallels
 
                 RETURN {
-                    segmentnr: relevant_segments[segment_nr],
+                    segmentnr: file.segment_keys[segment_nr],
                     parallels: grouped_parallels[*].file_info
                 }
     )

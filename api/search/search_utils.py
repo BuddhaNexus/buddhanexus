@@ -198,8 +198,22 @@ def _process_tibetan(search_string):
 
 def _process_pali(search_string):
     """Process Pali search string"""
-    # For now, just return the cleaned string
-    return search_string
+    # For now, this is just a hack. Needs to be done better
+    try:
+        search_string = transliterate.process("autodetect", "IAST", search_string)
+        search_string = search_string.lower()
+    except:
+        pass
+
+    # Get fuzzy matches using the existing sanskrit_processor
+    try:
+        sa_fuzzy = sanskrit_processor.process_batch(
+            [search_string], mode="unsandhied", output_format="string"
+        )[0]
+    except Exception:
+        sa_fuzzy = ""
+
+    return sa_fuzzy if sa_fuzzy else search_string
 
 
 def _process_chinese(search_string):
