@@ -1,7 +1,7 @@
 def build_query_search(query_languages, bind_variables, filters=None, max_limit=1000):
     """
     Build search query for specified languages only
-    
+
     Args:
         query_languages: List of language codes to search
         bind_variables: Dict of bind variables that will be available in the query
@@ -10,12 +10,12 @@ def build_query_search(query_languages, bind_variables, filters=None, max_limit=
     """
     if not query_languages:
         return "RETURN []"
-        
+
     # Helper to generate the repeated filter code - only if filters are provided
     def filter_clauses():
         if not filters:
             return ""
-            
+
         return f"""
         FILTER LENGTH(@filter_include_files) == 0 OR d.filename IN @filter_include_files
         FILTER LENGTH(@filter_exclude_files) == 0 OR d.filename NOT IN @filter_exclude_files
@@ -76,10 +76,12 @@ def build_query_search(query_languages, bind_variables, filters=None, max_limit=
 
         for config in language_configs[lang]:
             # Skip this configuration if we don't expect to have the bind variable
-            bind_var = config['bind_var'].replace('@', '')  # Remove @ from bind variable name
+            bind_var = config["bind_var"].replace(
+                "@", ""
+            )  # Remove @ from bind variable name
             if bind_var not in bind_variables:  # Add this check
                 continue
-                
+
             subquery = f"""(
                 FOR d IN {config['view']}
                     SEARCH PHRASE({config['phrase_field']}, {config['bind_var']}, '{config['analyzer']}')
@@ -98,7 +100,7 @@ def build_query_search(query_languages, bind_variables, filters=None, max_limit=
     LET combined_subqueries = FLATTEN([
         {subqueries_combined}
     ])
-    
+
     LET results_with_names = (
         FOR r IN combined_subqueries
             LET full_names = (

@@ -79,7 +79,7 @@ async def startup():
         socket_timeout=300,
         socket_connect_timeout=300,
         retry_on_timeout=True,
-        health_check_interval=30
+        health_check_interval=30,
     )
     FastAPICache.init(
         backend=RedisBackend(redis),

@@ -379,8 +379,6 @@ def get_category_dict(segment_parallels, categories_list):
         par_segnr = parallel.get("par_segnr")
         if not par_segnr:
             continue
-        category_dict[category_index].append(
-            shorten_segment_names(par_segnr)
-        )
+        category_dict[category_index].append(shorten_segment_names(par_segnr))
 
     return category_dict
