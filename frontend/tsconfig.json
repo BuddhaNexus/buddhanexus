@@ -20,6 +20,9 @@
       "@atoms": [
         "src/atoms/index.ts"
       ],
+      "@atoms/*": [
+        "src/atoms/*"
+      ],
       "@api": [
         "src/utils/api/client.ts"
       ]

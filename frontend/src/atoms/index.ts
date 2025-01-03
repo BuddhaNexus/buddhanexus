@@ -6,6 +6,8 @@ import { DbViewEnum, DEFAULT_DB_VIEW } from "@utils/constants";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
+import { CurrentDbFileAtom } from "./types";
+
 /**
  * GENERAL
  */
@@ -15,10 +17,7 @@ export const currentDbViewAtom = atomWithStorage<DbViewEnum>(
   DEFAULT_DB_VIEW,
 );
 
-export const currentDbFileAtom = atom<Pick<
-  DbSourceTreeNode,
-  "id" | "displayId" | "name"
-> | null>(null);
+export const currentDbFileAtom = atom<CurrentDbFileAtom>(null);
 
 /**
  * SEARCH

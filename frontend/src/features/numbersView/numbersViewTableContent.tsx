@@ -1,5 +1,6 @@
 import React from "react";
 import { TableComponents } from "react-virtuoso";
+import { SetCurrentDbFileAtom } from "@atoms/types";
 import { Link } from "@components/common/Link";
 import { createURLToSegment } from "@features/textView/utils";
 import {
@@ -47,12 +48,13 @@ export const createTableRows = (
 interface CreateTableColumnProps {
   categories: APIGetResponse<"/numbers-view/categories/">;
   language: DbLanguage;
-  fileName: string;
+  setCurrentDbFileAtom: SetCurrentDbFileAtom;
 }
 
 export const createTableColumns = ({
   categories,
   language,
+  setCurrentDbFileAtom,
 }: CreateTableColumnProps): ColumnDef<NumbersSegment>[] => [
   {
     accessorKey: "segment",
@@ -72,6 +74,7 @@ export const createTableColumns = ({
         <Typography sx={{ fontWeight: 500, lineHeight: 1.25 }}>
           <Link
             href={createURLToSegment({ segmentNumber: segmentnr, language })}
+            onClick={() => setCurrentDbFileAtom(null)}
           >
             {segmentnr}
           </Link>
@@ -121,7 +124,11 @@ export const createTableColumns = ({
                 enterDelay={1200}
               >
                 <Typography sx={{ lineHeight: 1.25 }}>
-                  <Link href={urlToSegment} color="text.primary">
+                  <Link
+                    href={urlToSegment}
+                    color="text.primary"
+                    onClick={() => setCurrentDbFileAtom(null)}
+                  >
                     {segmentnr}
                   </Link>
                 </Typography>

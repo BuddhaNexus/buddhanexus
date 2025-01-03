@@ -1,5 +1,6 @@
 import React from "react";
 import { TableComponents, TableVirtuoso } from "react-virtuoso";
+import { currentDbFileAtom } from "@atoms";
 import { Box, Skeleton, TableCell, TableRow } from "@mui/material";
 import {
   FetchNextPageOptions,
@@ -17,6 +18,7 @@ import {
 import type { NumbersViewData } from "@utils/api/endpoints/numbers-view/numbers";
 import type { APIGetResponse, APIPostResponse } from "@utils/api/types";
 import { DbLanguage } from "@utils/api/types";
+import { useSetAtom } from "jotai";
 
 import {
   createTableColumns,
@@ -38,7 +40,6 @@ interface NumbersTableProps {
   isFetching: boolean;
   isLoading: boolean;
   language: DbLanguage;
-  fileName: string;
 }
 
 const stickyStyles = { position: "sticky", left: 0 };
@@ -51,7 +52,6 @@ export default function NumbersTable({
   isFetching,
   isLoading,
   language,
-  fileName,
 }: NumbersTableProps) {
   const loadMoreItems = React.useCallback(async () => {
     if (!isFetching && !isLoading) {
@@ -61,9 +61,16 @@ export default function NumbersTable({
 
   const rowData = React.useMemo(() => createTableRows(data), [data]);
 
+  const setCurrentDbFileAtom = useSetAtom(currentDbFileAtom);
+
   const columns = React.useMemo<ColumnDef<NumbersSegment>[]>(
-    () => createTableColumns({ categories, language, fileName }),
-    [categories, language, fileName],
+    () =>
+      createTableColumns({
+        categories,
+        language,
+        setCurrentDbFileAtom,
+      }),
+    [categories, language, setCurrentDbFileAtom],
   );
 
   const table = useReactTable({
