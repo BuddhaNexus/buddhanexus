@@ -1,6 +1,8 @@
 import React from "react";
 import { TableComponents } from "react-virtuoso";
+import { SetCurrentDbFileAtom } from "@atoms/types";
 import { Link } from "@components/common/Link";
+import { createURLToSegment } from "@features/textView/utils";
 import {
   Paper,
   Skeleton,
@@ -46,12 +48,13 @@ export const createTableRows = (
 interface CreateTableColumnProps {
   categories: APIGetResponse<"/numbers-view/categories/">;
   language: DbLanguage;
-  fileName: string;
+  setCurrentDbFileAtom: SetCurrentDbFileAtom;
 }
+
 export const createTableColumns = ({
   categories,
   language,
-  fileName,
+  setCurrentDbFileAtom,
 }: CreateTableColumnProps): ColumnDef<NumbersSegment>[] => [
   {
     accessorKey: "segment",
@@ -70,10 +73,8 @@ export const createTableColumns = ({
       return (
         <Typography sx={{ fontWeight: 500, lineHeight: 1.25 }}>
           <Link
-            // TODO: make sure this links to the correct segment
-            href={`/db/${language}/${fileName}/text?active_segment=${segmentnr}`}
-            target="_blank"
-            rel="noreferrer noopenner"
+            href={createURLToSegment({ segmentNumber: segmentnr, language })}
+            onClick={() => setCurrentDbFileAtom(null)}
           >
             {segmentnr}
           </Link>
@@ -103,11 +104,14 @@ export const createTableColumns = ({
           }}
         >
           {parallels.map((parallel, i) => {
-            const {
-              displayName,
-              fileName: parallelFileName,
-              segmentnr,
-            } = parallel || {};
+            const { displayName, segmentnr } = parallel || {};
+
+            const segmentNumber = segmentnr.split("–")[0] ?? segmentnr;
+
+            const urlToSegment = createURLToSegment({
+              segmentNumber,
+              language,
+            });
 
             return (
               <Tooltip
@@ -121,11 +125,9 @@ export const createTableColumns = ({
               >
                 <Typography sx={{ lineHeight: 1.25 }}>
                   <Link
-                    // TODO: make sure this links to the correct segment
-                    href={`/db/${language}/${parallelFileName}/text?active_segment=${segmentnr}`}
+                    href={urlToSegment}
                     color="text.primary"
-                    target="_blank"
-                    rel="noreferrer noopenner"
+                    onClick={() => setCurrentDbFileAtom(null)}
                   >
                     {segmentnr}
                   </Link>

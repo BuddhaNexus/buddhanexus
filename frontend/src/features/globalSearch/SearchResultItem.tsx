@@ -1,12 +1,14 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
+import { currentDbFileAtom } from "@atoms";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import { Link } from "@components/common/Link";
-import { useGetURLToSegment } from "@features/textView/useGetURLToSegment";
+import { createURLToSegment } from "@features/textView/utils";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";
 import { CardContent, Chip, Divider, IconButton, Tooltip } from "@mui/material";
 import type { ParsedSearchResult } from "@utils/api/endpoints/search";
+import { useSetAtom } from "jotai";
 
 import {
   SearchResultCard,
@@ -38,10 +40,12 @@ export const SearchResultItem = ({ result }: Props) => {
   const roundedSimilarity =
     similarity % 1 === 0 ? similarity : similarity.toFixed(2);
 
-  const { urlToSegment } = useGetURLToSegment({
+  const urlToSegment = createURLToSegment({
     language,
     segmentNumber,
   });
+
+  const setCurrentDbFileAtom = useSetAtom(currentDbFileAtom);
 
   return (
     <SearchResultCard>
@@ -80,8 +84,9 @@ export const SearchResultItem = ({ result }: Props) => {
                 wordBreak: "break-word",
                 m: 0.5,
               }}
-              target="_blank"
-              rel="noreferrer noopenner"
+              onClick={() => {
+                setCurrentDbFileAtom(null);
+              }}
             >
               {segmentNumber}
             </Link>

@@ -1,5 +1,6 @@
 import React from "react";
 import { TableComponents, TableVirtuoso } from "react-virtuoso";
+import { currentDbFileAtom } from "@atoms";
 import { Box, Skeleton, TableCell, TableRow } from "@mui/material";
 import {
   FetchNextPageOptions,
@@ -17,6 +18,7 @@ import {
 import type { NumbersViewData } from "@utils/api/endpoints/numbers-view/numbers";
 import type { APIGetResponse, APIPostResponse } from "@utils/api/types";
 import { DbLanguage } from "@utils/api/types";
+import { useSetAtom } from "jotai";
 
 import {
   createTableColumns,
@@ -38,7 +40,6 @@ interface NumbersTableProps {
   isFetching: boolean;
   isLoading: boolean;
   language: DbLanguage;
-  fileName: string;
 }
 
 const stickyStyles = { position: "sticky", left: 0 };
@@ -51,7 +52,6 @@ export default function NumbersTable({
   isFetching,
   isLoading,
   language,
-  fileName,
 }: NumbersTableProps) {
   const loadMoreItems = React.useCallback(async () => {
     if (!isFetching && !isLoading) {
@@ -61,9 +61,16 @@ export default function NumbersTable({
 
   const rowData = React.useMemo(() => createTableRows(data), [data]);
 
+  const setCurrentDbFileAtom = useSetAtom(currentDbFileAtom);
+
   const columns = React.useMemo<ColumnDef<NumbersSegment>[]>(
-    () => createTableColumns({ categories, language, fileName }),
-    [categories, language, fileName],
+    () =>
+      createTableColumns({
+        categories,
+        language,
+        setCurrentDbFileAtom,
+      }),
+    [categories, language, setCurrentDbFileAtom],
   );
 
   const table = useReactTable({
@@ -128,36 +135,48 @@ export default function NumbersTable({
 
     return (
       <>
-        {row?.getVisibleCells().map((cell, i) => (
-          <TableCell
-            key={cell.id.concat(i.toString())}
-            sx={{
-              padding: "6px",
-              ...(cell.column.getIsFirstColumn() && {
-                ...stickyStyles,
-                backgroundColor: "background.paper",
-                borderRight: "1px solid #e0e0e0",
-                paddingLeft: "1rem",
-                overflowWrap: "anywhere",
-              }),
-            }}
-          >
-            {cell.column.getIsFirstColumn() ? (
-              <Box sx={{ position: "absolute", top: 0, bottom: 0 }}>
-                <Box
-                  sx={{
-                    position: "sticky",
-                    top: "54px",
-                  }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        {row?.getVisibleCells().map((cell, i) => {
+          let height;
+          const isSegmentId = cell.column.getIsFirstColumn();
+
+          if (isSegmentId) {
+            const contentLength = cell.getValue()?.toString().length ?? 0;
+            // prettier-ignore
+            height = contentLength > 30 ? "5rem" : (contentLength > 17 ? "3.6rem" : undefined);
+          }
+
+          return (
+            <TableCell
+              key={cell.id.concat(i.toString())}
+              sx={{
+                padding: "6px",
+                ...(isSegmentId && {
+                  ...stickyStyles,
+                  backgroundColor: "background.paper",
+                  borderRight: "1px solid #e0e0e0",
+                  paddingLeft: "1rem",
+                  overflowWrap: "anywhere",
+                }),
+                ...(height && { height }),
+              }}
+            >
+              {isSegmentId ? (
+                <Box sx={{ position: "absolute", top: 0, bottom: 0 }}>
+                  <Box
+                    sx={{
+                      position: "sticky",
+                      top: "54px",
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Box>
                 </Box>
-              </Box>
-            ) : (
-              flexRender(cell.column.columnDef.cell, cell.getContext())
-            )}
-          </TableCell>
-        ))}
+              ) : (
+                flexRender(cell.column.columnDef.cell, cell.getContext())
+              )}
+            </TableCell>
+          );
+        })}
       </>
     );
   });
