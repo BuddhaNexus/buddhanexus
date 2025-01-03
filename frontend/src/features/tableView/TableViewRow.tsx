@@ -25,8 +25,8 @@ export const TableViewRow = ({
   const { parallelStackDirection, parallelArrowTransform } =
     useSettingsDrawer();
 
-  const [rootSegmentNumber] = rootSegmentNumberRange.split("–")[0];
-  const [parallelSegmentNumber] = parallelSegmentNumberRange.split("–")[0];
+  const [rootSegmentNumber] = rootSegmentNumberRange.split("–");
+  const [parallelSegmentNumber] = parallelSegmentNumberRange.split("–");
   return (
     <>
       <Stack

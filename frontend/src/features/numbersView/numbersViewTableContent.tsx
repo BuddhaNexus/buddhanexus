@@ -122,7 +122,7 @@ export const createTableColumns = ({
                 <Typography sx={{ lineHeight: 1.25 }}>
                   <Link
                     // TODO: make sure this links to the correct segment
-                    href={`/db/${language}/${parallelFileName}/text?active_segment=${segmentnr}`}
+                    href={`/db/${language}/${parallelFileName}/text?active_segment=${segmentnr.split("–")[0]}`}
                     color="text.primary"
                     target="_blank"
                     rel="noreferrer noopenner"
