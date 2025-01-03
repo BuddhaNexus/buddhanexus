@@ -112,7 +112,7 @@ export const TextSegment = ({
         href={`/db/${dbLanguage}/${fileName}/text?active_segment=${data.segmentNumber}`}
         target="_blank"
         rel="noreferrer"
-      ></a>
+      />
 
       {data.segmentText.map(({ text, highlightColor, matches }, i) => {
         const segmentKey = segmentNumber ? segmentNumber + i : undefined;
