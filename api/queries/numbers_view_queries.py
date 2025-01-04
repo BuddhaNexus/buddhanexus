@@ -18,7 +18,6 @@ FOR file IN files
 
     LET parallels_data = (
         FOR segmentnr IN relevant_segments
-            LIMIT 100 * @page,100
             FOR p IN parallels
                 FILTER segmentnr IN p.root_segnr
                 FILTER p.score * 100 >= @score
@@ -42,7 +41,7 @@ FOR file IN files
                 )
 
                 COLLECT segment_nr = POSITION(relevant_segments, segmentnr, true) INTO grouped_parallels
-
+                LIMIT 100 * @page,100
                 RETURN {
                     segmentnr: relevant_segments[segment_nr],
                     parallels: grouped_parallels[*].file_info
