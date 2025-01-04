@@ -27,7 +27,7 @@ def run_table_download(query, file_values):
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
     worksheet.hide_gridlines(2)
 
-    spreadsheet_fields = get_spreadsheet_fields(file_values[6], file_values)
+    spreadsheet_fields = get_spreadsheet_fields(file_values[6], file_values, "20,000")
 
     # Defining formats
     worksheet.set_row(0, 30)
@@ -100,7 +100,7 @@ def run_table_download(query, file_values):
     )
 
 
-def get_spreadsheet_fields(lang, file_values):
+def get_spreadsheet_fields(lang, file_values, total_results):
     """
     create header and filter fields for spreadsheet
     """
@@ -121,9 +121,9 @@ def get_spreadsheet_fields(lang, file_values):
         [segment_field, file_values[5]],
         ["Similarity Score", file_values[1]],
         ["Min. Match Length", file_values[2]],
-        ["Sorting Method", file_values[3]],
+        ["Sorting Method", file_values[3].split(".")[1]],
         ["Filters", file_values[4]],
-        ["Max. number of results", "20,000"],
+        ["Max. number of results", total_results],
     )
 
     return (header_fields, filters_fields)
@@ -288,7 +288,7 @@ def run_numbers_download(categories, segments, file_values):
     worksheet.center_horizontally()
     worksheet.set_margins(0.1, 0.1, 0.4, 0.4)
 
-    spreadsheet_fields = get_spreadsheet_fields(file_values[6], file_values)
+    spreadsheet_fields = get_spreadsheet_fields(file_values[6], file_values, "2,500")
 
     # Defining formats
     worksheet.set_row(0, 30)
