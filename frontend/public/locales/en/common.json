@@ -51,6 +51,7 @@
     "genericErrorTitle": "Something went wrong.",
     "genericErrorDescription": "Please contact us if the issue persists.",
     "fetchError": "Error fetching result data",
+    "dbSrcMenuError": "Error fetching database source menu. Database language is invalid.",
     "queryWarning": "Unable to display results. Please use the filters to adjust your query.",
     "noFile": "No file selected.",
     "fileUndefined": "File undefined.",
@@ -73,7 +74,7 @@
     "openSearch": "Open search box",
     "closeSearch": "Close search box",
     "noResultsHeading": "No results found",
-    "noResultsTip": "Try search for an exact term with whole words, correct punctuation and diacretical marks where relevant:"
+    "noResultsTip": "Try adjusting your search. Making sure you use an exact search term with whole words, correct punctuation and diacretical marks where relevant may help."
   },
   "graph": {
     "histogramDataTitle": "Distribution of the top files that have matches with the Inquiry Text:",

@@ -5,6 +5,7 @@ import {
   textViewRightPaneFileNameAtom,
 } from "@atoms";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
+import { Link } from "@components/common/Link";
 import {
   useActiveSegmentParam,
   useRightPaneActiveSegmentParam,
@@ -21,7 +22,6 @@ import {
   Chip,
   Divider,
   IconButton,
-  Link,
   Tooltip,
 } from "@mui/material";
 import type { APISchemas } from "@utils/api/types";
@@ -35,6 +35,7 @@ interface ParallelSegmentProps {
   language: DbLanguage;
   displayName: string;
   length: number;
+  isRowItem?: boolean;
 
   text: APISchemas["FullText"][];
   textSegmentNumber: string;
@@ -51,6 +52,7 @@ export const ParallelSegment = ({
   text,
   score,
   length,
+  isRowItem,
   displayName,
   language,
   onHover,
@@ -114,7 +116,10 @@ export const ParallelSegment = ({
   // the box component exists to improve hover actions (visual flash when hovering through parallel cards)
   return (
     <Box
-      sx={{ py: 1 }}
+      sx={{
+        py: 1,
+        maxWidth: isRowItem ? { xs: "100%", lg: "48%" } : undefined,
+      }}
       onMouseEnter={() => id && onHover?.(id)}
       onMouseLeave={() => onHover?.("")}
     >

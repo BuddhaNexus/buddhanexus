@@ -48,16 +48,16 @@ export default function ParallelsChip() {
     <Chip
       size="small"
       label={
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box
+          sx={{ display: "flex", justifyContent: "space-between", gap: 0.25 }}
+        >
+          <Box>{t("resultsHead.matches")}</Box>
           {isLoading ? (
-            <Skeleton sx={{ minWidth: "8ch" }} animation="wave" />
+            <Skeleton sx={{ minWidth: "5ch" }} animation="wave" />
           ) : (
-            <>
-              <Box>{t("resultsHead.matches")}</Box>
-              <Box sx={{ minWidth: "2ch", ml: "3px", textAlign: "center" }}>
-                {parallelCount}
-              </Box>
-            </>
+            <Box sx={{ minWidth: "5ch", textAlign: "center" }}>
+              {parallelCount}
+            </Box>
           )}
         </Box>
       }

@@ -11,6 +11,13 @@ import {
 } from "@mui/material-nextjs/v14-pagesRouter";
 import InitColorSchemeScript from "@mui/system/InitColorSchemeScript";
 
+const makePublicPath = (path: string) => {
+  // TODO: add basePath to .env
+  const { NODE_ENV } = process.env;
+  const basePath = NODE_ENV === "production" ? "/nexus" : undefined;
+  return basePath ? basePath + path : path;
+};
+
 export default function MyDocument(
   props: DocumentProps & DocumentHeadTagsProps,
 ) {
@@ -31,26 +38,30 @@ export default function MyDocument(
           nonce={process.env.nonce}
         />
         <meta property="csp-nonce" content={process.env.nonce} />
-        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href={makePublicPath("/favicon.ico")} />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="/apple-touch-icon.png"
+          href={makePublicPath("/apple-touch-icon.png")}
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="/favicon-32x32.png"
+          href={makePublicPath("/favicon-32x32.png")}
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="/favicon-16x16.png"
+          href={makePublicPath("/favicon-16x16.png")}
         />
-        <link rel="manifest" href="/site.webmanifest" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#361f0d" />
+        <link rel="manifest" href={makePublicPath("/site.webmanifest")} />
+        <link
+          rel="mask-icon"
+          href={makePublicPath("/safari-pinned-tab.svg")}
+          color="#361f0d"
+        />
         <meta name="msapplication-TileColor" content="#361f0d" />
         <meta name="theme-color" content="#361f0d" />
 

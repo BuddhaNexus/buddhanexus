@@ -17,6 +17,7 @@ import {
   displayUISettings,
   searchRequestFilters,
 } from "@features/SidebarSuite/uiSettings/config";
+import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 
 const searchFilterSet = new Set(searchRequestFilters);
@@ -98,7 +99,14 @@ export default function CurrentResultChips({
   );
 
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row-reverse",
+        flexWrap: "wrap",
+        gap: 0.5,
+      }}
+    >
       {isSearchPage ? (
         <SearchMatchesChip matches={matches} isSearchPage />
       ) : (
@@ -109,16 +117,16 @@ export default function CurrentResultChips({
         <Chip
           size="small"
           label={t("resultsHead.filters", { value: count.filter })}
-          sx={{ mx: 0.5, p: 0.5 }}
+          sx={{ p: 0.5 }}
         />
       )}
       {count.display > 0 && (
         <Chip
           size="small"
           label={t("resultsHead.options", { value: count.display })}
-          sx={{ mx: 0.5, p: 0.5 }}
+          sx={{ p: 0.5 }}
         />
       )}
-    </>
+    </Box>
   );
 }

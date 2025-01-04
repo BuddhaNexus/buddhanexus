@@ -35,6 +35,7 @@ class CacheControlMiddleware(BaseHTTPMiddleware):
     """
     Middleware to control cache headers for GET requests.
     """
+
     async def dispatch(self, request, call_next):
         response = await call_next(request)
         if request.method == "GET":
@@ -72,7 +73,13 @@ async def startup():
     """
     logger.info("Initializing FastAPI application...")
     redis = aioredis.from_url(
-        "redis://redis:6379", encoding="utf8", decode_responses=False
+        "redis://redis:6379",
+        encoding="utf8",
+        decode_responses=False,
+        socket_timeout=300,
+        socket_connect_timeout=300,
+        retry_on_timeout=True,
+        health_check_interval=30,
     )
     FastAPICache.init(
         backend=RedisBackend(redis),
@@ -92,8 +99,6 @@ APP.include_router(numbers_view.router, prefix="/numbers-view")
 APP.include_router(links.router, prefix="/links")
 APP.include_router(utils.router, prefix="/utils")
 APP.include_router(menu.router)
-
-
 
 
 @APP.get("/")

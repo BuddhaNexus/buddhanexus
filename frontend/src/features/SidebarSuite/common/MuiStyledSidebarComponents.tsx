@@ -42,7 +42,7 @@ export const PopperMsgBox = styled(Box)(({ theme }) => ({
   color: theme.palette.text.inverted,
 }));
 
-export const SourceLink = styled(Link)(() => ({
+export const ExternalSourceLink = styled(Link)(() => ({
   "&:hover": {
     filter: "brightness(80%)",
   },

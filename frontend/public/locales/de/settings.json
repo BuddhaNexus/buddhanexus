@@ -3,7 +3,7 @@
     "selectLanguage": "Sprache auswählen",
     "noSelection": "Nichts ausgewählt",
     "default": "Standard",
-    "resutsSubject": "BuddhaNexus Suchergebnisse-Link"
+    "resultsSubject": "BuddhaNexus Suchergebnisse-Link"
   },
   "resultsHead": {
     "matches": "Übereinstimmungen:",
@@ -45,20 +45,19 @@
     "wylie": "Wylie",
     "unicode": "Unicode",
     "download_data": "Ergebnisse als xlsx-Datei herunterladen",
-    "copyQueryTitle": "Texttitel kopieren",
-    "copyQueryLink": "Link der Ergebnisseite kopieren",
-    "emailQueryLink": "Link zur Ergebnisseite per E-Mail versenden",
-    "hideSegmentNumbers": "Segmentnummern anzeigen",
+    "copyResultInfo": "Copy result page details",
+    "emailResultInfo": "Email result page details",
+    "showSegmentNumbers": "Segmentnummern anzeigen",
     "useMonochromaticSegmentColors": "Verwenden Sie monochromatische Farbkombinationen"
   },
   "optionsPopperMsgs": {
-    "download_data": "Hoppla! Etwas ist schief gelaufen!",
-    "copyQueryTitle": "Kopiert",
-    "copyQueryLink": "Kopiert",
-    "emailQueryLink": "E-Mail geöffnet"
+    "downloadStarted": "Downloading...",
+    "downloadError": "Hoppla! Etwas ist schief gelaufen!",
+    "copied": "Kopiert",
+    "emailResultInfo": "E-Mail geöffnet"
   },
   "filtersLabels": {
-    "score": "Similarity Score:",
+    "score": "Ähnlichkeitsbewertung:",
     "minMatch": "Mindestlänge der Zeichen-/Silbenübereinstimmungen",
     "exclude_sources": "Quellen ausschließen:",
     "include_sources": "Nur Quellen einschließen:"

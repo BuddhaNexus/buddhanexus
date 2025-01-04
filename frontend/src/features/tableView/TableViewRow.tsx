@@ -42,6 +42,7 @@ export const TableViewRow = ({
           text={rootFullText}
           textSegmentNumber={rootSegmentNumber ?? ""}
           textSegmentNumberRange={rootSegmentNumberRange}
+          isRowItem
         />
 
         <ArrowDownwardIcon sx={{ transform: parallelArrowTransform }} />
@@ -55,6 +56,7 @@ export const TableViewRow = ({
           score={score}
           textSegmentNumber={parallelSegmentNumber ?? ""}
           textSegmentNumberRange={parallelSegmentNumberRange}
+          isRowItem
         />
       </Stack>
       <Divider />

@@ -1,7 +1,8 @@
 services:
   arangodb:
-    image: arangodb:3.8.4
+    image: arangodb:3.12.3
     platform: linux/amd64
+    #platform: linux/arm64/v8 # Use this instead if you want to use it on m1+ macs
     expose:
       - "8529"
     container_name: "arangodb"
@@ -13,13 +14,17 @@ services:
     command: --query.optimizer-rules "-splice-subqueries"
     volumes:
       - dbdata:/var/lib/arangodb3
+    networks:
+      - app-network
     restart: always
 
   dataloader:
     build:
       context: .
       dockerfile: ./setup/Dockerfile-dataloader
-    platform: linux/amd64
+      platforms:
+        - linux/amd64
+        - linux/arm64/v8
     container_name: "dataloader"
     volumes:
       - .:/opt/buddhanexus
@@ -35,13 +40,28 @@ services:
       - "arangodb"
     depends_on:
       - arangodb
+    networks:
+      - app-network      
+    restart: always
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning --appendonly yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
     restart: always
 
   fastapi:
     build:
       context: .
       dockerfile: ./setup/Dockerfile-fastapi
-    platform: linux/amd64
+      platforms:
+        - linux/amd64
+        - linux/arm64/v8
     container_name: "fastapi"
     ports:
       - "8000:8000"
@@ -58,12 +78,17 @@ services:
     restart: always
     depends_on:
       - arangodb
+      - redis
+    networks:
+      - app-network
 
   tests:
     build:
       context: .
       dockerfile: ./setup/Dockerfile-fastapi
-    platform: linux/amd64
+      platforms:
+        - linux/amd64
+        - linux/arm64/v8
     container_name: "tests"
     volumes:
       - .:/opt/buddhanexus
@@ -78,6 +103,7 @@ services:
     command: pytest -v
     depends_on:
       - arangodb
+  
 
   frontend:
     container_name: frontend
@@ -87,7 +113,6 @@ services:
 
     # Set environment variables directly in the docker-compose file
     environment:
-      NEXT_PUBLIC_DOWNLOAD_URL: ${NEXT_PUBLIC_DOWNLOAD_URL}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
 
     # Set environment variables based on the .env file
@@ -104,3 +129,9 @@ volumes:
   dbdata:
   dharmanexus-data:
     external: true
+  redis-data:
+
+networks:
+  app-network:
+    driver: bridge
+

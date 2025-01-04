@@ -112,5 +112,4 @@ async def get_table_download(input: DownloadInput) -> Any:
                 language,
             ],
         )
-
     return

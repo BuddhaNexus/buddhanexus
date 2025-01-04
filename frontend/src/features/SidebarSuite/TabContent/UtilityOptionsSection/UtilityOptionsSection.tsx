@@ -1,53 +1,41 @@
-import React, { useMemo, useState } from "react";
-import useDownloader from "react-use-downloader";
+import type { JSX } from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
 import { useNullableDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useResultPageType } from "@components/hooks/useResultPageType";
-import {
-  Popper,
-  PopperMsgBox,
-} from "@features/SidebarSuite/common/MuiStyledSidebarComponents";
 import PanelHeading from "@features/SidebarSuite/common/PanelHeading";
 import {
   UNAVAILABLE_DB_SOURCE_PAGE_UI_UTILITIES,
   UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES,
 } from "@features/SidebarSuite/TabContent/config";
-import {
-  defaultAnchorEls,
-  type PopperAnchorState,
-} from "@features/SidebarSuite/TabContent/UtilityOptionsSection/utils";
-import { UtilityUISettingName } from "@features/SidebarSuite/types";
-import { utilityComponents } from "@features/SidebarSuite/uiSettings";
-import {
-  allUIComponentParamNames,
-  utilityUISettings,
-} from "@features/SidebarSuite/uiSettings/config";
+import { UtilityUIOptionName } from "@features/SidebarSuite/types";
+import { utilityUISettings } from "@features/SidebarSuite/uiSettings/config";
 import { getAvailableSettings } from "@features/SidebarSuite/utils";
-import {
-  Fade,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import List from "@mui/material/List";
 import { useAtomValue } from "jotai";
 
+import { CopyResultInfoButton } from "./CopyResultInfoButton";
+import { DownloadResultsButton } from "./DownloadResultsButton";
+import { EmailResultInfoButton } from "./EmailResultInfoButton";
+
+export const UtilityUiomponents: Record<
+  UtilityUIOptionName,
+  JSX.Element | null
+> = {
+  download_data: <DownloadResultsButton />,
+  copyResultInfo: <CopyResultInfoButton />,
+  emailResultInfo: <EmailResultInfoButton />,
+};
+
 export const UtilityOptionsSection = () => {
-  const { t } = useTranslation(["settings", "common"]);
+  const { t } = useTranslation("settings");
   const currentView = useAtomValue(currentDbViewAtom);
-  const { fileName, dbLanguage } = useNullableDbRouterParams();
-  let href: string;
+  const { dbLanguage } = useNullableDbRouterParams();
 
   const pageType = useResultPageType();
 
-  const { download, error } = useDownloader();
-
-  const [popperAnchorEl, setPopperAnchorEl] =
-    useState<PopperAnchorState>(defaultAnchorEls);
-
-  const uiSettings = useMemo(() => {
+  const uiOptions = useMemo(() => {
     if (pageType.isSearchPage) {
       return utilityUISettings.filter(
         (setting) => !UNAVAILABLE_SEARCH_PAGE_UI_UTILITIES.includes(setting),
@@ -55,7 +43,7 @@ export const UtilityOptionsSection = () => {
     }
 
     if (dbLanguage && pageType.isDbFilePage) {
-      return getAvailableSettings<UtilityUISettingName>({
+      return getAvailableSettings<UtilityUIOptionName>({
         dbLanguage,
         uiSettings: utilityUISettings,
         unavailableSettingsForViewOrLang:
@@ -63,92 +51,24 @@ export const UtilityOptionsSection = () => {
       });
     }
 
-    // TODO: create error component
     return [];
   }, [dbLanguage, currentView, pageType]);
 
-  if (typeof window !== "undefined") {
-    href = window.location.toString();
-  }
-
-  if (uiSettings.length === 0) {
+  if (uiOptions.length === 0) {
     return null;
   }
-
-  // TODO: update ui utils to hanlde undefined fileName
-  if (!fileName) return null;
 
   return (
     <>
       <PanelHeading heading={t("headings.tools")} sx={{ mt: 3 }} />
 
       <List sx={{ m: 0 }}>
-        {uiSettings.map((utilityKey) => {
-          const Icon = utilityComponents[utilityKey].icon;
+        {uiOptions.map((filter) => {
+          const Component = UtilityUiomponents[filter];
+          const key = `filter-setting-${filter}`;
 
-          const isPopperOpen = Boolean(popperAnchorEl[utilityKey]);
-          const showPopper =
-            utilityKey === allUIComponentParamNames.download_data
-              ? Boolean(error)
-              : true;
-          const popperId = isPopperOpen ? `${utilityKey}-popper` : undefined;
-
-          return (
-            <ListItem
-              key={utilityKey}
-              disablePadding
-              onMouseLeave={() => setPopperAnchorEl(defaultAnchorEls)}
-            >
-              <ListItemButton
-                id={utilityKey}
-                sx={{ px: 0 }}
-                aria-describedby={popperId}
-                onClick={(event) =>
-                  utilityComponents[utilityKey].callback({
-                    event,
-                    fileName,
-                    popperAnchorStateHandler: [
-                      popperAnchorEl,
-                      setPopperAnchorEl,
-                    ],
-                    download: {
-                      call: download,
-                      fileName,
-                      //TODO: queryParams
-                      queryParams: {},
-                    },
-                    href,
-                    messages: {
-                      subject: t("generic.resutsSubject"),
-                    },
-                  })
-                }
-              >
-                <ListItemIcon>
-                  <Icon />
-                </ListItemIcon>
-                <ListItemText primary={t(`optionsLabels.${utilityKey}`)} />
-              </ListItemButton>
-
-              {showPopper && (
-                <Popper
-                  id={popperId}
-                  open={isPopperOpen}
-                  anchorEl={popperAnchorEl[utilityKey]}
-                  placement="top"
-                  transition
-                >
-                  {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={200}>
-                      <PopperMsgBox>
-                        {t(`optionsPopperMsgs.${utilityKey}`)}
-                      </PopperMsgBox>
-                    </Fade>
-                  )}
-                </Popper>
-              )}
-            </ListItem>
-          );
+          if (!Component) return null;
+          return React.cloneElement(Component, { key });
         })}
       </List>
     </>

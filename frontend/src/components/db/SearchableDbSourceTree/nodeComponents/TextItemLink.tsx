@@ -1,14 +1,18 @@
 import React from "react";
 import { NodeApi } from "react-arborist";
 import { useTranslation } from "next-i18next";
-import { currentDbViewAtom, isDbSourceBrowserDrawerOpenAtom } from "@atoms";
+import {
+  currentDbFileAtom,
+  currentDbViewAtom,
+  isDbSourceBrowserDrawerOpenAtom,
+} from "@atoms";
 import { Link } from "@components/common/Link";
 import { getTextPath } from "@components/common/utils";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { isDbSourceTreeLeafNodeData } from "@components/db/SearchableDbSourceTree/utils";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Chip, Tooltip, Typography } from "@mui/material";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 
 import { SourceTypeIcon } from "./SourceTypeIcon";
 import { RowBox, TextNameTypography } from "./styledComponents";
@@ -27,7 +31,7 @@ export function TextItemLinkBody({
   children: React.ReactNode;
   treeWidth: string | number | undefined;
 }) {
-  const { name, id, dataType } = data;
+  const { name, id, displayId, dataType } = data;
   let elementWidth = DEFAULT_NODE_WIDTH;
   const nameWidth = name.length * CHARACTER_WIDTH;
 
@@ -41,7 +45,7 @@ export function TextItemLinkBody({
         label={
           <RowBox sx={{ gap: "0.25rem" }}>
             <SourceTypeIcon dataType={dataType} />
-            {id}
+            {displayId ?? id}
           </RowBox>
         }
         size="small"
@@ -61,30 +65,37 @@ export function TextItemLinkBody({
 }
 
 export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
-  const { dbLanguage } = useDbRouterParams();
-  const dbView = useAtomValue(currentDbViewAtom);
-
   const { t } = useTranslation();
+  const { dbLanguage } = useDbRouterParams();
 
-  const [, setIsDrawerOpen] = useAtom(isDbSourceBrowserDrawerOpenAtom);
+  const dbView = useAtomValue(currentDbViewAtom);
+  const currentDbFile = useSetAtom(currentDbFileAtom);
+  const setIsDrawerOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);
 
   const { data } = node;
+
+  const { name, id, displayId } = data;
 
   if (!isDbSourceTreeLeafNodeData(data)) {
     return (
       <TextItemLinkBody data={data} treeWidth={node.tree.props.width}>
         <Typography className={styles.textName} color="error.main">
-          {data.name} | {t("prompts.fileUndefined")}
+          {name} | {t("prompts.fileUndefined")}
         </Typography>
       </TextItemLinkBody>
     );
   }
 
+  const handleClick = () => {
+    currentDbFile({ name, id, displayId });
+    setIsDrawerOpen(false);
+  };
+
   return (
     <Link
       className={styles.textNodeLink}
       href={getTextPath({ dbLanguage, fileName: data.fileName, dbView })}
-      onClick={() => setIsDrawerOpen(false)}
+      onClick={handleClick}
     >
       <TextItemLinkBody data={data} treeWidth={node.tree.props.width}>
         <TextNameTypography className={styles.textName}>

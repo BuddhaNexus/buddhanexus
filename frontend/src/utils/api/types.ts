@@ -106,3 +106,14 @@ type QueryParameterProps = {
 export type AllAPIRequestProps = RequestBodyProps & QueryParameterProps;
 
 export type APIRequestPropName = keyof AllAPIRequestProps;
+
+/**
+ * *********************
+ * ERROR TYPES
+ * **************************
+ */
+
+export type CustomAPIError = {
+  code: number;
+  errorMessage: string;
+};

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   nullToUndefined,
   useExcludeCategoriesParam,
@@ -57,4 +58,33 @@ export const useStandardViewBaseQueryParams = () => {
     folio: nullToUndefined(folio) ?? "",
     filters: useDbQueryFilters(),
   };
+};
+
+export const useClearDbSourceFilterQueryParams = () => {
+  const [, setExcludeCollections] = useExcludeCollectionsParam();
+  const [, setExcludeCategories] = useExcludeCategoriesParam();
+  const [, setExcludeFiles] = useExcludeFilesParam();
+  const [, setIncludeCollections] = useIncludeCollectionsParam();
+  const [, setIncludeCategories] = useIncludeCategoriesParam();
+  const [, setIncludeFiles] = useIncludeFilesParam();
+
+  const handleClearDbSourceFilterParams = React.useCallback(async () => {
+    await Promise.all([
+      setExcludeCollections(null),
+      setExcludeCategories(null),
+      setExcludeFiles(null),
+      setIncludeCollections(null),
+      setIncludeCategories(null),
+      setIncludeFiles(null),
+    ]);
+  }, [
+    setExcludeCollections,
+    setExcludeCategories,
+    setExcludeFiles,
+    setIncludeCollections,
+    setIncludeCategories,
+    setIncludeFiles,
+  ]);
+
+  return handleClearDbSourceFilterParams;
 };

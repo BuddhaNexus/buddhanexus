@@ -12,6 +12,7 @@ export type DbSourceTreeNode = {
   dataType: DbSourceTreeNodeDataType;
   children?: DbSourceTreeNode[];
   fileName?: string;
+  displayId?: string;
   searchField: string;
 };
 

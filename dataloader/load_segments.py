@@ -114,8 +114,11 @@ class LoadSegmentsBase:
         segmentnrs = sliding_window(file_df["segmentnr"].tolist(), 3)
         originals = sliding_window(file_df["original"].tolist(), 3)
         stems = sliding_window(file_df["analyzed"].tolist(), 3)
+        collections = file_df["collection"].tolist()
         search_index_entries = []
-        for segnr, original, stem in zip(segmentnrs, originals, stems):
+        for segnr, original, stem, collection in zip(
+            segmentnrs, originals, stems, collections
+        ):
             if self.LANG == "chn":
                 original = "".join(original)
                 stem = "".join(stem)
@@ -131,6 +134,7 @@ class LoadSegmentsBase:
                     "original": original,
                     "analyzed": stem,
                     "category": category,
+                    "collection": collection,
                     "lang": self.LANG,
                     "filename": get_filename_from_segmentnr(segnr[1]),
                 }
@@ -140,7 +144,8 @@ class LoadSegmentsBase:
         db.collection(self.SEARCH_COLLECTION_NAME).insert_many(search_index_entries)
 
         db.collection(self.SEARCH_COLLECTION_NAME).add_hash_index(
-            fields=["segmentnr", "lang", "filename", "category"], unique=False
+            fields=["segmentnr", "lang", "filename", "category", "collection"],
+            unique=False,
         )
 
     def _process_file(self, file):

@@ -51,6 +51,7 @@
     "genericErrorTitle": "Etwas ist schiefgelaufen.",
     "genericErrorDescription": "Bitte kontaktieren Sie uns, wenn das Problem weiterhin besteht.",
     "fetchError": "Error fetching result data",
+    "dbSrcMenuError": "Error fetching database source menu. Database language is invalid.",
     "queryWarning": "Unable to display results. Please use the filters to adjust your query.",
     "noFile": "No file selected.",
     "fileUndefined": "File undefined.",
@@ -73,7 +74,7 @@
     "openSearch": "Suchfeld öffnen",
     "closeSearch": "Suchfeld schließen",
     "noResultsHeading": "keine Ergebnisse gefunden",
-    "noResultsTip": "Versuchen Sie, nach einem exakten Begriff mit ganzen Wörtern, korrekten Interpunktionen und diakretischen Markierungen zu suchen, wo relevant:"
+    "noResultsTip": "Try adjusting your search. Making sure you use an exact search term with whole words, correct punctuation and diacretical marks where relevant may help."
   },
   "graph": {
     "histogramDataTitle": "Verteilung der Top-Dateien, die Übereinstimmungen mit dem Anfragetext haben:",

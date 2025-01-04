@@ -3,9 +3,9 @@ import {
   DEFAULT_PARAM_VALUES,
   sortMethods,
 } from "@features/SidebarSuite/uiSettings/config";
-
-import { DbLanguage, dbLanguages } from "./api/constants";
-import { DbViewEnum, DEFAULT_DB_VIEW } from "./constants";
+import { DbLanguage, dbLanguages } from "@utils/api/constants";
+import { APISchemas, CustomAPIError } from "@utils/api/types";
+import { DbViewEnum, DEFAULT_DB_VIEW } from "@utils/constants";
 
 export const isValidDbView = (view: unknown): view is DbViewEnum =>
   Object.values(DbViewEnum).some((item) => item === view);
@@ -37,3 +37,20 @@ export const isValidSortMethod = (method: unknown): method is SortMethod =>
 export const getValidSortMethod = (method: unknown) => {
   return isValidSortMethod(method) ? method : DEFAULT_PARAM_VALUES.sort_method;
 };
+
+export const isCustomAPIError = (error: unknown): error is CustomAPIError => {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    "errorMessage" in error
+  );
+};
+
+const downloadViews: APISchemas["DownloadData"][] = ["numbers", "table"];
+
+export function isValidDownloadView(
+  value: string,
+): value is APISchemas["DownloadData"] {
+  return downloadViews.some((view) => view === value);
+}

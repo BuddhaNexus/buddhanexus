@@ -76,7 +76,7 @@ const parseAsDbLanguage = parseAsStringLiteral([
 ]);
 
 export const useLanguageParam = () => {
-  return useQueryState(allUIComponentParamNames.languages, {
+  return useQueryState(allUIComponentParamNames.language, {
     ...parseAsDbLanguage.withDefault(DEFAULT_PARAM_VALUES.language),
   });
 };
