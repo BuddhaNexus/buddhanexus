@@ -37,7 +37,8 @@
     "score": "Score",
     "matches": "Matches",
     "clearSelectedSegment": "Clear selected segment",
-    "segmentMatches": "Segment Matches"
+    "segmentMatches": "Segment Matches",
+    "openVisualCharts": "Open Visual Charts"
   },
   "news": {
     "title": "News",

@@ -37,7 +37,8 @@
     "score": "Punktzahl",
     "matches": "Übereinstimmungen",
     "clearSelectedSegment": "Ausgewähltes Segment löschen",
-    "segmentMatches": "Segmentübereinstimmungen"
+    "segmentMatches": "Segmentübereinstimmungen",
+    "openVisualCharts": "Open Visual Charts"
   },
   "news": {
     "title": "Nachrichten",
