@@ -5,19 +5,20 @@ Contains all database queries related to numbers view.
 QUERY_NUMBERS_VIEW = """
 FOR file IN files
     FILTER file._key == @filename
+    LET selected_folio = @folio OR file.folios[0]
     LET selected_folio_segmentnr = FIRST(
         FOR segment in segments
-            FILTER segment.folio == @folio
+            FILTER segment.folio == selected_folio
             FILTER segment.segmentnr IN file.segment_keys
             RETURN segment.segmentnr
     )
 
     LET startIndex = POSITION(file.segment_keys, selected_folio_segmentnr, true)
-    LET relevant_segments = SLICE(file.segment_keys, startIndex, 100 * (@page + 1))
-
+    LET relevant_segments = SLICE(file.segment_keys, startIndex)
 
     LET parallels_data = (
         FOR segmentnr IN relevant_segments
+            LIMIT 100 * @page,100
             FOR p IN parallels
                 FILTER segmentnr IN p.root_segnr
                 FILTER p.score * 100 >= @score
