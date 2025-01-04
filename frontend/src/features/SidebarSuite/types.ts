@@ -14,6 +14,7 @@ type APIRequestPropsName = keyof AllAPIRequestProps;
 
 type FeStateParams =
   | "active_segment_index"
+  | "collection"
   | "right_pane_active_segment"
   | "right_pane_active_segment_index";
 

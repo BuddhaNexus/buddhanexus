@@ -15,6 +15,7 @@ import { getAvailableLanguages } from "./endpoints/utils/available-languages";
 import { getCountMatches } from "./endpoints/utils/count-matches";
 import { getTextDisplayName } from "./endpoints/utils/displayname";
 import { getFolios } from "./endpoints/utils/folios";
+import { getVisualViewCollections } from "./endpoints/visual-view";
 
 export const DbApi = {
   //* VIEWS
@@ -96,5 +97,9 @@ export const DbApi = {
   TextDisplayName: {
     makeQueryKey: (fileName: string) => ["textNameData", fileName],
     call: getTextDisplayName,
+  },
+  VisualViewCollections: {
+    makeQueryKey: (language: DbLanguage) => ["visualViewCollections", language],
+    call: (language: DbLanguage) => getVisualViewCollections(language),
   },
 };
