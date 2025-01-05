@@ -143,3 +143,9 @@ export const useVisualCollectionStringParam = () => {
     history: "push",
   });
 };
+export const useVisualHitCollectionsStringParam = () => {
+  return useQueryState(allUIComponentParamNames.hit_collections, {
+    ...parseAsArrayOf(parseAsString),
+    history: "push",
+  });
+};

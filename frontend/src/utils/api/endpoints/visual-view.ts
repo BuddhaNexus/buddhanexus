@@ -13,7 +13,7 @@ interface APIVisualCollection {
   collectionname: string;
 }
 
-interface ParsedApiVisualCollection {
+export interface ParsedApiVisualCollection {
   key: string;
   language: string;
   name: string;

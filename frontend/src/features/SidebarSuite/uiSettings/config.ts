@@ -90,6 +90,7 @@ export const allUIComponentParamNames: AllUIComponentParamNames = {
   segmentnr: "segmentnr",
   filters: "filters",
   collection: "collection",
+  hit_collections: "hit_collections",
 };
 
 export const DEFAULT_LANGUAGE = "all";
