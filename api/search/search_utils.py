@@ -13,40 +13,30 @@ from aksharamukha import transliterate
 
 
 def preprocess_search_string(search_string, language):
-    print(f"\n=== Starting search preprocessing ===")
-    print(f"Input: '{search_string}', Language: {language}")
-    
     result = {
         "search_string_unprocessed": search_string
     }
     
     search_string = _clean_search_string(search_string)
-    print(f"After cleaning: '{search_string}'")
     
     if language == "all":
-        print("Processing for all languages...")
         result.update(_process_all_languages(search_string))
     else:
-        print(f"Processing for single language: {language}")
         result.update(_process_single_language(search_string, language))
     
-    print("Final result:", result)
     return result
 
 
 def _clean_search_string(search_string):
-    print(f"\nCleaning search string: '{search_string}'")
     search_string = search_string.strip()
     search_string = search_string.replace("ṁ", "ṃ")
     search_string = re.sub("@[0-9a-b+]+", "", search_string)
     search_string = re.sub("/+", "", search_string)
     search_string = re.sub(" +", " ", search_string)
-    print(f"Cleaned result: '{search_string}'")
     return search_string
 
 
 def _process_single_language(search_string, language):
-    print(f"\nProcessing for single language: {language}")
     result = {}
 
     if language == "bo":
@@ -58,21 +48,17 @@ def _process_single_language(search_string, language):
     elif language == "zh":
         result["zh"] = _process_chinese(search_string)
     
-    print(f"Single language result: {result}")
     return result
 
 
 def _process_all_languages(search_string):
-    print(f"\nProcessing for all languages: '{search_string}'")
     result = {}
     
     if re.search("[\u0F00-\u0FDA]", search_string):
-        print("Detected Tibetan script")
         result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
         result["sa"] = result["bo"]
     else:
         if bn_translate.check_if_sanskrit(search_string):
-            print("Detected Sanskrit")
             sa, sa_fuzzy = _process_sanskrit(search_string)
             result["sa"] = sa
             result["sa_fuzzy"] = sa_fuzzy
@@ -83,7 +69,6 @@ def _process_all_languages(search_string):
                 result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
                 result["zh"] = search_string
         else:
-            print("No specific script detected")
             result["sa"] = search_string
             result["zh"] = search_string
             pa, pa_fuzzy = _process_pali(search_string)
@@ -91,7 +76,6 @@ def _process_all_languages(search_string):
             result["pa_fuzzy"] = pa_fuzzy
             result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
     
-    print(f"All languages result: {result}")
     return result
 
 
@@ -184,66 +168,51 @@ def postprocess_results(search_strings, results):
 
 
 def _process_sanskrit(search_string):
-    print(f"\nProcessing Sanskrit: '{search_string}'")
     try:
         search_string = transliterate.process("autodetect", "IAST", search_string)
         search_string = search_string.lower()
-        print(f"After IAST conversion: '{search_string}'")
-    except Exception as e:
-        print(f"IAST conversion error: {e}")
+    except Exception:
+        pass
     
     try:
         sa_fuzzy = sanskrit_processor.process_batch(
             [search_string], mode="unsandhied", output_format="string"
         )[0]
-        print(f"After fuzzy processing: '{sa_fuzzy}'")
-    except Exception as e:
-        print(f"Sanskrit processing error: {e}")
+    except Exception:
         sa_fuzzy = ""
 
     return search_string, sa_fuzzy if sa_fuzzy else search_string
 
 
 def _process_tibetan(search_string):
-    print(f"\nProcessing Tibetan: '{search_string}'")
     bo_wylie = search_string
     if re.search("[\u0F00-\u0FDA]", search_string):
         bo_wylie = bo_converter.toWylie(search_string)
-        print(f"Converted to Wylie: '{bo_wylie}'")
     
-    # Create stemmed version using bn_analyzer
     try:
         bo_fuzzy = bn_analyzer.process_bo(bo_wylie)
-        print(f"After stemming: '{bo_fuzzy}'")
-    except Exception as e:
-        print(f"Tibetan stemming error: {e}")
+    except Exception:
         bo_fuzzy = bo_wylie
     
     return bo_wylie, bo_fuzzy
 
 
 def _process_pali(search_string):
-    """Process Pali search string"""
-    print(f"\nProcessing Pali: '{search_string}'")
     try:
         search_string = transliterate.process('autodetect', 'IAST', search_string)
         search_string = search_string.lower()
-        print(f"After IAST conversion: '{search_string}'")
-    except Exception as e:
-        print(f"IAST conversion error: {e}")
+    except Exception:
+        pass
     
     try:
         pa_fuzzy = sanskrit_processor.process_batch(
             [search_string], mode="unsandhied", output_format="string"
         )[0]
-        print(f"After fuzzy processing: '{pa_fuzzy}'")
-    except Exception as e:
-        print(f"Pali processing error: {e}")
+    except Exception:
         pa_fuzzy = ""
     
     return search_string, pa_fuzzy if pa_fuzzy else search_string
 
 def _process_chinese(search_string):
-    """Process Chinese search string"""
     # For now, just return the cleaned string
     return search_string
