@@ -5,7 +5,7 @@ import type { paths } from "src/codegen/api/v2";
 // temporary. replace with same API url as the rest of the endpoints when BE is ready
 const API_ROOT = "https://buddhanexus.kc-tbts.uni-hamburg.de/api";
 
-const { GET, POST } = createClient<paths>({ baseUrl: API_ROOT });
+const { GET } = createClient<paths>({ baseUrl: API_ROOT });
 
 interface APIVisualCollection {
   collectionkey: string;
@@ -56,4 +56,22 @@ export async function getVisualViewCollections(language: DbLanguage) {
   return parseVisualCollection(data?.result as APIVisualCollection[]).filter(
     (c) => c.language === getLegacyLanguageCode(language),
   );
+}
+export async function getVisualGraphData(
+  language: DbLanguage,
+  inquiryCollection: string,
+  hitCollections: string[],
+) {
+  // @ts-expect-error we have to call the legacy BE API here
+  const { data } = await GET(`/visual/${inquiryCollection}`, {
+    params: {
+      query: {
+        language: getLegacyLanguageCode(language),
+        selected: hitCollections,
+      },
+    },
+  });
+
+  // @ts-expect-error no typings, leaving this intentionally since it's temporary
+  return data?.graphdata;
 }

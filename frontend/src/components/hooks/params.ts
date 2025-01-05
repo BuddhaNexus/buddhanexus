@@ -145,7 +145,7 @@ export const useVisualCollectionStringParam = () => {
 };
 export const useVisualHitCollectionsStringParam = () => {
   return useQueryState(allUIComponentParamNames.hit_collections, {
-    ...parseAsArrayOf(parseAsString),
+    ...parseAsArrayOf(parseAsString).withDefault([]),
     history: "push",
   });
 };

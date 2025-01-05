@@ -12,6 +12,7 @@ export function CenteredProgress() {
         alignItems: "center",
         justifyContent: "center",
         flex: 1,
+        height: "100%",
       }}
     >
       <CircularProgress color="inherit" aria-label={t("prompts.loading")} />
