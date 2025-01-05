@@ -85,6 +85,7 @@ async def get_table_download(input: DownloadInput) -> Any:
                 "filename": input.filename,
                 "score": input.filters.score,
                 "parlength": input.filters.par_length,
+                "folio": input.folio,
                 "filter_include_files": input.filters.include_files,
                 "filter_exclude_files": input.filters.exclude_files,
                 "filter_include_categories": input.filters.include_categories,
@@ -108,7 +109,7 @@ async def get_table_download(input: DownloadInput) -> Any:
                 input.filters.par_length,
                 input.sort_method,
                 filters_display,
-                "All",
+                input.folio,
                 language,
             ],
         )
