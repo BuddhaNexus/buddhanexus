@@ -93,5 +93,4 @@ async def get_active_segment_for_folio(
         utils_queries.QUERY_SEGMENT_FOR_FOLIO,
         bind_vars={"folio": folio, "filename": filename},
     )
-    print(f"[utils] query_result: {query_result.result}")
     return {"active_segment": query_result.result[0]}

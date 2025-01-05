@@ -13,12 +13,15 @@ router = APIRouter()
 async def search(search_input: SearchInput):
     # Process search string only for requested language
     search_strings = search_utils.preprocess_search_string(
-        search_input.search_string, 
-        search_input.filters.language
+        search_input.search_string, search_input.filters.language
     )
-    
+
     # Determine which languages to search
-    query_languages = ["sa", "bo", "pa"] if search_input.filters.language == "all" else [search_input.filters.language]
+    query_languages = (
+        ["sa", "bo", "pa"]
+        if search_input.filters.language == "all"
+        else [search_input.filters.language]
+    )
 
     # Build filter parameters with only relevant search strings
     filter_params = {
@@ -44,14 +47,16 @@ async def search(search_input: SearchInput):
     # Create bind variables dictionary
     bind_variables = {
         "search_string_sa": search_strings["sa"] if "sa" in search_strings else None,
-        "search_string_sa_fuzzy": search_strings["sa_fuzzy"] if "sa_fuzzy" in search_strings else None,
+        "search_string_sa_fuzzy": (
+            search_strings["sa_fuzzy"] if "sa_fuzzy" in search_strings else None
+        ),
         "search_string_bo": search_strings["bo"] if "bo" in search_strings else None,
         "search_string_bo_fuzzy": search_strings["bo_fuzzy"] if "bo_fuzzy" in search_strings else None,
         "search_string_pa": search_strings["pa"] if "pa" in search_strings else None,
         "search_string_pa_fuzzy": search_strings["pa_fuzzy"] if "pa_fuzzy" in search_strings else None,
         "search_string_zh": search_strings["zh"] if "zh" in search_strings else None,
     }
-    
+
     # Remove None values from bind_variables
     bind_variables = {k: v for k, v in bind_variables.items() if v is not None}
 
@@ -60,14 +65,14 @@ async def search(search_input: SearchInput):
         query_languages=query_languages,
         bind_variables=bind_variables,
         filters=filter_params,
-        max_limit=1000
+        max_limit=1000,
     )
-    
+
     result = execute_query(query, bind_vars=filter_params)
     result = result.result[0]
-    
+
     # Post-process results
     processed_results = search_utils.postprocess_results(search_strings, result)
     processed_results = calculate_color_maps_search(processed_results)
-    
+
     return {"searchResults": processed_results}

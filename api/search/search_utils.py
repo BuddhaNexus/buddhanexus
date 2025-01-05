@@ -33,6 +33,7 @@ def preprocess_search_string(search_string, language):
     print("Final result:", result)
     return result
 
+
 def _clean_search_string(search_string):
     print(f"\nCleaning search string: '{search_string}'")
     search_string = search_string.strip()
@@ -43,10 +44,11 @@ def _clean_search_string(search_string):
     print(f"Cleaned result: '{search_string}'")
     return search_string
 
+
 def _process_single_language(search_string, language):
     print(f"\nProcessing for single language: {language}")
     result = {}
-    
+
     if language == "bo":
         result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
     elif language == "sa":
@@ -58,6 +60,7 @@ def _process_single_language(search_string, language):
     
     print(f"Single language result: {result}")
     return result
+
 
 def _process_all_languages(search_string):
     print(f"\nProcessing for all languages: '{search_string}'")
@@ -90,6 +93,7 @@ def _process_all_languages(search_string):
     
     print(f"All languages result: {result}")
     return result
+
 
 def get_offsets(search_string, segment_text):
     allowed_distance = 0
@@ -178,10 +182,11 @@ def postprocess_results(search_strings, results):
     results = results[::-1]
     return results[:200]  # make sure we return a fixed number of results
 
+
 def _process_sanskrit(search_string):
     print(f"\nProcessing Sanskrit: '{search_string}'")
     try:
-        search_string = transliterate.process('autodetect', 'IAST', search_string)
+        search_string = transliterate.process("autodetect", "IAST", search_string)
         search_string = search_string.lower()
         print(f"After IAST conversion: '{search_string}'")
     except Exception as e:
@@ -195,8 +200,9 @@ def _process_sanskrit(search_string):
     except Exception as e:
         print(f"Sanskrit processing error: {e}")
         sa_fuzzy = ""
-    
+
     return search_string, sa_fuzzy if sa_fuzzy else search_string
+
 
 def _process_tibetan(search_string):
     print(f"\nProcessing Tibetan: '{search_string}'")
@@ -214,6 +220,7 @@ def _process_tibetan(search_string):
         bo_fuzzy = bo_wylie
     
     return bo_wylie, bo_fuzzy
+
 
 def _process_pali(search_string):
     """Process Pali search string"""

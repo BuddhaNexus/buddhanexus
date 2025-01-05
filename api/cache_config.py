@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 
 # Cache expiration times in seconds
 CACHE_TIMES = {
-    "SHORT": 86400,     # 1 day
-    "MEDIUM": 604800,   # 1 week
-    "LONG": 2592000,    # 30 days
+    "SHORT": 86400,  # 1 day
+    "MEDIUM": 604800,  # 1 week
+    "LONG": 2592000,  # 30 days
 }
 
 
@@ -114,10 +114,11 @@ def make_cache_key_builder():
 def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
     """
     Decorator that implements Redis-based caching for API endpoints.
-    
+
     Args:
         expire: Cache expiration time in seconds. Use -1 for no expiration.
     """
+
     def wrapper(func):
         @wraps(func)
         async def debug_wrapper(*args, **kwargs):
@@ -132,7 +133,7 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
                     decode_responses=True,
                     socket_timeout=300,
                     socket_connect_timeout=300,
-                    retry_on_timeout=True
+                    retry_on_timeout=True,
                 )
 
                 exists = await redis.exists(cache_key)
@@ -165,5 +166,7 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
             except (ConnectionError, TimeoutError) as e:
                 logger.error("Cache operation failed: %s", str(e))
                 return await func(*args, **kwargs)
+
         return debug_wrapper
+
     return wrapper
