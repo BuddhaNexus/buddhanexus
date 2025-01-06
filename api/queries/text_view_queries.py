@@ -8,6 +8,12 @@ FOR file IN files
     RETURN LENGTH(file.segment_pages)
 """
 
+QUERY_GET_MATCH_BY_ID = """
+FOR p IN parallels
+    FILTER p._key == @active_match_id
+    RETURN p
+"""
+
 
 QUERY_TEXT_AND_PARALLELS = """
 FOR file IN files

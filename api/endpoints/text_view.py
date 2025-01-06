@@ -38,10 +38,20 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
     filename = input.filename
     parallel_ids_type = "parallel_ids"
     page = input.page
+    active_match = None
+    # active_segment is used to scroll to and highlight the segment in the text view
     if input.active_segment != "none":
         page = get_page_for_segment(input.active_segment)
-        filename = get_filename_from_segmentnr(input.active_segment)
-
+        filename = get_filename_from_segmentnr(input.active_segment)    
+    # active_match_id bypasses page, filename and active_segement in order to highlight the active match in the text view
+    if input.active_match_id:
+        query_result = execute_query(
+            text_view_queries.QUERY_GET_MATCH_BY_ID,
+            bind_vars={"active_match_id": input.active_match_id},
+        )        
+        active_match = query_result.result[0]
+        page = get_page_for_segment(active_match["par_segnr"][0])
+        filename = get_filename_from_segmentnr(active_match["par_segnr"][0])
     number_of_total_pages = execute_query(
         text_view_queries.QUERY_GET_NUMBER_OF_PAGES,
         bind_vars={
@@ -69,7 +79,8 @@ async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any
         bind_vars=current_bind_vars,
     )
     data_with_colormaps = calculate_color_maps_text_view(
-        text_segments_query_result.result[0]
+        text_segments_query_result.result[0],
+        active_match=active_match,
     )
 
     return {
