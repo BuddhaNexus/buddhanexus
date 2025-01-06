@@ -29,8 +29,7 @@ export const createTableRows = (
   rowData: APIPostResponse<"/numbers-view/numbers/">,
 ) =>
   rowData.map((item) => {
-    // hyphen replaced with soft-hyphen (U+00AD) for better overflow wrap readability
-    const row: any = { segment: item.segmentnr.replace("-", "­") };
+    const row: any = { segment: item.segmentnr };
 
     item.parallels.forEach((parallel) => {
       // TODO: - clear undefined check onee Pali data is updated to BE.
@@ -61,7 +60,7 @@ export const createTableColumns = ({
     header: () => (
       <div
         style={{
-          // determines width for whole column
+          // sets width for whole column
           minWidth: "150px",
         }}
       >
