@@ -33,7 +33,9 @@ def create_segmented_text(text, colormap, matchmap, active_map):
             current_segment = ""
 
         current_segment += char
-        last_matches, last_color, last_active_match = current_matches, current_color, current_active_match
+        last_matches = current_matches
+        last_color = current_color
+        last_active_match = current_active_match
     # Add the last segment
     result_segments.append(
         {
@@ -86,7 +88,7 @@ def calculate_color_maps_text_view(data, active_match=None):
         segtext_len = len(entry["segtext"])
         current_colormap = [0] * segtext_len
         current_active_map = [False] * segtext_len
-        current_matchmap = [[] for _ in range(segtext_len)]        
+        current_matchmap = [[] for _ in range(segtext_len)]
         # this variable holds the ids of the parallels that are present at each character
         # now add the color layer
         for parallel_id in entry["parallel_ids"]:
@@ -107,9 +109,10 @@ def calculate_color_maps_text_view(data, active_match=None):
                 current_colormap[item] += 1
                 if parallel_id not in current_matchmap[item]:
                     current_matchmap[item].append(parallel_id)
-        # when an active match is present, we need to highlight the corresponding segment since we cannot be 100% sure that the right match is present in the database.
-        if active_match: 
-            start = 0 
+        # when an active match is present, we need to highlight the corresponding segment, 
+        # since we cannot be 100% sure that the right match is present in the database.
+        if active_match:
+            start = 0
             end = segtext_len
             if active_match["par_segnr"][0] == entry["segnr"]:
                 start = active_match["par_offset_beg"]
