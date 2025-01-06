@@ -10,33 +10,12 @@ import { visualChartColors } from "@features/visualView/visualChartUtils";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 
-const chartOptions = {
-  sankey: {
-    iterations: 0,
-    node: {
-      width: 40,
-      interactivity: true,
-      nodePadding: 20,
-      colors: visualChartColors,
-      label: {
-        fontSize: 14,
-        bold: true,
-      },
-    },
-    link: {
-      colorMode: "gradient",
-      fillOpacity: 0.4,
-      colors: visualChartColors,
-    },
-  },
-};
-
-export const VisualViewChart = () => {
+export const VisualViewChart = ({ currentPage }: { currentPage: number }) => {
   const { dbLanguage } = useDbRouterParams();
   const [selectedCollection] = useVisualCollectionStringParam();
   const [selectedHitCollections] = useVisualHitCollectionsStringParam();
 
-  const { data: graphData, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     enabled: true,
     queryKey: DbApi.VisualViewGraphData.makeQueryKey(
       dbLanguage,
@@ -60,14 +39,32 @@ export const VisualViewChart = () => {
       chartType="Sankey"
       width="100%"
       height="100%"
-      style={{ overflow: "auto" }}
-      rows={graphData ?? []}
+      rows={data?.filteredData[currentPage] ?? []}
       columns={[
         { label: "From", type: "string" },
         { label: "To", type: "string" },
         { label: "Weight", type: "number" },
       ]}
-      options={chartOptions}
+      options={{
+        sankey: {
+          iterations: 0,
+          node: {
+            width: 50,
+            interactivity: true,
+            nodePadding: 20,
+            colors: visualChartColors,
+            label: {
+              fontSize: 14,
+              bold: true,
+            },
+          },
+          link: {
+            colorMode: "gradient",
+            fillOpacity: 0.4,
+            colors: visualChartColors,
+          },
+        },
+      }}
     />
   );
 };

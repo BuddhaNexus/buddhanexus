@@ -1,3 +1,7 @@
+import {
+  graphDataRemoveLowest,
+  paginateGraphData,
+} from "@features/visualView/graphDataUtils";
 import { DbLanguage } from "@utils/api/types";
 import createClient from "openapi-fetch";
 import type { paths } from "src/codegen/api/v2";
@@ -57,6 +61,9 @@ export async function getVisualViewCollections(language: DbLanguage) {
     (c) => c.language === getLegacyLanguageCode(language),
   );
 }
+
+const VISUAL_VIEW_PAGE_SIZE = 30;
+
 export async function getVisualGraphData(
   language: DbLanguage,
   inquiryCollection: string,
@@ -72,6 +79,15 @@ export async function getVisualGraphData(
     },
   });
 
-  // @ts-expect-error no typings, leaving this intentionally since it's temporary
-  return data?.graphdata;
+  // code to handle legacy BN API
+  // https://github.com/BuddhaNexus/buddhanexus-frontend/blob/master/src/views/visual/visual-view-graph.js#L126
+  const [initialGraphData] = paginateGraphData(
+    // @ts-expect-error legacy api, no typings available
+    data?.graphdata,
+    VISUAL_VIEW_PAGE_SIZE,
+  );
+  const filteredData = graphDataRemoveLowest(initialGraphData);
+  const totalPages = initialGraphData?.length ?? 0;
+
+  return { filteredData, totalPages };
 }

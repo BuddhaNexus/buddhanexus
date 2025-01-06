@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   useVisualCollectionStringParam,
   useVisualHitCollectionsStringParam,
@@ -32,12 +32,18 @@ export function VisualViewChartContainer() {
   const [selectedCollection] = useVisualCollectionStringParam();
   const [selectedHitCollections] = useVisualHitCollectionsStringParam();
 
+  const [currentPage] = useState(0);
+
   const isViewEnabled =
     selectedCollection && Boolean(selectedHitCollections?.length);
 
   return (
-    <Paper sx={{ flex: isViewEnabled ? 1 : undefined, m: 2, p: 2 }}>
-      {isViewEnabled ? <VisualViewChart /> : <VisualViewInfo />}
+    <Paper sx={{ height: "100%", m: 2, p: 2 }}>
+      {isViewEnabled ? (
+        <VisualViewChart currentPage={currentPage} />
+      ) : (
+        <VisualViewInfo />
+      )}
     </Paper>
   );
 }
