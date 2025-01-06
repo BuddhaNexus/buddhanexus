@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 import {
   useVisualCollectionStringParam,
   useVisualHitCollectionsStringParam,
@@ -19,14 +20,12 @@ import { ParsedApiVisualCollection } from "@utils/api/endpoints/visual-view";
 
 export function VisualViewHeader() {
   const { dbLanguage } = useDbRouterParams();
+  const { t } = useTranslation();
 
   const [selectedCollection, setSelectedCollection] =
     useVisualCollectionStringParam();
   const [selectedHitCollections, setSelectedHitCollections] =
     useVisualHitCollectionsStringParam();
-
-  const inquiryCollectionLabel = "Inquiry Collection";
-  const hitCollectionsLabel = "Hit Collections";
 
   const { data, isLoading } = useQuery({
     queryKey: DbApi.VisualViewCollections.makeQueryKey(dbLanguage),
@@ -42,7 +41,7 @@ export function VisualViewHeader() {
     <Paper sx={{ mx: 2, py: 1, px: 2, flexDirection: "row", display: "flex" }}>
       <FormControl sx={{ display: "flex", flexDirection: "row" }}>
         <InputLabel id="collection-option-selector-label">
-          {inquiryCollectionLabel}
+          {t("visual.inquiryCollectionLabel")}
         </InputLabel>
         <Select
           variant="outlined"
@@ -50,7 +49,7 @@ export function VisualViewHeader() {
           id="collection-option-selector"
           labelId="collection-option-selector-label"
           displayEmpty={true}
-          label={inquiryCollectionLabel}
+          label={t("visual.inquiryCollectionLabel")}
           value={data ? selectedCollection : ""}
           onChange={(e) => setSelectedCollection(e.target.value)}
         >
@@ -79,7 +78,7 @@ export function VisualViewHeader() {
               <TextField
                 {...params}
                 variant="outlined"
-                label={hitCollectionsLabel}
+                label={t("visual.hitCollectionsLabel")}
               />
             )}
             // @ts-expect-error not sure what's up here, this is fine

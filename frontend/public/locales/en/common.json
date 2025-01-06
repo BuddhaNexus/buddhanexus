@@ -37,8 +37,16 @@
     "score": "Score",
     "matches": "Matches",
     "clearSelectedSegment": "Clear selected segment",
-    "segmentMatches": "Segment Matches",
-    "openVisualCharts": "Open Visual Charts"
+    "segmentMatches": "Segment Matches"
+  },
+  "visual": {
+    "openVisualCharts": "Open Visual Charts",
+    "visualInfoHeader": "Visual View",
+    "visualInfo1": "Select the Inquiry and Hit Collections.",
+    "visualInfo2": "More than one Hit Collection can be selected. To reduce the view to a single subsection, click on the coloured bar in the Inquiry Collection (left).",
+    "visualInfo3": "The view can be further reduced to a single text. A click on a single text will open the text view where the individual matches will be.",
+    "inquiryCollectionLabel": "Inquiry Collection",
+    "hitCollectionsLabel": "Hit Collections"
   },
   "news": {
     "title": "News",

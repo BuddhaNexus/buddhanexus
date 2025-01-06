@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "next-i18next";
 import {
   useVisualCollectionStringParam,
   useVisualHitCollectionsStringParam,
@@ -7,23 +8,14 @@ import { VisualViewChart } from "@features/visualView/VisualViewChart";
 import { Paper, Typography } from "@mui/material";
 
 function VisualViewInfo() {
+  const { t } = useTranslation();
+
   return (
     <>
-      <Typography variant="h1">Visual View</Typography>
-      <Typography sx={{ m: 2 }}>
-        Select the Inquiry and Hit Collections.
-      </Typography>
-      <Typography sx={{ m: 2 }}>
-        More than one Hit Collection can be selected. To reduce the view to a
-        single subsection, click on the coloured bar in the Inquiry Collection
-        (left).
-      </Typography>
-
-      <Typography sx={{ m: 2 }}>
-        The view can be further reduced to a single text. A click on a single
-        text will open the text view where the individual matches will be
-        displayed.
-      </Typography>
+      <Typography variant="h1">{t("visual.visualInfoHeader")}</Typography>
+      <Typography sx={{ m: 2 }}>{t("visual.visualInfo1")}</Typography>
+      <Typography sx={{ m: 2 }}>{t("visual.visualInfo2")}</Typography>
+      <Typography sx={{ m: 2 }}>{t("visual.visualInfo3")}</Typography>
     </>
   );
 }

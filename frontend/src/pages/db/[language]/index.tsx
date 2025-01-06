@@ -54,7 +54,7 @@ export default function DbIndexPage() {
 
       <Link href={`./${dbLanguage}/visual`}>
         <Button sx={{ my: 2 }} variant="contained">
-          {t("db.openVisualCharts")}
+          {t("visual.openVisualCharts")}
         </Button>
       </Link>
 
