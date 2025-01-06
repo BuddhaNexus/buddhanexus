@@ -78,71 +78,54 @@ def abbreviate(text):
     return newtext
 
 
-def _process_parallel_segment(entry, parallels_dict, parallel_id, segtext_len, current_colormap, current_matchmap):
-    """Helper function to process a single parallel segment"""
-    current_parallel = parallels_dict.get(parallel_id)
-    if current_parallel is None:
-        return
-
-    start = 0
-    end = segtext_len
-    if current_parallel["root_segnr"][0] == entry["segnr"]:
-        start = current_parallel["root_offset_beg"]
-    if current_parallel["root_segnr"][-1] == entry["segnr"]:
-        end = current_parallel["root_offset_end"]
-    
-    end = min(end, segtext_len)
-    for item in range(start, end):
-        current_colormap[item] += 1
-        if parallel_id not in current_matchmap[item]:
-            current_matchmap[item].append(parallel_id)
-
-def _process_active_match(entry, active_match, segtext_len, current_colormap, current_active_map):
-    """Helper function to process the active match"""
-    active_flag = False
-    if not active_match:
-        return active_flag
-
-    start = 0
-    end = segtext_len
-    if active_match["par_segnr"][0] == entry["segnr"]:
-        start = active_match["par_offset_beg"]
-        active_flag = True
-    if active_match["par_segnr"][-1] == entry["segnr"]:
-        end = active_match["par_offset_end"]
-    
-    end = min(end, segtext_len)
-    if active_flag:
-        for item in range(start, end):
-            current_colormap[item] += 1
-            current_active_map[item] = True
-    
-    return active_flag and active_match["par_segnr"][-1] == entry["segnr"]
-
 def calculate_color_maps_text_view(data, active_match=None):
     """calculates the color maps for the text view"""
     textleft = data["textleft"]
     parallels_dict = dict(zip(data["parallel_ids"], data["parallels"]))
     active_flag = False
-
     for entry in textleft:
+        # initialize with zeros
         segtext_len = len(entry["segtext"])
         current_colormap = [0] * segtext_len
         current_active_map = [False] * segtext_len
         current_matchmap = [[] for _ in range(segtext_len)]
-
+        # this variable holds the ids of the parallels that are present at each character
+        # now add the color layer
         for parallel_id in entry["parallel_ids"]:
-            _process_parallel_segment(
-                entry, parallels_dict, parallel_id, segtext_len,
-                current_colormap, current_matchmap
-            )
+            current_parallel = parallels_dict.get(parallel_id)
+            if current_parallel is None:
+                continue
 
-        if active_match and (active_flag or active_match["par_segnr"][0] == entry["segnr"]):
-            active_flag = not _process_active_match(
-                entry, active_match, segtext_len,
-                current_colormap, current_active_map
-            )
-
+            start = 0
+            end = segtext_len
+            if current_parallel["root_segnr"][0] == entry["segnr"]:
+                start = current_parallel["root_offset_beg"]
+            if current_parallel["root_segnr"][-1] == entry["segnr"]:
+                end = current_parallel["root_offset_end"]
+            # it is embarassing that we need to do this,
+            # this should be dealt with at data-loader level
+            end = min(end, segtext_len)
+            for item in range(start, end):
+                current_colormap[item] += 1
+                if parallel_id not in current_matchmap[item]:
+                    current_matchmap[item].append(parallel_id)
+        # when an active match is present, we need to highlight the corresponding segment,
+        # since we cannot be 100% sure that the right match is present in the database.
+        if active_match:
+            start = 0
+            end = segtext_len
+            if active_match["par_segnr"][0] == entry["segnr"]:
+                start = active_match["par_offset_beg"]
+                active_flag = True
+            if active_match["par_segnr"][-1] == entry["segnr"]:
+                end = active_match["par_offset_end"]
+            end = min(end, segtext_len)
+            if active_flag:
+                for item in range(start, end):
+                    current_colormap[item] += 1
+                    current_active_map[item] = True
+                if active_match["par_segnr"][-1] == entry["segnr"]:
+                    active_flag = False
         entry["segtext"] = create_segmented_text(
             entry["segtext"], current_colormap, current_matchmap, current_active_map
         )
