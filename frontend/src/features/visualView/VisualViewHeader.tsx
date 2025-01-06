@@ -38,8 +38,6 @@ export function VisualViewHeader() {
     [data, selectedHitCollections],
   );
 
-  console.log(data);
-
   return (
     <Paper sx={{ mx: 2, py: 1, px: 2, flexDirection: "row", display: "flex" }}>
       <FormControl sx={{ display: "flex", flexDirection: "row" }}>
