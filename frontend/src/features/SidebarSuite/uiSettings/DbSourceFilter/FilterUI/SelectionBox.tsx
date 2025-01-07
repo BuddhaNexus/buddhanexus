@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
+import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import {
   useExcludeCategoriesParam,
   useExcludeCollectionsParam,
@@ -8,6 +9,7 @@ import {
   useIncludeCollectionsParam,
   useIncludeFilesParam,
 } from "@components/hooks/params";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import type { DbSourceFilterUISetting } from "@features/SidebarSuite/types";
 import {
   InputOutlineBox,
@@ -16,6 +18,8 @@ import {
 } from "@features/SidebarSuite/uiSettings/DbSourceFilter/styledComponents";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Button, Chip, IconButton } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { DbApi } from "@utils/api/dbApi";
 
 const CHIP_GAP = 6;
 const MAX_CHIP_ROW_WIDTH = 253;
@@ -48,6 +52,27 @@ const DbSourceFilterInput = ({
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [showButton, setShowButton] = React.useState(false);
   const selectionBoxRef = React.useRef<HTMLElement>(null);
+
+  const { dbLanguage: language } = useDbRouterParams();
+
+  const { data: menuData } = useQuery<DbSourceTreeNode[]>({
+    queryKey: DbApi.DbSourcesMenu.makeQueryKey(language),
+    queryFn: () => DbApi.DbSourcesMenu.call({ language }),
+  });
+
+  const displayIdMap = React.useMemo(() => {
+    if (!menuData) return {};
+
+    const map: Record<string, string> = {};
+    const processNode = (node: DbSourceTreeNode) => {
+      if (node.displayId) {
+        map[node.id] = node.displayId;
+      }
+      node.children?.forEach(processNode);
+    };
+    menuData.forEach(processNode);
+    return map;
+  }, [menuData]);
 
   const toggleExpand = () => {
     setIsExpanded((prevIsExpanded) => !prevIsExpanded);
@@ -137,7 +162,7 @@ const DbSourceFilterInput = ({
           {selectionIds.map((id) => (
             <Chip
               key={id}
-              label={id}
+              label={displayIdMap?.[id] ?? id}
               onDelete={() => handleClearSourcesById(id, filterName)}
             />
           ))}
