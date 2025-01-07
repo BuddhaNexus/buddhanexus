@@ -12,7 +12,7 @@ class TextParallelsInput(BaseModel):
     page: int = 0
 
 
-class FullMatchText(FullText):    
+class FullMatchText(FullText):
     matches: List[str]
     is_active_match: bool = False
 

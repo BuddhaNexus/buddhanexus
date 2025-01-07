@@ -13,17 +13,15 @@ from aksharamukha import transliterate
 
 
 def preprocess_search_string(search_string, language):
-    result = {
-        "search_string_unprocessed": search_string
-    }
-    
+    result = {"search_string_unprocessed": search_string}
+
     search_string = _clean_search_string(search_string)
-    
+
     if language == "all":
         result.update(_process_all_languages(search_string))
     else:
         result.update(_process_single_language(search_string, language))
-    
+
     return result
 
 
@@ -47,13 +45,13 @@ def _process_single_language(search_string, language):
         result["pa"], result["pa_fuzzy"] = _process_pali(search_string)
     elif language == "zh":
         result["zh"] = _process_chinese(search_string)
-    
+
     return result
 
 
 def _process_all_languages(search_string):
     result = {}
-    
+
     if re.search("[\u0F00-\u0FDA]", search_string):
         result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
         result["sa"] = result["bo"]
@@ -75,7 +73,7 @@ def _process_all_languages(search_string):
             result["pa"] = pa
             result["pa_fuzzy"] = pa_fuzzy
             result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
-    
+
     return result
 
 
@@ -173,7 +171,7 @@ def _process_sanskrit(search_string):
         search_string = search_string.lower()
     except Exception:
         pass
-    
+
     try:
         sa_fuzzy = sanskrit_processor.process_batch(
             [search_string], mode="unsandhied", output_format="string"
@@ -188,30 +186,31 @@ def _process_tibetan(search_string):
     bo_wylie = search_string
     if re.search("[\u0F00-\u0FDA]", search_string):
         bo_wylie = bo_converter.toWylie(search_string)
-    
+
     try:
         bo_fuzzy = bn_analyzer.process_bo(bo_wylie)
     except Exception:
         bo_fuzzy = bo_wylie
-    
+
     return bo_wylie, bo_fuzzy
 
 
 def _process_pali(search_string):
     try:
-        search_string = transliterate.process('autodetect', 'IAST', search_string)
+        search_string = transliterate.process("autodetect", "IAST", search_string)
         search_string = search_string.lower()
     except Exception:
         pass
-    
+
     try:
         pa_fuzzy = sanskrit_processor.process_batch(
             [search_string], mode="unsandhied", output_format="string"
         )[0]
     except Exception:
         pa_fuzzy = ""
-    
+
     return search_string, pa_fuzzy if pa_fuzzy else search_string
+
 
 def _process_chinese(search_string):
     # For now, just return the cleaned string

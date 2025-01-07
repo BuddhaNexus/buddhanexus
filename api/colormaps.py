@@ -62,9 +62,7 @@ def create_segmented_text_color_only(text, colormap):
             current_segment = ""
         current_segment += text[i]
         last_color = current_color
-    result_segments.append(
-        {"text": current_segment, "highlightColor": last_color}
-    )
+    result_segments.append({"text": current_segment, "highlightColor": last_color})
     return result_segments
 
 
