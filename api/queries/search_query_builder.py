@@ -56,7 +56,7 @@ def build_query_search(query_languages, bind_variables, filters=None, max_limit=
                 "phrase_field": "d.analyzed",
                 "analyzer": "tibetan_fuzzy_analyzer",
                 "bind_var": "@search_string_bo_fuzzy",
-            }
+            },
         ],
         "pa": [
             # normal Pali
@@ -72,7 +72,7 @@ def build_query_search(query_languages, bind_variables, filters=None, max_limit=
                 "phrase_field": "d.analyzed",
                 "analyzer": "pali_analyzer",
                 "bind_var": "@search_string_pa_fuzzy",
-            }
+            },
         ],
         "zh": [
             {

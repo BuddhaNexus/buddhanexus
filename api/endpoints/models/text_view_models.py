@@ -8,11 +8,13 @@ class TextParallelsInput(BaseModel):
     folio: str = ""
     active_segment: Optional[str] = "none"
     filters: Optional[Filters]
+    active_match_id: Optional[str] = None
     page: int = 0
 
 
 class FullMatchText(FullText):
     matches: List[str]
+    is_active_match: bool = False
 
 
 class TextItem(BaseModel):

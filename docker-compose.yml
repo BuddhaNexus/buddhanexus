@@ -45,12 +45,13 @@ services:
     restart: always
 
   redis:
-    image: redis:alpine
+    image: redis:latest
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./api/redis.conf:/usr/local/etc/redis/redis.conf
+      - redis_data:/data
     ports:
       - "6379:6379"
-    command: redis-server --save 60 1 --loglevel warning --appendonly yes
-    volumes:
-      - redis-data:/data
     networks:
       - app-network
     restart: always
@@ -129,7 +130,7 @@ volumes:
   dbdata:
   dharmanexus-data:
     external: true
-  redis-data:
+  redis_data:
 
 networks:
   app-network:
