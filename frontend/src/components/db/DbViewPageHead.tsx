@@ -29,7 +29,7 @@ export const DbViewPageHead = () => {
     title = isLoading ? "..." : (data?.displayName ?? "");
   }
 
-  const displayId = currentDbFile?.displayId ?? data?.displayId ?? "";
+  const displayId = currentDbFile?.displayId ?? data?.displayId ?? fileName;
 
   return (
     <>

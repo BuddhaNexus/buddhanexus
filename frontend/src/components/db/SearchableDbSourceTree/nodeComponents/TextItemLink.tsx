@@ -69,7 +69,7 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
   const { dbLanguage } = useDbRouterParams();
 
   const dbView = useAtomValue(currentDbViewAtom);
-  const currentDbFile = useSetAtom(currentDbFileAtom);
+  const setCurrentDbFile = useSetAtom(currentDbFileAtom);
   const setIsDrawerOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);
 
   const { data } = node;
@@ -87,7 +87,7 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
   }
 
   const handleClick = () => {
-    currentDbFile({ name, id, displayId });
+    setCurrentDbFile({ name, id, displayId });
     setIsDrawerOpen(false);
   };
 
