@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "next-i18next";
 import {
-  currentDbFileAtom,
   textViewIsMiddlePanePointingLeftAtom,
   textViewRightPaneFileNameAtom,
 } from "@atoms";
@@ -64,7 +63,6 @@ export const ParallelSegment = ({
     useRightPaneActiveSegmentParam();
   const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
   const setRightPaneFileName = useSetAtom(textViewRightPaneFileNameAtom);
-  const setCurrentDbFileAtom = useSetAtom(currentDbFileAtom);
 
   const isMiddlePanePointingLeft = useAtomValue(
     textViewIsMiddlePanePointingLeftAtom,
@@ -151,9 +149,6 @@ export const ParallelSegment = ({
                   display: "inline-block",
                   wordBreak: "break-word",
                   m: 0.5,
-                }}
-                onClick={() => {
-                  setCurrentDbFileAtom(null);
                 }}
               >
                 {textSegmentNumberRange}

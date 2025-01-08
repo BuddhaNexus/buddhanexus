@@ -1,15 +1,17 @@
 import { NextSeo } from "next-seo";
-import { currentDbFileAtom, currentDbViewAtom } from "@atoms";
+import { currentDbViewAtom } from "@atoms";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useMenuDataFileMap } from "@components/hooks/useMenuDataMap";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 import { useAtomValue } from "jotai";
 import startCase from "lodash/startCase";
 
 export const DbViewPageHead = () => {
-  const currentDbFile = useAtomValue(currentDbFileAtom);
+  const menuDataFileMap = useMenuDataFileMap();
   const { fileName } = useDbRouterParams();
+  const fileData = menuDataFileMap[fileName];
 
   // Used for external navigation to app when titles can't be retrieved from menudata
   const { data, isLoading } = useQuery({
@@ -18,18 +20,18 @@ export const DbViewPageHead = () => {
       DbApi.TextDisplayName.call({
         segmentnr: fileName,
       }),
-    enabled: !currentDbFile,
+    enabled: !fileData,
   });
 
   const dbView = useAtomValue(currentDbViewAtom);
 
-  let title = currentDbFile?.name;
+  let title = fileData?.name;
 
   if (!title) {
     title = isLoading ? "..." : (data?.displayName ?? "");
   }
 
-  const displayId = currentDbFile?.displayId ?? data?.displayId ?? fileName;
+  const displayId = fileData?.displayId ?? data?.displayId ?? fileName;
 
   return (
     <>

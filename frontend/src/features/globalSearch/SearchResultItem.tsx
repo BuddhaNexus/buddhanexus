@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "next-i18next";
-import { currentDbFileAtom } from "@atoms";
 import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import { Link } from "@components/common/Link";
 import { createURLToSegment } from "@features/textView/utils";
@@ -8,7 +7,6 @@ import CopyIcon from "@mui/icons-material/ContentCopy";
 import DifferenceIcon from "@mui/icons-material/Difference";
 import { CardContent, Chip, Divider, IconButton, Tooltip } from "@mui/material";
 import type { ParsedSearchResult } from "@utils/api/endpoints/search";
-import { useSetAtom } from "jotai";
 
 import {
   SearchResultCard,
@@ -44,8 +42,6 @@ export const SearchResultItem = ({ result }: Props) => {
     language,
     segmentNumber,
   });
-
-  const setCurrentDbFileAtom = useSetAtom(currentDbFileAtom);
 
   return (
     <SearchResultCard>
@@ -83,9 +79,6 @@ export const SearchResultItem = ({ result }: Props) => {
                 display: "inline-block",
                 wordBreak: "break-word",
                 m: 0.5,
-              }}
-              onClick={() => {
-                setCurrentDbFileAtom(null);
               }}
             >
               {segmentNumber}

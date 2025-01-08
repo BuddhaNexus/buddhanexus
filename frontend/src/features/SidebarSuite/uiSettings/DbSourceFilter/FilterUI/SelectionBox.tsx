@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "next-i18next";
-import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import {
   useExcludeCategoriesParam,
   useExcludeCollectionsParam,
@@ -9,7 +8,7 @@ import {
   useIncludeCollectionsParam,
   useIncludeFilesParam,
 } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useMenuDataFileMap } from "@components/hooks/useMenuDataMap";
 import type { DbSourceFilterUISetting } from "@features/SidebarSuite/types";
 import {
   InputOutlineBox,
@@ -18,8 +17,6 @@ import {
 } from "@features/SidebarSuite/uiSettings/DbSourceFilter/styledComponents";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Button, Chip, IconButton } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { DbApi } from "@utils/api/dbApi";
 
 const CHIP_GAP = 6;
 const MAX_CHIP_ROW_WIDTH = 253;
@@ -53,26 +50,7 @@ const DbSourceFilterInput = ({
   const [showButton, setShowButton] = React.useState(false);
   const selectionBoxRef = React.useRef<HTMLElement>(null);
 
-  const { dbLanguage: language } = useDbRouterParams();
-
-  const { data: menuData } = useQuery<DbSourceTreeNode[]>({
-    queryKey: DbApi.DbSourcesMenu.makeQueryKey(language),
-    queryFn: () => DbApi.DbSourcesMenu.call({ language }),
-  });
-
-  const displayIdMap = React.useMemo(() => {
-    if (!menuData) return {};
-
-    const map: Record<string, string> = {};
-    const processNode = (node: DbSourceTreeNode) => {
-      if (node.displayId) {
-        map[node.id] = node.displayId;
-      }
-      node.children?.forEach(processNode);
-    };
-    menuData.forEach(processNode);
-    return map;
-  }, [menuData]);
+  const menuDataFileMap = useMenuDataFileMap(true);
 
   const toggleExpand = () => {
     setIsExpanded((prevIsExpanded) => !prevIsExpanded);
@@ -159,13 +137,23 @@ const DbSourceFilterInput = ({
     <InputOutlineBox>
       <MultiSelectionBox role="combobox" onClick={handleClick}>
         <SelectionChipsBox ref={selectionBoxRef} isExpanded={isExpanded}>
-          {selectionIds.map((id) => (
-            <Chip
-              key={id}
-              label={displayIdMap?.[id] ?? id}
-              onDelete={() => handleClearSourcesById(id, filterName)}
-            />
-          ))}
+          {Object.keys(menuDataFileMap).length === 0 ? (
+            <>...</>
+          ) : (
+            <>
+              {selectionIds.map((id) => {
+                const fileData = menuDataFileMap?.[id];
+                const label = fileData?.displayId ?? id;
+                return (
+                  <Chip
+                    key={id}
+                    label={label}
+                    onDelete={() => handleClearSourcesById(id, filterName)}
+                  />
+                );
+              })}
+            </>
+          )}
         </SelectionChipsBox>
 
         <IconButton
