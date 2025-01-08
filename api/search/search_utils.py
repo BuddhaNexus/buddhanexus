@@ -13,68 +13,68 @@ from aksharamukha import transliterate
 
 
 def preprocess_search_string(search_string, language):
-    search_string_unprocessed = search_string
-    bo = ""
-    zh = ""
-    sa = ""
-    pa = ""
+    result = {"search_string_unprocessed": search_string}
 
-    # test if string contains Tibetan characters
+    search_string = _clean_search_string(search_string)
+
+    if language == "all":
+        result.update(_process_all_languages(search_string))
+    else:
+        result.update(_process_single_language(search_string, language))
+
+    return result
+
+
+def _clean_search_string(search_string):
     search_string = search_string.strip()
     search_string = search_string.replace("ṁ", "ṃ")
-    search_string = re.sub(
-        "@[0-9a-b+]+", "", search_string
-    )  # remove possible bo folio numbers
-    search_string = re.sub(
-        "/+", "", search_string
-    )  # just in case we have some sort of danda in the search query
-    search_string = re.sub(
-        " +", " ", search_string
-    )  # search is very sensitive to whitespace
+    search_string = re.sub("@[0-9a-b+]+", "", search_string)
+    search_string = re.sub("/+", "", search_string)
+    search_string = re.sub(" +", " ", search_string)
+    return search_string
+
+
+def _process_single_language(search_string, language):
+    result = {}
+
+    if language == "bo":
+        result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
+    elif language == "sa":
+        result["sa"], result["sa_fuzzy"] = _process_sanskrit(search_string)
+    elif language == "pa":
+        result["pa"], result["pa_fuzzy"] = _process_pali(search_string)
+    elif language == "zh":
+        result["zh"] = _process_chinese(search_string)
+
+    return result
+
+
+def _process_all_languages(search_string):
+    result = {}
+
     if re.search("[\u0F00-\u0FDA]", search_string):
-        bo = bo_converter.toWylie(search_string).strip()
-        sa = bo
+        result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
+        result["sa"] = result["bo"]
     else:
         if bn_translate.check_if_sanskrit(search_string):
-            sa = transliterate.process("autodetect", "IAST", search_string)
+            sa, sa_fuzzy = _process_sanskrit(search_string)
+            result["sa"] = sa
+            result["sa_fuzzy"] = sa_fuzzy
+            pa, pa_fuzzy = _process_pali(search_string)
+            result["pa"] = pa
+            result["pa_fuzzy"] = pa_fuzzy
+            if sa_fuzzy == "":
+                result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
+                result["zh"] = search_string
         else:
-            sa = search_string
-        sa = sa.lower()
+            result["sa"] = search_string
+            result["zh"] = search_string
+            pa, pa_fuzzy = _process_pali(search_string)
+            result["pa"] = pa
+            result["pa_fuzzy"] = pa_fuzzy
+            result["bo"], result["bo_fuzzy"] = _process_tibetan(search_string)
 
-    # sa_fuzzy also tests if a string contains bo/zh letters; if so, it returns an empty string
-    try:
-        sa_fuzzy = sanskrit_processor.process_batch(
-            [sa], mode="unsandhied", output_format="string"
-        )[0]
-    except Exception:
-        sa_fuzzy = ""
-    pa = sa_fuzzy
-    # if sa_fuzzy detected the string to be Tibetan/Chinese or the unicode2wylie transliteration was successful, do this:
-    if sa_fuzzy == "" or bo != "":
-        if bo == "":
-            bo = search_string
-        bo_preprocessed = bo.replace("’", "'")
-        bo = bn_analyzer.stem_tibetan(bo_preprocessed)
-        zh = search_string
-    else:
-        sa = search_string
-
-    if language == "sa":
-        bo = zh = pa = ""
-    elif language == "bo":
-        zh = pa = sa = ""
-    elif language == "zh":
-        bo = pa = sa = ""
-    elif language == "pa":
-        bo = zh = sa = ""
-    return {
-        "sa": sa,
-        "sa_fuzzy": sa_fuzzy,
-        "bo": bo,
-        "pa": pa,
-        "zh": zh,
-        "search_string_unprocessed": search_string_unprocessed,
-    }
+    return result
 
 
 def get_offsets(search_string, segment_text):
@@ -131,7 +131,7 @@ def remove_duplicate_results(results):
 def process_result(result, search_string):
     try:
         beg, end, centeredness, distance = get_offsets(
-            search_string, result["original"]
+            search_string.lower(), result["original"].lower()
         )
 
         result["offset_beg"] = beg
@@ -163,3 +163,55 @@ def postprocess_results(search_strings, results):
     results = sorted(results, key=lambda i: i["distance"])
     results = results[::-1]
     return results[:200]  # make sure we return a fixed number of results
+
+
+def _process_sanskrit(search_string):
+    try:
+        search_string = transliterate.process("autodetect", "IAST", search_string)
+        search_string = search_string.lower()
+    except Exception:
+        pass
+
+    try:
+        sa_fuzzy = sanskrit_processor.process_batch(
+            [search_string], mode="unsandhied", output_format="string"
+        )[0]
+    except Exception:
+        sa_fuzzy = ""
+
+    return search_string, sa_fuzzy if sa_fuzzy else search_string
+
+
+def _process_tibetan(search_string):
+    bo_wylie = search_string
+    if re.search("[\u0F00-\u0FDA]", search_string):
+        bo_wylie = bo_converter.toWylie(search_string)
+
+    try:
+        bo_fuzzy = bn_analyzer.process_bo(bo_wylie)
+    except Exception:
+        bo_fuzzy = bo_wylie
+
+    return bo_wylie, bo_fuzzy
+
+
+def _process_pali(search_string):
+    try:
+        search_string = transliterate.process("autodetect", "IAST", search_string)
+        search_string = search_string.lower()
+    except Exception:
+        pass
+
+    try:
+        pa_fuzzy = sanskrit_processor.process_batch(
+            [search_string], mode="unsandhied", output_format="string"
+        )[0]
+    except Exception:
+        pa_fuzzy = ""
+
+    return search_string, pa_fuzzy if pa_fuzzy else search_string
+
+
+def _process_chinese(search_string):
+    # For now, just return the cleaned string
+    return search_string

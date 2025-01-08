@@ -115,7 +115,7 @@ FOR f IN parallels_sorted_file
                     FILTER file._key == filename
                     return [file.displayName, file.textname]
             )
-            LIMIT 20000
+            LIMIT 2500
             RETURN {
                 par_segnr: p.par_segnr,
                 par_segment: par_segment,

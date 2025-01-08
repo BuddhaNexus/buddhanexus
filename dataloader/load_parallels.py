@@ -140,13 +140,11 @@ def clean_parallels_for_language(lang, db):
 
 def load_sorted_parallels_file(path, lang, db_collection):
     print("Loading sorted parallels for file: ", path)
-    current_files = json.load(
-        gzip.open(path, "rt", encoding="utf-8")
-    )
-    
+    current_files = json.load(gzip.open(path, "rt", encoding="utf-8"))
+
     batch_size = 100
     batch = []
-    
+
     for file in tqdm(current_files):
         if not should_download_file(file["filename"]):
             continue
@@ -154,7 +152,7 @@ def load_sorted_parallels_file(path, lang, db_collection):
         file["_key"] = filename
         file["lang"] = lang
         batch.append(file)
-        
+
         if len(batch) >= batch_size:
             try:
                 db_collection.insert_many(batch, overwrite=True)
@@ -162,7 +160,7 @@ def load_sorted_parallels_file(path, lang, db_collection):
             except DocumentInsertError as e:
                 print(f"Batch insert failed: {e}")
                 raise
-    
+
     # Insert remaining documents
     if batch:
         db_collection.insert_many(batch, overwrite=True)

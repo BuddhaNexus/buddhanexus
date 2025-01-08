@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 
 # Cache expiration times in seconds
 CACHE_TIMES = {
-    "SHORT": 300,  # 5 minutes
-    "MEDIUM": 3600,  # 1 hour
-    "LONG": 864000,  # 10 days
+    "SHORT": 86400,  # 1 day
+    "MEDIUM": 604800,  # 1 week
+    "LONG": 2592000,  # 30 days
 }
 
 
@@ -116,7 +116,7 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
     Decorator that implements Redis-based caching for API endpoints.
 
     Args:
-        expire: Cache expiration time in seconds
+        expire: Cache expiration time in seconds. Use -1 for no expiration.
     """
 
     def wrapper(func):
@@ -128,7 +128,12 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
 
             try:
                 redis = await aioredis.from_url(
-                    "redis://redis:6379", encoding="utf8", decode_responses=True
+                    "redis://redis:6379",
+                    encoding="utf8",
+                    decode_responses=True,
+                    socket_timeout=300,
+                    socket_connect_timeout=300,
+                    retry_on_timeout=True,
                 )
 
                 exists = await redis.exists(cache_key)
@@ -136,37 +141,29 @@ def cached_endpoint(expire: int = CACHE_TIMES["MEDIUM"]):
 
                 if exists:
                     cached_value = await redis.get(cache_key)
-                    logger.info(
-                        "Retrieved cached value of length: %s",
-                        len(cached_value) if cached_value else 0,
-                    )
-
                     if cached_value:
                         try:
                             decoded = CustomJsonCoder.decode(cached_value)
-                            logger.info(
-                                "Successfully decoded cached value of type: %s",
-                                type(decoded),
-                            )
+                            logger.info("Cache hit for: %s", cache_key)
                             return decoded
                         except ValueError as e:
                             logger.error("Failed to decode cached value: %s", str(e))
-                    else:
-                        logger.warning("Cache key exists but value is None")
-
                 logger.info("Cache miss - calling original function")
                 result = await func(*args, **kwargs)
 
                 try:
                     encoded = CustomJsonCoder.encode(result)
-                    await redis.set(cache_key, encoded, ex=expire)
+                    if expire != -1:
+                        await redis.set(cache_key, encoded, ex=expire)
+                    else:
+                        await redis.set(cache_key, encoded)
                     logger.info("Stored new result in cache with TTL: %s", expire)
                 except ValueError as e:
                     logger.error("Failed to store in cache: %s", str(e))
 
                 return result
 
-            except ConnectionError as e:
+            except (ConnectionError, TimeoutError) as e:
                 logger.error("Cache operation failed: %s", str(e))
                 return await func(*args, **kwargs)
 

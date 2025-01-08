@@ -5,114 +5,100 @@ Contains all database queries related to numbers view.
 QUERY_NUMBERS_VIEW = """
 FOR file IN files
     FILTER file._key == @filename
-    LET selected_folio_segmentnr = (
-        FOR segmentnr in file.segment_keys
-            FOR segment in segments
-                FILTER segment.segmentnr == segmentnr
-                FILTER segment.folio == @folio
+    LET selected_folio = @folio OR file.folios[0]
+    LET selected_folio_segmentnr = FIRST(
+        FOR segment in segments
+            FILTER segment.folio == selected_folio
+            FILTER segment.segmentnr IN file.segment_keys
             RETURN segment.segmentnr
     )
 
-    LET current_segments = (
-        LET startIndex = POSITION(file.segment_keys, selected_folio_segmentnr[0], true)
-        LET subArray = SLICE(file.segment_keys, startIndex)
-        FOR segmentnr IN subArray
-            FOR segment in segments
-                FILTER segment.segmentnr == segmentnr
-                LET parallel_ids = (
-                    FOR p IN parallels
-                        FILTER p.root_filename == @filename
-                        FILTER segment.segmentnr IN p.root_segnr
-                        RETURN p._key
-                        )
-                FILTER LENGTH(parallel_ids) > 0
-                LIMIT 100 * @page,100
-                LET parallels = (
-                    FOR parallel_id IN parallel_ids
-                        FOR p IN parallels
-                            FILTER p._key == parallel_id
-                            FILTER p.score * 100 >= @score
-                            FILTER p.par_length >= @parlength
+    LET startIndex = POSITION(file.segment_keys, selected_folio_segmentnr, true)
+    LET relevant_segments = SLICE(file.segment_keys, startIndex)
 
-                            FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
-                            FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
+    LET parallels_data = (
+        FOR segmentnr IN relevant_segments
+            FOR p IN parallels
+                FILTER segmentnr IN p.root_segnr
+                FILTER p.score * 100 >= @score
+                FILTER p.par_length >= @parlength
+                FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
+                FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
+                FILTER LENGTH(@filter_include_categories) == 0 OR p.par_category IN @filter_include_categories
+                FILTER LENGTH(@filter_exclude_categories) == 0 OR p.par_category NOT IN @filter_exclude_categories
+                FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
+                FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
 
-                            FILTER LENGTH(@filter_include_categories) == 0 OR p.par_category IN @filter_include_categories
-                            FILTER LENGTH(@filter_exclude_categories) == 0 OR p.par_category NOT IN @filter_exclude_categories
-
-                            FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
-                            FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
-
-                            LET par_full_names = (
-                                FOR f in files
-                                    FILTER f._key == p.par_filename
-                                    RETURN {"displayName": f.displayName,
-                                    "fileName": f.filename,
-                                    "category": f.category}
-                                )
-                            RETURN {
-                                par_segnr: p.par_segnr,
-                                par_full_names: par_full_names
-                            }
-
+                LET file_info = FIRST(
+                    FOR f in files
+                        FILTER f._key == p.par_filename
+                        RETURN {
+                            displayName: f.displayName,
+                            fileName: f.filename,
+                            category: f.category,
+                            par_segnr: p.par_segnr
+                        }
                 )
-                FILTER LENGTH(parallels) > 0
+
+                COLLECT segment_nr = POSITION(relevant_segments, segmentnr, true) INTO grouped_parallels
+                LIMIT 100 * @page,100
                 RETURN {
-                    segmentnr: segment.segmentnr,
-                    parallels: parallels
+                    segmentnr: relevant_segments[segment_nr],
+                    parallels: grouped_parallels[*].file_info
                 }
-        )
-RETURN current_segments
+    )
+
+    RETURN parallels_data
 """
 
 QUERY_NUMBERS_DOWNLOAD = """
 FOR file IN files
     FILTER file._key == @filename
-    LET current_segments = (
-        FOR segmentnr IN file.segment_keys
-            FOR segment in segments
-                FILTER segment.segmentnr == segmentnr
-                LET parallel_ids = (
-                    FOR p IN parallels
-                        FILTER p.root_filename == @filename
-                        FILTER segment.segmentnr IN p.root_segnr
-                        RETURN p._key
-                        )
-                FILTER LENGTH(parallel_ids) > 0
-                LET parallels = (
-                    FOR parallel_id IN parallel_ids
-                        FOR p IN parallels
-                            FILTER p._key == parallel_id
-                            FILTER p.score * 100 >= @score
-                            FILTER p.par_length >= @parlength
+    LET selected_folio = @folio OR file.folios[0]
+    LET selected_folio_segmentnr = FIRST(
+        FOR segment in segments
+            FILTER segment.folio == selected_folio
+            FILTER segment.segmentnr IN file.segment_keys
+            RETURN segment.segmentnr
+    )
 
-                            FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
-                            FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
+    LET startIndex = POSITION(file.segment_keys, selected_folio_segmentnr, true)
+    LET relevant_segments = SLICE(file.segment_keys, startIndex)
 
-                            FILTER LENGTH(@filter_include_categories) == 0 OR p.par_category IN @filter_include_categories
-                            FILTER LENGTH(@filter_exclude_categories) == 0 OR p.par_category NOT IN @filter_exclude_categories
+    LET parallels_data = (
+        FOR segmentnr IN relevant_segments
+            LIMIT 2500
+            FOR p IN parallels
+                FILTER segmentnr IN p.root_segnr
+                FILTER p.score * 100 >= @score
+                FILTER p.par_length >= @parlength
+                FILTER LENGTH(@filter_include_files) == 0 OR p.par_filename IN @filter_include_files
+                FILTER LENGTH(@filter_exclude_files) == 0 OR p.par_filename NOT IN @filter_exclude_files
+                FILTER LENGTH(@filter_include_categories) == 0 OR p.par_category IN @filter_include_categories
+                FILTER LENGTH(@filter_exclude_categories) == 0 OR p.par_category NOT IN @filter_exclude_categories
+                FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
+                FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
 
-                            FILTER LENGTH(@filter_include_collections) == 0 OR p.par_collection IN @filter_include_collections
-                            FILTER LENGTH(@filter_exclude_collections) == 0 OR p.par_collection NOT IN @filter_exclude_collections
-
-                            LET category = (
-                                FOR f in files
-                                    FILTER f._key == p.par_filename
-                                    RETURN f.category
-                                )
-                            RETURN {
-                                par_segnr: p.par_segnr,
-                                category: category[0] || {}
-                            }
+                LET file_info = FIRST(
+                    FOR f in files
+                        FILTER f._key == p.par_filename
+                        RETURN {
+                            displayName: f.displayName,
+                            fileName: f.filename,
+                            category: f.category,
+                            par_segnr: p.par_segnr
+                        }
                 )
-                FILTER LENGTH(parallels) > 0
-                LIMIT 20000
+
+                COLLECT segment_nr = POSITION(relevant_segments, segmentnr, true) INTO grouped_parallels
+
                 RETURN {
-                    segmentnr: segment.segmentnr,
-                    parallels: parallels
+                    segmentnr: relevant_segments[segment_nr],
+                    parallels: grouped_parallels[*].file_info
                 }
-        )
-RETURN current_segments
+    )
+
+    RETURN parallels_data
 """
 
 QUERY_CATEGORIES_PER_LANGUAGE = """
