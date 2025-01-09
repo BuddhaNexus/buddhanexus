@@ -1,11 +1,7 @@
 import React from "react";
 import { NodeApi } from "react-arborist";
 import { useTranslation } from "next-i18next";
-import {
-  currentDbFileAtom,
-  currentDbViewAtom,
-  isDbSourceBrowserDrawerOpenAtom,
-} from "@atoms";
+import { currentDbViewAtom, isDbSourceBrowserDrawerOpenAtom } from "@atoms";
 import { Link } from "@components/common/Link";
 import { getTextPath } from "@components/common/utils";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
@@ -69,12 +65,11 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
   const { dbLanguage } = useDbRouterParams();
 
   const dbView = useAtomValue(currentDbViewAtom);
-  const currentDbFile = useSetAtom(currentDbFileAtom);
   const setIsDrawerOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);
 
   const { data } = node;
 
-  const { name, id, displayId } = data;
+  const { name } = data;
 
   if (!isDbSourceTreeLeafNodeData(data)) {
     return (
@@ -87,7 +82,6 @@ export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
   }
 
   const handleClick = () => {
-    currentDbFile({ name, id, displayId });
     setIsDrawerOpen(false);
   };
 

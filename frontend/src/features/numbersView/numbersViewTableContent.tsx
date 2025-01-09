@@ -1,6 +1,7 @@
 import React from "react";
 import { TableComponents } from "react-virtuoso";
 import { Link } from "@components/common/Link";
+import { createURLToSegment } from "@features/textView/utils";
 import {
   Paper,
   Skeleton,
@@ -27,8 +28,7 @@ export const createTableRows = (
   rowData: APIPostResponse<"/numbers-view/numbers/">,
 ) =>
   rowData.map((item) => {
-    // hyphen replaced with soft-hyphen (U+00AD) for better overflow wrap readability
-    const row: any = { segment: item.segmentnr.replace("-", "­") };
+    const row: any = { segment: item.segmentnr };
 
     item.parallels.forEach((parallel) => {
       // TODO: - clear undefined check onee Pali data is updated to BE.
@@ -46,19 +46,18 @@ export const createTableRows = (
 interface CreateTableColumnProps {
   categories: APIGetResponse<"/numbers-view/categories/">;
   language: DbLanguage;
-  fileName: string;
 }
+
 export const createTableColumns = ({
   categories,
   language,
-  fileName,
 }: CreateTableColumnProps): ColumnDef<NumbersSegment>[] => [
   {
     accessorKey: "segment",
     header: () => (
       <div
         style={{
-          // determines width for whole column
+          // sets width for whole column
           minWidth: "150px",
         }}
       >
@@ -70,10 +69,7 @@ export const createTableColumns = ({
       return (
         <Typography sx={{ fontWeight: 500, lineHeight: 1.25 }}>
           <Link
-            // TODO: make sure this links to the correct segment
-            href={`/db/${language}/${fileName}/text?active_segment=${segmentnr}`}
-            target="_blank"
-            rel="noreferrer noopenner"
+            href={createURLToSegment({ segmentNumber: segmentnr, language })}
           >
             {segmentnr}
           </Link>
@@ -103,11 +99,14 @@ export const createTableColumns = ({
           }}
         >
           {parallels.map((parallel, i) => {
-            const {
-              displayName,
-              fileName: parallelFileName,
-              segmentnr,
-            } = parallel || {};
+            const { displayName, segmentnr } = parallel || {};
+
+            const segmentNumber = segmentnr.split("–")[0] ?? segmentnr;
+
+            const urlToSegment = createURLToSegment({
+              segmentNumber,
+              language,
+            });
 
             return (
               <Tooltip
@@ -120,13 +119,7 @@ export const createTableColumns = ({
                 enterDelay={1200}
               >
                 <Typography sx={{ lineHeight: 1.25 }}>
-                  <Link
-                    // TODO: make sure this links to the correct segment
-                    href={`/db/${language}/${parallelFileName}/text?active_segment=${segmentnr}`}
-                    color="text.primary"
-                    target="_blank"
-                    rel="noreferrer noopenner"
-                  >
+                  <Link href={urlToSegment} color="text.primary">
                     {segmentnr}
                   </Link>
                 </Typography>
