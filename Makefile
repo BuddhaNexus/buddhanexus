@@ -126,3 +126,15 @@ run-frontend:
 
 run-tests:
 	$(COMPOSE) run tests pytest -v
+
+clean-cache:
+	@docker exec -t buddhanexus-redis-1 redis-cli FLUSHALL
+
+redis-cli:
+	docker exec -it buddhanexus-redis-1 redis-cli
+
+redis-monitor:
+	docker exec -it buddhanexus-redis-1 redis-cli monitor
+
+redis-info:
+	docker exec -it buddhanexus-redis-1 redis-cli info

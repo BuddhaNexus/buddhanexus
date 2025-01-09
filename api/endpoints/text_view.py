@@ -30,7 +30,7 @@ async def get_parallels_for_middle(input: TextViewMiddleInput) -> Any:
 
 
 @router.post("/text-parallels/", response_model=TextViewLeftOutput)
-@cached_endpoint(expire=CACHE_TIMES["LONG"])
+#@cached_endpoint(expire=CACHE_TIMES["LONG"])
 async def get_file_text_segments_and_parallels(input: TextParallelsInput) -> Any:
     """
     Endpoint for text view. Returns preformatted text segments and ids of the corresponding parallels.

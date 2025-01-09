@@ -81,6 +81,10 @@ async def startup():
         retry_on_timeout=True,
         health_check_interval=30,
     )
+    # Flush all keys from Redis
+    await redis.flushall()
+    logger.info("Cache flushed")
+    
     FastAPICache.init(
         backend=RedisBackend(redis),
         prefix="buddhanexus-cache",
