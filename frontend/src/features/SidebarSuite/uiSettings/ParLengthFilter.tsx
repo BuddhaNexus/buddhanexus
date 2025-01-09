@@ -74,7 +74,7 @@ export default function ParLengthFilter() {
         value={parLengthValue}
         type="number"
         inputProps={{
-          min: 0,
+          min: minValue,
           max: 4000,
           type: "number",
           "aria-labelledby": "min-match-input-label",
@@ -86,7 +86,7 @@ export default function ParLengthFilter() {
           value={parLengthValue}
           aria-labelledby="min-match-input-label"
           getAriaValueText={valueToString}
-          min={0}
+          min={minValue}
           max={4000}
           marks={marks}
           onChange={(_, value) => handleChange(Number(value))}

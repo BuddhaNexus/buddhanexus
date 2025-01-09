@@ -15,11 +15,6 @@ export const currentDbViewAtom = atomWithStorage<DbViewEnum>(
   DEFAULT_DB_VIEW,
 );
 
-export const currentDbFileAtom = atom<Pick<
-  DbSourceTreeNode,
-  "id" | "displayId" | "name"
-> | null>(null);
-
 /**
  * SEARCH
  */

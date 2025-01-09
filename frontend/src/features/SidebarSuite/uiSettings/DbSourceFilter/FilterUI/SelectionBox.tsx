@@ -8,6 +8,7 @@ import {
   useIncludeCollectionsParam,
   useIncludeFilesParam,
 } from "@components/hooks/params";
+import { useMenuDataFileMap } from "@components/hooks/useMenuDataMap";
 import type { DbSourceFilterUISetting } from "@features/SidebarSuite/types";
 import {
   InputOutlineBox,
@@ -48,6 +49,8 @@ const DbSourceFilterInput = ({
   const [isExpanded, setIsExpanded] = React.useState(false);
   const [showButton, setShowButton] = React.useState(false);
   const selectionBoxRef = React.useRef<HTMLElement>(null);
+
+  const menuDataFileMap = useMenuDataFileMap(true);
 
   const toggleExpand = () => {
     setIsExpanded((prevIsExpanded) => !prevIsExpanded);
@@ -134,13 +137,23 @@ const DbSourceFilterInput = ({
     <InputOutlineBox>
       <MultiSelectionBox role="combobox" onClick={handleClick}>
         <SelectionChipsBox ref={selectionBoxRef} isExpanded={isExpanded}>
-          {selectionIds.map((id) => (
-            <Chip
-              key={id}
-              label={id}
-              onDelete={() => handleClearSourcesById(id, filterName)}
-            />
-          ))}
+          {Object.keys(menuDataFileMap).length === 0 ? (
+            <>...</>
+          ) : (
+            <>
+              {selectionIds.map((id) => {
+                const fileData = menuDataFileMap?.[id];
+                const label = fileData?.displayId ?? id;
+                return (
+                  <Chip
+                    key={id}
+                    label={label}
+                    onDelete={() => handleClearSourcesById(id, filterName)}
+                  />
+                );
+              })}
+            </>
+          )}
         </SelectionChipsBox>
 
         <IconButton

@@ -10,7 +10,7 @@ import {
   useActiveSegmentParam,
   useRightPaneActiveSegmentParam,
 } from "@components/hooks/params";
-import { useGetURLToSegment } from "@features/textView/useGetURLToSegment";
+import { createURLToSegment } from "@features/textView/utils";
 import CopyIcon from "@mui/icons-material/ContentCopy";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import PercentIcon from "@mui/icons-material/Percent";
@@ -90,7 +90,7 @@ export const ParallelSegment = ({
     textSegmentNumber,
   ]);
 
-  const { urlToSegment } = useGetURLToSegment({
+  const urlToSegment = createURLToSegment({
     language,
     segmentNumber: textSegmentNumber,
   });
@@ -119,6 +119,7 @@ export const ParallelSegment = ({
       sx={{
         py: 1,
         maxWidth: isRowItem ? { xs: "100%", lg: "48%" } : undefined,
+        width: "100%",
       }}
       onMouseEnter={() => id && onHover?.(id)}
       onMouseLeave={() => onHover?.("")}
@@ -149,8 +150,6 @@ export const ParallelSegment = ({
                   wordBreak: "break-word",
                   m: 0.5,
                 }}
-                target="_blank"
-                rel="noreferrer noopenner"
               >
                 {textSegmentNumberRange}
               </Link>
