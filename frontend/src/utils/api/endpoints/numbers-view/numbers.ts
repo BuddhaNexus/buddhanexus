@@ -15,6 +15,6 @@ export async function getNumbersViewData(
     body: parseAPIRequestBody(body),
   });
 
-  const hasNextPage = Boolean(data && data.length < 100);
+  const hasNextPage = Boolean(data && data.length >= 100);
   return { data: data ?? [], pageNumber: body.page, hasNextPage };
 }
