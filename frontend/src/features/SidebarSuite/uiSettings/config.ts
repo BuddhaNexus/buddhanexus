@@ -89,6 +89,7 @@ export const allUIComponentParamNames: AllUIComponentParamNames = {
   search_string: "search_string",
   segmentnr: "segmentnr",
   filters: "filters",
+  active_match_id: "active_match_id",
 };
 
 export const DEFAULT_LANGUAGE = "all";

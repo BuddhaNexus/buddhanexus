@@ -1,32 +1,8 @@
 import apiClient from "@api";
 import { transformDataForTreeView } from "@components/db/SearchableDbSourceTree/utils";
-import type {
-  APIGetRequestQuery,
-  // APIGetResponse,
-  APISchemas,
-} from "@utils/api/types";
+import type { APIGetRequestQuery, APIGetResponse } from "@utils/api/types";
 
-type TEMP_FIX_FILE = {
-  displayName: string;
-  filename: string;
-  search_field: string;
-  textname: string;
-};
-
-type TEMP_FIX_CATEGORY = Omit<APISchemas["Category"], "files"> & {
-  files: TEMP_FIX_FILE[];
-};
-
-type TEMP_FIX_COLLECTION = {
-  collection: string;
-  categories: TEMP_FIX_CATEGORY[];
-};
-
-type TEMP_FIX_API_MENUDATA = {
-  menudata: TEMP_FIX_COLLECTION[];
-};
-
-function parseStructuredDbSourceMenuData(data: TEMP_FIX_API_MENUDATA) {
+function parseStructuredDbSourceMenuData(data: APIGetResponse<"/menudata/">) {
   return data.menudata.map(({ collection, categories }) => ({
     collection,
     categories: categories.map(
@@ -58,8 +34,6 @@ export async function getDbSourceMenuData(
     params: { query },
   });
 
-  const parsedApiData = data
-    ? parseStructuredDbSourceMenuData(data as TEMP_FIX_API_MENUDATA)
-    : [];
+  const parsedApiData = data ? parseStructuredDbSourceMenuData(data) : [];
   return transformDataForTreeView(parsedApiData);
 }
