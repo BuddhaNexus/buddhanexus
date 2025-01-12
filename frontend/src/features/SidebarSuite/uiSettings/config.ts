@@ -24,7 +24,6 @@ export const allRequestFilters = exhaustiveStringTuple<APIRequestFilterName>()(
 );
 
 // order sets appearance in sidebar
-
 export const dbSourceFileRequestFilters =
   exhaustiveStringTuple<DBSourceFilePageFilterUISettingName>()(
     "score",

@@ -2,15 +2,13 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
-import { useSourceFile } from "@components/hooks/useSourceFile";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { DbSourceBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import { TextView } from "@features/textView/TextView";
 
 export default function TextPage() {
-  const { isFallback } = useSourceFile();
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage, isFallback } = useDbRouterParams();
 
   if (isFallback) {
     return (

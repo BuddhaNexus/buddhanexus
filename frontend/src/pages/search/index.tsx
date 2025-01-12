@@ -6,7 +6,7 @@ import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
 import { useSearchStringParam } from "@components/hooks/params";
-import { useSourceFile } from "@components/hooks/useSourceFile";
+import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SearchResults } from "@features/globalSearch";
@@ -44,7 +44,7 @@ const SearchPageHeader = ({ matches }: { matches: number }) => {
 };
 
 export default function SearchPage() {
-  const { isFallback } = useSourceFile();
+  const { isFallback } = useDbRouterParams();
 
   const [search_string] = useSearchStringParam();
 

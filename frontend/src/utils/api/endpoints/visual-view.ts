@@ -11,13 +11,13 @@ const API_ROOT = "https://buddhanexus.kc-tbts.uni-hamburg.de/api";
 
 const { GET } = createClient<paths>({ baseUrl: API_ROOT });
 
-interface APIVisualCollection {
+interface APIV1VisualCollection {
   collectionkey: string;
   collectionlanguage: string;
   collectionname: string;
 }
 
-export interface ParsedApiVisualCollection {
+export interface ParsedApiV1VisualCollection {
   key: string;
   language: string;
   name: string;
@@ -44,8 +44,8 @@ const getLegacyLanguageCode = (languageCode: DbLanguage): string => {
 };
 
 const parseVisualCollection = (
-  collections: APIVisualCollection[],
-): ParsedApiVisualCollection[] =>
+  collections: APIV1VisualCollection[],
+): ParsedApiV1VisualCollection[] =>
   collections.map((c) => ({
     key: c.collectionkey,
     name: c.collectionname,
@@ -57,7 +57,7 @@ export async function getVisualViewCollections(language: DbLanguage) {
   const { data } = await GET(`/collections`);
 
   // @ts-expect-error no typings, leaving this intentionally since it's temporary
-  return parseVisualCollection(data?.result as APIVisualCollection[]).filter(
+  return parseVisualCollection(data?.result as APIV1VisualCollection[]).filter(
     (c) => c.language === getLegacyLanguageCode(language),
   );
 }

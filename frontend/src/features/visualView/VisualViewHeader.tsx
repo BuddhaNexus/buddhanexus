@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
-import { ParsedApiVisualCollection } from "@utils/api/endpoints/visual-view";
+import { ParsedApiV1VisualCollection } from "@utils/api/endpoints/visual-view";
 
 export function VisualViewHeader() {
   const { dbLanguage } = useDbRouterParams();
@@ -64,7 +64,7 @@ export function VisualViewHeader() {
       {/* Hit collection*/}
       {selectedCollection ? (
         <FormControl sx={{ mx: 2 }}>
-          <Autocomplete<ParsedApiVisualCollection>
+          <Autocomplete<ParsedApiV1VisualCollection>
             id="hit-collections-option-selector"
             options={data ?? []}
             isOptionEqualToValue={(option, value) => option.key === value.key}

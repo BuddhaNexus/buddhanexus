@@ -16,7 +16,6 @@ export const VisualViewChart = ({ currentPage }: { currentPage: number }) => {
   const [selectedHitCollections] = useVisualHitCollectionsStringParam();
 
   const { data, isLoading } = useQuery({
-    enabled: true,
     queryKey: DbApi.VisualViewGraphData.makeQueryKey(
       dbLanguage,
       selectedCollection,
