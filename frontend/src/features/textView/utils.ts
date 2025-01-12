@@ -10,7 +10,7 @@ export function getTextViewColorScale(
 
   return chroma
     .scale("Reds")
-    .padding([0.6, 0])
+    .padding([0.7, 0])
     .domain([maxColor, minColor])
     .correctLightness(true);
 }

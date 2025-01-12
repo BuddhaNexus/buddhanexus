@@ -16,7 +16,10 @@ import { ParsedTextViewParallel } from "@utils/api/endpoints/text-view/text-para
 import type { Scale } from "chroma-js";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 
-import { OLD_WEBSITE_SEGMENT_COLORS } from "./constants";
+import {
+  DARK_MODE_MATCH_HEAT_INVERTED_COLORS,
+  LIGHT_MODE_MATCH_HEAT_COLORS,
+} from "./constants";
 import styles from "./textSegment.module.scss";
 
 export const TextSegment = ({
@@ -34,6 +37,9 @@ export const TextSegment = ({
 } & TextViewPaneProps) => {
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
+  const matchHeatColors = isDarkTheme
+    ? DARK_MODE_MATCH_HEAT_INVERTED_COLORS
+    : LIGHT_MODE_MATCH_HEAT_COLORS;
 
   const { dbLanguage } = useDbRouterParams();
 
@@ -148,9 +154,7 @@ export const TextSegment = ({
 
         const color: string = shouldUseMonochromaticSegmentColors
           ? colorScale(highlightColor).hex()
-          : (OLD_WEBSITE_SEGMENT_COLORS[highlightColor] ??
-            OLD_WEBSITE_SEGMENT_COLORS.at(-1) ??
-            "");
+          : (matchHeatColors[highlightColor] ?? matchHeatColors.at(-1) ?? "");
 
         return (
           // eslint-disable-next-line jsx-a11y/no-static-element-interactions
