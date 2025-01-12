@@ -39,6 +39,10 @@ async def search(search_input: SearchInput):
             filter_params[f"search_string_{lang}"] = search_strings[lang]
             if lang == "sa" and "sa_fuzzy" in search_strings:
                 filter_params["search_string_sa_fuzzy"] = search_strings["sa_fuzzy"]
+            if lang == "pa" and "pa_fuzzy" in search_strings:
+                filter_params["search_string_pa_fuzzy"] = search_strings["pa_fuzzy"]
+            if lang == "bo" and "bo_fuzzy" in search_strings:
+                filter_params["search_string_bo_fuzzy"] = search_strings["bo_fuzzy"]
 
     # Create bind variables dictionary
     bind_variables = {
@@ -47,7 +51,13 @@ async def search(search_input: SearchInput):
             search_strings["sa_fuzzy"] if "sa_fuzzy" in search_strings else None
         ),
         "search_string_bo": search_strings["bo"] if "bo" in search_strings else None,
+        "search_string_bo_fuzzy": (
+            search_strings["bo_fuzzy"] if "bo_fuzzy" in search_strings else None
+        ),
         "search_string_pa": search_strings["pa"] if "pa" in search_strings else None,
+        "search_string_pa_fuzzy": (
+            search_strings["pa_fuzzy"] if "pa_fuzzy" in search_strings else None
+        ),
         "search_string_zh": search_strings["zh"] if "zh" in search_strings else None,
     }
 

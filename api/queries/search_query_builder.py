@@ -43,20 +43,36 @@ def build_query_search(query_languages, bind_variables, filters=None, max_limit=
             },
         ],
         "bo": [
+            # normal Tibetan
+            {
+                "view": "search_index_bo_view",
+                "phrase_field": "d.original",
+                "analyzer": "tibetan_analyzer",
+                "bind_var": "@search_string_bo",
+            },
+            # fuzzy Tibetan
             {
                 "view": "search_index_bo_fuzzy_view",
                 "phrase_field": "d.analyzed",
                 "analyzer": "tibetan_fuzzy_analyzer",
-                "bind_var": "@search_string_bo",
-            }
+                "bind_var": "@search_string_bo_fuzzy",
+            },
         ],
         "pa": [
+            # normal Pali
+            {
+                "view": "search_index_pa_view",
+                "phrase_field": "d.original",
+                "analyzer": "pali_analyzer",
+                "bind_var": "@search_string_pa",
+            },
+            # fuzzy Pali
             {
                 "view": "search_index_pa_view",
                 "phrase_field": "d.analyzed",
                 "analyzer": "pali_analyzer",
-                "bind_var": "@search_string_pa",
-            }
+                "bind_var": "@search_string_pa_fuzzy",
+            },
         ],
         "zh": [
             {

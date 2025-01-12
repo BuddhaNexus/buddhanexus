@@ -130,7 +130,6 @@ export default function NumbersPage() {
         isFetching={isFetching}
         isLoading={isLoading}
         language={dbLanguage}
-        fileName={fileName}
       />
       <DbSourceBrowserDrawer />
     </PageContainer>

@@ -123,7 +123,7 @@ def get_spreadsheet_fields(lang, file_values):
         ["Min. Match Length", file_values[2]],
         ["Sorting Method", file_values[3]],
         ["Filters", file_values[4]],
-        ["Max. number of results", "20,000"],
+        ["Max. number of results", "2,500"],
     )
 
     return (header_fields, filters_fields)
