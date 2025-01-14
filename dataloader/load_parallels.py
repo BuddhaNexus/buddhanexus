@@ -8,6 +8,7 @@ from arango.database import StandardDatabase
 import multiprocessing
 from utils import should_download_file, get_database
 from time import sleep
+from itertools import islice
 
 from dataloader_models import Match, validate_dict_list
 from dataloader_constants import (
@@ -70,16 +71,21 @@ def load_parallels(parallels, db: StandardDatabase) -> None:
 def process_file(path, _):
     print("Processing file: ", path)
     db = get_database()
-
-    parallels = json.load(
-        gzip.open(path, "rt", encoding="utf-8")
-    )  # returns a list of dicts
-    print(f"Validating {path}")
-    if validate_dict_list(path, Match, parallels):
-        print(f"Loading {path}")
-        load_parallels(parallels, db)
-    else:
-        print(f"Validation failed for {path}")
+    
+    chunk_size = 10000
+    with gzip.open(path, 'rt', encoding='utf-8') as f:
+        while True:
+            # Read chunk_size lines and parse each as JSON
+            chunk = list(map(json.loads, islice(f, chunk_size)))
+            if not chunk:  # End of file
+                break
+                
+            print(f"Validating chunk from {path}")
+            if validate_dict_list(path, Match, chunk):
+                print(f"Loading chunk from {path}")
+                load_parallels(chunk, db)
+            else:
+                print(f"Validation failed for chunk from {path}")
 
 
 def load_parallels_for_language(folder, lang, db, number_of_threads):
@@ -102,7 +108,7 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     }
 
     files = os.listdir(folder)
-    files = list(filter(lambda f: f.endswith(".json.gz"), files))
+    files = list(filter(lambda f: f.endswith(".ndjson.gz"), files))
     pool = multiprocessing.Pool(number_of_threads)
     async_results = []
     for file in files:
@@ -140,30 +146,20 @@ def clean_parallels_for_language(lang, db):
 
 def load_sorted_parallels_file(path, lang, db_collection):
     print("Loading sorted parallels for file: ", path)
-    current_files = json.load(gzip.open(path, "rt", encoding="utf-8"))
-
-    batch_size = 100
-    batch = []
-
-    for file in tqdm(current_files):
-        if not should_download_file(file["filename"]):
-            continue
-        filename = get_filename_from_segmentnr(file["filename"])
-        file["_key"] = filename
-        file["lang"] = lang
-        batch.append(file)
-
-        if len(batch) >= batch_size:
-            try:
-                db_collection.insert_many(batch, overwrite=True)
-                batch = []
-            except DocumentInsertError as e:
-                print(f"Batch insert failed: {e}")
-                raise
-
-    # Insert remaining documents
-    if batch:
-        db_collection.insert_many(batch, overwrite=True)
+    file = json.load(gzip.open(path, "rt", encoding="utf-8"))
+    
+    if not should_download_file(file["filename"]):
+        return
+        
+    filename = get_filename_from_segmentnr(file["filename"])
+    file["_key"] = filename
+    file["lang"] = lang
+    
+    try:
+        db_collection.insert(file, overwrite=True)
+    except DocumentInsertError as e:
+        print(f"Insert failed: {e}")
+        raise
 
 
 def load_sorted_parallels_for_language(folder, lang, db):
@@ -172,7 +168,6 @@ def load_sorted_parallels_for_language(folder, lang, db):
 
     :param folder: Folder with parallel json files
     :param db: ArangoDB connection object
-    :param number_of_threads: Number of threads to use for parallel loading
     """
     # create a dictionary with filename as key and collection as value for all files of current language
     print("Loading sorted parallels for language: ", lang)
@@ -186,8 +181,25 @@ def load_sorted_parallels_for_language(folder, lang, db):
     files = list(filter(lambda f: f.endswith("_stats.json.gz"), files))
     files = list(filter(lambda f: not "global" in f, files))
 
-    for file in tqdm(files):
-        load_sorted_parallels_file(os.path.join(folder, file), lang, db_collection)
-    db_collection.add_hash_index(fields=["filename", "lang"])
+    # Create a pool of 10 workers
+    pool = multiprocessing.Pool(10)
+    
+    # Create arguments for each file
+    args = [(os.path.join(folder, file), lang) for file in files]
+    
+    # Process files in parallel using pool.starmap
+    list(tqdm(
+        pool.imap_unordered(
+            lambda x: load_sorted_parallels_file(*x, db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE)),
+            args
+        ),
+        total=len(files)
+    ))
+    
+    pool.close()
+    pool.join()
+    
+    # Add index after all files are loaded
+    db.collection(COLLECTION_PARALLELS_SORTED_BY_FILE).add_hash_index(fields=["filename", "lang"])
 
     print("Done sorted parallels for language: ", lang)
