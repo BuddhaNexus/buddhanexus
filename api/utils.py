@@ -100,6 +100,16 @@ def get_cat_from_segmentnr(segmentnr):
     return segmentnr.split("_")[1]
 
 
+def test_is_collection(inputstring):
+    """
+    tests if the inputstring is a collection or a category name
+    """
+    collection = False
+    if inputstring[0].isupper() and inputstring[1].islower():
+        collection = True
+    return collection
+
+
 def arrange_filter_data(filters):
     """
     Stringify include and exclude filters for display

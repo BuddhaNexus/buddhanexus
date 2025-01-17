@@ -4,6 +4,7 @@ from ..queries import visual_view_queries
 from typing import Any
 from .models.visual_view_models import *
 from ..cache_config import cached_endpoint, CACHE_TIMES
+from ..utils import test_is_collection
 
 router = APIRouter()
 
@@ -37,12 +38,24 @@ async def get_visual_graph_data(input: VisualViewInput) -> Any:
 
     """
 
-    query_visual_result = execute_query(
-        graph_view_queries.QUERY_VISUAL_VIEW,
-        bind_vars={
-            "inquiry": input.inquiry,
-            "hit": input.hit,
-        },
-    )
+    if test_is_collection(input.inquiry):
+        query_visual_result = execute_query(
+            visual_view_queries.QUERY_VISUAL_COLLECTION_VIEW,
+            bind_vars={
+                "inquiry_collection": input.inquiry,
+                "hit_collection": input.hit,
+                "lang": input.language,
+            },
+        )
 
-    return query_visual_result.result[0]
+    else:
+        query_visual_result = execute_query(
+            visual_view_queries.QUERY_VISUAL_CATEGORY_VIEW,
+            bind_vars={
+                "inquiry_collection": input.inquiry,
+                "hit_collection": input.hit,
+                "lang": input.language,
+            },
+        )
+
+    return {"graphdata": query_visual_result.result}

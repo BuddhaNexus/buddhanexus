@@ -18,6 +18,7 @@ from .endpoints import (
     text_view,
     numbers_view,
     graph_view,
+    visual_view,
     menu,
     utils,
     links,
@@ -92,6 +93,7 @@ async def startup():
 
 APP.include_router(search.router)
 APP.include_router(graph_view.router)
+APP.include_router(visual_view.router)
 APP.include_router(download.router)
 APP.include_router(table_view.router, prefix="/table-view")
 APP.include_router(text_view.router, prefix="/text-view")
