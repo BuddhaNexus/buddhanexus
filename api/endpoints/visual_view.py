@@ -15,26 +15,39 @@ async def get_visual_graph_data(input: VisualViewInput) -> Any:
     """
     Endpoint for visual view.
 
-    Output is f.i.:
+    **Input is:**
+
+    *inquiry*: A string with the required inquiry collection ("Suttas-Early-1"), category ("dn") or file ("PA_dn_1")
+
+    *hit*: And array with the required hit collection(s) ["Suttas-Early-1","Vinaya"]
+
+    *language*: pa, sa, bo or zh
+
+    **Output is f.i.:**
 
     ```
-    "graphdata": [
-            [
-              "Khuddakapāṭha (kp)",
-              "Dīghanikāya_(dn)",
-              1094
-            ],
-            [
-              "Khuddakapāṭha (kp)",
-              "Majjhimanikāya_(mn)"
-              5042
-            ],
+    {
+        "totalpages": 4,
+        "graphdata": [
+                [
+                  "Khuddakapāṭha (kp)",
+                  "Dīghanikāya_(dn)",
+                  1094
+                ],
+                [
+                  "Khuddakapāṭha (kp)",
+                  "Majjhimanikāya_(mn)"
+                  5042
+                ],
 
-            ...
+                ...
 
-            ]
-          ]
+                ]
+              ]
+    }
     ```
+
+    Note that if a collection or file is selected, the total number of pages is always 1.
 
     """
     collection_test, category_test, file_test = test_collection_category_file(
@@ -72,4 +85,4 @@ async def get_visual_graph_data(input: VisualViewInput) -> Any:
             },
         )
 
-    return {"graphdata": query_visual_result.result}
+    return query_visual_result.result[0]

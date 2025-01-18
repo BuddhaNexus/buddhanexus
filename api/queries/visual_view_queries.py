@@ -28,23 +28,29 @@ LET hit_collection = FIRST(RETURN (
     RETURN collection.categories
   )[**])
 
-FOR inquiry_category IN inquiry_collection
-  FOR stats IN global_stats_categories
-    FILTER stats._key == inquiry_category
-    LET inquiry_category_info = FIRST(
-        FOR cat IN category_names
-          FILTER cat.category == inquiry_category AND cat.lang == @lang
-          RETURN CONCAT(cat.displayName, " (", cat.category, ")")
-      )
-    FOR hit_category in hit_collection
-      FOR pair IN ENTRIES(stats.stats)
-        FILTER pair[0] == hit_category
-        LET hit_category_info = FIRST(
+LET graphdata = (
+  FOR inquiry_category IN inquiry_collection
+    FOR stats IN global_stats_categories
+      FILTER stats._key == inquiry_category
+      LET inquiry_category_info = FIRST(
           FOR cat IN category_names
-            FILTER cat.category == hit_category AND cat.lang == @lang
+            FILTER cat.category == inquiry_category AND cat.lang == @lang
             RETURN CONCAT(cat.displayName, " (", cat.category, ")")
         )
-        RETURN [inquiry_category_info, hit_category_info, pair[1]]
+      FOR hit_category in hit_collection
+        FOR pair IN ENTRIES(stats.stats)
+          FILTER pair[0] == hit_category
+          LET hit_category_info = FIRST(
+            FOR cat IN category_names
+              FILTER cat.category == hit_category AND cat.lang == @lang
+              RETURN CONCAT(cat.displayName, " (", cat.category, ")")
+          )
+          RETURN [inquiry_category_info, hit_category_info, pair[1]]
+  )
+RETURN {
+      "totalpages": 1,
+      "graphdata": graphdata
+}
 """
 
 
@@ -59,22 +65,36 @@ LET hit_category_list = (
     RETURN categories
   )[**]
 
-FOR file IN files
-  FILTER file.lang == @lang
-  FILTER file.category == @inquiry_collection
-  SORT file.filenr ASC
-  LIMIT 50 * @page,50
-  FOR stats IN global_stats_files
-    FILTER stats._key == file.filename
-    FOR hit_category IN hit_category_list
-      FOR pair IN ENTRIES(stats.stats)
-        FILTER pair[0] == hit_category
-        LET hit_category_info = FIRST(
-          FOR cat IN category_names
-            FILTER cat.category == hit_category AND cat.lang == @lang
-            RETURN CONCAT(cat.displayName, " (", cat.category, ")")
-        )
-        RETURN [CONCAT(file.displayName, " (", file.textname, ")"), hit_category_info, pair[1]]
+LET totalpages = (
+  FOR file IN files
+    FILTER file.lang == @lang
+    FILTER file.category == @inquiry_collection
+    COLLECT WITH COUNT INTO total
+    RETURN CEIL(total / 50)
+)[0]
+
+LET graphdata = (
+  FOR file IN files
+    FILTER file.lang == @lang
+    FILTER file.category == @inquiry_collection
+    SORT file.filenr ASC
+    LIMIT 50 * @page,50
+    FOR stats IN global_stats_files
+      FILTER stats._key == file.filename
+      FOR hit_category IN hit_category_list
+        FOR pair IN ENTRIES(stats.stats)
+          FILTER pair[0] == hit_category
+          LET hit_category_info = FIRST(
+            FOR cat IN category_names
+              FILTER cat.category == hit_category AND cat.lang == @lang
+              RETURN CONCAT(cat.displayName, " (", cat.category, ")")
+          )
+          RETURN [CONCAT(file.displayName, " (", file.textname, ")"), hit_category_info, pair[1]]
+  )
+RETURN {
+      "totalpages": totalpages,
+      "graphdata": graphdata
+}
 """
 
 
@@ -89,17 +109,24 @@ LET hit_category_list = (
     RETURN categories
   )[**]
 
-FOR file IN files
-  FILTER file._key == @inquiry_collection
-  FOR stats IN global_stats_files
-    FILTER stats._key == file.filename
-    FOR hit_category IN hit_category_list
-      FOR pair IN ENTRIES(stats.stats)
-        FILTER pair[0] == hit_category
-        LET hit_category_info = FIRST(
-          FOR cat IN category_names
-            FILTER cat.category == hit_category AND cat.lang == @lang
-            RETURN CONCAT(cat.displayName, " (", cat.category, ")")
-        )
-        RETURN [CONCAT(file.displayName, " (", file.textname, ")"), hit_category_info, pair[1]]
+LET graphdata = (
+  FOR file IN files
+    FILTER file._key == @inquiry_collection
+    FOR stats IN global_stats_files
+      FILTER stats._key == file.filename
+      FOR hit_category IN hit_category_list
+        FOR pair IN ENTRIES(stats.stats)
+          FILTER pair[0] == hit_category
+          LET hit_category_info = FIRST(
+            FOR cat IN category_names
+              FILTER cat.category == hit_category AND cat.lang == @lang
+              RETURN CONCAT(cat.displayName, " (", cat.category, ")")
+          )
+          RETURN [CONCAT(file.displayName, " (", file.textname, ")"), hit_category_info, pair[1]]
+  )
+
+RETURN {
+      "totalpages": 1,
+      "graphdata": graphdata
+}
 """

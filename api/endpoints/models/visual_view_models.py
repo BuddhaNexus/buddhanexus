@@ -10,5 +10,10 @@ class VisualViewInput(BaseModel):
     page: int = 0
 
 
-class VisualViewOutput(BaseModel):
+class VisualViewData(BaseModel):
+    totalpages: int = 1
     graphdata: List[List[Union[str, str, int]]]
+
+
+class VisualViewOutput(BaseModel):
+    __root__: VisualViewData
