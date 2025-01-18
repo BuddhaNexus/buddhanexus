@@ -4,7 +4,7 @@ from ..queries import visual_view_queries
 from typing import Any
 from .models.visual_view_models import *
 from ..cache_config import cached_endpoint, CACHE_TIMES
-from ..utils import test_is_collection
+from ..utils import test_collection_category_file
 
 router = APIRouter()
 
@@ -37,8 +37,22 @@ async def get_visual_graph_data(input: VisualViewInput) -> Any:
     ```
 
     """
+    collection_test, category_test, file_test = test_collection_category_file(
+        input.inquiry
+    )
 
-    if test_is_collection(input.inquiry):
+    if file_test:
+        print(file_test, input)
+        query_visual_result = execute_query(
+            visual_view_queries.QUERY_VISUAL_FILE_VIEW,
+            bind_vars={
+                "inquiry_collection": input.inquiry,
+                "hit_collection": input.hit,
+                "lang": input.language,
+            },
+        )
+
+    elif collection_test:
         query_visual_result = execute_query(
             visual_view_queries.QUERY_VISUAL_COLLECTION_VIEW,
             bind_vars={
@@ -55,6 +69,7 @@ async def get_visual_graph_data(input: VisualViewInput) -> Any:
                 "inquiry_collection": input.inquiry,
                 "hit_collection": input.hit,
                 "lang": input.language,
+                "page": input.page,
             },
         )
 

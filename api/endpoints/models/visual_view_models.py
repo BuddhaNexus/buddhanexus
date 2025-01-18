@@ -7,6 +7,7 @@ class VisualViewInput(BaseModel):
     inquiry: str
     hit: List[str]
     language: Languages
+    page: int = 0
 
 
 class VisualViewOutput(BaseModel):

@@ -63,6 +63,34 @@ FOR file IN files
   FILTER file.lang == @lang
   FILTER file.category == @inquiry_collection
   SORT file.filenr ASC
+  LIMIT 50 * @page,50
+  FOR stats IN global_stats_files
+    FILTER stats._key == file.filename
+    FOR hit_category IN hit_category_list
+      FOR pair IN ENTRIES(stats.stats)
+        FILTER pair[0] == hit_category
+        LET hit_category_info = FIRST(
+          FOR cat IN category_names
+            FILTER cat.category == hit_category AND cat.lang == @lang
+            RETURN CONCAT(cat.displayName, " (", cat.category, ")")
+        )
+        RETURN [CONCAT(file.displayName, " (", file.textname, ")"), hit_category_info, pair[1]]
+"""
+
+
+QUERY_VISUAL_FILE_VIEW = """
+LET hit_category_list = (
+  FOR file IN files
+    FILTER file.lang == @lang
+    FILTER file.collection IN @hit_collection
+    SORT file.filenr ASC
+    COLLECT collection = file.collection
+    AGGREGATE categories = UNIQUE(file.category)
+    RETURN categories
+  )[**]
+
+FOR file IN files
+  FILTER file._key == @inquiry_collection
   FOR stats IN global_stats_files
     FILTER stats._key == file.filename
     FOR hit_category IN hit_category_list
