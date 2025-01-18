@@ -42,7 +42,6 @@ async def get_visual_graph_data(input: VisualViewInput) -> Any:
     )
 
     if file_test:
-        print(file_test, input)
         query_visual_result = execute_query(
             visual_view_queries.QUERY_VISUAL_FILE_VIEW,
             bind_vars={
