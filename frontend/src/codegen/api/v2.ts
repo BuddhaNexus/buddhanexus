@@ -13,12 +13,8 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /**
-     * Get Search Results
-     * @description Returns search results for given search string.
-     *     :return: List of search results
-     */
-    post: operations["get_search_results_search__post"];
+    /** Search */
+    post: operations["search_search__post"];
     delete?: never;
     options?: never;
     head?: never;
@@ -331,6 +327,26 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/utils/active-segment-for-folio/": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get Active Segment For Folio
+     * @description Returns the active segment for a given folio
+     */
+    get: operations["get_active_segment_for_folio_utils_active_segment_for_folio__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/menudata/": {
     parameters: {
       query?: never;
@@ -376,6 +392,11 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /** ActiveSegmentOutput */
+    ActiveSegmentOutput: {
+      /** Active Segment */
+      active_segment: string;
+    };
     /** Category */
     Category: {
       /** Category */
@@ -447,6 +468,8 @@ export interface components {
       displayName: string;
       /** Filename */
       filename: string;
+      /** Textname */
+      textname: string;
       /** Search Field */
       search_field: string;
     };
@@ -495,6 +518,11 @@ export interface components {
       highlightColor: number;
       /** Matches */
       matches: string[];
+      /**
+       * Is Active Match
+       * @default false
+       */
+      is_active_match: boolean;
     };
     /** FullNames */
     FullNames: {
@@ -695,6 +723,8 @@ export interface components {
        */
       active_segment: string;
       filters?: components["schemas"]["Filters"];
+      /** Active Match Id */
+      active_match_id?: string;
       /**
        * Page
        * @default 0
@@ -791,7 +821,7 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  get_search_results_search__post: {
+  search_search__post: {
     parameters: {
       query?: never;
       header?: never;
@@ -1123,6 +1153,36 @@ export interface operations {
         headers: Record<string, unknown>;
         content: {
           "application/json": components["schemas"]["DisplayNameOutput"];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: Record<string, unknown>;
+        content: {
+          "application/json": components["schemas"]["HTTPValidationError"];
+        };
+      };
+    };
+  };
+  get_active_segment_for_folio_utils_active_segment_for_folio__get: {
+    parameters: {
+      query: {
+        /** @description Filename for which the active segment should be fetched. */
+        filename: string;
+        /** @description Folio for which the active segment should be fetched. */
+        folio: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: Record<string, unknown>;
+        content: {
+          "application/json": components["schemas"]["ActiveSegmentOutput"];
         };
       };
       /** @description Validation Error */
