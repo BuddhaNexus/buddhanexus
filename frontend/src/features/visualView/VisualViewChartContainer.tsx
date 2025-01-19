@@ -30,7 +30,7 @@ export function VisualViewChartContainer() {
     selectedCollection && Boolean(selectedHitCollections?.length);
 
   return (
-    <Paper sx={{ height: "100%", m: 2, p: 2 }}>
+    <Paper sx={{ height: "auto", m: 2, p: 2 }}>
       {isViewEnabled ? (
         <VisualViewChart currentPage={currentPage} />
       ) : (

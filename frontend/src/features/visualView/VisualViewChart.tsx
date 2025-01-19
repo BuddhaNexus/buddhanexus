@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Chart } from "react-google-charts";
 import {
   useVisualCollectionStringParam,
@@ -29,6 +29,27 @@ export const VisualViewChart = ({ currentPage }: { currentPage: number }) => {
       ),
   });
 
+  const chartHeight = useMemo(() => {
+    const pageData = data?.filteredData?.[currentPage];
+    if (!pageData) {
+      return "100%";
+    }
+
+    const weights: number[] = pageData.map(
+      (value: [string, string, number]) => value[2],
+    );
+    const maxWeight = Math.max(...weights);
+    const meanScaledWeight =
+      weights.reduce((acc: number, weight) => {
+        // map to a [0, 1] scale
+        return acc + weight / maxWeight;
+      }, 0) / pageData.length;
+
+    const magicHeightNumber = pageData.length * meanScaledWeight * 5;
+
+    return `${magicHeightNumber < 80 ? 80 : magicHeightNumber}vh`;
+  }, [currentPage, data?.filteredData]);
+
   if (isLoading) {
     return <CenteredProgress />;
   }
@@ -39,6 +60,7 @@ export const VisualViewChart = ({ currentPage }: { currentPage: number }) => {
       width="100%"
       height="100%"
       rows={data?.filteredData[currentPage] ?? []}
+      style={{ height: chartHeight }}
       columns={[
         { label: "From", type: "string" },
         { label: "To", type: "string" },
