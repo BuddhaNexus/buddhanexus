@@ -24,7 +24,6 @@ export const allRequestFilters = exhaustiveStringTuple<APIRequestFilterName>()(
 );
 
 // order sets appearance in sidebar
-
 export const dbSourceFileRequestFilters =
   exhaustiveStringTuple<DBSourceFilePageFilterUISettingName>()(
     "score",
@@ -89,6 +88,8 @@ export const allUIComponentParamNames: AllUIComponentParamNames = {
   search_string: "search_string",
   segmentnr: "segmentnr",
   filters: "filters",
+  collection: "collection",
+  hit_collections: "hit_collections",
   active_match_id: "active_match_id",
 };
 

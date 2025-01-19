@@ -15,7 +15,6 @@ import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryPa
 import { useSortMethodParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
-import { useSourceFile } from "@components/hooks/useSourceFile";
 import { PageContainer } from "@components/layout/PageContainer";
 import NumbersTable from "@features/numbersView/NumbersTable";
 import { DbSourceBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
@@ -28,8 +27,7 @@ import {
 import { DbApi } from "@utils/api/dbApi";
 
 export default function NumbersPage() {
-  const { dbLanguage, fileName } = useDbRouterParams();
-  const { isFallback } = useSourceFile();
+  const { dbLanguage, fileName, isFallback } = useDbRouterParams();
 
   useSetDbViewFromPath();
 

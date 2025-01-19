@@ -20,6 +20,7 @@ export const useDbRouterParams = () => {
     dbLanguage,
     dbLanguageName: t(`language.${dbLanguage}`),
     fileName,
+    isFallback: router.isFallback,
   };
 };
 

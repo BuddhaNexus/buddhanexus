@@ -7,13 +7,12 @@ import {
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useSortMethodParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
-import { useSourceFile } from "@components/hooks/useSourceFile";
-import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { DbSourceBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "@features/tableView/TableView";
@@ -28,8 +27,7 @@ import { DbApi } from "@utils/api/dbApi";
 
 // TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
-  const { dbLanguage } = useDbRouterParams();
-  const { isFallback } = useSourceFile();
+  const { isFallback, dbLanguage } = useDbRouterParams();
 
   useSetDbViewFromPath();
 
@@ -59,6 +57,8 @@ export default function TablePage() {
     [data],
   );
 
+  // todo: refactor to reuse PageContainer like in the visual view
+
   if (isError) {
     return (
       <PageContainer
@@ -78,7 +78,7 @@ export default function TablePage() {
         backgroundName={dbLanguage}
         isQueryResultsPage
       >
-        <CenteredProgress />
+        <InfiniteLoadingSpinner />
       </PageContainer>
     );
   }

@@ -2,13 +2,13 @@ import React from "react";
 import type { DocumentContext, DocumentProps } from "next/document";
 import { Head, Html, Main, NextScript } from "next/document";
 import i18nextConfig from "next-i18next.config";
-import { getInitColorSchemeScript } from "@mui/material/styles";
 // https://mui.com/material-ui/integrations/nextjs/#pages-router
 import {
   documentGetInitialProps,
   DocumentHeadTags,
   DocumentHeadTagsProps,
 } from "@mui/material-nextjs/v14-pagesRouter";
+import InitColorSchemeScript from "@mui/system/InitColorSchemeScript";
 
 const makePublicPath = (path: string) => {
   // TODO: add basePath to .env
@@ -79,7 +79,7 @@ export default function MyDocument(
       </Head>
 
       <body>
-        {getInitColorSchemeScript()}
+        <InitColorSchemeScript />
         <Main />
         <NextScript nonce={process.env.nonce} />
       </body>

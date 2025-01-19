@@ -90,6 +90,7 @@ export const useLanguagesParam = () => {
 export const useActiveSegmentParam = () => {
   return useQueryState(allUIComponentParamNames.active_segment, {
     ...parseAsString.withDefault(DEFAULT_PARAM_VALUES.active_segment),
+    history: "push",
   });
 };
 
@@ -103,6 +104,7 @@ export const useActiveSegmentIndexParam = () => {
 export const useRightPaneActiveSegmentParam = () => {
   return useQueryState(allUIComponentParamNames.right_pane_active_segment, {
     ...parseAsString.withDefault(DEFAULT_PARAM_VALUES.active_segment),
+    history: "push",
   });
 };
 
@@ -130,5 +132,20 @@ export const useFolioParam = () => {
 export const useSearchStringParam = () => {
   return useQueryState(allUIComponentParamNames.search_string, {
     ...parseAsString.withDefault(""),
+    history: "push",
+  });
+};
+
+// for visual view
+export const useVisualCollectionStringParam = () => {
+  return useQueryState(allUIComponentParamNames.collection, {
+    ...parseAsString.withDefault(""),
+    history: "push",
+  });
+};
+export const useVisualHitCollectionsStringParam = () => {
+  return useQueryState(allUIComponentParamNames.hit_collections, {
+    ...parseAsArrayOf(parseAsString).withDefault([]),
+    history: "push",
   });
 };
