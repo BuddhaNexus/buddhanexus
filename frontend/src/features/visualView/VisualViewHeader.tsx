@@ -38,8 +38,16 @@ export function VisualViewHeader() {
   );
 
   return (
-    <Paper sx={{ mx: 2, py: 1, px: 2, flexDirection: "row", display: "flex" }}>
-      <FormControl sx={{ display: "flex", flexDirection: "row" }}>
+    <Paper
+      sx={{
+        mx: 2,
+        mt: { xs: 2, sm: 0 },
+        p: 1,
+        flexDirection: { xs: "column", md: "row" },
+        display: "flex",
+      }}
+    >
+      <FormControl sx={{ m: 1, display: "flex", flexDirection: "row" }}>
         <InputLabel id="collection-option-selector-label">
           {t("visual.inquiryCollectionLabel")}
         </InputLabel>
@@ -63,7 +71,7 @@ export function VisualViewHeader() {
 
       {/* Hit collection*/}
       {selectedCollection ? (
-        <FormControl sx={{ mx: 2 }}>
+        <FormControl sx={{ m: 1 }}>
           <Autocomplete<ParsedApiV1VisualCollection>
             id="hit-collections-option-selector"
             options={data ?? []}
