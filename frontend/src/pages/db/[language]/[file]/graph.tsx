@@ -9,6 +9,7 @@ import { useTranslation } from "next-i18next";
 // import merge from "lodash/merge";
 // export { getDbViewFileStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import { ResultQueryError } from "@components/db/ResultQueryError";
 import {
   nullToUndefined,
@@ -18,7 +19,6 @@ import {
 } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
-import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { HistogramDataChart } from "@features/graphView/HistogramDataChart";
 import { PieDataChart } from "@features/graphView/PieDataChart";
@@ -90,7 +90,7 @@ export default function GraphPage() {
         backgroundName={dbLanguage}
         isQueryResultsPage
       >
-        <CenteredProgress />
+        <InfiniteLoadingSpinner />
       </PageContainer>
     );
   }

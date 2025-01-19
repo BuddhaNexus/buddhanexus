@@ -7,12 +7,12 @@ import {
 // import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 // import merge from "lodash/merge";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useSortMethodParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
-import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { DbSourceBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
 import TableView from "@features/tableView/TableView";
@@ -78,7 +78,7 @@ export default function TablePage() {
         backgroundName={dbLanguage}
         isQueryResultsPage
       >
-        <CenteredProgress />
+        <InfiniteLoadingSpinner />
       </PageContainer>
     );
   }

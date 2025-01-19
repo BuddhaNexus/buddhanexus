@@ -1,12 +1,13 @@
 import React, { useMemo } from "react";
 import { Chart } from "react-google-charts";
+import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import {
   useVisualCollectionStringParam,
   useVisualHitCollectionsStringParam,
 } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
-import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { visualChartColors } from "@features/visualView/visualChartUtils";
+import { Box } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 
@@ -51,7 +52,11 @@ export const VisualViewChart = ({ currentPage }: { currentPage: number }) => {
   }, [currentPage, data?.filteredData]);
 
   if (isLoading) {
-    return <CenteredProgress />;
+    return (
+      <Box height="80vh" position="relative">
+        <InfiniteLoadingSpinner />
+      </Box>
+    );
   }
 
   return (

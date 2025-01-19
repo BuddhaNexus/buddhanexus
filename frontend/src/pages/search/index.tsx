@@ -2,12 +2,12 @@ import React from "react";
 import type { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
 import { isSearchTriggeredAtom } from "@atoms";
+import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
 import { useSearchStringParam } from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
-import { CenteredProgress } from "@components/layout/CenteredProgress";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SearchResults } from "@features/globalSearch";
 import SearchPageInputBox from "@features/globalSearch/SearchPageInputBox";
@@ -132,7 +132,7 @@ export default function SearchPage() {
     return (
       <PageContainer maxWidth="xl" isQueryResultsPage>
         <SearchPageHeader matches={matches} />
-        <CenteredProgress />
+        <InfiniteLoadingSpinner />
       </PageContainer>
     );
   }
