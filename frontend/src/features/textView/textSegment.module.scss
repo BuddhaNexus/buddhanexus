@@ -14,15 +14,16 @@
   transition: background, color 150ms ease-out;
 
   &__button:hover {
-    cursor: text;
+    cursor: pointer;
     text-decoration: underline;
   }
 
   &--noMatches {
-    cursor: not-allowed;
+    cursor: text;
   }
 
   &--dark {
+    color: black;
     filter: invert(1);
   }
 
