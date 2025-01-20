@@ -3,109 +3,130 @@ Contains all database queries related to visual view.
 
 """
 
-QUERY_VISUAL_CATEGORY_VIEW = """
-LET hitcollection_details = (
-    FOR item IN @hitcollections
-        FOR cat in menu_categories
-            FILTER cat.category == item
-            RETURN {
-                    hitcategory: item,
-                    displayname: cat.categoryname
-            }
-)
+QUERY_VISUAL_COLLECTION_VIEW = """
+LET category_list = (
+  FOR file IN files
+    FILTER file.lang == @lang
+    SORT file.filenr ASC
+    COLLECT collection = file.collection
+    AGGREGATE categories = UNIQUE(file.category)
+    RETURN {
+      collection: collection,
+      categories: categories
+    }
+  )
 
-LET category_stats = (
-    FOR f IN global_stats_categories
-        FILTER f._key IN @inquirycollection
-        LET categorydetails = (
-            FOR cat IN menu_categories
-                FILTER cat.category == f._key
-                RETURN {ordernr: cat.categorynr,
-                        displayname: cat.categoryname}
+LET inquiry_collection = FIRST(
+  FOR collection IN category_list
+    FILTER collection.collection == @inquiry_collection
+    RETURN collection.categories
+  )
+
+LET hit_collection = FIRST(RETURN (
+  FOR collection IN category_list
+    FILTER collection.collection IN @hit_collection
+    RETURN collection.categories
+  )[**])
+
+LET graphdata = (
+  FOR inquiry_category IN inquiry_collection
+    FOR stats IN global_stats_categories
+      FILTER stats._key == inquiry_category
+      LET inquiry_category_info = FIRST(
+          FOR cat IN category_names
+            FILTER cat.category == inquiry_category AND cat.lang == @lang
+            RETURN CONCAT(cat.displayName, " (", cat.category, ")")
         )
-        LET filteredKeys = ATTRIBUTES(f.stats)
-        LET filteredValues = VALUES(f.stats)
-        LET validHitCollections = @hitcollections[* FILTER CURRENT IN filteredKeys]
-        LET filteredPairs = ZIP(filteredKeys, filteredValues)
-        RETURN {
-            collection: f._key,
-            ordernr: categorydetails[0].ordernr,
-            displayname: categorydetails[0].displayname,
-            stats: ZIP(
-                validHitCollections, 
-                validHitCollections[* RETURN filteredPairs[CURRENT]]
-            )
-        }
-)
-    
-LET order = @hitcollections
-    
-FOR doc IN category_stats
-    SORT doc.ordernr ASC
-    FOR key IN order
-        FILTER HAS(doc.stats, key)
-        LET output_category = (
-        FOR cat IN hitcollection_details
-            FILTER cat.hitcategory == key
-            RETURN CONCAT(cat.displayname," (", cat.hitcategory,")")
-        )
-        RETURN [CONCAT(doc.displayname," (", doc.collection,")"), output_category[0], doc.stats[key]]
+      FOR hit_category in hit_collection
+        FOR pair IN ENTRIES(stats.stats)
+          FILTER pair[0] == hit_category
+          LET hit_category_info = FIRST(
+            FOR cat IN category_names
+              FILTER cat.category == hit_category AND cat.lang == @lang
+              RETURN CONCAT(cat.displayName, " (", cat.category, ")")
+          )
+          RETURN [inquiry_category_info, hit_category_info, pair[1]]
+  )
+RETURN {
+      "totalpages": 1,
+      "graphdata": graphdata
+}
 """
 
 
-QUERY_FILES_FOR_ONE_CATEGORY = """
-FOR file IN files
-    FILTER file.category == @category
-    SORT file.filenr
-    RETURN file.filename
+QUERY_VISUAL_CATEGORY_VIEW = """
+LET hit_category_list = (
+  FOR file IN files
+    FILTER file.lang == @lang
+    FILTER file.collection IN @hit_collection
+    SORT file.filenr ASC
+    COLLECT collection = file.collection
+    AGGREGATE categories = UNIQUE(file.category)
+    RETURN categories
+  )[**]
+
+LET totalpages = (
+  FOR file IN files
+    FILTER file.lang == @lang
+    FILTER file.category == @inquiry_collection
+    COLLECT WITH COUNT INTO total
+    RETURN CEIL(total / 50)
+)[0]
+
+LET graphdata = (
+  FOR file IN files
+    FILTER file.lang == @lang
+    FILTER file.category == @inquiry_collection
+    SORT file.filenr ASC
+    LIMIT 50 * @page,50
+    FOR stats IN global_stats_files
+      FILTER stats._key == file.filename
+      FOR hit_category IN hit_category_list
+        FOR pair IN ENTRIES(stats.stats)
+          FILTER pair[0] == hit_category
+          LET hit_category_info = FIRST(
+            FOR cat IN category_names
+              FILTER cat.category == hit_category AND cat.lang == @lang
+              RETURN CONCAT(cat.displayName, " (", cat.category, ")")
+          )
+          RETURN [CONCAT(file.displayName, " (", file.textname, ")"), hit_category_info, pair[1]]
+  )
+RETURN {
+      "totalpages": totalpages,
+      "graphdata": graphdata
+}
 """
 
 
 QUERY_VISUAL_FILE_VIEW = """
-LET hitcollection_details = (
-    FOR item IN @hitcollections
-        FOR cat in menu_categories
-            FILTER cat.category == item
-            RETURN {
-                    hitcategory: item,
-                    displayname: cat.categoryname
-            }
-)
+LET hit_category_list = (
+  FOR file IN files
+    FILTER file.lang == @lang
+    FILTER file.collection IN @hit_collection
+    SORT file.filenr ASC
+    COLLECT collection = file.collection
+    AGGREGATE categories = UNIQUE(file.category)
+    RETURN categories
+  )[**]
 
-LET files_stats = (
-    FOR f IN global_stats_files
-        FILTER f._key IN @inquirycollection
-        LET filedetails = (
-            FOR file IN files
-                FILTER file._key == f._key
-                RETURN {ordernr: file.filenr,
-                        displayname: file.displayName}
-        )
-        LET filteredKeys = ATTRIBUTES(f.stats)
-        LET filteredValues = VALUES(f.stats)
-        LET validHitCollections = @hitcollections[* FILTER CURRENT IN filteredKeys]
-        LET filteredPairs = ZIP(filteredKeys, filteredValues)
-        RETURN {
-            collection: f._key,
-            ordernr: filedetails[0].ordernr,
-            displayname: filedetails[0].displayname,
-            stats: ZIP(
-                validHitCollections, 
-                validHitCollections[* RETURN filteredPairs[CURRENT]]
-            )
-        }
-)
-    
-LET order = @hitcollections
-    
-FOR doc IN files_stats
-    SORT doc.ordernr ASC
-    FOR key IN order
-        FILTER HAS(doc.stats, key)
-        LET output_category = (
-        FOR cat IN hitcollection_details
-            FILTER cat.hitcategory == key
-            RETURN CONCAT(cat.displayname," (", cat.hitcategory,")")
-        )
-        RETURN [CONCAT(doc.displayname," (", doc.collection,")"), output_category[0], doc.stats[key]]
+LET graphdata = (
+  FOR file IN files
+    FILTER file._key == @inquiry_collection
+    FOR stats IN global_stats_files
+      FILTER stats._key == file.filename
+      FOR hit_category IN hit_category_list
+        FOR pair IN ENTRIES(stats.stats)
+          FILTER pair[0] == hit_category
+          LET hit_category_info = FIRST(
+            FOR cat IN category_names
+              FILTER cat.category == hit_category AND cat.lang == @lang
+              RETURN CONCAT(cat.displayName, " (", cat.category, ")")
+          )
+          RETURN [CONCAT(file.displayName, " (", file.textname, ")"), hit_category_info, pair[1]]
+  )
+
+RETURN {
+      "totalpages": 1,
+      "graphdata": graphdata
+}
 """
