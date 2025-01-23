@@ -78,7 +78,7 @@ LET totalpages = (
     FILTER file.lang == @lang
     FILTER file.category == @inquiry_collection OR file._key == @inquiry_collection
     COLLECT WITH COUNT INTO total
-    RETURN CEIL(total / 50)
+    RETURN CEIL(total / 25)
 )[0]
 
 LET graphdata = (
