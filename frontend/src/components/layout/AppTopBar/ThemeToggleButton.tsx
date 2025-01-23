@@ -17,7 +17,6 @@ export const ThemeToggleButton = () => {
 
   return (
     <IconButton
-      sx={{ mr: 1 }}
       color="inherit"
       aria-label={t("header.toggleTheme")}
       data-testid="theme-toggle"

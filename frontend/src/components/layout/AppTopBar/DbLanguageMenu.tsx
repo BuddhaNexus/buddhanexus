@@ -14,11 +14,23 @@ import {
   usePopupState,
 } from "material-ui-popup-state/hooks";
 
-interface LanguageMenuProps {
+interface DbLanguageMenuProps {
   type: "database" | "visual";
+  isMobile?: boolean;
 }
 
-export const DbLanguageMenu = ({ type }: LanguageMenuProps) => {
+const mobileOffsetProps = {
+  anchorOrigin: {
+    vertical: "top",
+    horizontal: "right",
+  },
+  transformOrigin: {
+    vertical: "top",
+    horizontal: "left",
+  },
+} as const;
+
+export const DbLanguageMenu = ({ type, isMobile }: DbLanguageMenuProps) => {
   const popupState = usePopupState({
     variant: "popover",
     popupId: `${type}Menu`,
@@ -31,7 +43,7 @@ export const DbLanguageMenu = ({ type }: LanguageMenuProps) => {
     async (language: string) => {
       if (type === "database") {
         const availableViews = getAvailableDBViews(
-          getValidDbLanguage(language),
+          getValidDbLanguage(language)
         );
         if (!availableViews.includes(currentView)) {
           setCurrentView(DEFAULT_DB_VIEW);
@@ -41,15 +53,25 @@ export const DbLanguageMenu = ({ type }: LanguageMenuProps) => {
         await router.push(`/db/${language}/visual`);
       }
     },
-    [router, type, currentView, setCurrentView],
+    [router, type, currentView, setCurrentView]
   );
+
+  const menuProps = bindMenu(popupState);
 
   return (
     <>
-      <Button variant="text" color="inherit" {...bindTrigger(popupState)}>
+      <Button
+        variant="text"
+        color="inherit"
+        {...bindTrigger(popupState)}
+        {...(isMobile && {
+          sx: { "&:hover": { backgroundColor: "transparent" } },
+        })}
+      >
         {t(`header.${type}`)}
       </Button>
-      <Menu {...bindMenu(popupState)}>
+
+      <Menu {...menuProps} {...(isMobile && mobileOffsetProps)}>
         {dbLanguages.map((language) => (
           <MenuItem
             key={language}

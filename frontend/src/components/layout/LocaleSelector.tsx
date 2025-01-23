@@ -32,14 +32,15 @@ export default function LocaleSelector() {
         id="basic-button"
         variant="text"
         color="inherit"
+        sx={{ m: 0, pr: 0, minWidth: 0 }}
         aria-controls={isOpen ? "language-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={isOpen ? "true" : undefined}
         onClick={handleClick}
       >
-        <LanguageIcon sx={{ fontSize: 24, mr: 1 }} color="inherit" />
-        {SUPPORTED_LOCALES[currentLocale]}
+        <LanguageIcon sx={{ fontSize: 24 }} color="inherit" />
       </Button>
+
       <Menu
         id="language-menu"
         role="navigation"

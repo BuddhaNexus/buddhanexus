@@ -9,9 +9,8 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 
-import { DbLanguageMenu } from "./DbLanguageMenu";
 import { LogoLink } from "./LogoLink";
-import { NavLink } from "./NavLink";
+import { NavMenu } from "./NavMenu";
 import { ThemeToggleButton } from "./ThemeToggleButton";
 
 export const AppTopBar = memo(function AppTopBar() {
@@ -31,7 +30,7 @@ export const AppTopBar = memo(function AppTopBar() {
       }}
       data-testid="app-bar"
     >
-      <Toolbar>
+      <Toolbar sx={{ mx: 2 }} disableGutters>
         <Box
           sx={{
             display: "flex",
@@ -47,17 +46,7 @@ export const AppTopBar = memo(function AppTopBar() {
           {!isSearchPage && <GlobalSearch />}
         </Box>
 
-        <Box
-          component="nav"
-          sx={{
-            display: "flex",
-            overflow: "auto",
-          }}
-        >
-          <DbLanguageMenu type="database" />
-          <DbLanguageMenu type="visual" />
-          <NavLink title={t("header.guide")} href="/guide" />
-        </Box>
+        <NavMenu />
 
         <ThemeToggleButton />
         <LocaleSelector />
