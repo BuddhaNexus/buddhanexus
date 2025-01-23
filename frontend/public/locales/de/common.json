@@ -5,7 +5,8 @@
   },
   "header": {
     "guide": "Richtlinien",
-    "database": "Datenbank"
+    "database": "Datenbank",
+    "toggleTheme": "Toggle theme"
   },
   "language": {
     "all": "Alle",

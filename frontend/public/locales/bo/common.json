@@ -5,7 +5,8 @@
   },
   "header": {
     "guide": "ལམ་སྟོན།",
-    "database": "གྲངས་མཛོད།"
+    "database": "གྲངས་མཛོད།",
+    "toggleTheme": "Toggle theme"
   },
   "language": {
     "all": "ཆ་ཚང་།",

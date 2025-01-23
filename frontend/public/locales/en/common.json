@@ -5,7 +5,8 @@
   },
   "header": {
     "guide": "Guide",
-    "database": "Database"
+    "database": "Database",
+    "toggleTheme": "Toggle theme"
   },
   "language": {
     "all": "All",
@@ -92,5 +93,6 @@
     "pieDataSubtitle": "The distribution is weighted by length of matches found:",
     "collection": "Collection",
     "matchLengths": "Match Lengths"
-  }
+  },
+  "toggleTheme": "Toggle theme"
 }
