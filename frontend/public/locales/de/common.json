@@ -6,7 +6,8 @@
   "header": {
     "guide": "Richtlinien",
     "database": "Datenbank",
-    "toggleTheme": "Toggle theme"
+    "toggleTheme": "Toggle theme",
+    "visual": "Visual"
   },
   "language": {
     "all": "Alle",

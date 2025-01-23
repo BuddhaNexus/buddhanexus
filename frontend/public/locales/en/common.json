@@ -6,7 +6,8 @@
   "header": {
     "guide": "Guide",
     "database": "Database",
-    "toggleTheme": "Toggle theme"
+    "toggleTheme": "Toggle theme",
+    "visual": "Visual"
   },
   "language": {
     "all": "All",

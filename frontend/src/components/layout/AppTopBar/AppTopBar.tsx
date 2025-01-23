@@ -1,35 +1,18 @@
 import React, { memo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import { Link } from "@components/common/Link";
 import { useResultPageType } from "@components/hooks/useResultPageType";
 import LocaleSelector from "@components/layout/LocaleSelector";
-import { DatabaseMenu } from "@components/layout/TopBarDatabaseMenu";
 import { GlobalSearch } from "@features/globalSearch";
-import { IconButton, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import { useColorScheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
+
+import { DbLanguageMenu } from "./DbLanguageMenu";
 import { LogoLink } from "./LogoLink";
+import { NavLink } from "./NavLink";
 import { ThemeToggleButton } from "./ThemeToggleButton";
-
-interface AppBarLinkProps {
-  title: string;
-  href: string;
-}
-
-const AppBarLink = ({ title, href }: AppBarLinkProps) => (
-  <Link
-    variant="button"
-    color="primary.contrastText"
-    href={href}
-    underline="hover"
-    sx={{ my: 1, mx: 1.5 }}
-  >
-    {title}
-  </Link>
-);
 
 export const AppTopBar = memo(function AppTopBar() {
   const materialTheme = useTheme();
@@ -71,8 +54,9 @@ export const AppTopBar = memo(function AppTopBar() {
             overflow: "auto",
           }}
         >
-          <DatabaseMenu />
-          <AppBarLink title={t("header.guide")} href="/guide" />
+          <DbLanguageMenu type="database" />
+          <DbLanguageMenu type="visual" />
+          <NavLink title={t("header.guide")} href="/guide" />
         </Box>
 
         <ThemeToggleButton />

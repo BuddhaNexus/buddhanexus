@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { IconButton } from "@mui/material";
-import { useColorScheme } from "@mui/material/styles";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Brightness1Icon from "@mui/icons-material/Brightness4";
 import Brightness2Icon from "@mui/icons-material/Brightness7";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-import { useTranslation } from "react-i18next";
+import { IconButton } from "@mui/material";
+import { useColorScheme } from "@mui/material/styles";
 
 export const ThemeToggleButton = () => {
   const { mode, setMode } = useColorScheme();

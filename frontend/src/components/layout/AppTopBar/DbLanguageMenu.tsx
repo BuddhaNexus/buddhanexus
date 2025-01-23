@@ -14,28 +14,40 @@ import {
   usePopupState,
 } from "material-ui-popup-state/hooks";
 
-export const DatabaseMenu = () => {
-  const popupState = usePopupState({ variant: "popover", popupId: "demoMenu" });
+interface LanguageMenuProps {
+  type: "database" | "visual";
+}
+
+export const DbLanguageMenu = ({ type }: LanguageMenuProps) => {
+  const popupState = usePopupState({
+    variant: "popover",
+    popupId: `${type}Menu`,
+  });
   const { t } = useTranslation();
   const router = useRouter();
-
   const [currentView, setCurrentView] = useAtom(currentDbViewAtom);
 
   const handleLanguageChange = React.useCallback(
     async (language: string) => {
-      const availableViews = getAvailableDBViews(getValidDbLanguage(language));
-      if (!availableViews.includes(currentView)) {
-        setCurrentView(DEFAULT_DB_VIEW);
+      if (type === "database") {
+        const availableViews = getAvailableDBViews(
+          getValidDbLanguage(language),
+        );
+        if (!availableViews.includes(currentView)) {
+          setCurrentView(DEFAULT_DB_VIEW);
+        }
+        await router.push(`/db/${language}`);
+      } else {
+        await router.push(`/db/${language}/visual`);
       }
-      await router.push(`/db/${language}`);
     },
-    [router, currentView, setCurrentView],
+    [router, type, currentView, setCurrentView],
   );
 
   return (
     <>
       <Button variant="text" color="inherit" {...bindTrigger(popupState)}>
-        {t("header.database")}
+        {t(`header.${type}`)}
       </Button>
       <Menu {...bindMenu(popupState)}>
         {dbLanguages.map((language) => (
