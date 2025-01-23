@@ -18,8 +18,9 @@ async def get_visual_graph_data(input: VisualViewInput) -> Any:
     **Input is:**
 
     *inquiry*: A string with the required inquiry collection ("Suttas-Early-1"), category ("dn") or file ("PA_dn_1")
+               (only one possibility)
 
-    *hit*: And array with the required hit collection(s) ["Suttas-Early-1","Vinaya"]
+    *hit*: And array with the required hit collection(s) and/or category(ies) ["Suttas-Early-1","Vinaya", "an", "mn"]
 
     *language*: pa, sa, bo or zh
 

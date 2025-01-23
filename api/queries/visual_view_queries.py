@@ -23,9 +23,17 @@ LET inquiry_collection = FIRST(
   )
 
 LET hit_collection = FIRST(RETURN (
-  FOR collection IN category_list
-    FILTER collection.collection IN @hit_collection
-    RETURN collection.categories
+  FOR collection IN @hit_collection
+    FOR item in category_list
+      LET selected_collection = (
+        FILTER collection == item.collection
+        RETURN item.categories
+      )
+      LET selected_category = (
+        FILTER collection IN item.categories
+        RETURN collection
+      )
+      RETURN APPEND(selected_collection[**], selected_category, true)
   )[**])
 
 LET graphdata = (
@@ -58,7 +66,7 @@ QUERY_VISUAL_CATEGORY_VIEW = """
 LET hit_category_list = (
   FOR file IN files
     FILTER file.lang == @lang
-    FILTER file.collection IN @hit_collection
+    FILTER file.collection IN @hit_collection OR file.category IN @hit_collection
     SORT file.filenr ASC
     COLLECT collection = file.collection
     AGGREGATE categories = UNIQUE(file.category)
