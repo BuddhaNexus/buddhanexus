@@ -43,7 +43,7 @@ export const DbLanguageMenu = ({ type, isMobile }: DbLanguageMenuProps) => {
     async (language: string) => {
       if (type === "database") {
         const availableViews = getAvailableDBViews(
-          getValidDbLanguage(language)
+          getValidDbLanguage(language),
         );
         if (!availableViews.includes(currentView)) {
           setCurrentView(DEFAULT_DB_VIEW);
@@ -53,7 +53,7 @@ export const DbLanguageMenu = ({ type, isMobile }: DbLanguageMenuProps) => {
         await router.push(`/db/${language}/visual`);
       }
     },
-    [router, type, currentView, setCurrentView]
+    [router, type, currentView, setCurrentView],
   );
 
   const menuProps = bindMenu(popupState);

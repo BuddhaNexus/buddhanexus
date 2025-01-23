@@ -1,8 +1,7 @@
 import React, { memo } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
 import { useResultPageType } from "@components/hooks/useResultPageType";
-import LocaleSelector from "@components/layout/LocaleSelector";
 import { GlobalSearch } from "@features/globalSearch";
 import { useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -11,12 +10,20 @@ import Toolbar from "@mui/material/Toolbar";
 
 import { LogoLink } from "./LogoLink";
 import { NavMenu } from "./NavMenu";
-import { ThemeToggleButton } from "./ThemeToggleButton";
+import { UtilityButtonsLoading } from "./UtilityButtons";
+
+// Aviods i18n content server/client mismatch hydration issue.
+const UtilityButtons = dynamic(
+  () => import("./UtilityButtons").then((module) => module.UtilityButtons),
+  {
+    ssr: false,
+    loading: UtilityButtonsLoading,
+  }
+);
 
 export const AppTopBar = memo(function AppTopBar() {
   const materialTheme = useTheme();
   const { route } = useRouter();
-  const { t } = useTranslation();
   const isHomeRoute = route === "/";
   const { isSearchPage } = useResultPageType();
 
@@ -48,8 +55,7 @@ export const AppTopBar = memo(function AppTopBar() {
 
         <NavMenu />
 
-        <ThemeToggleButton />
-        <LocaleSelector />
+        <UtilityButtons />
       </Toolbar>
     </AppBar>
   );

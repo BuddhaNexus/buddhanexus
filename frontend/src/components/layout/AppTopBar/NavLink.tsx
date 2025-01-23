@@ -8,7 +8,7 @@ interface NavLinkProps {
 export const NavLink = ({ title, href }: NavLinkProps) => (
   <Link
     variant="button"
-    color={{ sm: "primary.contrastText" }}
+    color="inherit"
     href={href}
     underline="hover"
     sx={{ my: 1, mx: 1.5 }}

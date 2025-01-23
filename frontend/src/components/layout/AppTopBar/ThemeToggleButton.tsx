@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import Brightness1Icon from "@mui/icons-material/Brightness4";
 import Brightness2Icon from "@mui/icons-material/Brightness7";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { IconButton } from "@mui/material";
 import { useColorScheme } from "@mui/material/styles";
 
 export const ThemeToggleButton = () => {
   const { mode, setMode } = useColorScheme();
-  const [isMounted, setIsMounted] = useState(false);
   const { t } = useTranslation("common");
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   return (
     <IconButton
@@ -22,14 +16,10 @@ export const ThemeToggleButton = () => {
       data-testid="theme-toggle"
       onClick={() => setMode(mode === "light" ? "dark" : "light")}
     >
-      {isMounted ? (
-        mode === "dark" ? (
-          <Brightness1Icon fontSize="inherit" />
-        ) : (
-          <Brightness2Icon fontSize="inherit" />
-        )
+      {mode === "dark" ? (
+        <Brightness1Icon fontSize="inherit" />
       ) : (
-        <HourglassEmptyIcon fontSize="inherit" />
+        <Brightness2Icon fontSize="inherit" />
       )}
     </IconButton>
   );
