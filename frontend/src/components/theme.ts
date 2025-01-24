@@ -62,6 +62,9 @@ export const getDesignTokens = ({
         success: {
           main: "#10A60B",
         },
+        action: {
+          disabled: grey[500],
+        },
         background: {
           default: lighten("#efe0c2", 0.3),
           paper: "#ffffff",
@@ -103,6 +106,9 @@ export const getDesignTokens = ({
         },
         success: {
           main: "#10A60B",
+        },
+        action: {
+          disabled: grey[500],
         },
         background: {
           default: "#201c22",

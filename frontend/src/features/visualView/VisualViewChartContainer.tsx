@@ -15,7 +15,6 @@ function VisualViewInfo() {
       <Typography variant="h1">{t("visual.visualInfoHeader")}</Typography>
       <Typography sx={{ m: 2 }}>{t("visual.visualInfo1")}</Typography>
       <Typography sx={{ m: 2 }}>{t("visual.visualInfo2")}</Typography>
-      <Typography sx={{ m: 2 }}>{t("visual.visualInfo3")}</Typography>
     </>
   );
 }
