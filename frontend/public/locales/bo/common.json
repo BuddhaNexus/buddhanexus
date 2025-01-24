@@ -42,13 +42,12 @@
     "segmentMatches": "ཚན་པ་འདྲ་མཚུངས།"
   },
   "visual": {
-    "openVisualCharts": "Open Visual Charts",
-    "visualInfoHeader": "Visual View",
-    "visualInfo1": "Select the Inquiry and Hit Collections.",
-    "visualInfo2": "More than one Hit Collection can be selected. To reduce the view to a single subsection, click on the coloured bar in the Inquiry Collection (left).",
-    "visualInfo3": "The view can be further reduced to a single text. A click on a single text will open the text view where the individual matches will be ",
-    "inquiryCollectionLabel": "Inquiry Collection",
-    "hitCollectionsLabel": "Hit Collections"
+    "openVisualCharts": "Open Sankey Chart",
+    "visualInfoHeader": "Sankey Chart",
+    "visualInfo1": "Select the Inquiry Collection, Category or Text and Hit Collection and/or Category.",
+    "visualInfo2": "More than one Hit Collection and/or Category can be selected.",
+    "inquiryCollectionLabel": "Inquiry Text(s)",
+    "hitCollectionsLabel": "Hit Text(s)"
   },
   "news": {
     "title": "གསར་འགྱུར།",
