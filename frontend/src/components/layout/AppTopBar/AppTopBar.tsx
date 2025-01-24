@@ -18,7 +18,7 @@ const UtilityButtons = dynamic(
   {
     ssr: false,
     loading: UtilityButtonsLoading,
-  }
+  },
 );
 
 export const AppTopBar = memo(function AppTopBar() {
