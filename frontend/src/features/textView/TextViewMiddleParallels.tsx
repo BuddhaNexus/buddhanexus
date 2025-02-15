@@ -4,7 +4,6 @@ import {
   activeSegmentMatchesAtom,
   hoveredOverParallelIdAtom,
   textViewIsMiddlePanePointingLeftAtom,
-  textViewRightPaneFileNameAtom,
 } from "@atoms";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import {
