@@ -8,7 +8,8 @@ import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import { Link } from "@components/common/Link";
 import {
   useActiveSegmentParam,
-  useMiddleViewActiveMatchParam,
+  useLeftPaneActiveMatchParam,
+  useRightPaneActiveMatchParam,
   useRightPaneActiveSegmentParam,
 } from "@components/hooks/params";
 import { createURLToSegment } from "@features/textView/utils";
@@ -63,7 +64,8 @@ export const ParallelSegment = ({
   const [rightPaneActiveSegmentId, setRightPaneActiveSegmentId] =
     useRightPaneActiveSegmentParam();
   const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
-  const [, setActiveMatch] = useMiddleViewActiveMatchParam();
+  const [, setLeftPaneActiveMatch] = useLeftPaneActiveMatchParam();
+  const [, setRightPaneActiveMatch] = useRightPaneActiveMatchParam();
 
   const setRightPaneFileName = useSetAtom(textViewRightPaneFileNameAtom);
 
@@ -80,22 +82,24 @@ export const ParallelSegment = ({
     await navigator.clipboard.writeText(infoToCopy);
   }, [infoToCopy]);
 
+  // TODO: extract this out of here bc of usage in table view
   const openTextPane = useCallback(async () => {
     if (isMiddlePanePointingLeft) {
       await Promise.all([
-        setActiveMatch(id ?? ""),
+        setLeftPaneActiveMatch(id ?? ""),
         setActiveSegmentId(textSegmentNumber),
       ]);
     } else {
       await Promise.all([
-        setActiveMatch(id ?? ""),
+        setRightPaneActiveMatch(id ?? ""),
         setRightPaneActiveSegmentId(textSegmentNumber),
       ]);
     }
   }, [
     id,
     isMiddlePanePointingLeft,
-    setActiveMatch,
+    setLeftPaneActiveMatch,
+    setRightPaneActiveMatch,
     setActiveSegmentId,
     setRightPaneActiveSegmentId,
     textSegmentNumber,

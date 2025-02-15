@@ -129,13 +129,23 @@ export const TextSegment = ({
           // [hack/workaround]: in the right pane, we don't know the correct segment index
           // because it is opened by clicking a parallel in the middle view. We highlight the whole segment instead.
 
+          const isSegmentPartSelected =
+            isSegmentSelected &&
+            (activeSegmentIndex === null ||
+              activeSegmentIndex === i ||
+              activeSegmentIndex > data.segmentText.length);
+
           const isSegmentPartHoveredOverInMiddleView = matchSets
             ? matchSets[i]?.has(hoveredOverParallelId)
             : false;
 
+          const isSelected = isSegmentSelected
+            ? isSegmentPartSelected
+            : isActiveMatch;
+
           const segmentClassName = `${styles.segment} ${
             isDarkTheme && styles["segment--dark"]
-          } ${isActiveMatch && styles["segment--selected"]} ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`;
+          } ${isSelected && styles["segment--selected"]} ${isSegmentPartSelected && styles["segment--part-selected"]} ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`;
 
           if (matches.length === 0) {
             return (

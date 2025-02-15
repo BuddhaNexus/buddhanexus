@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
+import {
+  useLeftPaneActiveMatchParam,
+  useRightPaneActiveMatchParam,
+} from "@components/hooks/params";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
@@ -37,6 +41,8 @@ export function useTextViewPane({
   const requestBodyBase = useStandardViewBaseQueryParams();
 
   const { fileName: fileNameUrlParam } = useDbRouterParams();
+  const [rightPaneActiveMatchId] = useRightPaneActiveMatchParam();
+  const [leftPaneActiveMatchId] = useLeftPaneActiveMatchParam();
 
   const [fileNameFromActiveSegment] = activeSegment.split(":");
 
@@ -98,7 +104,7 @@ export function useTextViewPane({
       // We may need to revisit after moving to the Next.js App Router
 
       // if the `active_segment` param was already sent for this segment,
-      // don't send it anymore.
+      // don't send it anymore. This is how the BE works with pagination, otherwise it will start from page 0 again.
       const activeSegmentParam = hasSegmentBeenSelected(activeSegment)
         ? DEFAULT_PARAM_VALUES.active_segment
         : activeSegment;
@@ -111,6 +117,9 @@ export function useTextViewPane({
             ? fileNameUrlParam
             : (fileNameFromActiveSegment ?? ""),
         active_segment: activeSegmentParam,
+        active_match_id: isRightPane
+          ? rightPaneActiveMatchId
+          : leftPaneActiveMatchId,
 
         filters: requestFilters,
       });

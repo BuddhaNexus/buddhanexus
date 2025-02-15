@@ -91,6 +91,8 @@ export const allUIComponentParamNames: AllUIComponentParamNames = {
   collection: "collection",
   hit_collections: "hit_collections",
   active_match_id: "active_match_id",
+  left_pane_active_match: "left_pane_active_match",
+  right_pane_active_match: "right_pane_active_match",
 };
 
 export const DEFAULT_LANGUAGE = "all";
