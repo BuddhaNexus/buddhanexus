@@ -1,15 +1,18 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import {
   activeSegmentMatchesAtom,
   hoveredOverParallelIdAtom,
   textViewIsMiddlePanePointingLeftAtom,
+  textViewRightPaneFileNameAtom,
 } from "@atoms";
 import LoadingSpinner from "@components/common/LoadingSpinner";
 import {
   useActiveSegmentIndexParam,
   useActiveSegmentParam,
+  useLeftPaneActiveMatchParam,
   useRightPaneActiveMatchParam,
+  useRightPaneActiveSegmentParam,
 } from "@components/hooks/params";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { ArrowForward, Numbers } from "@mui/icons-material";
@@ -38,12 +41,42 @@ export default function TextViewMiddleParallels() {
     enabled: activeSegmentMatches.length > 0,
   });
 
-  const [, setActiveSegment] = useActiveSegmentParam();
+  const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
   const [, setActiveSegmentIndex] = useActiveSegmentIndexParam();
+  const [rightPaneActiveSegmentId, setRightPaneActiveSegmentId] =
+    useRightPaneActiveSegmentParam();
+  const [, setLeftPaneActiveMatch] = useLeftPaneActiveMatchParam();
+  const [, setRightPaneActiveMatch] = useRightPaneActiveMatchParam();
 
   const handleClear = async () => {
-    await Promise.all([setActiveSegment("none"), setActiveSegmentIndex(null)]);
+    await Promise.all([
+      setActiveSegmentId("none"),
+      setActiveSegmentIndex(null),
+    ]);
   };
+
+  const openTextPane = useCallback(
+    async (id: string, textSegmentNumber: string) => {
+      if (isMiddlePanePointingLeft) {
+        await Promise.all([
+          setLeftPaneActiveMatch(id ?? ""),
+          setActiveSegmentId(textSegmentNumber),
+        ]);
+      } else {
+        await Promise.all([
+          setRightPaneActiveMatch(id ?? ""),
+          setRightPaneActiveSegmentId(textSegmentNumber),
+        ]);
+      }
+    },
+    [
+      isMiddlePanePointingLeft,
+      setLeftPaneActiveMatch,
+      setRightPaneActiveMatch,
+      setActiveSegmentId,
+      setRightPaneActiveSegmentId,
+    ],
+  );
 
   const parallelsToDisplay = useMemo(
     () =>
@@ -75,11 +108,24 @@ export default function TextViewMiddleParallels() {
               score={score}
               textSegmentNumber={parallelSegmentNumber}
               textSegmentNumberRange={parallelSegmentNumberRange}
+              segmentIdToMatch={
+                isMiddlePanePointingLeft
+                  ? activeSegmentId
+                  : rightPaneActiveSegmentId
+              }
               onHover={setHoveredOverParallelId}
+              onClick={openTextPane}
             />
           ),
         ),
-    [data, setHoveredOverParallelId],
+    [
+      activeSegmentId,
+      data,
+      isMiddlePanePointingLeft,
+      openTextPane,
+      rightPaneActiveSegmentId,
+      setHoveredOverParallelId,
+    ],
   );
 
   return (
