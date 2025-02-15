@@ -108,9 +108,21 @@ export function useTextViewPane({
 
       // if the `active_segment` param was already sent for this segment,
       // don't send it anymore. This is how the BE works with pagination, otherwise it will start from page 0 again.
-      const activeSegmentParam = hasSegmentBeenSelected(activeSegment)
+      const hasActiveSegmentBeenSelected =
+        hasSegmentBeenSelected(activeSegment);
+
+      const activeSegmentParam = hasActiveSegmentBeenSelected
         ? DEFAULT_PARAM_VALUES.active_segment
         : activeSegment;
+
+      let activeMatchIdParam: string;
+      if (hasActiveSegmentBeenSelected) {
+        activeMatchIdParam = DEFAULT_PARAM_VALUES.active_match;
+      } else {
+        activeMatchIdParam = isRightPane
+          ? rightPaneActiveMatchId
+          : leftPaneActiveMatchId;
+      }
 
       return DbApi.TextView.call({
         ...requestBodyBase,
@@ -120,9 +132,7 @@ export function useTextViewPane({
             ? fileNameUrlParam
             : (fileNameFromActiveSegment ?? ""),
         active_segment: activeSegmentParam,
-        active_match_id: isRightPane
-          ? rightPaneActiveMatchId
-          : leftPaneActiveMatchId,
+        active_match_id: activeMatchIdParam,
 
         filters: requestFilters,
       });
