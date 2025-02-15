@@ -20,6 +20,7 @@ interface UseTextPageReturn {
   firstItemIndex: number;
   handleFetchingNextPage: () => Promise<void>;
   handleFetchingPreviousPage: () => Promise<void>;
+  clearActiveMatch: () => Promise<void>;
   isError: boolean;
   isLoading: boolean;
   isFetching: boolean;
@@ -41,8 +42,10 @@ export function useTextViewPane({
   const requestBodyBase = useStandardViewBaseQueryParams();
 
   const { fileName: fileNameUrlParam } = useDbRouterParams();
-  const [rightPaneActiveMatchId] = useRightPaneActiveMatchParam();
-  const [leftPaneActiveMatchId] = useLeftPaneActiveMatchParam();
+  const [leftPaneActiveMatchId, setLeftPaneActiveMatchId] =
+    useLeftPaneActiveMatchParam();
+  const [rightPaneActiveMatchId, setRightPaneActiveMatchId] =
+    useRightPaneActiveMatchParam();
 
   const [fileNameFromActiveSegment] = activeSegment.split(":");
 
@@ -201,11 +204,20 @@ export function useTextViewPane({
     [data?.pages],
   );
 
+  const clearActiveMatch = useCallback(async () => {
+    if (isRightPane) {
+      await setRightPaneActiveMatchId(DEFAULT_PARAM_VALUES.active_match);
+    } else {
+      await setLeftPaneActiveMatchId(DEFAULT_PARAM_VALUES.active_match);
+    }
+  }, [isRightPane, setLeftPaneActiveMatchId, setRightPaneActiveMatchId]);
+
   return {
     allParallels,
     firstItemIndex,
     handleFetchingNextPage,
     handleFetchingPreviousPage,
+    clearActiveMatch,
     isError,
     isFetching,
     isFetchingNextPage,

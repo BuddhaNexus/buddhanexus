@@ -68,6 +68,7 @@ export const TextViewPane = ({
     handleFetchingPreviousPage,
     handleFetchingNextPage,
     isLoading,
+    clearActiveMatch,
   } = useTextViewPane({ activeSegment: activeSegmentId, isRightPane });
 
   // assign data to a ref to avoid re-running the effect when items are appended during endless loading.
@@ -122,12 +123,14 @@ export const TextViewPane = ({
         setActiveSegmentId={setActiveSegmentId}
         activeSegmentIndex={activeSegmentIndex}
         setActiveSegmentIndex={setActiveSegmentIndex}
+        clearActiveMatch={clearActiveMatch}
         isRightPane={isRightPane}
       />
     ),
     [
       activeSegmentId,
       activeSegmentIndex,
+      clearActiveMatch,
       colorScale,
       isRightPane,
       setActiveSegmentId,

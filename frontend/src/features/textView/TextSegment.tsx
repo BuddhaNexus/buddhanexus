@@ -30,10 +30,12 @@ export const TextSegment = ({
   activeSegmentIndex,
   setActiveSegmentId,
   setActiveSegmentIndex,
+  clearActiveMatch,
 }: {
   data?: ParsedTextViewParallel;
   colorScale: Scale;
   activeSegmentId: string;
+  clearActiveMatch: () => Promise<void>;
 } & TextViewPaneProps) => {
   const { mode } = useColorScheme();
   const isDarkTheme = mode === "dark";
@@ -61,12 +63,13 @@ export const TextSegment = ({
     async (location: { id: string; index: number; matches: string[] }) => {
       setIsMiddlePanePointingLeft(isRightPane);
       await Promise.all([
-        // todo: update what happens when a segment is clicked
         setActiveSegmentId(location.id),
         setActiveSegmentIndex(location.index),
+        clearActiveMatch(),
       ]);
     },
     [
+      clearActiveMatch,
       isRightPane,
       setActiveSegmentId,
       setActiveSegmentIndex,
@@ -145,7 +148,11 @@ export const TextSegment = ({
 
           const segmentClassName = `${styles.segment} ${
             isDarkTheme && styles["segment--dark"]
-          } ${isSelected && styles["segment--selected"]} ${isSegmentPartSelected && styles["segment--part-selected"]} ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`;
+          } ${isSelected && styles["segment--selected"]} ${
+            isSegmentPartSelected &&
+            !isActiveMatch &&
+            styles["segment--part-selected"]
+          } ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`;
 
           if (matches.length === 0) {
             return (
