@@ -8,6 +8,7 @@ import { DbLanguageChip } from "@components/common/DbLanguageChip";
 import { Link } from "@components/common/Link";
 import {
   useActiveSegmentParam,
+  useMiddleViewActiveMatchParam,
   useRightPaneActiveSegmentParam,
 } from "@components/hooks/params";
 import { createURLToSegment } from "@features/textView/utils";
@@ -62,6 +63,8 @@ export const ParallelSegment = ({
   const [rightPaneActiveSegmentId, setRightPaneActiveSegmentId] =
     useRightPaneActiveSegmentParam();
   const [activeSegmentId, setActiveSegmentId] = useActiveSegmentParam();
+  const [, setActiveMatch] = useMiddleViewActiveMatchParam();
+
   const setRightPaneFileName = useSetAtom(textViewRightPaneFileNameAtom);
 
   const isMiddlePanePointingLeft = useAtomValue(
@@ -79,12 +82,20 @@ export const ParallelSegment = ({
 
   const openTextPane = useCallback(async () => {
     if (isMiddlePanePointingLeft) {
-      await setActiveSegmentId(textSegmentNumber);
+      await Promise.all([
+        setActiveMatch(id ?? ""),
+        setActiveSegmentId(textSegmentNumber),
+      ]);
     } else {
-      await setRightPaneActiveSegmentId(textSegmentNumber);
+      await Promise.all([
+        setActiveMatch(id ?? ""),
+        setRightPaneActiveSegmentId(textSegmentNumber),
+      ]);
     }
   }, [
+    id,
     isMiddlePanePointingLeft,
+    setActiveMatch,
     setActiveSegmentId,
     setRightPaneActiveSegmentId,
     textSegmentNumber,

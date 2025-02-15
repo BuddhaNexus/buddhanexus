@@ -9,6 +9,7 @@ import LoadingSpinner from "@components/common/LoadingSpinner";
 import {
   useActiveSegmentIndexParam,
   useActiveSegmentParam,
+  useMiddleViewActiveMatchParam,
 } from "@components/hooks/params";
 import { ParallelSegment } from "@features/tableView/ParallelSegment";
 import { ArrowForward, Numbers } from "@mui/icons-material";

@@ -117,78 +117,75 @@ export const TextSegment = ({
         data-segmentnumber={segmentNumber}
       />
 
-      {data.segmentText.map(({ text, highlightColor, matches }, i) => {
-        const segmentKey = segmentNumber ? segmentNumber + i : undefined;
-        const textContent = enscriptText({
-          text,
-          script: scriptSelection,
-          language: dbLanguage,
-        });
+      {data.segmentText.map(
+        ({ text, highlightColor, matches, isActiveMatch }, i) => {
+          const segmentKey = segmentNumber ? segmentNumber + i : undefined;
+          const textContent = enscriptText({
+            text,
+            script: scriptSelection,
+            language: dbLanguage,
+          });
 
-        // [hack/workaround]: in the right pane, we don't know the correct segment index
-        // because it is opened by clicking a parallel in the middle view. We highlight the whole segment instead.
-        const isSegmentPartSelected =
-          isSegmentSelected &&
-          (activeSegmentIndex === null ||
-            activeSegmentIndex === i ||
-            activeSegmentIndex > data.segmentText.length);
+          // [hack/workaround]: in the right pane, we don't know the correct segment index
+          // because it is opened by clicking a parallel in the middle view. We highlight the whole segment instead.
 
-        const isSegmentPartHoveredOverInMiddleView = matchSets
-          ? matchSets[i]?.has(hoveredOverParallelId)
-          : false;
+          const isSegmentPartHoveredOverInMiddleView = matchSets
+            ? matchSets[i]?.has(hoveredOverParallelId)
+            : false;
 
-        const segmentClassName = `${styles.segment} ${
-          isDarkTheme && styles["segment--dark"]
-        } ${isSegmentPartSelected && styles["segment--selected"]} ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`;
+          const segmentClassName = `${styles.segment} ${
+            isDarkTheme && styles["segment--dark"]
+          } ${isActiveMatch && styles["segment--selected"]} ${isSegmentPartHoveredOverInMiddleView && styles["segment--parallel-hovered"]}`;
 
-        if (matches.length === 0) {
+          if (matches.length === 0) {
+            return (
+              <span
+                key={segmentKey}
+                className={`${segmentClassName} ${styles["segment--noMatches"]}`}
+              >
+                {textContent}
+              </span>
+            );
+          }
+
+          const color: string = shouldUseMonochromaticSegmentColors
+            ? colorScale(highlightColor).hex()
+            : (matchHeatColors[highlightColor] ?? matchHeatColors.at(-1) ?? "");
+
           return (
+            // eslint-disable-next-line jsx-a11y/no-static-element-interactions
             <span
               key={segmentKey}
-              className={`${segmentClassName} ${styles["segment--noMatches"]}`}
+              // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+              tabIndex={0}
+              className={`${segmentClassName} ${styles.segment__button}`}
+              style={{
+                fontFamily: sourceSans.style.fontFamily,
+                color,
+              }}
+              onClick={async () => {
+                await updateSelectedLocationInGlobalState({
+                  id: data.segmentNumber,
+                  matches,
+                  index: i,
+                });
+              }}
+              onKeyDown={async (event) => {
+                // allow selecting the segments by pressing space or enter
+                if (event.key !== " " && event.key !== "Enter") return;
+                event.preventDefault();
+                await updateSelectedLocationInGlobalState({
+                  id: data.segmentNumber,
+                  matches,
+                  index: i,
+                });
+              }}
             >
               {textContent}
             </span>
           );
-        }
-
-        const color: string = shouldUseMonochromaticSegmentColors
-          ? colorScale(highlightColor).hex()
-          : (matchHeatColors[highlightColor] ?? matchHeatColors.at(-1) ?? "");
-
-        return (
-          // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-          <span
-            key={segmentKey}
-            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            tabIndex={0}
-            className={`${segmentClassName} ${styles.segment__button}`}
-            style={{
-              fontFamily: sourceSans.style.fontFamily,
-              color,
-            }}
-            onClick={async () => {
-              await updateSelectedLocationInGlobalState({
-                id: data.segmentNumber,
-                matches,
-                index: i,
-              });
-            }}
-            onKeyDown={async (event) => {
-              // allow selecting the segments by pressing space or enter
-              if (event.key !== " " && event.key !== "Enter") return;
-              event.preventDefault();
-              await updateSelectedLocationInGlobalState({
-                id: data.segmentNumber,
-                matches,
-                index: i,
-              });
-            }}
-          >
-            {textContent}
-          </span>
-        );
-      })}
+        },
+      )}
     </div>
   );
 };

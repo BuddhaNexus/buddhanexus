@@ -115,6 +115,13 @@ export const useRightPaneActiveSegmentIndexParam = () => {
   );
 };
 
+export const useMiddleViewActiveMatchParam = () => {
+  return useQueryState(
+    allUIComponentParamNames.active_match_id,
+    parseAsString.withDefault(DEFAULT_PARAM_VALUES.active_match),
+  );
+};
+
 const parseAsSortMethod = parseAsStringLiteral(sortMethods);
 
 export const useSortMethodParam = () => {

@@ -67,7 +67,7 @@
   "devDependencies": {
     "@tanstack/react-query-devtools": "^5.64.2",
     "@types/chroma-js": "^2.4.5",
-    "@types/lodash": "^4.17.14",
+    "@types/lodash": "^4.17",
     "@types/mdx": "^2.0.13",
     "@types/node": "22.10.7",
     "@types/react": "19.0.7",

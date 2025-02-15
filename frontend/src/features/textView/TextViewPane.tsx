@@ -1,5 +1,5 @@
 import React, {
-  MutableRefObject,
+  RefObject,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -54,7 +54,7 @@ export const TextViewPane = ({
   setActiveSegmentIndex,
 }: TextViewPaneProps) => {
   const virtuosoRef = useRef<VirtuosoHandle>(null);
-  const wasDataJustAppended: MutableRefObject<boolean> = useRef(false);
+  const wasDataJustAppended: RefObject<boolean> = useRef(false);
 
   const {
     // [TODO] add error handling
@@ -72,6 +72,7 @@ export const TextViewPane = ({
 
   // assign data to a ref to avoid re-running the effect when items are appended during endless loading.
   const allParallelsRef = useRef<ParsedTextViewParallels>(allParallels);
+
   useLayoutEffect(() => {
     allParallelsRef.current = allParallels;
   }, [allParallels]);
