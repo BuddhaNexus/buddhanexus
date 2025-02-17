@@ -5,7 +5,9 @@
   },
   "header": {
     "guide": "Richtlinien",
-    "database": "Datenbank"
+    "database": "Datenbank",
+    "toggleTheme": "Toggle theme",
+    "visual": "Sankey-Diagramme"
   },
   "language": {
     "all": "Alle",
@@ -40,13 +42,12 @@
     "segmentMatches": "Segmentübereinstimmungen"
   },
   "visual": {
-    "openVisualCharts": "Open Visual Charts",
-    "visualInfoHeader": "Visual View",
-    "visualInfo1": "Select the Inquiry and Hit Collections.",
-    "visualInfo2": "More than one Hit Collection can be selected. To reduce the view to a single subsection, click on the coloured bar in the Inquiry Collection (left).",
-    "visualInfo3": "The view can be further reduced to a single text. A click on a single text will open the text view where the individual matches will be ",
-    "inquiryCollectionLabel": "Inquiry Collection",
-    "hitCollectionsLabel": "Hit Collections"
+    "openVisualCharts": "Sankey-Diagramm öffnen",
+    "visualInfoHeader": "Sankey-Diagramm",
+    "visualInfo1": "Wählen Sie eine Abfragesammlung, eine Kategorie oder einen Text und eine Treffersammlung und/oder Kategorie aus.",
+    "visualInfo2": "Es kann mehr als eine Treffersammlung und/oder Kategorie ausgewählt werden.",
+    "inquiryCollectionLabel": "Abfragetext(e)",
+    "hitCollectionsLabel": "Treffertext(e)"
   },
   "news": {
     "title": "Nachrichten",

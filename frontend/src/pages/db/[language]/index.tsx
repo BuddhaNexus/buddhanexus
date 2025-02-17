@@ -3,15 +3,13 @@ import type { GetStaticProps } from "next";
 import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import { getI18NextStaticProps } from "@utils/nextJsHelpers";
 import merge from "lodash/merge";
 
 export { getDbLanguageStaticPaths as getStaticPaths } from "@utils/nextJsHelpers";
 
 import useDimensions from "react-cool-dimensions";
-import { useTranslation } from "next-i18next";
-import { Link } from "@components/common/Link";
 import {
   DbSourceTreeType,
   SearchableDbSourceTree,
@@ -20,8 +18,6 @@ import {
 export default function DbIndexPage() {
   const { dbLanguageName, dbLanguage } = useDbRouterParams();
   const { observe, height, width } = useDimensions();
-
-  const { t } = useTranslation();
 
   return (
     <PageContainer backgroundName={dbLanguage}>
@@ -51,12 +47,6 @@ export default function DbIndexPage() {
           />
         </Box>
       </Paper>
-
-      <Link href={`./${dbLanguage}/visual`}>
-        <Button sx={{ my: 2 }} variant="contained">
-          {t("visual.openVisualCharts")}
-        </Button>
-      </Link>
 
       <Footer />
     </PageContainer>

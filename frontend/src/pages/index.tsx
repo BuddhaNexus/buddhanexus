@@ -2,7 +2,7 @@ import React from "react";
 import type { GetStaticProps } from "next";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
-import { ContentLanguageSelector } from "@components/layout/ContentLanguageSelector";
+import { DbLanguageLinkBox } from "@components/layout/DbLanguageLinkBox";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { sourceSerif } from "@components/theme";
@@ -35,14 +35,13 @@ export default function Home() {
         component={Image}
         src={treeIcon}
         height="30vh"
-        width="100%"
+        width="auto"
         alt="buddhanexus logo"
         sx={{
-          p: 4,
-          [materialTheme.breakpoints.down("sm")]: {
-            p: 3,
-            m: 2,
-          },
+          p: { xs: 3, sm: 4 },
+          mx: { xs: 2, lg: 0 },
+          mt: 2,
+          mb: 0,
           backgroundColor: materialTheme.palette.background.header,
           borderBottom: `1px solid ${materialTheme.palette.background.accent}`,
           borderRadiusTopLeft: 1,
@@ -52,14 +51,10 @@ export default function Home() {
       <Paper
         elevation={1}
         sx={{
-          p: 4,
+          p: { xs: 3, sm: 4 },
+          mx: { xs: 2, lg: 0 },
           mt: 0,
           mb: 4,
-          [materialTheme.breakpoints.down("sm")]: {
-            p: 3,
-            mx: 2,
-            mb: 2,
-          },
         }}
       >
         <Typography component="h1" sx={visuallyHidden}>
@@ -76,29 +71,30 @@ export default function Home() {
         <Box
           sx={{
             display: "flex",
-            my: 2,
             flexWrap: "wrap",
-            [materialTheme.breakpoints.down("sm")]: {
-              flexDirection: "column",
-            },
+            justifyContent: "center",
+            gap: 2,
+            pt: 4,
+            mx: "auto",
+            maxWidth: { xs: 240, sm: 360, md: 800 },
           }}
         >
-          <ContentLanguageSelector
+          <DbLanguageLinkBox
             title={t("language.pa")}
             href={dbLanguagePaths.pa}
             color={materialTheme.palette.common.pali}
           />
-          <ContentLanguageSelector
+          <DbLanguageLinkBox
             title={t("language.sa")}
             href={dbLanguagePaths.sa}
             color={materialTheme.palette.common.sanskrit}
           />
-          <ContentLanguageSelector
+          <DbLanguageLinkBox
             title={t("language.bo")}
             href={dbLanguagePaths.bo}
             color={materialTheme.palette.common.tibetan}
           />
-          <ContentLanguageSelector
+          <DbLanguageLinkBox
             title={t("language.zh")}
             href={dbLanguagePaths.zh}
             color={materialTheme.palette.common.chinese}
