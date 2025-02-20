@@ -55,7 +55,7 @@ export function useTextViewPane({
     (segmentId: string): boolean =>
       segmentId !== DEFAULT_PARAM_VALUES.active_segment &&
       Boolean(previouslySelectedSegmentsMap.current[segmentId]),
-    []
+    [],
   );
 
   // in the right pane, everything is only filtered by active file
@@ -145,7 +145,7 @@ export function useTextViewPane({
       if (isSuccess && activeSegment)
         previouslySelectedSegmentsMap.current[activeSegment] = true;
     },
-    [isSuccess, activeSegment]
+    [isSuccess, activeSegment],
   );
 
   useEffect(
@@ -160,7 +160,7 @@ export function useTextViewPane({
         paginationState.current[1] = data?.pages[0].data.page;
       }
     },
-    [data?.pages]
+    [data?.pages],
   );
 
   const handleFetchingPreviousPage = useCallback(async () => {
@@ -189,7 +189,7 @@ export function useTextViewPane({
 
   const allParallels = useMemo(
     () => (data?.pages ? data.pages.flatMap((page) => page.data.items) : []),
-    [data?.pages]
+    [data?.pages],
   );
 
   return {

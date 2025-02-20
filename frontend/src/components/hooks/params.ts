@@ -29,7 +29,7 @@ export const useParLengthParam = () => {
   const { dbLanguage } = useNullableDbRouterParams();
   return useQueryState(allUIComponentParamNames.par_length, {
     ...parseAsInteger.withDefault(
-      DEFAULT_PARAM_VALUES.par_length[dbLanguage ?? DEFAULT_LANGUAGE]
+      DEFAULT_PARAM_VALUES.par_length[dbLanguage ?? DEFAULT_LANGUAGE],
     ),
   });
 };
@@ -97,7 +97,7 @@ export const useActiveSegmentParam = () => {
 export const useActiveSegmentIndexParam = () => {
   return useQueryState(
     allUIComponentParamNames.active_segment_index,
-    parseAsInteger
+    parseAsInteger,
   );
 };
 
@@ -111,7 +111,7 @@ export const useRightPaneActiveSegmentParam = () => {
 export const useRightPaneActiveSegmentIndexParam = () => {
   return useQueryState(
     allUIComponentParamNames.right_pane_active_segment_index,
-    parseAsInteger
+    parseAsInteger,
   );
 };
 
