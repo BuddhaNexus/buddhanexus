@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { useParLengthParam } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { MIN_PAR_LENGTH_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { Box, FormLabel, Slider, TextField } from "@mui/material";
 import debounce from "lodash/debounce";
@@ -26,7 +26,7 @@ function normalizeValue(value: number, min: number) {
 export default function ParLengthFilter() {
   const { t } = useTranslation("settings");
 
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbPageRouterParams();
 
   const [parLengthParam, setParLengthParam] = useParLengthParam();
   const [parLengthValue, setparLengthValue] = useState(parLengthParam);

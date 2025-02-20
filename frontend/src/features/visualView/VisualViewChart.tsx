@@ -5,14 +5,14 @@ import {
   useVisualCollectionStringParam,
   useVisualHitCollectionsStringParam,
 } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { visualChartColors } from "@features/visualView/visualChartUtils";
 import { Box } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 
 export const VisualViewChart = ({ currentPage }: { currentPage: number }) => {
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbPageRouterParams();
   const [selectedCollection] = useVisualCollectionStringParam();
   const [selectedHitCollections] = useVisualHitCollectionsStringParam();
 

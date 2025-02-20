@@ -11,7 +11,7 @@ import { InfiniteLoadingSpinner } from "@components/common/LoadingSpinner";
 import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useSortMethodParam } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { PageContainer } from "@components/layout/PageContainer";
 import { DbSourceBrowserDrawer } from "@features/sourceTextBrowserDrawer/sourceTextBrowserDrawer";
@@ -27,7 +27,7 @@ import { DbApi } from "@utils/api/dbApi";
 
 // TODO: investigate why there is a full page rerender when switching to table view (but not text view).
 export default function TablePage() {
-  const { isFallback, dbLanguage } = useDbRouterParams();
+  const { isFallback, dbLanguage } = useDbPageRouterParams();
 
   useSetDbViewFromPath();
 

@@ -4,7 +4,7 @@ import {
   useVisualCollectionStringParam,
   useVisualHitCollectionsStringParam,
 } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   Autocomplete,
   FormControl,
@@ -19,7 +19,7 @@ import { DbApi } from "@utils/api/dbApi";
 import { ParsedApiV1VisualCollection } from "@utils/api/endpoints/visual-view";
 
 export function VisualViewHeader() {
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbPageRouterParams();
   const { t } = useTranslation();
 
   const [selectedCollection, setSelectedCollection] =

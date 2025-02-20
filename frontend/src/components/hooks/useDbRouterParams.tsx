@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { getDbLanguage, getValidDbLanguage } from "@utils/validators";
 
-export const useDbRouterParams = () => {
+export const useDbPageRouterParams = () => {
   const { t } = useTranslation();
   const router = useRouter();
 

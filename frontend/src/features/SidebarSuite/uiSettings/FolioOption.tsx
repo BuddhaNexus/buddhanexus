@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { useFolioParam } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import {
   CircularProgress,
   FormControl,
@@ -55,7 +55,7 @@ function Loading({ showAll, label }: { showAll: string; label: string }) {
 // TODO: add handling for functionality change for different views (jump to / only show)
 export default function FolioOption() {
   const { t } = useTranslation("settings");
-  const { fileName } = useDbRouterParams();
+  const { fileName } = useDbPageRouterParams();
 
   const { data, isLoading } = useQuery({
     queryKey: DbApi.FolioData.makeQueryKey(fileName),

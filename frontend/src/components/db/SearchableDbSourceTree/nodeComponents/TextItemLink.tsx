@@ -6,7 +6,7 @@ import { Link } from "@components/common/Link";
 import { getTextPath } from "@components/common/utils";
 import { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
 import { isDbSourceTreeLeafNodeData } from "@components/db/SearchableDbSourceTree/utils";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { Chip, Tooltip, Typography } from "@mui/material";
 import { useAtomValue, useSetAtom } from "jotai";
 
@@ -62,7 +62,7 @@ export function TextItemLinkBody({
 
 export function TextItemLink({ node }: { node: NodeApi<DbSourceTreeNode> }) {
   const { t } = useTranslation();
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbPageRouterParams();
 
   const dbView = useAtomValue(currentDbViewAtom);
   const setIsDrawerOpen = useSetAtom(isDbSourceBrowserDrawerOpenAtom);

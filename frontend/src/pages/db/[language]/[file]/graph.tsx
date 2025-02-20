@@ -17,7 +17,7 @@ import {
   useParLengthParam,
   useScoreParam,
 } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { PageContainer } from "@components/layout/PageContainer";
 import { HistogramDataChart } from "@features/graphView/HistogramDataChart";
@@ -43,7 +43,11 @@ const GraphContainer: React.FC<{ children: React.ReactNode; sx?: SxProps }> = ({
 );
 
 export default function GraphPage() {
-  const { dbLanguage, fileName: filename, isFallback } = useDbRouterParams();
+  const {
+    dbLanguage,
+    fileName: filename,
+    isFallback,
+  } = useDbPageRouterParams();
 
   useSetDbViewFromPath();
 

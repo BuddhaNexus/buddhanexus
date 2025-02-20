@@ -1,7 +1,7 @@
 import { NextSeo } from "next-seo";
 import { currentDbViewAtom } from "@atoms";
 import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { useMenuDataFileMap } from "@components/hooks/useMenuDataMap";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
@@ -10,7 +10,7 @@ import startCase from "lodash/startCase";
 
 export const DbViewPageHead = () => {
   const menuDataFileMap = useMenuDataFileMap();
-  const { fileName } = useDbRouterParams();
+  const { fileName } = useDbPageRouterParams();
   const fileData = menuDataFileMap[fileName];
 
   // Used for external navigation to app when titles can't be retrieved from menudata

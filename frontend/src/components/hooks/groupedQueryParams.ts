@@ -13,7 +13,7 @@ import {
   useParLengthParam,
   useScoreParam,
 } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { AllAPIRequestProps } from "@utils/api/types";
 
 export const useDbQueryFilters = () => {
@@ -50,7 +50,7 @@ export const useStandardViewBaseQueryParams = () => {
    * table & numbers: + sort_method
    */
 
-  const { fileName: filename } = useDbRouterParams();
+  const { fileName: filename } = useDbPageRouterParams();
   const [folio] = useFolioParam();
 
   return {

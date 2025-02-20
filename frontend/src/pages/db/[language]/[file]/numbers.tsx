@@ -13,7 +13,7 @@ import LoadingSpinner from "@components/common/LoadingSpinner";
 import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useStandardViewBaseQueryParams } from "@components/hooks/groupedQueryParams";
 import { useSortMethodParam } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { PageContainer } from "@components/layout/PageContainer";
 import NumbersTable from "@features/numbersView/NumbersTable";
@@ -27,7 +27,7 @@ import {
 import { DbApi } from "@utils/api/dbApi";
 
 export default function NumbersPage() {
-  const { dbLanguage, fileName, isFallback } = useDbRouterParams();
+  const { dbLanguage, fileName, isFallback } = useDbPageRouterParams();
 
   useSetDbViewFromPath();
 

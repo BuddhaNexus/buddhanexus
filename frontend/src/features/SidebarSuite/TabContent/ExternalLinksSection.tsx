@@ -2,7 +2,7 @@ import React from "react";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import { useTranslation } from "next-i18next";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { ExternalSourceLink } from "@features/SidebarSuite/common/MuiStyledSidebarComponents";
 import PanelHeading from "@features/SidebarSuite/common/PanelHeading";
 import { List, ListItem } from "@mui/material";
@@ -49,7 +49,7 @@ function CBCIcon({ fill }: { fill: string }) {
 }
 
 export const ExternalLinksSection = () => {
-  const { fileName } = useDbRouterParams();
+  const { fileName } = useDbPageRouterParams();
   const { t } = useTranslation("settings");
   const materialTheme = useTheme();
 
