@@ -7,7 +7,6 @@ import { QueryPageTopStack } from "@components/db/QueryPageTopStack";
 import { ResultQueryError } from "@components/db/ResultQueryError";
 import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
 import { useSearchStringParam } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
 import { PageContainer } from "@components/layout/PageContainer";
 import { SearchResults } from "@features/globalSearch";
 import SearchPageInputBox from "@features/globalSearch/SearchPageInputBox";
@@ -44,8 +43,6 @@ const SearchPageHeader = ({ matches }: { matches: number }) => {
 };
 
 export default function SearchPage() {
-  const { isFallback } = useDbRouterParams();
-
   const [search_string] = useSearchStringParam();
 
   const filters = useDbQueryFilters();
@@ -128,7 +125,7 @@ export default function SearchPage() {
     );
   }
 
-  if (isFallback || isLoading || isFetching || isExternalInitialLoad.current) {
+  if (isLoading || isFetching || isExternalInitialLoad.current) {
     return (
       <PageContainer maxWidth="xl" isQueryResultsPage>
         <SearchPageHeader matches={matches} />

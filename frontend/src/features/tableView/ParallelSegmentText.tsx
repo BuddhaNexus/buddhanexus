@@ -1,5 +1,5 @@
 import { scriptSelectionAtom } from "@atoms";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { enscriptText } from "@features/SidebarSuite/utils";
 import { Typography } from "@mui/material";
 import { APISchemas } from "@utils/api/types";
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const ParallelSegmentText = ({ text }: Props) => {
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbPageRouterParams();
   const script = useAtomValue(scriptSelectionAtom);
 
   if (!text) {

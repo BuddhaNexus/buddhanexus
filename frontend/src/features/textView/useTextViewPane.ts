@@ -4,7 +4,7 @@ import {
   useLeftPaneActiveMatchParam,
   useRightPaneActiveMatchParam,
 } from "@components/hooks/params";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { useSetDbViewFromPath } from "@components/hooks/useDbView";
 import { DEFAULT_PARAM_VALUES } from "@features/SidebarSuite/uiSettings/config";
 import { PaginationState } from "@features/textView/utils";
@@ -41,7 +41,7 @@ export function useTextViewPane({
   useSetDbViewFromPath();
   const requestBodyBase = useStandardViewBaseQueryParams();
 
-  const { fileName: fileNameUrlParam } = useDbRouterParams();
+  const { fileName: fileNameUrlParam } = useDbPageRouterParams();
   const [leftPaneActiveMatchId, setLeftPaneActiveMatchId] =
     useLeftPaneActiveMatchParam();
   const [rightPaneActiveMatchId, setRightPaneActiveMatchId] =

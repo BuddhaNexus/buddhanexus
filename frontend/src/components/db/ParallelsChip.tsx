@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import { useDbQueryFilters } from "@components/hooks/groupedQueryParams";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { Skeleton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
@@ -13,7 +13,7 @@ import CappedMatchesChip from "./CappedMatchesChip";
 export default function ParallelsChip() {
   const { t } = useTranslation("settings");
 
-  const { fileName } = useDbRouterParams();
+  const { fileName } = useDbPageRouterParams();
   const filters = useDbQueryFilters();
 
   const { data, isLoading } = useQuery({

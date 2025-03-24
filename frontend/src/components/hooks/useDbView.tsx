@@ -6,7 +6,7 @@ import { DbViewEnum, DEFAULT_DB_VIEW } from "@utils/constants";
 import { getValidDbView } from "@utils/validators";
 import { useSetAtom } from "jotai";
 
-import { useDbRouterParams } from "./useDbRouterParams";
+import { useDbPageRouterParams } from "./useDbRouterParams";
 
 export const UNAVAILABLE_VIEWS: Partial<Record<DbLanguage, DbViewEnum[]>> = {
   sa: [DbViewEnum.NUMBERS],
@@ -23,7 +23,7 @@ export const getAvailableDBViews = (language: DbLanguage) => {
 };
 
 export const useAvailableDbViews = () => {
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbPageRouterParams();
 
   return useMemo(() => {
     return getAvailableDBViews(dbLanguage);

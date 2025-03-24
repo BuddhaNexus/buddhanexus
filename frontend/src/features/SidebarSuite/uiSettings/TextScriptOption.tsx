@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useTranslation } from "next-i18next";
 import { scriptSelectionAtom } from "@atoms";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import type { Script } from "@features/SidebarSuite/types";
 import {
   FormControl,
@@ -18,7 +18,7 @@ const SCRIPT_OPTIONS: Partial<Record<DbLanguage, Script[]>> = {
 };
 
 export default function TextScriptOption() {
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbPageRouterParams();
   const { t } = useTranslation("settings");
 
   const [scriptSelection, setScriptSelection] = useAtom(scriptSelectionAtom);

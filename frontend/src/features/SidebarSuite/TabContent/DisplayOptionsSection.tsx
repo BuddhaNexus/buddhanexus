@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useTranslation } from "next-i18next";
 import { currentDbViewAtom } from "@atoms";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import PanelHeading from "@features/SidebarSuite/common/PanelHeading";
 import { DisplayUISettingName } from "@features/SidebarSuite/types";
 import { displaySettingComponents } from "@features/SidebarSuite/uiSettings";
@@ -16,7 +16,7 @@ export const DisplayOptionsSection = () => {
   const { t } = useTranslation("settings");
 
   const currentView = useAtomValue(currentDbViewAtom);
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbPageRouterParams();
 
   const uiSettings = useMemo(() => {
     return getAvailableSettings<DisplayUISettingName>({

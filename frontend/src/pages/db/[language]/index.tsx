@@ -1,6 +1,6 @@
 import React from "react";
 import type { GetStaticProps } from "next";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { Footer } from "@components/layout/Footer";
 import { PageContainer } from "@components/layout/PageContainer";
 import { Box, Paper, Typography } from "@mui/material";
@@ -16,7 +16,7 @@ import {
 } from "@components/db/SearchableDbSourceTree";
 
 export default function DbIndexPage() {
-  const { dbLanguageName, dbLanguage } = useDbRouterParams();
+  const { dbLanguageName, dbLanguage } = useDbPageRouterParams();
   const { observe, height, width } = useDimensions();
 
   return (

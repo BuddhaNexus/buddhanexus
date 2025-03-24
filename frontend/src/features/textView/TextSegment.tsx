@@ -7,7 +7,7 @@ import {
   shouldUseMonochromaticSegmentColorsAtom,
   textViewIsMiddlePanePointingLeftAtom,
 } from "@atoms";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { sourceSans } from "@components/theme";
 import { enscriptText } from "@features/SidebarSuite/utils";
 import { TextViewPaneProps } from "@features/textView/TextViewPane";
@@ -43,7 +43,7 @@ export const TextSegment = ({
     ? DARK_MODE_MATCH_HEAT_INVERTED_COLORS
     : LIGHT_MODE_MATCH_HEAT_COLORS;
 
-  const { dbLanguage } = useDbRouterParams();
+  const { dbLanguage } = useDbPageRouterParams();
 
   const shouldUseMonochromaticSegmentColors = useAtomValue(
     shouldUseMonochromaticSegmentColorsAtom,

@@ -1,7 +1,7 @@
 // import * as React from "react";
 // import { useRouter } from "next/router";
 // import { useTranslation } from "next-i18next";
-// import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+// import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 // import {
 //   Popper,
 //   PopperMsgBox,
@@ -39,7 +39,7 @@
 // const MultiLingualSelector = () => {
 //   const { t } = useTranslation(["settings", "common"]);
 //   const router = useRouter();
-//   const { fileName } = useDbRouterParams();
+//   const { fileName } = useDbPageRouterParams();
 //   const theme = useTheme();
 
 //   const queryParams = {

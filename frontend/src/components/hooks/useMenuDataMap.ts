@@ -1,11 +1,11 @@
 import React from "react";
 import type { DbSourceTreeNode } from "@components/db/SearchableDbSourceTree/types";
-import { useDbRouterParams } from "@components/hooks/useDbRouterParams";
+import { useDbPageRouterParams } from "@components/hooks/useDbRouterParams";
 import { useQuery } from "@tanstack/react-query";
 import { DbApi } from "@utils/api/dbApi";
 
 export const useMenuDataFileMap = (enabled = false) => {
-  const { dbLanguage: language } = useDbRouterParams();
+  const { dbLanguage: language } = useDbPageRouterParams();
 
   const { data: menuData } = useQuery<DbSourceTreeNode[]>({
     queryKey: DbApi.DbSourcesMenu.makeQueryKey(language),
