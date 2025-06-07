@@ -71,9 +71,13 @@ def process_file(path, _):
     print("Processing file: ", path)
     db = get_database()
 
-    parallels = json.load(
-        gzip.open(path, "rt", encoding="utf-8")
-    )  # returns a list of dicts
+    parallels = []
+    with gzip.open(path, "rt", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:  # Skip empty lines
+                parallels.append(json.loads(line))
+    
     print(f"Validating {path}")
     if validate_dict_list(path, Match, parallels):
         print(f"Loading {path}")
@@ -102,7 +106,7 @@ def load_parallels_for_language(folder, lang, db, number_of_threads):
     }
 
     files = os.listdir(folder)
-    files = list(filter(lambda f: f.endswith(".json.gz"), files))
+    files = list(filter(lambda f: f.endswith(".ndjson.gz"), files))
     pool = multiprocessing.Pool(number_of_threads)
     async_results = []
     for file in files:
@@ -141,11 +145,12 @@ def clean_parallels_for_language(lang, db):
 def load_sorted_parallels_file(path, lang, db_collection):
     print("Loading sorted parallels for file: ", path)
     current_files = json.load(gzip.open(path, "rt", encoding="utf-8"))
-
     batch_size = 100
     batch = []
 
     for file in tqdm(current_files):
+        if not isinstance(file, dict):
+            continue
         if not should_download_file(file["filename"]):
             continue
         filename = get_filename_from_segmentnr(file["filename"])

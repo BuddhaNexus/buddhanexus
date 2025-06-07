@@ -32,6 +32,10 @@ rebuild:
 clean-all:
 	$(COMPOSE) down --rmi local --volumes
 
+# Clear Redis cache
+clear-cache:
+	@docker exec -t buddhanexus-redis-1 redis-cli FLUSHALL
+
 # Initialize database and create empty collections
 create-db:
 	@docker exec -t dataloader bash -c "invoke create-db create-collections"
@@ -74,8 +78,8 @@ load-chinese-data:
 	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=zh"
 
 load-sanskrit-data:
-	@docker exec -t dataloader bash -c "invoke create-collections"
-	@docker exec -t dataloader bash -c "invoke load-text-segments --lang=sa"
+	#@docker exec -t dataloader bash -c "invoke create-collections"
+	#@docker exec -t dataloader bash -c "invoke load-text-segments --lang=sa"
 	@docker exec -t dataloader bash -c "invoke load-parallels --lang=sa"
 	@docker exec -t dataloader bash -c "invoke load-global-stats --lang=sa"
 
