@@ -46,7 +46,7 @@
     "jotai": "^2.11.1",
     "lodash": "^4.17.21",
     "material-ui-popup-state": "^5.3.3",
-    "next": "15.1.6",
+    "next": "15.2.4",
     "next-i18next": "^15.4.1",
     "next-mdx-remote": "^4.4.1",
     "next-seo": "^6.6.0",
