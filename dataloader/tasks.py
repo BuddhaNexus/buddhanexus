@@ -126,6 +126,19 @@ def load_text_segments(c, lang=DEFAULT_LANGS, threaded=True):
             loader = SegmentLoaderClass()
             loader.load(number_of_threads=number_of_threads)
     print("Segment data loading completed.")
+
+
+@task
+def create_search_views(c, lang=DEFAULT_LANGS):
+    """
+    Create analyzers and search views for the specified languages
+
+    :param c: invoke.py context object
+    :param lang: Language(s) to create search views for
+    """
+    db = get_database()
+    if lang != DEFAULT_LANGS:
+        lang = ["".join(lang)]
     print("Creating analyzers and search views...")
     create_analyzers(db)
     create_search_views(db, lang)
@@ -162,9 +175,9 @@ def load_parallels(c, root_url=DEFAULT_MATCH_URL, lang=DEFAULT_LANGS, threaded=T
     db = get_database()
     for clang in lang:
         print("LANG: ", clang)
-        load_parallels_for_language(
-            root_url, clang, db, thread_count if threaded else 1
-        )
+        #load_parallels_for_language(
+        #    root_url, clang, db, thread_count if threaded else 1
+        #)
         load_sorted_parallels_for_language(root_url, clang, db)
 
 
