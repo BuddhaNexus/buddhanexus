@@ -1,5 +1,5 @@
 # buddhanexus
-Backend for the Buddhanexus project.
+Backend for the Buddhanexus project. Developed with support of the Khyentse Foundation, GPL-licensed community resource. 
 
 Includes:
 - API (using [fastapi](https://fastapi.tiangolo.com/))
