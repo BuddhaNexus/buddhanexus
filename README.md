@@ -1,5 +1,7 @@
 # buddhanexus
-Backend for the Buddhanexus project. Developed with support of the Khyentse Foundation, GPL-licensed community resource. 
+Backend for the Buddhanexus project. Developed with support of the Khyentse Foundation, GPL-licensed community resource.   
+
+Legacy note: This codebase is not actively developed anymore. The version still running at https://buddhanexus.kc-tbts.uni-hamburg.de/ is using a deprecated version of this codebase from 2022 and has not been updated since then. Active development has since moved to [DharmaNexus](https://github.com/dharmamitra/dharmanexus).
 
 Includes:
 - API (using [fastapi](https://fastapi.tiangolo.com/))
